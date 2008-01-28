@@ -1,0 +1,787 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		F472042B0D33BEAF00E9F378 /* All UnitTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F47204340D33BEDF00E9F378 /* Build configuration list for PBXAggregateTarget "All UnitTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				F472042F0D33BEB500E9F378 /* PBXTargetDependency */,
+				F472042D0D33BEB500E9F378 /* PBXTargetDependency */,
+			);
+			name = "All UnitTests";
+			productName = "All UnitTests";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */; };
+		F428FF040D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */; };
+		F428FF090D48E57300382ED1 /* GTMNSBezierPath+CGPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */; };
+		F428FF0A0D48E57300382ED1 /* GTMNSBezierPath+CGPathTest.tif in Resources */ = {isa = PBXBuildFile; fileRef = F428FF020D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.tif */; };
+		F42E082E0D19991400D5DDE0 /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */; };
+		F42E082F0D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */; };
+		F42E08300D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.tif in Resources */ = {isa = PBXBuildFile; fileRef = F48FE2840D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.tif */; };
+		F42E08330D19992100D5DDE0 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
+		F42E08340D19992100D5DDE0 /* GTMSystemVersionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */; };
+		F42E08610D199A2B00D5DDE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		F42E08640D199A2F00D5DDE0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		F42E087F0D199AB400D5DDE0 /* GTM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E086D0D199A5B00D5DDE0 /* GTM.framework */; };
+		F42E08800D199AB500D5DDE0 /* GTM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E086D0D199A5B00D5DDE0 /* GTM.framework */; };
+		F42E089C0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */; };
+		F42E089D0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */; };
+		F42E09450D199BA400D5DDE0 /* GTMNSObject+UnitTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE29C0D198D36009257D2 /* GTMNSObject+UnitTesting.m */; };
+		F42E09460D199BA400D5DDE0 /* GTMNSView+UnitTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE29E0D198D36009257D2 /* GTMNSView+UnitTesting.m */; };
+		F42E09490D199BBF00D5DDE0 /* GTMDelegatingTableColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE27C0D198D0E009257D2 /* GTMDelegatingTableColumn.h */; };
+		F42E094A0D199BBF00D5DDE0 /* GTMDelegatingTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE27D0D198D0E009257D2 /* GTMDelegatingTableColumn.m */; };
+		F42E094B0D199BBF00D5DDE0 /* GTMGarbageCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE28D0D198D24009257D2 /* GTMGarbageCollection.h */; };
+		F42E094C0D199BBF00D5DDE0 /* GTMGeometryUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE27E0D198D0E009257D2 /* GTMGeometryUtils.h */; };
+		F42E094D0D199BBF00D5DDE0 /* GTMGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */; };
+		F42E094F0D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE2810D198D0E009257D2 /* GTMNSBezierPath+RoundRect.h */; };
+		F42E09500D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2820D198D0E009257D2 /* GTMNSBezierPath+RoundRect.m */; };
+		F42E09510D199BBF00D5DDE0 /* GTMNSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */; };
+		F42E09520D199BBF00D5DDE0 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */; };
+		F42E09530D199BBF00D5DDE0 /* GTMObjectSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE2910D198D24009257D2 /* GTMObjectSingleton.h */; };
+		F42E09540D199BBF00D5DDE0 /* GTMSystemVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE2920D198D24009257D2 /* GTMSystemVersion.h */; };
+		F42E09550D199BBF00D5DDE0 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
+		F42E095E0D199BD600D5DDE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		F42E09AA0D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.h in Headers */ = {isa = PBXBuildFile; fileRef = F42E09A80D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.h */; };
+		F42E09AB0D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = F42E09A90D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m */; };
+		F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
+		F42E0B0A0D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42E0B090D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m */; };
+		F43DCDCD0D4796C600959A62 /* GTMLoginItems.h in Headers */ = {isa = PBXBuildFile; fileRef = F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */; };
+		F43DCDCE0D4796C600959A62 /* GTMLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */; };
+		F43DCEC70D47BEA000959A62 /* GTMLoginItemsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */; };
+		F43E447A0D4918B20041161F /* GTMLinearRGBShading.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E44770D4918B20041161F /* GTMLinearRGBShading.h */; };
+		F43E447B0D4918B20041161F /* GTMLinearRGBShading.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E44780D4918B20041161F /* GTMLinearRGBShading.m */; };
+		F43E447F0D4918BC0041161F /* GTMLinearRGBShadingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E44790D4918B20041161F /* GTMLinearRGBShadingTest.m */; };
+		F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E4C250D4E361D0041161F /* GTMNSString+XML.h */; };
+		F43E4C290D4E361D0041161F /* GTMNSString+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C260D4E361D0041161F /* GTMNSString+XML.m */; };
+		F43E4C2D0D4E36230041161F /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
+		F43E4DD90D4E56320041161F /* GTMNSEnumerator+Filter.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E4DD60D4E56320041161F /* GTMNSEnumerator+Filter.h */; };
+		F43E4DDA0D4E56320041161F /* GTMNSEnumerator+Filter.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4DD70D4E56320041161F /* GTMNSEnumerator+Filter.m */; };
+		F43E4DDE0D4E56380041161F /* GTMNSEnumerator+FilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4DD80D4E56320041161F /* GTMNSEnumerator+FilterTest.m */; };
+		F43E4E610D4E5EC90041161F /* GTMNSData+zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E4E5E0D4E5EC90041161F /* GTMNSData+zlib.h */; };
+		F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */; };
+		F43E4E660D4E5ED40041161F /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */; };
+		F43E4F6D0D4E60C50041161F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F43E4F6C0D4E60C50041161F /* libz.dylib */; };
+		F47F1C120D490BC000925B8F /* GTMNSBezierPath+Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */; };
+		F47F1C130D490BC000925B8F /* GTMNSBezierPath+Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */; };
+		F47F1C190D490BD200925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif in Resources */ = {isa = PBXBuildFile; fileRef = F47F1C0F0D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif */; };
+		F47F1C1A0D490BD200925B8F /* GTMNSBezierPath+ShadingTest.10.5.tif in Resources */ = {isa = PBXBuildFile; fileRef = F47F1C100D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.5.tif */; };
+		F47F1C1B0D490BD200925B8F /* GTMNSBezierPath+ShadingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1C110D490BC000925B8F /* GTMNSBezierPath+ShadingTest.m */; };
+		F47F1C750D490E5C00925B8F /* GTMShading.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1C740D490E5C00925B8F /* GTMShading.h */; };
+		F47F1CAF0D4910FD00925B8F /* GTMNSColor+Theme.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1CAC0D4910FD00925B8F /* GTMNSColor+Theme.h */; };
+		F47F1CB00D4910FD00925B8F /* GTMNSColor+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1CAD0D4910FD00925B8F /* GTMNSColor+Theme.m */; };
+		F47F1CB60D49110900925B8F /* GTMNSColor+ThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1CAE0D4910FD00925B8F /* GTMNSColor+ThemeTest.m */; };
+		F47F1D300D4914AD00925B8F /* GTMCalculatedRange.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */; };
+		F47F1D310D4914AD00925B8F /* GTMCalculatedRange.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */; };
+		F47F1D350D4914B600925B8F /* GTMCalculatedRangeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F42E08760D199A9B00D5DDE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
+			remoteInfo = GTM;
+		};
+		F42E08780D199AA600D5DDE0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
+			remoteInfo = GTM;
+		};
+		F472042C0D33BEB500E9F378 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F48FE2630D198C1E009257D2;
+			remoteInfo = "UnitTest - AppKit";
+		};
+		F472042E0D33BEB500E9F378 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F42E08110D19987200D5DDE0;
+			remoteInfo = "UnitTest - Foundation";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		32DBCF5E0370ADEE00C91783 /* GTM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTM_Prefix.pch; sourceTree = "<group>"; };
+		F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSBezierPath+CGPath.h"; sourceTree = "<group>"; };
+		F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+CGPath.m"; sourceTree = "<group>"; };
+		F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+CGPathTest.m"; sourceTree = "<group>"; };
+		F428FF020D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+CGPathTest.tif"; sourceTree = "<group>"; };
+		F42E08210D19987200D5DDE0 /* UnitTest - Foundation.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest - Foundation.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F42E086D0D199A5B00D5DDE0 /* GTM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GTM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F42E086E0D199A5B00D5DDE0 /* GTM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "GTM-Info.plist"; sourceTree = "<group>"; };
+		F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		F42E09A80D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSWorkspace+Theme.h"; sourceTree = "<group>"; };
+		F42E09A90D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+Theme.m"; sourceTree = "<group>"; };
+		F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		F42E0B090D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+ThemeTest.m"; sourceTree = "<group>"; };
+		F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMLoginItems.h; sourceTree = "<group>"; };
+		F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLoginItems.m; sourceTree = "<group>"; };
+		F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLoginItemsTest.m; sourceTree = "<group>"; };
+		F43E44770D4918B20041161F /* GTMLinearRGBShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMLinearRGBShading.h; sourceTree = "<group>"; };
+		F43E44780D4918B20041161F /* GTMLinearRGBShading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLinearRGBShading.m; sourceTree = "<group>"; };
+		F43E44790D4918B20041161F /* GTMLinearRGBShadingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLinearRGBShadingTest.m; sourceTree = "<group>"; };
+		F43E4C250D4E361D0041161F /* GTMNSString+XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+XML.h"; sourceTree = "<group>"; };
+		F43E4C260D4E361D0041161F /* GTMNSString+XML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+XML.m"; sourceTree = "<group>"; };
+		F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+XMLTest.m"; sourceTree = "<group>"; };
+		F43E4DD60D4E56320041161F /* GTMNSEnumerator+Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSEnumerator+Filter.h"; sourceTree = "<group>"; };
+		F43E4DD70D4E56320041161F /* GTMNSEnumerator+Filter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSEnumerator+Filter.m"; sourceTree = "<group>"; };
+		F43E4DD80D4E56320041161F /* GTMNSEnumerator+FilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSEnumerator+FilterTest.m"; sourceTree = "<group>"; };
+		F43E4E5E0D4E5EC90041161F /* GTMNSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+zlib.h"; sourceTree = "<group>"; };
+		F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlib.m"; sourceTree = "<group>"; };
+		F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlibTest.m"; sourceTree = "<group>"; };
+		F43E4F6C0D4E60C50041161F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
+		F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSBezierPath+Shading.h"; sourceTree = "<group>"; };
+		F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+Shading.m"; sourceTree = "<group>"; };
+		F47F1C0F0D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+ShadingTest.10.4.tif"; sourceTree = "<group>"; };
+		F47F1C100D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.5.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+ShadingTest.10.5.tif"; sourceTree = "<group>"; };
+		F47F1C110D490BC000925B8F /* GTMNSBezierPath+ShadingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+ShadingTest.m"; sourceTree = "<group>"; };
+		F47F1C740D490E5C00925B8F /* GTMShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMShading.h; sourceTree = "<group>"; };
+		F47F1CAC0D4910FD00925B8F /* GTMNSColor+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSColor+Theme.h"; sourceTree = "<group>"; };
+		F47F1CAD0D4910FD00925B8F /* GTMNSColor+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+Theme.m"; sourceTree = "<group>"; };
+		F47F1CAE0D4910FD00925B8F /* GTMNSColor+ThemeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+ThemeTest.m"; sourceTree = "<group>"; };
+		F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMCalculatedRange.h; sourceTree = "<group>"; };
+		F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRange.m; sourceTree = "<group>"; };
+		F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRangeTest.m; sourceTree = "<group>"; };
+		F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugTigerOrLater.xcconfig; sourceTree = "<group>"; };
+		F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugUnittest.xcconfig; sourceTree = "<group>"; };
+		F48FE2430D197F9A009257D2 /* LoadableBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LoadableBundle.xcconfig; sourceTree = "<group>"; };
+		F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseTigerOrLater.xcconfig; sourceTree = "<group>"; };
+		F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseUnittest.xcconfig; sourceTree = "<group>"; };
+		F48FE2460D197F9A009257D2 /* SharedLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = SharedLibrary.xcconfig; sourceTree = "<group>"; };
+		F48FE2470D197F9A009257D2 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		F48FE2640D198C1E009257D2 /* UnitTest - AppKit.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest - AppKit.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F48FE26E0D198CAD009257D2 /* UnitTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "UnitTest-Info.plist"; sourceTree = "<group>"; };
+		F48FE27C0D198D0E009257D2 /* GTMDelegatingTableColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDelegatingTableColumn.h; sourceTree = "<group>"; };
+		F48FE27D0D198D0E009257D2 /* GTMDelegatingTableColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDelegatingTableColumn.m; sourceTree = "<group>"; };
+		F48FE27E0D198D0E009257D2 /* GTMGeometryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGeometryUtils.h; sourceTree = "<group>"; };
+		F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtils.m; sourceTree = "<group>"; };
+		F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtilsTest.m; sourceTree = "<group>"; };
+		F48FE2810D198D0E009257D2 /* GTMNSBezierPath+RoundRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSBezierPath+RoundRect.h"; sourceTree = "<group>"; };
+		F48FE2820D198D0E009257D2 /* GTMNSBezierPath+RoundRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+RoundRect.m"; sourceTree = "<group>"; };
+		F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+RoundRectTest.m"; sourceTree = "<group>"; };
+		F48FE2840D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+RoundRectTest.tif"; sourceTree = "<group>"; };
+		F48FE28D0D198D24009257D2 /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGarbageCollection.h; sourceTree = "<group>"; };
+		F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTMLTest.m"; sourceTree = "<group>"; };
+		F48FE2910D198D24009257D2 /* GTMObjectSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMObjectSingleton.h; sourceTree = "<group>"; };
+		F48FE2920D198D24009257D2 /* GTMSystemVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSystemVersion.h; sourceTree = "<group>"; };
+		F48FE2930D198D24009257D2 /* GTMSystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersion.m; sourceTree = "<group>"; };
+		F48FE29B0D198D36009257D2 /* GTMNSObject+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+UnitTesting.h"; sourceTree = "<group>"; };
+		F48FE29C0D198D36009257D2 /* GTMNSObject+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+UnitTesting.m"; sourceTree = "<group>"; };
+		F48FE29D0D198D36009257D2 /* GTMNSView+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSView+UnitTesting.h"; sourceTree = "<group>"; };
+		F48FE29E0D198D36009257D2 /* GTMNSView+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSView+UnitTesting.m"; sourceTree = "<group>"; };
+		F48FE29F0D198D36009257D2 /* GTMSenTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase.h; sourceTree = "<group>"; };
+		F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersionTest.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F42E081C0D19987200D5DDE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E08640D199A2F00D5DDE0 /* Foundation.framework in Frameworks */,
+				F42E08800D199AB500D5DDE0 /* GTM.framework in Frameworks */,
+				F42E089D0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F42E086B0D199A5B00D5DDE0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E095E0D199BD600D5DDE0 /* Cocoa.framework in Frameworks */,
+				F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */,
+				F43E4F6D0D4E60C50041161F /* libz.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48FE2610D198C1E009257D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E08610D199A2B00D5DDE0 /* Cocoa.framework in Frameworks */,
+				F42E087F0D199AB400D5DDE0 /* GTM.framework in Frameworks */,
+				F42E089C0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F48FE2640D198C1E009257D2 /* UnitTest - AppKit.octest */,
+				F42E08210D19987200D5DDE0 /* UnitTest - Foundation.octest */,
+				F42E086D0D199A5B00D5DDE0 /* GTM.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* GTM */ = {
+			isa = PBXGroup;
+			children = (
+				32DBCF5E0370ADEE00C91783 /* GTM_Prefix.pch */,
+				F48FE26F0D198CBA009257D2 /* AppKit */,
+				F48FE2720D198CCE009257D2 /* Foundation */,
+				F48FE2770D198CEA009257D2 /* UnitTesting */,
+				F48FE23E0D197F70009257D2 /* XcodeConfig */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				F43E4F6C0D4E60C50041161F /* libz.dylib */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				F42E086E0D199A5B00D5DDE0 /* GTM-Info.plist */,
+				F48FE26E0D198CAD009257D2 /* UnitTest-Info.plist */,
+			);
+			name = GTM;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
+				F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */,
+				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+				F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		F48FE23E0D197F70009257D2 /* XcodeConfig */ = {
+			isa = PBXGroup;
+			children = (
+				F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */,
+				F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */,
+				F48FE2430D197F9A009257D2 /* LoadableBundle.xcconfig */,
+				F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */,
+				F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */,
+				F48FE2460D197F9A009257D2 /* SharedLibrary.xcconfig */,
+				F48FE2470D197F9A009257D2 /* StaticLibrary.xcconfig */,
+			);
+			path = XcodeConfig;
+			sourceTree = "<group>";
+		};
+		F48FE26F0D198CBA009257D2 /* AppKit */ = {
+			isa = PBXGroup;
+			children = (
+				F48FE27C0D198D0E009257D2 /* GTMDelegatingTableColumn.h */,
+				F48FE27D0D198D0E009257D2 /* GTMDelegatingTableColumn.m */,
+				F48FE27E0D198D0E009257D2 /* GTMGeometryUtils.h */,
+				F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */,
+				F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */,
+				F43E44770D4918B20041161F /* GTMLinearRGBShading.h */,
+				F43E44780D4918B20041161F /* GTMLinearRGBShading.m */,
+				F43E44790D4918B20041161F /* GTMLinearRGBShadingTest.m */,
+				F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */,
+				F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */,
+				F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */,
+				F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */,
+				F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */,
+				F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */,
+				F428FF020D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.tif */,
+				F48FE2810D198D0E009257D2 /* GTMNSBezierPath+RoundRect.h */,
+				F48FE2820D198D0E009257D2 /* GTMNSBezierPath+RoundRect.m */,
+				F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */,
+				F48FE2840D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.tif */,
+				F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */,
+				F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */,
+				F47F1C0F0D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif */,
+				F47F1C100D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.5.tif */,
+				F47F1C110D490BC000925B8F /* GTMNSBezierPath+ShadingTest.m */,
+				F47F1CAC0D4910FD00925B8F /* GTMNSColor+Theme.h */,
+				F47F1CAD0D4910FD00925B8F /* GTMNSColor+Theme.m */,
+				F47F1CAE0D4910FD00925B8F /* GTMNSColor+ThemeTest.m */,
+				F47F1C740D490E5C00925B8F /* GTMShading.h */,
+				F42E09A80D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.h */,
+				F42E09A90D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m */,
+				F42E0B090D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m */,
+			);
+			path = AppKit;
+			sourceTree = "<group>";
+		};
+		F48FE2720D198CCE009257D2 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */,
+				F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */,
+				F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */,
+				F48FE28D0D198D24009257D2 /* GTMGarbageCollection.h */,
+				F43E4DD60D4E56320041161F /* GTMNSEnumerator+Filter.h */,
+				F43E4DD70D4E56320041161F /* GTMNSEnumerator+Filter.m */,
+				F43E4DD80D4E56320041161F /* GTMNSEnumerator+FilterTest.m */,
+				F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */,
+				F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */,
+				F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */,
+				F43E4C250D4E361D0041161F /* GTMNSString+XML.h */,
+				F43E4C260D4E361D0041161F /* GTMNSString+XML.m */,
+				F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */,
+				F43E4E5E0D4E5EC90041161F /* GTMNSData+zlib.h */,
+				F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */,
+				F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */,
+				F48FE2910D198D24009257D2 /* GTMObjectSingleton.h */,
+				F48FE2920D198D24009257D2 /* GTMSystemVersion.h */,
+				F48FE2930D198D24009257D2 /* GTMSystemVersion.m */,
+				F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		F48FE2770D198CEA009257D2 /* UnitTesting */ = {
+			isa = PBXGroup;
+			children = (
+				F48FE29B0D198D36009257D2 /* GTMNSObject+UnitTesting.h */,
+				F48FE29C0D198D36009257D2 /* GTMNSObject+UnitTesting.m */,
+				F48FE29D0D198D36009257D2 /* GTMNSView+UnitTesting.h */,
+				F48FE29E0D198D36009257D2 /* GTMNSView+UnitTesting.m */,
+				F48FE29F0D198D36009257D2 /* GTMSenTestCase.h */,
+			);
+			path = UnitTesting;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		F42E08680D199A5B00D5DDE0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E09490D199BBF00D5DDE0 /* GTMDelegatingTableColumn.h in Headers */,
+				F42E094B0D199BBF00D5DDE0 /* GTMGarbageCollection.h in Headers */,
+				F42E094C0D199BBF00D5DDE0 /* GTMGeometryUtils.h in Headers */,
+				F42E094F0D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.h in Headers */,
+				F42E09510D199BBF00D5DDE0 /* GTMNSString+HTML.h in Headers */,
+				F42E09530D199BBF00D5DDE0 /* GTMObjectSingleton.h in Headers */,
+				F42E09540D199BBF00D5DDE0 /* GTMSystemVersion.h in Headers */,
+				F42E09AA0D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.h in Headers */,
+				F43DCDCD0D4796C600959A62 /* GTMLoginItems.h in Headers */,
+				F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */,
+				F47F1C120D490BC000925B8F /* GTMNSBezierPath+Shading.h in Headers */,
+				F47F1C750D490E5C00925B8F /* GTMShading.h in Headers */,
+				F47F1CAF0D4910FD00925B8F /* GTMNSColor+Theme.h in Headers */,
+				F47F1D300D4914AD00925B8F /* GTMCalculatedRange.h in Headers */,
+				F43E447A0D4918B20041161F /* GTMLinearRGBShading.h in Headers */,
+				F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */,
+				F43E4DD90D4E56320041161F /* GTMNSEnumerator+Filter.h in Headers */,
+				F43E4E610D4E5EC90041161F /* GTMNSData+zlib.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		F42E08110D19987200D5DDE0 /* UnitTest - Foundation */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F42E081E0D19987200D5DDE0 /* Build configuration list for PBXNativeTarget "UnitTest - Foundation" */;
+			buildPhases = (
+				F42E08140D19987200D5DDE0 /* Resources */,
+				F42E08160D19987200D5DDE0 /* Sources */,
+				F42E081C0D19987200D5DDE0 /* Frameworks */,
+				F42E081D0D19987200D5DDE0 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F42E08790D199AA600D5DDE0 /* PBXTargetDependency */,
+			);
+			name = "UnitTest - Foundation";
+			productName = "UnitTest - AppKit";
+			productReference = F42E08210D19987200D5DDE0 /* UnitTest - Foundation.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		F42E086C0D199A5B00D5DDE0 /* GTM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F42E086F0D199A5C00D5DDE0 /* Build configuration list for PBXNativeTarget "GTM" */;
+			buildPhases = (
+				F42E08680D199A5B00D5DDE0 /* Headers */,
+				F42E08690D199A5B00D5DDE0 /* Resources */,
+				F42E086A0D199A5B00D5DDE0 /* Sources */,
+				F42E086B0D199A5B00D5DDE0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GTM;
+			productName = GTM;
+			productReference = F42E086D0D199A5B00D5DDE0 /* GTM.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F48FE2630D198C1E009257D2 /* UnitTest - AppKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F48FE2660D198C1F009257D2 /* Build configuration list for PBXNativeTarget "UnitTest - AppKit" */;
+			buildPhases = (
+				F48FE25F0D198C1E009257D2 /* Resources */,
+				F48FE2600D198C1E009257D2 /* Sources */,
+				F48FE2610D198C1E009257D2 /* Frameworks */,
+				F48FE2620D198C1E009257D2 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */,
+			);
+			name = "UnitTest - AppKit";
+			productName = "UnitTest - AppKit";
+			productReference = F48FE2640D198C1E009257D2 /* UnitTest - AppKit.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB918108733D990010E9CD /* Build configuration list for PBXProject "GTM" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* GTM */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			targets = (
+				F42E086C0D199A5B00D5DDE0 /* GTM */,
+				F472042B0D33BEAF00E9F378 /* All UnitTests */,
+				F48FE2630D198C1E009257D2 /* UnitTest - AppKit */,
+				F42E08110D19987200D5DDE0 /* UnitTest - Foundation */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F42E08140D19987200D5DDE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F42E08690D199A5B00D5DDE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48FE25F0D198C1E009257D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E08300D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.tif in Resources */,
+				F428FF0A0D48E57300382ED1 /* GTMNSBezierPath+CGPathTest.tif in Resources */,
+				F47F1C190D490BD200925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif in Resources */,
+				F47F1C1A0D490BD200925B8F /* GTMNSBezierPath+ShadingTest.10.5.tif in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		F48FE2620D198C1E009257D2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F42E08160D19987200D5DDE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E08330D19992100D5DDE0 /* GTMNSString+HTMLTest.m in Sources */,
+				F42E08340D19992100D5DDE0 /* GTMSystemVersionTest.m in Sources */,
+				F47F1D350D4914B600925B8F /* GTMCalculatedRangeTest.m in Sources */,
+				F43E4C2D0D4E36230041161F /* GTMNSString+XMLTest.m in Sources */,
+				F43E4DDE0D4E56380041161F /* GTMNSEnumerator+FilterTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F42E086A0D199A5B00D5DDE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E094A0D199BBF00D5DDE0 /* GTMDelegatingTableColumn.m in Sources */,
+				F42E094D0D199BBF00D5DDE0 /* GTMGeometryUtils.m in Sources */,
+				F42E09500D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.m in Sources */,
+				F42E09520D199BBF00D5DDE0 /* GTMNSString+HTML.m in Sources */,
+				F42E09550D199BBF00D5DDE0 /* GTMSystemVersion.m in Sources */,
+				F42E09AB0D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m in Sources */,
+				F43DCDCE0D4796C600959A62 /* GTMLoginItems.m in Sources */,
+				F428FF040D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m in Sources */,
+				F47F1C130D490BC000925B8F /* GTMNSBezierPath+Shading.m in Sources */,
+				F47F1CB00D4910FD00925B8F /* GTMNSColor+Theme.m in Sources */,
+				F47F1D310D4914AD00925B8F /* GTMCalculatedRange.m in Sources */,
+				F43E447B0D4918B20041161F /* GTMLinearRGBShading.m in Sources */,
+				F43E4C290D4E361D0041161F /* GTMNSString+XML.m in Sources */,
+				F43E4DDA0D4E56320041161F /* GTMNSEnumerator+Filter.m in Sources */,
+				F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48FE2600D198C1E009257D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F42E082E0D19991400D5DDE0 /* GTMGeometryUtilsTest.m in Sources */,
+				F42E082F0D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
+				F42E09450D199BA400D5DDE0 /* GTMNSObject+UnitTesting.m in Sources */,
+				F42E09460D199BA400D5DDE0 /* GTMNSView+UnitTesting.m in Sources */,
+				F42E0B0A0D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m in Sources */,
+				F43DCEC70D47BEA000959A62 /* GTMLoginItemsTest.m in Sources */,
+				F428FF090D48E57300382ED1 /* GTMNSBezierPath+CGPathTest.m in Sources */,
+				F47F1C1B0D490BD200925B8F /* GTMNSBezierPath+ShadingTest.m in Sources */,
+				F47F1CB60D49110900925B8F /* GTMNSColor+ThemeTest.m in Sources */,
+				F43E447F0D4918BC0041161F /* GTMLinearRGBShadingTest.m in Sources */,
+				F43E4E660D4E5ED40041161F /* GTMNSData+zlibTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
+			targetProxy = F42E08760D199A9B00D5DDE0 /* PBXContainerItemProxy */;
+		};
+		F42E08790D199AA600D5DDE0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
+			targetProxy = F42E08780D199AA600D5DDE0 /* PBXContainerItemProxy */;
+		};
+		F472042D0D33BEB500E9F378 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F48FE2630D198C1E009257D2 /* UnitTest - AppKit */;
+			targetProxy = F472042C0D33BEB500E9F378 /* PBXContainerItemProxy */;
+		};
+		F472042F0D33BEB500E9F378 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F42E08110D19987200D5DDE0 /* UnitTest - Foundation */;
+			targetProxy = F472042E0D33BEB500E9F378 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB918208733D990010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		1DEB918308733D990010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		F42E081F0D19987200D5DDE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - Foundation";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		F42E08200D19987200D5DDE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - Foundation";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		F42E08700D199A5C00D5DDE0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2430D197F9A009257D2 /* LoadableBundle.xcconfig */;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PREFIX_HEADER = GTM_prefix.pch;
+				INFOPLIST_FILE = "GTM-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_NAME = GTM;
+			};
+			name = Debug;
+		};
+		F42E08710D199A5C00D5DDE0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2430D197F9A009257D2 /* LoadableBundle.xcconfig */;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PREFIX_HEADER = GTM_prefix.pch;
+				INFOPLIST_FILE = "GTM-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_NAME = GTM;
+			};
+			name = Release;
+		};
+		F47204350D33BEDF00E9F378 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = Debug;
+		};
+		F47204360D33BEDF00E9F378 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = "All UnitTests";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		F48FE2670D198C1F009257D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AppKit";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		F48FE2680D198C1F009257D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AppKit";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB918108733D990010E9CD /* Build configuration list for PBXProject "GTM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB918208733D990010E9CD /* Debug */,
+				1DEB918308733D990010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F42E081E0D19987200D5DDE0 /* Build configuration list for PBXNativeTarget "UnitTest - Foundation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F42E081F0D19987200D5DDE0 /* Debug */,
+				F42E08200D19987200D5DDE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F42E086F0D199A5C00D5DDE0 /* Build configuration list for PBXNativeTarget "GTM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F42E08700D199A5C00D5DDE0 /* Debug */,
+				F42E08710D199A5C00D5DDE0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F47204340D33BEDF00E9F378 /* Build configuration list for PBXAggregateTarget "All UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F47204350D33BEDF00E9F378 /* Debug */,
+				F47204360D33BEDF00E9F378 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F48FE2660D198C1F009257D2 /* Build configuration list for PBXNativeTarget "UnitTest - AppKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F48FE2670D198C1F009257D2 /* Debug */,
+				F48FE2680D198C1F009257D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
