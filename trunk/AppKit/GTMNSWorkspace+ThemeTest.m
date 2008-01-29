@@ -17,6 +17,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
 #import "GTMNSWorkspace+Theme.h"
 
 @interface GTMNSWorkspace_ThemeTest : SenTestCase
@@ -32,6 +33,6 @@
 
 - (void)testThemeScrollBarArrowStyle {
   ThemeScrollBarArrowStyle style = [[NSWorkspace sharedWorkspace] gtm_themeScrollBarArrowStyle];
-  STAssertTrue(style <= kThemeScrollBarArrowsDouble, nil);
+  STAssertLessThanOrEqual(style, (ThemeScrollBarArrowStyle)kThemeScrollBarArrowsDouble, nil);
 }
 @end
