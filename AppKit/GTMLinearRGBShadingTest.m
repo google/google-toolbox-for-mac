@@ -17,9 +17,9 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
 #import "GTMLinearRGBShading.h"
 #import "GTMNSColor+Theme.h"
-
 
 @interface GTMLinearRGBShadingTest : SenTestCase
 @end
@@ -35,7 +35,7 @@
                                   toColor:blue
                            fromSpaceNamed:NSDeviceRGBColorSpace];
   STAssertNotNil(theShading,nil);
-  STAssertTrue([theShading stopCount] == 2, nil);
+  STAssertEquals([theShading stopCount], 2U, nil);
   float *theColor = (float*)[theShading valueAtPosition: 0.5];
   STAssertTrue(theColor[0] == [purple redComponent] &&
                theColor[1] == [purple greenComponent] &&
@@ -77,8 +77,8 @@
                                atPositions:nil
                                      count:0];
   CGFunctionRef theFunction = [theShading shadeFunction];
-  STAssertTrue(nil != theFunction, nil);
-  STAssertTrue(CFGetTypeID(theFunction) == CGFunctionGetTypeID(), nil);  
+  STAssertNotNULL(theFunction, nil);
+  STAssertEquals(CFGetTypeID(theFunction), CGFunctionGetTypeID(), nil);  
 }
 
 - (void)testColorSpace {
@@ -88,7 +88,7 @@
                                atPositions:nil
                                      count:0];
   CGColorSpaceRef theColorSpace = [theShading colorSpace];
-  STAssertTrue(nil != theColorSpace, nil);
-  STAssertTrue(CFGetTypeID(theColorSpace) == CGColorSpaceGetTypeID(), nil);
+  STAssertNotNULL(theColorSpace, nil);
+  STAssertEquals(CFGetTypeID(theColorSpace), CGColorSpaceGetTypeID(), nil);
 }
 @end

@@ -16,11 +16,12 @@
 //  the License.
 //
 
+#import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
+
 #import "GTMNSData+zlib.h"
 #import <stdlib.h> // for randiom/srandomdev
 #import <zlib.h>
-
-#import <SenTestingKit/SenTestingKit.h>
 
 @interface GTMNSData_zlibTest : SenTestCase
 @end
@@ -68,21 +69,21 @@ static BOOL HasGzipHeader(NSData *data) {
       // w/ *Bytes apis, default level
       NSData *deflated = [NSData gtm_dataByDeflatingBytes:[data bytes] length:[data length]];
       STAssertNotNil(deflated, @"failed to deflate data block");
-      STAssertTrue([deflated length] > 0, @"failed to deflate data block");
+      STAssertGreaterThan([deflated length], 0U, @"failed to deflate data block");
       STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
       NSData *dataPrime = [NSData gtm_dataByInflatingBytes:[deflated bytes] length:[deflated length]];
       STAssertNotNil(dataPrime, @"failed to inflate data block");
-      STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+      STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
       STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Bytes apis");
 
       // w/ *Data apis, default level
       deflated = [NSData gtm_dataByDeflatingData:data];
       STAssertNotNil(deflated, @"failed to deflate data block");
-      STAssertTrue([deflated length] > 0, @"failed to deflate data block");
+      STAssertGreaterThan([deflated length], 0U, @"failed to deflate data block");
       STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
       dataPrime = [NSData gtm_dataByInflatingData:deflated];
       STAssertNotNil(dataPrime, @"failed to inflate data block");
-      STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+      STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
       STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Data apis");
 
       // loop over the compression levels
@@ -92,21 +93,21 @@ static BOOL HasGzipHeader(NSData *data) {
                                              length:[data length]
                                    compressionLevel:level];
         STAssertNotNil(deflated, @"failed to deflate data block");
-        STAssertTrue([deflated length] > 0, @"failed to deflate data block");
+        STAssertGreaterThan([deflated length], 0U, @"failed to deflate data block");
         STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
         dataPrime = [NSData gtm_dataByInflatingBytes:[deflated bytes] length:[deflated length]];
         STAssertNotNil(dataPrime, @"failed to inflate data block");
-        STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+        STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
         STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Bytes apis");
 
         // w/ *Data apis, using our level
         deflated = [NSData gtm_dataByDeflatingData:data compressionLevel:level];
         STAssertNotNil(deflated, @"failed to deflate data block");
-        STAssertTrue([deflated length] > 0, @"failed to deflate data block");
+        STAssertGreaterThan([deflated length], 0U, @"failed to deflate data block");
         STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
         dataPrime = [NSData gtm_dataByInflatingData:deflated];
         STAssertNotNil(dataPrime, @"failed to inflate data block");
-        STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+        STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
         STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Data apis");
       }
 
@@ -133,21 +134,21 @@ static BOOL HasGzipHeader(NSData *data) {
       // w/ *Bytes apis, default level
       NSData *gzipped = [NSData gtm_dataByGzippingBytes:[data bytes] length:[data length]];
       STAssertNotNil(gzipped, @"failed to gzip data block");
-      STAssertTrue([gzipped length] > 0, @"failed to gzip data block");
+      STAssertGreaterThan([gzipped length], 0U, @"failed to gzip data block");
       STAssertTrue(HasGzipHeader(gzipped), @"doesn't have gzip header on gzipped data");
       NSData *dataPrime = [NSData gtm_dataByInflatingBytes:[gzipped bytes] length:[gzipped length]];
       STAssertNotNil(dataPrime, @"failed to inflate data block");
-      STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+      STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
       STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Bytes apis");
 
       // w/ *Data apis, default level
       gzipped = [NSData gtm_dataByGzippingData:data];
       STAssertNotNil(gzipped, @"failed to gzip data block");
-      STAssertTrue([gzipped length] > 0, @"failed to gzip data block");
+      STAssertGreaterThan([gzipped length], 0U, @"failed to gzip data block");
       STAssertTrue(HasGzipHeader(gzipped), @"doesn't have gzip header on gzipped data");
       dataPrime = [NSData gtm_dataByInflatingData:gzipped];
       STAssertNotNil(dataPrime, @"failed to inflate data block");
-      STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+      STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
       STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Data apis");
 
       // loop over the compression levels
@@ -157,21 +158,21 @@ static BOOL HasGzipHeader(NSData *data) {
                                            length:[data length]
                                  compressionLevel:level];
         STAssertNotNil(gzipped, @"failed to gzip data block");
-        STAssertTrue([gzipped length] > 0, @"failed to gzip data block");
+        STAssertGreaterThan([gzipped length], 0U, @"failed to gzip data block");
         STAssertTrue(HasGzipHeader(gzipped), @"doesn't have gzip header on gzipped data");
         dataPrime = [NSData gtm_dataByInflatingBytes:[gzipped bytes] length:[gzipped length]];
         STAssertNotNil(dataPrime, @"failed to inflate data block");
-        STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+        STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
         STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Bytes apis");
 
         // w/ *Data apis, using our level
         gzipped = [NSData gtm_dataByGzippingData:data compressionLevel:level];
         STAssertNotNil(gzipped, @"failed to gzip data block");
-        STAssertTrue([gzipped length] > 0, @"failed to gzip data block");
+        STAssertGreaterThan([gzipped length], 0U, @"failed to gzip data block");
         STAssertTrue(HasGzipHeader(gzipped), @"doesn't have gzip header on gzipped data");
         dataPrime = [NSData gtm_dataByInflatingData:gzipped];
         STAssertNotNil(dataPrime, @"failed to inflate data block");
-        STAssertTrue([dataPrime length] > 0, @"failed to inflate data block");
+        STAssertGreaterThan([dataPrime length], 0U, @"failed to inflate data block");
         STAssertEqualObjects(data, dataPrime, @"failed to round trip via *Data apis");
       }
 
