@@ -56,6 +56,9 @@
 		F42E09AB0D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = F42E09A90D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m */; };
 		F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		F42E0B0A0D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42E0B090D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m */; };
+		F437F55D0D50BC0A00F5C3A4 /* GTMRegex.h in Headers */ = {isa = PBXBuildFile; fileRef = F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */; };
+		F437F55E0D50BC0A00F5C3A4 /* GTMRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */; };
+		F437F5620D50BC1D00F5C3A4 /* GTMRegexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */; };
 		F43DCDCD0D4796C600959A62 /* GTMLoginItems.h in Headers */ = {isa = PBXBuildFile; fileRef = F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */; };
 		F43DCDCE0D4796C600959A62 /* GTMLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */; };
 		F43DCEC70D47BEA000959A62 /* GTMLoginItemsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */; };
@@ -134,6 +137,9 @@
 		F42E09A90D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+Theme.m"; sourceTree = "<group>"; };
 		F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		F42E0B090D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+ThemeTest.m"; sourceTree = "<group>"; };
+		F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMRegex.h; sourceTree = "<group>"; };
+		F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMRegex.m; sourceTree = "<group>"; };
+		F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMRegexTest.m; sourceTree = "<group>"; };
 		F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMLoginItems.h; sourceTree = "<group>"; };
 		F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLoginItems.m; sourceTree = "<group>"; };
 		F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLoginItemsTest.m; sourceTree = "<group>"; };
@@ -340,6 +346,9 @@
 				F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */,
 				F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */,
 				F48FE2910D198D24009257D2 /* GTMObjectSingleton.h */,
+				F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */,
+				F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */,
+				F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */,
 				F48FE2920D198D24009257D2 /* GTMSystemVersion.h */,
 				F48FE2930D198D24009257D2 /* GTMSystemVersion.m */,
 				F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */,
@@ -384,6 +393,7 @@
 				F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */,
 				F43E4DD90D4E56320041161F /* GTMNSEnumerator+Filter.h in Headers */,
 				F43E4E610D4E5EC90041161F /* GTMNSData+zlib.h in Headers */,
+				F437F55D0D50BC0A00F5C3A4 /* GTMRegex.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +542,7 @@
 				F47F1D350D4914B600925B8F /* GTMCalculatedRangeTest.m in Sources */,
 				F43E4C2D0D4E36230041161F /* GTMNSString+XMLTest.m in Sources */,
 				F43E4DDE0D4E56380041161F /* GTMNSEnumerator+FilterTest.m in Sources */,
+				F437F5620D50BC1D00F5C3A4 /* GTMRegexTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +565,7 @@
 				F43E4C290D4E361D0041161F /* GTMNSString+XML.m in Sources */,
 				F43E4DDA0D4E56320041161F /* GTMNSEnumerator+Filter.m in Sources */,
 				F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */,
+				F437F55E0D50BC0A00F5C3A4 /* GTMRegex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
