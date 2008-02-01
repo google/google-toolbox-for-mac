@@ -617,6 +617,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
 			name = Debug;
 		};
@@ -624,6 +626,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
 			name = Release;
 		};
@@ -668,7 +672,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
-				GCC_PREFIX_HEADER = GTM_prefix.pch;
 				INFOPLIST_FILE = "GTM-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
 				PRODUCT_NAME = GTM;
@@ -682,7 +685,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
-				GCC_PREFIX_HEADER = GTM_prefix.pch;
 				INFOPLIST_FILE = "GTM-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
 				PRODUCT_NAME = GTM;

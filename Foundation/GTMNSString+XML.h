@@ -31,7 +31,19 @@
 //  Returns:
 //    Autoreleased NSString
 //
-- (NSString *)gtm_stringByEscapingForXML;
+- (NSString *)gtm_stringBySanitizingAndEscapingForXML;
+
+/// Get a string where characters that invalid characters per the XML spec have been removed
+//
+/// This call removes all invalid characters as defined by Section 2.2 of the
+/// xml spec.  If you are writing XML yourself, you probably was to use the
+/// above api (gtm_stringBySanitizingAndEscapingForXML) so any entities also
+/// get escaped.
+//
+//  Returns:
+//    Autoreleased NSString
+//
+- (NSString *)gtm_stringBySanitizingToXMLSpec;
 
 // There is no stringByUnescapingFromXML because the XML parser will do this.
 // The above api is here just incase you need to create XML yourself.
