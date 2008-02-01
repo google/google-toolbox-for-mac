@@ -26,19 +26,34 @@
 
 @implementation GTMNSString_XMLTest
 
-- (void)testStringByEscapingForXML {
-  unichar chars[] =
-  { 0, 'z', 1, 'z', 4, 'z', 5, 'z', 34, 'z', 38, 'z', 39, 'z',
+- (void)testStringBySanitizingAndEscapingForXML {
+  UniChar chars[] = {
+    'z', 0, 'z', 1, 'z', 4, 'z', 5, 'z', 34, 'z', 38, 'z', 39, 'z',
     60, 'z', 62, 'z', ' ', 'z', 0xd800, 'z', 0xDFFF, 'z', 0xFFFE,
-    0xFFFF, 'z' };
+    'z', 0xFFFF, 'z' };
 
   NSString *string1 = [NSString stringWithCharacters:chars
-                                              length:sizeof(chars) / sizeof(unichar)];
-  NSString *string2 = @"zzzz&quot;z&amp;z&apos;z&lt;z&gt;z zzzz";
+                                              length:sizeof(chars) / sizeof(UniChar)];
+  NSString *string2 = @"zzzzz&quot;z&amp;z&apos;z&lt;z&gt;z zzzzz";
 
-  STAssertEqualObjects([string1 gtm_stringByEscapingForXML],
+  STAssertEqualObjects([string1 gtm_stringBySanitizingAndEscapingForXML],
                        string2,
-                       @"Escaped for XML failed");
+                       @"Sanitize and Escape for XML failed");
+}
+
+- (void)testStringBySanitizingToXMLSpec {
+  UniChar chars[] = {
+    'z', 0, 'z', 1, 'z', 4, 'z', 5, 'z', 34, 'z', 38, 'z', 39, 'z',
+    60, 'z', 62, 'z', ' ', 'z', 0xd800, 'z', 0xDFFF, 'z', 0xFFFE,
+    'z', 0xFFFF, 'z' };
+  
+  NSString *string1 = [NSString stringWithCharacters:chars
+                                              length:sizeof(chars) / sizeof(UniChar)];
+  NSString *string2 = @"zzzzz\"z&z'z<z>z zzzzz";
+  
+  STAssertEqualObjects([string1 gtm_stringBySanitizingToXMLSpec],
+                       string2,
+                       @"Sanitize for XML failed");
 }
 
 @end

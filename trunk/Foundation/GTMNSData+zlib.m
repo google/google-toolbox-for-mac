@@ -35,7 +35,10 @@
                                useGzip:(BOOL)useGzip {
   if (!bytes || !length) return nil;
 
-  if (level < Z_BEST_SPEED)
+  if (level == Z_DEFAULT_COMPRESSION) {
+    // the default value is actually outside the range, so we have to let it
+    // through specifically.
+  } else if (level < Z_BEST_SPEED)
     level = Z_BEST_SPEED;
   else if (level > Z_BEST_COMPRESSION)
     level = Z_BEST_COMPRESSION;

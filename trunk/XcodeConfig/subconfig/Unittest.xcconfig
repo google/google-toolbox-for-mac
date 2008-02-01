@@ -25,10 +25,6 @@
 // Unittests are loadable bundles
 #include "../LoadableBundle.xcconfig"
 
-// No prefix
-GCC_PRECOMPILE_PREFIX_HEADER = NO
-GCC_PREFIX_HEADER =
-
 // Force C99 dialect with GNU extensions (needed for OCUnit)
 GCC_C_LANGUAGE_STANDARD = gnu99
 

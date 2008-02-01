@@ -17,6 +17,7 @@
 //
 
 #import "GTMNSString+XML.h"
+#import "GTMGarbageCollection.h"
 
 typedef enum {
   kGMXMLCharModeEncodeQUOT  = 0,
@@ -37,12 +38,12 @@ static NSString *gXMLEntityList[] = {
   @"&gt;",
 };
 
-FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(unichar c) {
+FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(UniChar c) {
 
   // Per XML spec Section 2.2 Characters
   //   ( http://www.w3.org/TR/REC-xml/#charsets )
   //
-  // 	Char	   ::=   	#x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
+  //   Char    ::=       #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
   //                      [#x10000-#x10FFFF]
 
   if (c <= 0xd7ff)  {
@@ -78,7 +79,7 @@ FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(unichar c) {
   if (c <= 0xFFFD)
     return kGMXMLCharModeValid;
 
-  // unichar can't have the following values
+  // UniChar can't have the following values
   // if (c < 0x10000)
   //   return kGMXMLCharModeInvalid;
   // if (c <= 0x10FFFF)
@@ -87,60 +88,72 @@ FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(unichar c) {
   return kGMXMLCharModeInvalid;
 } // XMLModeForUnichar
 
-@implementation NSString (GTMNSStringXMLAdditions)
-
-- (NSString *)gtm_stringByEscapingForXML {
+static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
+  //
+  // NOTE:
+  // We don't use CFXMLCreateStringByEscapingEntities because it's busted in
+  // 10.3 (http://lists.apple.com/archives/Cocoa-dev/2004/Nov/msg00059.html) and
+  // it doesn't do anything about the chars that are actually invalid per the
+  // xml spec.
+  //
+  
+  // we can't use the CF call here because it leaves the invalid chars
+  // in the string.
+  
   NSMutableString *finalString = [NSMutableString string];
-  int length = [self length];
+  int length = [src length];
   require_quiet(length != 0, cantConvertAnything);
-
+  
   // see if we can just use the interal version
   BOOL freeBuffer = NO;
-  unichar *buffer = (unichar*)CFStringGetCharactersPtr((CFStringRef)self);
+  UniChar *buffer = (UniChar*)CFStringGetCharactersPtr((CFStringRef)src);
   if (!buffer) {
     // nope, alloc buffer and fetch the chars ourselves
-    buffer = malloc(sizeof(unichar) * length);
-    if (!buffer) return nil;
+    buffer = malloc(sizeof(UniChar) * length);
+    require_action(buffer, cantCreateString, finalString = nil);
     freeBuffer = YES;
-    [self getCharacters:buffer];
+    [src getCharacters:buffer];
   }
-
-  unichar *goodRun = buffer;
+  
+  UniChar *goodRun = buffer;
   int goodRunLength = 0;
-
+  
   for (int i = 0; i < length; ++i) {
-
+    
     GMXMLCharMode cMode = XMLModeForUnichar(buffer[i]);
-
-    if (cMode == kGMXMLCharModeValid) {
+    
+    // valid chars go as is, and if we aren't doing entities, then
+    // everything goes as is.
+    if ((cMode == kGMXMLCharModeValid) ||
+        (!escaping && (cMode != kGMXMLCharModeInvalid))) {
       // goes as is
       goodRunLength += 1;
     } else {
       // it's something we have to encode or something invalid
-
+      
       // start by adding what we already collected (if anything)
       if (goodRunLength) {
         CFStringRef goodRunString =
-          CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
-                                             goodRun, goodRunLength,
-                                             kCFAllocatorNull);
+        CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
+                                           goodRun, goodRunLength,
+                                           kCFAllocatorNull);
         require_action(goodRunString != NULL, cantCreateString, finalString = nil);
         [finalString appendString:(NSString*)goodRunString];
         CFRelease(goodRunString);
         goodRunLength = 0;
       }
-
+      
       // if it wasn't invalid, add the encoded version
       if (cMode != kGMXMLCharModeInvalid) {
         // add this encoded
         [finalString appendString:gXMLEntityList[cMode]];
       }
-
-      // update goodRun to point to the next unichar
+      
+      // update goodRun to point to the next UniChar
       goodRun = buffer + i + 1;
     }
   }
-
+  
   // anything left to add?
   if (goodRunLength) {
     CFStringRef goodRunString =
@@ -157,6 +170,16 @@ cantCreateString2:
     free(buffer);
 cantConvertAnything:
   return finalString;
-} // gtm_stringByEscapingForXML
+} // AutoreleasedCloneForXML
+
+@implementation NSString (GTMNSStringXMLAdditions)
+
+- (NSString *)gtm_stringBySanitizingAndEscapingForXML {
+  return AutoreleasedCloneForXML(self, YES);
+} // gtm_stringBySanitizingAndEscapingForXML
+
+- (NSString *)gtm_stringBySanitizingToXMLSpec {
+  return AutoreleasedCloneForXML(self, NO);
+} // gtm_stringBySanitizingToXMLSpec
 
 @end

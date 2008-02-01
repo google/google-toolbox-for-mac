@@ -35,7 +35,7 @@ static _object_name_ *z##_shared_obj_name_ = nil;  \
       /* Note that 'self' may not be the same as _object_name_ */                               \
       /* first assignment done in allocWithZone but we must reassign in case init fails */      \
       z##_shared_obj_name_ = [[self alloc] init];                                               \
-      GTMDebugAssert((z##_shared_obj_name_ != nil), @"didn't catch singleton allocation");       \
+      NSAssert((z##_shared_obj_name_ != nil), @"didn't catch singleton allocation");       \
     }                                              \
   }                                                \
   return z##_shared_obj_name_;                     \
@@ -49,7 +49,7 @@ static _object_name_ *z##_shared_obj_name_ = nil;  \
   }                                                \
                                                    \
   /* We can't return the shared instance, because it's been init'd */ \
-  GTMDebugAssert(NO, @"use the singleton API, not alloc+init");        \
+  NSAssert(NO, @"use the singleton API, not alloc+init");        \
   return nil;                                      \
 }                                                  \
 - (id)retain {                                     \
