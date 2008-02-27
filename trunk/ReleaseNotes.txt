@@ -7,12 +7,20 @@ Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 Release ?.?.?
 Changes since 1.0.0
 
+- Updated the project so Xcode 3 is also happy.
+
 - Fixed up the prefix header of the project and prefix handing in the Unittest
   Xcode Config. (thanks schafdog)
+
 - Fixed error in handling default compression for NSData+zlib
+
 - Changed name on API in NSString+XML and added another api to make this a
   litte more clear. (thanks Kent)
 
+- Found and fixed a bug in the regex enumerators that was causing them to
+  incorrectly walk a string when using '^' in an expression.
+
+- Added GTMScriptRunner for spawning scripts.
 
 
 Release 1.0.0
