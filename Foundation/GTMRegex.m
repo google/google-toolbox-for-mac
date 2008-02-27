@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -21,7 +21,7 @@
 // This is the pattern to use for walking replacement text when doing
 // substitutions.
 //
-// this pattern may look over escaped, but remember the compiler will consume
+// This pattern may look over-escaped, but remember the compiler will consume
 // one layer of slashes, and then we have to escape the slashes for them to be
 // seen as we want in the pattern.
 static NSString *const kReplacementPattern =
@@ -43,12 +43,14 @@ static NSString *const kReplacementPattern =
   GTMRegex *regex_;
   NSData *utf8StrBuf_;
   BOOL allSegments_;
+  BOOL treatStartOfNewSegmentAsBeginningOfString_;
   regoff_t curParseIndex_;
   regmatch_t *savedRegMatches_;
 }
 - (id)initWithRegex:(GTMRegex *)regex
       processString:(NSString *)str
         allSegments:(BOOL)allSegments;
+- (void)treatStartOfNewSegmentAsBeginningOfString:(BOOL)yesNo;
 @end
 
 @interface GTMRegexStringSegment (PrivateMethods)
@@ -263,9 +265,32 @@ static NSString *const kReplacementPattern =
     GTMRegex *replacementRegex =
       [GTMRegex regexWithPattern:kReplacementPattern
                          options:kGTMRegexOptionSupressNewlineSupport];
+#ifdef DEBUG
+    if (!replacementRegex)
+      NSLog(@"failed to parse out replacement regex!!!");
+#endif
+    GTMRegexEnumerator *relacementEnumerator =
+      [[[GTMRegexEnumerator alloc] initWithRegex:replacementRegex
+                                        processString:replacementPattern
+                                          allSegments:YES] autorelease];
+    // We turn on treatStartOfNewSegmentAsBeginningOfLine for this enumerator.
+    // As complex as kReplacementPattern is, it can't completely do what we want
+    // with the normal string walk.  The problem is this, backreferences are a
+    // slash follow by a number ("\0"), but the replacement pattern might
+    // actually need to use backslashes (they have to be escaped).  So if a
+    // replacement were "\\0", then there is no backreference, instead the
+    // replacement is a backslash and a zero.  Generically this means an even
+    // number of backslashes are all escapes, and an odd are some number of
+    // literal backslashes followed by our backreference.  Think of it as a "an
+    // odd number of slashes that comes after a non-backslash character."  There
+    // is no way to rexpress this in re_format(7) extended expressions.  Instead
+    // we look for a non-blackslash or string start followed by an optional even
+    // number of slashes followed by the backreference; and use the special
+    // flag; so after each match, we restart claiming it's the start of the
+    // string.  (the problem match w/o this flag is a substition of "\2\1")
+    [relacementEnumerator treatStartOfNewSegmentAsBeginningOfString:YES];
     // pull them all into an array so we can walk this as many times as needed.
-    replacements =
-      [[replacementRegex segmentEnumeratorForString:replacementPattern] allObjects];
+    replacements = [relacementEnumerator allObjects];
     if (!replacements) {
       NSLog(@"failed to create the replacements for subtituations");
       return nil;
@@ -413,6 +438,21 @@ static NSString *const kReplacementPattern =
   [super dealloc];
 }
 
+- (void)treatStartOfNewSegmentAsBeginningOfString:(BOOL)yesNo {
+  // The way regexec works, it assumes the first char it's looking at to the
+  // start of the string.  In normal use, this makes sense; but in this case,
+  // we're going to walk the entry string splitting it up by our pattern.  That
+  // means for the first call, it is the string start, but for all future calls,
+  // it is NOT the string start, so we will pass regexec the flag to let it
+  // know.  However, (you knew that was coming), there are some cases where you
+  // actually want the each pass to be considered as the start of the string
+  // (usually the cases are where a pattern can't express what's needed w/o
+  // this).  There is no really good way to explain this behavior w/o all this
+  // text and lot of examples, so for now this is not in the public api, and
+  // just here. (Hint: see what w/in this file uses this for why we have it)
+  treatStartOfNewSegmentAsBeginningOfString_ = yesNo;
+}
+
 - (id)nextObject {
 
   GTMRegexStringSegment *result = nil;
@@ -446,11 +486,20 @@ static NSString *const kReplacementPattern =
       nextMatches[0].rm_so = curParseIndex_;
       nextMatches[0].rm_eo = [utf8StrBuf_ length];
 
+      // figure out our flags
+      int flags = REG_STARTEND;
+      if ((!treatStartOfNewSegmentAsBeginningOfString_) &&
+          (curParseIndex_ != 0)) {
+        // see -treatStartOfNewSegmentAsBeginningOfString: for why we have
+        // this check here.
+        flags |= REG_NOTBOL;
+      }
+
       // call for the match
       if ([regex_ runRegexOnUTF8:[utf8StrBuf_ bytes]
                           nmatch:([regex_ subPatternCount] + 1)
                           pmatch:nextMatches
-                           flags:REG_STARTEND]) {
+                           flags:flags]) {
         // match
 
         if (allSegments_ &&

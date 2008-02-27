@@ -503,6 +503,69 @@
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
   STAssertEquals(6U, [allSegments count], nil);
+
+  // test we are getting the flags right for newline
+  regex = [GTMRegex regexWithPattern:@"^a"];
+  STAssertNotNil(regex, nil);
+  enumerator = [regex segmentEnumeratorForString:@"aa\naa"];
+  STAssertNotNil(enumerator, nil);
+  // "a"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"a", nil);
+  // "a\n"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertFalse([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"a\n", nil);
+  // "a"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"a", nil);
+  // "a"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertFalse([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"a", nil);
+  // (end)
+  seg = [enumerator nextObject];
+  STAssertNil(seg, nil);
+
+  // test we are getting the flags right for newline, part 2
+  regex = [GTMRegex regexWithPattern:@"^a*$"];
+  STAssertNotNil(regex, nil);
+  enumerator = [regex segmentEnumeratorForString:@"aa\naa\nbb\naa"];
+  STAssertNotNil(enumerator, nil);
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // "\n"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertFalse([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"\n", nil);
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // "\nbb\n"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertFalse([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"\nbb\n", nil);
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // (end)
+  seg = [enumerator nextObject];
+  STAssertNil(seg, nil);
 }
 
 - (void)testMatchSegmentEnumeratorForString {
@@ -589,6 +652,53 @@
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
   STAssertEquals(3U, [allSegments count], nil);
+  
+  // test we are getting the flags right for newline
+  regex = [GTMRegex regexWithPattern:@"^a"];
+  STAssertNotNil(regex, nil);
+  enumerator = [regex matchSegmentEnumeratorForString:@"aa\naa"];
+  STAssertNotNil(enumerator, nil);
+  // "a"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"a", nil);
+  // "a\n" - skipped
+  // "a"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"a", nil);
+  // "a" - skipped
+  // (end)
+  seg = [enumerator nextObject];
+  STAssertNil(seg, nil);
+
+  // test we are getting the flags right for newline, part 2
+  regex = [GTMRegex regexWithPattern:@"^a*$"];
+  STAssertNotNil(regex, nil);
+  enumerator = [regex matchSegmentEnumeratorForString:@"aa\naa\nbb\naa"];
+  STAssertNotNil(enumerator, nil);
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // "\n" - skipped
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // "\nbb\n" - skipped
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertTrue([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // (end)
+  seg = [enumerator nextObject];
+  STAssertNil(seg, nil);
 }
 
 - (void)testStringByReplacingMatchesInStringWithReplacement {

@@ -75,6 +75,9 @@
 		F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */; };
 		F43E4E660D4E5ED40041161F /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */; };
 		F43E4F6D0D4E60C50041161F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F43E4F6C0D4E60C50041161F /* libz.dylib */; };
+		F47A79880D746EE9002302AB /* GTMScriptRunner.h in Headers */ = {isa = PBXBuildFile; fileRef = F47A79850D746EE9002302AB /* GTMScriptRunner.h */; };
+		F47A79890D746EE9002302AB /* GTMScriptRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79860D746EE9002302AB /* GTMScriptRunner.m */; };
+		F47A798B0D746EFC002302AB /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };
 		F47F1C120D490BC000925B8F /* GTMNSBezierPath+Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */; };
 		F47F1C130D490BC000925B8F /* GTMNSBezierPath+Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */; };
 		F47F1C190D490BD200925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif in Resources */ = {isa = PBXBuildFile; fileRef = F47F1C0F0D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif */; };
@@ -156,6 +159,9 @@
 		F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlib.m"; sourceTree = "<group>"; };
 		F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlibTest.m"; sourceTree = "<group>"; };
 		F43E4F6C0D4E60C50041161F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
+		F47A79850D746EE9002302AB /* GTMScriptRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMScriptRunner.h; sourceTree = "<group>"; };
+		F47A79860D746EE9002302AB /* GTMScriptRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMScriptRunner.m; sourceTree = "<group>"; };
+		F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMScriptRunnerTest.m; sourceTree = "<group>"; };
 		F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSBezierPath+Shading.h"; sourceTree = "<group>"; };
 		F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+Shading.m"; sourceTree = "<group>"; };
 		F47F1C0F0D490BC000925B8F /* GTMNSBezierPath+ShadingTest.10.4.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+ShadingTest.10.4.tif"; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 		F48FE29E0D198D36009257D2 /* GTMNSView+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSView+UnitTesting.m"; sourceTree = "<group>"; };
 		F48FE29F0D198D36009257D2 /* GTMSenTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase.h; sourceTree = "<group>"; };
 		F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersionTest.m; sourceTree = "<group>"; };
+		F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				32DBCF5E0370ADEE00C91783 /* GTM_Prefix.pch */,
+				F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */,
 				F48FE26F0D198CBA009257D2 /* AppKit */,
 				F48FE2720D198CCE009257D2 /* Foundation */,
 				F48FE2770D198CEA009257D2 /* UnitTesting */,
@@ -349,6 +357,9 @@
 				F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */,
 				F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */,
 				F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */,
+				F47A79850D746EE9002302AB /* GTMScriptRunner.h */,
+				F47A79860D746EE9002302AB /* GTMScriptRunner.m */,
+				F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */,
 				F48FE2920D198D24009257D2 /* GTMSystemVersion.h */,
 				F48FE2930D198D24009257D2 /* GTMSystemVersion.m */,
 				F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */,
@@ -394,6 +405,7 @@
 				F43E4DD90D4E56320041161F /* GTMNSEnumerator+Filter.h in Headers */,
 				F43E4E610D4E5EC90041161F /* GTMNSData+zlib.h in Headers */,
 				F437F55D0D50BC0A00F5C3A4 /* GTMRegex.h in Headers */,
+				F47A79880D746EE9002302AB /* GTMScriptRunner.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,10 +474,12 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB918108733D990010E9CD /* Build configuration list for PBXProject "GTM" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* GTM */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				F42E086C0D199A5B00D5DDE0 /* GTM */,
 				F472042B0D33BEAF00E9F378 /* All UnitTests */,
@@ -543,6 +557,7 @@
 				F43E4C2D0D4E36230041161F /* GTMNSString+XMLTest.m in Sources */,
 				F43E4DDE0D4E56380041161F /* GTMNSEnumerator+FilterTest.m in Sources */,
 				F437F5620D50BC1D00F5C3A4 /* GTMRegexTest.m in Sources */,
+				F47A798B0D746EFC002302AB /* GTMScriptRunnerTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +581,7 @@
 				F43E4DDA0D4E56320041161F /* GTMNSEnumerator+Filter.m in Sources */,
 				F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */,
 				F437F55E0D50BC0A00F5C3A4 /* GTMRegex.m in Sources */,
+				F47A79890D746EE9002302AB /* GTMScriptRunner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
