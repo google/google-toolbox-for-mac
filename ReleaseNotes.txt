@@ -22,6 +22,8 @@ Changes since 1.0.0
 
 - Added GTMScriptRunner for spawning scripts.
 
+- Added GTMNSFileManager+Path for two small helpers.
+
 
 Release 1.0.0
 14-January-2008
