@@ -18,10 +18,7 @@
 
 #import "GTMScriptRunner.h"
 
-
-@interface NSTask (SafeLaunching)
-- (BOOL)safeLaunch;
-@end
+static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 @interface GTMScriptRunner (PrivateMethods)
 - (NSTask *)interpreterTaskWithAdditionalArgs:(NSArray *)args;
@@ -95,7 +92,7 @@
   NSFileHandle *toTask = [[task standardInput] fileHandleForWriting];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
   
-  if (![task safeLaunch]) {
+  if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
   
@@ -145,7 +142,7 @@
   NSTask *task = [self interpreterTaskWithAdditionalArgs:scriptPlusArgs];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
   
-  if (![task safeLaunch]) {
+  if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
 
@@ -230,17 +227,13 @@
 
 @end
 
-@implementation NSTask (SafeLaunching)
-
-- (BOOL)safeLaunch {
+static BOOL LaunchNSTaskCatchingExceptions(NSTask *task) {
   BOOL isOK = YES;
   @try {
-    [self launch];
+    [task launch];
   } @catch (id ex) {
     isOK = NO;
-    NSLog(@"Failed to launch interpreter '%@' due to: %@", [self launchPath], ex);
+    NSLog(@"Failed to launch interpreter '%@' due to: %@", [task launchPath], ex);
   }
   return isOK;
 }
-
-@end
