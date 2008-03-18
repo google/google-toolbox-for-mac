@@ -19,7 +19,6 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "GTMSenTestCase.h"
 #import "GTMLinearRGBShading.h"
-#import "GTMNSColor+Theme.h"
 
 @interface GTMLinearRGBShadingTest : SenTestCase
 @end
@@ -27,13 +26,13 @@
 @implementation GTMLinearRGBShadingTest
 - (void)testShadingFrom {
   // Create a shading from red to blue, and check if 50% is purple
-  NSColor *red = [NSColor gtm_deviceRedColor];
-  NSColor *blue = [NSColor gtm_deviceBlueColor];
-  NSColor *purple = [NSColor gtm_devicePurpleColor];
+  NSColor *red = [NSColor redColor];
+  NSColor *blue = [NSColor blueColor];
+  NSColor *purple = [NSColor purpleColor];
   GTMLinearRGBShading *theShading =
     [GTMLinearRGBShading shadingFromColor:red
                                   toColor:blue
-                           fromSpaceNamed:NSDeviceRGBColorSpace];
+                           fromSpaceNamed:NSCalibratedRGBColorSpace];
   STAssertNotNil(theShading,nil);
   STAssertEquals([theShading stopCount], 2U, nil);
   float *theColor = (float*)[theShading valueAtPosition: 0.5];
@@ -51,14 +50,14 @@
   const float kColorIncrement = 1.0f / kColorCount;
   for (unsigned int i = 0; i < kColorCount; i++) {
     thePositions[i] = kColorIncrement * i;
-    theColors[i] = [NSColor colorWithDeviceRed:kColorIncrement * i 
-                                         green:kColorIncrement * i 
-                                          blue:kColorIncrement * i 
-                                         alpha:kColorIncrement * i];
+    theColors[i] = [NSColor colorWithCalibratedRed:kColorIncrement * i 
+                                             green:kColorIncrement * i 
+                                              blue:kColorIncrement * i 
+                                             alpha:kColorIncrement * i];
   }
   GTMLinearRGBShading *theShading =
     [GTMLinearRGBShading shadingWithColors:theColors
-                            fromSpaceNamed:NSDeviceRGBColorSpace
+                            fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:thePositions
                                      count:kColorCount];
   for (unsigned int i = 0; i < kColorCount; i++) {
@@ -73,7 +72,7 @@
 - (void)testShadeFunction {
   GTMLinearRGBShading *theShading =
     [GTMLinearRGBShading shadingWithColors:nil
-                            fromSpaceNamed:NSDeviceRGBColorSpace
+                            fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:nil
                                      count:0];
   CGFunctionRef theFunction = [theShading shadeFunction];
@@ -84,7 +83,7 @@
 - (void)testColorSpace {
   GTMLinearRGBShading *theShading =
     [GTMLinearRGBShading shadingWithColors:nil
-                            fromSpaceNamed:NSDeviceRGBColorSpace
+                            fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:nil
                                      count:0];
   CGColorSpaceRef theColorSpace = [theShading colorSpace];

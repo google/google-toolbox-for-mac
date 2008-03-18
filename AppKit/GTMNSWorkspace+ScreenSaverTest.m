@@ -1,7 +1,5 @@
 //
-//  GTMNSColor+Theme.m
-//
-//  Category for working with Themes and NSColor
+//  GTMNSWorkspace+ScreenSaverTest.m
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -17,19 +15,19 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 //
+#import <SenTestingKit/SenTestingKit.h>
+#import "GTMNSWorkspace+ScreenSaver.h"
 
-#import <Cocoa/Cocoa.h>
-#import <Carbon/Carbon.h>
+@interface GTMNSWorkspace_ScreenSaverTest : SenTestCase
+@end
 
-///  Category for working with Themes and NSColor
-@interface NSColor (GTMColorThemeAdditions) 
 
-/// Create up an NSColor based on a Theme Text Color.
-/// Colors will be in the CalibratedRGB color space
-+ (id)gtm_colorWithThemeTextColor:(ThemeTextColor)textColor;
+@implementation GTMNSWorkspace_ScreenSaverTest
 
-/// Create up an NSColor based on a Theme Brush
-/// Colors will be in the CalibratedRGB color space
-+ (id)gtm_colorWithThemeBrush:(ThemeBrush)brush;
+- (void)testIsScreenSaverActive {
+  // Not much of a test, just executes the code. Couldn't think of a 
+  // good way of verifying this one.
+  [NSWorkspace gtm_isScreenSaverActive];
+}
 
 @end

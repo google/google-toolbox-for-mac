@@ -1,7 +1,9 @@
 //
-//  GTMNSColor+Theme.m
+//  GTMNSWorkspace+ScreenSaver.h
 //
-//  Category for working with Themes and NSColor
+//  Category for seeing if the screen saver is running.
+//  Requires linkage with the ScreenSaver.framework. Warning, uses some 
+//  undocumented methods in the ScreenSaver.framework.
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -19,17 +21,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Carbon/Carbon.h>
 
-///  Category for working with Themes and NSColor
-@interface NSColor (GTMColorThemeAdditions) 
+@interface NSWorkspace (GTMScreenSaverAddition)
 
-/// Create up an NSColor based on a Theme Text Color.
-/// Colors will be in the CalibratedRGB color space
-+ (id)gtm_colorWithThemeTextColor:(ThemeTextColor)textColor;
-
-/// Create up an NSColor based on a Theme Brush
-/// Colors will be in the CalibratedRGB color space
-+ (id)gtm_colorWithThemeBrush:(ThemeBrush)brush;
+// Check if the screen saver is running. 
+// Returns YES if it is running.
+// Requires linking to the ScreenSaver.framework.
++ (BOOL)gtm_isScreenSaverActive;
 
 @end
+

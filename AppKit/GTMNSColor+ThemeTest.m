@@ -29,12 +29,6 @@
 
 //METHOD_CHECK(NSWorkspace, themeAppearance);
 
-// utility function for giving random floats between 0.0f and 1.0f
-static float Randomf() {
-  float val = random();
-  return val / INT32_MAX;
-}
-
 - (void)testColorWithThemeTextColor {
   float colorValues[][4] = {
     { 1.000000, 1.000000, 1.000000, 1.000000 },
@@ -103,8 +97,8 @@ static float Randomf() {
     for(int j = 0; j < 4; j++) {
       STAssertEqualsWithAccuracy(nsComponents[j], colorValues[i + 2][j], 0.000001,
                    @"Theme Text Color %d is wrong", i);
-      STAssertEqualObjects([textColor colorSpaceName], NSDeviceRGBColorSpace,
-                           @"Color space must be DeviceRGB");
+      STAssertEqualObjects([textColor colorSpaceName], NSCalibratedRGBColorSpace,
+                           @"Color space must be CalibratedRGB");
     }
   }
 }
@@ -193,57 +187,10 @@ static float Randomf() {
     for(int j = 0; j < 4; j++) {
       STAssertEqualsWithAccuracy(nsComponents[j], colorValues[i + 2][j], 0.000001,
                                  @"Theme Text Brush %d is wrong", i + 2);
-      STAssertEqualObjects([brushColor colorSpaceName], NSDeviceRGBColorSpace,
-                           @"Color space must be DeviceRGB");
+      STAssertEqualObjects([brushColor colorSpaceName], NSCalibratedRGBColorSpace,
+                           @"Color space must be CalibratedRB");
     }
   }
-}
-
-- (void)testSafeColorWithAlphaComponent {
-  NSColorSpace *testSpace[6];
-  testSpace[0] = [NSColorSpace genericRGBColorSpace];
-  testSpace[1] = [NSColorSpace genericGrayColorSpace];
-  testSpace[2] = [NSColorSpace genericCMYKColorSpace];
-  testSpace[3] = [NSColorSpace deviceRGBColorSpace];
-  testSpace[4] = [NSColorSpace deviceGrayColorSpace];
-  testSpace[5] = [NSColorSpace deviceCMYKColorSpace];
-  
-  float comp[5];
-  for (int i = 0; i < sizeof(comp) / sizeof(float); ++i) {
-    comp[i] = Randomf();
-  }
-  
-  float alpha = Randomf();
-  for (int i = 0; i < sizeof(testSpace) / sizeof(NSColorSpace*); ++i) {
-    int componentCount = [testSpace[i] numberOfColorComponents];
-    NSColor *color = [NSColor colorWithColorSpace:testSpace[i]
-                                       components:comp
-                                            count:componentCount + 1];
-    NSColor *alphaColor = [color gtm_safeColorWithAlphaComponent:alpha];
-    
-    float alphaSwap = comp[componentCount];
-    comp[componentCount] = alpha;
-    NSColor *testColor = [NSColor colorWithColorSpace:testSpace[i]
-                                           components:comp
-                                                count:componentCount + 1];
-    comp[componentCount] = alphaSwap;
-    STAssertEqualObjects(alphaColor, 
-                         testColor, 
-                         @"Compare failed with components: %f %f %f %f %f %f alpha: %f",
-                         testSpace[0], testSpace[1], testSpace[2],
-                         testSpace[3], testSpace[4], testSpace[5],
-                         alpha);
-  }
-}
-
-- (void)testSafeColorUsingColorSpaceName {
-
-  NSColor *brushColor = [[NSColor selectedMenuItemColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-  STAssertNil(brushColor, @"This doesn't work on Tiger or Leopard");
-  
-  brushColor = [[NSColor selectedMenuItemColor] gtm_safeColorUsingColorSpaceName:NSDeviceRGBColorSpace];
-  STAssertNotNil(brushColor, nil);
-}
-  
+}  
 
 @end
