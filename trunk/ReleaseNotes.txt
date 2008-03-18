@@ -24,6 +24,7 @@ Changes since 1.0.0
 
 - Added GTMNSFileManager+Path for two small helpers.
 
+- Added GTMNSWorkspace+ScreenSaver
 
 Release 1.0.0
 14-January-2008

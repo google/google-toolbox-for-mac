@@ -23,7 +23,6 @@
 #import "GTMLinearRGBShading.h"
 #import "GTMNSView+UnitTesting.h"
 #import "GTMNSBezierPath+Shading.h"
-#import "GTMNSColor+Theme.h"
 
 @interface GTMNSBezierPath_ShadingTest : SenTestCase<GTMUnitTestViewDrawer>
 @end
@@ -37,15 +36,15 @@
 
 - (void)unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
   
-  NSColor *theColorArray[] = { [NSColor gtm_deviceBlueColor],
-    [NSColor gtm_deviceRedColor], [NSColor gtm_deviceYellowColor],
-    [NSColor gtm_deviceBlueColor], [NSColor gtm_deviceGreenColor],
-    [NSColor gtm_deviceRedColor] };
+  NSColor *theColorArray[] = { [NSColor blueColor],
+    [NSColor redColor], [NSColor yellowColor],
+    [NSColor blueColor], [NSColor greenColor],
+    [NSColor redColor] };
   float theFloatArray[] = { 0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.00f };
   
   GTMLinearRGBShading *shading =
     [GTMLinearRGBShading shadingWithColors:theColorArray
-                            fromSpaceNamed:NSDeviceRGBColorSpace
+                            fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:theFloatArray
                                      count:sizeof(theFloatArray)/sizeof(float)]; 
   NSBezierPath *shadedPath;

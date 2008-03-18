@@ -22,6 +22,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		8B2A9B200D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A9B1D0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m */; };
+		8B2A9B220D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2A9B1F0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.h */; };
+		8B2A9B230D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A9B1D0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m */; };
+		8B2A9B240D8270DA00599386 /* GTMNSWorkspace+ScreenSaverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A9B1E0D8270DA00599386 /* GTMNSWorkspace+ScreenSaverTest.m */; };
+		8B2A9BEC0D82714A00599386 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2A9BEB0D82714A00599386 /* ScreenSaver.framework */; };
+		8B2A9BED0D82714A00599386 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B2A9BEB0D82714A00599386 /* ScreenSaver.framework */; };
 		F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */ = {isa = PBXBuildFile; fileRef = F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */; };
 		F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */; };
 		F41390920D75F64D00F72B31 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
@@ -131,6 +137,10 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* GTM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTM_Prefix.pch; sourceTree = "<group>"; };
+		8B2A9B1D0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+ScreenSaver.m"; sourceTree = "<group>"; };
+		8B2A9B1E0D8270DA00599386 /* GTMNSWorkspace+ScreenSaverTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+ScreenSaverTest.m"; sourceTree = "<group>"; };
+		8B2A9B1F0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSWorkspace+ScreenSaver.h"; sourceTree = "<group>"; };
+		8B2A9BEB0D82714A00599386 /* ScreenSaver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenSaver.framework; path = /System/Library/Frameworks/ScreenSaver.framework; sourceTree = "<absolute>"; };
 		F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileManager+Path.h"; sourceTree = "<group>"; };
 		F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+Path.m"; sourceTree = "<group>"; };
 		F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+PathTest.m"; sourceTree = "<group>"; };
@@ -232,6 +242,7 @@
 				F42E095E0D199BD600D5DDE0 /* Cocoa.framework in Frameworks */,
 				F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */,
 				F43E4F6D0D4E60C50041161F /* libz.dylib in Frameworks */,
+				8B2A9BEC0D82714A00599386 /* ScreenSaver.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +253,7 @@
 				F42E08610D199A2B00D5DDE0 /* Cocoa.framework in Frameworks */,
 				F42E087F0D199AB400D5DDE0 /* GTM.framework in Frameworks */,
 				F42E089C0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */,
+				8B2A9BED0D82714A00599386 /* ScreenSaver.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +291,7 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8B2A9BEB0D82714A00599386 /* ScreenSaver.framework */,
 				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
 				F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */,
 				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
@@ -333,6 +346,9 @@
 				F47F1CAD0D4910FD00925B8F /* GTMNSColor+Theme.m */,
 				F47F1CAE0D4910FD00925B8F /* GTMNSColor+ThemeTest.m */,
 				F47F1C740D490E5C00925B8F /* GTMShading.h */,
+				8B2A9B1D0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m */,
+				8B2A9B1E0D8270DA00599386 /* GTMNSWorkspace+ScreenSaverTest.m */,
+				8B2A9B1F0D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.h */,
 				F42E09A80D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.h */,
 				F42E09A90D19A5E300D5DDE0 /* GTMNSWorkspace+Theme.m */,
 				F42E0B090D19A6FB00D5DDE0 /* GTMNSWorkspace+ThemeTest.m */,
@@ -416,6 +432,7 @@
 				F437F55D0D50BC0A00F5C3A4 /* GTMRegex.h in Headers */,
 				F47A79880D746EE9002302AB /* GTMScriptRunner.h in Headers */,
 				F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */,
+				8B2A9B220D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,6 +611,7 @@
 				F437F55E0D50BC0A00F5C3A4 /* GTMRegex.m in Sources */,
 				F47A79890D746EE9002302AB /* GTMScriptRunner.m in Sources */,
 				F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */,
+				8B2A9B200D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,6 +630,8 @@
 				F47F1CB60D49110900925B8F /* GTMNSColor+ThemeTest.m in Sources */,
 				F43E447F0D4918BC0041161F /* GTMLinearRGBShadingTest.m in Sources */,
 				F43E4E660D4E5ED40041161F /* GTMNSData+zlibTest.m in Sources */,
+				8B2A9B230D8270DA00599386 /* GTMNSWorkspace+ScreenSaver.m in Sources */,
+				8B2A9B240D8270DA00599386 /* GTMNSWorkspace+ScreenSaverTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
