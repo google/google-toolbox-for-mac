@@ -13,7 +13,7 @@ We're being stymied by the following issues in Xcode 3 (and 3.1):
   # The version of libgcov.a compiled in the MacOS10.4u.sdk that shipped with Xcode 3, links to symbols that aren't in the MacOS10.4u.sdk. Specifically `_fcntl$UNIX2003`, `_open$UNIX2003`, and `_close$UNIX2003`.
     Radar 5707470 - gcov broken with MacOS10.4.u.sdk
 
-To fix this we include a fat version of the Tiger libgcov.a in TigerGcov (or you can download it directly from [http://code.google.com/p/coverstory/downloads/list downloads]). When the linker sees this version, it will link to it instead of the bad version in /usr/lib and then you will be able to run your app on both Tiger and Leopard. When Apple fixes these issues we can hopefully remove all this garbage and everything will be good.
+To fix this we include a fat version of the Tiger libgcov.a in !TigerGcov (or you can download it directly from [http://code.google.com/p/coverstory/downloads/list downloads]). When the linker sees this version, it will link to it instead of the bad version in /usr/lib and then you will be able to run your app on both Tiger and Leopard. When Apple fixes these issues we can hopefully remove all this garbage and everything will be good.
 
 Just make sure to add the path to this folder into the OTHER_LDFLAGS setting for your xcode target/project. You can see a demonstration of this in the debug-gcov config of the Google Toolbox for Mac target.
 
