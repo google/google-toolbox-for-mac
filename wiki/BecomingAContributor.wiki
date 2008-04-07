@@ -1,3 +1,4 @@
+#summary How to contribute to Google Toolbox for Mac
 #labels Featured
 =How to become a contributor and submit patches=
 
