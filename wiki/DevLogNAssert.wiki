@@ -23,7 +23,7 @@ First, a little terminology authored/inspired by dmaclach:
 
 Now, what this means to GTM:
 
-One of the goals with GTM is to provide a collection of code that developers can easily use without having to pick up stuff they don't need.  GTM uses {{{_GTMDevLog}}} and {{{_GTMDevAssert}}} as internal calls to provide logs and assertions; it is *_not_* meant to be a reporting system.  These two calls are meant to be _extremely_ simple.  If a developer does nothing, they will macro into the {{{NSLog}}}/{{{NSAssert}}} we all know and love.
+One of the goals with GTM is to provide a collection of code that developers can easily use without having to pick up stuff they don't need.  GTM uses {{{_GTMDevLog}}} and {{{_GTMDevAssert}}} as internal calls to provide logs and assertions; it is *_not_* meant to be a reporting system.  These two calls are meant to be _extremely_ simple.  If a developer does nothing, {{{_GTMDevAssert}}} will macro into {{{NSAssert}}} in all build styles. {{{_GTMDevLog}}} will macro to {{{NSLog}}} in _Debug_ builds and will macro out of the code in _Release_ builds.
 
 GTM uses {{{_GTMDevLog}}}/{{{_GTMDevAssert}}} as described above, to log two classes of problems for developers.  No more, no less.  The intent that is any true errors that would need to be presented to an end user should be returned from APIs via {{{NSError}}} objects and/or other standard Cocoa practices.
 
