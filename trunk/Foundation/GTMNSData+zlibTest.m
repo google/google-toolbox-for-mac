@@ -16,7 +16,6 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "GTMSenTestCase.h"
 
 #import "GTMNSData+zlib.h"
@@ -36,11 +35,9 @@ static void FillWithRandom(char *data, unsigned long len) {
 
 static BOOL HasGzipHeader(NSData *data) {
   // very simple check
-  if ([data length] > 2) {
-    const unsigned char *bytes = [data bytes];
-    return (bytes[0] == 0x1f) && (bytes[1] == 0x8b);
-  }
-  return NO;
+  const unsigned char *bytes = [data bytes];
+  return ([data length] > 2) &&
+         ((bytes[0] == 0x1f) && (bytes[1] == 0x8b));
 }
 
 
@@ -49,6 +46,115 @@ static BOOL HasGzipHeader(NSData *data) {
 - (void)setUp {
   // seed random from /dev/random
   srandomdev();
+}
+
+- (void)testBoundryValues {
+  NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
+  STAssertNotNil(localPool, @"failed to alloc local pool");
+  
+  // build some test data
+  NSMutableData *data = [NSMutableData data];
+  STAssertNotNil(data, @"failed to alloc data block");
+  [data setLength:512];
+  FillWithRandom([data mutableBytes], [data length]);
+
+  // bogus args to start
+  STAssertNil([NSData gtm_dataByDeflatingData:nil], nil);
+  STAssertNil([NSData gtm_dataByDeflatingBytes:nil length:666], nil);
+  STAssertNil([NSData gtm_dataByDeflatingBytes:[data bytes] length:0], nil);
+  STAssertNil([NSData gtm_dataByGzippingData:nil], nil);
+  STAssertNil([NSData gtm_dataByGzippingBytes:nil length:666], nil);
+  STAssertNil([NSData gtm_dataByGzippingBytes:[data bytes] length:0], nil);
+  STAssertNil([NSData gtm_dataByInflatingData:nil], nil);
+  STAssertNil([NSData gtm_dataByInflatingBytes:nil length:666], nil);
+  STAssertNil([NSData gtm_dataByInflatingBytes:[data bytes] length:0], nil);
+  
+  // test deflate w/ compression levels out of range
+  NSData *deflated = [NSData gtm_dataByDeflatingData:data
+                                    compressionLevel:-4];
+  STAssertNotNil(deflated, nil);
+  STAssertFalse(HasGzipHeader(deflated), nil);
+  NSData *dataPrime = [NSData gtm_dataByInflatingData:deflated];
+  STAssertNotNil(dataPrime, nil);
+  STAssertEqualObjects(data, dataPrime, nil);
+  deflated = [NSData gtm_dataByDeflatingData:data
+                             compressionLevel:20];
+  STAssertNotNil(deflated, nil);
+  STAssertFalse(HasGzipHeader(deflated), nil);
+  dataPrime = [NSData gtm_dataByInflatingData:deflated];
+  STAssertNotNil(dataPrime, nil);
+  STAssertEqualObjects(data, dataPrime, nil);
+
+  // test gzip w/ compression levels out of range
+  NSData *gzipped = [NSData gtm_dataByGzippingData:data
+                                   compressionLevel:-4];
+  STAssertNotNil(gzipped, nil);
+  STAssertTrue(HasGzipHeader(gzipped), nil);
+  dataPrime = [NSData gtm_dataByInflatingData:gzipped];
+  STAssertNotNil(dataPrime, nil);
+  STAssertEqualObjects(data, dataPrime, nil);
+  gzipped = [NSData gtm_dataByGzippingData:data
+                           compressionLevel:20];
+  STAssertNotNil(gzipped, nil);
+  STAssertTrue(HasGzipHeader(gzipped), nil);
+  dataPrime = [NSData gtm_dataByInflatingData:gzipped];
+  STAssertNotNil(dataPrime, nil);
+  STAssertEqualObjects(data, dataPrime, nil);
+  
+  // test non-compressed data data itself
+  STAssertNil([NSData gtm_dataByInflatingData:data], nil);
+  
+  // test deflated data runs that end before they are done
+  for (int x = 1 ; x < [deflated length] ; ++x) {
+    STAssertNil([NSData gtm_dataByInflatingBytes:[deflated bytes] length:x], nil);
+  }
+  
+  // test gzipped data runs that end before they are done
+  for (int x = 1 ; x < [gzipped length] ; ++x) {
+    STAssertNil([NSData gtm_dataByInflatingBytes:[gzipped bytes] length:x], nil);
+  }
+  
+  // test extra data before the deflated/gzipped data (just to make sure we
+  // don't seek to the "real" data)
+  NSMutableData *prefixedDeflated = [NSMutableData data];
+  STAssertNotNil(prefixedDeflated, @"failed to alloc data block");
+  [prefixedDeflated setLength:20];
+  FillWithRandom([prefixedDeflated mutableBytes], [prefixedDeflated length]);
+  [prefixedDeflated appendData:deflated];
+  STAssertNil([NSData gtm_dataByInflatingData:prefixedDeflated], nil);
+  STAssertNil([NSData gtm_dataByInflatingBytes:[prefixedDeflated bytes]
+                                        length:[prefixedDeflated length]],
+              nil);
+  NSMutableData *prefixedGzipped = [NSMutableData data];
+  STAssertNotNil(prefixedDeflated, @"failed to alloc data block");
+  [prefixedGzipped setLength:20];
+  FillWithRandom([prefixedGzipped mutableBytes], [prefixedGzipped length]);
+  [prefixedGzipped appendData:gzipped];
+  STAssertNil([NSData gtm_dataByInflatingData:prefixedGzipped], nil);
+  STAssertNil([NSData gtm_dataByInflatingBytes:[prefixedGzipped bytes]
+                                        length:[prefixedGzipped length]],
+              nil);
+
+  // test extra data after the deflated/gzipped data (just to make sure we
+  // don't ignore some of the data)
+  NSMutableData *suffixedDeflated = [NSMutableData data];
+  STAssertNotNil(suffixedDeflated, @"failed to alloc data block");
+  [suffixedDeflated appendData:deflated];
+  [suffixedDeflated appendBytes:[data bytes] length:20];
+  STAssertNil([NSData gtm_dataByInflatingData:suffixedDeflated], nil);
+  STAssertNil([NSData gtm_dataByInflatingBytes:[suffixedDeflated bytes]
+                                        length:[suffixedDeflated length]],
+              nil);
+  NSMutableData *suffixedGZipped = [NSMutableData data];
+  STAssertNotNil(suffixedGZipped, @"failed to alloc data block");
+  [suffixedGZipped appendData:gzipped];
+  [suffixedGZipped appendBytes:[data bytes] length:20];
+  STAssertNil([NSData gtm_dataByInflatingData:suffixedGZipped], nil);
+  STAssertNil([NSData gtm_dataByInflatingBytes:[suffixedGZipped bytes]
+                                        length:[suffixedGZipped length]],
+              nil);
+  
+  [localPool release];
 }
 
 - (void)testInflateDeflate {

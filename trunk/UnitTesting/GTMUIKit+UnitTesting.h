@@ -1,5 +1,5 @@
 //
-//  GTMNSView+UnitTesting.h
+//  GTMUIKit+UnitTesting.h
 //
 //  Code for making unit testing of graphics/UI easier. Generally you
 //  will only want to look at the macros:
@@ -24,12 +24,12 @@
 //  the License.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <UIKit/UIKit.h>
 #import "GTMNSObject+UnitTesting.h"
 
 @protocol GTMUnitTestViewDrawer;
 
-///  Fails when the |a1|'s drawing in an area |a2| does not equal the TIFF file named |a3|.
+//  Fails when the |a1|'s drawing in an area |a2| does not equal the image file named |a3|.
 //  See the description of the GTMAssertViewRepEqualToFile macro
 //  to understand how |a3| is found and written out.
 //  See the description of the GTMUnitTestView for a better idea
@@ -40,7 +40,7 @@
 //    a1: The object that implements the GTMUnitTestViewDrawer protocol
 //        that is doing the drawing.
 //    a2: The size of the drawing
-//    a3: The name of the TIFF file to check against.
+//    a3: The name of the image file to check against.
 //        Do not include the extension
 //    a4: contextInfo to pass to drawer
 //    description: A format string as in the printf() function. 
@@ -48,66 +48,56 @@
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 
-
 #define GTMAssertDrawingEqualToFile(a1, a2, a3, a4, description, ...) \
   do { \
     id<GTMUnitTestViewDrawer> a1Object = (a1); \
-    NSSize a2Size = (a2); \
+    CGSize a2Size = (a2); \
     NSString* a3String = (a3); \
     void *a4ContextInfo = (a4); \
-    NSRect frame = NSMakeRect(0, 0, a2Size.width, a2Size.height); \
+    CGRect frame = CGRectMake(0, 0, a2Size.width, a2Size.height); \
     GTMUnitTestView *view = [[[GTMUnitTestView alloc] initWithFrame:frame drawer:a1Object contextInfo:a4ContextInfo] autorelease]; \
-    GTMAssertObjectImageEqualToTIFFNamed(view, a3String, STComposeString(description, ##__VA_ARGS__)); \
+    GTMAssertObjectImageEqualToImageNamed(view, a3String, STComposeString(description, ##__VA_ARGS__)); \
   } while(0)
 
 //  Category for making unit testing of graphics/UI easier.
 
-///  Allows you to take a state of a view. Supports both image and state.
-//  See NSObject+UnitTesting.h for details.
-@interface NSView (GTMUnitTestingAdditions) <GTMUnitTestingEncoding>
+//  Allows you to take a state of a view. Supports both image and state.
+//  See GTMNSObject+UnitTesting.h for details.
+@interface UIView (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
 
-///  Returns an image containing a representation suitable for use in comparing against a master image.
-//  
-//  NB this means that all colors should be device based.
+//  Returns an image containing a representation suitable for use in comparing against a master image.
 //
 //  Returns:
 //    an image of the object
-- (NSImage*)unitTestImage;
+- (CGImageRef)gtm_createUnitTestImage;
 
-///  Encodes the state of an object in a manner suitable for comparing against a master state file
+//  Encodes the state of an object in a manner suitable for comparing against a master state file
 //  This enables us to determine whether the object is in a suitable state.
 //
 //  Arguments:
 //    inCoder - the coder to encode our state into
-- (void)unitTestEncodeState:(NSCoder*)inCoder;
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder;
 
-///  Returns whether unitTestEncodeState should recurse into subviews
-// 
-//  Dan Waylonis discovered that if you have "Full keyboard access" in the
-//  Keyboard & Mouse > Keyboard Shortcuts preferences pane set to "Text boxes 
-//  and Lists only" that Apple adds a set of subviews to NSTextFields. So in the 
-//  case of NSTextFields we don't want to recurse into their subviews. There may 
-//  be other cases like this, so instead of specializing unitTestEncodeState: to
-//  look for NSTextFields, NSTextFields will just not allow us to recurse into
-//  their subviews.
+//  Returns whether gtm_unitTestEncodeState should recurse into subviews
 //
 //  Returns:
-//    should unitTestEncodeState pick up subview state.
-- (BOOL)shouldEncodeStateRecurseIntoSubviews;
-
+//    should gtm_unitTestEncodeState pick up subview state.
+- (BOOL)gtm_shouldEncodeStateForSubviews;
 @end
 
-///  A view that allows you to delegate out drawing using the formal GTMUnitTestViewDelegate protocol
+//  A view that allows you to delegate out drawing using the formal 
+//  GTMUnitTestViewDelegate protocol
 //  This is useful when writing up unit tests for visual elements.
 //  Your test will often end up looking like this:
 //  - (void)testFoo {
-//   GTMAssertDrawingEqualToFile(self, NSMakeSize(200, 200), @"Foo", nil, nil);
+//   GTMAssertDrawingEqualToFile(self, CGSizeMake(200, 200), @"Foo", nil, nil);
 //  }
 //  and your testSuite will also implement the unitTestViewDrawRect method to do
 //  it's actual drawing. The above creates a view of size 200x200 that draws
 //  it's content using |self|'s unitTestViewDrawRect method and compares it to
 //  the contents of the file Foo.tif to make sure it's valid
-@interface GTMUnitTestView : NSView {
+@interface GTMUnitTestView : UIView {
+ @private
   id<GTMUnitTestViewDrawer> drawer_; // delegate for doing drawing (STRONG) 
   void* contextInfo_; // info passed in by user for them to use when drawing
 }
@@ -119,7 +109,8 @@
 //    drawer: the object that will do the drawing via the GTMUnitTestViewDrawer
 //            protocol
 //    contextInfo: 
-- (id)initWithFrame:(NSRect)frame drawer:(id<GTMUnitTestViewDrawer>)drawer contextInfo:(void*)contextInfo;
+- (id)initWithFrame:(CGRect)frame drawer:(id<GTMUnitTestViewDrawer>)drawer contextInfo:(void*)contextInfo;
+
 @end
 
 /// \cond Protocols
@@ -128,11 +119,10 @@
 // GTMUnitTestView for details.
 @protocol GTMUnitTestViewDrawer <NSObject>
 
-//  Draw the view. Equivalent to drawRect on a standard NSView.
+//  Draw the view. Equivalent to drawRect on a standard UIView.
 //
 //  Args:
 //    rect: the area to draw.
-- (void)unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo;
-@end
+- (void)gtm_unitTestViewDrawRect:(CGRect)rect contextInfo:(void*)contextInfo;
 
-/// \endcond
+@end

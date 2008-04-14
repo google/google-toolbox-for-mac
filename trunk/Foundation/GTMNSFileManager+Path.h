@@ -52,7 +52,8 @@
 /// Args:
 ///   extension - the file extension (excluding the leading ".") to match.
 ///               If nil, all files are matched.
-///   directoryPath - the directory to look in.  Subdirectories are not traversed.
+///   directoryPath - the directory to look in.  NOTE: Subdirectories are NOT
+///                   traversed.
 /// 
 /// Returns:
 ///   An NSArray of absolute file paths that have |extension|.  nil is returned

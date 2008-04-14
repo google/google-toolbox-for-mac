@@ -2,7 +2,7 @@
 //  General.xcconfig
 //
 //  Xcode configuration file for general build settings applicable to all
-//  Google projects and targets.
+//  projects and targets.
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -20,7 +20,7 @@
 //
 
 // Build for PPC and Intel
-ARCHS = ppc i386
+ARCHS = i386 ppc
 
 // Zerolink prevents link warnings so turn it off
 ZERO_LINK = NO

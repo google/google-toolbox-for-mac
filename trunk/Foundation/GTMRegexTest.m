@@ -16,8 +16,6 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
-
 #import "GTMSenTestCase.h"
 #import "GTMRegex.h"
 
@@ -62,6 +60,22 @@
   STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."] autorelease], nil);
   STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
                                          options:kGTMRegexOptionIgnoreCase] autorelease], nil);
+  // fail cases w/ error param
+  NSError *error = nil;
+  STAssertNil([[[GTMRegex alloc] initWithPattern:nil
+                                         options:kGTMRegexOptionIgnoreCase
+                                       withError:&error] autorelease], nil);
+  STAssertNil(error, @"no pattern, shouldn't get error object");
+  STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
+                                         options:kGTMRegexOptionIgnoreCase
+                                       withError:&error] autorelease], nil);
+  STAssertNotNil(error, nil);
+  STAssertEqualObjects([error domain], kGTMRegexErrorDomain, nil);
+  STAssertEquals([error code], kGTMRegexPatternParseFailedError, nil);
+  NSDictionary *userInfo = [error userInfo];
+  STAssertNotNil(userInfo, @"failed to get userInfo from error");
+  STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
+  STAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString], nil);
 
   // basic pattern w/ options
   STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"] autorelease], nil);
@@ -69,6 +83,11 @@
                                             options:0] autorelease], nil);
   STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
                                             options:kGTMRegexOptionIgnoreCase] autorelease], nil);
+  error = nil;
+  STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
+                                            options:kGTMRegexOptionIgnoreCase
+                                          withError:&error] autorelease], nil);
+  STAssertNil(error, @"shouldn't have been any error");
 
   // fail cases (helper)
   STAssertNil([GTMRegex regexWithPattern:nil], nil);
@@ -77,13 +96,39 @@
   STAssertNil([GTMRegex regexWithPattern:@"(."], nil);
   STAssertNil([GTMRegex regexWithPattern:@"(."
                                  options:0], nil);
-
+  // fail cases (helper) w/ error param
+  STAssertNil([GTMRegex regexWithPattern:nil
+                                 options:kGTMRegexOptionIgnoreCase
+                               withError:&error], nil);
+  STAssertNil(error, @"no pattern, shouldn't get error object");
+  STAssertNil([GTMRegex regexWithPattern:@"(."
+                                 options:kGTMRegexOptionIgnoreCase
+                               withError:&error], nil);
+  STAssertNotNil(error, nil);
+  STAssertEqualObjects([error domain], kGTMRegexErrorDomain, nil);
+  STAssertEquals([error code], kGTMRegexPatternParseFailedError, nil);
+  userInfo = [error userInfo];
+  STAssertNotNil(userInfo, @"failed to get userInfo from error");
+  STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
+  STAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString], nil);
+  
   // basic pattern w/ options (helper)
   STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"], nil);
   STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
                                     options:0], nil);
   STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
                                     options:kGTMRegexOptionIgnoreCase], nil);
+  error = nil;
+  STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
+                                    options:kGTMRegexOptionIgnoreCase
+                                  withError:&error], nil);
+  STAssertNil(error, @"shouldn't have been any error");
+  
+  // not really a test on GTMRegex, but make sure we block attempts to directly
+  // alloc/init a GTMRegexStringSegment.
+  STAssertThrowsSpecificNamed([[[GTMRegexStringSegment alloc] init] autorelease],
+                              NSException, NSInvalidArgumentException,
+                              @"shouldn't have been able to alloc/init a GTMRegexStringSegment");
 }
 
 - (void)testOptions {
@@ -397,10 +442,68 @@
   STAssertNil(subPatterns, nil);
 }
 
+- (void)testFirstSubStringMatchedInString {
+  // simple pattern
+  GTMRegex *regex = [GTMRegex regexWithPattern:@"foo.*bar"];
+  STAssertNotNil(regex, nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobar"],
+                       @"foobar", nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobydoo spambar"],
+                       @"foobydoo spambar", nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobarzz"],
+                       @"foobar", nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobydoo spambarzz"],
+                       @"foobydoo spambar", nil);
+  STAssertNil([regex firstSubStringMatchedInString:@"abcdef"], nil);
+  STAssertNil([regex firstSubStringMatchedInString:@""], nil);
+  // pattern w/ sub patterns
+  regex = [GTMRegex regexWithPattern:@"(foo)(.*)(bar)"];
+  STAssertNotNil(regex, nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobar"],
+                       @"foobar", nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobydoo spambar"],
+                       @"foobydoo spambar", nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobarzz"],
+                       @"foobar", nil);
+  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobydoo spambarzz"],
+                       @"foobydoo spambar", nil);
+  STAssertNil([regex firstSubStringMatchedInString:@"abcdef"], nil);
+  STAssertNil([regex firstSubStringMatchedInString:@""], nil);
+}
+
+- (void)testMatchesSubStringInString {
+  // simple pattern
+  GTMRegex *regex = [GTMRegex regexWithPattern:@"foo.*bar"];
+  STAssertNotNil(regex, nil);
+  STAssertTrue([regex matchesSubStringInString:@"foobar"], nil);
+  STAssertTrue([regex matchesSubStringInString:@"foobydoo spambar"], nil);
+  STAssertTrue([regex matchesSubStringInString:@"zzfoobarzz"], nil);
+  STAssertTrue([regex matchesSubStringInString:@"zzfoobydoo spambarzz"], nil);
+  STAssertFalse([regex matchesSubStringInString:@"abcdef"], nil);
+  STAssertFalse([regex matchesSubStringInString:@""], nil);
+  // pattern w/ sub patterns
+  regex = [GTMRegex regexWithPattern:@"(foo)(.*)(bar)"];
+  STAssertNotNil(regex, nil);
+  STAssertTrue([regex matchesSubStringInString:@"foobar"], nil);
+  STAssertTrue([regex matchesSubStringInString:@"foobydoo spambar"], nil);
+  STAssertTrue([regex matchesSubStringInString:@"zzfoobarzz"], nil);
+  STAssertTrue([regex matchesSubStringInString:@"zzfoobydoo spambarzz"], nil);
+  STAssertFalse([regex matchesSubStringInString:@"abcdef"], nil);
+  STAssertFalse([regex matchesSubStringInString:@""], nil);
+}
+
 - (void)testSegmentEnumeratorForString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
   STAssertNotNil(regex, nil);
-  NSEnumerator *enumerator = [regex segmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
+  
+  // test odd input
+  NSEnumerator *enumerator = [regex segmentEnumeratorForString:@""];
+  STAssertNotNil(enumerator, nil);
+  enumerator = [regex segmentEnumeratorForString:nil];
+  STAssertNil(enumerator, nil);
+  
+  // on w/ the normal tests
+  enumerator = [regex segmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
   STAssertNotNil(enumerator, nil);
   // "a"
   GTMRegexStringSegment *seg = [enumerator nextObject];
@@ -566,12 +669,32 @@
   // (end)
   seg = [enumerator nextObject];
   STAssertNil(seg, nil);
+
+  // make sure the enum cleans up if not walked to the end
+  regex = [GTMRegex regexWithPattern:@"b+"];
+  STAssertNotNil(regex, nil);
+  enumerator = [regex segmentEnumeratorForString:@"aabbcc"];
+  STAssertNotNil(enumerator, nil);
+  // "aa"
+  seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertFalse([seg isMatch], nil);
+  STAssertEqualStrings([seg string], @"aa", nil);
+  // and done w/o walking the rest
 }
 
 - (void)testMatchSegmentEnumeratorForString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
   STAssertNotNil(regex, nil);
-  NSEnumerator *enumerator = [regex matchSegmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
+
+  // test odd input
+  NSEnumerator *enumerator = [regex matchSegmentEnumeratorForString:@""];
+  STAssertNotNil(enumerator, nil);
+  enumerator = [regex matchSegmentEnumeratorForString:nil];
+  STAssertNil(enumerator, nil);
+  
+  // on w/ the normal tests
+  enumerator = [regex matchSegmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
   STAssertNotNil(enumerator, nil);
   // "a" - skipped
   // "foobar"
@@ -718,6 +841,13 @@
                        [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
                                                withReplacement:@""],
                        nil);
+  STAssertEqualStrings(@"",
+                       [regex stringByReplacingMatchesInString:@""
+                                               withReplacement:@"abc"],
+                       nil);
+  STAssertNil([regex stringByReplacingMatchesInString:nil
+                                      withReplacement:@"abc"],
+              nil);
   // use optional and invale subexpression parts to confirm that works
   regex = [GTMRegex regexWithPattern:@"(fo(o+))((bar)|(baz))"];
   STAssertNotNil(regex, nil);
@@ -744,6 +874,30 @@
                        [regex stringByReplacingMatchesInString:@"zaz"
                                                withReplacement:@"\\\\\\\\0 \\\\\\\\\\0 \\\\\\\\\\\\0"],
                        nil);
+}
+
+- (void)testDescriptions {
+  // default options
+  GTMRegex *regex = [GTMRegex regexWithPattern:@"a+"];
+  STAssertNotNil(regex, nil);
+  STAssertGreaterThan([[regex description] length], 10U,
+                      @"failed to get a reasonable description for regex");
+  // enumerator
+  NSEnumerator *enumerator = [regex segmentEnumeratorForString:@"aaabbbccc"];
+  STAssertNotNil(enumerator, nil);
+  STAssertGreaterThan([[enumerator description] length], 10U,
+                      @"failed to get a reasonable description for regex enumerator");
+  // string segment
+  GTMRegexStringSegment *seg = [enumerator nextObject];
+  STAssertNotNil(seg, nil);
+  STAssertGreaterThan([[seg description] length], 10U,
+                      @"failed to get a reasonable description for regex string segment");
+  // regex w/ other options
+  regex = [GTMRegex regexWithPattern:@"a+"
+                             options:(kGTMRegexOptionIgnoreCase | kGTMRegexOptionSupressNewlineSupport)];
+  STAssertNotNil(regex, nil);
+  STAssertGreaterThan([[regex description] length], 10U,
+                      @"failed to get a reasonable description for regex w/ options");
 }
 
 @end
@@ -816,6 +970,23 @@
                        @"foobydoo spambar", nil);
   STAssertNil([@"abcdef" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"], nil);
   STAssertNil([@"" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"], nil);
+}
+
+- (void)testSubStringMatchesPattern {
+  // simple pattern
+  STAssertTrue([@"foobar" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  STAssertTrue([@"foobydoo spambar" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  STAssertTrue([@"zzfoobarzz" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  STAssertTrue([@"zzfoobydoo spambarzz" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  STAssertFalse([@"abcdef" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  STAssertFalse([@"" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  // pattern w/ sub patterns
+  STAssertTrue([@"foobar" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
+  STAssertTrue([@"foobydoo spambar" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
+  STAssertTrue([@"zzfoobarzz" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
+  STAssertTrue([@"zzfoobydoo spambarzz" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
+  STAssertFalse([@"abcdef" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
+  STAssertFalse([@"" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
 }
 
 - (void)testSegmentEnumeratorForPattern {
@@ -1037,6 +1208,10 @@
   STAssertEqualStrings(@"weedoggies",
                        [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
                                                                             withReplacement:@""],
+                       nil);
+  STAssertEqualStrings(@"",
+                       [@"" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
+                                               withReplacement:@"abc"],
                        nil);
   // use optional and invale subexpression parts to confirm that works
   STAssertEqualStrings(@"aaa baz bar bar foo baz aaa",

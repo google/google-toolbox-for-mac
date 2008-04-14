@@ -16,15 +16,16 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
 #import <sys/types.h>
 #import <unistd.h>
+#import "GTMSenTestCase.h"
 #import "GTMScriptRunner.h"
 
 @interface GTMScriptRunnerTest : SenTestCase {
  @private 
   NSString *shScript_;
   NSString *perlScript_;
+  NSString *shOutputScript_;
 }
 @end
 
@@ -53,6 +54,15 @@
    @"}\n"
    @"print \"$i\n\"\n"
    writeToFile:perlScript_ atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+  shOutputScript_ = [NSString stringWithFormat:@"/tmp/script_runner_unittest_err_%d_%d_sh", geteuid(), getpid()];
+  [@"#!/bin/sh\n"
+   @"if [ \"err\" = \"$1\" ]; then\n"
+   @"  echo \" on err \" > /dev/stderr\n"
+   @"else\n"
+   @"  echo \" on out \"\n"
+   @"fi\n"
+   writeToFile:shOutputScript_ atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
 - (void)tearDown {
@@ -60,6 +70,9 @@
   if (path)
     unlink(path);
   path = [perlScript_ fileSystemRepresentation];
+  if (path)
+    unlink(path);
+  path = [shOutputScript_ fileSystemRepresentation];
   if (path)
     unlink(path);
 }
@@ -167,6 +180,8 @@
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
   
+  STAssertNil([sr environment], @"should start w/ empty env");
+  
   output = [sr run:@"/usr/bin/env | wc -l"];
   int numVars = [output intValue];
   STAssertTrue(numVars > 0, @"numVars should be positive");
@@ -195,6 +210,152 @@
   STAssertTrue([output intValue] == [currVars count],
                @"should be back down to %d vars", numVars);
 }
+
+- (void)testDescription {
+  // make sure description doesn't choke
+  GTMScriptRunner *sr = [GTMScriptRunner runner];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  STAssertGreaterThan([[sr description] length], 10U,
+                      @"expected a description of at least 10 chars");
+}
+
+- (void)testRunCommandOutputHandling {
+  // Test whitespace trimming & stdout vs. stderr w/ run command api
+  
+  GTMScriptRunner *sr = [GTMScriptRunner runnerWithBash];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  NSString *output = nil;
+  NSString *err = nil;
+  
+  // w/o whitespace trimming
+  {
+    [sr setTrimsWhitespace:NO];
+    STAssertFalse([sr trimsWhitespace], @"setTrimsWhitespace to NO failed");
+    
+    // test stdout
+    output = [sr run:@"echo \" on out \"" standardError:&err];
+    STAssertEqualObjects(output, @" on out \n", @"failed to get stdout output");
+    STAssertNil(err, @"stderr should have been empty");
+    
+    // test stderr
+    output = [sr run:@"echo \" on err \" > /dev/stderr" standardError:&err];
+    STAssertNil(output, @"stdout should have been empty");
+    STAssertEqualObjects(err, @" on err \n", nil);
+  }
+  
+  // w/ whitespace trimming
+  {
+    [sr setTrimsWhitespace:YES];
+    STAssertTrue([sr trimsWhitespace], @"setTrimsWhitespace to YES failed");
+    
+    // test stdout
+    output = [sr run:@"echo \" on out \"" standardError:&err];
+    STAssertEqualObjects(output, @"on out", @"failed to get stdout output");
+    STAssertNil(err, @"stderr should have been empty");
+    
+    // test stderr
+    output = [sr run:@"echo \" on err \" > /dev/stderr" standardError:&err];
+    STAssertNil(output, @"stdout should have been empty");
+    STAssertEqualObjects(err, @"on err", nil);
+  }
+}
+
+- (void)testScriptOutputHandling {
+  // Test whitespace trimming & stdout vs. stderr w/ script api
+
+  GTMScriptRunner *sr = [GTMScriptRunner runner];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  NSString *output = nil;
+  NSString *err = nil;
+
+  // w/o whitespace trimming
+  {
+    [sr setTrimsWhitespace:NO];
+    STAssertFalse([sr trimsWhitespace], @"setTrimsWhitespace to NO failed");
+  
+    // test stdout
+    output = [sr runScript:shOutputScript_
+                  withArgs:[NSArray arrayWithObject:@"out"]
+             standardError:&err];
+    STAssertEqualObjects(output, @" on out \n", nil);
+    STAssertNil(err, @"stderr should have been empty");
+    
+    // test stderr
+    output = [sr runScript:shOutputScript_
+                  withArgs:[NSArray arrayWithObject:@"err"]
+             standardError:&err];
+    STAssertNil(output, @"stdout should have been empty");
+    STAssertEqualObjects(err, @" on err \n", nil);
+  }
+  
+  // w/ whitespace trimming
+  {
+    [sr setTrimsWhitespace:YES];
+    STAssertTrue([sr trimsWhitespace], @"setTrimsWhitespace to YES failed");
+    
+    // test stdout
+    output = [sr runScript:shOutputScript_
+                  withArgs:[NSArray arrayWithObject:@"out"]
+             standardError:&err];
+    STAssertEqualObjects(output, @"on out", nil);
+    STAssertNil(err, @"stderr should have been empty");
+    
+    // test stderr
+    output = [sr runScript:shOutputScript_
+                  withArgs:[NSArray arrayWithObject:@"err"]
+             standardError:&err];
+    STAssertNil(output, @"stdout should have been empty");
+    STAssertEqualObjects(err, @"on err", nil);
+  }
+}
+
+- (void)testBadRunCommandInput {
+  GTMScriptRunner *sr = [GTMScriptRunner runner];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  NSString *err = nil;
+  
+  STAssertNil([sr run:nil standardError:&err], nil);
+  STAssertNil(err, nil);
+}
+
+- (void)testBadScriptInput {
+  GTMScriptRunner *sr = [GTMScriptRunner runner];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  NSString *err = nil;
+  
+  STAssertNil([sr runScript:nil withArgs:nil standardError:&err], nil);
+  STAssertNil(err, nil);
+  STAssertNil([sr runScript:@"/path/that/does/not/exists/foo/bar/baz"
+                   withArgs:nil standardError:&err], nil);
+  STAssertNotNil(err,
+                 @"should have gotten something about the path not existing");
+}
+
+- (void)testBadCmdInterpreter {
+  GTMScriptRunner *sr =
+    [GTMScriptRunner runnerWithInterpreter:@"/path/that/does/not/exists/interpreter"];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  NSString *err = nil;
+  
+  STAssertNil([sr run:nil standardError:&err], nil);
+  STAssertNil(err, nil);
+  STAssertNil([sr run:@"ls /" standardError:&err], nil);
+  STAssertNil(err, nil);
+}
+
+- (void)testBadScriptInterpreter {
+  GTMScriptRunner *sr =
+    [GTMScriptRunner runnerWithInterpreter:@"/path/that/does/not/exists/interpreter"];
+  STAssertNotNil(sr, @"Script runner must not be nil");
+  NSString *err = nil;
+  
+  STAssertNil([sr runScript:shScript_ withArgs:nil standardError:&err], nil);
+  STAssertNil(err, nil);
+  STAssertNil([sr runScript:@"/path/that/does/not/exists/foo/bar/baz"
+                   withArgs:nil standardError:&err], nil);
+  STAssertNil(err, nil);
+}
+
 
 @end
 

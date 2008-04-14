@@ -16,7 +16,6 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "GTMSenTestCase.h"
 #import "GTMNSString+HTML.h"
 

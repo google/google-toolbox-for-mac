@@ -19,9 +19,25 @@
 //  the License.
 //
 
-#include <Carbon/Carbon.h>
-#include <Cocoa/Cocoa.h>
+#include <Foundation/Foundation.h>
 
+typedef enum {
+  GTMScaleProportionally = 0,   // Fit proportionally
+  GTMScaleToFit,                // Forced fit (distort if necessary)
+  GTMScaleNone                  // Don't scale (clip)
+} GTMScaling;
+
+typedef enum {
+  GTMRectAlignCenter = 0,
+  GTMRectAlignTop,
+  GTMRectAlignTopLeft,
+  GTMRectAlignTopRight,
+  GTMRectAlignLeft,
+  GTMRectAlignBottom,
+  GTMRectAlignBottomLeft,
+  GTMRectAlignBottomRight,
+  GTMRectAlignRight
+} GTMRectAlignment;
 
 #pragma mark Miscellaneous
 
@@ -39,45 +55,8 @@ CG_INLINE float GTMDistanceBetweenPoints(NSPoint pt1, NSPoint pt2) {
   return sqrtf(dX * dX + dY * dY);
 }
 
-///  Returns the height of the main display (the one with the menu bar).
-//
-///  The value updates itself automatically whenever the user
-///  repositions their monitors, or changes resolutions etc.
-//
-//  Returns:
-//    height of the main display area.
-float GTMGetMainDisplayHeight(void);
-
 #pragma mark -
 #pragma mark Point Conversion
-
-///  Quickly convert from a global HIPoint to a global NSPoint.
-//
-///  HIPoints are relative to 0,0 in upper left;
-///  NSPoints are relative to 0,0 in lower left
-//
-//  Args: 
-//    inPoint: HIPoint to convert
-//
-//  Returns:
-//    Converted NSPoint
-CG_INLINE NSPoint GTMGlobalHIPointToNSPoint(HIPoint inPoint) { 
-  return NSMakePoint(inPoint.x, GTMGetMainDisplayHeight() - inPoint.y); 
-}
-
-///  Quickly convert from a global NSPoint to a global HIPoint.
-//
-///  HIPoints are relative to 0,0 in upper left;
-///  NSPoints are relative to 0,0 in lower left
-//
-//  Args: 
-//    inPoint: NSPoint to convert
-//
-//  Returns:
-//    Converted HIPoint
-CG_INLINE HIPoint GTMGlobalNSPointToHIPoint(NSPoint inPoint) { 
-  return CGPointMake(inPoint.x, GTMGetMainDisplayHeight() - inPoint.y); 
-}
 
 ///  Quickly convert from a CGPoint to a NSPoint.
 //
@@ -107,99 +86,8 @@ CG_INLINE CGPoint GTMNSPointToCGPoint(NSPoint inPoint) {
   return CGPointMake(inPoint.x, inPoint.y); 
 }
 
-///  Quickly convert from a global HIPoint to a global CGPoint.
-//
-///  HIPoints are relative to 0,0 in upper left;
-///  CGPoints are relative to 0,0 in lower left
-//
-//  Args: 
-//    inPoint: NSPoint to convert
-//
-//  Returns:
-//    Converted CGPoint
-CG_INLINE HIPoint GTMGlobalCGPointToHIPoint(CGPoint inPoint) { 
-  return GTMGlobalNSPointToHIPoint(GTMCGPointToNSPoint(inPoint)); 
-}
-
-///  Quickly convert from a global CGPoint to a global HIPoint.
-//
-///  HIPoints are relative to 0,0 in upper left;
-///    CGPoints are relative to 0,0 in lower left
-//
-//  Args: 
-//    inPoint: CGPoint to convert
-//
-//  Returns:
-//    Converted NSPoint
-CG_INLINE CGPoint GTMGlobalHIPointToCGPoint(HIPoint inPoint) { 
-  return GTMNSPointToCGPoint(GTMGlobalHIPointToNSPoint(inPoint)); 
-}
-
 #pragma mark -
 #pragma mark Rect Conversion
-
-///  Convert from a global NSRect to a global HIRect.
-//
-///  HIRect are relative to 0,0 in upper left;
-///  NSRect are relative to 0,0 in lower left
-//
-//  Args: 
-//    inRect: NSRect to convert
-//
-//  Returns:
-//    Converted HIRect
-HIRect GTMGlobalNSRectToHIRect(NSRect inRect);
-
-///  Convert from a rect to a HIRect.
-//
-///  HIRect are relative to 0,0 in upper left;
-///  Rect are relative to 0,0 in upper left
-//
-//  Args: 
-//    inRect: Rect to convert
-//
-//  Returns:
-//    Converted HIRect
-HIRect GTMRectToHIRect(Rect inRect);
-
-///  Convert from a global HIRect to a global NSRect.
-//
-///  NSRect are relative to 0,0 in lower left;
-///  HIRect are relative to 0,0 in upper left
-//
-//  Args: 
-//    inRect: HIRect to convert
-//
-//  Returns:
-//    Converted NSRect
-NSRect GTMGlobalHIRectToNSRect(HIRect inRect);
-
-
-///  Convert from a HIRect to a Rect.
-//
-///  Rect are relative to 0,0 in upper left;
-///  HIRect are relative to 0,0 in upper left
-//
-//  Args: 
-//    inRect: HIRect to convert
-//
-//  Returns:
-//    Converted Rect
-Rect GTMHIRectToRect(HIRect inRect);
-
-///  Convert from a global Rect to a global NSRect.
-//
-///  NSRect are relative to 0,0 in lower left;
-///  Rect are relative to 0,0 in upper left
-//
-//  Args: 
-//    inRect: Rect to convert
-//
-//  Returns:
-//    Converted NSRect
-CG_INLINE NSRect GTMGlobalRectToNSRect(Rect inRect) {
-  return GTMGlobalHIRectToNSRect(GTMRectToHIRect(inRect));
-}
 
 ///  Convert from a CGRect to a NSRect.
 //
@@ -227,76 +115,6 @@ CG_INLINE NSRect GTMCGRectToNSRect(CGRect inRect) {
 //    Converted CGRect
 CG_INLINE CGRect GTMNSRectToCGRect(NSRect inRect) {
   return CGRectMake(inRect.origin.x,inRect.origin.y,inRect.size.width,inRect.size.height);
-}
-
-///  Convert from a global HIRect to a global CGRect.
-//
-///  HIRect are relative to 0,0 in upper left;
-///  CGRect are relative to 0,0 in lower left
-//
-//  Args: 
-//    inRect: HIRect to convert
-//
-//  Returns:
-//    Converted CGRect
-CG_INLINE CGRect GTMGlobalHIRectToCGRect(HIRect inRect) {
-  return GTMNSRectToCGRect(GTMGlobalHIRectToNSRect(inRect));
-}
-
-///  Convert from a global Rect to a global CGRect.
-//
-///  Rect are relative to 0,0 in upper left;
-///  CGRect are relative to 0,0 in lower left
-//
-//  Args: 
-//    inRect: Rect to convert
-//
-//  Returns:
-//    Converted CGRect
-CG_INLINE CGRect GTMGlobalRectToCGRect(Rect inRect) {
-  return GTMNSRectToCGRect(GTMGlobalRectToNSRect(inRect));
-}
-
-///  Convert from a global NSRect to a global Rect.
-//
-///  Rect are relative to 0,0 in upper left;
-///  NSRect are relative to 0,0 in lower left
-//
-//  Args: 
-//    inRect: NSRect to convert
-//
-//  Returns:
-//    Converted Rect
-CG_INLINE Rect GTMGlobalNSRectToRect(NSRect inRect) {
-  return GTMHIRectToRect(GTMGlobalNSRectToHIRect(inRect));
-}
-
-///  Convert from a global CGRect to a global HIRect.
-//
-///  HIRect are relative to 0,0 in upper left;
-///  CGRect are relative to 0,0 in lower left
-//
-//  Args: 
-//    inRect: CGRect to convert
-//
-//  Returns:
-//    Converted HIRect
-CG_INLINE HIRect GTMGlobalCGRectToHIRect(CGRect inRect) {
-  return GTMGlobalNSRectToHIRect(GTMCGRectToNSRect(inRect));
-}
-
-///  Convert from a global CGRect to a global Rect.
-//
-///  Rect are relative to 0,0 in upper left;
-///  CGRect are relative to 0,0 in lower left
-//
-//  Args: 
-//    inRect: CGRect to convert
-//
-//  Returns:
-//    Converted Rect
-CG_INLINE Rect GTMGlobalCGRectToRect(CGRect inRect) {
-  return GTMHIRectToRect(GTMGlobalCGRectToHIRect(inRect));
 }
 
 #pragma mark -
@@ -521,7 +339,7 @@ CG_INLINE CGRect GTMCGRectScale(CGRect inRect, float xScale, float yScale) {
 //    alignee - rect to be aligned
 //    aligner - rect to be aligned from
 NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, 
-                         NSImageAlignment alignment);  
+                          GTMRectAlignment alignment);  
 
 /// Align rectangles
 //
@@ -530,7 +348,7 @@ NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner,
 //    aligner - rect to be aligned from
 //    alignment - way to align the rectangles
 CG_INLINE CGRect GTMCGAlignRectangles(CGRect alignee, CGRect aligner, 
-                                      NSImageAlignment alignment) {
+                                      GTMRectAlignment alignment) {
   return GTMNSRectToCGRect(GTMAlignRectangles(GTMCGRectToNSRect(alignee),
                                               GTMCGRectToNSRect(aligner),
                                               alignment));
@@ -543,7 +361,7 @@ CG_INLINE CGRect GTMCGAlignRectangles(CGRect alignee, CGRect aligner,
 //    size - size to scale to
 //    scaling - way to scale the rectangle
 NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size, 
-                              NSImageScaling scaling);  
+                               GTMScaling scaling);  
 
 /// Scale rectangle
 //
@@ -552,9 +370,8 @@ NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size,
 //    size - size to scale to
 //    scaling - way to scale the rectangle
 CG_INLINE CGRect GTMCGScaleRectangleToSize(CGRect scalee, CGSize size, 
-                                           NSImageScaling scaling) {
+                                           GTMScaling scaling) {
   return GTMNSRectToCGRect(GTMScaleRectangleToSize(GTMCGRectToNSRect(scalee),
                                                    GTMCGSizeToNSSize(size),
                                                    scaling));
 }
-

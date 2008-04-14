@@ -17,6 +17,7 @@
 //
 
 #import "GTMScriptRunner.h"
+#import "GTMDefines.h"
 
 static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
@@ -77,8 +78,8 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@<%p>{ interpreter = '%@', args = %@ }",
-          [self class], self, interpreter_, interpreterArgs_];
+  return [NSString stringWithFormat:@"%@<%p>{ interpreter = '%@', args = %@, environment = %@ }",
+          [self class], self, interpreter_, interpreterArgs_, environment_];
 }
 
 - (NSString *)run:(NSString *)cmds {
@@ -112,6 +113,11 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
     if (trimsWhitespace_) {
       *err = [*err stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
+
+    // let folks test for nil instead of @""
+    if ([*err length] < 1) {
+      *err = nil;
+    }
   }
   
   [task terminate];
@@ -120,6 +126,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
     output = [output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   }
   
+  // let folks test for nil instead of @""
   if ([output length] < 1) {
     output = nil;
   }
@@ -159,6 +166,11 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
     if (trimsWhitespace_) {
       *err = [*err stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
+
+    // let folks test for nil instead of @""
+    if ([*err length] < 1) {
+      *err = nil;
+    }
   }
   
   [task terminate];
@@ -167,6 +179,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
     output = [output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   }
   
+  // let folks test for nil instead of @""
   if ([output length] < 1) {
     output = nil;
   }
@@ -233,7 +246,8 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task) {
     [task launch];
   } @catch (id ex) {
     isOK = NO;
-    NSLog(@"Failed to launch interpreter '%@' due to: %@", [task launchPath], ex);
+    _GTMDevLog(@"Failed to launch interpreter '%@' due to: %@",
+               [task launchPath], ex);
   }
   return isOK;
 }

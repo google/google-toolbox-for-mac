@@ -17,7 +17,10 @@
 //  the License.
 //
 
+#import "GTMDefines.h"
 #import "GTMNSString+HTML.h"
+#import "GTMNSString+Utilities.h"
+#import "GTMMethodCheck.h"
 
 typedef struct {
   NSString *escapeSequence;
@@ -355,7 +358,7 @@ static HTMLEscapeMap gUnicodeHTMLEscapeMap[] = {
 
 
 // Utility function for Bsearching table above
-static int escapeMapCompare(const void *ucharVoid, const void *mapVoid) {
+static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
   unichar *uchar = (unichar*)ucharVoid;
   HTMLEscapeMap *map = (HTMLEscapeMap*)mapVoid;
   int val;
@@ -370,45 +373,49 @@ static int escapeMapCompare(const void *ucharVoid, const void *mapVoid) {
 }
 
 @implementation NSString (GTMNSStringHTMLAdditions)
+GTM_METHOD_CHECK(NSString, gtm_UTF16StringWithLength:);
 
 - (NSString *)gtm_stringByEscapingHTMLUsingTable:(HTMLEscapeMap*)table 
                                           ofSize:(int)size 
-                                 escapingUnicode:(BOOL)escapeUnicode {
-  NSMutableString *finalString = [NSMutableString string];
+                                 escapingUnicode:(BOOL)escapeUnicode {  
   int length = [self length];
-  require_quiet(length != 0, cantConvertAnything);
+  if (!length) {
+    return nil;
+  }
   
-  unichar *buffer = malloc(sizeof(unichar) * length);
-  require_action(buffer, cantAllocBuffer, finalString = nil);
-  unichar *buffer2 = malloc(sizeof(unichar) * length);
-  require_action(buffer2, cantAllocBuffer2, finalString = nil);
+  NSMutableString *finalString = [NSMutableString string];
   
-  [self getCharacters:buffer];
+  NSMutableData *data2 = [NSMutableData dataWithCapacity:sizeof(unichar) * length];
+  const unichar *buffer = (const unichar *)[self gtm_UTF16StringWithLength:nil];
+
+  if (!buffer || !data2) {
+    // COV_NF_BEGIN
+    _GTMDevLog(@"Unable to allocate buffer or data2");
+    return nil;
+    // COV_NF_END
+  }
+  
+  unichar *buffer2 = (unichar *)[data2 mutableBytes];
+  
   int buffer2Length = 0;
   
   for (int i = 0; i < length; ++i) {
     HTMLEscapeMap *val = bsearch(&buffer[i], table, 
                                  size / sizeof(HTMLEscapeMap), 
-                                 sizeof(HTMLEscapeMap), escapeMapCompare);
+                                 sizeof(HTMLEscapeMap), EscapeMapCompare);
     if (val || (escapeUnicode && buffer[i] > 127)) {
       if (buffer2Length) {
-        CFStringRef buffer2String =
-          CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
-                                             buffer2, buffer2Length,
-                                             kCFAllocatorNull);
-        require_action(buffer2String, cantCreateString, finalString = nil);
-        [finalString appendString:(NSString*)buffer2String];
-        CFRelease(buffer2String);
+        CFStringAppendCharacters((CFMutableStringRef)finalString, 
+                                 buffer2, 
+                                 buffer2Length);
         buffer2Length = 0;
       }
       if (val) {
         [finalString appendString:val->escapeSequence];
       }
-      else if (escapeUnicode && buffer[i] > 127) {
+      else {
+        _GTMDevAssert(escapeUnicode && buffer[i] > 127, @"Illegal Character");
         [finalString appendFormat:@"&#%d;", buffer[i]];
-      } else {
-        // Should never get here. Assert in debug.
-        require_action(NO, cantCreateString, finalString = nil);
       }
     } else {
       buffer2[buffer2Length] = buffer[i];
@@ -416,20 +423,10 @@ static int escapeMapCompare(const void *ucharVoid, const void *mapVoid) {
     }
   }
   if (buffer2Length) {
-    CFStringRef buffer2String =
-      CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
-                                         buffer2, buffer2Length,
-                                         kCFAllocatorNull);
-    require_action(buffer2String, cantCreateString, finalString = nil);
-    [finalString appendString:(NSString*)buffer2String];
-    CFRelease(buffer2String);
+    CFStringAppendCharacters((CFMutableStringRef)finalString, 
+                             buffer2, 
+                             buffer2Length);
   }
-cantCreateString:
-  free(buffer2);
-cantAllocBuffer2:
-  free(buffer);
-cantAllocBuffer:
-cantConvertAnything:
   return finalString;
 }
 

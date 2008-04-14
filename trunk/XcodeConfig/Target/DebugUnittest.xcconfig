@@ -1,12 +1,11 @@
 //
-//  DebugTigerOrLater.xcconfig
+//  DebugUnittest.xcconfig
 //
-//  Xcode configuration file for building a Debug target on Tiger or later.
+//  Xcode configuration file for a debug unittest target.
 //
-//  This is a _Configuration_ Xcode config file for use in the "Based on" popup
-//  of the project configuration editor. Do _not_ use this as the config base
-//  and individual Xcode target, there are other configuration files for that
-//  purpose.
+//  This is a _Target_ config file, for use in the "Based on" popup of the
+//  settings dialog for a target. Do not attempt to apply this as the base
+//  of an Xcode configuration in the project settings dialog.
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -23,12 +22,8 @@
 //  the License.
 //
 
-// Pull in our general Google settings
-#include "subconfig/General.xcconfig"
+// Unittests are loadable bundles
+#include "../subconfig/Unittest.xcconfig"
 
-// Tiger or later
-#include "subconfig/TigerOrLater.xcconfig"
-
-// Debug settings
-#include "subconfig/Debug.xcconfig"
-
+// See comments in ReleaseUnittest.xcconfig regarding BUNDLE_LOADER and
+// how it should be set if you are running into link errors.

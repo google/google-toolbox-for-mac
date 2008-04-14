@@ -35,7 +35,7 @@
   ThemeScrollBarArrowStyle style = kThemeScrollBarArrowsInvalid;
   OSStatus theStatus = GetThemeScrollBarArrowStyle(&style);
   if (theStatus != noErr) {
-    style = kThemeScrollBarArrowsInvalid;
+    style = kThemeScrollBarArrowsInvalid;  // COV_NF_LINE
   }
   return style;
 }

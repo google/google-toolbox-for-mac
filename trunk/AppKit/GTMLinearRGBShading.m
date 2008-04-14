@@ -165,7 +165,7 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals) {
     // diposed if necessary in the dealloc call.
     const CGFunctionCallbacks shadeFunctionCallbacks = { 0, &cShadeFunction, NULL };
     
-    // TODO: (dmaclach): this code assumes that we have a range from 0.0f to 1.0f
+    // TODO: this code assumes that we have a range from 0.0f to 1.0f
     // which may not be true according to the stops that the user has given us.
     // In general you have stops at 0.0 and 1.0, so this will do for right now
     // but may be an issue in the future.

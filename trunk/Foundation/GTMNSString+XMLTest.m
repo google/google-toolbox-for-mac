@@ -17,7 +17,7 @@
 //
 
 
-#import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
 #import "GTMNSString+XML.h"
 
 
@@ -27,33 +27,61 @@
 @implementation GTMNSString_XMLTest
 
 - (void)testStringBySanitizingAndEscapingForXML {
+  // test the substitutions cases
   UniChar chars[] = {
     'z', 0, 'z', 1, 'z', 4, 'z', 5, 'z', 34, 'z', 38, 'z', 39, 'z',
-    60, 'z', 62, 'z', ' ', 'z', 0xd800, 'z', 0xDFFF, 'z', 0xFFFE,
-    'z', 0xFFFF, 'z' };
+    60, 'z', 62, 'z', ' ', 'z', 0xd800, 'z', 0xDFFF, 'z', 0xE000,
+    'z', 0xFFFE, 'z', 0xFFFF, 'z', '\n', 'z', '\r', 'z', '\t', 'z' };
 
   NSString *string1 = [NSString stringWithCharacters:chars
                                               length:sizeof(chars) / sizeof(UniChar)];
-  NSString *string2 = @"zzzzz&quot;z&amp;z&apos;z&lt;z&gt;z zzzzz";
+  NSString *string2 =
+   [NSString stringWithFormat:@"zzzzz&quot;z&amp;z&apos;z&lt;z&gt;z zzz%Czzz\nz\rz\tz",
+    0xE000];
 
   STAssertEqualObjects([string1 gtm_stringBySanitizingAndEscapingForXML],
                        string2,
                        @"Sanitize and Escape for XML failed");
+  
+  // force the backing store of the NSString to test extraction paths
+  char ascBuffer[] = "a\01bcde\nf";
+  NSString *ascString =
+    [[[NSString alloc] initWithBytesNoCopy:ascBuffer
+                                    length:sizeof(ascBuffer) / sizeof(char)
+                                  encoding:NSASCIIStringEncoding
+                              freeWhenDone:NO] autorelease];
+  STAssertEqualObjects([ascString gtm_stringBySanitizingAndEscapingForXML],
+                       @"abcde\nf",
+                       @"Sanitize and Escape for XML from asc buffer failed");
 }
 
 - (void)testStringBySanitizingToXMLSpec {
+  // test the substitutions cases
   UniChar chars[] = {
     'z', 0, 'z', 1, 'z', 4, 'z', 5, 'z', 34, 'z', 38, 'z', 39, 'z',
-    60, 'z', 62, 'z', ' ', 'z', 0xd800, 'z', 0xDFFF, 'z', 0xFFFE,
-    'z', 0xFFFF, 'z' };
+    60, 'z', 62, 'z', ' ', 'z', 0xd800, 'z', 0xDFFF, 'z', 0xE000,
+    'z', 0xFFFE, 'z', 0xFFFF, 'z', '\n', 'z', '\r', 'z', '\t', 'z' };
   
   NSString *string1 = [NSString stringWithCharacters:chars
                                               length:sizeof(chars) / sizeof(UniChar)];
-  NSString *string2 = @"zzzzz\"z&z'z<z>z zzzzz";
+  NSString *string2 =
+    [NSString stringWithFormat:@"zzzzz\"z&z'z<z>z zzz%Czzz\nz\rz\tz",
+     0xE000];
   
   STAssertEqualObjects([string1 gtm_stringBySanitizingToXMLSpec],
                        string2,
                        @"Sanitize for XML failed");
+
+  // force the backing store of the NSString to test extraction paths
+  char ascBuffer[] = "a\01bcde\nf";
+  NSString *ascString =
+  [[[NSString alloc] initWithBytesNoCopy:ascBuffer
+                                  length:sizeof(ascBuffer) / sizeof(char)
+                                encoding:NSASCIIStringEncoding
+                            freeWhenDone:NO] autorelease];
+  STAssertEqualObjects([ascString gtm_stringBySanitizingToXMLSpec],
+                       @"abcde\nf",
+                       @"Sanitize and Escape for XML from asc buffer failed");
 }
 
 @end

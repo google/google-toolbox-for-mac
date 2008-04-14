@@ -16,7 +16,9 @@
 //  the License.
 //
 
+#define GTMREGEX_DEFINE_GLOBALS 1
 #import "GTMRegex.h"
+#import "GTMDefines.h"
 
 // This is the pattern to use for walking replacement text when doing
 // substitutions.
@@ -71,6 +73,14 @@ static NSString *const kReplacementPattern =
                                 options:options] autorelease];
 }
 
++ (id)regexWithPattern:(NSString *)pattern
+               options:(GTMRegexOptions)options
+             withError:(NSError **)outErrorOrNULL {
+  return [[[self alloc] initWithPattern:pattern
+                                options:options
+                              withError:outErrorOrNULL] autorelease];
+}
+
 + (NSString *)escapedPatternForString:(NSString *)str {
   if (str == nil)
     return nil;
@@ -117,8 +127,17 @@ static NSString *const kReplacementPattern =
 }
 
 - (id)initWithPattern:(NSString *)pattern options:(GTMRegexOptions)options {
+  return [self initWithPattern:pattern options:options withError:nil];
+}
+
+- (id)initWithPattern:(NSString *)pattern
+              options:(GTMRegexOptions)options
+            withError:(NSError **)outErrorOrNULL {
+  
   self = [super init];
   if (!self) return nil;
+
+  if (outErrorOrNULL) *outErrorOrNULL = nil;
 
   if ([pattern length] == 0) {
     [self release];
@@ -138,17 +157,31 @@ static NSString *const kReplacementPattern =
   // error info).  we use pattern_ as this flag.
   pattern_ = [pattern copy];
   if (!pattern_) {
+     // COV_NF_START - no real way to force this in a unittest
     [self release];
     return nil;
+    // COV_NF_END
   }
 
   // compile it
   int compResult = regcomp(&regexData_, [pattern_ UTF8String], flags);
   if (compResult != 0) {
-    // we don't want to throw if we failed, so we'll return nil, but still
-    // log the error just so it's out there.
     NSString *errorStr = [self errorMessage:compResult];
-    NSLog(@"Invalid pattern \"%@\", error: \"%@\"", pattern_, errorStr);
+    if (outErrorOrNULL) {
+      // include the pattern and patternError message in the userInfo.
+      NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                pattern_, kGTMRegexPatternErrorPattern,
+                                errorStr, kGTMRegexPatternErrorErrorString,
+                                nil];
+      *outErrorOrNULL = [NSError errorWithDomain:kGTMRegexErrorDomain
+                                            code:kGTMRegexPatternParseFailedError
+                                        userInfo:userInfo];
+    } else {
+      // if caller didn't get us an NSError to fill in, we log the error to help
+      // debugging.
+      _GTMDevLog(@"Invalid pattern \"%@\", error: \"%@\"",
+                 pattern_, errorStr);
+    }
 
     [self release];
     return nil;
@@ -193,7 +226,7 @@ static NSString *const kReplacementPattern =
   int count = regexData_.re_nsub + 1;
   regmatch_t *regMatches = malloc(sizeof(regmatch_t) * count);
   if (!regMatches)
-    return nil;
+    return nil; // COV_NF_LINE - no real way to force this in a unittest
 
   // wrap it all in a try so we don't leak the malloc
   @try {
@@ -232,12 +265,44 @@ static NSString *const kReplacementPattern =
     }
 
     result = buildResult;
-  }
+  } // COV_NF_LINE - radar 5851992 not all brackets reachable w/ obj-c exceptions and coverage
   @finally {
     free(regMatches);
   }
 
   return result;
+}
+
+- (NSString *)firstSubStringMatchedInString:(NSString *)str {
+  NSString *result = nil;
+  
+  regmatch_t regMatch;
+  const char *utf8Str = [str UTF8String];
+  if ([self runRegexOnUTF8:utf8Str
+                    nmatch:1
+                    pmatch:&regMatch
+                     flags:0]) {
+    // fetch the string
+    const char *base = utf8Str + regMatch.rm_so;
+    unsigned len = regMatch.rm_eo - regMatch.rm_so;
+    result =
+      [[[NSString alloc] initWithBytes:base
+                                length:len
+                              encoding:NSUTF8StringEncoding] autorelease];
+  }
+  return result;
+}
+
+- (BOOL)matchesSubStringInString:(NSString *)str {
+  regmatch_t regMatch;
+  if ([self runRegexOnUTF8:[str UTF8String]
+                    nmatch:1
+                    pmatch:&regMatch
+                     flags:0]) {
+    // don't really care what matched, just report the match
+    return YES;
+  }
+  return NO;
 }
 
 - (NSEnumerator *)segmentEnumeratorForString:(NSString *)str {
@@ -266,8 +331,9 @@ static NSString *const kReplacementPattern =
       [GTMRegex regexWithPattern:kReplacementPattern
                          options:kGTMRegexOptionSupressNewlineSupport];
 #ifdef DEBUG
-    if (!replacementRegex)
-      NSLog(@"failed to parse out replacement regex!!!");
+    if (!replacementRegex) {
+      _GTMDevLog(@"failed to parse out replacement regex!!!"); // COV_NF_LINE
+    }
 #endif
     GTMRegexEnumerator *relacementEnumerator =
       [[[GTMRegexEnumerator alloc] initWithRegex:replacementRegex
@@ -292,8 +358,10 @@ static NSString *const kReplacementPattern =
     // pull them all into an array so we can walk this as many times as needed.
     replacements = [relacementEnumerator allObjects];
     if (!replacements) {
-      NSLog(@"failed to create the replacements for subtituations");
+      // COV_NF_START - no real way to force this in a unittest
+      _GTMDevLog(@"failed to create the replacements for substitutions");
       return nil;
+      // COV_NF_END
     }
   }
 
@@ -388,9 +456,11 @@ static NSString *const kReplacementPattern =
   if (execResult != 0) {
 #ifdef DEBUG
     if (execResult != REG_NOMATCH) {
+      // COV_NF_START - no real way to force this in a unittest
       NSString *errorStr = [self errorMessage:execResult];
-      NSLog(@"%@: matching string \"%.20s...\", had error: \"%@\"",
-            self, utf8Str, errorStr);
+      _GTMDevLog(@"%@: matching string \"%.20s...\", had error: \"%@\"",
+                 self, utf8Str, errorStr);
+      // COV_NF_END
     }
 #endif
     return NO;
@@ -402,9 +472,8 @@ static NSString *const kReplacementPattern =
 
 @implementation GTMRegexEnumerator
 
-- (id)init {
-  return [self initWithRegex:nil processString:nil allSegments:NO];
-}
+// we don't block init because the class isn't exported, so no one can
+// create one, or if they do, they get whatever happens...
 
 - (id)initWithRegex:(GTMRegex *)regex
       processString:(NSString *)str
@@ -480,7 +549,7 @@ static NSString *const kReplacementPattern =
       size_t matchBufSize = ([regex_ subPatternCount] + 1) * sizeof(regmatch_t);
       nextMatches = malloc(matchBufSize);
       if (!nextMatches)
-        return nil;
+        return nil; // COV_NF_LINE - no real way to force this in a unittest
 
       // setup our range to work on
       nextMatches[0].rm_so = curParseIndex_;
@@ -511,7 +580,7 @@ static NSString *const kReplacementPattern =
           savedRegMatches_ = nextMatches;
           nextMatches = malloc(matchBufSize);
           if (!nextMatches)
-            return nil;
+            return nil; // COV_NF_LINE - no real way to force this in a unittest
 
           isMatch = NO;
           // mark everything but the zero slot w/ not used
@@ -568,14 +637,13 @@ static NSString *const kReplacementPattern =
                                                    isMatch:isMatch] autorelease];
       nextMatches = nil;
     }
-  }
+  } // COV_NF_START - no real way to force this in a test
   @catch (id e) {
-    NSLog(@"Exceptions while trying to advance enumeration (%@)", e);
-  }
-
-  // if we still have something in our temp, free it
-  if (nextMatches)
-    free(nextMatches);
+    _GTMDevLog(@"Exceptions while trying to advance enumeration (%@)", e);
+    // if we still have something in our temp, free it
+    if (nextMatches)
+      free(nextMatches);
+  } // COV_NF_END
 
   return result;
 }
@@ -593,10 +661,10 @@ static NSString *const kReplacementPattern =
 @implementation GTMRegexStringSegment
 
 - (id)init {
-  return [self initWithUTF8StrBuf:nil
-                       regMatches:nil
-                    numRegMatches:0
-                          isMatch:NO];
+  // make sure init is never called, the class in in the header so someone
+  // could try to create it by mistake.
+  [self doesNotRecognizeSelector:_cmd];
+  return nil; // COV_NF_LINE - return is just here to keep gcc happy
 }
 
 - (void)dealloc {
@@ -669,8 +737,11 @@ static NSString *const kReplacementPattern =
 
   // check the args
   if (!utf8StrBuf_ || !regMatches_ || (numRegMatches_ < 0)) {
+    // COV_NF_START
+    // this could only happen something messed w/ our internal state.
     [self release];
     return nil;
+    // COV_NF_END
   }
 
   return self;
@@ -692,9 +763,12 @@ static NSString *const kReplacementPattern =
 
 - (NSString *)gtm_firstSubStringMatchedByPattern:(NSString *)pattern {
   GTMRegex *regex = [GTMRegex regexWithPattern:pattern];
-  NSEnumerator *enumerator = [regex matchSegmentEnumeratorForString:self];
-  GTMRegexStringSegment *firstMatch = [enumerator nextObject];
-  return [firstMatch string];
+  return [regex firstSubStringMatchedInString:self];
+}
+
+- (BOOL)gtm_subStringMatchesPattern:(NSString *)pattern {
+  GTMRegex *regex = [GTMRegex regexWithPattern:pattern];
+  return [regex matchesSubStringInString:self];
 }
 
 - (NSArray *)gtm_allSubstringsMatchedByPattern:(NSString *)pattern {

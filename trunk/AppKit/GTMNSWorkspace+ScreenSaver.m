@@ -19,6 +19,7 @@
 #import <Carbon/Carbon.h>
 #import <ScreenSaver/ScreenSaver.h>
 #import "GTMNSWorkspace+ScreenSaver.h"
+#import "GTMDefines.h"
 
 // Interesting class descriptions extracted from ScreenSaver.framework using
 // class-dump. Note that these are "not documented".
@@ -79,21 +80,25 @@
   // step rather carefully.
 
   Class screenSaverControllerClass = NSClassFromString(@"ScreenSaverController");
-  NSAssert(screenSaverControllerClass, 
-           @"Are you linked with ScreenSaver.framework?"
-           " Can't find ScreenSaverController class.");
+  _GTMDevAssert(screenSaverControllerClass, 
+                @"Are you linked with ScreenSaver.framework?"
+                " Can't find ScreenSaverController class.");
   if ([screenSaverControllerClass respondsToSelector:@selector(controller)]) {
     controller = [ScreenSaverController controller];
     if (controller) {
       if ([controller respondsToSelector:@selector(screenSaverIsRunning)]) {
         answer = [controller screenSaverIsRunning];
       } else {
-        NSLog(@"ScreenSaverController no longer supports -screenSaverIsRunning?");
+        // COV_NF_START
+        _GTMDevLog(@"ScreenSaverController no longer supports -screenSaverIsRunning?");  
+        controller = nil;
+        // COV_NF_END
       }
     }
   }
   
   if (!controller) {
+    // COV_NF_START
     // If we can't get the controller, chances are we are being run from the
     // command line and don't have access to the window server. As such we are
     // going to fallback to the older method of figuring out if a screen saver
@@ -106,7 +111,7 @@
       = ProcessInformationCopyDictionary(&psn, 
                                          kProcessDictionaryIncludeAllInformationMask);
     
-    require(cfProcessInfo, CantGetFrontProcessInfo);
+    require(cfProcessInfo, CantGetFrontProcess);
     
     NSString *bundlePath = [(NSDictionary*)cfProcessInfo objectForKey:@"BundlePath"];
     
@@ -116,8 +121,8 @@
     answer = [bundlePath hasSuffix:@"ScreenSaverEngine.app"] || 
              [bundlePath hasSuffix:@"SecurityAgent.app"];
     CFRelease(cfProcessInfo);
+    // COV_NF_END
   }
-CantGetFrontProcessInfo:
 CantGetFrontProcess:
   return answer;
 }

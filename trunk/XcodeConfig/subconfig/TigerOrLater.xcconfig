@@ -1,9 +1,8 @@
 //
 //  TigerOrLater.xcconfig
 //
-//  Xcode configuration file for Google applications targeting 10.4 Tiger or
-//  later. These settings produce a Universal binary compatible with 10.4 for
-//  PPC and Intel.
+//  Xcode configuration file for projects targeting 10.4 Tiger or later. These
+//  settings produce a Universal binary compatible with 10.4 for PPC and Intel.
 //
 //  Copyright 2006-2008 Google Inc.
 //

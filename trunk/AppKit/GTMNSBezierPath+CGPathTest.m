@@ -20,7 +20,8 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "GTMNSBezierPath+CGPath.h"
-#import "GTMNSView+UnitTesting.h"
+#import "GTMAppKit+UnitTesting.h"
+#import "GTMSenTestCase.h"
 
 @interface GTMNSBezierPath_CGPathTest : SenTestCase<GTMUnitTestViewDrawer>
 @end
@@ -32,8 +33,8 @@
 }
 
 
-// Draws all of our tests so that we can compare this to our stored TIFF file.
-- (void)unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
+// Draws all of our tests so that we can compare this to our stored image file.
+- (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
   NSBezierPath *thePath = [NSBezierPath bezierPath];
   NSPoint theStart = NSMakePoint(20.0f, 20.0f);
   
@@ -59,17 +60,11 @@
   [thePath closePath];
   
   CGPathRef cgPath = [thePath gtm_createCGPath];
-  if (nil == cgPath) {
-    @throw [NSException failureInFile:[NSString stringWithCString:__FILE__] 
-                               atLine:__LINE__
-                      withDescription:@"Nil CGPath"];
-  }
+  STAssertNotNULL(cgPath, @"Nil CGPath");
+
   CGContextRef cgContext = [[NSGraphicsContext currentContext] graphicsPort];
-  if (nil == cgContext) {
-    @throw [NSException failureInFile:[NSString stringWithCString:__FILE__] 
-                               atLine:__LINE__
-                      withDescription:@"Nil CGContext"];
-  }
+  STAssertNotNULL(cgContext, @"Nil cgContext");
+  
   CGContextAddPath(cgContext, cgPath);
   CGContextStrokePath(cgContext);
   CGPathRelease(cgPath);

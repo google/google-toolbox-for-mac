@@ -16,7 +16,7 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
 #import "GTMSystemVersion.h"
 
 @interface GTMSystemVersionTest : SenTestCase
@@ -28,20 +28,26 @@
   long minor;
   long bugFix;
   
-  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
-  STAssertTrue(major >= 10 && minor >= 3 && bugFix >= 0, nil);
-  STAssertTrue([GTMSystemVersion isPantherOrGreater], nil);
-  if (minor > 3) {
-    STAssertTrue([GTMSystemVersion isTigerOrGreater], nil);
-  } else {
-    STAssertFalse([GTMSystemVersion isTigerOrGreater], nil);
-  }
-  if (minor > 4) {
-    STAssertTrue([GTMSystemVersion isLeopardOrGreater], nil);
-  } else {
-    STAssertFalse([GTMSystemVersion isLeopardOrGreater], nil);
-  }  
   [GTMSystemVersion getMajor:nil minor:nil bugFix:nil];
+  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
+#if GTM_IPHONE_SDK
+  STAssertTrue(major >= 2 && minor >= 0 && bugFix >= 0, nil);
+#else
+  STAssertTrue(major >= 10 && minor >= 3 && bugFix >= 0, nil);
+  BOOL isPanther = (major == 10) && (minor == 3);
+  BOOL isTiger = (major == 10) && (minor == 4);
+  BOOL isLeopard = (major == 10) && (minor == 5);
+  BOOL isLater = (major > 10) || ((major == 10) && (minor > 5));
+  STAssertEquals([GTMSystemVersion isPanther], isPanther, nil);
+  STAssertEquals([GTMSystemVersion isPantherOrGreater],
+                 (BOOL)(isPanther || isTiger || isLeopard || isLater), nil);
+  STAssertEquals([GTMSystemVersion isTiger], isTiger, nil);
+  STAssertEquals([GTMSystemVersion isTigerOrGreater],
+                 (BOOL)(isTiger || isLeopard || isLater), nil);
+  STAssertEquals([GTMSystemVersion isLeopard], isLeopard, nil);
+  STAssertEquals([GTMSystemVersion isLeopardOrGreater],
+                 (BOOL)(isLeopard || isLater), nil);
+#endif
 }
 
 @end

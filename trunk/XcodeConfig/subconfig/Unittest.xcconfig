@@ -1,11 +1,8 @@
 //
 //  Unittest.xcconfig
 //
-//  Xcode configuration file for a unittest target.
-//
-//  This is a _Target_ config file, for use in the "Based on" popup of the
-//  settings dialog for a target. Do not attempt to apply this as the base
-//  of an Xcode configuration in the project settings dialog.
+//  Xcode configuration file for a basic unittest targets.  Use the debug or
+//  release build specific configs in the Target folder.
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -23,7 +20,7 @@
 //
 
 // Unittests are loadable bundles
-#include "../LoadableBundle.xcconfig"
+#include "../Target/LoadableBundle.xcconfig"
 
 // Force C99 dialect with GNU extensions (needed for OCUnit)
 GCC_C_LANGUAGE_STANDARD = gnu99
@@ -31,3 +28,6 @@ GCC_C_LANGUAGE_STANDARD = gnu99
 // Deploment postprocessing is what triggers Xcode to strip, we don't strip
 // unittests
 DEPLOYMENT_POSTPROCESSING = NO
+
+// Most common unittests will be objective-c
+WRAPPER_EXTENSION = octest

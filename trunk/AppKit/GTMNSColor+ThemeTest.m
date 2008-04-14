@@ -82,21 +82,21 @@
     { 0.499992, 0.499992, 0.499992, 1.000000 },
     { 0.000000, 0.000000, 0.000000, 1.000000 }
   };
-	
-	if ([GTMSystemVersion isLeopardOrGreater]) {
-		// kThemeTextColorRootMenuDisabled changed to white in Leopard.
-		colorValues[35][0] = 1.0;
-		colorValues[35][1] = 1.0;
-		colorValues[35][2] = 1.0;
-	}
+
+  if ([GTMSystemVersion isLeopardOrGreater]) {
+    // kThemeTextColorRootMenuDisabled changed to white in Leopard.
+    colorValues[35][0] = 1.0;
+    colorValues[35][1] = 1.0;
+    colorValues[35][2] = 1.0;
+  }
   for(int i = kThemeTextColorWhite; i < kThemeTextColorSystemDetail; i++) {
-    if (i == 0) continue;
+    if (i == 0) continue;  // There is no brush 0
     NSColor *textColor = [NSColor gtm_colorWithThemeTextColor:i];
     float nsComponents[5];
     [textColor getComponents: nsComponents];
     for(int j = 0; j < 4; j++) {
       STAssertEqualsWithAccuracy(nsComponents[j], colorValues[i + 2][j], 0.000001,
-                   @"Theme Text Color %d is wrong", i);
+                                 @"Theme Text Color %d is wrong", i);
       STAssertEqualObjects([textColor colorSpaceName], NSCalibratedRGBColorSpace,
                            @"Color space must be CalibratedRGB");
     }
@@ -169,13 +169,16 @@
   
   NSString *theme = [[NSWorkspace sharedWorkspace] gtm_themeAppearance];
   if ([theme isEqualToString:(NSString*)kThemeAppearanceAquaGraphite]) {
+    // COV_NF_START
     // These are the only two brushes that change with an appearance change
+    // In general we will be testing in blue, so this code won't get run
     colorValues[21][0] = 0.605478;
     colorValues[21][1] = 0.667979;
     colorValues[21][2] = 0.738293;
     colorValues[59][0] = 0.941192;
     colorValues[59][1] = 0.941192;
     colorValues[59][2] = 0.941192;
+    // COV_NF_END
   }
   for(int i = kThemeBrushWhite; i < kThemeBrushListViewColumnDivider; i++) {
     // Brush "14" is the selection, so it will change depending on the system

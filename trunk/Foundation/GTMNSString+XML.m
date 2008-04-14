@@ -16,8 +16,11 @@
 //  the License.
 //
 
+#import "GTMDefines.h"
 #import "GTMNSString+XML.h"
 #import "GTMGarbageCollection.h"
+#import "GTMNSString+Utilities.h"
+#import "GTMMethodCheck.h"
 
 typedef enum {
   kGMXMLCharModeEncodeQUOT  = 0,
@@ -88,6 +91,7 @@ FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(UniChar c) {
   return kGMXMLCharModeInvalid;
 } // XMLModeForUnichar
 
+
 static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
   //
   // NOTE:
@@ -99,23 +103,16 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
   
   // we can't use the CF call here because it leaves the invalid chars
   // in the string.
-  
-  NSMutableString *finalString = [NSMutableString string];
   int length = [src length];
-  require_quiet(length != 0, cantConvertAnything);
-  
-  // see if we can just use the interal version
-  BOOL freeBuffer = NO;
-  UniChar *buffer = (UniChar*)CFStringGetCharactersPtr((CFStringRef)src);
-  if (!buffer) {
-    // nope, alloc buffer and fetch the chars ourselves
-    buffer = malloc(sizeof(UniChar) * length);
-    require_action(buffer, cantCreateString, finalString = nil);
-    freeBuffer = YES;
-    [src getCharacters:buffer];
+  if (!length) {
+    return nil;
   }
   
-  UniChar *goodRun = buffer;
+  NSMutableString *finalString = [NSMutableString string];
+  const UniChar *buffer = [src gtm_UTF16StringWithLength:nil];
+  _GTMDevAssert(buffer, @"couldn't alloc buffer");
+  
+  const UniChar *goodRun = buffer;
   int goodRunLength = 0;
   
   for (int i = 0; i < length; ++i) {
@@ -133,13 +130,9 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
       
       // start by adding what we already collected (if anything)
       if (goodRunLength) {
-        CFStringRef goodRunString =
-        CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
-                                           goodRun, goodRunLength,
-                                           kCFAllocatorNull);
-        require_action(goodRunString != NULL, cantCreateString, finalString = nil);
-        [finalString appendString:(NSString*)goodRunString];
-        CFRelease(goodRunString);
+        CFStringAppendCharacters((CFMutableStringRef)finalString, 
+                                 goodRun, 
+                                 goodRunLength);
         goodRunLength = 0;
       }
       
@@ -156,23 +149,15 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
   
   // anything left to add?
   if (goodRunLength) {
-    CFStringRef goodRunString =
-      CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
-                                         goodRun, goodRunLength,
-                                         kCFAllocatorNull);
-    require_action(goodRunString != NULL, cantCreateString2, finalString = nil);
-    [finalString appendString:(NSString*)goodRunString];
-    CFRelease(goodRunString);
+    CFStringAppendCharacters((CFMutableStringRef)finalString, 
+                             goodRun, 
+                             goodRunLength);
   }
-cantCreateString:
-cantCreateString2:
-  if (freeBuffer)
-    free(buffer);
-cantConvertAnything:
   return finalString;
 } // AutoreleasedCloneForXML
 
 @implementation NSString (GTMNSStringXMLAdditions)
+GTM_METHOD_CHECK(NSString, gtm_UTF16StringWithLength:);
 
 - (NSString *)gtm_stringBySanitizingAndEscapingForXML {
   return AutoreleasedCloneForXML(self, YES);

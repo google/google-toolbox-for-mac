@@ -16,7 +16,6 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
 #import "GTMCalculatedRange.h"
 #import "GTMSenTestCase.h"
 
