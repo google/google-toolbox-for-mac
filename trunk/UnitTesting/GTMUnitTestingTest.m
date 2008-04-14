@@ -18,8 +18,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "GTMUnitTestingTest.h"
-#import "GTMNSApplication+UnitTesting.h"
-#import "GTMNSView+UnitTesting.h"
+#import "GTMAppKit+UnitTesting.h"
 
 NSString *const kGTMWindowNibName = @"GTMUnitTestingTest";
 NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
