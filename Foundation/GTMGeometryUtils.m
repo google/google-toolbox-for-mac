@@ -18,54 +18,6 @@
 
 #import "GTMGeometryUtils.h"
 
-float GTMGetMainDisplayHeight(void) {
-  float height = 0;
-  NSArray *screens = [NSScreen screens];
-  // We may have a headless machine without any screens. In this case we
-  // return 0.
-  if ([screens count] > 0) {
-    height = NSHeight([(NSScreen*)[screens objectAtIndex: 0] frame]);
-  }
-  return height;
-}
- 
-
-//  Rect conversion routines.
-HIRect GTMGlobalNSRectToHIRect(NSRect inRect) {
-  HIRect theRect;
-  theRect.origin = GTMGlobalNSPointToHIPoint(inRect.origin);
-  theRect.origin.y -= inRect.size.height;
-  theRect.size = CGSizeMake(inRect.size.width, inRect.size.height);
-  return theRect;
-}
-
-
-HIRect GTMRectToHIRect(Rect inRect) {
-  HIRect theRect;
-  theRect.origin = CGPointMake(inRect.left,inRect.top);
-  theRect.size = CGSizeMake(inRect.right - inRect.left, inRect.bottom - inRect.top);
-  return theRect;
-}
-
-
-NSRect GTMGlobalHIRectToNSRect(HIRect inRect) {
-  NSRect theRect;
-  theRect.origin = GTMGlobalHIPointToNSPoint(inRect.origin);
-  theRect.origin.y -= inRect.size.height;
-  theRect.size = NSMakeSize(inRect.size.width, inRect.size.height);
-  return theRect;
-}
-
-
-Rect GTMHIRectToRect(HIRect inRect) {
-  Rect theRect;
-  theRect.left = inRect.origin.x;
-  theRect.right = ceilf(inRect.origin.x + inRect.size.width);
-  theRect.top = inRect.origin.y;
-  theRect.bottom = ceilf(inRect.origin.y + inRect.size.height);
-  return theRect;
-}
-
 /// Align rectangles
 //
 //  Args:
@@ -73,50 +25,50 @@ Rect GTMHIRectToRect(HIRect inRect) {
 //    aligner - rect to be aligned to
 //    alignment - alignment to be applied to alignee based on aligner
 
-NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, NSImageAlignment alignment) {
+NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, GTMRectAlignment alignment) {
   switch (alignment) {
-    case NSImageAlignTop:
+    case GTMRectAlignTop:
       alignee.origin.x = aligner.origin.x + (NSWidth(aligner) * .5f - NSWidth(alignee) * .5f);
       alignee.origin.y = aligner.origin.y + NSHeight(aligner) - NSHeight(alignee);
       break;
       
-    case NSImageAlignTopLeft:
+    case GTMRectAlignTopLeft:
       alignee.origin.x = aligner.origin.x;
       alignee.origin.y = aligner.origin.y + NSHeight(aligner) - NSHeight(alignee);
     break;
     
-    case NSImageAlignTopRight:
+    case GTMRectAlignTopRight:
       alignee.origin.x = aligner.origin.x + NSWidth(aligner) - NSWidth(alignee);
       alignee.origin.y = aligner.origin.y + NSHeight(aligner) - NSHeight(alignee);
       break;
 
-    case NSImageAlignLeft:
+    case GTMRectAlignLeft:
       alignee.origin.x = aligner.origin.x;
       alignee.origin.y = aligner.origin.y + (NSHeight(aligner) * .5f - NSHeight(alignee) * .5f);
       break;
       
-    case NSImageAlignBottomLeft:
+    case GTMRectAlignBottomLeft:
       alignee.origin.x = aligner.origin.x;
       alignee.origin.y = aligner.origin.y;
       break;
 
-    case NSImageAlignBottom:
+    case GTMRectAlignBottom:
       alignee.origin.x = aligner.origin.x + (NSWidth(aligner) * .5f - NSWidth(alignee) * .5f);
       alignee.origin.y = aligner.origin.y;
       break;
 
-    case NSImageAlignBottomRight:
+    case GTMRectAlignBottomRight:
       alignee.origin.x = aligner.origin.x + NSWidth(aligner) - NSWidth(alignee);
       alignee.origin.y = aligner.origin.y;
       break;
       
-    case NSImageAlignRight:
+    case GTMRectAlignRight:
       alignee.origin.x = aligner.origin.x + NSWidth(aligner) - NSWidth(alignee);
       alignee.origin.y = aligner.origin.y + (NSHeight(aligner) * .5f - NSHeight(alignee) * .5f);
       break;
       
     default:
-    case NSImageAlignCenter:
+    case GTMRectAlignCenter:
       alignee.origin.x = aligner.origin.x + (NSWidth(aligner) * .5f - NSWidth(alignee) * .5f);
       alignee.origin.y = aligner.origin.y + (NSHeight(aligner) * .5f - NSHeight(alignee) * .5f);
       break;
@@ -124,9 +76,9 @@ NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, NSImageAlignment align
   return alignee;
 }
 
-NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size, NSImageScaling scaling) {
+NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size, GTMScaling scaling) {
   switch (scaling) {
-    case NSScaleProportionally: {
+    case GTMScaleProportionally: {
       float height = NSHeight(scalee);
       float width = NSWidth(scalee);
       if (isnormal(height) && isnormal(width) && 
@@ -139,11 +91,11 @@ NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size, NSImageScaling scalin
       break;
     }
       
-    case NSScaleToFit:
+    case GTMScaleToFit:
       scalee.size = size;
       break;
       
-    case NSScaleNone:
+    case GTMScaleNone:
     default:
       // Do nothing
       break;

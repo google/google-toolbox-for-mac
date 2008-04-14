@@ -18,6 +18,7 @@
 
 #import "GTMNSData+zlib.h"
 #import <zlib.h>
+#import "GTMDefines.h"
 
 #define kChunkSize 1024
 
@@ -33,31 +34,35 @@
                                 length:(unsigned)length
                       compressionLevel:(int)level
                                useGzip:(BOOL)useGzip {
-  if (!bytes || !length) return nil;
+  if (!bytes || !length) {
+    return nil;
+  }
 
   if (level == Z_DEFAULT_COMPRESSION) {
     // the default value is actually outside the range, so we have to let it
     // through specifically.
-  } else if (level < Z_BEST_SPEED)
+  } else if (level < Z_BEST_SPEED) {
     level = Z_BEST_SPEED;
-  else if (level > Z_BEST_COMPRESSION)
+  } else if (level > Z_BEST_COMPRESSION) {
     level = Z_BEST_COMPRESSION;
+  }
 
   z_stream strm;
   bzero(&strm, sizeof(z_stream));
 
   int windowBits = 15; // the default
   int memLevel = 8; // the default
-  if (useGzip)
+  if (useGzip) {
     windowBits += 16; // enable gzip header instead of zlib header
+  }
   int retCode;
   if ((retCode = deflateInit2(&strm, level, Z_DEFLATED, windowBits,
                               memLevel, Z_DEFAULT_STRATEGY)) != Z_OK) {
-#ifdef DEBUG
-    NSLog(@"Failed to init for deflate w/ level %d, error %d",
-          level, retCode);
-#endif
+    // COV_NF_START - no real way to force this in a unittest (we guard all args)
+    _GTMDevLog(@"Failed to init for deflate w/ level %d, error %d",
+               level, retCode);
     return nil;
+    // COV_NF_END
   }
 
   // hint the size at 1/4 the input size
@@ -75,12 +80,15 @@
     strm.next_out = output;
     retCode = deflate(&strm, Z_FINISH);
     if ((retCode != Z_OK) && (retCode != Z_STREAM_END)) {
-#ifdef DEBUG
-      NSLog(@"Error trying to deflate some of the payload, error %d",
-            retCode);
-#endif
+      // COV_NF_START - no real way to force this in a unittest
+      // (in inflate, we can feed bogus/truncated data to test, but an error
+      // here would be some internal issue w/in zlib, and there isn't any real
+      // way to test it)
+      _GTMDevLog(@"Error trying to deflate some of the payload, error %d",
+                 retCode);
       deflateEnd(&strm);
       return nil;
+      // COV_NF_END
     }
     // collect what we got
     unsigned gotBack = kChunkSize - strm.avail_out;
@@ -90,16 +98,13 @@
 
   } while (retCode == Z_OK);
 
-#ifdef DEBUG
-  if (strm.avail_in != 0) {
-    NSLog(@"thought we finished deflate w/o using all input, %u bytes left",
-          strm.avail_in);
-  }
-  if (retCode != Z_STREAM_END) {
-    NSLog(@"thought we finished deflate w/o getting a result of stream end, code %d",
-          retCode);
-  }
-#endif
+  // if the loop exits, we used all input and the stream ended
+  _GTMDevAssert(strm.avail_in == 0,
+                @"thought we finished deflate w/o using all input, %u bytes left",
+                strm.avail_in);
+  _GTMDevAssert(retCode == Z_STREAM_END,
+                @"thought we finished deflate w/o getting a result of stream end, code %d",
+                retCode);
 
   // clean up
   deflateEnd(&strm);
@@ -179,7 +184,9 @@
 
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
                               length:(unsigned)length {
-  if (!bytes || !length) return nil;
+  if (!bytes || !length) {
+    return nil;
+  }
 
   z_stream strm;
   bzero(&strm, sizeof(z_stream));
@@ -192,10 +199,10 @@
   windowBits += 32; // and +32 to enable zlib or gzip header detection.
   int retCode;
   if ((retCode = inflateInit2(&strm, windowBits)) != Z_OK) {
-#ifdef DEBUG
-    NSLog(@"Failed to init for inflate, error %d", retCode);
-#endif
+    // COV_NF_START - no real way to force this in a unittest (we guard all args)
+    _GTMDevLog(@"Failed to init for inflate, error %d", retCode);
     return nil;
+    // COV_NF_END
   }
 
   // hint the size at 4x the input size
@@ -209,10 +216,8 @@
     strm.next_out = output;
     retCode = inflate(&strm, Z_NO_FLUSH);
     if ((retCode != Z_OK) && (retCode != Z_STREAM_END)) {
-#ifdef DEBUG
-      NSLog(@"Error trying to inflate some of the payload, error %d",
-            retCode);
-#endif
+      _GTMDevLog(@"Error trying to inflate some of the payload, error %d",
+                 retCode);
       inflateEnd(&strm);
       return nil;
     }
@@ -224,16 +229,17 @@
 
   } while (retCode == Z_OK);
 
-#ifdef DEBUG
+  // make sure there wasn't more data tacked onto the end of a valid compressed
+  // stream.
   if (strm.avail_in != 0) {
-    NSLog(@"thought we finished inflate w/o using all input, %u bytes left",
-          strm.avail_in);
+    _GTMDevLog(@"thought we finished inflate w/o using all input, %u bytes left",
+               strm.avail_in);
+    result = nil;
   }
-  if (retCode != Z_STREAM_END) {
-    NSLog(@"thought we finished inflate w/o getting a result of stream end, code %d",
-          retCode);
-  }
-#endif
+  // the only way out of the loop was by hitting the end of the stream
+  _GTMDevAssert(retCode == Z_STREAM_END,
+                @"thought we finished inflate w/o getting a result of stream end, code %d",
+                retCode);
 
   // clean up
   inflateEnd(&strm);

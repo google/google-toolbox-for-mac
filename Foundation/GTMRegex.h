@@ -50,6 +50,28 @@ typedef enum {
 
 } GTMRegexOptions;
 
+/// Global contants needed for errors from consuming patterns
+
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GTMREGEX_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+_EXTERN NSString* kGTMRegexErrorDomain _INITIALIZE_AS(@"com.google_toolbox_for_mac.GTMRegexDomain");
+
+enum {
+  kGTMRegexPatternParseFailedError = -100
+};
+
+// Keys for the userInfo from a kGTMRegexErrorDomain/kGTMRegexPatternParseFailedError error
+_EXTERN NSString* kGTMRegexPatternErrorPattern _INITIALIZE_AS(@"pattern");
+_EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError");
+
 /// Class for doing Extended Regex operations w/ libregex (see re_format(7)).
 //
 // NOTE: the docs for recomp/regexec make *no* claims about i18n.  All work
@@ -102,6 +124,11 @@ typedef enum {
 /// Create a new, autoreleased object w/ the given regex pattern and specify the matching options
 + (id)regexWithPattern:(NSString *)pattern options:(GTMRegexOptions)options;
 
+/// Create a new, autoreleased object w/ the given regex pattern, specify the matching options and receive any error consuming the pattern.
++ (id)regexWithPattern:(NSString *)pattern
+               options:(GTMRegexOptions)options
+             withError:(NSError **)outErrorOrNULL;
+
 /// Returns a new, autoreleased copy of |str| w/ any pattern chars in it escaped so they have no meaning when used w/in a pattern.
 + (NSString *)escapedPatternForString:(NSString *)str;
 
@@ -110,6 +137,11 @@ typedef enum {
 
 /// Initialize a new object w/ the given regex pattern and specify the matching options
 - (id)initWithPattern:(NSString *)pattern options:(GTMRegexOptions)options;
+
+/// Initialize a new object w/ the given regex pattern, specify the matching options, and receive any error consuming the pattern.
+- (id)initWithPattern:(NSString *)pattern
+              options:(GTMRegexOptions)options
+            withError:(NSError **)outErrorOrNULL;
 
 /// Returns the number of sub patterns in the pattern
 //
@@ -139,6 +171,12 @@ typedef enum {
 //              5: "baz"
 //
 - (NSArray *)subPatternsOfString:(NSString *)str;
+
+/// Returns the first match for this pattern in |str|.
+- (NSString *)firstSubStringMatchedInString:(NSString *)str;
+
+/// Returns YES if this pattern some substring of |str|.
+- (BOOL)matchesSubStringInString:(NSString *)str;
 
 /// Returns a new, autoreleased enumerator that will walk segments (GTMRegexStringSegment) of |str| based on the pattern.
 //
@@ -306,6 +344,9 @@ typedef enum {
 
 /// Returns a new, autoreleased string w/ the first substring that matched the regex |pattern| using the default match options
 - (NSString *)gtm_firstSubStringMatchedByPattern:(NSString *)pattern;
+
+/// Returns YES if a substring string matches regex |pattern| using the default match options
+- (BOOL)gtm_subStringMatchesPattern:(NSString *)pattern;
 
 /// Returns a new, autoreleased array of substrings in the string that match the regex |pattern| using the default match options
 //

@@ -23,7 +23,7 @@
 //
 
 // Unittests are loadable bundles
-#include "subconfig/Unittest.xcconfig"
+#include "../subconfig/Unittest.xcconfig"
 
 // When running OCUnit tests in Release mode the unittests BUNDLE_LOADER
 // is probably stripped (or at least it will be if they are using our

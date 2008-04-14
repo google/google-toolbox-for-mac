@@ -17,88 +17,71 @@
 //
 
 #import "GTMSystemVersion.h"
-#import <Carbon/Carbon.h>
-#import <stdlib.h>
+
+static int sGTMSystemVersionMajor = 0;
+static int sGTMSystemVersionMinor = 0;
+static int sGTMSystemVersionBugFix = 0;
 
 @implementation GTMSystemVersion
-
-+ (BOOL)isPanther {
-  long major, minor;
-  [self getMajor:&major minor:&minor bugFix:nil];
-  return major == 10 && minor == 3;
-}
-
-+ (BOOL)isTiger {
-  long major, minor;
-  [self getMajor:&major minor:&minor bugFix:nil];
-  return major == 10 && minor == 4;
-}
-
-+ (BOOL)isLeopard {
-  long major, minor;
-  [self getMajor:&major minor:&minor bugFix:nil];
-  return major == 10 && minor == 5;
-}
-
-+ (BOOL)isPantherOrGreater {
-  long major, minor;
-  [self getMajor:&major minor:&minor bugFix:nil];
-  return (major > 10) || (major == 10 && minor >= 3);
-}
-
-+ (BOOL)isTigerOrGreater {
-  long major, minor;
-  [self getMajor:&major minor:&minor bugFix:nil];
-  return (major > 10) || (major == 10 && minor >= 4);
-}
-
-+ (BOOL)isLeopardOrGreater {
-  long major, minor;
-  [self getMajor:&major minor:&minor bugFix:nil];
-  return (major > 10) || (major == 10 && minor >= 5);
++ (void)initialize {
+  if (self == [GTMSystemVersion class]) {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSDictionary *systemVersionPlist = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
+    NSString *version = [systemVersionPlist objectForKey:@"ProductVersion"];
+    _GTMDevAssert(version, @"Unable to get version");
+    NSArray *versionInfo = [version componentsSeparatedByString:@"."];
+    int length = [versionInfo count];
+    _GTMDevAssert(length > 1 && length < 4, @"Unparseable version %@", version);
+    sGTMSystemVersionMajor = [[versionInfo objectAtIndex:0] intValue];
+    _GTMDevAssert(sGTMSystemVersionMajor != 0, @"Unknown version for %@", version);
+    sGTMSystemVersionMinor = [[versionInfo objectAtIndex:1] intValue];
+    if (length == 3) {
+      sGTMSystemVersionBugFix = [[versionInfo objectAtIndex:2] intValue];
+    }
+    [pool release];
+  }
 }
 
 + (void)getMajor:(long*)major minor:(long*)minor bugFix:(long*)bugFix {
-  long binaryCodedDec;
-  
   if (major) {
-    require_noerr(Gestalt(gestaltSystemVersionMajor, major), failedGestalt);
+    *major = sGTMSystemVersionMajor;
   }
   if (minor) {
-    require_noerr(Gestalt(gestaltSystemVersionMinor, minor), failedGestalt);
+    *minor = sGTMSystemVersionMinor;
   }
-  if (bugFix) {
-    require_noerr(Gestalt(gestaltSystemVersionBugFix, bugFix), failedGestalt);
-  }
-  return;
-
-failedGestalt:
-  // gestaltSystemVersionMajor et al are only on 10.4 and above, so they
-  // could fail if we have this code on 10.3.
-  if (Gestalt(gestaltSystemVersion, &binaryCodedDec)) {
-    // not much else we can do...
-    if (major)  *major = 0;
-    if (minor)  *minor = 0;
-    if (bugFix) *bugFix = 0;
-    return;
-  }
-  
-  // Note that this code will return x.9.9 for any system rev parts that are
-  // greater than 9 (ie 10.10.10 will be 10.9.9. This shouldn't ever be a
-  // problem  as the code above takes care of this for any system above 10.4.
   if (major) {
-    int msb = (binaryCodedDec & 0x0000F000L) >> 12;
-    msb *= 10;
-    int lsb = (binaryCodedDec & 0x00000F00L) >> 8;
-    *major = msb + lsb;
+    *bugFix = sGTMSystemVersionBugFix;
   }
-  if (minor) {
-    *minor = (binaryCodedDec & 0x000000F0L) >> 4;
-  }
-  if (bugFix) {
-    *bugFix = (binaryCodedDec & 0x0000000FL);
-  }
-  
 }
+
+#if GTM_MACOS_SDK
++ (BOOL)isPanther {
+  return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 3;
+}
+
++ (BOOL)isTiger {
+  return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 4;
+}
+
++ (BOOL)isLeopard {
+  return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 5;
+}
+
++ (BOOL)isPantherOrGreater {
+  return (sGTMSystemVersionMajor > 10) || 
+          (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 3);
+}
+
++ (BOOL)isTigerOrGreater {
+  return (sGTMSystemVersionMajor > 10) || 
+          (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 4);
+}
+
++ (BOOL)isLeopardOrGreater {
+  return (sGTMSystemVersionMajor > 10) || 
+          (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 5);
+}
+
+#endif // GTM_IPHONE_SDK
 
 @end

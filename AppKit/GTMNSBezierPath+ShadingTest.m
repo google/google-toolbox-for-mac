@@ -21,7 +21,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "GTMLinearRGBShading.h"
-#import "GTMNSView+UnitTesting.h"
+#import "GTMAppKit+UnitTesting.h"
 #import "GTMNSBezierPath+Shading.h"
 
 @interface GTMNSBezierPath_ShadingTest : SenTestCase<GTMUnitTestViewDrawer>
@@ -34,7 +34,7 @@
 }
 
 
-- (void)unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
+- (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo {
   
   NSColor *theColorArray[] = { [NSColor blueColor],
     [NSColor redColor], [NSColor yellowColor],

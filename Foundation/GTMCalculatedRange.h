@@ -19,7 +19,7 @@
 //  the License.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 ///  Allows you to calculate a value based on defined stops in a range.
 //

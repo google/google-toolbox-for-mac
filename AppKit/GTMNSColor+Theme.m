@@ -19,6 +19,7 @@
 //
 
 #import "GTMNSColor+Theme.h"
+#import "GTMDefines.h"
 
 @implementation NSColor (GTMColorThemeAdditions)
 
@@ -37,9 +38,7 @@
                                              blue:blue
                                             alpha:1.0f];
   } else {
-#ifdef DEBUG
-    NSLog(@"Unable to create color for textcolor %d", textColor);
-#endif
+    _GTMDevLog(@"Unable to create color for textcolor %d", textColor);
   }
   return nsTextColor;
 }
@@ -56,9 +55,7 @@
                                               blue:rgbBrushColor.blue / 65535.0f
                                              alpha:1.0f];
   } else {
-#ifdef DEBUG
-    NSLog(@"Unable to create color for brushcolor %d", brush);
-#endif
+    _GTMDevLog(@"Unable to create color for brushcolor %d", brush);
   }
   return nsBrushColor;
 }

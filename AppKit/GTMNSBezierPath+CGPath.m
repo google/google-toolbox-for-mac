@@ -18,6 +18,7 @@
 //  the License.
 //
 #import "GTMNSBezierPath+CGPath.h"
+#import "GTMDefines.h"
 
 @implementation NSBezierPath (GTMBezierPathCGPathAdditions)
 
@@ -58,7 +59,7 @@
         CGPathCloseSubpath(thePath);
         break;
       default:
-        NSLog(@"Unknown element at [NSBezierPath (GTMBezierPathCGPathAdditions) cgPath]");
+        _GTMDevLog(@"Unknown element at [NSBezierPath (GTMBezierPathCGPathAdditions) cgPath]");
         break;
     };
   }

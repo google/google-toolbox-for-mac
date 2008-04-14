@@ -1,12 +1,7 @@
 //
-//  ReleaseTigerOrLater.xcconfig
+//  DebugiPhoneSimulator.xcconfig
 //
-//  Xcode configuration file for building a Release target on Tiger or later.
-//
-//  This is a _Configuration_ Xcode config file for use in the "Based on" popup
-//  of the project configuration editor. Do _not_ use this as the config base
-//  and individual Xcode target, there are other configuration files for that
-//  purpose.
+//  Xcode configuration file for building a Debug target on iPhone
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -21,13 +16,18 @@
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
+
 //
+//  This is a _Configuration_ Xcode config file for use in the "Based on" popup
+//  of the project configuration editor. Do _not_ use this as the config base
+//  and individual Xcode target, there are other configuration files for that
+//  purpose.
 
 // Pull in our general Google settings
-#include "subconfig/General.xcconfig"
+#include "../subconfig/General.xcconfig"
 
-// Tiger or later
-#include "subconfig/TigerOrLater.xcconfig"
+// iPhone settings
+#include "../subconfig/iPhone.xcconfig"
 
 // Release settings
-#include "subconfig/Release.xcconfig"
+#include "../subconfig/Debug.xcconfig"

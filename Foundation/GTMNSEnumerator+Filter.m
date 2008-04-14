@@ -17,33 +17,35 @@
 //
 
 #import "GTMNSEnumerator+Filter.h"
+#import "GTMDebugSelectorValidation.h"
+#import "GTMDefines.h"
 
 // a private subclass of NSEnumerator that does all the work.
 // public interface just returns one of these.
 // This top level class contains all the additional boilerplate. Specific
 // behavior is in the subclasses.
-@interface GTMEnumerator : NSEnumerator {
+@interface GTMEnumeratorPrivateBase : NSEnumerator {
  @protected
   NSEnumerator *base_;  // STRONG
   SEL operation_; // either a predicate or a transform depending on context.
   id other_;  // STRONG, may be nil
 }
-- (id)nextObject;
+@end
+
+@interface GTMEnumeratorPrivateBase (SubclassesMustProvide)
 - (BOOL)filterObject:(id)obj returning:(id *)resultp;
 @end
-@implementation GTMEnumerator
+
+@implementation GTMEnumeratorPrivateBase
 - (id)initWithBase:(NSEnumerator *)base
                sel:(SEL)filter
             object:(id)optionalOther {
   self = [super init];
   if (self) {
 
-    // specializing a nil enumerator returns nil.
-    if (nil == base) {
-      [self release];
-      return nil;
-    }
-
+    // someone would have to subclass or directly create an object of this
+    // class, and this class is private to this impl.
+    _GTMDevAssert(base, @"can't bas a nil base enumerator");
     base_ = [base retain];
     operation_ = filter;
     other_ = [optionalOther retain];
@@ -51,11 +53,9 @@
   return self;
 }
 
-// it is an error to call this initializer.
-- (id)init {
-  [self doesNotRecognizeSelector:_cmd];
-  return nil;
-}
+// we don't provide an init because this base class is private to this
+// impl, and no one would be able to create it (if they do, they get whatever
+// they happens...).
 
 - (void)dealloc {
   [base_ release];
@@ -72,17 +72,10 @@
   }
   return nil;
 }
-
-// subclasses must override
-- (BOOL)filterObject:(id)obj returning:(id *)resultp {
-  [self doesNotRecognizeSelector:_cmd];
-  return NO;
-}
 @end
 
 // a transformer, for each item in the enumerator, returns a f(item).
-@interface GTMEnumeratorTransformer : GTMEnumerator
-- (BOOL)filterObject:(id)obj returning:(id *)resultp;
+@interface GTMEnumeratorTransformer : GTMEnumeratorPrivateBase
 @end
 @implementation GTMEnumeratorTransformer
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
@@ -93,8 +86,7 @@
 
 // a transformer, for each item in the enumerator, returns a f(item).
 // a target transformer swaps the target and the argument.
-@interface GTMEnumeratorTargetTransformer : GTMEnumerator
-- (BOOL)filterObject:(id)obj returning:(id *)resultp;
+@interface GTMEnumeratorTargetTransformer : GTMEnumeratorPrivateBase
 @end
 @implementation GTMEnumeratorTargetTransformer
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
@@ -104,8 +96,7 @@
 @end
 
 // a filter, for each item in the enumerator, if(f(item)) { returns item. }
-@interface GTMEnumeratorFilter : GTMEnumerator
-- (BOOL)filterObject:(id)obj returning:(id *)resultp;
+@interface GTMEnumeratorFilter : GTMEnumeratorPrivateBase
 @end
 @implementation GTMEnumeratorFilter
 // We must take care here, since Intel leaves junk in high bytes of return register
@@ -119,8 +110,7 @@
 
 // a target filter, for each item in the enumerator, if(f(item)) { returns item. }
 // a target transformer swaps the target and the argument.
-@interface GTMEnumeratorTargetFilter : GTMEnumerator
-- (BOOL)filterObject:(id)obj returning:(id *)resultp;
+@interface GTMEnumeratorTargetFilter : GTMEnumeratorPrivateBase
 @end
 @implementation GTMEnumeratorTargetFilter
 // We must take care here, since Intel leaves junk in high bytes of return register
@@ -151,6 +141,10 @@
 
 - (NSEnumerator *)gtm_filteredEnumeratorByTarget:(id)target
                            performOnEachSelector:(SEL)selector {
+  // make sure the object impls this selector taking an object as an arg.
+  GTMAssertSelectorNilOrImplementedWithArguments(target, selector,
+                                                 @encode(id),
+                                                 NULL);
   return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self
                                                       sel:selector
                                                    object:target] autorelease];
@@ -158,6 +152,10 @@
 
 - (NSEnumerator *)gtm_enumeratorByTarget:(id)target
                    performOnEachSelector:(SEL)selector {
+  // make sure the object impls this selector taking an object as an arg.
+  GTMAssertSelectorNilOrImplementedWithArguments(target, selector,
+                                                 @encode(id),
+                                                 NULL);
   return [[[GTMEnumeratorTargetTransformer alloc] initWithBase:self
                                                            sel:selector
                                                         object:target] autorelease];
