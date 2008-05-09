@@ -100,6 +100,9 @@
 		F42E09550D199BBF00D5DDE0 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
 		F42E095E0D199BD600D5DDE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
+		F431221C0DD4E3B800F45252 /* GTMStackTrace.c in Sources */ = {isa = PBXBuildFile; fileRef = F43122190DD4E3B800F45252 /* GTMStackTrace.c */; };
+		F431221D0DD4E3B800F45252 /* GTMStackTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = F431221A0DD4E3B800F45252 /* GTMStackTrace.h */; };
+		F431221F0DD4E3C900F45252 /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */; };
 		F435DE7C0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F435DE7A0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff */; };
 		F435DE7D0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.x86_64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F435DE7B0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.x86_64.tiff */; };
 		F435DE8B0DC0B7620069CDE8 /* GTMNSBezierPath+RoundRectTest.ppc64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F435DE8A0DC0B7620069CDE8 /* GTMNSBezierPath+RoundRectTest.ppc64.tiff */; };
@@ -261,6 +264,9 @@
 		F42E086E0D199A5B00D5DDE0 /* GTM-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "GTM-Info.plist"; sourceTree = "<group>"; };
 		F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		F43122190DD4E3B800F45252 /* GTMStackTrace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GTMStackTrace.c; sourceTree = "<group>"; };
+		F431221A0DD4E3B800F45252 /* GTMStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMStackTrace.h; sourceTree = "<group>"; };
+		F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTraceTest.m; sourceTree = "<group>"; };
 		F435DE7A0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+CGPathTest.ppc64.tiff"; sourceTree = "<group>"; };
 		F435DE7B0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.x86_64.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+CGPathTest.x86_64.tiff"; sourceTree = "<group>"; };
 		F435DE8A0DC0B7620069CDE8 /* GTMNSBezierPath+RoundRectTest.ppc64.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+RoundRectTest.ppc64.tiff"; sourceTree = "<group>"; };
@@ -579,6 +585,9 @@
 				F47A79850D746EE9002302AB /* GTMScriptRunner.h */,
 				F47A79860D746EE9002302AB /* GTMScriptRunner.m */,
 				F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */,
+				F43122190DD4E3B800F45252 /* GTMStackTrace.c */,
+				F431221A0DD4E3B800F45252 /* GTMStackTrace.h */,
+				F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */,
 				F48FE2920D198D24009257D2 /* GTMSystemVersion.h */,
 				F48FE2930D198D24009257D2 /* GTMSystemVersion.m */,
 				F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */,
@@ -682,6 +691,7 @@
 				F41D258B0DBD21A300774EEB /* GTMBase64.h in Headers */,
 				F435E0890DC63F6D0069CDE8 /* GTMHTTPFetcher.h in Headers */,
 				F435E27F0DC7B0630069CDE8 /* GTMProgressMonitorInputStream.h in Headers */,
+				F431221D0DD4E3B800F45252 /* GTMStackTrace.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -950,6 +960,7 @@
 				8BC04CDE0DB004A000C2D1CA /* GTMMethodCheck.m in Sources */,
 				F41D258F0DBD21B900774EEB /* GTMBase64Test.m in Sources */,
 				F435E3940DC8CAAF0069CDE8 /* GTMHTTPFetcherTest.m in Sources */,
+				F431221F0DD4E3C900F45252 /* GTMStackTraceTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,6 +990,7 @@
 				F41D258C0DBD21A300774EEB /* GTMBase64.m in Sources */,
 				F435E08A0DC63F6D0069CDE8 /* GTMHTTPFetcher.m in Sources */,
 				F435E2800DC7B0630069CDE8 /* GTMProgressMonitorInputStream.m in Sources */,
+				F431221C0DD4E3B800F45252 /* GTMStackTrace.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
