@@ -101,6 +101,8 @@ Changes since 1.0.0
 - GTMDelegatingTableColumn get an overhaul to match the 10.5 sdk so it's closer
   to a dropin for previous sdks.
 
+- Added GTMStackTrace.
+
 
 Release 1.0.0
 14-January-2008

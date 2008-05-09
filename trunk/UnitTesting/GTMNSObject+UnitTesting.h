@@ -23,6 +23,8 @@
 
 #if GTM_MACOS_SDK
 #import <ApplicationServices/ApplicationServices.h>
+#elif GTM_IPHONE_SDK
+#import <CoreGraphics/CoreGraphics.h>
 #endif
 
 #import "GTMSenTestCase.h"
