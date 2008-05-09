@@ -47,11 +47,21 @@ static BOOL ConformsToNSObjectProtocol(Class cls) {
     return YES;
   }
   
+// iPhone SDK does not define the |Object| class, so we instead test for the
+// |NSObject| class.
+#if GTM_IPHONE_SDK
+  // Iterate through all the protocols |cls| supports looking for NSObject.
+  if (cls == [NSObject class] 
+      || class_conformsToProtocol(cls, @protocol(NSObject))) {
+    return YES;
+  }
+#else   
   // Iterate through all the protocols |cls| supports looking for NSObject.
   if (cls == [Object class] 
       || class_conformsToProtocol(cls, @protocol(NSObject))) {
     return YES;
   }
+#endif
   
   // Recursively check the superclasses.
   return ConformsToNSObjectProtocol(class_getSuperclass(cls));

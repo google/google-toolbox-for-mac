@@ -17,6 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 /// Helpers for dealing w/ zlib inflate/deflate calls.
 @interface NSData (GTMZLibAdditions)
@@ -25,7 +26,7 @@
 //
 //  Uses the default compression level.
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(unsigned)length;
+                             length:(NSUInteger)length;
 
 /// Return an autoreleased NSData w/ the result of gzipping the payload of |data|.
 //
@@ -36,7 +37,7 @@
 //
 // |level| can be 1-9, any other values will be clipped to that range.
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(unsigned)length
+                             length:(NSUInteger)length
                    compressionLevel:(int)level;
 
 /// Return an autoreleased NSData w/ the result of gzipping the payload of |data| using |level| compression level.
@@ -50,7 +51,7 @@
 //
 //  Uses the default compression level.
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(unsigned)length;
+                              length:(NSUInteger)length;
 
 /// Return an autoreleased NSData w/ the result of deflating the payload of |data|.
 //
@@ -61,7 +62,7 @@
 //
 // |level| can be 1-9, any other values will be clipped to that range.
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(unsigned)length
+                              length:(NSUInteger)length
                     compressionLevel:(int)level;
 
 /// Return an autoreleased NSData w/ the result of deflating the payload of |data| using |level| compression level.
@@ -73,7 +74,7 @@
 //
 // The bytes to decompress can be zlib or gzip payloads.
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
-                              length:(unsigned)length;
+                              length:(NSUInteger)length;
 
 /// Return an autoreleased NSData w/ the result of decompressing the payload of |data|.
 //

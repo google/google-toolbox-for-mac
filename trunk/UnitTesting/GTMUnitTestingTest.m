@@ -204,18 +204,6 @@ NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
   return field_;
 }
 
-- (void)dealloc {
-  NSWindow *window = [self window];
-  int count = [window retainCount];
-  
-  // Spinning the run loop here to get rid of the window. Stupid issue
-  // where there's a delayed selector holding a retain count on our window
-  // rdar://5851458 - Closing a window with a NSTextView in it should get rid of it immediately
-  while (count == [window retainCount]) {
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
-  }
-  [super dealloc];
-}
 @end
 
 @implementation GTMUnitTestingDelegate

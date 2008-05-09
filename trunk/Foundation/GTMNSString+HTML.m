@@ -19,8 +19,6 @@
 
 #import "GTMDefines.h"
 #import "GTMNSString+HTML.h"
-#import "GTMNSString+Utilities.h"
-#import "GTMMethodCheck.h"
 
 typedef struct {
   NSString *escapeSequence;
@@ -373,23 +371,38 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
 }
 
 @implementation NSString (GTMNSStringHTMLAdditions)
-GTM_METHOD_CHECK(NSString, gtm_UTF16StringWithLength:);
 
 - (NSString *)gtm_stringByEscapingHTMLUsingTable:(HTMLEscapeMap*)table 
-                                          ofSize:(int)size 
+                                          ofSize:(NSUInteger)size 
                                  escapingUnicode:(BOOL)escapeUnicode {  
-  int length = [self length];
+  NSUInteger length = [self length];
   if (!length) {
-    return nil;
+    return self;
   }
   
   NSMutableString *finalString = [NSMutableString string];
-  
   NSMutableData *data2 = [NSMutableData dataWithCapacity:sizeof(unichar) * length];
-  const unichar *buffer = (const unichar *)[self gtm_UTF16StringWithLength:nil];
+
+  // this block is common between GTMNSString+HTML and GTMNSString+XML but
+  // it's so short that it isn't really worth trying to share.
+  const unichar *buffer = CFStringGetCharactersPtr((CFStringRef)self);
+  if (!buffer) {
+    size_t memsize = length * sizeof(UniChar);
+    
+    // nope, alloc buffer and fetch the chars ourselves
+    buffer = malloc(memsize);
+    if (!buffer) {
+      // COV_NF_START  - Memory fail case
+      _GTMDevLog(@"couldn't alloc buffer");
+      return nil;
+      // COV_NF_END
+    }
+    [self getCharacters:(void*)buffer];
+    [NSData dataWithBytesNoCopy:(void*)buffer length:memsize];
+  }
 
   if (!buffer || !data2) {
-    // COV_NF_BEGIN
+    // COV_NF_START
     _GTMDevLog(@"Unable to allocate buffer or data2");
     return nil;
     // COV_NF_END
@@ -397,9 +410,9 @@ GTM_METHOD_CHECK(NSString, gtm_UTF16StringWithLength:);
   
   unichar *buffer2 = (unichar *)[data2 mutableBytes];
   
-  int buffer2Length = 0;
+  NSUInteger buffer2Length = 0;
   
-  for (int i = 0; i < length; ++i) {
+  for (NSUInteger i = 0; i < length; ++i) {
     HTMLEscapeMap *val = bsearch(&buffer[i], table, 
                                  size / sizeof(HTMLEscapeMap), 
                                  sizeof(HTMLEscapeMap), EscapeMapCompare);
@@ -459,7 +472,7 @@ GTM_METHOD_CHECK(NSString, gtm_UTF16StringWithLength:);
     }
     NSRange escapeRange = NSMakeRange(subrange.location, semiColonRange.location - subrange.location + 1);
     NSString *escapeString = [self substringWithRange:escapeRange];
-    unsigned length = [escapeString length];
+    NSUInteger length = [escapeString length];
     // a squence must be longer than 3 (&lt;) and less than 11 (&thetasym;)
     if (length > 3 && length < 11) {
       if ([escapeString characterAtIndex:1] == '#') {

@@ -79,13 +79,13 @@ NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, GTMRectAlignment align
 NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size, GTMScaling scaling) {
   switch (scaling) {
     case GTMScaleProportionally: {
-      float height = NSHeight(scalee);
-      float width = NSWidth(scalee);
+      CGFloat height = NSHeight(scalee);
+      CGFloat width = NSWidth(scalee);
       if (isnormal(height) && isnormal(width) && 
           (height > size.height || width > size.width)) {
-        float horiz = size.width / width;
-        float vert = size.height / height;
-        float newScale = horiz < vert ? horiz : vert;
+        CGFloat horiz = size.width / width;
+        CGFloat vert = size.height / height;
+        CGFloat newScale = horiz < vert ? horiz : vert;
         scalee = GTMNSRectScale(scalee, newScale, newScale);
       }
       break;

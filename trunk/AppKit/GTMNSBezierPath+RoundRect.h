@@ -20,6 +20,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "GTMDefines.h"
 
 ///  Category for adding utility functions for creating round rectangles.
 @interface NSBezierPath (GMBezierPathRoundRectAdditions) 
@@ -33,7 +34,8 @@
 //
 //  Returns:
 //    Auto released NSBezierPath
-+ (NSBezierPath *)gtm_bezierPathWithRoundRect:(NSRect)rect cornerRadius:(float)radius;
++ (NSBezierPath *)gtm_bezierPathWithRoundRect:(NSRect)rect
+                                 cornerRadius:(CGFloat)radius;
 
 ///  Adds a path which is a round rectangle inscribed inside of rectangle |rect| with a corner radius of |radius|
 //
@@ -41,5 +43,6 @@
 //    rect: outer rectangle to inscribe into
 //    radius: radius of the corners. |radius| is clamped internally
 //            to be no larger than the smaller of half |rect|'s width or height
-- (void)gtm_appendBezierPathWithRoundRect:(NSRect)rect cornerRadius:(float)radius;
+- (void)gtm_appendBezierPathWithRoundRect:(NSRect)rect
+                             cornerRadius:(CGFloat)radius;
 @end

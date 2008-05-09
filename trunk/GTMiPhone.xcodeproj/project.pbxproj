@@ -6,6 +6,20 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		F4C7F9BF0DC62EC8009BEE5B /* All UnitTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F4C7F9C50DC62F0C009BEE5B /* Build configuration list for PBXAggregateTarget "All UnitTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				F4C7F9C40DC62ECD009BEE5B /* PBXTargetDependency */,
+			);
+			name = "All UnitTests";
+			productName = "All UnitTests";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -37,11 +51,23 @@
 		8BC0486C0DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BC048010DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png */; };
 		8BC04A720DAF144700C2D1CA /* GTMSystemVersionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04A710DAF144700C2D1CA /* GTMSystemVersionTest.m */; };
 		8BC04A750DAF145200C2D1CA /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04A740DAF145200C2D1CA /* GTMSystemVersion.m */; };
-		8BC04C470DAFFCF300C2D1CA /* GTMNSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04C450DAFFCF300C2D1CA /* GTMNSString+Utilities.m */; };
-		8BC04C480DAFFCF300C2D1CA /* GTMNSString+UtilitiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04C460DAFFCF300C2D1CA /* GTMNSString+UtilitiesTest.m */; };
 		8BC04D480DB0088500C2D1CA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC04D470DB0088500C2D1CA /* libz.dylib */; };
 		8BC04DE80DB023D400C2D1CA /* ReleaseNotes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */; };
+		F439ADEB0DBD3C0000BE9B91 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADE90DBD3C0000BE9B91 /* GTMBase64.m */; };
+		F439ADEC0DBD3C0000BE9B91 /* GTMBase64Test.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEA0DBD3C0000BE9B91 /* GTMBase64Test.m */; };
+		F439ADF00DBD3C4000BE9B91 /* GTMGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */; };
+		F439ADF10DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4C7F9C30DC62ECD009BEE5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */;
+			remoteInfo = GTMiPhoneUnitTesting;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -99,11 +125,14 @@
 		8BC04A6F0DAF144200C2D1CA /* GTMSystemVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSystemVersion.h; sourceTree = "<group>"; };
 		8BC04A710DAF144700C2D1CA /* GTMSystemVersionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersionTest.m; sourceTree = "<group>"; };
 		8BC04A740DAF145200C2D1CA /* GTMSystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersion.m; sourceTree = "<group>"; };
-		8BC04C440DAFFCF300C2D1CA /* GTMNSString+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+Utilities.h"; sourceTree = "<group>"; };
-		8BC04C450DAFFCF300C2D1CA /* GTMNSString+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+Utilities.m"; sourceTree = "<group>"; };
-		8BC04C460DAFFCF300C2D1CA /* GTMNSString+UtilitiesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+UtilitiesTest.m"; sourceTree = "<group>"; };
 		8BC04D470DB0088500C2D1CA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
+		F439ADE80DBD3C0000BE9B91 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
+		F439ADE90DBD3C0000BE9B91 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMBase64.m; sourceTree = "<group>"; };
+		F439ADEA0DBD3C0000BE9B91 /* GTMBase64Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMBase64Test.m; sourceTree = "<group>"; };
+		F439ADED0DBD3C4000BE9B91 /* GTMGeometryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGeometryUtils.h; sourceTree = "<group>"; };
+		F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtils.m; sourceTree = "<group>"; };
+		F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtilsTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,13 +163,13 @@
 			isa = PBXGroup;
 			children = (
 				8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */,
-				8BC049840DAEC59100C2D1CA /* XcodeConfig */,
-				8B308AF40DAD070C00183556 /* RunIPhoneUnitTest.sh */,
 				8BC047750DAE926E00C2D1CA /* GTMDefines.h */,
 				8BC047760DAE928A00C2D1CA /* Foundation */,
 				8BC0479A0DAE928A00C2D1CA /* DebugUtils */,
 				8BC0479F0DAE928A00C2D1CA /* UnitTesting */,
+				8BC049840DAEC59100C2D1CA /* XcodeConfig */,
 				32CA4F630368D1EE00C91783 /* GTMiPhone_Prefix.pch */,
+				8B308AF40DAD070C00183556 /* RunIPhoneUnitTest.sh */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -162,16 +191,19 @@
 		8BC047760DAE928A00C2D1CA /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				F439ADE80DBD3C0000BE9B91 /* GTMBase64.h */,
+				F439ADE90DBD3C0000BE9B91 /* GTMBase64.m */,
+				F439ADEA0DBD3C0000BE9B91 /* GTMBase64Test.m */,
 				8BC047770DAE928A00C2D1CA /* GTMCalculatedRange.h */,
 				8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */,
 				8BC047790DAE928A00C2D1CA /* GTMCalculatedRangeTest.m */,
 				8BC0477A0DAE928A00C2D1CA /* GTMGarbageCollection.h */,
+				F439ADED0DBD3C4000BE9B91 /* GTMGeometryUtils.h */,
+				F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */,
+				F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */,
 				8BC0477E0DAE928A00C2D1CA /* GTMNSData+zlib.h */,
 				8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */,
 				8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */,
-				8BC04C440DAFFCF300C2D1CA /* GTMNSString+Utilities.h */,
-				8BC04C450DAFFCF300C2D1CA /* GTMNSString+Utilities.m */,
-				8BC04C460DAFFCF300C2D1CA /* GTMNSString+UtilitiesTest.m */,
 				8BC047810DAE928A00C2D1CA /* GTMNSEnumerator+Filter.h */,
 				8BC047820DAE928A00C2D1CA /* GTMNSEnumerator+Filter.m */,
 				8BC047830DAE928A00C2D1CA /* GTMNSEnumerator+FilterTest.m */,
@@ -220,9 +252,9 @@
 				8BC047ED0DAE928A00C2D1CA /* GTMNSObject+UnitTesting.m */,
 				8BC047F60DAE928A00C2D1CA /* GTMSenTestCase.h */,
 				8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */,
-				8BC048000DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.gtmUTState */,
 				8BC048010DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png */,
 				8BC0480E0DAE928A00C2D1CA /* RunIPhoneUnitTest.sh */,
+				F435E49F0DC8F5290069CDE8 /* TestData */,
 			);
 			path = UnitTesting;
 			sourceTree = "<group>";
@@ -251,6 +283,14 @@
 				8BC049890DAEC59100C2D1CA /* ReleaseiPhone.xcconfig */,
 			);
 			path = Project;
+			sourceTree = "<group>";
+		};
+		F435E49F0DC8F5290069CDE8 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				8BC048000DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.gtmUTState */,
+			);
+			path = TestData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,6 +326,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				F4C7F9BF0DC62EC8009BEE5B /* All UnitTests */,
 				1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */,
 			);
 		};
@@ -347,14 +388,24 @@
 				8BC048650DAE928A00C2D1CA /* GTMSenTestCase.m in Sources */,
 				8BC04A720DAF144700C2D1CA /* GTMSystemVersionTest.m in Sources */,
 				8BC04A750DAF145200C2D1CA /* GTMSystemVersion.m in Sources */,
-				8BC04C470DAFFCF300C2D1CA /* GTMNSString+Utilities.m in Sources */,
-				8BC04C480DAFFCF300C2D1CA /* GTMNSString+UtilitiesTest.m in Sources */,
 				8B5547CA0DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m in Sources */,
 				8B5547CB0DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m in Sources */,
+				F439ADEB0DBD3C0000BE9B91 /* GTMBase64.m in Sources */,
+				F439ADEC0DBD3C0000BE9B91 /* GTMBase64Test.m in Sources */,
+				F439ADF00DBD3C4000BE9B91 /* GTMGeometryUtils.m in Sources */,
+				F439ADF10DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F4C7F9C40DC62ECD009BEE5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */;
+			targetProxy = F4C7F9C30DC62ECD009BEE5B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -407,6 +458,27 @@
 			};
 			name = Release;
 		};
+		F4C7F9C00DC62EC8009BEE5B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = Debug;
+		};
+		F4C7F9C10DC62EC8009BEE5B /* Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "Debug-gcov";
+		};
+		F4C7F9C20DC62EC8009BEE5B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -426,6 +498,16 @@
 				C01FCF4F08A954540054247B /* Debug */,
 				8BC0497D0DAEC48600C2D1CA /* Debug-gcov */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4C7F9C50DC62F0C009BEE5B /* Build configuration list for PBXAggregateTarget "All UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4C7F9C00DC62EC8009BEE5B /* Debug */,
+				F4C7F9C10DC62EC8009BEE5B /* Debug-gcov */,
+				F4C7F9C20DC62EC8009BEE5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

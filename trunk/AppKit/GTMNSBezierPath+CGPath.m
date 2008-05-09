@@ -1,5 +1,5 @@
 //
-//  GTMNSBezierPath+CGPath.h
+//  GTMNSBezierPath+CGPath.m
 //
 //  Category for extracting a CGPathRef from a NSBezierPath
 //
@@ -33,13 +33,13 @@
   CGMutablePathRef thePath = CGPathCreateMutable();
   if (!thePath) return nil;
   
-  unsigned int elementCount = [self elementCount];
+  NSInteger elementCount = [self elementCount];
   
   // The maximum number of points is 3 for a NSCurveToBezierPathElement.
   // (controlPoint1, controlPoint2, and endPoint)
   NSPoint controlPoints[3];
   
-  for (unsigned int i = 0; i < elementCount; i++) {
+  for (NSInteger i = 0; i < elementCount; i++) {
     switch ([self elementAtIndex:i associatedPoints:controlPoints]) {
       case NSMoveToBezierPathElement:
         CGPathMoveToPoint(thePath, &CGAffineTransformIdentity, 

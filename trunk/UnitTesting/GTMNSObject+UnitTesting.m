@@ -202,6 +202,8 @@ BOOL GTMIsObjectStateEqualToStateNamed(id object,
 - (NSString *)gtm_saveToPathForFileNamed:(NSString*)name 
                                extension:(NSString*)extension;
 - (CGImageRef)gtm_createUnitTestImage;
+// Returns nil if there is no override
+- (NSString *)gtm_getOverrideDefaultUnitTestSaveToDirectory;
 @end
 
 // This is a keyed coder for storing unit test state data. It is used only by
@@ -388,17 +390,45 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
                                        stringByDeletingLastPathComponent] 
                                       stringByDeletingLastPathComponent] 
                                      stringByAppendingPathComponent:@"Desktop"];
-#else 
+#else
       NSArray *desktopDirs = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, 
                                                                  NSUserDomainMask,
                                                                  YES);
       gGTMUnitTestSaveToDirectory = [desktopDirs objectAtIndex:0];
 #endif    
+      // Did we get overridden?
+      NSString *override = [self gtm_getOverrideDefaultUnitTestSaveToDirectory];
+      if (override) {
+        gGTMUnitTestSaveToDirectory = override;
+      }
       [gGTMUnitTestSaveToDirectory retain];
     }
     result = gGTMUnitTestSaveToDirectory;
   }
   
+  return result;
+}
+
+// Return nil if there is no override
+- (NSString *)gtm_getOverrideDefaultUnitTestSaveToDirectory {
+  NSString *result = nil;
+
+  // If we have an environment variable that ends in "BUILD_NUMBER" odds are
+  // we're on an automated build system, so use the build products dir as an
+  // override instead of writing on the desktop.
+  NSDictionary *env = [[NSProcessInfo processInfo] environment];
+  NSEnumerator *enumerator = [env keyEnumerator];
+  NSString *key = nil;
+  while (((key = [enumerator nextObject]) != nil) &&
+         ![key hasSuffix:@"BUILD_NUMBER"])
+    ;
+  if (key) {
+    result = [env objectForKey:@"BUILT_PRODUCTS_DIR"];
+  }
+  
+  if (result && [result length] == 0) {
+    result = nil;
+  }
   return result;
 }
 
@@ -443,15 +473,33 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   systemVersions[2] = [NSString stringWithFormat:@".%d", major];
   systemVersions[3] = @"";
   NSString *extensions[2];
-#if GTM_IPHONE_SDK  
+#if GTM_IPHONE_SDK
   extensions[0] = @".iPhone";
-#else
-  const NXArchInfo *localInfo = NXGetLocalArchInfo();
-  _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
-  const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
-  _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
-  extensions[0] = [NSString stringWithFormat:@".%s", genericInfo->name];
-#endif
+#else // !GTM_IPHONE_SDK
+  // In reading arch(3) you'd thing this would work:
+  //
+  // const NXArchInfo *localInfo = NXGetLocalArchInfo();
+  // _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
+  // const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
+  // _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
+  // extensions[0] = [NSString stringWithFormat:@".%s", genericInfo->name];
+  //
+  // but on 64bit it returns the same things as on 32bit, so...
+#if __POWERPC__
+ #if __LP64__
+  extensions[0] = @".ppc64";
+ #else // !__LP64__
+  extensions[0] = @".ppc";
+ #endif // __LP64__
+#else // !__POWERPC__
+ #if __LP64__
+  extensions[0] = @".x86_64";
+ #else // !__LP64__
+  extensions[0] = @".i386";
+ #endif // __LP64__
+#endif // !__POWERPC__
+
+#endif // GTM_IPHONE_SDK
   extensions[1] = @"";
   
   int i,j;
@@ -481,11 +529,29 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 #if GTM_IPHONE_SDK
   system = "iPhone";
 #else
-  const NXArchInfo *localInfo = NXGetLocalArchInfo();
-  _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
-  const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
-  _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
-  system = genericInfo->name;
+  // In reading arch(3) you'd thing this would work:
+  //
+  // const NXArchInfo *localInfo = NXGetLocalArchInfo();
+  // _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
+  // const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
+  // _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
+  // system = genericInfo->name;
+  //
+  // but on 64bit it returns the same things as on 32bit, so...
+#if __POWERPC__
+ #if __LP64__
+  system = "ppc64";
+ #else // !__LP64__
+  system = "ppc";
+ #endif // __LP64__
+#else // !__POWERPC__
+ #if __LP64__
+  system = "x86_64";
+ #else // !__LP64__
+  system = "i386";
+ #endif // __LP64__
+#endif // !__POWERPC__
+  
 #endif
   long major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
@@ -530,7 +596,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   _GTMDevAssert(cs, @"Couldn't create colorspace");
   CGBitmapInfo info = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
   if (data) {
-    *data = calloc(bytesPerRow, height);
+    *data = (unsigned char*)calloc(bytesPerRow, height);
     _GTMDevAssert(*data, @"Couldn't create bitmap");
   }
   context = CGBitmapContextCreate(data ? *data : NULL, width, height, 
@@ -618,7 +684,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   NSDictionary *tiffDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:NSTIFFCompressionLZW]
                                                        forKey:(NSString*)kCGImagePropertyTIFFCompression];
   NSDictionary *destProps = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithFloat:1.0], 
+                             [NSNumber numberWithFloat:1.0f], 
                              (NSString*)kCGImageDestinationLossyCompressionQuality,
                              tiffDict,
                              (NSString*)kCGImagePropertyTIFFDictionary,
@@ -756,12 +822,12 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
       _GTMDevAssert(diffContext, @"Can't make diff context");
       size_t diffRowBytes = CGBitmapContextGetBytesPerRow(diffContext);
       for (row = 0; row < imageHeight; row++) {
-        unsigned long *imageRow = (unsigned long*)(imageData + imageBytesPerRow * row);
-        unsigned long *fileRow = (unsigned long*)(fileData + fileBytesPerRow * row);
-        unsigned long* diffRow = (unsigned long*)(diffData + diffRowBytes * row);
+        uint32_t *imageRow = (uint32_t*)(imageData + imageBytesPerRow * row);
+        uint32_t *fileRow = (uint32_t*)(fileData + fileBytesPerRow * row);
+        uint32_t* diffRow = (uint32_t*)(diffData + diffRowBytes * row);
         for (col = 0; col < imageWidth; col++) {
-          unsigned long imageColor = imageRow[col];
-          unsigned long fileColor = fileRow[col];
+          uint32_t imageColor = imageRow[col];
+          uint32_t fileColor = fileRow[col];
           
           unsigned char imageAlpha = imageColor & 0xF;
           unsigned char imageBlue = imageColor >> 8 & 0xF;
@@ -783,12 +849,12 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
           almostEqual(imageAlpha, fileAlpha);
           answer &= equal;
           if (diff) {
-            unsigned long newColor;
+            uint32_t newColor;
             if (equal) {
-              newColor = (((unsigned long)imageRed) << 24) + 
-              (((unsigned long)imageGreen) << 16) + 
-              (((unsigned long)imageBlue) << 8) + 
-              (((unsigned long)imageAlpha) / 2);
+              newColor = (((uint32_t)imageRed) << 24) + 
+              (((uint32_t)imageGreen) << 16) + 
+              (((uint32_t)imageBlue) << 8) + 
+              (((uint32_t)imageAlpha) / 2);
             } else {
               newColor = 0xFF0000FF;
             }

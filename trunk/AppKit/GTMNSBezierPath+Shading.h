@@ -19,6 +19,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "GTMDefines.h"
 
 @protocol GTMShading;
 
@@ -66,8 +67,8 @@
 //                  last color in our shading?
 //    shading: the shading to use to take our colors from.
 //
-- (void)gtm_strokeRadiallyFrom:(NSPoint)fromPoint fromRadius:(float)fromRadius 
-                            to:(NSPoint)toPoint toRadius:(float)toRadius
+- (void)gtm_strokeRadiallyFrom:(NSPoint)fromPoint fromRadius:(CGFloat)fromRadius 
+                            to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
                 extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                        shading:(id<GTMShading>)shading;
 
@@ -113,8 +114,8 @@
 //                  last color in our shading?
 //    shading: the shading to use to take our colors from.
 //
-- (void)gtm_fillRadiallyFrom:(NSPoint)fromPoint fromRadius:(float)fromRadius 
-                          to:(NSPoint)toPoint toRadius:(float)toRadius
+- (void)gtm_fillRadiallyFrom:(NSPoint)fromPoint fromRadius:(CGFloat)fromRadius 
+                          to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
               extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                      shading:(id<GTMShading>)shading;
 @end

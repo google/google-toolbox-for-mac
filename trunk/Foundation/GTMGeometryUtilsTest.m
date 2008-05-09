@@ -64,11 +64,11 @@
 - (void)testGTMDistanceBetweenPoints {
   NSPoint pt1 = NSMakePoint(0, 0);
   NSPoint pt2 = NSMakePoint(3, 4);
-  STAssertEquals(GTMDistanceBetweenPoints(pt1, pt2), 5.0f, nil);
-  STAssertEquals(GTMDistanceBetweenPoints(pt2, pt1), 5.0f, nil);
+  STAssertEquals(GTMDistanceBetweenPoints(pt1, pt2), (CGFloat)5.0, nil);
+  STAssertEquals(GTMDistanceBetweenPoints(pt2, pt1), (CGFloat)5.0, nil);
   pt1 = NSMakePoint(1, 1);
   pt2 = NSMakePoint(1, 1);
-  STAssertEquals(GTMDistanceBetweenPoints(pt1, pt2), 0.0f, nil);
+  STAssertEquals(GTMDistanceBetweenPoints(pt1, pt2), (CGFloat)0.0, nil);
 }
 
 - (void)testGTMAlignRectangles {
@@ -109,37 +109,37 @@
   CGPoint cgPoint = GTMCGMidLeft(cgRect);
   STAssertEquals(point.x, cgPoint.x, nil);
   STAssertEquals(point.y, cgPoint.y, nil);
-  STAssertEqualsWithAccuracy(point.y, 1.0f, 0.01f, nil);
-  STAssertEqualsWithAccuracy(point.x, 0.0f, 0.01f, nil);
+  STAssertEqualsWithAccuracy(point.y, (CGFloat)1.0, (CGFloat)0.01, nil);
+  STAssertEqualsWithAccuracy(point.x, (CGFloat)0.0, (CGFloat)0.01, nil);
 
   point = GTMNSMidRight(rect);
   cgPoint = GTMCGMidRight(cgRect);
   STAssertEquals(point.x, cgPoint.x, nil);
   STAssertEquals(point.y, cgPoint.y, nil);
-  STAssertEqualsWithAccuracy(point.y, 1.0f, 0.01f, nil);
-  STAssertEqualsWithAccuracy(point.x, 2.0f, 0.01f, nil);
+  STAssertEqualsWithAccuracy(point.y, (CGFloat)1.0, (CGFloat)0.01, nil);
+  STAssertEqualsWithAccuracy(point.x, (CGFloat)2.0, (CGFloat)0.01, nil);
 
   point = GTMNSMidTop(rect);
   cgPoint = GTMCGMidTop(cgRect);
   STAssertEquals(point.x, cgPoint.x, nil);
   STAssertEquals(point.y, cgPoint.y, nil);
-  STAssertEqualsWithAccuracy(point.y, 2.0f, 0.01f, nil);
-  STAssertEqualsWithAccuracy(point.x, 1.0f, 0.01f, nil);
+  STAssertEqualsWithAccuracy(point.y, (CGFloat)2.0, (CGFloat)0.01, nil);
+  STAssertEqualsWithAccuracy(point.x, (CGFloat)1.0, (CGFloat)0.01, nil);
   
   point = GTMNSMidBottom(rect);
   cgPoint = GTMCGMidBottom(cgRect);
   STAssertEquals(point.x, cgPoint.x, nil);
   STAssertEquals(point.y, cgPoint.y, nil);
-  STAssertEqualsWithAccuracy(point.y, 0.0f, 0.01f, nil);
-  STAssertEqualsWithAccuracy(point.x, 1.0f, 0.01f, nil);
+  STAssertEqualsWithAccuracy(point.y, (CGFloat)0.0, (CGFloat)0.01, nil);
+  STAssertEqualsWithAccuracy(point.x, (CGFloat)1.0, (CGFloat)0.01, nil);
 }
 
 - (void)testGTMRectScaling {
   NSRect rect = NSMakeRect(1.0f, 2.0f, 5.0f, 10.0f);
-  NSRect rect2 = NSMakeRect(1.0f, 2.0f, 1.0f, 12.0f);
-  STAssertEquals(GTMNSRectScale(rect, 0.2f, 1.2f), 
+  NSRect rect2 = NSMakeRect((CGFloat)1.0, (CGFloat)2.0, (CGFloat)1.0, (CGFloat)12.0);
+  STAssertEquals(GTMNSRectScale(rect, (CGFloat)0.2, (CGFloat)1.2), 
                  rect2, nil);
-  STAssertEquals(GTMCGRectScale(GTMNSRectToCGRect(rect), 0.2f, 1.2f), 
+  STAssertEquals(GTMCGRectScale(GTMNSRectToCGRect(rect), (CGFloat)0.2, (CGFloat)1.2), 
                  GTMNSRectToCGRect(rect2), nil);
 }
   

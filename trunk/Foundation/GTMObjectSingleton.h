@@ -26,7 +26,7 @@
 ///
 /// Sample usage:
 ///
-/// SINGLETON_BOILERPLATE(GMSomeUsefulManager, sharedSomeUsefulManager)
+/// GTMOBJECT_SINGLETON_BOILERPLATE(SomeUsefulManager, sharedSomeUsefulManager)
 /// (with no trailing semicolon)
 ///
 #define GTMOBJECT_SINGLETON_BOILERPLATE(_object_name_, _shared_obj_name_) \
@@ -57,8 +57,8 @@ static _object_name_ *z##_shared_obj_name_ = nil;  \
 - (id)retain {                                     \
   return self;                                     \
 }                                                  \
-- (unsigned int)retainCount {                      \
-  return UINT_MAX;                                 \
+- (NSUInteger)retainCount {                        \
+  return NSUIntegerMax;                            \
 }                                                  \
 - (void)release {                                  \
 }                                                  \

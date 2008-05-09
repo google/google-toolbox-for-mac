@@ -24,19 +24,25 @@
 
 @interface NSData (GTMZlibAdditionsPrivate)
 + (NSData *)gtm_dataByCompressingBytes:(const void *)bytes
-                                length:(unsigned)length
+                                length:(NSUInteger)length
                       compressionLevel:(int)level
                                useGzip:(BOOL)useGzip;
 @end
 
 @implementation NSData (GTMZlibAdditionsPrivate)
 + (NSData *)gtm_dataByCompressingBytes:(const void *)bytes
-                                length:(unsigned)length
+                                length:(NSUInteger)length
                       compressionLevel:(int)level
                                useGzip:(BOOL)useGzip {
   if (!bytes || !length) {
     return nil;
   }
+  
+  // TODO: support 64bit inputs
+  // avail_in is a uInt, so if length > UINT_MAX we actually need to loop
+  // feeding the data until we've gotten it all in.  not supporting this
+  // at the moment.
+  _GTMDevAssert(length <= UINT_MAX, @"Currently don't support >32bit lengths");
 
   if (level == Z_DEFAULT_COMPRESSION) {
     // the default value is actually outside the range, so we have to let it
@@ -70,7 +76,7 @@
   unsigned char output[kChunkSize];
 
   // setup the input
-  strm.avail_in = length;
+  strm.avail_in = (unsigned int)length;
   strm.next_in = (unsigned char*)bytes;
 
   // loop to collect the data
@@ -119,7 +125,7 @@
 @implementation NSData (GTMZLibAdditions)
 
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(unsigned)length {
+                             length:(NSUInteger)length {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:Z_DEFAULT_COMPRESSION
@@ -134,7 +140,7 @@
 } // gtm_dataByGzippingData:
 
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(unsigned)length
+                             length:(NSUInteger)length
                    compressionLevel:(int)level {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
@@ -151,7 +157,7 @@
 } // gtm_dataByGzippingData:level:
 
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(unsigned)length {
+                              length:(NSUInteger)length {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:Z_DEFAULT_COMPRESSION
@@ -166,7 +172,7 @@
 } // gtm_dataByDeflatingData:
 
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(unsigned)length
+                              length:(NSUInteger)length
                     compressionLevel:(int)level {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
@@ -183,16 +189,22 @@
 } // gtm_dataByDeflatingData:level:
 
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
-                              length:(unsigned)length {
+                              length:(NSUInteger)length {
   if (!bytes || !length) {
     return nil;
   }
+  
+  // TODO: support 64bit inputs
+  // avail_in is a uInt, so if length > UINT_MAX we actually need to loop
+  // feeding the data until we've gotten it all in.  not supporting this
+  // at the moment.
+  _GTMDevAssert(length <= UINT_MAX, @"Currently don't support >32bit lengths");
 
   z_stream strm;
   bzero(&strm, sizeof(z_stream));
 
   // setup the input
-  strm.avail_in = length;
+  strm.avail_in = (unsigned int)length;
   strm.next_in = (unsigned char*)bytes;
 
   int windowBits = 15; // 15 to enable any window size

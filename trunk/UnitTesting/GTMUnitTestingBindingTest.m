@@ -48,6 +48,7 @@
   NSWindow *window = [testWindowController window];
   GTMTestExposedBindings(window, @"Window failed binding test");
   [self doSubviewBindingTest:[window contentView]];
+  [window close];
   [testWindowController release];
 
   // Run a test against something with no bindings. 

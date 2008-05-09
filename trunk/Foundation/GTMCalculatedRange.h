@@ -20,6 +20,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 ///  Allows you to calculate a value based on defined stops in a range.
 //
@@ -46,7 +47,7 @@
 //    item: the object to place at |position|.
 //    position: the position in the range to put |item|.
 //
-- (void)insertStop:(id)item atPosition:(float)position;
+- (void)insertStop:(id)item atPosition:(CGFloat)position;
 
 //  Removes a stop from the range at |position|.
 //
@@ -56,7 +57,7 @@
 //  Returns:
 //    YES if there is a stop at |position| that has been removed
 //    NO if there is not a stop at the |position|
-- (BOOL)removeStopAtPosition:(float)position;
+- (BOOL)removeStopAtPosition:(CGFloat)position;
 
 //  Removes stop |index| from the range. Stops are ordered
 //  based on position where index of x <  index of y if position
@@ -66,13 +67,13 @@
 //    item: the object to place at |position|.
 //    position: the position in the range to put |item|.
 //
-- (void)removeStopAtIndex:(unsigned int)index;
+- (void)removeStopAtIndex:(NSUInteger)index;
 
 //  Returns the number of stops in the range.
 //
 //  Returns:
 //    number of stops
-- (unsigned int)stopCount;
+- (NSUInteger)stopCount;
 
 //  Returns the value at position |position|.
 //  This function should be overridden by subclasses to calculate a
@@ -85,7 +86,7 @@
 //
 //  Returns:
 //    value for position
-- (id)valueAtPosition:(float)position;
+- (id)valueAtPosition:(CGFloat)position;
 
 //  Returns the |index|'th stop and position in the set.
 //  Throws an exception if out of range.
@@ -97,5 +98,5 @@
 //
 //  Returns:
 //    the stop at the index.
-- (id)stopAtIndex:(unsigned int)index position:(float*)outPosition;
+- (id)stopAtIndex:(NSUInteger)index position:(CGFloat*)outPosition;
 @end

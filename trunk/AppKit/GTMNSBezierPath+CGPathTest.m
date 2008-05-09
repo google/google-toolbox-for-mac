@@ -36,11 +36,11 @@
 // Draws all of our tests so that we can compare this to our stored image file.
 - (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
   NSBezierPath *thePath = [NSBezierPath bezierPath];
-  NSPoint theStart = NSMakePoint(20.0f, 20.0f);
+  NSPoint theStart = NSMakePoint(20.0, 20.0);
   
   // Test moveto/lineto
   [thePath moveToPoint: theStart];
-  for (unsigned int i = 0; i < 10; ++i) {
+  for (NSUInteger i = 0; i < 10; ++i) {
     NSPoint theNewPoint = NSMakePoint(i * 5, i * 10);
     [thePath lineToPoint: theNewPoint];
     theNewPoint = NSMakePoint(i * 2, i * 6);
@@ -48,11 +48,11 @@
   }
   
   // Test moveto/curveto
-  for (unsigned int i = 0; i < 10;  ++i) {
-    NSPoint startPoint = NSMakePoint(5.0f, 50.0f);
-    NSPoint endPoint = NSMakePoint(55.0f, 50.0f);
-    NSPoint controlPoint1 = NSMakePoint(17.5f, 50.0f + 5.0f * i);
-    NSPoint controlPoint2 = NSMakePoint(42.5f, 50.0f - 5.0f * i);
+  for (NSUInteger i = 0; i < 10;  ++i) {
+    NSPoint startPoint = NSMakePoint(5.0, 50.0);
+    NSPoint endPoint = NSMakePoint(55.0, 50.0);
+    NSPoint controlPoint1 = NSMakePoint(17.5, 50.0 + 5.0 * i);
+    NSPoint controlPoint2 = NSMakePoint(42.5, 50.0 - 5.0 * i);
     [thePath moveToPoint:startPoint];
     [thePath curveToPoint:endPoint controlPoint1:controlPoint1 controlPoint2:controlPoint2];
   }

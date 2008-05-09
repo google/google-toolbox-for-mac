@@ -17,16 +17,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "GTMDefines.h"
 
-@interface GTMDelegatingTableColumn : NSTableColumn {
- @private
-  IBOutlet id delegate_;
-}
-- (void)setDelegate:(id)delegate;
-- (id)delegate;
-- (id)dataCellForRow:(int)row;
+// NOTE: If you're using the 10.5 SDK, just use the new delegate method:
+//  tableView:dataCellForTableColumn:row:
+
+@interface GTMDelegatingTableColumn : NSTableColumn
+// no instance state or new method, it will just invoke the tableview's delegate
+// w/ the method below.
 @end
 
+// the method delegated to
 @interface NSObject (GTMDelegatingTableColumnDelegate)
-- (id)tableColumn:(NSTableColumn*)column dataCellForRow:(int)row;
+- (id)gtm_tableView:(NSTableView *)tableView
+ dataCellForTableColumn:(NSTableColumn *)tableColumn
+                row:(NSInteger)row;
 @end

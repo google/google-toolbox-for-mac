@@ -54,8 +54,8 @@ static void RestoreColorProfile(void);
 // Sets up the user interface so that we can run consistent UI unittests on it.
 + (void)setUpForUIUnitTests {
   // Give some names to undocumented defaults values
-  static const int MediumFontSmoothing = 2;
-  static const int BlueTintedAppearance = 1;
+  const NSInteger MediumFontSmoothing = 2;
+  const NSInteger BlueTintedAppearance = 1;
   
   // This sets up some basic values that we want as our defaults for doing pixel
   // based user interface tests. These defaults only apply to the unit test app,
@@ -78,7 +78,7 @@ static void RestoreColorProfile(void);
   // Use english plz
   [defaults setObject:[NSArray arrayWithObject:@"en"] forKey:@"AppleLanguages"];
   // How fast should we draw sheets. This speeds up the sheet tests considerably
-  [defaults setFloat:.001 forKey:@"NSWindowResizeTime"];
+  [defaults setFloat:.001f forKey:@"NSWindowResizeTime"];
   // Switch over the screen profile to "generic rgb". This installs an 
   // atexit handler to return our profile back when we are done.
   SetColorProfileToGenericRGB();  
@@ -111,7 +111,7 @@ BOOL AreCMProfilesEqual(CMProfileRef a, CMProfileRef b) {
 static void RestoreColorProfile(void) {
   if (gCurrentColorProfile) {
     CGDirectDisplayID displayID = CGMainDisplayID();
-    int error = CMSetProfileByAVID((UInt32)displayID, gCurrentColorProfile);
+    CMError error = CMSetProfileByAVID((UInt32)displayID, gCurrentColorProfile);
     if (error) {
       // COV_NF_START
       // No way to force this case in a unittest.

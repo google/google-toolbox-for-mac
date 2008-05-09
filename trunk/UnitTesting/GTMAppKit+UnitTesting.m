@@ -23,21 +23,34 @@
 #import "GTMGeometryUtils.h"
 #import "GTMMethodCheck.h"
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+ #define ENCODE_NSINTEGER(coder, i, key) [(coder) encodeInt:(i) forKey:(key)]
+#else
+ #define ENCODE_NSINTEGER(coder, i, key) [(coder) encodeInteger:(i) forKey:(key)]
+#endif
+
 @implementation NSApplication (GMUnitTestingAdditions) 
 GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
 
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
   [super gtm_unitTestEncodeState:inCoder];
-  [inCoder encodeInt:[[self mainWindow] windowNumber] 
-              forKey:@"ApplicationMainWindow"];
-  
+  ENCODE_NSINTEGER(inCoder, [[self mainWindow] windowNumber], @"ApplicationMainWindow");
+   
   // Descend down into the windows allowing them to store their state
   NSEnumerator *windowEnum = [[self windows] objectEnumerator];
   NSWindow *window = nil;
   int i = 0;
   while ((window = [windowEnum nextObject])) {
-    [inCoder encodeObject:window forKey:[NSString stringWithFormat:@"Window %d", i]];
-    i = i + 1;
+    if ([window isVisible]) {
+      // Only record visible windows because invisible windows may be closing on us
+      // This appears to happen differently in 64 bit vs 32 bit, and items
+      // in the window may hold an extra retain count for a while until the 
+      // event loop is spun. To avoid all this, we just don't record non
+      // visible windows.
+      // See rdar://5851458 for details.      
+      [inCoder encodeObject:window forKey:[NSString stringWithFormat:@"Window %d", i]];
+      i = i + 1;
+    }
   }
   
   // and encode the menu bar
@@ -81,7 +94,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
   [inCoder encodeObject:[self class] forKey:@"ControlType"];
   [inCoder encodeObject:[self objectValue] forKey:@"ControlValue"];
   [inCoder encodeObject:[self selectedCell] forKey:@"ControlSelectedCell"];
-  [inCoder encodeInt:[self tag] forKey:@"ControlTag"];
+  ENCODE_NSINTEGER(inCoder, [self tag], @"ControlTag");
   [inCoder encodeBool:[self isEnabled] forKey:@"ControlIsEnabled"];
 }
 
@@ -117,8 +130,8 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
     // is going to be in the CellValue encoding.
     [inCoder encodeObject:[self title] forKey:@"CellTitle"];
   }
-  [inCoder encodeInt:[self state] forKey:@"CellState"];
-  [inCoder encodeInt:[self tag] forKey:@"CellTag"];
+  ENCODE_NSINTEGER(inCoder, [self state], @"CellState");
+  ENCODE_NSINTEGER(inCoder, [self tag], @"CellTag");
 }
 
 @end
@@ -163,8 +176,19 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
 //    inCoder - the coder to encode our state into
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
   [super gtm_unitTestEncodeState:inCoder];
-  [inCoder encodeObject:[self title] forKey:@"MenuTitle"];
-  
+  // Hack here to work around
+  // rdar://5881796 Application menu item title wrong when accessed programatically
+  // which causes us to have different results on x86_64 vs x386.
+  // Hack is braced intentionally. We don't record the title of the 
+  // "application" menu or it's menu title because they are wrong on 32 bit.
+  // They appear to work right on 64bit.
+  {
+    NSMenu *mainMenu = [NSApp mainMenu];
+    NSMenu *appleMenu = [[mainMenu itemAtIndex:0] submenu];
+    if (![self isEqual:appleMenu]) {
+      [inCoder encodeObject:[self title] forKey:@"MenuTitle"];
+    }
+  }
   // Descend down into the menuitems allowing them to store their state
   NSEnumerator *menuItemEnum = [[self itemArray] objectEnumerator];
   NSMenuItem *menuItem = nil;
@@ -179,15 +203,25 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
 
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
   [super gtm_unitTestEncodeState:inCoder];
-  [inCoder encodeObject:[self title] forKey:@"MenuItemTitle"];
+  // Hack here to work around
+  // rdar://5881796 Application menu item title wrong when accessed programatically
+  // which causes us to have different results on x86_64 vs x386.
+  // See comment above.
+  {
+    NSMenu *mainMenu = [NSApp mainMenu];
+    NSMenuItem *appleMenuItem = [mainMenu itemAtIndex:0];
+    if (![self isEqual:appleMenuItem]) {
+      [inCoder encodeObject:[self title] forKey:@"MenuItemTitle"];
+    }
+  }
   [inCoder encodeObject:[self keyEquivalent] forKey:@"MenuItemKeyEquivalent"];
   [inCoder encodeBool:[self isSeparatorItem] forKey:@"MenuItemIsSeparator"];
-  [inCoder encodeInt:[self state] forKey:@"MenuItemState"];
+  ENCODE_NSINTEGER(inCoder, [self state], @"MenuItemState");
   [inCoder encodeBool:[self isEnabled] forKey:@"MenuItemIsEnabled"];
   [inCoder encodeBool:[self isAlternate] forKey:@"MenuItemIsAlternate"];
   [inCoder encodeObject:[self toolTip] forKey:@"MenuItemTooltip"];
-  [inCoder encodeInt:[self tag] forKey:@"MenuItemTag"];
-  [inCoder encodeInt:[self indentationLevel] forKey:@"MenuItemIndentationLevel"];
+  ENCODE_NSINTEGER(inCoder, [self tag], @"MenuItemTag");
+  ENCODE_NSINTEGER(inCoder, [self indentationLevel], @"MenuItemIndentationLevel");
   
   // Do our submenu if neccessary
   if ([self hasSubmenu]) {
@@ -221,7 +255,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
   return self;
 }
 
-- (void) dealloc {
+- (void)dealloc {
   [drawer_ release];
   [super dealloc];
 }

@@ -43,6 +43,6 @@
 
 // Returns a YES/NO if the system is 10.5 or better
 + (BOOL)isLeopardOrGreater;
-#endif  // GTM_IPHONE_SDK
+#endif  // GTM_MACOS_SDK
 
 @end

@@ -45,7 +45,7 @@
 
     // someone would have to subclass or directly create an object of this
     // class, and this class is private to this impl.
-    _GTMDevAssert(base, @"can't bas a nil base enumerator");
+    _GTMDevAssert(base, @"can't initWithBase: a nil base enumerator");
     base_ = [base retain];
     operation_ = filter;
     other_ = [optionalOther retain];

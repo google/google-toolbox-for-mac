@@ -215,7 +215,7 @@
   // make sure description doesn't choke
   GTMScriptRunner *sr = [GTMScriptRunner runner];
   STAssertNotNil(sr, @"Script runner must not be nil");
-  STAssertGreaterThan([[sr description] length], 10U,
+  STAssertGreaterThan([[sr description] length], (NSUInteger)10,
                       @"expected a description of at least 10 chars");
 }
 

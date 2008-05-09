@@ -71,7 +71,7 @@
                                        withError:&error] autorelease], nil);
   STAssertNotNil(error, nil);
   STAssertEqualObjects([error domain], kGTMRegexErrorDomain, nil);
-  STAssertEquals([error code], kGTMRegexPatternParseFailedError, nil);
+  STAssertEquals([error code], (NSInteger)kGTMRegexPatternParseFailedError, nil);
   NSDictionary *userInfo = [error userInfo];
   STAssertNotNil(userInfo, @"failed to get userInfo from error");
   STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
@@ -106,7 +106,7 @@
                                withError:&error], nil);
   STAssertNotNil(error, nil);
   STAssertEqualObjects([error domain], kGTMRegexErrorDomain, nil);
-  STAssertEquals([error code], kGTMRegexPatternParseFailedError, nil);
+  STAssertEquals([error code], (NSInteger)kGTMRegexPatternParseFailedError, nil);
   userInfo = [error userInfo];
   STAssertNotNil(userInfo, @"failed to get userInfo from error");
   STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
@@ -385,11 +385,11 @@
 }
 
 - (void)testSubPatternCount {
-  STAssertEquals(0, [[GTMRegex regexWithPattern:@".*"] subPatternCount], nil);
-  STAssertEquals(1, [[GTMRegex regexWithPattern:@"(.*)"] subPatternCount], nil);
-  STAssertEquals(1, [[GTMRegex regexWithPattern:@"[fo]*(.*)[bar]*"] subPatternCount], nil);
-  STAssertEquals(3, [[GTMRegex regexWithPattern:@"([fo]*)(.*)([bar]*)"] subPatternCount], nil);
-  STAssertEquals(7, [[GTMRegex regexWithPattern:@"(([bar]*)|([fo]*))(.*)(([bar]*)|([fo]*))"] subPatternCount], nil);
+  STAssertEquals((NSUInteger)0, [[GTMRegex regexWithPattern:@".*"] subPatternCount], nil);
+  STAssertEquals((NSUInteger)1, [[GTMRegex regexWithPattern:@"(.*)"] subPatternCount], nil);
+  STAssertEquals((NSUInteger)1, [[GTMRegex regexWithPattern:@"[fo]*(.*)[bar]*"] subPatternCount], nil);
+  STAssertEquals((NSUInteger)3, [[GTMRegex regexWithPattern:@"([fo]*)(.*)([bar]*)"] subPatternCount], nil);
+  STAssertEquals((NSUInteger)7, [[GTMRegex regexWithPattern:@"(([bar]*)|([fo]*))(.*)(([bar]*)|([fo]*))"] subPatternCount], nil);
 }
 
 - (void)testMatchesString {
@@ -418,15 +418,15 @@
 - (void)testSubPatternsOfString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"(fo(o+))((bar)|(baz))"];
   STAssertNotNil(regex, nil);
-  STAssertEquals(5, [regex subPatternCount], nil);
+  STAssertEquals((NSUInteger)5, [regex subPatternCount], nil);
   NSArray *subPatterns = [regex subPatternsOfString:@"foooooobaz"];
   STAssertNotNil(subPatterns, nil);
-  STAssertEquals(6U, [subPatterns count], nil);
+  STAssertEquals((NSUInteger)6, [subPatterns count], nil);
   STAssertEqualStrings(@"foooooobaz", [subPatterns objectAtIndex:0], nil);
   STAssertEqualStrings(@"foooooo", [subPatterns objectAtIndex:1], nil);
   STAssertEqualStrings(@"ooooo", [subPatterns objectAtIndex:2], nil);
   STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:3], nil);
-  STAssertTrue(([NSNull null] == [subPatterns objectAtIndex:4]), nil);
+  STAssertEqualObjects([NSNull null], [subPatterns objectAtIndex:4], nil);
   STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:5], nil);
 
   // not there
@@ -562,7 +562,7 @@
   // now test the saved sub segments
   regex = [GTMRegex regexWithPattern:@"(foo)((bar)|(baz))"];
   STAssertNotNil(regex, nil);
-  STAssertEquals(4, [regex subPatternCount], nil);
+  STAssertEquals((NSUInteger)4, [regex subPatternCount], nil);
   enumerator = [regex segmentEnumeratorForString:@"foobarxxfoobaz"];
   STAssertNotNil(enumerator, nil);
   // "foobar"
@@ -605,7 +605,7 @@
   STAssertNotNil(enumerator, nil);
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
-  STAssertEquals(6U, [allSegments count], nil);
+  STAssertEquals((NSUInteger)6, [allSegments count], nil);
 
   // test we are getting the flags right for newline
   regex = [GTMRegex regexWithPattern:@"^a"];
@@ -737,7 +737,7 @@
   // now test the saved sub segments
   regex = [GTMRegex regexWithPattern:@"(foo)((bar)|(baz))"];
   STAssertNotNil(regex, nil);
-  STAssertEquals(4, [regex subPatternCount], nil);
+  STAssertEquals((NSUInteger)4, [regex subPatternCount], nil);
   enumerator = [regex matchSegmentEnumeratorForString:@"foobarxxfoobaz"];
   STAssertNotNil(enumerator, nil);
   // "foobar"
@@ -774,7 +774,7 @@
   STAssertNotNil(enumerator, nil);
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
-  STAssertEquals(3U, [allSegments count], nil);
+  STAssertEquals((NSUInteger)3, [allSegments count], nil);
   
   // test we are getting the flags right for newline
   regex = [GTMRegex regexWithPattern:@"^a"];
@@ -880,23 +880,23 @@
   // default options
   GTMRegex *regex = [GTMRegex regexWithPattern:@"a+"];
   STAssertNotNil(regex, nil);
-  STAssertGreaterThan([[regex description] length], 10U,
+  STAssertGreaterThan([[regex description] length], (NSUInteger)10,
                       @"failed to get a reasonable description for regex");
   // enumerator
   NSEnumerator *enumerator = [regex segmentEnumeratorForString:@"aaabbbccc"];
   STAssertNotNil(enumerator, nil);
-  STAssertGreaterThan([[enumerator description] length], 10U,
+  STAssertGreaterThan([[enumerator description] length], (NSUInteger)10,
                       @"failed to get a reasonable description for regex enumerator");
   // string segment
   GTMRegexStringSegment *seg = [enumerator nextObject];
   STAssertNotNil(seg, nil);
-  STAssertGreaterThan([[seg description] length], 10U,
+  STAssertGreaterThan([[seg description] length], (NSUInteger)10,
                       @"failed to get a reasonable description for regex string segment");
   // regex w/ other options
   regex = [GTMRegex regexWithPattern:@"a+"
                              options:(kGTMRegexOptionIgnoreCase | kGTMRegexOptionSupressNewlineSupport)];
   STAssertNotNil(regex, nil);
-  STAssertGreaterThan([[regex description] length], 10U,
+  STAssertGreaterThan([[regex description] length], (NSUInteger)10,
                       @"failed to get a reasonable description for regex w/ options");
 }
 
@@ -926,12 +926,12 @@
 - (void)testSubPatternsOfPattern {
   NSArray *subPatterns = [@"foooooobaz" gtm_subPatternsOfPattern:@"(fo(o+))((bar)|(baz))"];
   STAssertNotNil(subPatterns, nil);
-  STAssertEquals(6U, [subPatterns count], nil);
+  STAssertEquals((NSUInteger)6, [subPatterns count], nil);
   STAssertEqualStrings(@"foooooobaz", [subPatterns objectAtIndex:0], nil);
   STAssertEqualStrings(@"foooooo", [subPatterns objectAtIndex:1], nil);
   STAssertEqualStrings(@"ooooo", [subPatterns objectAtIndex:2], nil);
   STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:3], nil);
-  STAssertTrue(([NSNull null] == [subPatterns objectAtIndex:4]), nil);
+  STAssertEqualObjects([NSNull null], [subPatterns objectAtIndex:4], nil);
   STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:5], nil);
 
   // not there
@@ -1089,7 +1089,7 @@
   STAssertNotNil(enumerator, nil);
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
-  STAssertEquals(6U, [allSegments count], nil);
+  STAssertEquals((NSUInteger)6, [allSegments count], nil);
 }
 
 - (void)testMatchSegmentEnumeratorForPattern {
@@ -1170,14 +1170,14 @@
   STAssertNotNil(enumerator, nil);
   NSArray *allSegments = [enumerator allObjects];
   STAssertNotNil(allSegments, nil);
-  STAssertEquals(3U, [allSegments count], nil);
+  STAssertEquals((NSUInteger)3, [allSegments count], nil);
 }
 
 - (void)testAllSubstringsMatchedByPattern {
   NSArray *segments =
     [@"afoobarbfooobaarfoobarzz" gtm_allSubstringsMatchedByPattern:@"foo+ba+r"];
   STAssertNotNil(segments, nil);
-  STAssertEquals(3U, [segments count], nil);
+  STAssertEquals((NSUInteger)3, [segments count], nil);
   STAssertEqualStrings([segments objectAtIndex:0], @"foobar", nil);
   STAssertEqualStrings([segments objectAtIndex:1], @"fooobaar", nil);
   STAssertEqualStrings([segments objectAtIndex:2], @"foobar", nil);
@@ -1185,12 +1185,12 @@
   // test no match
   segments = [@"aaa" gtm_allSubstringsMatchedByPattern:@"foo+ba+r"];
   STAssertNotNil(segments, nil);
-  STAssertEquals(0U, [segments count], nil);
+  STAssertEquals((NSUInteger)0, [segments count], nil);
 
   // test only match
   segments = [@"foobar" gtm_allSubstringsMatchedByPattern:@"foo+ba+r"];
   STAssertNotNil(segments, nil);
-  STAssertEquals(1U, [segments count], nil);
+  STAssertEquals((NSUInteger)1, [segments count], nil);
   STAssertEqualStrings([segments objectAtIndex:0], @"foobar", nil);
 }
 

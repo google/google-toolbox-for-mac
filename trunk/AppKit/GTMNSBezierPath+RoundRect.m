@@ -24,14 +24,16 @@
 @implementation NSBezierPath (GTMBezierPathRoundRectAdditions)
 
 
-+ (NSBezierPath *)gtm_bezierPathWithRoundRect:(NSRect)rect cornerRadius:(float)radius {
++ (NSBezierPath *)gtm_bezierPathWithRoundRect:(NSRect)rect
+                                 cornerRadius:(CGFloat)radius {
   NSBezierPath *bezier = [NSBezierPath bezierPath];
   [bezier gtm_appendBezierPathWithRoundRect:rect cornerRadius:radius];
   return bezier;
 }
 
 
-- (void)gtm_appendBezierPathWithRoundRect:(NSRect)rect cornerRadius:(float)radius {
+- (void)gtm_appendBezierPathWithRoundRect:(NSRect)rect
+                             cornerRadius:(CGFloat)radius {
   if (!NSIsEmptyRect(rect)) {
     if (radius > 0.0) {
       // Clamp radius to be no larger than half the rect's width or height.
@@ -42,10 +44,18 @@
       NSPoint bottomRight = NSMakePoint(NSMaxX(rect), NSMinY(rect));
       
       [self moveToPoint:NSMakePoint(NSMidX(rect), NSMaxY(rect))];
-      [self appendBezierPathWithArcFromPoint:topLeft toPoint:rect.origin radius:radius];
-      [self appendBezierPathWithArcFromPoint:rect.origin toPoint:bottomRight radius:radius];
-      [self appendBezierPathWithArcFromPoint:bottomRight toPoint:topRight radius:radius];
-      [self appendBezierPathWithArcFromPoint:topRight toPoint:topLeft radius:radius];
+      [self appendBezierPathWithArcFromPoint:topLeft
+                                     toPoint:rect.origin
+                                      radius:radius];
+      [self appendBezierPathWithArcFromPoint:rect.origin
+                                     toPoint:bottomRight
+                                      radius:radius];
+      [self appendBezierPathWithArcFromPoint:bottomRight
+                                     toPoint:topRight
+                                      radius:radius];
+      [self appendBezierPathWithArcFromPoint:topRight
+                                     toPoint:topLeft
+                                      radius:radius];
       [self closePath];
     } else {
       // When radius <= 0.0, use plain rectangle.

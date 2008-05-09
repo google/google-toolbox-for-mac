@@ -34,8 +34,8 @@
                                   toColor:blue
                            fromSpaceNamed:NSCalibratedRGBColorSpace];
   STAssertNotNil(theShading,nil);
-  STAssertEquals([theShading stopCount], 2U, nil);
-  float *theColor = (float*)[theShading valueAtPosition: 0.5];
+  STAssertEquals([theShading stopCount], (NSUInteger)2, nil);
+  CGFloat *theColor = (CGFloat*)[theShading valueAtPosition: 0.5];
   STAssertTrue(theColor[0] == [purple redComponent] &&
                theColor[1] == [purple greenComponent] &&
                theColor[2] == [purple blueComponent] &&
@@ -44,11 +44,11 @@
 
 - (void)testShadingWith {
   // Create a shading with kColorCount colors and make sure all the values are there.
-  const unsigned int kColorCount = 100; 
+  const NSUInteger kColorCount = 100; 
   NSColor *theColors[kColorCount];
-  float thePositions[kColorCount];
-  const float kColorIncrement = 1.0f / kColorCount;
-  for (unsigned int i = 0; i < kColorCount; i++) {
+  CGFloat thePositions[kColorCount];
+  const CGFloat kColorIncrement = 1.0 / kColorCount;
+  for (NSUInteger i = 0; i < kColorCount; i++) {
     thePositions[i] = kColorIncrement * i;
     theColors[i] = [NSColor colorWithCalibratedRed:kColorIncrement * i 
                                              green:kColorIncrement * i 
@@ -60,8 +60,8 @@
                             fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:thePositions
                                      count:kColorCount];
-  for (unsigned int i = 0; i < kColorCount; i++) {
-     float *theColor = (float*)[theShading valueAtPosition: kColorIncrement * i];
+  for (NSUInteger i = 0; i < kColorCount; i++) {
+     CGFloat *theColor = (CGFloat*)[theShading valueAtPosition: kColorIncrement * i];
     STAssertTrue(theColor[0] == kColorIncrement * i &&
                  theColor[1] == kColorIncrement * i &&
                  theColor[2] == kColorIncrement * i &&

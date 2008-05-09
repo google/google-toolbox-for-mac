@@ -19,15 +19,17 @@
 //  the License.
 //
 
-#include <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
-typedef enum {
+enum {
   GTMScaleProportionally = 0,   // Fit proportionally
   GTMScaleToFit,                // Forced fit (distort if necessary)
   GTMScaleNone                  // Don't scale (clip)
-} GTMScaling;
+};
+typedef NSUInteger GTMScaling;
 
-typedef enum {
+enum {
   GTMRectAlignCenter = 0,
   GTMRectAlignTop,
   GTMRectAlignTopLeft,
@@ -37,7 +39,8 @@ typedef enum {
   GTMRectAlignBottomLeft,
   GTMRectAlignBottomRight,
   GTMRectAlignRight
-} GTMRectAlignment;
+};
+typedef NSUInteger GTMRectAlignment;
 
 #pragma mark Miscellaneous
 
@@ -49,10 +52,14 @@ typedef enum {
 //  
 //  Returns:
 //    Distance
-CG_INLINE float GTMDistanceBetweenPoints(NSPoint pt1, NSPoint pt2) {
-  float dX = pt1.x - pt2.x;
-  float dY = pt1.y - pt2.y;
+CG_INLINE CGFloat GTMDistanceBetweenPoints(NSPoint pt1, NSPoint pt2) {
+  CGFloat dX = pt1.x - pt2.x;
+  CGFloat dY = pt1.y - pt2.y;
+#if CGFLOAT_IS_DOUBLE  
+  return sqrt(dX * dX + dY * dY);
+#else
   return sqrtf(dX * dX + dY * dY);
+#endif
 }
 
 #pragma mark -
@@ -314,7 +321,7 @@ CG_INLINE CGRect GTMCGRectOfSize(CGSize size) {
 //
 //  Returns:
 //    Converted Rect
-CG_INLINE NSRect GTMNSRectScale(NSRect inRect, float xScale, float yScale) {
+CG_INLINE NSRect GTMNSRectScale(NSRect inRect, CGFloat xScale, CGFloat yScale) {
   return NSMakeRect(inRect.origin.x, inRect.origin.y, 
                     inRect.size.width * xScale, inRect.size.height * yScale);
 }
@@ -328,7 +335,7 @@ CG_INLINE NSRect GTMNSRectScale(NSRect inRect, float xScale, float yScale) {
 //
 //  Returns:
 //    Converted Rect
-CG_INLINE CGRect GTMCGRectScale(CGRect inRect, float xScale, float yScale) {
+CG_INLINE CGRect GTMCGRectScale(CGRect inRect, CGFloat xScale, CGFloat yScale) {
   return CGRectMake(inRect.origin.x, inRect.origin.y, 
                     inRect.size.width * xScale, inRect.size.height * yScale);
 }

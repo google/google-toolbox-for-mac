@@ -53,6 +53,9 @@
   STAssertEqualObjects([ascString gtm_stringBySanitizingAndEscapingForXML],
                        @"abcde\nf",
                        @"Sanitize and Escape for XML from asc buffer failed");
+
+  // test empty string
+  STAssertEqualObjects([@"" gtm_stringBySanitizingAndEscapingForXML], @"", nil);
 }
 
 - (void)testStringBySanitizingToXMLSpec {
@@ -82,6 +85,9 @@
   STAssertEqualObjects([ascString gtm_stringBySanitizingToXMLSpec],
                        @"abcde\nf",
                        @"Sanitize and Escape for XML from asc buffer failed");
+
+  // test empty string
+  STAssertEqualObjects([@"" gtm_stringBySanitizingToXMLSpec], @"", nil);
 }
 
 @end

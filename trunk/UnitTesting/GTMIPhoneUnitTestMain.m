@@ -43,11 +43,11 @@ static int MethodSort(const void *a, const void *b) {
 @implementation GTMIPhoneUnitTestDelegate
 
 // Return YES if class is subclass (1 or more generations) of SenTestCase
-- (BOOL)isTestFixture:(Class)class {
+- (BOOL)isTestFixture:(Class)aClass {
   BOOL iscase = NO;
   Class testCaseClass = [SenTestCase class];
   Class superclass;
-  for (superclass = class; 
+  for (superclass = aClass; 
        !iscase && superclass; 
        superclass = class_getSuperclass(superclass)) {
     iscase = superclass == testCaseClass ? YES : NO;

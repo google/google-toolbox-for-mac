@@ -20,7 +20,7 @@
 //
 
 // Default SDK and minimum OS version is 10.4
-SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk
+SDKROOT = $(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk
 MACOSX_DEPLOYMENT_TARGET = 10.4
 GCC_VERSION = 4.0
 
