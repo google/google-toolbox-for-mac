@@ -16,8 +16,8 @@
 //  the License.
 //
 
-#import <objc/objc-runtime.h>
-#import <objc/Object.h>
+#import <objc/objc-api.h>
+#import "GTMDefines.h"
 
 // These functions exist for code that we want to compile on both the < 10.5 
 // sdks and on the >= 10.5 sdks without warnings. It basically reimplements 
@@ -33,6 +33,18 @@
 #else
 #define AT_OPTIONAL
 #define AT_REQUIRED
+#endif
+
+// The file objc-runtime.h was moved to runtime.h and in Leopard, objc-runtime.h 
+// was just a wrapper around runtime.h. For the iPhone SDK, this objc-runtime.h
+// is removed in the iPhoneOS2.0 SDK.
+//
+// The |Object| class was removed in the iPhone2.0 SDK too.
+#if GTM_IPHONE_SDK
+#import <objc/runtime.h>
+#else
+#import <objc/objc-runtime.h>
+#import <objc/Object.h>
 #endif
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1050

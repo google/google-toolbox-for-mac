@@ -40,39 +40,37 @@ static void GTMAssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...)
   
   if (obj && sel) {
     // check that the selector is implemented
-    if (![obj respondsToSelector:sel]) {
-      _GTMDevAssert(NO,
-                    @"\"%@\" selector \"%@\" is unimplemented or misnamed", 
-                    NSStringFromClass([obj class]), 
-                    NSStringFromSelector(sel));
-    } else {
-      const char *expectedArgType;
-      int argCount = 2; // skip self and _cmd
-      NSMethodSignature *sig = [obj methodSignatureForSelector:sel];
-      
-      // check that each expected argument is present and of the correct type
-      while ((expectedArgType = va_arg(argList, const char*)) != 0) {
+    _GTMDevAssert([obj respondsToSelector:sel],
+                  @"\"%@\" selector \"%@\" is unimplemented or misnamed", 
+                  NSStringFromClass([obj class]), 
+                  NSStringFromSelector(sel));
+
+    const char *expectedArgType;
+    NSUInteger argCount = 2; // skip self and _cmd
+    NSMethodSignature *sig = [obj methodSignatureForSelector:sel];
+    
+    // check that each expected argument is present and of the correct type
+    while ((expectedArgType = va_arg(argList, const char*)) != 0) {
         
-        if ([sig numberOfArguments] > argCount) {
-          const char *foundArgType = [sig getArgumentTypeAtIndex:argCount];
+      if ([sig numberOfArguments] > argCount) {
+        const char *foundArgType = [sig getArgumentTypeAtIndex:argCount];
           
-          _GTMDevAssert(0 == strncmp(foundArgType, expectedArgType, strlen(expectedArgType)),
-                        @"\"%@\" selector \"%@\" argument %d should be type %s", 
-                        NSStringFromClass([obj class]), 
-                        NSStringFromSelector(sel),
-                        (argCount - 2),
-                        expectedArgType);
-        }
-        argCount++;
+        _GTMDevAssert(0 == strncmp(foundArgType, expectedArgType, strlen(expectedArgType)),
+                      @"\"%@\" selector \"%@\" argument %d should be type %s", 
+                      NSStringFromClass([obj class]), 
+                      NSStringFromSelector(sel),
+                      (argCount - 2),
+                      expectedArgType);
       }
-      
-      // check that the proper number of arguments are present in the selector
-      _GTMDevAssert(argCount == [sig numberOfArguments],
-                    @"\"%@\" selector \"%@\" should have %d arguments",
-                    NSStringFromClass([obj class]), 
-                    NSStringFromSelector(sel),
-                    (argCount - 2));
+      argCount++;
     }
+      
+    // check that the proper number of arguments are present in the selector
+    _GTMDevAssert(argCount == [sig numberOfArguments],
+                  @"\"%@\" selector \"%@\" should have %d arguments",
+                  NSStringFromClass([obj class]), 
+                  NSStringFromSelector(sel),
+                  (argCount - 2));
   }
   
   va_end(argList);

@@ -26,14 +26,14 @@
 
 @implementation GTMCalculatedRangeTest
 NSString *kStrings[] = { @"Fee", @"Fi", @"Fo", @"Fum" };
-const unsigned int kStringCount = sizeof(kStrings) / sizeof(NSString*);
-const float kOddPosition = 0.14159265f;
-const float kExistingPosition = 0.5f;
-const unsigned int kExisitingIndex = 2;
+const NSUInteger kStringCount = sizeof(kStrings) / sizeof(NSString*);
+const CGFloat kOddPosition = 0.14159265f;
+const CGFloat kExistingPosition = 0.5f;
+const NSUInteger kExisitingIndex = 2;
 
 - (void)setUp {
   range_ = [[GTMCalculatedRange alloc] init];
-  for(unsigned int i = kStringCount; i > 0; --i) {
+  for(NSUInteger i = kStringCount; i > 0; --i) {
     [range_ insertStop:kStrings[kStringCount - i] atPosition: 1.0f / i];
   }
 }
@@ -43,12 +43,22 @@ const unsigned int kExisitingIndex = 2;
 }
 
 - (void)testInsertStop {
+  // new position
   NSString *theString = @"I smell the blood of an Englishman!";
-  [range_ insertStop:theString atPosition: kOddPosition];
+  [range_ insertStop:theString atPosition:kOddPosition];
   STAssertEquals([range_ stopCount], kStringCount + 1, @"Stop count was bad");
   NSString *getString = [range_ valueAtPosition:kOddPosition];
   STAssertNotNil(getString, @"String was bad");
   STAssertEquals(theString, getString, @"Stops weren't equal");
+  // existing position
+  NSString *theStringTake2 = @"I smell the blood of an Englishman! Take 2";
+  [range_ insertStop:theStringTake2 atPosition:kOddPosition];
+  STAssertEquals([range_ stopCount], kStringCount + 1, @"Stop count was bad");
+  getString = [range_ valueAtPosition:kOddPosition];
+  STAssertNotNil(getString, @"String was bad");
+  STAssertEquals(theStringTake2, getString, @"Stops weren't equal");
+  STAssertNotEquals(theString, getString, @"Should be the new value");
+  STAssertNotEqualObjects(theString, getString, @"Should be the new value");
 }
 
 - (void)testRemoveStopAtPosition {
@@ -74,7 +84,7 @@ const unsigned int kExisitingIndex = 2;
 }
 
 - (void)testStopAtIndex {
-  float thePosition;
+  CGFloat thePosition;
   
   STAssertEqualObjects([range_ stopAtIndex:kStringCount - 1 position:nil], kStrings[kStringCount - 1], nil);
   STAssertEqualObjects([range_ stopAtIndex:kExisitingIndex position:&thePosition], kStrings[kExisitingIndex], nil);
@@ -83,5 +93,9 @@ const unsigned int kExisitingIndex = 2;
   STAssertThrows([range_ stopAtIndex:kStringCount position:nil], nil);
 }
 
+- (void)testDescription {
+  // we expect a description of atleast a few chars
+  STAssertGreaterThan([[range_ description] length], (NSUInteger)10, nil);
+}
 
 @end

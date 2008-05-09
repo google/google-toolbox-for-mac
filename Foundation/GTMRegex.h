@@ -18,9 +18,10 @@
 
 #import <Foundation/Foundation.h>
 #import <regex.h>
+#import "GTMDefines.h"
 
 /// Options for controlling the behavior of the matches
-typedef enum {
+enum {
 
   kGTMRegexOptionIgnoreCase            = 0x01,
     // Ignore case in matching, ie: 'a' matches 'a' or 'A'
@@ -48,7 +49,8 @@ typedef enum {
     // and would also match
     //     fooAAA\nbar
 
-} GTMRegexOptions;
+};
+typedef NSUInteger GTMRegexOptions;
 
 /// Global contants needed for errors from consuming patterns
 
@@ -148,7 +150,7 @@ _EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError
 // Sub Patterns are basically the number of parenthesis blocks w/in the pattern.
 //   ie: The pattern "foo((bar)|(baz))" has 3 sub patterns.
 //
-- (int)subPatternCount;
+- (NSUInteger)subPatternCount;
 
 /// Returns YES if the whole string |str| matches the pattern.
 - (BOOL)matchesString:(NSString *)str;
@@ -266,7 +268,7 @@ _EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError
  @private
   NSData *utf8StrBuf_;
   regmatch_t *regMatches_;  // STRONG: ie-we call free
-  int numRegMatches_;
+  NSUInteger numRegMatches_;
   BOOL isMatch_;
 }
 
@@ -296,7 +298,7 @@ _EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError
 //              4: nil
 //              5: "baz"
 //
-- (NSString *)subPatternString:(int)index;
+- (NSString *)subPatternString:(NSUInteger)index;
 
 @end
 

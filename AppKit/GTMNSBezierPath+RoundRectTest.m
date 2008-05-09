@@ -35,26 +35,26 @@
 // Draws all of our tests so that we can compare this to our stored TIFF file.
 - (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo{
   NSRect theRects[] = { 
-    NSMakeRect(0.0f, 10.0f, 0.0f, 0.0f), //Empty Rect test
-    NSMakeRect(50.0f, 10.0f, 30.0f, 30.0f), //Square Test
-    NSMakeRect(100.0f, 10.0f, 1.0f, 2.0f), //Small Test
-    NSMakeRect(120.0f, 10.0f, 15.0f, 20.0f), //Medium Test
-    NSMakeRect(140.0f, 10.0f, 150.0f, 30.0f)  //Large Test
+    NSMakeRect(0.0, 10.0, 0.0, 0.0), //Empty Rect test
+    NSMakeRect(50.0, 10.0, 30.0, 30.0), //Square Test
+    NSMakeRect(100.0, 10.0, 1.0, 2.0), //Small Test
+    NSMakeRect(120.0, 10.0, 15.0, 20.0), //Medium Test
+    NSMakeRect(140.0, 10.0, 150.0, 30.0)  //Large Test
   };
-  const unsigned int theRectCount = sizeof(theRects) / sizeof(NSRect);
+  const NSUInteger theRectCount = sizeof(theRects) / sizeof(NSRect);
   
   // Line Width Tests
-  float theLineWidths[] = { 0.5f, 50.0f, 2.0f };
-  const unsigned int theLineWidthCount = sizeof(theLineWidths) / sizeof(float);
-  unsigned int i,j;
+  CGFloat theLineWidths[] = { 0.5, 50.0, 2.0 };
+  const NSUInteger theLineWidthCount = sizeof(theLineWidths) / sizeof(CGFloat);
+  NSUInteger i,j;
   
   for (i = 0; i < theLineWidthCount; ++i) {
     for (j = 0; j < theRectCount; ++j) {
       NSBezierPath *roundRect = [NSBezierPath gtm_bezierPathWithRoundRect:theRects[j] 
-                                                             cornerRadius:20.0f];
+                                                             cornerRadius:20.0];
       [roundRect setLineWidth: theLineWidths[i]];
       [roundRect stroke];
-      float newWidth = 35.0f;
+      CGFloat newWidth = 35.0;
       if (i < theLineWidthCount - 1) {
         newWidth += theLineWidths[i + 1] + theLineWidths[i];
       }
@@ -64,32 +64,32 @@
   
   // Fill test
   NSColor *theColors[] = { 
-    [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:1.0f], 
-    [NSColor colorWithCalibratedRed:0.2f green:0.4f blue:0.6f alpha:0.4f]
+    [NSColor colorWithCalibratedRed:1.0 green:0.0 blue:0.0 alpha:1.0], 
+    [NSColor colorWithCalibratedRed:0.2 green:0.4 blue:0.6 alpha:0.4]
   };
-  const unsigned int theColorCount = sizeof(theColors)/sizeof(NSColor);
+  const NSUInteger theColorCount = sizeof(theColors)/sizeof(NSColor);
   
   for (i = 0; i < theColorCount; ++i) {
     for (j = 0; j < theRectCount; ++j) {
       NSBezierPath *roundRect = [NSBezierPath gtm_bezierPathWithRoundRect:theRects[j] 
-                                                             cornerRadius:10.0f];
+                                                             cornerRadius:10.0];
       [theColors[i] setFill];
       [roundRect fill];
-      theRects[j].origin.y += 35.0f;
+      theRects[j].origin.y += 35.0;
     }
   }
   
   // Flatness test
-  float theFlatness[] = {0.0f, 0.1f, 1.0f, 10.0f};
-  const unsigned int theFlatnessCount = sizeof(theFlatness)/sizeof(float);
+  CGFloat theFlatness[] = {0.0, 0.1, 1.0, 10.0};
+  const NSUInteger theFlatnessCount = sizeof(theFlatness)/sizeof(CGFloat);
   
   for (i = 0; i < theFlatnessCount; i++) {
     for (j = 0; j < theRectCount; ++j) {
       NSBezierPath *roundRect = [NSBezierPath gtm_bezierPathWithRoundRect:theRects[j] 
-                                                             cornerRadius:6.0f];
+                                                             cornerRadius:6.0];
       [roundRect setFlatness:theFlatness[i]];
       [roundRect stroke];
-      theRects[j].origin.y += 35.0f;
+      theRects[j].origin.y += 35.0;
     }
   }  
 }

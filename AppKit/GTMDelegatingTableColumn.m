@@ -19,19 +19,22 @@
 #import "GTMDelegatingTableColumn.h"
 
 @implementation GTMDelegatingTableColumn
-- (void)setDelegate:(id)delegate {
-  delegate_ = delegate;
-}
-
-- (id)delegate {
-  return delegate_;
-}
-
-- (id)dataCellForRow:(int)row {
+- (id)dataCellForRow:(NSInteger)row {
   id dataCell = nil;
-  if (delegate_ && [delegate_ respondsToSelector:@selector(tableColumn:dataCellForRow:)]) {
-    dataCell = [delegate_ tableColumn:self dataCellForRow:row];
-  } else {
+  id delegate = [[self tableView] delegate];
+  BOOL sendSuper = YES;
+  if (delegate) {
+    if ([delegate respondsToSelector:@selector(gtm_tableView:dataCellForTableColumn:row:)]) {
+
+      dataCell = [delegate gtm_tableView:[self tableView]
+                    dataCellForTableColumn:self
+                                        row:row];
+      sendSuper = NO;
+    } else {
+      _GTMDevLog(@"tableView delegate didn't implement gtm_tableView:dataCellForTableColumn:row:");
+    }
+  }
+  if (sendSuper) {
     dataCell = [super dataCellForRow:row];
   }
   return dataCell;

@@ -34,7 +34,7 @@
   CGFunctionRef function_;  // function used to calculated shading (STRONG)
   CGColorSpaceRef colorSpace_; // colorspace used for shading (STRONG)
   BOOL isCalibrated_;  // are we using calibrated or device RGB.
-  float colorValue[4];  // the RGBA color values
+  CGFloat colorValue_[4];  // the RGBA color values
 }
 
 ///  Generate a shading with color |begin| at position 0.0 and color |end| at 1.0.
@@ -64,8 +64,8 @@
 //    a GTMLinearRGBShading
 + (id)shadingWithColors:(NSColor **)colors
          fromSpaceNamed:(NSString*)colorSpaceName
-            atPositions:(float *)positions 
-                  count:(unsigned int)numberOfColors;
+            atPositions:(CGFloat *)positions 
+                  count:(NSUInteger)numberOfColors;
 
 /// Designated initializer
 //  Args:

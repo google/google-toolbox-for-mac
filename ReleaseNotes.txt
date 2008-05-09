@@ -7,7 +7,10 @@ Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 Release ?.?.?
 Changes since 1.0.0
 
-- Updated the project so Xcode 3 is also happy.
+- Updated the project to Xcode 3.  This is the only supported Xcode version
+  for the project.  The code can build against the Tiger or Leopard SDKs, and
+  developers can pull individual files into a Xcode 2.x project and things
+  should work just fine.
 
 - Fixed up the prefix header of the project and prefix handing in the Unittest
   Xcode Config. (thanks schafdog)
@@ -83,6 +86,21 @@ Changes since 1.0.0
   the unittests using the _debug frameworks if you have them.
   
   https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19915
+
+- Remove NSColor+Theme and NSWorkspace+Theme as they are no longer needed for
+  testing things for unittests, instead GTMUnitTestingUtilities.m(Lines 64-79)
+  force the user settable things to ensure tests are consistent.
+
+- Added GTMBase64.
+
+- Added GTMHTTPFetcher and GTMProgressMonitorInputStream.
+
+- Moved the data files for unittests into subdirectories call TestData to
+  help make it a little easier to find files w/in the main directories.
+
+- GTMDelegatingTableColumn get an overhaul to match the 10.5 sdk so it's closer
+  to a dropin for previous sdks.
+
 
 Release 1.0.0
 14-January-2008

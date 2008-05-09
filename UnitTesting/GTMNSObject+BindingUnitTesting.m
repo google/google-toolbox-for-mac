@@ -306,11 +306,14 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 - (NSMutableDictionary*)gtm_unitTestExposedBindingsTestValues:(NSString*)binding {
   NSMutableDictionary *dict = [super gtm_unitTestExposedBindingsTestValues:binding];
+#if !__LP64__
   if ([binding isEqualToString:NSAlignmentBinding]) {
     // rdar://5851491 - Setting NSAlignmentBinding of search field to NSCenterTextAlignment broken
+    // This appears to not be a bug in 64 bit. Strange.
     [dict setObject:[NSNumber numberWithInt:NSNaturalTextAlignment] 
              forKey:[NSNumber numberWithInt:NSCenterTextAlignment]];
   }
+#endif
   return dict;
 }
 

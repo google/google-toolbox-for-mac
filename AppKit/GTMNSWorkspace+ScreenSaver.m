@@ -77,8 +77,9 @@
   BOOL answer = NO;
   ScreenSaverController *controller = nil;
   // We're calling into an "undocumented" framework here, so we are going to
-  // step rather carefully.
+  // step rather carefully (and in 10.5.2 it's only 32bit).
 
+#if !__LP64__
   Class screenSaverControllerClass = NSClassFromString(@"ScreenSaverController");
   _GTMDevAssert(screenSaverControllerClass, 
                 @"Are you linked with ScreenSaver.framework?"
@@ -96,6 +97,7 @@
       }
     }
   }
+#endif // !__LP64__
   
   if (!controller) {
     // COV_NF_START

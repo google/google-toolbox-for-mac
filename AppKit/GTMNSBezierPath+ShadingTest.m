@@ -40,13 +40,13 @@
     [NSColor redColor], [NSColor yellowColor],
     [NSColor blueColor], [NSColor greenColor],
     [NSColor redColor] };
-  float theFloatArray[] = { 0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.00f };
+  CGFloat theFloatArray[] = { 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 };
   
   GTMLinearRGBShading *shading =
     [GTMLinearRGBShading shadingWithColors:theColorArray
                             fromSpaceNamed:NSCalibratedRGBColorSpace
                                atPositions:theFloatArray
-                                     count:sizeof(theFloatArray)/sizeof(float)]; 
+                                     count:sizeof(theFloatArray)/sizeof(CGFloat)]; 
   NSBezierPath *shadedPath;
   
   // axialStrokeRect test

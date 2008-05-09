@@ -1,7 +1,12 @@
 //
-//  GTMNSColor+Theme.m
+//  StaticLibraryGCSupported.xcconfig
 //
-//  Category for working with Themes and NSColor
+//  Xcode configuration file for a static library that supports garbage
+//  collection.
+//
+//  This is a _Target_ config file, for use in the "Based on" popup of the
+//  settings dialog for a target. Do not attempt to apply this as the base
+//  of an Xcode configuration in the project settings dialog.
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -18,18 +23,8 @@
 //  the License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <Carbon/Carbon.h>
+// Include the basic Static Library config
+#include "StaticLibrary.xcconfig"
 
-///  Category for working with Themes and NSColor
-@interface NSColor (GTMColorThemeAdditions) 
-
-/// Create up an NSColor based on a Theme Text Color.
-/// Colors will be in the CalibratedRGB color space
-+ (id)gtm_colorWithThemeTextColor:(ThemeTextColor)textColor;
-
-/// Create up an NSColor based on a Theme Brush
-/// Colors will be in the CalibratedRGB color space
-+ (id)gtm_colorWithThemeBrush:(ThemeBrush)brush;
-
-@end
+// Include the GC flag(s)
+#include "../subconfig/GCSupported.xcconfig"

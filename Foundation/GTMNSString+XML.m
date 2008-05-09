@@ -19,18 +19,17 @@
 #import "GTMDefines.h"
 #import "GTMNSString+XML.h"
 #import "GTMGarbageCollection.h"
-#import "GTMNSString+Utilities.h"
-#import "GTMMethodCheck.h"
 
-typedef enum {
-  kGMXMLCharModeEncodeQUOT  = 0,
-  kGMXMLCharModeEncodeAMP   = 1,
-  kGMXMLCharModeEncodeAPOS  = 2,
-  kGMXMLCharModeEncodeLT    = 3,
-  kGMXMLCharModeEncodeGT    = 4,
-  kGMXMLCharModeValid       = 99,
-  kGMXMLCharModeInvalid     = 100,
-} GMXMLCharMode;
+enum {
+  kGTMXMLCharModeEncodeQUOT  = 0,
+  kGTMXMLCharModeEncodeAMP   = 1,
+  kGTMXMLCharModeEncodeAPOS  = 2,
+  kGTMXMLCharModeEncodeLT    = 3,
+  kGTMXMLCharModeEncodeGT    = 4,
+  kGTMXMLCharModeValid       = 99,
+  kGTMXMLCharModeInvalid     = 100,
+};
+typedef NSUInteger GTMXMLCharMode;
 
 static NSString *gXMLEntityList[] = {
   // this must match the above order
@@ -41,7 +40,7 @@ static NSString *gXMLEntityList[] = {
   @"&gt;",
 };
 
-FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(UniChar c) {
+FOUNDATION_STATIC_INLINE GTMXMLCharMode XMLModeForUnichar(UniChar c) {
 
   // Per XML spec Section 2.2 Characters
   //   ( http://www.w3.org/TR/REC-xml/#charsets )
@@ -53,42 +52,42 @@ FOUNDATION_STATIC_INLINE GMXMLCharMode XMLModeForUnichar(UniChar c) {
     if (c >= 0x20) {
       switch (c) {
         case 34:
-          return kGMXMLCharModeEncodeQUOT;
+          return kGTMXMLCharModeEncodeQUOT;
         case 38:
-          return kGMXMLCharModeEncodeAMP;
+          return kGTMXMLCharModeEncodeAMP;
         case 39:
-          return kGMXMLCharModeEncodeAPOS;
+          return kGTMXMLCharModeEncodeAPOS;
         case 60:
-          return kGMXMLCharModeEncodeLT;
+          return kGTMXMLCharModeEncodeLT;
         case 62:
-          return kGMXMLCharModeEncodeGT;
+          return kGTMXMLCharModeEncodeGT;
         default:
-          return kGMXMLCharModeValid;
+          return kGTMXMLCharModeValid;
       }
     } else {
       if (c == '\n')
-        return kGMXMLCharModeValid;
+        return kGTMXMLCharModeValid;
       if (c == '\r')
-        return kGMXMLCharModeValid;
+        return kGTMXMLCharModeValid;
       if (c == '\t')
-        return kGMXMLCharModeValid;
-      return kGMXMLCharModeInvalid;
+        return kGTMXMLCharModeValid;
+      return kGTMXMLCharModeInvalid;
     }
   }
 
   if (c < 0xE000)
-    return kGMXMLCharModeInvalid;
+    return kGTMXMLCharModeInvalid;
 
   if (c <= 0xFFFD)
-    return kGMXMLCharModeValid;
+    return kGTMXMLCharModeValid;
 
   // UniChar can't have the following values
   // if (c < 0x10000)
-  //   return kGMXMLCharModeInvalid;
+  //   return kGTMXMLCharModeInvalid;
   // if (c <= 0x10FFFF)
-  //   return kGMXMLCharModeValid;
+  //   return kGTMXMLCharModeValid;
 
-  return kGMXMLCharModeInvalid;
+  return kGTMXMLCharModeInvalid;
 } // XMLModeForUnichar
 
 
@@ -103,26 +102,42 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
   
   // we can't use the CF call here because it leaves the invalid chars
   // in the string.
-  int length = [src length];
+  NSUInteger length = [src length];
   if (!length) {
-    return nil;
+    return src;
   }
   
   NSMutableString *finalString = [NSMutableString string];
-  const UniChar *buffer = [src gtm_UTF16StringWithLength:nil];
-  _GTMDevAssert(buffer, @"couldn't alloc buffer");
+
+  // this block is common between GTMNSString+HTML and GTMNSString+XML but
+  // it's so short that it isn't really worth trying to share.
+  const UniChar *buffer = CFStringGetCharactersPtr((CFStringRef)src);
+  if (!buffer) {
+    size_t memsize = length * sizeof(UniChar);
+    
+    // nope, alloc buffer and fetch the chars ourselves
+    buffer = malloc(memsize);
+    if (!buffer) {
+      // COV_NF_START  - Memory fail case
+      _GTMDevLog(@"couldn't alloc buffer");
+      return nil;
+      // COV_NF_END
+    }
+    [src getCharacters:(void*)buffer];
+    [NSData dataWithBytesNoCopy:(void*)buffer length:memsize];
+  }
   
   const UniChar *goodRun = buffer;
-  int goodRunLength = 0;
+  NSUInteger goodRunLength = 0;
   
-  for (int i = 0; i < length; ++i) {
+  for (NSUInteger i = 0; i < length; ++i) {
     
-    GMXMLCharMode cMode = XMLModeForUnichar(buffer[i]);
+    GTMXMLCharMode cMode = XMLModeForUnichar(buffer[i]);
     
     // valid chars go as is, and if we aren't doing entities, then
     // everything goes as is.
-    if ((cMode == kGMXMLCharModeValid) ||
-        (!escaping && (cMode != kGMXMLCharModeInvalid))) {
+    if ((cMode == kGTMXMLCharModeValid) ||
+        (!escaping && (cMode != kGTMXMLCharModeInvalid))) {
       // goes as is
       goodRunLength += 1;
     } else {
@@ -137,7 +152,7 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
       }
       
       // if it wasn't invalid, add the encoded version
-      if (cMode != kGMXMLCharModeInvalid) {
+      if (cMode != kGTMXMLCharModeInvalid) {
         // add this encoded
         [finalString appendString:gXMLEntityList[cMode]];
       }
@@ -157,7 +172,6 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
 } // AutoreleasedCloneForXML
 
 @implementation NSString (GTMNSStringXMLAdditions)
-GTM_METHOD_CHECK(NSString, gtm_UTF16StringWithLength:);
 
 - (NSString *)gtm_stringBySanitizingAndEscapingForXML {
   return AutoreleasedCloneForXML(self, YES);

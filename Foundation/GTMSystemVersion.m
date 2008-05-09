@@ -17,20 +17,55 @@
 //
 
 #import "GTMSystemVersion.h"
+#if GTM_MACOS_SDK
+#import <Carbon/Carbon.h>
+#endif
 
-static int sGTMSystemVersionMajor = 0;
-static int sGTMSystemVersionMinor = 0;
-static int sGTMSystemVersionBugFix = 0;
+static SInt32 sGTMSystemVersionMajor = 0;
+static SInt32 sGTMSystemVersionMinor = 0;
+static SInt32 sGTMSystemVersionBugFix = 0;
 
 @implementation GTMSystemVersion
 + (void)initialize {
   if (self == [GTMSystemVersion class]) {
+    // Gestalt is the recommended way of getting the OS version (despite a
+    // comment to the contrary in the 10.4 headers and docs; see
+    // <http://lists.apple.com/archives/carbon-dev/2007/Aug/msg00089.html>).
+    // The iPhone doesn't have Gestalt though, so use the plist there.
+#if GTM_MACOS_SDK
+    require_noerr(Gestalt(gestaltSystemVersionMajor, &sGTMSystemVersionMajor), failedGestalt);
+    require_noerr(Gestalt(gestaltSystemVersionMinor, &sGTMSystemVersionMinor), failedGestalt);
+    require_noerr(Gestalt(gestaltSystemVersionBugFix, &sGTMSystemVersionBugFix), failedGestalt);
+    
+    return;
+
+  failedGestalt:
+    ;
+#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_3
+    // gestaltSystemVersionMajor et al are only on 10.4 and above, so they
+    // could fail when running on 10.3.
+    SInt32 binaryCodedDec;
+    OSStatus err = err = Gestalt(gestaltSystemVersion, &binaryCodedDec);
+    _GTMDevAssert(!err, @"Unable to get version from Gestalt");
+
+    // Note that this code will return x.9.9 for any system rev parts that are
+    // greater than 9 (i.e., 10.10.10 will be 10.9.9). This shouldn't ever be a
+    // problem as the code above takes care of 10.4+.
+    int msb = (binaryCodedDec & 0x0000F000L) >> 12;
+    msb *= 10;
+    int lsb = (binaryCodedDec & 0x00000F00L) >> 8;
+    sGTMSystemVersionMajor = msb + lsb;
+    sGTMSystemVersionMinor = (binaryCodedDec & 0x000000F0L) >> 4;
+    sGTMSystemVersionBugFix = (binaryCodedDec & 0x0000000FL);
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_3
+
+#else // GTM_MACOS_SDK
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSDictionary *systemVersionPlist = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
     NSString *version = [systemVersionPlist objectForKey:@"ProductVersion"];
     _GTMDevAssert(version, @"Unable to get version");
     NSArray *versionInfo = [version componentsSeparatedByString:@"."];
-    int length = [versionInfo count];
+    NSUInteger length = [versionInfo count];
     _GTMDevAssert(length > 1 && length < 4, @"Unparseable version %@", version);
     sGTMSystemVersionMajor = [[versionInfo objectAtIndex:0] intValue];
     _GTMDevAssert(sGTMSystemVersionMajor != 0, @"Unknown version for %@", version);
@@ -39,6 +74,7 @@ static int sGTMSystemVersionBugFix = 0;
       sGTMSystemVersionBugFix = [[versionInfo objectAtIndex:2] intValue];
     }
     [pool release];
+#endif // GTM_MACOS_SDK
   }
 }
 
@@ -82,6 +118,6 @@ static int sGTMSystemVersionBugFix = 0;
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 5);
 }
 
-#endif // GTM_IPHONE_SDK
+#endif // GTM_MACOS_SDK
 
 @end

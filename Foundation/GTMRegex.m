@@ -47,7 +47,7 @@ static NSString *const kReplacementPattern =
   BOOL allSegments_;
   BOOL treatStartOfNewSegmentAsBeginningOfString_;
   regoff_t curParseIndex_;
-  regmatch_t *savedRegMatches_;
+  __strong regmatch_t *savedRegMatches_;
 }
 - (id)initWithRegex:(GTMRegex *)regex
       processString:(NSString *)str
@@ -58,7 +58,7 @@ static NSString *const kReplacementPattern =
 @interface GTMRegexStringSegment (PrivateMethods)
 - (id)initWithUTF8StrBuf:(NSData *)utf8StrBuf
               regMatches:(regmatch_t *)regMatches
-           numRegMatches:(int)numRegMatches
+           numRegMatches:(NSUInteger)numRegMatches
                  isMatch:(BOOL)isMatch;
 @end
 
@@ -89,10 +89,10 @@ static NSString *const kReplacementPattern =
   // a unichar buffer and scanning that, along w/ pushing the data over in
   // chunks (when possible).
 
-  unsigned int len = [str length];
+  NSUInteger len = [str length];
   NSMutableString *result = [NSMutableString stringWithCapacity:len];
 
-  for (unsigned int x = 0; x < len; ++x) {
+  for (NSUInteger x = 0; x < len; ++x) {
     unichar ch = [str characterAtIndex:x];
     switch (ch) {
       case '^':
@@ -190,6 +190,17 @@ static NSString *const kReplacementPattern =
   return self;
 }
 
+- (void)finalize {
+  // we used pattern_ as our flag that we initialized the regex_t
+  if (pattern_) {
+    regfree(&regexData_);
+    [pattern_ release];
+    // play it safe and clear it since we use it as a flag for regexData_
+    pattern_ = nil;
+  }
+  [super finalize];
+}
+
 - (void)dealloc {
   // we used pattern_ as our flag that we initialized the regex_t
   if (pattern_) {
@@ -201,7 +212,7 @@ static NSString *const kReplacementPattern =
   [super dealloc];
 }
 
-- (int)subPatternCount {
+- (NSUInteger)subPatternCount {
   return regexData_.re_nsub;
 }
 
@@ -223,7 +234,7 @@ static NSString *const kReplacementPattern =
 - (NSArray *)subPatternsOfString:(NSString *)str {
   NSArray *result = nil;
 
-  int count = regexData_.re_nsub + 1;
+  NSUInteger count = regexData_.re_nsub + 1;
   regmatch_t *regMatches = malloc(sizeof(regmatch_t) * count);
   if (!regMatches)
     return nil; // COV_NF_LINE - no real way to force this in a unittest
@@ -243,22 +254,22 @@ static NSString *const kReplacementPattern =
     if ((regMatches[0].rm_so != 0) ||
         (regMatches[0].rm_eo != [str lengthOfBytesUsingEncoding:NSUTF8StringEncoding])) {
       // only matched a sub part of the string
-      return NO;
+      return nil;
     }
 
     NSMutableArray *buildResult = [NSMutableArray arrayWithCapacity:count];
 
-    for (int x = 0 ; x < count ; ++x) {
+    for (NSUInteger x = 0 ; x < count ; ++x) {
       if ((regMatches[x].rm_so == -1) && (regMatches[x].rm_eo == -1)) {
         // add NSNull since it wasn't used
         [buildResult addObject:[NSNull null]];
       } else {
         // fetch the string
         const char *base = utf8Str + regMatches[x].rm_so;
-        unsigned len = regMatches[x].rm_eo - regMatches[x].rm_so;
+        regoff_t len = regMatches[x].rm_eo - regMatches[x].rm_so;
         NSString *sub =
           [[[NSString alloc] initWithBytes:base
-                                    length:len
+                                    length:(NSUInteger)len
                                   encoding:NSUTF8StringEncoding] autorelease];
         [buildResult addObject:sub];
       }
@@ -284,10 +295,10 @@ static NSString *const kReplacementPattern =
                      flags:0]) {
     // fetch the string
     const char *base = utf8Str + regMatch.rm_so;
-    unsigned len = regMatch.rm_eo - regMatch.rm_so;
+    regoff_t len = regMatch.rm_eo - regMatch.rm_so;
     result =
       [[[NSString alloc] initWithBytes:base
-                                length:len
+                                length:(NSUInteger)len
                               encoding:NSUTF8StringEncoding] autorelease];
   }
   return result;
@@ -497,6 +508,7 @@ static NSString *const kReplacementPattern =
   return self;
 }
 
+// Don't need a finalize because savedRegMatches_ is marked __strong
 - (void)dealloc {
   if (savedRegMatches_) {
     free(savedRegMatches_);
@@ -584,7 +596,7 @@ static NSString *const kReplacementPattern =
 
           isMatch = NO;
           // mark everything but the zero slot w/ not used
-          for (int x = [regex_ subPatternCount]; x > 0; --x) {
+          for (NSUInteger x = [regex_ subPatternCount]; x > 0; --x) {
             nextMatches[x].rm_so = nextMatches[x].rm_eo = -1;
           }
           nextMatches[0].rm_so = curParseIndex_;
@@ -611,7 +623,7 @@ static NSString *const kReplacementPattern =
         if (allSegments_) {
           isMatch = NO;
           // mark everything but the zero slot w/ not used
-          for (int x = [regex_ subPatternCount]; x > 0; --x) {
+          for (NSUInteger x = [regex_ subPatternCount]; x > 0; --x) {
             nextMatches[x].rm_so = nextMatches[x].rm_eo = -1;
           }
           nextMatches[0].rm_so = curParseIndex_;
@@ -685,7 +697,7 @@ static NSString *const kReplacementPattern =
   return [self subPatternString:0];
 }
 
-- (NSString *)subPatternString:(int)index {
+- (NSString *)subPatternString:(NSUInteger)index {
   if ((index < 0) || (index > numRegMatches_))
     return nil;
 
@@ -695,9 +707,9 @@ static NSString *const kReplacementPattern =
 
   // fetch the string
   const char *base = (const char*)[utf8StrBuf_ bytes] + regMatches_[index].rm_so;
-  unsigned len = regMatches_[index].rm_eo - regMatches_[index].rm_so;
+  regoff_t len = regMatches_[index].rm_eo - regMatches_[index].rm_so;
   return [[[NSString alloc] initWithBytes:base
-                                   length:len
+                                   length:(NSUInteger)len
                                  encoding:NSUTF8StringEncoding] autorelease];
 }
 
@@ -705,7 +717,7 @@ static NSString *const kReplacementPattern =
   NSMutableString *result =
     [NSMutableString stringWithFormat:@"%@<%p> { isMatch=\"%s\", subPatterns=(",
       [self class], self, (isMatch_ ? "YES" : "NO")];
-  for (int x = 0; x <= numRegMatches_; ++x) {
+  for (NSUInteger x = 0; x <= numRegMatches_; ++x) {
     NSString *format = @", \"%.*s\"";
     if (x == 0)
       format = @" \"%.*s\"";
@@ -725,7 +737,7 @@ static NSString *const kReplacementPattern =
 
 - (id)initWithUTF8StrBuf:(NSData *)utf8StrBuf
               regMatches:(regmatch_t *)regMatches
-           numRegMatches:(int)numRegMatches
+           numRegMatches:(NSUInteger)numRegMatches
                  isMatch:(BOOL)isMatch {
   self = [super init];
   if (!self) return nil;

@@ -26,3 +26,7 @@ GCC_VERSION = 4.0
 
 // On Leopard use Obj-C fast dispatch
 GCC_FAST_OBJC_DISPATCH = YES
+
+// For Leopard, pull in 64bit support
+#include "64bit.xcconfig"
+

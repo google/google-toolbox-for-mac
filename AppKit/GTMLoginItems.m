@@ -18,6 +18,7 @@
 //
 
 #import "GTMLoginItems.h"
+#import "GTMDefines.h"
 
 #include <Carbon/Carbon.h>
 
@@ -27,22 +28,22 @@ NSString * const kGTMLoginItemsPathKey = @"Path";
 NSString * const kGTMLoginItemsHiddenKey = @"Hide";
 
 @interface GTMLoginItems (PrivateMethods)
-+ (int)indexOfLoginItemWithValue:(id)value
-                          forKey:(NSString *)key
-                      loginItems:(NSArray *)items;
++ (NSInteger)indexOfLoginItemWithValue:(id)value
+                                forKey:(NSString *)key
+                            loginItems:(NSArray *)items;
 + (BOOL)compileAndRunScript:(NSString *)script
                   withError:(NSError **)errorInfo;
 @end
 
 @implementation GTMLoginItems (PrivateMethods)
 
-+ (int)indexOfLoginItemWithValue:(id)value
-                          forKey:(NSString *)key
-                      loginItems:(NSArray *)items {
++ (NSInteger)indexOfLoginItemWithValue:(id)value
+                                forKey:(NSString *)key
+                            loginItems:(NSArray *)items {
   if (!value || !key || !items) return NSNotFound;
   NSDictionary *item = nil;
   NSEnumerator *itemsEnum  = [items objectEnumerator];
-  int found = -1;
+  NSInteger found = -1;
   while ((item = [itemsEnum nextObject])) {
     ++found;
     id itemValue = [item objectForKey:key];
@@ -105,8 +106,8 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
   }
   // build our results
   NSMutableArray *result = [NSMutableArray array];
-  int count = [scriptResult numberOfItems];
-  for (int i = 0; i < count; ++i) {
+  NSInteger count = [scriptResult numberOfItems];
+  for (NSInteger i = 0; i < count; ++i) {
     NSAppleEventDescriptor *aeItem = [scriptResult descriptorAtIndex:i+1];
     NSAppleEventDescriptor *hidn = [aeItem descriptorForKeyword:kAEHidden];
     NSAppleEventDescriptor *nam = [aeItem descriptorForKeyword:pName];
@@ -135,17 +136,17 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
 
 + (BOOL)pathInLoginItems:(NSString *)path {
   NSArray *loginItems = [self loginItems:nil];
-  int index = [self indexOfLoginItemWithValue:path
-                                       forKey:kGTMLoginItemsPathKey
-                                   loginItems:loginItems];
+  NSInteger index = [self indexOfLoginItemWithValue:path
+                                             forKey:kGTMLoginItemsPathKey
+                                         loginItems:loginItems];
   return (index != NSNotFound) ? YES : NO;
 }
 
 + (BOOL)itemWithNameInLoginItems:(NSString *)name {
   NSArray *loginItems = [self loginItems:nil];
-  int index = [self indexOfLoginItemWithValue:name
-                                       forKey:kGTMLoginItemsNameKey
-                                   loginItems:loginItems];
+  NSInteger index = [self indexOfLoginItemWithValue:name
+                                             forKey:kGTMLoginItemsNameKey
+                                         loginItems:loginItems];
   return (index != NSNotFound) ? YES : NO;
 }
 

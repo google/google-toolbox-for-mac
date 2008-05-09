@@ -55,6 +55,9 @@
   STAssertEqualObjects([string gtm_stringByEscapingForHTML],
                        [NSString stringWithUTF8String:"abcا1ب&lt;تdef&amp;"],
                        @"HTML escaping failed");
+  
+  // test empty string
+  STAssertEqualObjects([@"" gtm_stringByEscapingForHTML], @"", nil);
 } // testStringByEscapingHTML
 
 - (void)testStringByEscapingAsciiHTML {

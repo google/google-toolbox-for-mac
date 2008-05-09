@@ -19,24 +19,24 @@
 #import "GTMLinearRGBShading.h"
 
 // Carbon callback function required for CoreGraphics
-static void cShadeFunction(void *info, const float *inPos, float *outVals);
+static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
 
 @implementation GTMLinearRGBShading
 + (id)shadingFromColor:(NSColor *)begin toColor:(NSColor *)end 
         fromSpaceNamed:(NSString*)colorSpaceName {
   NSColor *theColors[] = { begin, end };
-  float thePositions[] = { 0.0f, 1.0f };
+  CGFloat thePositions[] = { 0.0, 1.0 };
   return [[self class] shadingWithColors:theColors
                           fromSpaceNamed:colorSpaceName
                             atPositions:thePositions
-                                  count:(sizeof(thePositions)/sizeof(float))];
+                                  count:(sizeof(thePositions)/sizeof(CGFloat))];
 }
 
 + (id)shadingWithColors:(NSColor **)colors fromSpaceNamed:(NSString*)colorSpaceName
-            atPositions:(float *)positions count:(unsigned)count {
+            atPositions:(CGFloat *)positions count:(NSUInteger)count {
 
   GTMLinearRGBShading *theShading = [[[[self class] alloc] initWithColorSpaceName:colorSpaceName] autorelease];
-  for (unsigned int i = 0; i < count; ++i) {
+  for (NSUInteger i = 0; i < count; ++i) {
     [theShading insertStop:colors[i] atPosition:positions[i]];
   }
   return theShading;
@@ -50,14 +50,24 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals);
       isCalibrated_ = YES;
     }
     else {
-      [self dealloc];
+      [self release];
       self = nil;
     }
   }
   return self;
 }
 
-- (void) dealloc {
+- (void)finalize {
+  if (nil != function_) {
+    CGFunctionRelease(function_);
+  }
+  if (nil != colorSpace_) {
+    CGColorSpaceRelease(colorSpace_);
+  }
+  [super finalize];
+}
+
+- (void)dealloc {
   if (nil != function_) {
     CGFunctionRelease(function_);
   }
@@ -68,7 +78,7 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals);
 }
 
 
-- (void)insertStop:(id)item atPosition:(float)position {
+- (void)insertStop:(id)item atPosition:(CGFloat)position {
   NSString *colorSpaceName = isCalibrated_ ? NSCalibratedRGBColorSpace : NSDeviceRGBColorSpace;
   NSColor *tempColor = [item colorUsingColorSpaceName: colorSpaceName];
   if (nil != tempColor) {
@@ -77,13 +87,13 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals);
 }
 
 //  Calculate a linear value based on our stops
-- (id)valueAtPosition:(float)position {
-  unsigned int index = 0;
-  unsigned int colorCount = [self stopCount];
-  float stop1Position = 0.0f;
+- (id)valueAtPosition:(CGFloat)position {
+  NSUInteger index = 0;
+  NSUInteger colorCount = [self stopCount];
+  CGFloat stop1Position = 0.0;
   NSColor *stop1Color = [self stopAtIndex:index position:&stop1Position];
   index += 1;
-  float stop2Position = 0.0f;
+  CGFloat stop2Position = 0.0;
   NSColor *stop2Color = nil;
   NSColor *theColor = nil;
   if (colorCount > 1) {
@@ -105,30 +115,30 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals);
   if (position <= stop1Position) {
     // if we are less than our lowest position, return our first color
     theColor = stop1Color;
-    [stop1Color getRed:&colorValue[0] green:&colorValue[1] 
-                  blue:&colorValue[2] alpha:&colorValue[3]];
+    [stop1Color getRed:&colorValue_[0] green:&colorValue_[1] 
+                  blue:&colorValue_[2] alpha:&colorValue_[3]];
   } else if (position >= stop2Position) {
     // likewise if we are greater than our highest position, return the last color
-    [stop2Color getRed:&colorValue[0] green:&colorValue[1] 
-                  blue:&colorValue[2] alpha:&colorValue[3]];
+    [stop2Color getRed:&colorValue_[0] green:&colorValue_[1] 
+                  blue:&colorValue_[2] alpha:&colorValue_[3]];
   } else {
     // otherwise interpolate between the two
     position = (position - stop1Position) / (stop2Position - stop1Position);
-    float red1, red2, green1, green2, blue1, blue2, alpha1, alpha2;
+    CGFloat red1, red2, green1, green2, blue1, blue2, alpha1, alpha2;
     [stop1Color getRed:&red1 green:&green1 blue:&blue1 alpha:&alpha1];
     [stop2Color getRed:&red2 green:&green2 blue:&blue2 alpha:&alpha2];
     
-    colorValue[0] = (red2 - red1) * position + red1;
-    colorValue[1] = (green2 - green1) * position + green1;
-    colorValue[2] = (blue2 - blue1) * position + blue1;
-    colorValue[3] = (alpha2 - alpha1) * position + alpha1;
+    colorValue_[0] = (red2 - red1) * position + red1;
+    colorValue_[1] = (green2 - green1) * position + green1;
+    colorValue_[2] = (blue2 - blue1) * position + blue1;
+    colorValue_[3] = (alpha2 - alpha1) * position + alpha1;
   }
   
-  // Yes, I am casting a float[] to an id to pass it by the compiler. This
+  // Yes, I am casting a CGFloat[] to an id to pass it by the compiler. This
   // significantly improves performance though as I avoid creating an NSColor
   // for every scanline which later has to be cleaned up in an autorelease pool
   // somewhere. Causes guardmalloc to run significantly faster.
-  return (id)colorValue;
+  return (id)colorValue_;
 }
 
 //
@@ -146,12 +156,12 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals);
 //           a single float value
 //    outVals: where we store our return values. Since we are calculating
 //             an RGBA color, this is a pointer to an array of four float values
-//             ranging from 0.0f to 1.0f
+//             ranging from 0.0 to 1.0
 //      
 //
-static void cShadeFunction(void *info, const float *inPos, float *outVals) {
+static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals) {
   id object = (id)info;
-  float *colorValue = (float*)[object valueAtPosition:*inPos];
+  CGFloat *colorValue = (CGFloat*)[object valueAtPosition:*inPos];
   outVals[0] = colorValue[0];
   outVals[1] = colorValue[1];
   outVals[2] = colorValue[2];
@@ -165,15 +175,15 @@ static void cShadeFunction(void *info, const float *inPos, float *outVals) {
     // diposed if necessary in the dealloc call.
     const CGFunctionCallbacks shadeFunctionCallbacks = { 0, &cShadeFunction, NULL };
     
-    // TODO: this code assumes that we have a range from 0.0f to 1.0f
+    // TODO: this code assumes that we have a range from 0.0 to 1.0
     // which may not be true according to the stops that the user has given us.
     // In general you have stops at 0.0 and 1.0, so this will do for right now
     // but may be an issue in the future.
-    const float inRange[2] = { 0.0f, 1.0f };	
-    const float outRange[8] = { 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f };
-    function_ = CGFunctionCreate(self,				
-                                  sizeof(inRange) / (sizeof(float) * 2), inRange,			
-                                  sizeof(outRange) / (sizeof(float) * 2), outRange,		
+    const CGFloat inRange[2] = { 0.0, 1.0 };
+    const CGFloat outRange[8] = { 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0 };
+    function_ = CGFunctionCreate(self,
+                                  sizeof(inRange) / (sizeof(CGFloat) * 2), inRange,
+                                  sizeof(outRange) / (sizeof(CGFloat) * 2), outRange,
                                   &shadeFunctionCallbacks);
   }
   return function_;

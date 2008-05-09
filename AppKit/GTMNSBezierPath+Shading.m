@@ -22,6 +22,7 @@
 #import "GTMNSBezierPath+CGPath.h"
 #import "GTMShading.h"
 #import "GTMGeometryUtils.h"
+#import "GTMMethodCheck.h"
 
 @interface NSBezierPath (GTMBezierPathShadingAdditionsPrivate)
 //  Fills a CGPathRef either axially or radially with the given shading.
@@ -44,8 +45,8 @@
 - (void)gtm_fillCGPath:(CGPathRef)path 
                axially:(BOOL)axially 
               asStroke:(BOOL)asStroke
-                  from:(NSPoint)fromPoint fromRadius:(float)fromRadius
-                    to:(NSPoint)toPoint toRadius:(float)toRadius
+                  from:(NSPoint)fromPoint fromRadius:(CGFloat)fromRadius
+                    to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
         extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                shading:(id<GTMShading>)shading;
 
@@ -62,7 +63,7 @@
 //    the projected point
 - (NSPoint)gtm_projectLineFrom:(NSPoint)pointA
                             to:(NSPoint)pointB
-                            by:(float)length;
+                            by:(CGFloat)length;
 @end
 
 
@@ -70,8 +71,8 @@
 
 - (void)gtm_fillCGPath:(CGPathRef)path 
                axially:(BOOL)axially asStroke:(BOOL)asStroke
-                  from:(NSPoint)fromPoint fromRadius:(float)fromRadius
-                    to:(NSPoint)toPoint toRadius:(float)toRadius
+                  from:(NSPoint)fromPoint fromRadius:(CGFloat)fromRadius
+                    to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
         extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                shading:(id<GTMShading>)shading {
   CGFunctionRef shadingFunction = [shading shadeFunction];
@@ -79,15 +80,15 @@
     CGContextRef currentContext = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
     if (nil != currentContext) {
       CGContextSaveGState(currentContext);
-      float lineWidth = [self lineWidth];
-      CGContextSetLineWidth(currentContext,lineWidth);
+      CGFloat lineWidth = [self lineWidth];
+      CGContextSetLineWidth(currentContext, lineWidth);
       if (asStroke) {
         // if we are using the stroke, we offset the from and to points
         // by half the stroke width away from the center of the stroke. 
         // Otherwise we tend to end up with fills that only cover half of the 
         // because users set the start and end points based on the center
         // of the stroke.
-        float halfWidth = lineWidth * 0.5f;
+        CGFloat halfWidth = lineWidth * 0.5;
         fromPoint = [self gtm_projectLineFrom:toPoint to:fromPoint by:halfWidth];
         toPoint = [self gtm_projectLineFrom:fromPoint to:toPoint by:-halfWidth];
       }
@@ -127,18 +128,24 @@
 
 - (NSPoint)gtm_projectLineFrom:(NSPoint)pointA
                             to:(NSPoint)pointB
-                            by:(float)length {
+                            by:(CGFloat)length {
   NSPoint newPoint = pointB;
-  float x = (pointB.x - pointA.x);
-  float y = (pointB.y - pointA.y);
-  if (x == 0.0f) {
+  CGFloat x = (pointB.x - pointA.x);
+  CGFloat y = (pointB.y - pointA.y);
+  if (x == 0.0) {
     newPoint.y += length;
-  } else if (y == 0.0f) {
+  } else if (y == 0.0) {
     newPoint.x += length;
   } else {
-    float angle = atanf(y / x);
+#if CGFLOAT_IS_DOUBLE  
+    CGFloat angle = atan(y / x);
+    newPoint.x += sin(angle) * length;
+    newPoint.y += cos(angle) * length;
+#else
+    CGFloat angle = atanf(y / x);
     newPoint.x += sinf(angle) * length;
     newPoint.y += cosf(angle) * length;
+#endif
   }
   return newPoint;
 }
@@ -147,8 +154,7 @@
 
 
 @implementation NSBezierPath (GTMBezierPathShadingAdditions)
-
-//METHOD_CHECK(NSBezierPath, gtm_createCGPath);
+GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath); // COV_NF_LINE
 
 - (void)gtm_strokeAxiallyFrom:(NSPoint)fromPoint to:(NSPoint)toPoint 
                extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
@@ -156,8 +162,8 @@
   CGPathRef thePath = [self gtm_createCGPath];
   if (nil != thePath) {
     [self gtm_fillCGPath:thePath axially:YES asStroke:YES 
-                    from:fromPoint fromRadius:0.0f
-                      to:toPoint toRadius:0.0f
+                    from:fromPoint fromRadius:(CGFloat)0.0
+                      to:toPoint toRadius:(CGFloat)0.0
           extendingStart:extendingStart extendingEnd:extendingEnd 
                  shading:shading];
     CGPathRelease(thePath);
@@ -165,8 +171,8 @@
 }
 
 
-- (void)gtm_strokeRadiallyFrom:(NSPoint)fromPoint fromRadius:(float)fromRadius 
-                            to:(NSPoint)toPoint toRadius:(float)toRadius
+- (void)gtm_strokeRadiallyFrom:(NSPoint)fromPoint fromRadius:(CGFloat)fromRadius 
+                            to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
                 extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                        shading:(id<GTMShading>)shading {
   CGPathRef thePath = [self gtm_createCGPath];
@@ -187,8 +193,8 @@
   CGPathRef thePath = [self gtm_createCGPath];
   if (nil != thePath) {
     [self gtm_fillCGPath:thePath axially:YES asStroke:NO 
-                    from:fromPoint fromRadius:0.0f
-                      to:toPoint toRadius:0.0f
+                    from:fromPoint fromRadius:(CGFloat)0.0
+                      to:toPoint toRadius:(CGFloat)0.0
           extendingStart:extendingStart extendingEnd:extendingEnd 
                  shading:shading];
     CGPathRelease(thePath);
@@ -196,8 +202,8 @@
 }
 
 
-- (void)gtm_fillRadiallyFrom:(NSPoint)fromPoint fromRadius:(float)fromRadius 
-                          to:(NSPoint)toPoint toRadius:(float)toRadius
+- (void)gtm_fillRadiallyFrom:(NSPoint)fromPoint fromRadius:(CGFloat)fromRadius 
+                          to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
               extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                      shading:(id<GTMShading>)shading {
   CGPathRef thePath = [self gtm_createCGPath];

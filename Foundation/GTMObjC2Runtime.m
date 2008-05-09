@@ -44,7 +44,7 @@ BOOL class_conformsToProtocol(Class cls, Protocol *protocol) {
 
   struct objc_protocol_list *protos;
   for (protos = cls->protocols; protos != NULL; protos = protos->next) {
-    for (int i = 0; i < protos->count; i++) {
+    for (long i = 0; i < protos->count; i++) {
       if ([protos->list[i] conformsTo:protocol]) {
         return YES;
       }
