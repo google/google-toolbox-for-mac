@@ -101,7 +101,7 @@
 		F42E095E0D199BD600D5DDE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		F431221C0DD4E3B800F45252 /* GTMStackTrace.c in Sources */ = {isa = PBXBuildFile; fileRef = F43122190DD4E3B800F45252 /* GTMStackTrace.c */; };
-		F431221D0DD4E3B800F45252 /* GTMStackTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = F431221A0DD4E3B800F45252 /* GTMStackTrace.h */; };
+		F431221D0DD4E3B800F45252 /* GTMStackTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = F431221A0DD4E3B800F45252 /* GTMStackTrace.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F431221F0DD4E3C900F45252 /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */; };
 		F435DE7C0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F435DE7A0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff */; };
 		F435DE7D0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.x86_64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F435DE7B0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.x86_64.tiff */; };
