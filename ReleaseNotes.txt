@@ -103,6 +103,8 @@ Changes since 1.0.0
 
 - Added GTMStackTrace.
 
+- Added NSString+URLArguments and NSDictionary+URLArguments
+
 
 Release 1.0.0
 14-January-2008

@@ -207,8 +207,8 @@
 #endif 
 
 // notifications & errors
-_EXTERN NSString* const kGTMHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GTMHTTPFetcher");
-_EXTERN NSString* const kGTMHTTPFetcherStatusDomain _INITIALIZE_AS(@"com.google.HTTPStatus");
+_EXTERN NSString* const kGTMHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.mactoolbox.HTTPFetcher");
+_EXTERN NSString* const kGTMHTTPFetcherStatusDomain _INITIALIZE_AS(@"com.google.mactoolbox.HTTPStatus");
 _EXTERN NSString* const kGTMHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
 _EXTERN NSString* const kGTMHTTPFetcherStatusDataKey _INITIALIZE_AS(@"data"); // any data returns w/ a kGTMHTTPFetcherStatusDomain error
 

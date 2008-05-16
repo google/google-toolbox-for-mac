@@ -118,19 +118,26 @@ static int MethodSort(const void *a, const void *b) {
             NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
             @try {
               [testcase setUp];
-              [testcase performSelector:sel];
+              @try {
+                [testcase performSelector:sel];
+              } @catch (NSException *exception) {
+                failed = YES;
+                [self printError:[exception reason]];
+              }
               [testcase tearDown];
-              fixtureSuccesses += 1;
             } @catch (NSException *exception) {
-              fixtureFailures += 1;
               failed = YES;
               [self printError:[exception reason]];
             }
             [pool release];
           } @catch (NSException *exception) {
-            fixtureFailures += 1;
             failed = YES;
             [self printError:[exception reason]];
+          }
+          if (failed) {
+            fixtureFailures += 1;
+          } else {
+            fixtureSuccesses += 1;
           }
           NSTimeInterval caseEndTime = [[NSDate date] timeIntervalSinceDate:caseStartDate];
           NSString *caseEndString = [NSString stringWithFormat:@"Test Case '-[%@ %s]' %s (%0.3f seconds).\n",
