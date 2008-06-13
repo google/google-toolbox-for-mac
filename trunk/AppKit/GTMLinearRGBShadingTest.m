@@ -20,7 +20,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMLinearRGBShading.h"
 
-@interface GTMLinearRGBShadingTest : SenTestCase
+@interface GTMLinearRGBShadingTest : GTMTestCase
 @end
 
 @implementation GTMLinearRGBShadingTest
@@ -36,10 +36,10 @@
   STAssertNotNil(theShading,nil);
   STAssertEquals([theShading stopCount], (NSUInteger)2, nil);
   CGFloat *theColor = (CGFloat*)[theShading valueAtPosition: 0.5];
-  STAssertTrue(theColor[0] == [purple redComponent] &&
-               theColor[1] == [purple greenComponent] &&
-               theColor[2] == [purple blueComponent] &&
-               theColor[3] == [purple alphaComponent], nil);
+  STAssertEqualsWithAccuracy(theColor[0], [purple redComponent], 0.001, nil);
+  STAssertEqualsWithAccuracy(theColor[1], [purple greenComponent], 0.001, nil);
+  STAssertEqualsWithAccuracy(theColor[2], [purple blueComponent], 0.001, nil);
+  STAssertEqualsWithAccuracy(theColor[3], [purple alphaComponent], 0.001, nil);
 }
 
 - (void)testShadingWith {
@@ -49,11 +49,12 @@
   CGFloat thePositions[kColorCount];
   const CGFloat kColorIncrement = 1.0 / kColorCount;
   for (NSUInteger i = 0; i < kColorCount; i++) {
-    thePositions[i] = kColorIncrement * i;
-    theColors[i] = [NSColor colorWithCalibratedRed:kColorIncrement * i 
-                                             green:kColorIncrement * i 
-                                              blue:kColorIncrement * i 
-                                             alpha:kColorIncrement * i];
+    CGFloat newValue = kColorIncrement * i;
+    thePositions[i] = newValue;
+    theColors[i] = [NSColor colorWithCalibratedRed:newValue 
+                                             green:newValue 
+                                              blue:newValue 
+                                             alpha:newValue];
   }
   GTMLinearRGBShading *theShading =
     [GTMLinearRGBShading shadingWithColors:theColors
@@ -61,11 +62,12 @@
                                atPositions:thePositions
                                      count:kColorCount];
   for (NSUInteger i = 0; i < kColorCount; i++) {
-     CGFloat *theColor = (CGFloat*)[theShading valueAtPosition: kColorIncrement * i];
-    STAssertTrue(theColor[0] == kColorIncrement * i &&
-                 theColor[1] == kColorIncrement * i &&
-                 theColor[2] == kColorIncrement * i &&
-                 theColor[3] == kColorIncrement * i, nil);
+    CGFloat newValue = kColorIncrement * i;
+    CGFloat *theColor = (CGFloat*)[theShading valueAtPosition:newValue];
+    STAssertEqualsWithAccuracy(theColor[0], newValue, 0.001, nil);
+    STAssertEqualsWithAccuracy(theColor[1], newValue, 0.001, nil);
+    STAssertEqualsWithAccuracy(theColor[2], newValue, 0.001, nil);
+    STAssertEqualsWithAccuracy(theColor[3], newValue, 0.001, nil);
   }
 }
 

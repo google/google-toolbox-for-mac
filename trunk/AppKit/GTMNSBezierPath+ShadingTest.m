@@ -24,15 +24,16 @@
 #import "GTMAppKit+UnitTesting.h"
 #import "GTMNSBezierPath+Shading.h"
 
-@interface GTMNSBezierPath_ShadingTest : SenTestCase<GTMUnitTestViewDrawer>
+@interface GTMNSBezierPath_ShadingTest : GTMTestCase<GTMUnitTestViewDrawer>
 @end
   
 @implementation GTMNSBezierPath_ShadingTest
 
 - (void)testShadings {
-  GTMAssertDrawingEqualToFile(self, NSMakeSize(200, 200), @"GTMNSBezierPath+ShadingTest", nil, nil);
+  GTMAssertDrawingEqualToImageNamed(self,
+                                    NSMakeSize(200, 200), 
+                                    @"GTMNSBezierPath+ShadingTest", nil, nil);
 }
-
 
 - (void)gtm_unitTestViewDrawRect:(NSRect)rect contextInfo:(void*)contextInfo {
   

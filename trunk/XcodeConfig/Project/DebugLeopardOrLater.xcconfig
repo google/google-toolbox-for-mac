@@ -23,7 +23,7 @@
 //  the License.
 //
 
-// Pull in our general Google settings
+// Pull in the general settings
 #include "../subconfig/General.xcconfig"
 
 // Leopard or later

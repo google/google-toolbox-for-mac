@@ -38,7 +38,7 @@ static BOOL NoEqualChar(NSData *data) {
   return YES;
 }
 
-@interface GTMBase64Test : SenTestCase 
+@interface GTMBase64Test : GTMTestCase 
 @end
 
 @implementation GTMBase64Test

@@ -19,6 +19,12 @@
 #import "GTMNSEnumerator+Filter.h"
 #import "GTMDebugSelectorValidation.h"
 #import "GTMDefines.h"
+#if GTM_IPHONE_SDK
+#import <objc/message.h>
+#import <objc/runtime.h>
+#else
+#import <objc/objc-runtime.h>
+#endif
 
 // a private subclass of NSEnumerator that does all the work.
 // public interface just returns one of these.
@@ -101,10 +107,13 @@
 @implementation GTMEnumeratorFilter
 // We must take care here, since Intel leaves junk in high bytes of return register
 // for predicates that return BOOL.
+// For details see: 
+// http://developer.apple.com/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/chapter_5_section_23.html
+// and
+// http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
   *resultp = obj;
-  // intptr_t is an integer the same size as a pointer. <stdint.h>
-  return (BOOL) (intptr_t) [obj performSelector:operation_ withObject:other_];
+  return ((BOOL (*)(id, SEL, id))objc_msgSend)(obj, operation_, other_);
 }
 @end
 
@@ -115,10 +124,13 @@
 @implementation GTMEnumeratorTargetFilter
 // We must take care here, since Intel leaves junk in high bytes of return register
 // for predicates that return BOOL.
+// For details see: 
+// http://developer.apple.com/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/chapter_5_section_23.html
+// and
+// http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
   *resultp = obj;
-  // intptr_t is an integer the same size as a pointer. <stdint.h>
-  return (BOOL) (intptr_t) [other_ performSelector:operation_ withObject:obj];
+  return ((BOOL (*)(id, SEL, id))objc_msgSend)(other_, operation_, obj);
 }
 @end
 
@@ -142,9 +154,10 @@
 - (NSEnumerator *)gtm_filteredEnumeratorByTarget:(id)target
                            performOnEachSelector:(SEL)selector {
   // make sure the object impls this selector taking an object as an arg.
-  GTMAssertSelectorNilOrImplementedWithArguments(target, selector,
-                                                 @encode(id),
-                                                 NULL);
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, selector,
+                                                              @encode(BOOL),
+                                                              @encode(id),
+                                                              NULL);
   return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self
                                                       sel:selector
                                                    object:target] autorelease];
@@ -153,9 +166,10 @@
 - (NSEnumerator *)gtm_enumeratorByTarget:(id)target
                    performOnEachSelector:(SEL)selector {
   // make sure the object impls this selector taking an object as an arg.
-  GTMAssertSelectorNilOrImplementedWithArguments(target, selector,
-                                                 @encode(id),
-                                                 NULL);
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, selector,
+                                                              @encode(id),
+                                                              @encode(id),
+                                                              NULL);
   return [[[GTMEnumeratorTargetTransformer alloc] initWithBase:self
                                                            sel:selector
                                                         object:target] autorelease];

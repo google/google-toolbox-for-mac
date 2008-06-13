@@ -20,7 +20,7 @@
 #import "GTMNSDictionary+URLArguments.h"
 #import "GTMDefines.h"
 
-@interface GTMNSDictionary_URLArgumentsTest : SenTestCase
+@interface GTMNSDictionary_URLArgumentsTest : GTMTestCase
 @end
 
 @implementation GTMNSDictionary_URLArgumentsTest

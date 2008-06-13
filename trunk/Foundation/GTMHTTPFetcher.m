@@ -65,6 +65,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
 - (BOOL)shouldRetryNowForStatus:(NSInteger)status error:(NSError *)error;
+- (void)retryTimerFired:(NSTimer *)timer;
 - (void)destroyRetryTimer;
 - (void)beginRetryTimer;
 - (void)primeTimerWithNewTimeInterval:(NSTimeInterval)secs;
@@ -135,7 +136,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   GTMAssertSelectorNilOrImplementedWithArguments(delegate, finishedSEL, @encode(GTMHTTPFetcher *), @encode(NSData *), NULL);
   GTMAssertSelectorNilOrImplementedWithArguments(delegate, failedSEL, @encode(GTMHTTPFetcher *), @encode(NSError *), NULL);
   GTMAssertSelectorNilOrImplementedWithArguments(delegate, receivedDataSEL_, @encode(GTMHTTPFetcher *), @encode(NSData *), NULL);
-  GTMAssertSelectorNilOrImplementedWithArguments(delegate, retrySEL_, @encode(GTMHTTPFetcher *), @encode(BOOL), @encode(NSError *), NULL);
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(delegate, retrySEL_, @encode(BOOL), @encode(GTMHTTPFetcher *), @encode(BOOL), @encode(NSError *), NULL);
     
   if (connection_ != nil) {
     _GTMDevAssert(connection_ != nil,
@@ -244,7 +245,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
                                                   delegate:self 
                                           startImmediately:NO];
     
-    for (int idx = 0; idx < [runLoopModes count]; idx++) {
+    for (NSUInteger idx = 0; idx < [runLoopModes count]; idx++) {
       NSString *mode = [runLoopModes objectAtIndex:idx];
       [connection_ scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
     }
@@ -1412,7 +1413,7 @@ static NSString* gLoggingProcessName = nil;
   NSMutableData *mutableData = [NSMutableData dataWithData:data];
   unsigned char *bytes = [mutableData mutableBytes];
   
-  for (int idx = 0; idx < [mutableData length]; idx++) {
+  for (NSUInteger idx = 0; idx < [mutableData length]; idx++) {
     if (bytes[idx] > 0x7F || bytes[idx] == 0) {
       bytes[idx] = '_';
     }
@@ -1436,7 +1437,7 @@ static NSString* gLoggingProcessName = nil;
       // convert those into UTF-8
       NSMutableArray *origParts = [NSMutableArray array];
       NSUInteger offset = 0;
-      for (int partIdx = 0; partIdx < [mungedParts count]; partIdx++) {
+      for (NSUInteger partIdx = 0; partIdx < [mungedParts count]; partIdx++) {
         
         NSString *mungedPart = [mungedParts objectAtIndex:partIdx];
         NSUInteger partSize = [mungedPart length];

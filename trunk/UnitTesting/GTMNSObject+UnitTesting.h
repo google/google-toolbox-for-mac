@@ -203,7 +203,7 @@ do { \
 
 // Return the type of image to work with. Only valid types on the iPhone
 // are kUTTypeJPEG and kUTTypePNG. MacOS supports several more.
-- (NSString*)gtm_imageUTI;
+- (CFStringRef)gtm_imageUTI;
 
 // Return the extension to be used for saving unittest images
 //

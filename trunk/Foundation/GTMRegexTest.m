@@ -18,6 +18,7 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMRegex.h"
+#import "GTMUnitTestDevLog.h"
 
 //
 // NOTE:
@@ -26,10 +27,10 @@
 // libregex, we just want to test our wrapper.
 //
 
-@interface GTMRegexTest : SenTestCase
+@interface GTMRegexTest : GTMTestCase
 @end
 
-@interface NSString_GTMRegexAdditions : SenTestCase
+@interface NSString_GTMRegexAdditions : GTMTestCase
 @end
 
 @implementation GTMRegexTest
@@ -57,7 +58,9 @@
   STAssertNil([[[GTMRegex alloc] initWithPattern:nil] autorelease], nil);
   STAssertNil([[[GTMRegex alloc] initWithPattern:nil
                                          options:kGTMRegexOptionIgnoreCase] autorelease], nil);
+  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
   STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."] autorelease], nil);
+  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
   STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
                                          options:kGTMRegexOptionIgnoreCase] autorelease], nil);
   // fail cases w/ error param
@@ -93,7 +96,9 @@
   STAssertNil([GTMRegex regexWithPattern:nil], nil);
   STAssertNil([GTMRegex regexWithPattern:nil
                                  options:0], nil);
+  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
   STAssertNil([GTMRegex regexWithPattern:@"(."], nil);
+  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
   STAssertNil([GTMRegex regexWithPattern:@"(."
                                  options:0], nil);
   // fail cases (helper) w/ error param

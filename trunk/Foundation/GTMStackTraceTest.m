@@ -21,7 +21,7 @@
 #import "GTMStackTrace.h"
 #import "GTMSenTestCase.h"
 
-@interface GTMStackTraceTest : SenTestCase
+@interface GTMStackTraceTest : GTMTestCase
 @end
 
 @implementation GTMStackTraceTest

@@ -23,7 +23,7 @@
 NSString *const kGTMWindowNibName = @"GTMUnitTestingTest";
 NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
 
-@interface GTMUnitTestingTest : SenTestCase {
+@interface GTMUnitTestingTest : GTMTestCase {
   int expectedFailureCount_;
 }
 @end
@@ -84,11 +84,11 @@ NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
 
 - (void)testViewUnitTesting {
   GTMUnitTestingView *unitTestingView = [[GTMUnitTestingView alloc] init];
-  GTMAssertDrawingEqualToFile(unitTestingView, 
-                              NSMakeSize(200,200), 
-                              @"GTMUnitTestingView", 
-                              NSApp, 
-                              @"Testing view drawing");
+  GTMAssertDrawingEqualToImageNamed(unitTestingView, 
+                                    NSMakeSize(200,200), 
+                                    @"GTMUnitTestingView", 
+                                    NSApp, 
+                                    @"Testing view drawing");
   STAssertTrue([unitTestingView hadGoodContext], @"bad context?");
   [unitTestingView release];
 }
@@ -216,7 +216,7 @@ NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
   [inCoder encodeInt64:1 forKey:@"Int64Test"];
   [inCoder encodeFloat:1.0f forKey:@"FloatTest"];
   [inCoder encodeDouble:1.0 forKey:@"DoubleTest"];
-  [inCoder encodeBytes:(uint8_t*)"BytesTest" length:9 forKey:@"BytesTest"];
+  [inCoder encodeBytes:(const uint8_t*)"BytesTest" length:9 forKey:@"BytesTest"];
   didEncode_ = YES;
 }
 

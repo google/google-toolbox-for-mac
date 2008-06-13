@@ -25,26 +25,26 @@
 //    aligner - rect to be aligned to
 //    alignment - alignment to be applied to alignee based on aligner
 
-NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, GTMRectAlignment alignment) {
+CGRect GTMCGAlignRectangles(CGRect alignee, CGRect aligner, GTMRectAlignment alignment) {
   switch (alignment) {
     case GTMRectAlignTop:
-      alignee.origin.x = aligner.origin.x + (NSWidth(aligner) * .5f - NSWidth(alignee) * .5f);
-      alignee.origin.y = aligner.origin.y + NSHeight(aligner) - NSHeight(alignee);
+      alignee.origin.x = aligner.origin.x + (CGRectGetWidth(aligner) * .5f - CGRectGetWidth(alignee) * .5f);
+      alignee.origin.y = aligner.origin.y + CGRectGetHeight(aligner) - CGRectGetHeight(alignee);
       break;
       
     case GTMRectAlignTopLeft:
       alignee.origin.x = aligner.origin.x;
-      alignee.origin.y = aligner.origin.y + NSHeight(aligner) - NSHeight(alignee);
+      alignee.origin.y = aligner.origin.y + CGRectGetHeight(aligner) - CGRectGetHeight(alignee);
     break;
     
     case GTMRectAlignTopRight:
-      alignee.origin.x = aligner.origin.x + NSWidth(aligner) - NSWidth(alignee);
-      alignee.origin.y = aligner.origin.y + NSHeight(aligner) - NSHeight(alignee);
+      alignee.origin.x = aligner.origin.x + CGRectGetWidth(aligner) - CGRectGetWidth(alignee);
+      alignee.origin.y = aligner.origin.y + CGRectGetHeight(aligner) - CGRectGetHeight(alignee);
       break;
 
     case GTMRectAlignLeft:
       alignee.origin.x = aligner.origin.x;
-      alignee.origin.y = aligner.origin.y + (NSHeight(aligner) * .5f - NSHeight(alignee) * .5f);
+      alignee.origin.y = aligner.origin.y + (CGRectGetHeight(aligner) * .5f - CGRectGetHeight(alignee) * .5f);
       break;
       
     case GTMRectAlignBottomLeft:
@@ -53,40 +53,40 @@ NSRect GTMAlignRectangles(NSRect alignee, NSRect aligner, GTMRectAlignment align
       break;
 
     case GTMRectAlignBottom:
-      alignee.origin.x = aligner.origin.x + (NSWidth(aligner) * .5f - NSWidth(alignee) * .5f);
+      alignee.origin.x = aligner.origin.x + (CGRectGetWidth(aligner) * .5f - CGRectGetWidth(alignee) * .5f);
       alignee.origin.y = aligner.origin.y;
       break;
 
     case GTMRectAlignBottomRight:
-      alignee.origin.x = aligner.origin.x + NSWidth(aligner) - NSWidth(alignee);
+      alignee.origin.x = aligner.origin.x + CGRectGetWidth(aligner) - CGRectGetWidth(alignee);
       alignee.origin.y = aligner.origin.y;
       break;
       
     case GTMRectAlignRight:
-      alignee.origin.x = aligner.origin.x + NSWidth(aligner) - NSWidth(alignee);
-      alignee.origin.y = aligner.origin.y + (NSHeight(aligner) * .5f - NSHeight(alignee) * .5f);
+      alignee.origin.x = aligner.origin.x + CGRectGetWidth(aligner) - CGRectGetWidth(alignee);
+      alignee.origin.y = aligner.origin.y + (CGRectGetHeight(aligner) * .5f - CGRectGetHeight(alignee) * .5f);
       break;
       
     default:
     case GTMRectAlignCenter:
-      alignee.origin.x = aligner.origin.x + (NSWidth(aligner) * .5f - NSWidth(alignee) * .5f);
-      alignee.origin.y = aligner.origin.y + (NSHeight(aligner) * .5f - NSHeight(alignee) * .5f);
+      alignee.origin.x = aligner.origin.x + (CGRectGetWidth(aligner) * .5f - CGRectGetWidth(alignee) * .5f);
+      alignee.origin.y = aligner.origin.y + (CGRectGetHeight(aligner) * .5f - CGRectGetHeight(alignee) * .5f);
       break;
   }
   return alignee;
 }
 
-NSRect GTMScaleRectangleToSize(NSRect scalee, NSSize size, GTMScaling scaling) {
+CGRect GTMCGScaleRectangleToSize(CGRect scalee, CGSize size, GTMScaling scaling) {
   switch (scaling) {
     case GTMScaleProportionally: {
-      CGFloat height = NSHeight(scalee);
-      CGFloat width = NSWidth(scalee);
+      CGFloat height = CGRectGetHeight(scalee);
+      CGFloat width = CGRectGetWidth(scalee);
       if (isnormal(height) && isnormal(width) && 
           (height > size.height || width > size.width)) {
         CGFloat horiz = size.width / width;
         CGFloat vert = size.height / height;
         CGFloat newScale = horiz < vert ? horiz : vert;
-        scalee = GTMNSRectScale(scalee, newScale, newScale);
+        scalee = GTMCGRectScale(scalee, newScale, newScale);
       }
       break;
     }

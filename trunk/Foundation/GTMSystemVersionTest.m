@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMSystemVersion.h"
 
-@interface GTMSystemVersionTest : SenTestCase
+@interface GTMSystemVersionTest : GTMTestCase
 @end
 
 @implementation GTMSystemVersionTest

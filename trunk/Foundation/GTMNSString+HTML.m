@@ -357,8 +357,8 @@ static HTMLEscapeMap gUnicodeHTMLEscapeMap[] = {
 
 // Utility function for Bsearching table above
 static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
-  unichar *uchar = (unichar*)ucharVoid;
-  HTMLEscapeMap *map = (HTMLEscapeMap*)mapVoid;
+  const unichar *uchar = (const unichar*)ucharVoid;
+  const HTMLEscapeMap *map = (const HTMLEscapeMap*)mapVoid;
   int val;
   if (*uchar > map->uchar) {
     val = 1;
@@ -387,18 +387,16 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
   // it's so short that it isn't really worth trying to share.
   const unichar *buffer = CFStringGetCharactersPtr((CFStringRef)self);
   if (!buffer) {
-    size_t memsize = length * sizeof(UniChar);
-    
-    // nope, alloc buffer and fetch the chars ourselves
-    buffer = malloc(memsize);
-    if (!buffer) {
+    // We want this buffer to be autoreleased.
+    NSMutableData *data = [NSMutableData dataWithLength:length * sizeof(UniChar)];
+    if (!data) {
       // COV_NF_START  - Memory fail case
       _GTMDevLog(@"couldn't alloc buffer");
       return nil;
       // COV_NF_END
     }
-    [self getCharacters:(void*)buffer];
-    [NSData dataWithBytesNoCopy:(void*)buffer length:memsize];
+    [self getCharacters:[data mutableBytes]];
+    buffer = [data bytes];
   }
 
   if (!buffer || !data2) {

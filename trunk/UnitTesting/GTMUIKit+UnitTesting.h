@@ -50,12 +50,12 @@
 
 #define GTMAssertDrawingEqualToFile(a1, a2, a3, a4, description, ...) \
   do { \
-    id<GTMUnitTestViewDrawer> a1Object = (a1); \
+    id<GTMUnitTestViewDrawer> a1Drawer = (a1); \
     CGSize a2Size = (a2); \
     NSString* a3String = (a3); \
     void *a4ContextInfo = (a4); \
     CGRect frame = CGRectMake(0, 0, a2Size.width, a2Size.height); \
-    GTMUnitTestView *view = [[[GTMUnitTestView alloc] initWithFrame:frame drawer:a1Object contextInfo:a4ContextInfo] autorelease]; \
+    GTMUnitTestView *view = [[[GTMUnitTestView alloc] initWithFrame:frame drawer:a1Drawer contextInfo:a4ContextInfo] autorelease]; \
     GTMAssertObjectImageEqualToImageNamed(view, a3String, STComposeString(description, ##__VA_ARGS__)); \
   } while(0)
 

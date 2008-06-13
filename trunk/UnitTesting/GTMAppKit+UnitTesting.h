@@ -52,7 +52,7 @@
 @protocol GTMUnitTestViewDrawer;
 
 //  Fails when the |a1|'s drawing in an area |a2| does not equal the image file named |a3|.
-//  See the description of the GTMAssertViewRepEqualToFile macro
+//  See the description of the -gtm_pathForImageNamed method
 //  to understand how |a3| is found and written out.
 //  See the description of the GTMUnitTestView for a better idea
 //  how the view works.
@@ -70,15 +70,14 @@
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 
-
-#define GTMAssertDrawingEqualToFile(a1, a2, a3, a4, description, ...) \
+#define GTMAssertDrawingEqualToImageNamed(a1, a2, a3, a4, description, ...) \
   do { \
-    id<GTMUnitTestViewDrawer> a1Object = (a1); \
+    id<GTMUnitTestViewDrawer> a1Drawer = (a1); \
     NSSize a2Size = (a2); \
     NSString* a3String = (a3); \
     void *a4ContextInfo = (a4); \
     NSRect frame = NSMakeRect(0, 0, a2Size.width, a2Size.height); \
-    GTMUnitTestView *view = [[[GTMUnitTestView alloc] initWithFrame:frame drawer:a1Object contextInfo:a4ContextInfo] autorelease]; \
+    GTMUnitTestView *view = [[[GTMUnitTestView alloc] initWithFrame:frame drawer:a1Drawer contextInfo:a4ContextInfo] autorelease]; \
     GTMAssertObjectImageEqualToImageNamed(view, a3String, STComposeString(description, ##__VA_ARGS__)); \
   } while(0)
 

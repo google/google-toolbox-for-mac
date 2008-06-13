@@ -34,7 +34,7 @@ AT_REQUIRED
 + (NSString*)class_required;
 @end
 
-@interface GTMObjC2RuntimeTest : SenTestCase {
+@interface GTMObjC2RuntimeTest : GTMTestCase {
   Class cls_;
 }
 @end

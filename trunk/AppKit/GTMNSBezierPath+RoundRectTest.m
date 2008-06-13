@@ -22,14 +22,14 @@
 #import "GTMNSBezierPath+RoundRect.h"
 #import "GTMAppKit+UnitTesting.h"
 
-@interface GTMNSBezierPath_RoundRectTest : SenTestCase<GTMUnitTestViewDrawer>
+@interface GTMNSBezierPath_RoundRectTest : GTMTestCase<GTMUnitTestViewDrawer>
 @end
 
 @implementation GTMNSBezierPath_RoundRectTest
 
 - (void)testRoundRects {
-  GTMAssertDrawingEqualToFile(self, NSMakeSize(330, 430), 
-                              @"GTMNSBezierPath+RoundRectTest", nil, nil);
+  GTMAssertDrawingEqualToImageNamed(self, NSMakeSize(330, 430), 
+                                    @"GTMNSBezierPath+RoundRectTest", nil, nil);
 }
 
 // Draws all of our tests so that we can compare this to our stored TIFF file.

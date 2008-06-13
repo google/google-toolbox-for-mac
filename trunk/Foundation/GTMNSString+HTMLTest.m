@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSString+HTML.h"
 
-@interface GTMNSString_HTMLTest : SenTestCase
+@interface GTMNSString_HTMLTest : GTMTestCase
 @end
 
 @implementation GTMNSString_HTMLTest

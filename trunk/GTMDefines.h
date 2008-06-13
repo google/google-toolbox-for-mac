@@ -64,6 +64,14 @@
  #define _GTMDevLog(...) do { } while (0)
 #endif
 
+#endif // _GTMDevLog
+
+// Declared here so that it can easily be used for logging tracking if
+// necessary. See GTMUnitTestDevLog.h for details.
+@class NSString;
+extern void _GTMUnittestDevLog(NSString *format, ...);
+
+#ifndef _GTMDevAssert
 // we directly invoke the NSAssert handler so we can pass on the varargs
 // (NSAssert doesn't have a macro we can use that takes varargs)
 #if !defined(NS_BLOCK_ASSERTIONS)
@@ -81,7 +89,27 @@
 #define _GTMDevAssert(condition, ...) do { } while (0)
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
-#endif // _GTMDevLog
+#endif // _GTMDevAssert
+
+// _GTMCompileAssert
+// _GTMCompileAssert is an assert that is meant to fire at compile time if you
+// want to check things at compile instead of runtime. For example if you
+// want to check that a wchar is 4 bytes instead of 2 you would use
+// _GTMCompileAssert(sizeof(wchar_t) == 4, wchar_t_is_4_bytes_on_OS_X)
+// Note that the second "arg" is not in quotes, and must be a valid processor
+// symbol in it's own right (no spaces, punctuation etc).
+
+// Wrapping this in an #ifndef allows external groups to define their own
+// compile time assert scheme.
+#ifndef _GTMCompileAssert
+// We got this technique from here:
+// http://unixjunkie.blogspot.com/2007/10/better-compile-time-asserts_29.html
+
+#define _GTMCompileAssertSymbolInner(line, msg) _GTMCOMPILEASSERT ## line ## __ ## msg
+#define _GTMCompileAssertSymbol(line, msg) _GTMCompileAssertSymbolInner(line, msg)
+#define _GTMCompileAssert(test, msg) \
+  typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
+#endif // _GTMCompileAssert
 
 // ============================================================================
 

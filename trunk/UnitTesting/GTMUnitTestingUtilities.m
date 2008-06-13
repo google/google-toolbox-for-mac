@@ -126,7 +126,7 @@ static void RestoreColorProfile(void) {
   }
 }
 
-void SetColorProfileToGenericRGB() {
+void SetColorProfileToGenericRGB(void) {
   NSColorSpace *genericSpace = [NSColorSpace genericRGBColorSpace];
   CMProfileRef genericProfile = (CMProfileRef)[genericSpace colorSyncProfile];
   CMProfileRef previousProfile;
