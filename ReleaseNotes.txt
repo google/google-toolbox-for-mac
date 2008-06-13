@@ -4,8 +4,9 @@ Project site:     http://code.google.com/p/google-toolbox-for-mac/
 Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 
 
-Release ?.?.?
+Release 1.5.0
 Changes since 1.0.0
+13-June-2008
 
 - Updated the project to Xcode 3.  This is the only supported Xcode version
   for the project.  The code can build against the Tiger or Leopard SDKs, and
