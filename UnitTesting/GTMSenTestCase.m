@@ -129,12 +129,83 @@ NSString *STComposeString(NSString *formatString, ...) {
 
 NSString * const SenTestFailureException = @"SenTestFailureException";
 
+@interface SenTestCase (SenTestCasePrivate) 
+// our method of logging errors
+- (void)printError:(NSString *)error;
+@end
+
 @implementation SenTestCase
-- (void) setUp {
+- (void)setUp {
 }
 
-- (void) tearDown {
+- (void)performTest:(SEL)sel {
+  currentSelector_ = sel;
+  @try {
+    [self invokeTest];
+  } @catch (NSException *exception) {
+    [self printError:[exception reason]];
+    [exception raise];
+  }
+}
+
+- (void)printError:(NSString *)error {
+  if ([error rangeOfString:@"error:"].location == NSNotFound) {
+    fprintf(stderr, "error: %s\n", [error UTF8String]);
+  } else {
+    fprintf(stderr, "%s\n", [error UTF8String]);
+  }
+  fflush(stderr);
+}
+
+- (void)invokeTest {
+  NSException *e = nil;
+  @try {
+    // Wrap things in autorelease pools because they may
+    // have an STMacro in their dealloc which may get called
+    // when the pool is cleaned up
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    @try {
+      [self setUp];
+      @try {
+        [self performSelector:currentSelector_];
+      } @catch (NSException *exception) {
+        e = [exception retain];
+        [self printError:[exception reason]];
+      }
+      [self tearDown];
+    } @catch (NSException *exception) {
+      e = [exception retain];
+      [self printError:[exception reason]];
+    }
+    [pool release];
+  } @catch (NSException *exception) {
+    e = [exception retain];
+    [self printError:[exception reason]];
+  }
+  if (e) {
+    [e autorelease];
+    [e raise];
+  }
+}
+
+- (void)tearDown {
 }
 @end
 
 #endif
+
+@implementation GTMTestCase : SenTestCase
+- (void) invokeTest {
+  Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
+  if (devLogClass) {
+    [devLogClass performSelector:@selector(enableTracking)];
+    [devLogClass performSelector:@selector(verifyNoMoreLogsExpected)];
+   
+  }
+  [super invokeTest];
+  if (devLogClass) {
+    [devLogClass performSelector:@selector(verifyNoMoreLogsExpected)];
+    [devLogClass performSelector:@selector(disableTracking)];
+  }
+}
+@end

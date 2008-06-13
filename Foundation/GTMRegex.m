@@ -228,7 +228,7 @@ static NSString *const kReplacementPattern =
 
   // make sure the match is the full string
   return (regMatch.rm_so == 0) &&
-    (regMatch.rm_eo == [str lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+    (regMatch.rm_eo == (regoff_t)[str lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (NSArray *)subPatternsOfString:(NSString *)str {
@@ -252,7 +252,7 @@ static NSString *const kReplacementPattern =
 
     // make sure the match is the full string
     if ((regMatches[0].rm_so != 0) ||
-        (regMatches[0].rm_eo != [str lengthOfBytesUsingEncoding:NSUTF8StringEncoding])) {
+        (regMatches[0].rm_eo != (regoff_t)[str lengthOfBytesUsingEncoding:NSUTF8StringEncoding])) {
       // only matched a sub part of the string
       return nil;
     }
@@ -551,7 +551,7 @@ static NSString *const kReplacementPattern =
       isMatch = YES; // if we have something saved, it was a pattern match
     }
     // have we reached the end?
-    else if (curParseIndex_ >= [utf8StrBuf_ length]) {
+    else if (curParseIndex_ >= (regoff_t)[utf8StrBuf_ length]) {
       // done, do nothing, we'll return nil
     }
     // do the search.
@@ -697,17 +697,20 @@ static NSString *const kReplacementPattern =
   return [self subPatternString:0];
 }
 
-- (NSString *)subPatternString:(NSUInteger)index {
-  if ((index < 0) || (index > numRegMatches_))
+- (NSString *)subPatternString:(NSUInteger)patternIndex {
+  if (patternIndex > numRegMatches_)
     return nil;
 
   // pick off when it wasn't found
-  if ((regMatches_[index].rm_so == -1) && (regMatches_[index].rm_eo == -1))
+  if ((regMatches_[patternIndex].rm_so == -1) && 
+      (regMatches_[patternIndex].rm_eo == -1))
     return nil;
 
   // fetch the string
-  const char *base = (const char*)[utf8StrBuf_ bytes] + regMatches_[index].rm_so;
-  regoff_t len = regMatches_[index].rm_eo - regMatches_[index].rm_so;
+  const char *base = (const char*)[utf8StrBuf_ bytes] 
+    + regMatches_[patternIndex].rm_so;
+  regoff_t len = regMatches_[patternIndex].rm_eo 
+    - regMatches_[patternIndex].rm_so;
   return [[[NSString alloc] initWithBytes:base
                                    length:(NSUInteger)len
                                  encoding:NSUTF8StringEncoding] autorelease];
@@ -748,7 +751,7 @@ static NSString *const kReplacementPattern =
   isMatch_ = isMatch;
 
   // check the args
-  if (!utf8StrBuf_ || !regMatches_ || (numRegMatches_ < 0)) {
+  if (!utf8StrBuf_ || !regMatches_) {
     // COV_NF_START
     // this could only happen something messed w/ our internal state.
     [self release];

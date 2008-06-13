@@ -26,7 +26,7 @@
 #define TESTS_ENABLED 0
 
 
-@interface GTMLoginItemsTest : SenTestCase
+@interface GTMLoginItemsTest : GTMTestCase
 @end
 
 #if TESTS_ENABLED

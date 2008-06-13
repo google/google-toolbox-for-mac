@@ -23,13 +23,16 @@
 #import "GTMAppKit+UnitTesting.h"
 #import "GTMSenTestCase.h"
 
-@interface GTMNSBezierPath_CGPathTest : SenTestCase<GTMUnitTestViewDrawer>
+@interface GTMNSBezierPath_CGPathTest : GTMTestCase<GTMUnitTestViewDrawer>
 @end
 
 @implementation GTMNSBezierPath_CGPathTest
 
 - (void)testCreateCGPath {
-  GTMAssertDrawingEqualToFile(self, NSMakeSize(100, 100), @"GTMNSBezierPath+CGPathTest", nil, nil);
+  GTMAssertDrawingEqualToImageNamed(self, 
+                                    NSMakeSize(100, 100), 
+                                    @"GTMNSBezierPath+CGPathTest", 
+                                    nil, nil);
 }
 
 

@@ -20,33 +20,13 @@
 
 static BOOL gTestCheckVar = NO;
 
-// This is a contrived class that doesn't inherit from NSObject, but does
-// implement some of it's functionality to force test a case in 
-// GTMMethodCheck.
-@interface GTMClassThatDoesntInheritFromNSObject
-+ (BOOL)instancesRespondToSelector:(SEL)selector;
-+ (BOOL)respondsToSelector:(SEL)selector;
-@end
-
-@implementation GTMClassThatDoesntInheritFromNSObject
-GTM_METHOD_CHECK(GTMClassThatDoesntInheritFromNSObject, GTMMethodCheckTestMethod);
-- (void)GTMMethodCheckTestMethod {
-}
-+ (BOOL)instancesRespondToSelector:(SEL)selector {
-  return YES;
-}
-
-+ (BOOL)respondsToSelector:(SEL)selector {
-  return YES;
-}
-@end
-
-@interface GTMMethodCheckTest : SenTestCase
+@interface GTMMethodCheckTest : GTMTestCase
++ (void)GTMMethodCheckTestClassMethod;
 @end
 
 @implementation GTMMethodCheckTest
-GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestMethod);
-GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestClassMethod);
+GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestMethod);  // COV_NF_LINE
+GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestClassMethod);  // COV_NF_LINE
 
 - (void)GTMMethodCheckTestMethod {
 }

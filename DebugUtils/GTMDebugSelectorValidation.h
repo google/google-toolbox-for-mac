@@ -5,6 +5,8 @@
 //  function that takes an object and selector to invoke, you should call:
 //
 //    GTMAssertSelectorNilOrImplementedWithArguments(obj, sel, @encode(arg1type), ..., NULL)
+//  or
+//    GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(obj, sel, @encode(returnType), @encode(arg1type), ..., NULL)
 //
 //  This will then validate that the selector is defined and using the right
 //  type(s), this can help catch errors much earlier then waiting for the
@@ -31,12 +33,12 @@
 #import <stdarg.h>
 #import "GTMDefines.h"
 
-static void GTMAssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...) {
-  
+static void GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(id obj, SEL sel, const char *retType, ...) {
+
   // verify that the object's selector is implemented with the proper
   // number and type of arguments
   va_list argList;
-  va_start(argList, sel);
+  va_start(argList, retType);
   
   if (obj && sel) {
     // check that the selector is implemented
@@ -71,14 +73,28 @@ static void GTMAssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...)
                   NSStringFromClass([obj class]), 
                   NSStringFromSelector(sel),
                   (argCount - 2));
+    
+    // if asked, validate the return type
+    if (retType && (strcmp("gtm_skip_return_test", retType) != 0)) {
+      const char *foundRetType = [sig methodReturnType];
+      _GTMDevAssert(0 == strncmp(foundRetType, retType, strlen(retType)),
+                    @"\"%@\" selector \"%@\" return type should be type %s", 
+                    NSStringFromClass([obj class]), 
+                    NSStringFromSelector(sel),
+                    retType);
+    }
   }
   
   va_end(argList);
 }
 
+#define GTMAssertSelectorNilOrImplementedWithArguments(obj, sel, ...) \
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments((obj), (sel), "gtm_skip_return_test", __VA_ARGS__)
+
 #else // DEBUG
 
 // make it go away if not debug
+#define GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(obj, sel, retType, ...) do { } while (0)
 #define GTMAssertSelectorNilOrImplementedWithArguments(obj, sel, ...) do { } while (0)
 
 #endif // DEBUG

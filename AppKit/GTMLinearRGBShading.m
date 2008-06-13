@@ -88,28 +88,28 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
 
 //  Calculate a linear value based on our stops
 - (id)valueAtPosition:(CGFloat)position {
-  NSUInteger index = 0;
+  NSUInteger positionIndex = 0;
   NSUInteger colorCount = [self stopCount];
   CGFloat stop1Position = 0.0;
-  NSColor *stop1Color = [self stopAtIndex:index position:&stop1Position];
-  index += 1;
+  NSColor *stop1Color = [self stopAtIndex:positionIndex position:&stop1Position];
+  positionIndex += 1;
   CGFloat stop2Position = 0.0;
   NSColor *stop2Color = nil;
   NSColor *theColor = nil;
   if (colorCount > 1) {
-    stop2Color = [self stopAtIndex:index position:&stop2Position];
-    index += 1;
+    stop2Color = [self stopAtIndex:positionIndex position:&stop2Position];
+    positionIndex += 1;
   } else {
     // if we only have one value, that's what we return
     stop2Position = stop1Position;
     stop2Color = stop1Color;
   }
 
-  while (index < colorCount && stop2Position < position) {
+  while (positionIndex < colorCount && stop2Position < position) {
     stop1Color = stop2Color;
     stop1Position = stop2Position;
-    stop2Color = [self stopAtIndex:index position:&stop2Position];
-    index += 1;
+    stop2Color = [self stopAtIndex:positionIndex position:&stop2Position];
+    positionIndex += 1;
   }
 
   if (position <= stop1Position) {

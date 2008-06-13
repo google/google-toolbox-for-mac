@@ -130,7 +130,7 @@ do { \
 #define STAssertNotNULL(a1, description, ...) \
 do { \
   @try {\
-    char* a1value = (char*)(a1); \
+    const void* a1value = (a1); \
     if (a1value == NULL) { \
       NSString *_expression = [NSString stringWithFormat:@"(%s) != NULL", #a1]; \
       if (description) { \
@@ -159,7 +159,7 @@ do { \
 #define STAssertNULL(a1, description, ...) \
 do { \
   @try {\
-    char* a1value = (char*)(a1); \
+    const void* a1value = (a1); \
     if (a1value != NULL) { \
       NSString *_expression = [NSString stringWithFormat:@"(%s) == NULL", #a1]; \
       if (description) { \
@@ -983,12 +983,22 @@ do { \
 - (void)failWithException:(NSException*)exception;
 @end
 
-@interface SenTestCase : NSObject
-- (void) setUp;
-- (void) tearDown;
+@interface SenTestCase : NSObject {
+  SEL currentSelector_;
+}
+
+- (void)setUp;
+- (void)invokeTest;
+- (void)tearDown;
+- (void)performTest:(SEL)sel;
 @end
 
 CF_EXPORT NSString * const SenTestFailureException;
 
 #endif // GTM_IPHONE_SDK
 
+// All unittest cases in GTM should inherit from GTMTestCase. It makes sure
+// to set up our logging system correctly to verify logging calls.
+// See GTMUnitTestDevLog.h for details
+@interface GTMTestCase : SenTestCase
+@end

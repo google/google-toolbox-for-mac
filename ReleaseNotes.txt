@@ -101,11 +101,30 @@ Changes since 1.0.0
 - GTMDelegatingTableColumn get an overhaul to match the 10.5 sdk so it's closer
   to a dropin for previous sdks.
 
+- Added a lot of functionality to NSAppleEventDescriptor and NSAppleScript
+  allowing you to easily call labeled and positional handlers in an AppleScript,
+  get/set properties and get NSAppleEventDescriptors for most basic datatypes.
+
+- Added GTMFourCharCode for wrapping FourCharCodes in an ObjC object. Mainly for
+  use by the NSAppleEventDescriptor code, and also useful for storing them
+  in ObjC collection classes.
+  
 - Added GTMStackTrace.
 
 - Added NSString+URLArguments and NSDictionary+URLArguments
 
+- Added GTMHTTPServer as a simple server but mainly for use in unittesting.
 
+- Added _GTMCompileAssert for doing compile time assertions to GTMDefines.h
+
+- Added GTMUnitTestDevLog and GTMTestCase for logging and tracking logs while
+  running unittests to verify what is being logged is what you expect. All 
+  unittests should now inherit from GTMTestCase instead of SenTestCase to take
+  advantage of the new log tracking. See GTMUnitTestDevLog.h for details.
+
+- Extracted GTMIPhoneUnitTestDelegate from GTMIPhoneUnitTestMain.m to its own
+  file. Tests can now be run from another application.
+  
 Release 1.0.0
 14-January-2008
 

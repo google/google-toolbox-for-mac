@@ -20,8 +20,9 @@
 #import <unistd.h>
 #import "GTMSenTestCase.h"
 #import "GTMScriptRunner.h"
+#import "GTMUnitTestDevLog.h"
 
-@interface GTMScriptRunnerTest : SenTestCase {
+@interface GTMScriptRunnerTest : GTMTestCase {
  @private 
   NSString *shScript_;
   NSString *perlScript_;
@@ -67,14 +68,17 @@
 
 - (void)tearDown {
   const char *path = [shScript_ fileSystemRepresentation];
-  if (path)
+  if (path) {
     unlink(path);
+  }
   path = [perlScript_ fileSystemRepresentation];
-  if (path)
+  if (path) {
     unlink(path);
+  }
   path = [shOutputScript_ fileSystemRepresentation];
-  if (path)
+  if (path) {
     unlink(path);
+  }
 }
 
 - (void)testShCommands {
@@ -184,30 +188,30 @@
   
   output = [sr run:@"/usr/bin/env | wc -l"];
   int numVars = [output intValue];
-  STAssertTrue(numVars > 0, @"numVars should be positive");
+  STAssertGreaterThan(numVars, 0, @"numVars should be positive");
   // By default the environment is wiped clean, however shells often add a few
   // of their own env vars after things have been wiped. For example, sh will 
   // add about 3 env vars (PWD, _, and SHLVL).
-  STAssertTrue(numVars < 5, @"Our env should be almost empty");
+  STAssertLessThan(numVars, 5, @"Our env should be almost empty");
   
   NSDictionary *newEnv = [NSDictionary dictionaryWithObject:@"bar"
                                                      forKey:@"foo"];
   [sr setEnvironment:newEnv];
   
   output = [sr run:@"/usr/bin/env | wc -l"];
-  STAssertTrue([output intValue] == numVars + 1,
+  STAssertEquals([output intValue], numVars + 1,
                @"should have one more env var now");
   
   [sr setEnvironment:nil];
   output = [sr run:@"/usr/bin/env | wc -l"];
-  STAssertTrue([output intValue] == numVars,
+  STAssertEquals([output intValue], numVars,
                @"should be back down to %d vars", numVars);
   
   NSDictionary *currVars = [[NSProcessInfo processInfo] environment];
   [sr setEnvironment:currVars];
   
   output = [sr run:@"/usr/bin/env | wc -l"];
-  STAssertTrue([output intValue] == [currVars count],
+  STAssertEquals([output intValue], (int)[currVars count],
                @"should be back down to %d vars", numVars);
 }
 
@@ -339,6 +343,8 @@
   
   STAssertNil([sr run:nil standardError:&err], nil);
   STAssertNil(err, nil);
+  [GTMUnitTestDevLog expectString:@"Failed to launch interpreter "
+   "'/path/that/does/not/exists/interpreter' due to: launch path not accessible"];
   STAssertNil([sr run:@"ls /" standardError:&err], nil);
   STAssertNil(err, nil);
 }
@@ -349,8 +355,12 @@
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
   
+  [GTMUnitTestDevLog expectString:@"Failed to launch interpreter "
+   "'/path/that/does/not/exists/interpreter' due to: launch path not accessible"];
   STAssertNil([sr runScript:shScript_ withArgs:nil standardError:&err], nil);
   STAssertNil(err, nil);
+  [GTMUnitTestDevLog expectString:@"Failed to launch interpreter "
+   "'/path/that/does/not/exists/interpreter' due to: launch path not accessible"];
   STAssertNil([sr runScript:@"/path/that/does/not/exists/foo/bar/baz"
                    withArgs:nil standardError:&err], nil);
   STAssertNil(err, nil);

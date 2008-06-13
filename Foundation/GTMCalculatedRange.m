@@ -30,6 +30,9 @@
 - (CGFloat)position;
 @end
 
+CG_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
+  return (fpclassify(a - b) == FP_ZERO);
+}
 
 @implementation GTMCalculatedRangeStopPrivate
 + (id)stopWithObject:(id)item position:(CGFloat)inPosition {
@@ -77,52 +80,52 @@
 }
 
 - (void)insertStop:(id)item atPosition:(CGFloat)position {
-  NSUInteger index = 0;
+  NSUInteger positionIndex = 0;
   NSEnumerator *theEnumerator = [storage_ objectEnumerator];
   GTMCalculatedRangeStopPrivate *theStop;
   while (nil != (theStop = [theEnumerator nextObject])) {
     if ([theStop position] < position) {
-      index += 1;
+      positionIndex += 1;
     }
-    else if ([theStop position] == position) {
+    else if (FPEqual([theStop position], position)) {
       // remove and stop the enum since we just modified the object
-      [storage_ removeObjectAtIndex:index];
+      [storage_ removeObjectAtIndex:positionIndex];
       break;
     }
   }
   [storage_ insertObject:[GTMCalculatedRangeStopPrivate stopWithObject:item position:position] 
-                 atIndex:index];
+                 atIndex:positionIndex];
 }
 
 - (BOOL)removeStopAtPosition:(CGFloat)position {
-  NSUInteger index = 0;
+  NSUInteger positionIndex = 0;
   BOOL foundStop = NO;
   NSEnumerator *theEnumerator = [storage_ objectEnumerator];
   GTMCalculatedRangeStopPrivate *theStop;
   while (nil != (theStop = [theEnumerator nextObject])) {
-    if ([theStop position] == position) {
+    if (FPEqual([theStop position], position)) {
       break;
     } else {
-       index += 1;
+       positionIndex += 1;
     }
   }
   if (nil != theStop) {
-    [self removeStopAtIndex:index];
+    [self removeStopAtIndex:positionIndex];
     foundStop = YES;
   }
   return foundStop;
 }
 
-- (void)removeStopAtIndex:(NSUInteger)index {
-  [storage_ removeObjectAtIndex:index];
+- (void)removeStopAtIndex:(NSUInteger)positionIndex {
+  [storage_ removeObjectAtIndex:positionIndex];
 }
 
 - (NSUInteger)stopCount {
   return [storage_ count];
 }
 
-- (id)stopAtIndex:(NSUInteger)index position:(CGFloat*)outPosition {
-  GTMCalculatedRangeStopPrivate *theStop = [storage_ objectAtIndex:index];
+- (id)stopAtIndex:(NSUInteger)positionIndex position:(CGFloat*)outPosition {
+  GTMCalculatedRangeStopPrivate *theStop = [storage_ objectAtIndex:positionIndex];
   if (nil != outPosition) {
     *outPosition = [theStop position];
   }
@@ -134,7 +137,7 @@
   GTMCalculatedRangeStopPrivate *theStop;
   NSEnumerator *theEnumerator = [storage_ objectEnumerator];
   while (nil != (theStop = [theEnumerator nextObject])) {
-    if ([theStop position] == position) {
+    if (FPEqual([theStop position], position)) {
       theValue = [theStop item];
       break;
     }

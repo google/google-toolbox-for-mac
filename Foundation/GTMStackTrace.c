@@ -76,7 +76,7 @@ CFStringRef GTMStackTraceCreate(void) {
   CFMutableStringRef trace = CFStringCreateMutable(kCFAllocatorDefault, 0);
   
   for (int i = 0; i < depth; i++) {
-    Dl_info info = { 0 };
+    Dl_info info = { NULL, NULL, NULL, NULL };
     dladdr(pcs[i], &info);
     const char *symbol = info.dli_sname;
     const char *fname  = info.dli_fname;

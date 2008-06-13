@@ -41,9 +41,14 @@ static BOOL ConformsToNSObjectProtocol(Class cls) {
   // work for you.
   // Some classes (like _NSZombie) start with _NS.
   // On Leopard we have to look for CFObject as well.
-  if ((strncmp(className, "NS", 2) == 0) || 
-      (strncmp(className, "_NS", 3) == 0) ||
-      (strcmp(className, "CFObject") == 0)) {
+  // On iPhone we check Object as well
+  if ((strncmp(className, "NS", 2) == 0) 
+       || (strncmp(className, "_NS", 3) == 0)
+       || (strcmp(className, "CFObject") == 0)
+#if GTM_IPHONE_SDK
+       || (strcmp(className, "Object") == 0)
+#endif
+    ) {
     return YES;
   }
   
@@ -88,10 +93,12 @@ void GTMMethodCheckMethodChecker(void) {
     // @protocol(NSObject), or else we will tumble into a _objc_msgForward
     // recursive loop when we try and call a function by name.
     if (!ConformsToNSObjectProtocol(cls)) {
+      // COV_NF_START
       _GTMDevLog(@"GTMMethodCheckMethodChecker: Class %s does not conform to "
                  "@protocol(NSObject), so won't be checked", 
                  class_getName(cls));
       continue;
+      // COV_NF_END
     }
     // Since we are looking for a class method (+xxGMMethodCheckMethod...)
     // we need to query the isa pointer to see what methods it support, but 

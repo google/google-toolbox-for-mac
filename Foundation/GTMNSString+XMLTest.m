@@ -21,7 +21,7 @@
 #import "GTMNSString+XML.h"
 
 
-@interface GTMNSString_XMLTest : SenTestCase
+@interface GTMNSString_XMLTest : GTMTestCase
 @end
 
 @implementation GTMNSString_XMLTest

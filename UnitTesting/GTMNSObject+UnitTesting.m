@@ -353,7 +353,7 @@ static inline BOOL almostEqual(unsigned char a, unsigned char b) {
              length:(unsigned)lenv 
              forKey:(NSString *)key {
   [self checkForKey:key];
-  [dictionary_ setObject:[NSData dataWithBytes:(uint8_t*)bytesp 
+  [dictionary_ setObject:[NSData dataWithBytes:bytesp 
                                         length:lenv] 
                   forKey:key];
 }
@@ -502,7 +502,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 #endif // GTM_IPHONE_SDK
   extensions[1] = @"";
   
-  int i,j;
+  size_t i, j;
   // Note that we are searching for the most exact match first.
   for (i = 0; 
        !thePath && i < sizeof(extensions) / sizeof(*extensions); 
@@ -525,9 +525,9 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 
 - (NSString *)gtm_saveToPathForFileNamed:(NSString*)name 
                                extension:(NSString*)extension {  
-  char const *system;
+  char const *systemArchitecture;
 #if GTM_IPHONE_SDK
-  system = "iPhone";
+  systemArchitecture = "iPhone";
 #else
   // In reading arch(3) you'd thing this would work:
   //
@@ -540,15 +540,15 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   // but on 64bit it returns the same things as on 32bit, so...
 #if __POWERPC__
  #if __LP64__
-  system = "ppc64";
+  systemArchitecture = "ppc64";
  #else // !__LP64__
-  system = "ppc";
+  systemArchitecture = "ppc";
  #endif // __LP64__
 #else // !__POWERPC__
  #if __LP64__
-  system = "x86_64";
+  systemArchitecture = "x86_64";
  #else // !__LP64__
-  system = "i386";
+  systemArchitecture = "i386";
  #endif // __LP64__
 #endif // !__POWERPC__
   
@@ -557,7 +557,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
   
   NSString *fullName = [NSString stringWithFormat:@"%@.%s.%d.%d.%d", 
-                        name, system, major, minor, bugFix];
+                        name, systemArchitecture, major, minor, bugFix];
   
   NSString *basePath = [[self class] gtm_getUnitTestSaveToDirectory];
   return [[basePath stringByAppendingPathComponent:fullName]
@@ -622,13 +622,13 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   return YES;
 }
 
-- (NSString *)gtm_imageUTI {
+- (CFStringRef)gtm_imageUTI {
 #if GTM_IPHONE_SDK
-  return (NSString*)kUTTypePNG;
+  return kUTTypePNG;
 #else
   // Currently can't use PNG on Leopard. (10.5.2)
   // Radar:5844618 PNG importer/exporter in ImageIO is lossy
-  return (NSString*)kUTTypeTIFF;
+  return kUTTypeTIFF;
 #endif
 }
 
@@ -637,18 +637,18 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 // Returns
 //  An extension (e.g. "png")
 - (NSString*)gtm_imageExtension {
-  NSString *uti = [self gtm_imageUTI];
+  CFStringRef uti = [self gtm_imageUTI];
 #if GTM_IPHONE_SDK
-  if ([uti isEqualToString:(NSString*)kUTTypePNG]) {
+  if (CFEqual(uti, kUTTypePNG)) {
     return @"png";
-  } else if ([uti isEqualToString:(NSString*)kUTTypeJPEG]) {
+  } else if (CFEqual(uti, kUTTypeJPEG)) {
     return @"jpg";
   } else {
     _GTMDevAssert(NO, @"Illegal UTI for iPhone");
   }
   return nil;
 #else
-  CFStringRef extension = UTTypeCopyPreferredTagWithClass((CFStringRef)uti, 
+  CFStringRef extension = UTTypeCopyPreferredTagWithClass(uti, 
                                                           kUTTagClassFilenameExtension);
   _GTMDevAssert(extension, @"No extension for uti: %@", uti);
   
@@ -666,10 +666,10 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 #if GTM_IPHONE_SDK
   // iPhone support
   UIImage *uiImage = [UIImage imageWithCGImage:image];
-  NSString *uti = [self gtm_imageUTI];
-  if ([uti isEqualToString:(NSString*)kUTTypePNG]) {
+  CFStringRef uti = [self gtm_imageUTI];
+  if (CFEqual(uti, kUTTypePNG)) {
     data = UIImagePNGRepresentation(uiImage);
-  } else if ([uti isEqualToString:(NSString*)kUTTypeJPEG]) {
+  } else if (CFEqual(uti, kUTTypeJPEG)) {
     data = UIImageJPEGRepresentation(uiImage, 1.0f);
   } else {
     _GTMDevAssert(NO, @"Illegal UTI for iPhone");
@@ -677,17 +677,17 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 #else
   data = [NSMutableData data];
   CGImageDestinationRef dest = CGImageDestinationCreateWithData((CFMutableDataRef)data,
-                                                                (CFStringRef)[self gtm_imageUTI],
+                                                                [self gtm_imageUTI],
                                                                 1,
                                                                 NULL);
   // LZW Compression for TIFF
   NSDictionary *tiffDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:NSTIFFCompressionLZW]
-                                                       forKey:(NSString*)kCGImagePropertyTIFFCompression];
+                                                       forKey:(const NSString*)kCGImagePropertyTIFFCompression];
   NSDictionary *destProps = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithFloat:1.0f], 
-                             (NSString*)kCGImageDestinationLossyCompressionQuality,
+                             (const NSString*)kCGImageDestinationLossyCompressionQuality,
                              tiffDict,
-                             (NSString*)kCGImagePropertyTIFFDictionary,
+                             (const NSString*)kCGImagePropertyTIFFDictionary,
                              nil];
   CGImageDestinationAddImage(dest, image, (CFDictionaryRef)destProps);
   CGImageDestinationFinalize(dest);

@@ -20,6 +20,7 @@
 #import <ScreenSaver/ScreenSaver.h>
 #import "GTMNSWorkspace+ScreenSaver.h"
 #import "GTMDefines.h"
+#import "GTMGarbageCollection.h"
 
 // Interesting class descriptions extracted from ScreenSaver.framework using
 // class-dump. Note that these are "not documented".
@@ -114,15 +115,14 @@
                                          kProcessDictionaryIncludeAllInformationMask);
     
     require(cfProcessInfo, CantGetFrontProcess);
-    
-    NSString *bundlePath = [(NSDictionary*)cfProcessInfo objectForKey:@"BundlePath"];
-    
+    NSDictionary *processInfo = [GTMNSMakeCollectable(cfProcessInfo) autorelease];
+    NSString *bundlePath = [processInfo objectForKey:@"BundlePath"];
+
     // ScreenSaverEngine is the frontmost app if the screen saver is actually
     // running Security Agent is the frontmost app if the "enter password"
     // dialog is showing
     answer = [bundlePath hasSuffix:@"ScreenSaverEngine.app"] || 
              [bundlePath hasSuffix:@"SecurityAgent.app"];
-    CFRelease(cfProcessInfo);
     // COV_NF_END
   }
 CantGetFrontProcess:

@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSString+URLArguments.h"
 
-@interface GTMNSString_URLArgumentsTest : SenTestCase
+@interface GTMNSString_URLArgumentsTest : GTMTestCase
 @end
 
 @implementation GTMNSString_URLArgumentsTest

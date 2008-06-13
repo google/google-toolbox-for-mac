@@ -132,9 +132,9 @@
   NSPoint newPoint = pointB;
   CGFloat x = (pointB.x - pointA.x);
   CGFloat y = (pointB.y - pointA.y);
-  if (x == 0.0) {
+  if (fpclassify(x) == FP_ZERO) {
     newPoint.y += length;
-  } else if (y == 0.0) {
+  } else if (fpclassify(y) == FP_ZERO) {
     newPoint.x += length;
   } else {
 #if CGFLOAT_IS_DOUBLE  

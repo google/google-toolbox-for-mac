@@ -19,7 +19,7 @@
 #import "GTMCalculatedRange.h"
 #import "GTMSenTestCase.h"
 
-@interface GTMCalculatedRangeTest : SenTestCase {
+@interface GTMCalculatedRangeTest : GTMTestCase {
   GTMCalculatedRange *range_;
 }
 @end

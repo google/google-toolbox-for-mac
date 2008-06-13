@@ -16,12 +16,11 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
-#import <unistd.h>
-#import "GTMHTTPFetcher.h"
 #import "GTMSenTestCase.h"
+#import "GTMHTTPFetcher.h"
+#import "GTMTestHTTPServer.h"
 
-@interface GTMHTTPFetcherTest : SenTestCase {
+@interface GTMHTTPFetcherTest : GTMTestCase {
   // these ivars are checked after fetches, and are reset by resetFetchResponse
   NSData *fetchedData_;
   NSError *fetcherError_;
@@ -31,10 +30,7 @@
   
   // setup/teardown ivars
   NSMutableDictionary *fetchHistory_;
-  NSTask *server_; // python http server
-  BOOL didServerLaunch_;  // Tracks the state of our server
-  BOOL didServerDie_;
-  NSMutableData *launchBuffer_;  // Storage for output from our server
+  GTMTestHTTPServer *testServer_;
 }
 @end
 
@@ -49,11 +45,18 @@
                                 userData:(id)userData;
 
 - (NSString *)fileURLStringToTestFileName:(NSString *)name;
+- (BOOL)countRetriesFetcher:(GTMHTTPFetcher *)fetcher
+                  willRetry:(BOOL)suggestedWillRetry
+                   forError:(NSError *)error;
+- (BOOL)fixRequestFetcher:(GTMHTTPFetcher *)fetcher
+                willRetry:(BOOL)suggestedWillRetry
+                 forError:(NSError *)error;
+- (void)testFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)testFetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 @end
 
 @implementation GTMHTTPFetcherTest
 
-static const int kServerPortNumber = 54579;
 static const NSTimeInterval kRunLoopInterval = 0.01; 
 //  The bogus-fetch test can take >10s to pass. Pick something way higher
 //  to avoid failing.
@@ -61,96 +64,18 @@ static const NSTimeInterval kGiveUpInterval = 60.0; // bail on the test if 60 se
 
 static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 
-- (void)gotData:(NSNotification*)notification {
-  // our server sends out a string to confirm that it launched
-  NSFileHandle *handle = [notification object];
-  NSData *launchMessageData = [handle availableData];
-  [launchBuffer_ appendData:launchMessageData];
-  NSString *launchStr =
-    [[[NSString alloc] initWithData:launchBuffer_
-                           encoding:NSUTF8StringEncoding] autorelease];
-  didServerLaunch_ =
-    [launchStr rangeOfString:@"started GTMHTTPFetcherTestServer"].location != NSNotFound;
-  if (!didServerLaunch_) {
-    _GTMDevLog(@"gotData launching httpserver: %@", launchStr);
-    [handle readInBackgroundAndNotify];
-  } 
-}
-
-- (void)didDie:(NSNotification*)notification {
-  _GTMDevLog(@"server died");
-  didServerDie_ = YES;
-}
-  
-  
 - (void)setUp {
   fetchHistory_ = [[NSMutableDictionary alloc] init];
   
-  // run the python http server, located in the Tests directory
   NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
   STAssertNotNil(testBundle, nil);
+  NSString *docRoot = [testBundle pathForResource:@"GTMHTTPFetcherTestPage"
+                                           ofType:@"html"];
+  docRoot = [docRoot stringByDeletingLastPathComponent];
+  STAssertNotNil(docRoot, nil);
   
-  NSString *serverPath =
-    [testBundle pathForResource:@"GTMHTTPFetcherTestServer" ofType:@""];
-  STAssertNotNil(serverPath, nil);
-    
-  NSArray *argArray = [NSArray arrayWithObjects:serverPath, 
-    @"-p", [NSString stringWithFormat:@"%d", kServerPortNumber], 
-    @"-r", [serverPath stringByDeletingLastPathComponent], nil];
-  
-  server_ = [[NSTask alloc] init];
-  [server_ setArguments:argArray];
-  [server_ setLaunchPath:@"/usr/bin/python"];
-  [server_ setEnvironment:[NSDictionary dictionary]]; // don't inherit anything from us
-  
-  // pipes will be cleaned up when server_ is torn down.
-  NSPipe *outputPipe = [NSPipe pipe];
-  NSPipe *errorPipe = [NSPipe pipe];
-  
-  [server_ setStandardOutput:outputPipe];
-  [server_ setStandardError:errorPipe];
-  
-  NSFileHandle *outputHandle = [outputPipe fileHandleForReading];
-  NSFileHandle *errorHandle = [errorPipe fileHandleForReading];
-  
-  didServerLaunch_ = NO;
-  didServerDie_ = NO;
-  
-  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-  [center addObserver:self  
-             selector:@selector(gotData:) 
-                 name:NSFileHandleDataAvailableNotification  
-               object:outputHandle];
-  [center addObserver:self  
-             selector:@selector(gotData:) 
-                 name:NSFileHandleDataAvailableNotification  
-               object:errorHandle];
-  [center addObserver:self  
-             selector:@selector(didDie:) 
-                 name:NSTaskDidTerminateNotification  
-               object:server_];
-  
-  [launchBuffer_ autorelease];
-  launchBuffer_ = [[NSMutableData data] retain];
-  [outputHandle waitForDataInBackgroundAndNotify];
-  [errorHandle waitForDataInBackgroundAndNotify];
-  [server_ launch];
-  
-  NSDate* giveUpDate = [NSDate dateWithTimeIntervalSinceNow:kGiveUpInterval];
-  while ((!didServerDie_ && !didServerLaunch_) &&
-         [giveUpDate timeIntervalSinceNow] > 0) {
-    NSDate* loopIntervalDate =
-      [NSDate dateWithTimeIntervalSinceNow:kRunLoopInterval];
-    [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate]; 
-  }
-
-  [center removeObserver:self];
-  
-  STAssertTrue(didServerLaunch_ && [server_ isRunning] && !didServerDie_,
-               @"Python http server not launched.\n"
-               "Args:%@\n"
-               "Environment:%@\n", 
-               [argArray componentsJoinedByString:@" "], [server_ environment]);  
+  testServer_ = [[GTMTestHTTPServer alloc] initWithDocRoot:docRoot];
+  STAssertNotNil(testServer_, @"failed to create a testing server");
 }
 
 - (void)resetFetchResponse {
@@ -170,12 +95,9 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 }
 
 - (void)tearDown {
-  [server_ terminate];
-  [server_ waitUntilExit];
-  [server_ release];
-  server_ = nil;
-  [launchBuffer_ release];
-  launchBuffer_ = nil;
+  [testServer_ release];
+  testServer_ = nil;
+
   [self resetFetchResponse];
   
   [fetchHistory_ release];
@@ -451,8 +373,7 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   
   // return a localhost:port URL for the test file
   NSString *urlString = [NSString stringWithFormat:@"http://localhost:%d/%@",
-    kServerPortNumber, name];
-  
+    [testServer_ port], name];
   
   // we exclude the "?status=" that would indicate that the URL
   // should cause a retryable error
@@ -540,4 +461,3 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 }
 
 @end
-

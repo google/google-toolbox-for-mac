@@ -136,18 +136,18 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
 
 + (BOOL)pathInLoginItems:(NSString *)path {
   NSArray *loginItems = [self loginItems:nil];
-  NSInteger index = [self indexOfLoginItemWithValue:path
-                                             forKey:kGTMLoginItemsPathKey
-                                         loginItems:loginItems];
-  return (index != NSNotFound) ? YES : NO;
+  NSInteger itemIndex = [self indexOfLoginItemWithValue:path
+                                                 forKey:kGTMLoginItemsPathKey
+                                             loginItems:loginItems];
+  return (itemIndex != NSNotFound) ? YES : NO;
 }
 
 + (BOOL)itemWithNameInLoginItems:(NSString *)name {
   NSArray *loginItems = [self loginItems:nil];
-  NSInteger index = [self indexOfLoginItemWithValue:name
-                                             forKey:kGTMLoginItemsNameKey
-                                         loginItems:loginItems];
-  return (index != NSNotFound) ? YES : NO;
+  NSInteger itemIndex = [self indexOfLoginItemWithValue:name
+                                                 forKey:kGTMLoginItemsNameKey
+                                             loginItems:loginItems];
+  return (itemIndex != NSNotFound) ? YES : NO;
 }
 
 + (void)addPathToLoginItems:(NSString*)path hide:(BOOL)hide {

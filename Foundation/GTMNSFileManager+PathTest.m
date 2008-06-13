@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSFileManager+Path.h"
 
-@interface GTMNSFileManager_PathTest : SenTestCase {
+@interface GTMNSFileManager_PathTest : GTMTestCase {
   NSString *baseDir_;
 }
 @end
@@ -131,7 +131,7 @@
     @"a.txt", @"b.txt", @"c.rtf", @"d.m",
   };
   
-  for (int i = 0; i < sizeof(testDirs) / sizeof(NSString*); i++) {
+  for (size_t i = 0; i < sizeof(testDirs) / sizeof(NSString*); i++) {
     NSString *testDir = nil;
     if ([testDirs[i] length]) {
       testDir = [baseDir_ stringByAppendingPathComponent:testDirs[i]];
@@ -139,7 +139,7 @@
     } else {
       testDir = baseDir_;
     }
-    for (int j = 0; j < sizeof(testFiles) / sizeof(NSString*); j++) {
+    for (size_t j = 0; j < sizeof(testFiles) / sizeof(NSString*); j++) {
       NSString *testFile = [testDir stringByAppendingPathComponent:testFiles[j]];
       STAssertTrue([@"test" writeToFile:testFile atomically:YES], nil);
     }
@@ -147,13 +147,13 @@
   
   // build set of the top level items
   NSMutableArray *allFiles = [NSMutableArray array];
-  for (int i = 0; i < sizeof(testDirs) / sizeof(NSString*); i++) {
+  for (size_t i = 0; i < sizeof(testDirs) / sizeof(NSString*); i++) {
     if ([testDirs[i] length]) {
       NSString *testDir = [baseDir_ stringByAppendingPathComponent:testDirs[i]];
       [allFiles addObject:testDir];
     }
   }
-  for (int j = 0; j < sizeof(testFiles) / sizeof(NSString*); j++) {
+  for (size_t j = 0; j < sizeof(testFiles) / sizeof(NSString*); j++) {
     NSString *testFile = [baseDir_ stringByAppendingPathComponent:testFiles[j]];
     [allFiles addObject:testFile];
   }

@@ -15,10 +15,10 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 //
-#import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
 #import "GTMNSWorkspace+ScreenSaver.h"
 
-@interface GTMNSWorkspace_ScreenSaverTest : SenTestCase
+@interface GTMNSWorkspace_ScreenSaverTest : GTMTestCase
 @end
 
 

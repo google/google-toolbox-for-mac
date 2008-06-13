@@ -1,5 +1,7 @@
 //
-//  Copyright 2007-2008 Google Inc.
+//  GTMDevLog.m
+//  
+//  Copyright 2008 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -14,7 +16,19 @@
 //  the License.
 //
 
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-    #import <UIKit/UIKit.h>
-#endif
+#include "GTMUnitTestDevLog.h"
+
+// This is the logging function that is called by default when building
+// GTMFramework. If it can find GTMUnitTestDevLog class it will use it, 
+// otherwise it falls onto NSLog.
+void _GTMUnittestDevLog(NSString *format, ...) {
+  Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
+  va_list argList;
+  va_start(argList, format);
+  if (devLogClass) {
+    [devLogClass log:format args:argList];
+  } else {
+    NSLogv(format, argList);
+  }
+  va_end(argList);
+}

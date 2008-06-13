@@ -23,7 +23,7 @@
 //  and individual Xcode target, there are other configuration files for that
 //  purpose.
 
-// Pull in our general Google settings
+// Pull in the general settings
 #include "../subconfig/General.xcconfig"
 
 // iPhone settings

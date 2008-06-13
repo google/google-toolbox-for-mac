@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSEnumerator+Filter.h"
 
-@interface GTMNSEnumerator_FilterTest : SenTestCase
+@interface GTMNSEnumerator_FilterTest : GTMTestCase
 @end
 
 @implementation GTMNSEnumerator_FilterTest

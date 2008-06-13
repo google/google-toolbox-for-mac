@@ -24,9 +24,12 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */; };
 		8B308BCE0DAD0B8400183556 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B308BCD0DAD0B8400183556 /* QuartzCore.framework */; };
 		8B5547CA0DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */; };
 		8B5547CB0DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */; };
+		8B7DCEAA0DFF4C760017E983 /* GTMDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLog.m */; };
+		8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */; };
 		8BC0480F0DAE928A00C2D1CA /* GTMCalculatedRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */; };
 		8BC048100DAE928A00C2D1CA /* GTMCalculatedRangeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047790DAE928A00C2D1CA /* GTMCalculatedRangeTest.m */; };
 		8BC048130DAE928A00C2D1CA /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */; };
@@ -64,7 +67,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */;
+			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = GTMiPhoneUnitTesting;
 		};
 /* End PBXContainerItemProxy section */
@@ -74,12 +77,17 @@
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* GTMiPhoneTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMiPhoneTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		32CA4F630368D1EE00C91783 /* GTMiPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMiPhone_Prefix.pch; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* GTM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTM_Prefix.pch; sourceTree = "<group>"; };
+		67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIPhoneUnitTestDelegate.h; sourceTree = "<group>"; };
+		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
 		8B308AF40DAD070C00183556 /* RunIPhoneUnitTest.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = RunIPhoneUnitTest.sh; path = UnitTesting/RunIPhoneUnitTest.sh; sourceTree = "<group>"; };
 		8B308BCD0DAD0B8400183556 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIKit+UnitTesting.m"; sourceTree = "<group>"; };
 		8B5547C80DB3BBF20014CC1C /* GTMUIKit+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIKit+UnitTesting.h"; sourceTree = "<group>"; };
 		8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIKit+UnitTestingTest.m"; sourceTree = "<group>"; };
+		8B7DCEA90DFF4C760017E983 /* GTMDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDevLog.m; sourceTree = "<group>"; };
+		8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUnitTestDevLog.h; sourceTree = "<group>"; };
+		8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestDevLog.m; sourceTree = "<group>"; };
 		8BC047750DAE926E00C2D1CA /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		8BC047770DAE928A00C2D1CA /* GTMCalculatedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMCalculatedRange.h; sourceTree = "<group>"; };
 		8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRange.m; sourceTree = "<group>"; };
@@ -168,7 +176,7 @@
 				8BC0479A0DAE928A00C2D1CA /* DebugUtils */,
 				8BC0479F0DAE928A00C2D1CA /* UnitTesting */,
 				8BC049840DAEC59100C2D1CA /* XcodeConfig */,
-				32CA4F630368D1EE00C91783 /* GTMiPhone_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* GTM_Prefix.pch */,
 				8B308AF40DAD070C00183556 /* RunIPhoneUnitTest.sh */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -232,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				8BC0479B0DAE928A00C2D1CA /* GTMDebugSelectorValidation.h */,
+				8B7DCEA90DFF4C760017E983 /* GTMDevLog.m */,
 				8BC0479C0DAE928A00C2D1CA /* GTMMethodCheck.h */,
 				8BC0479D0DAE928A00C2D1CA /* GTMMethodCheck.m */,
 				8BC0479E0DAE928A00C2D1CA /* GTMMethodCheckTest.m */,
@@ -247,12 +256,16 @@
 				8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */,
 				8B5547C80DB3BBF20014CC1C /* GTMUIKit+UnitTesting.h */,
 				8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */,
+				67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */,
+				67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */,
 				8BC047DD0DAE928A00C2D1CA /* GTMIPhoneUnitTestMain.m */,
 				8BC047EC0DAE928A00C2D1CA /* GTMNSObject+UnitTesting.h */,
 				8BC047ED0DAE928A00C2D1CA /* GTMNSObject+UnitTesting.m */,
 				8BC047F60DAE928A00C2D1CA /* GTMSenTestCase.h */,
 				8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */,
 				8BC048010DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png */,
+				8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */,
+				8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */,
 				8BC0480E0DAE928A00C2D1CA /* RunIPhoneUnitTest.sh */,
 				F435E49F0DC8F5290069CDE8 /* TestData */,
 			);
@@ -394,6 +407,9 @@
 				F439ADEC0DBD3C0000BE9B91 /* GTMBase64Test.m in Sources */,
 				F439ADF00DBD3C4000BE9B91 /* GTMGeometryUtils.m in Sources */,
 				F439ADF10DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m in Sources */,
+				8B7DCEAA0DFF4C760017E983 /* GTMDevLog.m in Sources */,
+				8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */,
+				67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,7 +445,7 @@
 			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_PREFIX_HEADER = GTMiPhone_Prefix.pch;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
 			name = "Debug-gcov";
 		};
@@ -446,7 +462,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone.xcconfig */;
 			buildSettings = {
-				GCC_PREFIX_HEADER = GTMiPhone_Prefix.pch;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
 			name = Debug;
 		};
@@ -454,7 +470,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049890DAEC59100C2D1CA /* ReleaseiPhone.xcconfig */;
 			buildSettings = {
-				GCC_PREFIX_HEADER = GTMiPhone_Prefix.pch;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
 			name = Release;
 		};

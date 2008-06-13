@@ -16,6 +16,7 @@
 //  the License.
 //
 
+#import <Foundation/Foundation.h>
 #import <objc/objc.h>
 
 // Collection of utilities for unit testing

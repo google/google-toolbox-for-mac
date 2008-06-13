@@ -16,11 +16,11 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import "GTMSenTestCase.h"
 #import "GTMUnitTestingTest.h"
 #import "GTMNSObject+BindingUnitTesting.h"
 
-@interface GTMUnitTestingBindingTest : SenTestCase {
+@interface GTMUnitTestingBindingTest : GTMTestCase {
   int expectedFailureCount_;
 }
 @end
