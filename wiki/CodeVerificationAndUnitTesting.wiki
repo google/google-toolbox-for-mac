@@ -52,9 +52,9 @@ Important notes for everything to work well:
   * You must use `_GTMDevLog` calls to log. We will not catch `NSLog`, `fprintf`, or any other logging system unless you juryrig support yourself.
 
 =GTM UI !UnitTesting=
-GTM has extensive support for user interface unittests. It supports testing both the imaging and/or internal state of almost all of the standard Cocoa/UIKit UI objects, and makes it easy for you to extend this support to your own UI objects. The key files for this support are GTMNSObject+UnitTesting.m/.h, and depending on your needs you will probably require one or more of: GTMAppKit+UnitTesting, GTMCALayer+UnitTesting or GTMUIKit+UnitTesting.
+GTM has extensive support for user interface unittests. It supports testing both the imaging and/or internal state of almost all of the standard Cocoa/UIKit UI objects, and makes it easy for you to extend this support to your own UI objects. The key files for this support are GTMNSObject+UnitTesting.m/.h, and depending on your needs you will probably require one or more of: GTMAppKit+!UnitTesting, GTMCALayer+!UnitTesting or GTMUIKit+!UnitTesting.
 
-To do imaging tests use the `GTMAssertObjectImageEqualToImageNamed` macro. This compares the drawing of an object, and its subviews, to a master image file stored in the test executable's bundle. If the master image file does not exist yet, it will be created and placed on the Desktop and then easily added to the project. Master image files can be specialized on OS Version and architecture in case your image draws differently on Tiger vs Leopard, or ppc vs i386. If a unittest fails it will place a copy of the new image on the desktop as well as an image of a diff of the old vs new images. If your UI object is a subclass of NSView it will most likely unittest correctly with no modifications necessary. If your class is not a subclass of NSView but does drawing you may consider using the `GTMAssertDrawingEqualToImageNamed` macro defined in GTMAppKit+UnitTesting.h. This allows you to easily test drawing routines that aren't themselves a view. See GTMNSBezierPath+CGPathTest.m for an example of using `GTMAssertDrawingEqualToImageNamed`.
+To do imaging tests use the `GTMAssertObjectImageEqualToImageNamed` macro. This compares the drawing of an object, and its subviews, to a master image file stored in the test executable's bundle. If the master image file does not exist yet, it will be created and placed on the Desktop and then easily added to the project. Master image files can be specialized on OS Version and architecture in case your image draws differently on Tiger vs Leopard, or ppc vs i386. If a unittest fails it will place a copy of the new image on the desktop as well as an image of a diff of the old vs new images. If your UI object is a subclass of NSView it will most likely unittest correctly with no modifications necessary. If your class is not a subclass of NSView but does drawing you may consider using the `GTMAssertDrawingEqualToImageNamed` macro defined in GTMAppKit+!UnitTesting.h. This allows you to easily test drawing routines that aren't themselves a view. See GTMNSBezierPath+CGPathTest.m for an example of using `GTMAssertDrawingEqualToImageNamed`.
 
 For testing onscreen drawing it is often important to have a consistent environment to test against. GTMUnitTestingUtilities contains routines for setting up a consistent UI state, such as standardizing scroll bar types, selection colors, color spaces etc. It will automatically revert back to the original state when the unittests have finished executing. See GTMUIUnitTestingHarness/main.m for an example of how to use `[GTMUnitTestingUtilities setUpForUIUnitTestsIfBeingTested]`. Note that there are other cases of state dependent drawing (such as date controls) that you will need to be careful with when doing image based testing.
 
@@ -64,14 +64,14 @@ To test the internal state of an object use the `GTMAssertObjectStateEqualToStat
 }}}
 for your object in a category that you include in your unittest bundle, or listen for the `GTMUnitTestingEncodedObjectNotification` notification and respond to it appropriately. 
 
-See GTMAppKit+UnitTesting.m for examples of how to support both state and imaging tests.
+See GTMAppKit+!UnitTesting.m for examples of how to support both state and imaging tests.
 
 Important notes for everything to work well:
   * For imaging, make sure that your testing environment is set up correctly.
   * Make sure to test on both Leopard and Tiger (and any other OS as appropriate) as drawing is often subtly different between both OS releases and hardware platforms.
 
 =GTM Binding !UnitTesting=
-GTM binding unittesting allows you to automatically test any classes you have that support NSBinding, saving you from having to write a whole pile of set/get test code to test them yourself. The files you will require are GTMNSObject+BindingUnitTest.m/.h. To have your bindings tested, your object will need to implement 
+GTM binding unittesting allows you to automatically test any classes you have that support NSBinding, saving you from having to write a whole pile of set/get test code to test them yourself. The files you will require are GTMNSObject+!BindingUnitTest.m/.h. To have your bindings tested, your object will need to implement 
 {{{
 - (NSArray *)exposedBindings
 }}}
@@ -79,7 +79,7 @@ and
 {{{
 - (Class)valueClassForBinding:(NSString *)binding
 }}}
-By default calling `GTMTestExposedBindings` on your object that supports bindings will test all of bindings exposed by `-exposedBindings` with several interesting edge cases. For more extensive testing you may possibly want to implement `-gtm_unitTestExposedBindingsToIgnore` and `-gtm_unitTestExposedBindingsTestValues`. See descriptions of those methods in GTMNSObject+BindingUnitTest.h for details.
+By default calling `GTMTestExposedBindings` on your object that supports bindings will test all of bindings exposed by `-exposedBindings` with several interesting edge cases. For more extensive testing you may possibly want to implement `-gtm_unitTestExposedBindingsToIgnore` and `-gtm_unitTestExposedBindingsTestValues`. See descriptions of those methods in GTMNSObject+!BindingUnitTest.h for details.
 
 =GTM HTTP !UnitTesting=
 For testing objects that interact with remote servers we supply GTMHTTPServer. GTMHTTPServer is probably not what you want to use for an industrial stength webserver, but it works great for easily testing protocols without requiring firing up a webserver in a separate process. See GTMHTTPFetcherTest.m for an example of how to use it effectively.
@@ -119,4 +119,3 @@ For checking things at compile time we have `_GTMCompileAssert`. This allows us 
 
 =Conclusion=
 We are always interested in other methods of verifying our code correctness. Please share any ideas you have with us, and we will be happy to introduce good ones to the GTM codebase. If you see places we have missed using any of our internal verification features, please log bugs, or even better send us patches. If you would like us to expand on any of the above documentation please let us know. Issues can be logged here. Please note that all of the above techniques are opensource, and feel free to use them in your own code to improve it. QA is an expensive commodity, and hopefully some of the code/techniques above will allow you to develop more robust code.
-
