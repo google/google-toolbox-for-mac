@@ -1487,7 +1487,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/TigerGcov",
+					"\"$(SRCROOT)/TigerGcov\"",
 				);
 				OTHER_LDFLAGS = "-lgcov";
 			};
