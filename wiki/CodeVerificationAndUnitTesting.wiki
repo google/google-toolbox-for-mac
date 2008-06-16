@@ -9,7 +9,7 @@ Google Toolbox For Mac (GTM) is extensively unittested. As of this writing we ha
 =GTM !UnitTesting Basics=
 At its base GTM uses the !SenTestingKit framework supplied with the Apple Development Tools. We have added significant enhancements though to aid in getting better code coverage, and faster issue resolution. The key files for the basic enhancements is GTMSenTestCase.m/.h. 
 
-Please use the following macros as appropriate instead of falling back on STAssertTrue/STAssertFalse. These macros will display far more information when an assert fails making debugging easier. For documentation on these asserts please see GTMSenTestCase.h
+Please use the following macros as appropriate instead of falling back on `STAssertTrue`/`STAssertFalse`. These macros will display far more information when an assert fails making debugging easier. For documentation on these asserts please see GTMSenTestCase.h
 
 {{{
 STAssertNoErr
@@ -29,7 +29,7 @@ STAssertEqualCStrings
 STAssertNotEqualCStrings
 }}}
 
-All GTM unit tests should inherit from GTMTestCase instead of !SenTestCase. GTMTestCase enables the ability to use log tracking and is required on iPhone for iPhone unittests to work correctly.
+All GTM unit tests should inherit from `GTMTestCase` instead of !SenTestCase. `GTMTestCase` enables the ability to use log tracking and is required on iPhone for iPhone unittests to work correctly.
 
 =GTM Log Tracking=
 When running unittests we want to exercise all the code we possibly can. Hopefully this means entering into areas of the code  where we have `_GTMDevLog` calls to indicate that this may not be expected in the normal flow of execution. This means when running unittests that we will get a screen full of log messages making it easy to miss an unexpected log that is indicating that something unexpected has occurred. GTM Log Tracking allows you to specify what logs you expect to fire during the execution of a unittest, and will error if you hit an unexpected log or if a log you expect to fire does not fire. Log tracking is optional and is not required to be turned on.
@@ -48,7 +48,7 @@ STAssertFalse([foo insertObject:obj], @"Should fail inserting invalid object");
 The log tracking system will now complain if it gets a log that doesn't match this regular expression, or if this expected log is never fired. 
 
 Important notes for everything to work well:
-  * Your test case classes must inherit from GTMTestCase for full functionality. Explicitly the ability to detect if an expected log is never fired.
+  * Your test case classes must inherit from `GTMTestCase` for full functionality. Explicitly the ability to detect if an expected log is never fired.
   * You must use `_GTMDevLog` calls to log. We will not catch `NSLog`, `fprintf`, or any other logging system unless you juryrig support yourself.
 
 =GTM UI !UnitTesting=
@@ -82,10 +82,10 @@ and
 By default calling `GTMTestExposedBindings` on your object that supports bindings will test all of bindings exposed by `-exposedBindings` with several interesting edge cases. For more extensive testing you may possibly want to implement `-gtm_unitTestExposedBindingsToIgnore` and `-gtm_unitTestExposedBindingsTestValues`. See descriptions of those methods in GTMNSObject+!BindingUnitTest.h for details.
 
 =GTM HTTP !UnitTesting=
-For testing objects that interact with remote servers we supply GTMHTTPServer. GTMHTTPServer is probably not what you want to use for an industrial stength webserver, but it works great for easily testing protocols without requiring firing up a webserver in a separate process. See GTMHTTPFetcherTest.m for an example of how to use it effectively.
+For testing objects that interact with remote servers we supply `GTMHTTPServer`. `GTMHTTPServer` is probably not what you want to use for an industrial stength webserver, but it works great for easily testing protocols without requiring firing up a webserver in a separate process. See GTMHTTPFetcherTest.m for an example of how to use it effectively.
 
 =GTM iPhone !UnitTesting=
-GTM supports all of the features described above on the iPhone if they are applicable. Specifically we support UI Unittesting, log tracking and all of the standard (and our additional) STMacros on the iPhone in both Simulator and Device mode. GTM does not support binding unittesting on the iPhone as NSBinding is not supported on the iPhone. To have your tests executed on the phone, make sure your iPhone application's delegate is GTMIPhoneUnitTestDelegate, or calls `[GTMIPhoneUnitTestDelegate runTests]` when you want your tests to execute. All of your tests should execute as you would expect.
+GTM supports all of the features described above on the iPhone if they are applicable. Specifically we support UI Unittesting, log tracking and all of the standard (and our additional) STMacros on the iPhone in both Simulator and Device mode. GTM does not support binding unittesting on the iPhone as NSBinding is not supported on the iPhone. To have your tests executed on the phone, make sure your iPhone application's delegate is `GTMIPhoneUnitTestDelegate`, or calls `[GTMIPhoneUnitTestDelegate runTests]` when you want your tests to execute. All of your tests should execute as you would expect.
 
 =GTM Code Coverage Analysis=
 GTM has code coverage targets that build with full gcov settings on. We then use [http://code.google.com/p/coverstory CoverStory] to look at our code coverage. In some small isolated cases it is impossible to reach blocks of code, and in these cases we allow the use of the [http://code.google.com/p/coverstory/wiki/NonFeasibleCode non-feasible code comments]. Please be prepared to defend your usage of them. In all cases we hope to have 100% code coverage, and this should be attainable with good design, thorough test cases, and minimal usage of [http://code.google.com/p/coverstory/wiki/NonFeasibleCode non-feasible code comments].
