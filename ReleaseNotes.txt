@@ -3,6 +3,12 @@ Google Toolbox for Mac Release Notes
 Project site:     http://code.google.com/p/google-toolbox-for-mac/
 Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 
+Release 1.5.1
+Changes since 1.5.0
+16-June-2008
+
+- Fixed building tiger gcov w/ a directory path that contains a space.
+
 
 Release 1.5.0
 Changes since 1.0.0
@@ -125,7 +131,8 @@ Changes since 1.0.0
 
 - Extracted GTMIPhoneUnitTestDelegate from GTMIPhoneUnitTestMain.m to its own
   file. Tests can now be run from another application.
-  
+
+
 Release 1.0.0
 14-January-2008
 
