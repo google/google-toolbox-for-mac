@@ -422,7 +422,7 @@ static NSString *const kReplacementPattern =
 
 - (NSString *)description {
   NSMutableString *result =
-    [NSMutableString stringWithFormat:@"%@<%p> { pattern=\"%@\", rawNumSubPatterns=%z, options=(",
+    [NSMutableString stringWithFormat:@"%@<%p> { pattern=\"%@\", rawNumSubPatterns=%zd, options=(",
       [self class], self, pattern_, regexData_.re_nsub];
   if (options_) {
     if (options_ & kGTMRegexOptionIgnoreCase)

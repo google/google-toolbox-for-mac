@@ -16,7 +16,6 @@
 //  the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
 #import <Foundation/Foundation.h>
 #import "GTMStackTrace.h"
 #import "GTMSenTestCase.h"

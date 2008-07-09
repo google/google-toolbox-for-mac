@@ -82,7 +82,7 @@ __attribute__ ((constructor, visibility("hidden"))) void GTMMethodCheckMethodChe
 
 #else // !DEBUG
 
-// Do nothing in debug
+// Do nothing in release.
 #define GTM_METHOD_CHECK(class, method)
 
 #endif  // DEBUG

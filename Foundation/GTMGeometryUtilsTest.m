@@ -179,7 +179,7 @@
   for (size_t i = 0; i < sizeof(tests) / sizeof(Test); ++i) {
     CGRect result = GTMCGScaleRectangleToSize(rect, tests[i].size_,
                                               GTMScaleProportionally);
-    STAssertEquals(result, GTMCGRectOfSize(tests[i].newSize_), @"failed on test %z", i);
+    STAssertEquals(result, GTMCGRectOfSize(tests[i].newSize_), @"failed on test %zd", i);
   }
   
   CGRect result = GTMCGScaleRectangleToSize(CGRectZero, tests[0].size_,

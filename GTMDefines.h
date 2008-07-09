@@ -35,6 +35,13 @@
 # define GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING 0
 #endif // GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING
 
+// By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and 
+// GTM_CONTAINERS_VALIDATION_FAILED_ASSERT macros you can control what happens
+// when a validation fails. If you implement your own validators, you may want
+// to control their internals using the same macros for consistency.
+#ifndef GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
+#define GTM_CONTAINERS_VALIDATION_FAILED_ASSERT 0
+#endif
 
 // _GTMDevLog & _GTMDevAssert
 //

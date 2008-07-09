@@ -14,11 +14,16 @@
 #  License for the specific language governing permissions and limitations under
 #  the License.
 #
-#  Runs all unittests through the iPhone simulator
+#  Runs all unittests through the iPhone simulator. We don't handle running them
+#  on the device. To run on the device just choose "run".
 
-export DYLD_ROOT_PATH="$SDKROOT"
-export DYLD_FRAMEWORK_PATH="$CONFIGURATION_BUILD_DIR"
-export IPHONE_SIMULATOR_ROOT="$SDKROOT"
-export CFFIXED_USER_HOME="$USER_LIBRARY_DIR/Application Support/iPhone Simulator/User"
-"$TARGET_BUILD_DIR/$EXECUTABLE_PATH" -RegisterForSystemEvents
+if [ "$IPHONEOS_DEPLOYMENT_TARGET" == "" ]; then
+  export DYLD_ROOT_PATH="$SDKROOT"
+  export DYLD_FRAMEWORK_PATH="$CONFIGURATION_BUILD_DIR"
+  export IPHONE_SIMULATOR_ROOT="$SDKROOT"
+  export CFFIXED_USER_HOME="$USER_LIBRARY_DIR/Application Support/iPhone Simulator/User"
+  "$TARGET_BUILD_DIR/$EXECUTABLE_PATH" -RegisterForSystemEvents
+else
+  echo "note: Skipping running of unittests for device build."
+fi
 exit 0

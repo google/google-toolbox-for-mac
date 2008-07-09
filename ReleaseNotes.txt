@@ -3,6 +3,39 @@ Google Toolbox for Mac Release Notes
 Project site:     http://code.google.com/p/google-toolbox-for-mac/
 Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 
+
+Release ?.?.?
+Changes since 1.5.1
+
+- Added GTMSignalHandler for simple signal handling (via kqueue/runloop).
+
+- Fixed up GTMIPhoneUnitTestDelegate to be pickier about which tests it runs
+
+- Added GTMNSString+URLArguments to GTMiPhone
+
+- Added GTMHTTPFetcher and GTMHTTPServer to GTMiPhone
+
+- Made sure that build would work with iPhone device attached, and that all 
+  tests run directly on the phone.
+  
+- Added GTMValidatingContainers which are a set of mutable container classes 
+  that allow you to have a selector on a target that is called to verify that 
+  the objects being put into the container are valid. This can be controlled 
+  at compile time so that you don't take the performance hit in a release build.
+
+- Added GTMPath, which represents an existing absolute path on the file system.
+  It also makes it very easy to contruct new paths in the file system as well
+  as whole directory hierarchies.
+
+- Added GTMNSString+Replace for a common replacement need.
+
+- Added NSString+FindFolder for two commen helpers for building paths to common
+  locations.
+
+- Added GTMLargeTypeWindow for doing display windows similar to Address Book
+  Large Type display for phone numbers.
+  
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008

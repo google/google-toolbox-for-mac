@@ -180,7 +180,7 @@ CG_INLINE CGFloat GTMCGDistanceBetweenPoints(CGPoint pt1, CGPoint pt2) {
 #endif
 }
 
-#if (TARGET_OS_MAC && !(TARGET_OS_EMBEDDED || TARGET_OS_IPHONE))
+#if !GTM_IPHONE_SDK
 // iPhone does not have NSTypes defined, only CGTypes. So no NSRect, NSPoint etc.
 
 #pragma mark -
@@ -429,4 +429,4 @@ CG_INLINE CGFloat GTMNSDistanceBetweenPoints(NSPoint pt1, NSPoint pt2) {
                                     GTMNSPointToCGPoint(pt2));
 }
 
-#endif //  (TARGET_OS_MAC && !(TARGET_OS_EMBEDDED || TARGET_OS_IPHONE))
+#endif //  !GTM_IPHONE_SDK
