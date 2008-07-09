@@ -31,6 +31,9 @@
 ///
 /// If you are building for 10.5 or later, you should just use the new api:
 ///  createDirectoryAtPath:withIntermediateDirectories:attributes:error:
+/// 
+/// Also if you need more control over the creation of paths and their
+/// attributes, look into using GTMPath.
 ///
 /// Args:
 ///   path - the path of the directory to create.

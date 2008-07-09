@@ -68,7 +68,8 @@ static int MethodSort(const void *a, const void *b) {
 // the default output.
 - (void)runTests {
   int count = objc_getClassList(NULL, 0);
-  Class *classes = (Class*)malloc(sizeof(Class) * count);
+  NSMutableData *classData = [NSMutableData dataWithLength:sizeof(Class) * count];
+  Class *classes = (Class*)[classData mutableBytes];
   _GTMDevAssert(classes, @"Couldn't allocate class list");
   objc_getClassList(classes, count);
   int suiteSuccesses = 0;
@@ -97,15 +98,44 @@ static int MethodSort(const void *a, const void *b) {
                     fixtureName);
       unsigned int methodCount;
       Method *methods = class_copyMethodList(currClass, &methodCount);
+      if (!methods) {
+        // If the class contains no methods, head on to the next class
+        NSString *output = [NSString stringWithFormat:@"Test Suite '%@' "
+                            "finished at %@.\nExecuted 0 tests, with 0 "
+                            "failures (0 unexpected) in 0 (0) seconds\n",
+                            fixtureName, fixtureStartDate];
+        
+        fputs([output UTF8String], stderr);
+        continue;
+      }
+      // This handles disposing of methods for us even if an
+      // exception should fly. 
+      [NSData dataWithBytesNoCopy:methods
+                           length:sizeof(Method) * methodCount];
       // Sort our methods so they are called in Alphabetical order just
       // because we can.
       qsort(methods, methodCount, sizeof(Method), MethodSort);
       for (size_t j = 0; j < methodCount; ++j) {
         Method currMethod = methods[j];
         SEL sel = method_getName(currMethod);
+        char *returnType = NULL;
         const char *name = sel_getName(sel);
-        // If it starts with test, run it.
+        // If it starts with test, takes 2 args (target and sel) and returns
+        // void run it.
         if (strstr(name, "test") == name) {
+          returnType = method_copyReturnType(currMethod);
+          if (returnType) {
+            // This handles disposing of returnType for us even if an
+            // exception should fly. Length +1 for the terminator, not that
+            // the length really matters here, as we never reference inside
+            // the data block.
+            [NSData dataWithBytesNoCopy:returnType
+                                 length:strlen(returnType) + 1];
+          }
+        }
+        if (returnType  // True if name starts with "test"
+            && strcmp(returnType, @encode(void)) == 0
+            && method_getNumberOfArguments(currMethod) == 2) {
           fixtureTotal += 1;
           BOOL failed = NO;
           NSDate *caseStartDate = [NSDate date];
@@ -126,9 +156,6 @@ static int MethodSort(const void *a, const void *b) {
           fputs([caseEndString UTF8String], stderr);
           fflush(stderr);
         }
-      }
-      if (methods) {
-        free(methods);
       }
       [testcase release];
       NSDate *fixtureEndDate = [NSDate date];

@@ -66,7 +66,9 @@ BOOL GTMIsObjectImageEqualToImageNamed(id object,
       if (isGood) {
         isGood = [object gtm_compareWithImageAt:aPath diffImage:&diff];
       }
-      if (!isGood) {
+      if (isGood) {
+        CGImageRelease(diff);
+      } else {
         if (aPath) {
           filename = [filename stringByAppendingString:@"_Failed"];
         }
@@ -869,7 +871,10 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
       CFRelease(fileContext);
       free(imageData);
       CFRelease(imageContext);
-    } 
+    } else {
+      CFRelease(fileContext);
+      CFRelease(imageContext);
+    }
     CFRelease(imageRep);
     CFRelease(fileRep);
   }

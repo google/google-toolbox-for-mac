@@ -31,6 +31,10 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+#if GTM_IPHONE_SDK
+#import <CFNetwork/CFNetwork.h>
+#endif // GTM_IPHONE_SDK
+
 // Global contants needed for errors from start
 
 #undef _EXTERN
