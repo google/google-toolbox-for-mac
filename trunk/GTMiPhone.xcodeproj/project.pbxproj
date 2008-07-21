@@ -39,7 +39,7 @@
 		8B41EC100E0711D40040CF9F /* GTMValidatingContainers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B41EC0D0E0711D40040CF9F /* GTMValidatingContainers.m */; };
 		8B5547CA0DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */; };
 		8B5547CB0DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */; };
-		8B7DCEAA0DFF4C760017E983 /* GTMDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLog.m */; };
+		8B7DCEAA0DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */; };
 		8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */; };
 		8BC0480F0DAE928A00C2D1CA /* GTMCalculatedRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */; };
 		8BC048100DAE928A00C2D1CA /* GTMCalculatedRangeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047790DAE928A00C2D1CA /* GTMCalculatedRangeTest.m */; };
@@ -112,7 +112,7 @@
 		8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIKit+UnitTesting.m"; sourceTree = "<group>"; };
 		8B5547C80DB3BBF20014CC1C /* GTMUIKit+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIKit+UnitTesting.h"; sourceTree = "<group>"; };
 		8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIKit+UnitTestingTest.m"; sourceTree = "<group>"; };
-		8B7DCEA90DFF4C760017E983 /* GTMDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDevLog.m; sourceTree = "<group>"; };
+		8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDevLogUnitTestingBridge.m; sourceTree = "<group>"; };
 		8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUnitTestDevLog.h; sourceTree = "<group>"; };
 		8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestDevLog.m; sourceTree = "<group>"; };
 		8BC047750DAE926E00C2D1CA /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
@@ -290,7 +290,6 @@
 			isa = PBXGroup;
 			children = (
 				8BC0479B0DAE928A00C2D1CA /* GTMDebugSelectorValidation.h */,
-				8B7DCEA90DFF4C760017E983 /* GTMDevLog.m */,
 				8BC0479C0DAE928A00C2D1CA /* GTMMethodCheck.h */,
 				8BC0479D0DAE928A00C2D1CA /* GTMMethodCheck.m */,
 				8BC0479E0DAE928A00C2D1CA /* GTMMethodCheckTest.m */,
@@ -301,6 +300,7 @@
 		8BC0479F0DAE928A00C2D1CA /* UnitTesting */ = {
 			isa = PBXGroup;
 			children = (
+				8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */,
 				8B3AA9270E033647007E31B5 /* GTMTestHTTPServer.h */,
 				8B3AA9280E033647007E31B5 /* GTMTestHTTPServer.m */,
 				8BC047A00DAE928A00C2D1CA /* GTMCALayer+UnitTesting.h */,
@@ -460,7 +460,7 @@
 				F439ADEC0DBD3C0000BE9B91 /* GTMBase64Test.m in Sources */,
 				F439ADF00DBD3C4000BE9B91 /* GTMGeometryUtils.m in Sources */,
 				F439ADF10DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m in Sources */,
-				8B7DCEAA0DFF4C760017E983 /* GTMDevLog.m in Sources */,
+				8B7DCEAA0DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m in Sources */,
 				8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */,
 				67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */,
 				8B3AA8F30E032FC7007E31B5 /* GTMNSString+URLArguments.m in Sources */,

@@ -248,6 +248,7 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
   SEL failedSEL_;                   // should be implemented by delegate
   SEL receivedDataSEL_;             // optional, set with setReceivedDataSelector
   id userData_;                     // retained, if set by caller
+  NSMutableDictionary *properties_; // more data retained for caller
   NSArray *runLoopModes_;           // optional, for 10.5 and later
   NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
@@ -428,6 +429,13 @@ typedef NSUInteger GTMHTTPFetcherCookieStorageMethod;
 /// userData is retained for the convenience of the caller
 - (id)userData;
 - (void)setUserData:(id)theObj;
+
+// properties are retained for the convenience of the caller
+- (void)setProperties:(NSDictionary *)dict;
+- (NSDictionary *)properties;
+
+- (void)setProperty:(id)obj forKey:(NSString *)key; // pass nil obj to remove property
+- (id)propertyForKey:(NSString *)key;
 
 // using the fetcher while a modal dialog is displayed requires setting the
 // run-loop modes to include NSModalPanelRunLoopMode

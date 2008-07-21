@@ -108,7 +108,8 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   
   NSString *urlString = [self fileURLStringToTestFileName:kValidFileName];
   
-  [self doFetchWithURLString:urlString cachingDatedData:YES];
+  GTMHTTPFetcher *fetcher =
+    [self doFetchWithURLString:urlString cachingDatedData:YES];
   
   STAssertNotNil(fetchedData_,
                  @"failed to fetch data, status:%ld error:%@, URL:%@",
@@ -138,6 +139,21 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   NSString *cookieExpected = [NSString stringWithFormat:@"TestCookie=%@",
     kValidFileName];
   STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
+  
+  // test properties
+  NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    @"val1", @"key1", @"val2", @"key2", nil];
+  [fetcher setProperties:dict];
+  STAssertEqualObjects([fetcher properties], dict, @"properties as dictionary");
+  STAssertEqualObjects([fetcher propertyForKey:@"key2"], @"val2", 
+                      @"single property");
+  
+  NSDictionary *dict2 = [NSDictionary dictionaryWithObjectsAndKeys:
+    @"valx1", @"key1", @"val3", @"key3", nil];
+  [fetcher setProperty:@"valx1" forKey:@"key1"];
+  [fetcher setProperty:nil forKey:@"key2"];
+  [fetcher setProperty:@"val3" forKey:@"key3"];
+  STAssertEqualObjects([fetcher properties], dict2, @"property changes");
 
   // make a copy of the fetched data to compare with our next fetch from the
   // cache

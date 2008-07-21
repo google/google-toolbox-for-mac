@@ -35,6 +35,24 @@ Changes since 1.5.1
 - Added GTMLargeTypeWindow for doing display windows similar to Address Book
   Large Type display for phone numbers.
   
+- Removed GTMNSWorkspace+ScreenSaver as it has always been a little dodgy due
+  to it's dependencies on undocumented frameworks, and the ScreenSaver
+  framework doesn't play nicely in GC mode.
+  
+- Added property methods to GTMHTTPFetcher.  These are convenient alternatives
+  to storing an NSDictionary in the userData.
+
+- Renamed GTMDevLog.m to GTMDevLogUnitTestingBridge.m and added some more
+  comments where it comes into play to hopefully make it more clear that it
+  isn't needed in most cases.
+
+- Fixed a potential GTMHTTPFetcher crash on failed authentication.
+  
+- Added a obj-c logging package, GTMLogger, for applications that want an
+  application level logging system.  See GTMLogger.h, GTMLogger+ASL.h, and
+  GTMLoggerRingBufferWriter.h for what the basic system and two optional
+  additions can do.
+
 
 Release 1.5.1
 Changes since 1.5.0
