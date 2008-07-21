@@ -147,7 +147,7 @@ static const char kWebSafeBase64DecodeChars[] = {
 };
 
 
-// Tests a charact to see if it's a whitespace character.
+// Tests a character to see if it's a whitespace character.
 //
 // Returns:
 //   YES if the character is a whitespace character.
@@ -203,7 +203,7 @@ FOUNDATION_STATIC_INLINE NSUInteger CalcEncodedLength(NSUInteger srcLen,
 }
 
 // Tries to calculate how long the data will be once it's base64 decoded.
-// Unlinke the above, this is always an upperbound, since the source data
+// Unlike the above, this is always an upperbound, since the source data
 // could have spaces and might end with the padding characters on them.
 //
 // Returns:

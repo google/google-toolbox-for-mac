@@ -179,7 +179,7 @@ do { \
   }\
 } while(0)
 
-// Generates a failure when a1 is unequal to a2. This test is for C scalars, 
+// Generates a failure when a1 is equal to a2. This test is for C scalars, 
 // structs and unions.
 //  Args:
 //    a1: argument 1

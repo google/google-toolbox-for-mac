@@ -32,13 +32,16 @@
 - (void)foo;
 @end
 
-@interface GTMVCValidatorTests : GTMTestCase {
+@interface GTMVCValidatingTests : GTMTestCase {
   GTMVCTestClass *testClass_;
   GTMVCTestSubClass *testSubClass_;
 }
+@end
+
+@interface GTMVCValidatorTests : GTMVCValidatingTests
 @end 
 
-@interface GTMVCContainerTests : GTMVCValidatorTests {
+@interface GTMVCContainerTests : GTMVCValidatingTests {
   GTMConformsToProtocolValidator *validator_;
   SEL selector_;
 }
@@ -88,7 +91,8 @@
 }
 @end
 
-@implementation GTMVCValidatorTests
+@implementation GTMVCValidatingTests
+
 - (void)setUp {
   [super setUp];
   testClass_ = [[GTMVCTestClass alloc] init];
@@ -100,6 +104,10 @@
   [testSubClass_ release];
   [super tearDown];
 }
+
+@end
+
+@implementation GTMVCValidatorTests
 
 - (void)testKindOfClassValidator {
 #if GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT

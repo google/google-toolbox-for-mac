@@ -112,6 +112,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   [loggedStreamData_ release];
   [response_ release];
   [userData_ release];
+  [properties_ release];
   [runLoopModes_ release];
   [fetchHistory_ release];
   [self destroyRetryTimer];
@@ -507,13 +508,13 @@ CannotBeginFetch:
     } 
   }
   
-  // If we don't have credentials, or we've already failed auth 3x...
-  [[challenge sender] cancelAuthenticationChallenge:challenge];
-  
+  // If we don't have credentials, or we've already failed auth 3x, give up and
   // report the error, putting the challenge as a value in the userInfo
   // dictionary
+  // Store the challenge first to ensure that it lives past being cancelled.
   NSDictionary *userInfo = [NSDictionary dictionaryWithObject:challenge
                                                        forKey:kGTMHTTPFetcherErrorChallengeKey];
+  [[challenge sender] cancelAuthenticationChallenge:challenge];
   
   NSError *error = [NSError errorWithDomain:kGTMHTTPFetcherErrorDomain
                                        code:kGTMHTTPFetcherErrorAuthenticationChallengeFailed
@@ -999,6 +1000,28 @@ CannotBeginFetch:
 - (void)setUserData:(id)theObj {
   [userData_ autorelease]; 
   userData_ = [theObj retain];
+}
+
+- (void)setProperties:(NSDictionary *)dict {
+  [properties_ autorelease];
+  properties_ = [dict mutableCopy];
+}
+
+- (NSDictionary *)properties {
+  return properties_;
+}
+
+- (void)setProperty:(id)obj forKey:(NSString *)key {
+  
+  if (properties_ == nil && obj != nil) {
+    properties_ = [[NSMutableDictionary alloc] init];
+  }
+  
+  [properties_ setValue:obj forKey:key];
+}
+
+- (id)propertyForKey:(NSString *)key {
+  return [properties_ objectForKey:key];
 }
 
 - (NSArray *)runLoopModes {

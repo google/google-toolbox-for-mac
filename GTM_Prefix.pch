@@ -30,7 +30,8 @@
   #endif
   // This turns on unit test logging so that we can track unittests if we are
   // doing them. See GTMUnitTestDevLog.h for details.
-  #define _GTMDevLog _GTMUnittestDevLog
+  // (_GTMUnitTestDevLog comes from GTMDevLogUnitTestingBridge.m)
+  #define _GTMDevLog _GTMUnitTestDevLog
 #endif
 
 

@@ -1,5 +1,5 @@
 //
-//  GTMDevLog.m
+//  GTMDevLogUnitTestingBridge.m
 //  
 //  Copyright 2008 Google Inc.
 //
@@ -18,10 +18,20 @@
 
 #include "GTMUnitTestDevLog.h"
 
-// This is the logging function that is called by default when building
-// GTMFramework. If it can find GTMUnitTestDevLog class it will use it, 
-// otherwise it falls onto NSLog.
-void _GTMUnittestDevLog(NSString *format, ...) {
+//
+// NOTE: Odds are this file should not be included in your project.  It is
+// only needed for some enhanced unit testing.
+//
+// By adding:
+//    #define _GTMDevLog _GTMUnitTestDevLog
+// to your prefix header (like the GTM Framework does), this function then
+// works to forward logging messages to the GTMUnitTestDevLog class to
+// allow logging validation during unittest, otherwise the messages go to
+// NSLog like normal.
+//
+// See GTMUnitTestDevLog.h for more information on checking logs in unittests.
+//
+void _GTMUnitTestDevLog(NSString *format, ...) {
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   va_list argList;
   va_start(argList, format);

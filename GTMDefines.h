@@ -76,7 +76,7 @@
 // Declared here so that it can easily be used for logging tracking if
 // necessary. See GTMUnitTestDevLog.h for details.
 @class NSString;
-extern void _GTMUnittestDevLog(NSString *format, ...);
+extern void _GTMUnitTestDevLog(NSString *format, ...);
 
 #ifndef _GTMDevAssert
 // we directly invoke the NSAssert handler so we can pass on the varargs
