@@ -11,6 +11,7 @@ Hopefully your project already has an application target for building something 
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestMain.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.m` to your target
+  # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your target
   # Add `google-toolbox-for-mac/GTMDefines.h` to your target
   # Add a new 'run script' build phase as the last step of your target build via "Project Menu > New Build Phase > New Run Script Build Phase", and dragging it to the end of the build steps if needed.
   # Edit your Run Script Build Phase by double clicking it, and set the script to `"PATH_TO_GTM/UnitTesting/RunIPhoneUnitTest.sh"`, where PATH_TO_GTM is the path to your local version of google-toolbox-for-mac.
