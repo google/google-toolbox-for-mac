@@ -10,6 +10,7 @@ Hopefully your project already has an application target for building something 
   # Create a new iPhone Target (Cocoa Touch Application) via "Project Menu > New Target...". Choose a name that makes some sense such as "Unit Test".
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestMain.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.m` to your target
+  # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.h` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your target
   # Add `google-toolbox-for-mac/GTMDefines.h` to your target
