@@ -35,7 +35,7 @@ Now when you build your target you should now see test cases executing.
 
 = Advanced Stuff =
 
-== Unittest Logging ==
+== Unit test Logging ==
 When Unittesting is done correctly, you often have a lot of log messages logging because you are testing edge cases that you may not expect to hit in the real world very often. It's nice to be able to verify that the log messages you are receiving as you run your tests are the ones that you expect to receive. You can do this in GTM by enabling unit test logging.
 
   # Assuming you are using `_GTMDevLog` to do your logging,`#define _GTMDevLog _GTMUnittestDevLog` somewhere, either in target settings, or in your prefix. If you are using NSLog you can just define it to be `_GTMUnittestDevLog`.
