@@ -1,9 +1,9 @@
-#summary How to do iPhone unittesting
+#summary How to do iPhone unit testing
 #labels Phase-Deploy,Featured
 
 = Introduction =
 
-This is a quick tutorial on doing iPhone unittesting using the facilities in the Google Toolbox For Mac. Please send mail to [http://groups.google.com/group/google-toolbox-for-mac the group] if any clarification is required. 
+This is a quick tutorial on doing iPhone unit testing using the facilities in the Google Toolbox For Mac. Please send mail to [http://groups.google.com/group/google-toolbox-for-mac the group] if any clarification is required. 
 
 = Basic Project Setup =
 Hopefully your project already has an application target for building something for the iPhone.
@@ -21,7 +21,7 @@ Your target should now build cleanly, and if you check the build log you should 
 
 = Creating a unit test =
   # Add the source you want to test to your target. For example if you want to test class Foo, make sure to add Foo.h and Foo.m to your target.
-  # Add a new unittest file to your target via "File > New File" and choose "Objective-C test case class" from the "Mac OS X" Cocoa category. Call it `FooTest.m`, or follow whatever convention your project has for naming test classes.
+  # Add a new unit test file to your target via "File > New File" and choose "Objective-C test case class" from the "Mac OS X" Cocoa category. Call it `FooTest.m`, or follow whatever convention your project has for naming test classes.
   # In `FooTest.h`, change `#import <SenTestingKit/SenTestingKit.h>` to `#import "GTMSenTestCase.h"`
   # Add test cases as you normally would. See [http://developer.apple.com/tools/unittest.html Apple's Documentation] for a good tutorial on how to test in Objective C. The key is that your test case methods are declared `- (void)testBar`. The name must start with "test" and they must return nothing and have no arguments.
  
@@ -35,7 +35,7 @@ Now when you build your target you should now see test cases executing.
 = Advanced Stuff =
 
 == Unittest Logging ==
-When Unittesting is done correctly, you often have a lot of log messages logging because you are testing edge cases that you may not expect to hit in the real world very often. It's nice to be able to verify that the log messages you are receiving as you run your tests are the ones that you expect to receive. You can do this in GTM by enabling unittest logging.
+When Unittesting is done correctly, you often have a lot of log messages logging because you are testing edge cases that you may not expect to hit in the real world very often. It's nice to be able to verify that the log messages you are receiving as you run your tests are the ones that you expect to receive. You can do this in GTM by enabling unit test logging.
 
   # Assuming you are using `_GTMDevLog` to do your logging,`#define _GTMDevLog _GTMUnittestDevLog` somewhere, either in target settings, or in your prefix. If you are using NSLog you can just define it to be `_GTMUnittestDevLog`.
   # Add `google-toolbox-for-mac/DebugUtils/GTMDevLog.m` to your target.
@@ -43,7 +43,7 @@ When Unittesting is done correctly, you often have a lot of log messages logging
   # Add `google-toolbox-for-mac/Foundation/GTMRegex.m` to your target.
   # You may also need to add some headers depending on your search paths
 
-Now when you build all of the logging that you do via your unittests will get checked to make sure that it conforms with your expectations. You set up these expectations before running your tests using `[GTMUnitTestDevLog expect*]` methods. See `GTMUnitTestDevLog.h` for more info.
+Now when you build all of the logging that you do via your unit tests will get checked to make sure that it conforms with your expectations. You set up these expectations before running your tests using `[GTMUnitTestDevLog expect*]` methods. See `GTMUnitTestDevLog.h` for more info.
 
 == UI and State Testing ==
 GTM can also help you test your UI's representation and state.
