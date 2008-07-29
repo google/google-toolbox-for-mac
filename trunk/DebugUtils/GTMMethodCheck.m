@@ -86,7 +86,7 @@ void GTMMethodCheckMethodChecker(void) {
     _GTMDevAssert(classes, @"Unable to allocate memory for classes");
     newNumClasses = objc_getClassList(classes, numClasses);
   }
-  for (i = 0; i < numClasses; ++i) {
+  for (i = 0; i < numClasses && classes; ++i) {
     Class cls = classes[i];
     
     // Since we are directly calling objc_msgSend, we need to conform to 

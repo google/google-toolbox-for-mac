@@ -93,8 +93,10 @@
   if ((self = [super init])) {
     client_ = asl_open(NULL, NULL, 0);
     if (client_ == nil) {
+      // COV_NF_START - no real way to test this
       [self release];
       return nil;
+      // COV_NF_END
     }
   }
   return self;

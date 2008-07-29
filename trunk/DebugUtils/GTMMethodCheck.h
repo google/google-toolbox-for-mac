@@ -70,7 +70,7 @@ __attribute__ ((constructor, visibility("hidden"))) void GTMMethodCheckMethodChe
 //    look for GTMMethodCheckMethodChecker to enforce linkage of
 //    GTMMethodCheck.m.
 #define GTM_METHOD_CHECK_INNER_INNER(class, method, line) \
-+ (void)xxGMMethodCheckMethod ## class ## line { \
++ (void)xxGTMMethodCheckMethod ## class ## line { \
   void (*addr)() = GTMMethodCheckMethodChecker; \
   if (addr && ![class instancesRespondToSelector:@selector(method)] \
       && ![class respondsToSelector:@selector(method)]) { \

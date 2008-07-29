@@ -117,7 +117,7 @@
     [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:32
                                                      writer:countingWriter_];
   STAssertEquals([writer capacity], 32, nil);
-  STAssertEquals([writer writer], countingWriter_, nil);
+  STAssertTrue([writer writer] == countingWriter_, nil);
   STAssertEquals([writer count], 0, nil);
   STAssertEquals([writer droppedLogCount], 0, nil);
   STAssertEquals([writer totalLogged], 0, nil);

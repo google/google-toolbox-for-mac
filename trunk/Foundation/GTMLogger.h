@@ -43,9 +43,6 @@
 //   certain text, or filter nothing out at all. This gives the caller the
 //   flexibility to dynamically enable debug logging in Release builds.
 //
-// A class diagram showing the relationship between these key abstractions can
-// be found at: http://www.corp.google.com/eng/designdocs/maceng/GTMLogger.png
-// 
 // This file also declares some classes to handle the common log writer, log
 // formatter, and log filter cases. Callers can also create their own writers, 
 // formatters, and filters and they can even build them on top of the ones
