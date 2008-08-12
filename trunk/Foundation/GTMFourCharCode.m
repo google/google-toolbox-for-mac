@@ -25,7 +25,7 @@
 @implementation GTMFourCharCode
 
 + (id)stringWithFourCharCode:(FourCharCode)code {
-  return [GTMNSMakeCollectable(UTCreateStringForOSType(code)) autorelease];
+  return GTMCFAutorelease(UTCreateStringForOSType(code));
 }
 
 + (id)fourCharCodeWithString:(NSString*)string {
@@ -88,7 +88,7 @@
 }
 
 - (NSString*)stringValue {
-  return [GTMNSMakeCollectable(UTCreateStringForOSType(code_)) autorelease];
+  return GTMCFAutorelease(UTCreateStringForOSType(code_));
 }
 
 - (NSNumber*)numberValue {

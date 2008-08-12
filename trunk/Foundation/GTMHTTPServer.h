@@ -62,7 +62,7 @@ enum {
 // See comment at top of file for the intened use of this class.
 @interface GTMHTTPServer : NSObject {
  @private
-  id delegate_;
+  __weak id delegate_;
   uint16_t port_;
   BOOL localhostOnly_;
   NSFileHandle *listenHandle_;

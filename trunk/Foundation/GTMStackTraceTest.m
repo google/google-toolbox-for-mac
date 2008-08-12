@@ -35,9 +35,13 @@
                    @"stack trace must have < 25 lines");
   
   NSString *firstFrame = [stacklines objectAtIndex:0];
-  NSRange range = [firstFrame rangeOfString:@"GTMStackTrace"];
+  NSRange range = [firstFrame rangeOfString:@"testStackTraceBasic"];
   STAssertNotEquals(range.location, (NSUInteger)NSNotFound,
-                    @"First frame should contain GTMStackTrace, stack trace: %@",
+                    @"First frame should contain testStackTraceBasic,"
+                    " stack trace: %@", stacktrace);
+  range = [firstFrame rangeOfString:@"#0"];
+  STAssertNotEquals(range.location, (NSUInteger)NSNotFound,
+                    @"First frame should contain #0, stack trace: %@", 
                     stacktrace);
 }
 

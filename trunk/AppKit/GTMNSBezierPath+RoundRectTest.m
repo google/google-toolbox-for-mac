@@ -1,5 +1,5 @@
 //
-//  NSBezierPath+RoundRectTest.m
+//  GTMNSBezierPath+RoundRectTest.m
 //
 //  Copyright 2006-2008 Google Inc.
 //
@@ -28,7 +28,7 @@
 @implementation GTMNSBezierPath_RoundRectTest
 
 - (void)testRoundRects {
-  GTMAssertDrawingEqualToImageNamed(self, NSMakeSize(330, 430), 
+  GTMAssertDrawingEqualToImageNamed(self, NSMakeSize(490, 430), 
                                     @"GTMNSBezierPath+RoundRectTest", nil, nil);
 }
 
@@ -39,7 +39,8 @@
     NSMakeRect(50.0, 10.0, 30.0, 30.0), //Square Test
     NSMakeRect(100.0, 10.0, 1.0, 2.0), //Small Test
     NSMakeRect(120.0, 10.0, 15.0, 20.0), //Medium Test
-    NSMakeRect(140.0, 10.0, 150.0, 30.0)  //Large Test
+    NSMakeRect(140.0, 10.0, 150.0, 30.0),  //Large Test
+    NSMakeRect(300.0, 10.0, 150.0, 30.0)  //Large Test 2 (for different radius)
   };
   const NSUInteger theRectCount = sizeof(theRects) / sizeof(NSRect);
   
@@ -50,8 +51,9 @@
   
   for (i = 0; i < theLineWidthCount; ++i) {
     for (j = 0; j < theRectCount; ++j) {
+      CGFloat cornerRadius = ( (j < (theRectCount - 1)) ? 20.0 : 0.0 );
       NSBezierPath *roundRect = [NSBezierPath gtm_bezierPathWithRoundRect:theRects[j] 
-                                                             cornerRadius:20.0];
+                                                             cornerRadius:cornerRadius];
       [roundRect setLineWidth: theLineWidths[i]];
       [roundRect stroke];
       CGFloat newWidth = 35.0;
@@ -71,8 +73,9 @@
   
   for (i = 0; i < theColorCount; ++i) {
     for (j = 0; j < theRectCount; ++j) {
+      CGFloat cornerRadius = ( (j < (theRectCount - 1)) ? 10.0 : 0.0 );
       NSBezierPath *roundRect = [NSBezierPath gtm_bezierPathWithRoundRect:theRects[j] 
-                                                             cornerRadius:10.0];
+                                                             cornerRadius:cornerRadius];
       [theColors[i] setFill];
       [roundRect fill];
       theRects[j].origin.y += 35.0;
@@ -85,8 +88,9 @@
   
   for (i = 0; i < theFlatnessCount; i++) {
     for (j = 0; j < theRectCount; ++j) {
+      CGFloat cornerRadius = ( (j < (theRectCount - 1)) ? 6.0 : 0.0 );
       NSBezierPath *roundRect = [NSBezierPath gtm_bezierPathWithRoundRect:theRects[j] 
-                                                             cornerRadius:6.0];
+                                                             cornerRadius:cornerRadius];
       [roundRect setFlatness:theFlatness[i]];
       [roundRect stroke];
       theRects[j].origin.y += 35.0;

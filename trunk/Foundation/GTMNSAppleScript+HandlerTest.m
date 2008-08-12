@@ -1,5 +1,5 @@
 //
-//  NSAppleScript+HandlerTest.m
+//  GTMNSAppleScript+HandlerTest.m
 //
 //  Copyright 2008 Google Inc.
 //
@@ -21,6 +21,9 @@
 #import "GTMNSAppleScript+Handler.h"
 #import "GTMNSAppleEventDescriptor+Foundation.h"
 #import "GTMUnitTestDevLog.h"
+#import "GTMGarbageCollection.h"
+#import "GTMSystemVersion.h"
+#import "GTMFourCharCode.h"
 
 @interface GTMNSAppleScript_HandlerTest : GTMTestCase {
   NSAppleScript *script_; 
@@ -28,16 +31,34 @@
 @end
 
 @implementation GTMNSAppleScript_HandlerTest
+- (void)invokeTest {
+  // NOTE: These tests are disabled in GC is on.  See the comment/warning in the
+  // GTMNSAppleScript+Handler.h for more details, but we disable them to avoid
+  // the tests failing (crashing) when it's Apple's bug. Please bump the system
+  // check as appropriate when new systems are tested. Currently broken on
+  // 10.5.4 and below. Radar 6126682.
+  long major, minor, bugfix;
+  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
+  if (!(GTMIsGarbageCollectionEnabled() 
+        && major <= 10 && minor <= 5 && bugfix <= 4)) {
+    [super invokeTest];
+  } else {
+    NSLog(@"--- %@ NOT run because of GC incompatibilites ---", [self name]);
+  }
+}
+
 - (void)setUp {
-  NSBundle *bundle = [NSBundle bundleForClass:[GTMNSAppleScript_HandlerTest class]];
+  NSBundle *bundle
+    = [NSBundle bundleForClass:[GTMNSAppleScript_HandlerTest class]];
   STAssertNotNil(bundle, nil);
   NSString *path = [bundle pathForResource:@"GTMNSAppleEvent+HandlerTest" 
                                     ofType:@"scpt"
                                inDirectory:@"Scripts"];
   STAssertNotNil(path, [bundle description]);
   NSDictionary *error = nil;
-  script_ = [[NSAppleScript alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]
-                                                   error:&error];
+  script_ 
+    = [[NSAppleScript alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]
+                                             error:&error];
   STAssertNotNil(script_, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
 }
@@ -45,6 +66,30 @@
 - (void)tearDown {
   [script_ release];
   script_ = nil;
+}
+
+- (void)testExecuteAppleEvent {
+  NSString *source = @"on test()\nreturn 1\nend test";
+  NSAppleScript *script 
+    = [[[NSAppleScript alloc] initWithSource:source] autorelease];
+  STAssertNotNil(script, nil);
+  NSDictionary *error = nil;
+  NSAppleEventDescriptor *desc = [script gtm_executePositionalHandler:@"test" 
+                                                           parameters:nil 
+                                                                error:&error];
+  STAssertNotNil(desc, [error description]);
+  STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
+  STAssertEquals([desc gtm_objectValue], [NSNumber numberWithInt:1], nil);
+  
+  // bogus script
+  source = @"adf872345ba asdf asdf gr";
+  script = [[[NSAppleScript alloc] initWithSource:source] autorelease];
+  STAssertNotNil(script, nil);
+  desc = [script gtm_executePositionalHandler:@"test" 
+                                   parameters:nil 
+                                        error:&error];
+  STAssertNil(desc, nil);
+  STAssertNotNil(error, @"Error should not be nil");
 }
 
 - (void)testHandlerNoParamsNoReturn {
@@ -73,9 +118,10 @@
   
 - (void)testHandlerNoParamsWithReturn {
   NSDictionary *error = nil;
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testReturnOne" 
-                                                            parameters:nil 
-                                                                 error:&error];
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executePositionalHandler:@"testReturnOne" 
+                                 parameters:nil 
+                                      error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
   STAssertEquals([desc descriptorType], (DescType)typeSInt32, nil);
@@ -101,9 +147,10 @@
 - (void)testHandlerOneParamWithReturn {
   NSDictionary *error = nil;
   // Note case change in executeHandler call
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testreturnParam" 
-                                                            parameters:nil 
-                                                                error:&error];
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executePositionalHandler:@"testreturnParam" 
+                                 parameters:nil 
+                                      error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
   error = nil;
@@ -128,9 +175,10 @@
   NSDictionary *error = nil;
   // Note case change in executeHandler call
   // Test case and empty params
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"testADDPArams" 
-                                                            parameters:nil 
-                                                                 error:&error];
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executePositionalHandler:@"testADDPArams" 
+                                 parameters:nil 
+                                      error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
   STAssertNotNil(error, nil);
   
@@ -193,10 +241,11 @@
   params[2] = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4] 
                                           forKey:@"othervalue"];
   
-  NSAppleEventDescriptor *desc = [script_ gtm_executeLabeledHandler:@"testAdd" 
-                                                             labels:labels
-                                                         parameters:params
-                                                              count:sizeof(params) / sizeof(id)
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executeLabeledHandler:@"testAdd" 
+                                  labels:labels
+                              parameters:params
+                                   count:sizeof(params) / sizeof(id)
                                                               error:&error];
   STAssertNotNil(desc, [error description]);
   STAssertNil(error, @"Error should be nil. Error = %@", [error description]);
@@ -235,39 +284,136 @@
                      @"testreturnparam",
                      @"testaddparams",
                      @"testadd",
+                     @"testgetscript",
                      nil];
   STAssertEqualObjects(handlers, expected, @"Unexpected handlers?");
 }
 
+- (void)testInheritedHandlers {
+  NSDictionary *error = nil;
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executePositionalHandler:@"testGetScript" 
+                                 parameters:nil 
+                                      error:&error];
+  STAssertNil(error, nil);
+  STAssertNotNil(desc, nil);
+  NSAppleScript *script = [desc gtm_objectValue];
+  STAssertTrue([script isKindOfClass:[NSAppleScript class]], nil);
+  error = nil;
+  desc = [script gtm_executePositionalHandler:@"parentTestScriptFunc"
+                                   parameters:nil error:&error];
+  STAssertNil(error, nil);
+  STAssertNotNil(desc, nil);
+  NSString *value = [desc gtm_objectValue];
+  STAssertEqualObjects(value, @"parent", nil);
+}
+
 - (void)testProperties {
-  NSSet *properties = [script_ gtm_properties];
-  NSSet *expected = [NSSet setWithObjects:
-                     @"foo", 
-                     @"asdscriptuniqueidentifier", 
-                     nil];
+  NSDictionary *error = nil;
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executePositionalHandler:@"testGetScript" 
+                                 parameters:nil 
+                                      error:&error];
+  STAssertNil(error, nil);
+  STAssertNotNil(desc, nil);
+  NSAppleScript *script = [desc gtm_objectValue];
+  STAssertTrue([script isKindOfClass:[NSAppleScript class]], nil);
+  
+  NSSet *properties = [script gtm_properties];
+  NSSet *expected 
+    = [NSSet setWithObjects:
+       @"testscriptproperty", 
+       @"parenttestscriptproperty", 
+       @"foo",
+       @"testscript",
+       @"parenttestscript",
+       @"asdscriptuniqueidentifier",
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pVersion],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASPrintDepth],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASTopLevelScript],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASResult],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASMinutes],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASDays],
+       // No constant for linefeed in the 10.5 sdk
+       // Radar 6132775 Need a constant for the Applescript Property 'lnfd'
+       [GTMFourCharCode fourCharCodeWithFourCharCode:'lnfd'],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASPi],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASReturn],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASSpace],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASPrintLength],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASQuote],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASWeeks],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pTextItemDelimiters],
+       // Applescript properties should be pASSeconds, but
+       // on 10.5.4 it is actually using cSeconds.
+       // Radar 6132696 Applescript root level property is cSeconds 
+       // instead of pASSeconds
+       [GTMFourCharCode fourCharCodeWithFourCharCode:cSeconds],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASHours],
+       [GTMFourCharCode fourCharCodeWithFourCharCode:pASTab],
+       nil];
   STAssertEqualObjects(properties, expected, @"Unexpected properties?");
-  id value = [script_ gtm_valueForProperty:@"foo"];
-  STAssertEqualObjects(value, [NSNumber numberWithInt:1], @"bad property?");
-  BOOL goodSet = [script_ gtm_setValue:@"bar" forProperty:@"foo"];
+  id value = [script gtm_valueForProperty:@"testScriptProperty"];
+  STAssertEqualObjects(value, [NSNumber numberWithInt:5], @"bad property?");
+  BOOL goodSet = [script gtm_setValue:@"bar" 
+                          forProperty:@"foo" 
+                      addingDefinition:NO];
   STAssertTrue(goodSet, @"Couldn't set property");
+  
+  // Test local set
+  value = [script gtm_valueForProperty:@"foo"];
+  STAssertEqualObjects(value, @"bar", @"bad property?");
+
+  // Test inherited set
   value = [script_ gtm_valueForProperty:@"foo"];
   STAssertEqualObjects(value, @"bar", @"bad property?");
-  
+
   [GTMUnitTestDevLog expectPattern:@"Unable to setValue:bar forProperty:"
    "\\(null\\) from <NSAppleScript: 0x[0-9a-f]+> \\(-50\\)"];
-  goodSet = [script_ gtm_setValue:@"bar" forProperty:nil];
+  goodSet = [script gtm_setValue:@"bar" 
+                     forProperty:nil
+                 addingDefinition:NO];
   STAssertFalse(goodSet, @"Set property?");
+
+  [GTMUnitTestDevLog expectPattern:@"Unable to setValue:bar forProperty:3"
+   " from <NSAppleScript: 0x[0-9a-f]+> \\(-50\\)"];
+  goodSet = [script gtm_setValue:@"bar"
+                     forProperty:[NSNumber numberWithInt:3]
+                 addingDefinition:YES];
+  STAssertFalse(goodSet, @"Set property?");
+  
+  
   [GTMUnitTestDevLog expectPattern:@"Unable to get valueForProperty:gargle "
    "from <NSAppleScript: 0x[0-9a-f]+> \\(-1753\\)"];
-  value = [script_ gtm_valueForProperty:@"gargle"];
+  value = [script gtm_valueForProperty:@"gargle"];
   STAssertNil(value, @"Property named gargle?");
+  
+  goodSet = [script_ gtm_setValue:@"wow"
+                      forProperty:@"addedProperty" 
+                  addingDefinition:YES];
+  STAssertTrue(goodSet, @"Unable to addProperty");
+  
+  value = [script gtm_valueForProperty:@"addedProperty"];
+  STAssertNotNil(value, nil);
+  STAssertEqualObjects(value, @"wow", nil);
+  
+  // http://www.straightdope.com/classics/a3_341.html
+  NSNumber *newPI = [NSNumber numberWithInt:3];
+  goodSet = [script gtm_setValue:newPI
+                  forPropertyEnum:pASPi
+                 addingDefinition:NO];
+  STAssertTrue(goodSet, @"Unable to set property");
+  value = [script_ gtm_valueForPropertyEnum:pASPi];
+  STAssertNotNil(value, nil);
+  STAssertEqualObjects(value, newPI, @"bad property");
 }
 
 - (void)testFailures {
   NSDictionary *error = nil;
-  NSAppleEventDescriptor *desc = [script_ gtm_executePositionalHandler:@"noSuchTest" 
-                                                            parameters:nil 
-                                                                 error:&error];
+  NSAppleEventDescriptor *desc 
+    = [script_ gtm_executePositionalHandler:@"noSuchTest" 
+                                 parameters:nil 
+                                      error:&error];
   STAssertNil(desc, nil);
   STAssertNotNil(error, nil);
 
@@ -294,15 +440,18 @@
   STAssertNil(desc, nil);
   
   // Test with a bad script
-  NSAppleScript *script = [[[NSAppleScript alloc] initWithSource:@"david hasselhoff"] autorelease];
+  NSAppleScript *script 
+    = [[[NSAppleScript alloc] initWithSource:@"david hasselhoff"] autorelease];
   [GTMUnitTestDevLog expectPattern:@"Unable to compile script: .*"];
-  [GTMUnitTestDevLog expectPattern:@"Error getting handlers: -[0-9]+"];
+  [GTMUnitTestDevLog expectPattern:@"Unable to coerce script -2147450879"];
   NSSet *handlers = [script gtm_handlers];
   STAssertEquals([handlers count], (NSUInteger)0, @"Should have no handlers");
   [GTMUnitTestDevLog expectPattern:@"Unable to compile script: .*"];
-  [GTMUnitTestDevLog expectPattern:@"Error getting properties: -[0-9]+"];
+  [GTMUnitTestDevLog expectPattern:@"Unable to coerce script -2147450879"];
   NSSet *properties = [script gtm_properties];
-  STAssertEquals([properties count], (NSUInteger)0, @"Should have no properties");
+  STAssertEquals([properties count], 
+                 (NSUInteger)0, 
+                 @"Should have no properties");
 }
 
 - (void)testScriptDescriptors {
@@ -325,7 +474,8 @@
   [foo test];
   NSNumber *val = [foo testReturnParam:[NSNumber numberWithInt:2]];
   STAssertEquals([val intValue], 2, @"should be 2");
-  val = [foo testAddParams:[NSNumber numberWithInt:2] :[NSNumber numberWithInt:3]];
+  val = [foo testAddParams:[NSNumber numberWithInt:2] 
+                          :[NSNumber numberWithInt:3]];
   STAssertEquals([val intValue], 5, @"should be 5");
 }
 @end

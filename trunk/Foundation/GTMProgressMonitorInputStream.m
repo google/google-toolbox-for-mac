@@ -59,13 +59,40 @@
     
     inputStream_ = [input retain];
     dataSize_ = length;
+    
+    if (!inputStream_) {
+      [self release];
+      self = nil;
+    }
   }
   return self;
 }
 
+#pragma mark -
+
 - (id)init {
-  _GTMDevAssert(NO, @"should call initWithStream:length:");
-  return nil;
+  return [self initWithStream:nil length:0];
+}
+
+- (id)initWithData:(NSData *)data {
+  unsigned long long dataLength = [data length];
+  NSInputStream *inputStream = nil;
+  if (data) {
+    inputStream = [NSInputStream inputStreamWithData:data];
+  }
+  return [self initWithStream:inputStream length:dataLength];
+}
+
+- (id)initWithFileAtPath:(NSString *)path {
+  NSDictionary *fileAttrs =
+    [[NSFileManager defaultManager] fileAttributesAtPath:path
+                                            traverseLink:YES];
+  unsigned long long fileSize = [fileAttrs fileSize];
+  NSInputStream *inputStream = nil;
+  if (fileSize) {
+    inputStream = [NSInputStream inputStreamWithFileAtPath:path];
+  }
+  return [self initWithStream:inputStream length:fileSize];
 }
 
 - (void)dealloc {
@@ -74,7 +101,6 @@
 }
 
 #pragma mark -
-
 
 - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
 
@@ -103,6 +129,9 @@
 }
 
 - (BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)len {
+  // TODO: doesn't this advance the stream so we should warn the progress
+  // callback?  NSInputStream w/ a file and NSData both seem to return NO for
+  // this so I'm not sure how to test it.
   return [inputStream_ getBuffer:buffer length:len];
 }
 
@@ -135,6 +164,7 @@
 - (id)propertyForKey:(NSString *)key {
   return [inputStream_ propertyForKey:key]; 
 }
+
 - (BOOL)setProperty:(id)property forKey:(NSString *)key {
   return [inputStream_ setProperty:property forKey:key]; 
 }

@@ -386,8 +386,6 @@ CG_INLINE NSRect GTMNSRectScale(NSRect inRect, CGFloat xScale, CGFloat yScale) {
                     inRect.size.width * xScale, inRect.size.height * yScale);
 }
 
-
-
 /// Align rectangles
 //
 //  Args:

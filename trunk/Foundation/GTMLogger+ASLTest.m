@@ -68,7 +68,6 @@ static NSMutableArray *gDummyLog;  // weak
   // dummy writer will save the messages w/ @level concatenated. The "level" 
   // will be the ASL level, not the GTMLogger level. GTMLogASLWriter will log
   // all 
-  NSArray *log = gDummyLog;
   NSArray *expected = [NSArray arrayWithObjects:
                        @"unknown@5",
                        @"debug@5",
@@ -77,7 +76,7 @@ static NSMutableArray *gDummyLog;  // weak
                        @"assert@1",
                        nil];
   
-  STAssertEqualObjects(log, expected, nil);
+  STAssertEqualObjects(gDummyLog, expected, nil);
   
   gDummyLog = nil;
 }

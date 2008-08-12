@@ -17,6 +17,7 @@
 //
 
 #import "GTMLogger.h"
+#import "GTMDefines.h"
 
 typedef struct GTMRingBufferPair GTMRingBufferPair;
 
@@ -51,39 +52,39 @@ typedef struct GTMRingBufferPair GTMRingBufferPair;
  @private  
   id<GTMLogWriter> writer_;
   GTMRingBufferPair *buffer_;
-  int capacity_;
-  int nextIndex_;    // Index of the next element of |buffer_| to fill.
-  int totalLogged_;  // This > 0 and |nextIndex_| == 0 means we've wrapped.
+  NSUInteger capacity_;
+  NSUInteger nextIndex_;    // Index of the next element of |buffer_| to fill.
+  NSUInteger totalLogged_;  // This > 0 and |nextIndex_| == 0 means we've wrapped.
 }
 
-// Returns an autoreleased ring buffer writer.  If |capacity| is
-// non-positive, or |writer| is nil, then nil is returned.
-+ (id)ringBufferWriterWithCapacity:(int)capacity
+// Returns an autoreleased ring buffer writer.  If |writer| is nil, 
+// then nil is returned.
++ (id)ringBufferWriterWithCapacity:(NSUInteger)capacity
                             writer:(id<GTMLogWriter>)loggerWriter;
 
-// Designated initializer.  If |capacity| is non-positive, or |writer|
-// is nil, then nil is returned.  If you just use -init, nil will be returned.
-- (id)initWithCapacity:(int)capacity
+// Designated initializer.  If |writer| is nil, then nil is returned.  
+// If you just use -init, nil will be returned.
+- (id)initWithCapacity:(NSUInteger)capacity
                 writer:(id<GTMLogWriter>)loggerWriter;
 
 // How many messages will be logged before older messages get dropped
 // on the floor.
-- (int)capacity;
+- (NSUInteger)capacity;
 
 // The log writer that will get the buffered log messages if/when they
 // need to be displayed.
 - (id<GTMLogWriter>)writer;
 
 // How many log messages are currently in the buffer.
-- (int)count;
+- (NSUInteger)count;
 
 // How many have been dropped on the floor since creation, or the last
 // reset.
-- (int)droppedLogCount;
+- (NSUInteger)droppedLogCount;
 
 // The total number of messages processed since creation, or the last
 // reset.
-- (int)totalLogged;
+- (NSUInteger)totalLogged;
 
 // Purge the contents and reset the counters.
 - (void)reset;

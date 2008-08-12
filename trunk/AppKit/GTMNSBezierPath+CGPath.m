@@ -58,9 +58,9 @@
       case NSClosePathBezierPathElement:
         CGPathCloseSubpath(thePath);
         break;
-      default:
+      default:  // COV_NF_START
         _GTMDevLog(@"Unknown element at [NSBezierPath (GTMBezierPathCGPathAdditions) cgPath]");
-        break;
+        break;  // COV_NF_END
     };
   }
   return thePath;

@@ -17,7 +17,7 @@
 //
 
 #import "GTMNSAppleEventDescriptor+Foundation.h"
-#import "GTMFourCharCode.h"
+#import "GTMDebugSelectorValidation.h"
 #import <Carbon/Carbon.h>  // Needed Solely For keyASUserRecordFields
 
 // Map of types to selectors.
@@ -29,6 +29,14 @@ static NSMutableDictionary *gTypeMap = nil;
                     forTypes:(DescType*)types 
                        count:(NSUInteger)count {
   if (selector && types && count > 0) {
+#if DEBUG
+    NSAppleEventDescriptor *desc 
+      = [[[NSAppleEventDescriptor alloc] initListDescriptor] autorelease];
+    GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(desc, 
+                                                                selector,
+                                                                @encode(id), 
+                                                                NULL); 
+#endif
     @synchronized(self) {
       if (!gTypeMap) {
         gTypeMap = [[NSMutableDictionary alloc] init];
@@ -220,6 +228,10 @@ static NSMutableDictionary *gTypeMap = nil;
   NSNumber *value = nil;
   [invocation getReturnValue:&value];
   return value;
+}
+
+- (GTMFourCharCode*)gtm_fourCharCodeValue {
+  return [GTMFourCharCode fourCharCodeWithFourCharCode:[self typeCodeValue]];
 }
 
 @end
@@ -456,6 +468,35 @@ static NSMutableDictionary *gTypeMap = nil;
                                                        length:sizeof(ProcessSerialNumber)];
 }  
 
+@end
+
+@implementation GTMFourCharCode (GTMAppleEventDescriptorObjectAdditions)
+
++ (void)load {
+  DescType types[] = {
+    typeType, 
+    typeKeyword, 
+    typeApplSignature, 
+    typeEnumerated,
+  };
+  
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_fourCharCodeValue)
+                                      forTypes:types
+                                         count:sizeof(types)/sizeof(DescType)];
+  [pool release];
+}
+
+- (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
+  return [self gtm_appleEventDescriptorOfType:typeType];
+}
+
+- (NSAppleEventDescriptor*)gtm_appleEventDescriptorOfType:(DescType)type {
+  FourCharCode code = [self fourCharCode];
+  return [NSAppleEventDescriptor descriptorWithDescriptorType:type 
+                                                        bytes:&code 
+                                                       length:sizeof(code)];
+}
 @end
 
 @implementation NSAppleEventDescriptor (GTMAppleEventDescriptorAdditions)

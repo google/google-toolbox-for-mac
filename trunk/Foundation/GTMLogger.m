@@ -341,7 +341,7 @@ static GTMLogger *gSharedLogger = nil;
                                                NULL,  // format options
                                                (CFStringRef)fmt, 
                                                args);
-  return [GTMNSMakeCollectable(cfmsg) autorelease];
+  return GTMCFAutorelease(cfmsg);
 }
 
 @end  // GTMLogBasicFormatter

@@ -31,7 +31,7 @@
 
 - (void)testShadings {
   GTMAssertDrawingEqualToImageNamed(self,
-                                    NSMakeSize(200, 200), 
+                                    NSMakeSize(310, 410), 
                                     @"GTMNSBezierPath+ShadingTest", nil, nil);
 }
 
@@ -50,7 +50,7 @@
                                      count:sizeof(theFloatArray)/sizeof(CGFloat)]; 
   NSBezierPath *shadedPath;
   
-  // axialStrokeRect test
+  // axial stroke rect - diagonal fill
   NSRect axialStrokeRect = NSMakeRect(10.0f, 10.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:axialStrokeRect];
   [shadedPath setLineWidth: 10.0f];
@@ -59,8 +59,28 @@
   NSPoint endPoint = NSMakePoint(axialStrokeRect.origin.x + axialStrokeRect.size.width - 20.0f,
                                  axialStrokeRect.origin.y + axialStrokeRect.size.height - 20.0f);
   [shadedPath gtm_strokeAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
+
+  // axial stroke rect - v line fill
+  axialStrokeRect = NSMakeRect(110.0f, 10.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:axialStrokeRect];
+  [shadedPath setLineWidth: 10.0f];
+  startPoint = NSMakePoint(axialStrokeRect.origin.x + axialStrokeRect.size.width / 2.0f,
+                           axialStrokeRect.origin.y + 20.0f);
+  endPoint = NSMakePoint(axialStrokeRect.origin.x + axialStrokeRect.size.width / 2.0f,
+                         axialStrokeRect.origin.y + axialStrokeRect.size.height - 20.0f);
+  [shadedPath gtm_strokeAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
   
-  // axial fill
+  // axial stroke rect - h line fill
+  axialStrokeRect = NSMakeRect(210.0f, 10.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:axialStrokeRect];
+  [shadedPath setLineWidth: 10.0f];
+  startPoint = NSMakePoint(axialStrokeRect.origin.x + 20.0f,
+                           axialStrokeRect.origin.y + axialStrokeRect.size.height / 2.0f);
+  endPoint = NSMakePoint(axialStrokeRect.origin.x + axialStrokeRect.size.width - 20.0f,
+                         axialStrokeRect.origin.y + axialStrokeRect.size.height / 2.0f);
+  [shadedPath gtm_strokeAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
+  
+  // axial fill rect - diagonal fill
   NSRect axialFillRect = NSMakeRect(10.0f, 110.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:axialFillRect];
   startPoint = NSMakePoint(axialFillRect.origin.x + 20.0f,
@@ -69,8 +89,26 @@
                          axialFillRect.origin.y + axialFillRect.size.height - 20.0f);
   [shadedPath gtm_fillAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
   
-  // radial stroke
-  NSRect radialStrokeRect = NSMakeRect(110.0f, 110.0f, 90.0f, 90.0f);
+  // axial fill rect - v line fill
+  axialFillRect = NSMakeRect(110.0f, 110.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:axialFillRect];
+  startPoint = NSMakePoint(axialFillRect.origin.x + axialFillRect.size.width / 2.0f,
+                           axialFillRect.origin.y + 20.0f);
+  endPoint = NSMakePoint(axialFillRect.origin.x + axialFillRect.size.width / 2.0f,
+                         axialFillRect.origin.y + axialFillRect.size.height - 20.0f);
+  [shadedPath gtm_fillAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
+  
+  // axial fill rect - h line fill
+  axialFillRect = NSMakeRect(210.0f, 110.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:axialFillRect];
+  startPoint = NSMakePoint(axialFillRect.origin.x + 20.0f,
+                           axialFillRect.origin.y + axialFillRect.size.height / 2.0f);
+  endPoint = NSMakePoint(axialFillRect.origin.x + axialFillRect.size.width - 20.0f,
+                         axialFillRect.origin.y + axialFillRect.size.height / 2.0f);
+  [shadedPath gtm_fillAxiallyFrom:startPoint to:endPoint extendingStart:YES extendingEnd:YES shading:shading];
+  
+  // radial stroke rect - diagonal fill
+  NSRect radialStrokeRect = NSMakeRect(10.0f, 210.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:radialStrokeRect];
   startPoint = NSMakePoint(radialStrokeRect.origin.x + 20.0f,
                            radialStrokeRect.origin.y + 20.0f);
@@ -80,13 +118,57 @@
                                   to:endPoint toRadius:20.0f
                       extendingStart:YES extendingEnd:YES shading:shading];
   
-  // radial fill
-  NSRect radialFillRect = NSMakeRect(110.0f, 10.0f, 90.0f, 90.0f);
+  // radial stroke rect - v line fill
+  radialStrokeRect = NSMakeRect(110.0f, 210.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:radialStrokeRect];
+  startPoint = NSMakePoint(radialStrokeRect.origin.x + radialStrokeRect.size.width / 2.0f,
+                           radialStrokeRect.origin.y + 20.0f);
+  endPoint = NSMakePoint(radialStrokeRect.origin.x + radialStrokeRect.size.width / 2.0f,
+                         radialStrokeRect.origin.y + radialStrokeRect.size.height - 20.0f);
+  [shadedPath gtm_strokeRadiallyFrom:startPoint fromRadius:60.0f 
+                                  to:endPoint toRadius:20.0f
+                      extendingStart:YES extendingEnd:YES shading:shading];
+  
+  // radial stroke rect - h line fill
+  radialStrokeRect = NSMakeRect(210.0f, 210.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:radialStrokeRect];
+  startPoint = NSMakePoint(radialStrokeRect.origin.x + 20.0f,
+                           radialStrokeRect.origin.y + radialStrokeRect.size.height / 2.0f);
+  endPoint = NSMakePoint(radialStrokeRect.origin.x + radialStrokeRect.size.width - 20.0f,
+                         radialStrokeRect.origin.y + radialStrokeRect.size.height / 2.0f);
+  [shadedPath gtm_strokeRadiallyFrom:startPoint fromRadius:60.0f 
+                                  to:endPoint toRadius:20.0f
+                      extendingStart:YES extendingEnd:YES shading:shading];
+  
+  // radial fill rect - diagonal fill
+  NSRect radialFillRect = NSMakeRect(10.0f, 310.0f, 90.0f, 90.0f);
   shadedPath = [NSBezierPath bezierPathWithRect:radialFillRect];
   startPoint = NSMakePoint(radialFillRect.origin.x + 20.0f,
                            radialFillRect.origin.y + 20.0f);
   endPoint = NSMakePoint(radialFillRect.origin.x + radialFillRect.size.width - 20.0f,
                          radialFillRect.origin.y + radialFillRect.size.height - 20.0f);
+  [shadedPath gtm_fillRadiallyFrom:startPoint fromRadius:10.0f 
+                                to:endPoint toRadius:20.0f
+                    extendingStart:YES extendingEnd:YES shading:shading];
+
+  // radial fill rect - v line fill
+  radialFillRect = NSMakeRect(110.0f, 310.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:radialFillRect];
+  startPoint = NSMakePoint(radialFillRect.origin.x + radialFillRect.size.width / 2.0f,
+                           radialFillRect.origin.y + 20.0f);
+  endPoint = NSMakePoint(radialFillRect.origin.x + radialFillRect.size.width / 2.0f,
+                         radialFillRect.origin.y + radialFillRect.size.height - 20.0f);
+  [shadedPath gtm_fillRadiallyFrom:startPoint fromRadius:10.0f 
+                                to:endPoint toRadius:20.0f
+                    extendingStart:YES extendingEnd:YES shading:shading];
+  
+  // radial fill rect - h line fill
+  radialFillRect = NSMakeRect(210.0f, 310.0f, 90.0f, 90.0f);
+  shadedPath = [NSBezierPath bezierPathWithRect:radialFillRect];
+  startPoint = NSMakePoint(radialFillRect.origin.x + 20.0f,
+                           radialFillRect.origin.y + radialFillRect.size.height / 2.0f);
+  endPoint = NSMakePoint(radialFillRect.origin.x + radialFillRect.size.width - 20.0f,
+                         radialFillRect.origin.y + radialFillRect.size.height / 2.0f);
   [shadedPath gtm_fillRadiallyFrom:startPoint fromRadius:10.0f 
                                 to:endPoint toRadius:20.0f
                     extendingStart:YES extendingEnd:YES shading:shading];

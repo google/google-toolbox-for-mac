@@ -52,16 +52,16 @@
   DescType type;
   [NSAppleEventDescriptor gtm_registerSelector:nil 
                                       forTypes:&type count:1];
-  [NSAppleEventDescriptor gtm_registerSelector:@selector(retain) 
+  [NSAppleEventDescriptor gtm_registerSelector:@selector(initListDescriptor) 
                                       forTypes:nil count:1];
-  [NSAppleEventDescriptor gtm_registerSelector:@selector(retain) 
+  [NSAppleEventDescriptor gtm_registerSelector:@selector(initListDescriptor) 
                                       forTypes:&type count:0];
   // Test the duplicate case
-  [NSAppleEventDescriptor gtm_registerSelector:@selector(retain) 
+  [NSAppleEventDescriptor gtm_registerSelector:@selector(initListDescriptor) 
                                       forTypes:&type count:1];
-  [GTMUnitTestDevLog expectPattern:@"retain being replaced with retain exists "
-   "for type: [0-9]+"];
-  [NSAppleEventDescriptor gtm_registerSelector:@selector(retain) 
+  [GTMUnitTestDevLog expectPattern:@"initListDescriptor being replaced with "
+   "initListDescriptor exists for type: [0-9]+"];
+  [NSAppleEventDescriptor gtm_registerSelector:@selector(initListDescriptor) 
                                       forTypes:&type count:1];
 }
 
@@ -556,6 +556,23 @@
     CGFloat returnedValue = [desc gtm_cgFloatValue];
     STAssertEquals(value, returnedValue, @"Value: %g", (double)value);
   }
+}
+
+- (void)testDescriptorWithGTMFourCharCode {
+  GTMFourCharCode *fcc = [GTMFourCharCode fourCharCodeWithFourCharCode:'APPL'];
+  STAssertNotNil(fcc, nil);
+  NSAppleEventDescriptor *desc = [fcc gtm_appleEventDescriptor];
+  STAssertNotNil(desc, nil);
+  GTMFourCharCode *fcc2 = [desc gtm_objectValue];
+  STAssertNotNil(fcc2, nil);
+  STAssertEqualObjects(fcc, fcc2, nil);
+  STAssertEquals([desc descriptorType], (DescType)typeType, nil);
+  desc = [fcc gtm_appleEventDescriptorOfType:typeKeyword];
+  STAssertNotNil(desc, nil);
+  fcc2 = [desc gtm_objectValue];
+  STAssertNotNil(fcc2, nil);
+  STAssertEqualObjects(fcc, fcc2, nil);
+  STAssertEquals([desc descriptorType], (DescType)typeKeyword, nil);
 }
 
 - (void)handleEvent:(NSAppleEventDescriptor*)event 

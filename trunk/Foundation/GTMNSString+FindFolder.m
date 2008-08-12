@@ -31,12 +31,11 @@
   OSErr err = FSFindFolder(theDomain, theFolderType, doCreate, &folderRef);
   if (err == noErr) {
     
-    CFURLRef folderURL = CFURLCreateFromFSRef(kCFAllocatorSystemDefault, &folderRef);
+    CFURLRef folderURL = CFURLCreateFromFSRef(kCFAllocatorSystemDefault, 
+                                              &folderRef);
     if (folderURL) {
-      
-      folderPath = GTMNSMakeCollectable(CFURLCopyFileSystemPath(folderURL, kCFURLPOSIXPathStyle));
-      [folderPath autorelease];
-      
+      folderPath = GTMCFAutorelease(CFURLCopyFileSystemPath(folderURL, 
+                                                            kCFURLPOSIXPathStyle));      
       CFRelease(folderURL);
     }
   }

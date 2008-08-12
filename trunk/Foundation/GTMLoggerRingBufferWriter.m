@@ -18,16 +18,13 @@
 
 #import "GTMLoggerRingBufferWriter.h"
 
-// Define a trivial assertion macro to avoid dependencies
-#ifdef DEBUG
-#define GTMLOGGER_ASSERT(expr) assert(expr)
-#else
-#define GTMLOGGER_ASSERT(expr)
-#endif
-
 // Holds a message and a level.
 struct GTMRingBufferPair {
-  NSString *logMessage_;
+  // Explicitly using CFStringRef instead of NSString because in a GC world, the
+  // NSString will be collected because there is no way for the GC to know that
+  // there is a strong reference to the NSString in this data structure. By
+  // using a CFStringRef we can CFRetain it, and avoid the problem.
+  CFStringRef logMessage_;
   GTMLoggerLevel level_;
 };
 
@@ -52,7 +49,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 
 @implementation GTMLoggerRingBufferWriter
 
-+ (id)ringBufferWriterWithCapacity:(int)capacity
++ (id)ringBufferWriterWithCapacity:(NSUInteger)capacity
                             writer:(id<GTMLogWriter>)writer {
   GTMLoggerRingBufferWriter *rbw =
     [[[self alloc] initWithCapacity:capacity
@@ -62,24 +59,21 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 }  // ringBufferWriterWithCapacity
 
 
-- (id)initWithCapacity:(int)capacity
+- (id)initWithCapacity:(NSUInteger)capacity
                 writer:(id<GTMLogWriter>)writer {
   if ((self = [super init])) {
-    if (capacity > 0) {
-      writer_ = [writer retain];
-      capacity_ = capacity;
+    writer_ = [writer retain];
+    capacity_ = capacity;
 
-      buffer_ = calloc(capacity_, sizeof(GTMRingBufferPair));
+    buffer_ = (GTMRingBufferPair *)calloc(capacity_, sizeof(GTMRingBufferPair));
 
-      nextIndex_ = 0;
-    }
+    nextIndex_ = 0;
 
-    if (buffer_ == NULL || writer_ == nil) {
+    if (capacity_ == 0 || !buffer_ || !writer_) {
       [self release];
-      return nil;
+      self = nil;
     }
   }
-
   return self;
 
 }  // initWithCapacity
@@ -94,14 +88,16 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
   [self reset];
 
   [writer_ release];
-  free(buffer_);
+  if (buffer_) {
+    free(buffer_);
+  }
 
   [super dealloc];
   
 }  // dealloc
 
 
-- (int)capacity {
+- (NSUInteger)capacity {
   return capacity_;
 }  // capacity
 
@@ -111,8 +107,8 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 }  // writer
 
 
-- (int)count {
-  int count = 0;
+- (NSUInteger)count {
+  NSUInteger count = 0;
   @synchronized(self) {
     if ((nextIndex_ == 0 && totalLogged_ > 0)
         || totalLogged_ >= capacity_) {
@@ -128,21 +124,23 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 }  // count
 
 
-- (int)droppedLogCount {
-  int droppedCount = 0;
+- (NSUInteger)droppedLogCount {
+  NSUInteger droppedCount = 0;
   
   @synchronized(self) {
-    droppedCount = totalLogged_ - capacity_;
+    if (capacity_ > totalLogged_) {
+      droppedCount = 0;
+    } else {
+      droppedCount = totalLogged_ - capacity_;
+    }
   }
   
-  if (droppedCount < 0) droppedCount = 0;
-
   return droppedCount;
 
 }  // droppedLogCount
 
 
-- (int)totalLogged {
+- (NSUInteger)totalLogged {
   return totalLogged_;
 }  // totalLogged
 
@@ -179,9 +177,11 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 // the structure.
 static void ResetCallback(GTMLoggerRingBufferWriter *rbw,
                           GTMRingBufferPair *pair) {
-  [pair->logMessage_ release];
+  if (pair->logMessage_) {
+    CFRelease(pair->logMessage_);
+  }
   pair->logMessage_ = nil;
-  pair->level_ = 0;
+  pair->level_ = kGTMLoggerLevelUnknown;
 }  // ResetCallback
 
 
@@ -200,7 +200,7 @@ static void ResetCallback(GTMLoggerRingBufferWriter *rbw,
 // ring buffer's |writer_|.
 static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
                                   GTMRingBufferPair *pair) {
-  [[rbw writer] logMessage:pair->logMessage_ level:pair->level_];
+  [[rbw writer] logMessage:(NSString*)pair->logMessage_ level:pair->level_];
 }  // PrintContentsCallback
 
 
@@ -213,21 +213,21 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
 
 // Assumes caller will do any necessary synchronization.
 - (void)addMessage:(NSString *)message level:(GTMLoggerLevel)level {
-    int newIndex = nextIndex_;
-    nextIndex_ = (nextIndex_ + 1) % capacity_;
-    
-    ++totalLogged_;
-    
-    // Sanity check
-    GTMLOGGER_ASSERT(buffer_ != NULL);
-    GTMLOGGER_ASSERT(nextIndex_ >= 0 && nextIndex_ < capacity_);
-    GTMLOGGER_ASSERT(newIndex >= 0 && newIndex < capacity_);
-    
-    // Now store the goodies.
-    GTMRingBufferPair *pair = buffer_ + newIndex;
-    [pair->logMessage_ release];
-    pair->logMessage_ = [message copy];
-    pair->level_ = level;
+  NSUInteger newIndex = nextIndex_;
+  nextIndex_ = (nextIndex_ + 1) % capacity_;
+  
+  ++totalLogged_;
+  
+  // Now store the goodies.
+  GTMRingBufferPair *pair = buffer_ + newIndex;
+  if (pair->logMessage_) {
+    CFRelease(pair->logMessage_);
+    pair->logMessage_ = nil;
+  }
+  if (message) {
+    pair->logMessage_ = CFStringCreateCopy(kCFAllocatorDefault, (CFStringRef)message);
+  }
+  pair->level_ = level;
   
 }  // addMessage
 
@@ -235,7 +235,7 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
 // From the GTMLogWriter protocol.
 - (void)logMessage:(NSString *)message level:(GTMLoggerLevel)level {
   @synchronized(self) {
-    [self addMessage:message level:level];
+    [self addMessage:(NSString*)message level:level];
     
     if (level >= kGTMLoggerLevelError) {
       [self dumpContents];

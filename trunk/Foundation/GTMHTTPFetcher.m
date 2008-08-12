@@ -20,6 +20,7 @@
 
 #import "GTMHTTPFetcher.h"
 #import "GTMDebugSelectorValidation.h"
+#import "GTMGarbageCollection.h"
 
 @interface GTMHTTPFetcher (GTMHTTPFetcherLoggingInternal)
 - (void)logFetchWithError:(NSError *)error;
@@ -53,9 +54,9 @@ NSString* const kGTMLastModifiedHeader = @"Last-Modified";
 NSString* const kGTMIfModifiedSinceHeader = @"If-Modified-Since";
 
 
-NSMutableArray* gGTMFetcherStaticCookies = nil;
-Class gGTMFetcherConnectionClass = nil;
-NSArray *gGTMFetcherDefaultRunLoopModes = nil;
+static NSMutableArray* gGTMFetcherStaticCookies = nil;
+static Class gGTMFetcherConnectionClass = nil;
+static NSArray *gGTMFetcherDefaultRunLoopModes = nil;
 
 const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
                    
@@ -81,6 +82,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 + (void)initialize {
   if (!gGTMFetcherStaticCookies) {
     gGTMFetcherStaticCookies = [[NSMutableArray alloc] init];
+    GTMNSMakeUncollectable(gGTMFetcherStaticCookies);
   }
 }
 
@@ -140,14 +142,16 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(delegate, retrySEL_, @encode(BOOL), @encode(GTMHTTPFetcher *), @encode(BOOL), @encode(NSError *), NULL);
     
   if (connection_ != nil) {
+    // COV_NF_START - since we want the assert, we can't really test this
     _GTMDevAssert(connection_ != nil,
                   @"fetch object %@ being reused; this should never happen",
                   self);
     goto CannotBeginFetch;
+    // COV_NF_END
   }
   
   if (request_ == nil) {
-    _GTMDevAssert(request_ != nil, @"beginFetchWithDelegate requires a request");
+    _GTMDevLog(@"beginFetchWithDelegate requires a request");
     goto CannotBeginFetch;  
   }
   
@@ -254,9 +258,10 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   }
   
   if (!connection_) {
-    _GTMDevAssert(connection_ != nil,
-                  @"beginFetchWithDelegate could not create a connection");
+    // COV_NF_START - can't really create this case
+    _GTMDevLog(@"beginFetchWithDelegate could not create a connection");
     goto CannotBeginFetch;
+    // COV_NF_END
   }
 
   // we'll retain the delegate only during the outstanding connection (similar
@@ -1045,11 +1050,12 @@ CannotBeginFetch:
 + (void)setDefaultRunLoopModes:(NSArray *)modes {
   [gGTMFetcherDefaultRunLoopModes autorelease];
   gGTMFetcherDefaultRunLoopModes = [modes retain];
+  GTMNSMakeUncollectable(gGTMFetcherDefaultRunLoopModes);
 }
 
 + (Class)connectionClass {
   if (gGTMFetcherConnectionClass == nil) {
-    gGTMFetcherConnectionClass = [NSURLConnection class]; 
+    gGTMFetcherConnectionClass = [NSURLConnection class];
   }
   return gGTMFetcherConnectionClass; 
 }
@@ -1214,7 +1220,7 @@ CannotBeginFetch:
       }
       
     } else {
-      _GTMDevAssert(NO, @"Cookie incomplete: %@", newCookie); 
+      _GTMDevAssert(NO, @"Cookie incomplete: %@", newCookie);  // COV_NF_LINE
     }
   }
 }

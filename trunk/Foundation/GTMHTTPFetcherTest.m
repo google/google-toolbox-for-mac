@@ -51,8 +51,8 @@
 - (BOOL)fixRequestFetcher:(GTMHTTPFetcher *)fetcher
                 willRetry:(BOOL)suggestedWillRetry
                  forError:(NSError *)error;
-- (void)testFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
-- (void)testFetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+- (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)fetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 @end
 
 @implementation GTMHTTPFetcherTest
@@ -105,7 +105,6 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 }
 
 - (void)testValidFetch {
-  
   NSString *urlString = [self fileURLStringToTestFileName:kValidFileName];
   
   GTMHTTPFetcher *fetcher =
@@ -252,7 +251,6 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 }
 
 - (void)testRetryFetches {
-  
   GTMHTTPFetcher *fetcher;
   
   NSString *invalidFile = [kValidFileName stringByAppendingString:@"?status=503"];
@@ -362,8 +360,8 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   
   BOOL isFetching =
     [fetcher beginFetchWithDelegate:self
-                  didFinishSelector:@selector(testFetcher:finishedWithData:)
-                    didFailSelector:@selector(testFetcher:failedWithError:)];
+                  didFinishSelector:@selector(fetcher:finishedWithData:)
+                    didFailSelector:@selector(fetcher:failedWithError:)];
   STAssertTrue(isFetching, @"Begin fetch failed");
   
   if (isFetching) {
@@ -419,14 +417,14 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 
 
 
-- (void)testFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+- (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
   fetchedData_ = [data copy];
   fetchedStatus_ = [fetcher statusCode]; // this implicitly tests that the fetcher has kept the response
   fetchedRequest_ = [[fetcher request] retain];
   fetchedResponse_ = [[fetcher response] retain];
 }
 
-- (void)testFetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+- (void)fetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error {
   // if it's a status error, don't hang onto the error, just the status/data
   if ([[error domain] isEqual:kGTMHTTPFetcherStatusDomain]) {
     fetchedData_ = [[[error userInfo] objectForKey:kGTMHTTPFetcherStatusDataKey] copy];

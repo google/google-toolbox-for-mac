@@ -28,6 +28,15 @@
 //   = [[[GTMLargeTypeWindow alloc] initWithString:@"Foo"] autorelease];
 // [window makeKeyAndOrderFront:nil];
 
+// NB This class appears to have a problem with GC on 10.5.4 and below.
+// Radar 6137322 CIFilter crashing when run with GC enabled
+// This appears to be an Apple bug with GC.
+// We do a copy animation that causes things to crash, but only with GC
+// on. Currently I have left this enabled in GTMLargeTypeWindow pending
+// info from Apple on the bug. It's hard to reproduce, and only appears
+// at this time on our test machines. 
+// Dual-Core Intel Xeon with ATI Radeon X1300
+
 // Amount of time to fade the window in or out
 const NSTimeInterval kGTMLargeTypeWindowFadeTime;
 

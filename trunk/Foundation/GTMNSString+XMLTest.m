@@ -1,5 +1,5 @@
 //
-//  NSString+XMLTest.m
+//  GTMNSString+XMLTest.m
 //
 //  Copyright 2007-2008 Google Inc.
 //

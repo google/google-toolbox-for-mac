@@ -1,5 +1,5 @@
 //
-//  NSAppleEventDescriptor+HandlerTest.m
+//  GTNNSAppleEventDescriptor+HandlerTest.m
 //
 //  Copyright 2008 Google Inc.
 //
