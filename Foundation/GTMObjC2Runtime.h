@@ -50,17 +50,25 @@
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
 #import "objc/Protocol.h"
 
-Class object_getClass(id obj);
-const char *class_getName(Class cls);
-BOOL class_conformsToProtocol(Class cls, Protocol *protocol);
-Class class_getSuperclass(Class cls);
-Method *class_copyMethodList(Class cls, unsigned int *outCount);
-SEL method_getName(Method m);
-void method_exchangeImplementations(Method m1, Method m2);
-IMP method_getImplementation(Method method);
-IMP method_setImplementation(Method method, IMP imp);
-struct objc_method_description protocol_getMethodDescription(Protocol *p,
-                                                             SEL aSel,
-                                                             BOOL isRequiredMethod,
-                                                             BOOL isInstanceMethod);
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
+OBJC_EXPORT Class object_getClass(id obj);
+OBJC_EXPORT const char *class_getName(Class cls);
+OBJC_EXPORT BOOL class_conformsToProtocol(Class cls, Protocol *protocol);
+OBJC_EXPORT Class class_getSuperclass(Class cls);
+OBJC_EXPORT Method *class_copyMethodList(Class cls, unsigned int *outCount);
+OBJC_EXPORT SEL method_getName(Method m);
+OBJC_EXPORT void method_exchangeImplementations(Method m1, Method m2);
+OBJC_EXPORT IMP method_getImplementation(Method method);
+OBJC_EXPORT IMP method_setImplementation(Method method, IMP imp);
+OBJC_EXPORT struct objc_method_description protocol_getMethodDescription(Protocol *p,
+                                                                         SEL aSel,
+                                                                         BOOL isRequiredMethod,
+                                                                         BOOL isInstanceMethod);
+#ifdef __cplusplus
+}
+#endif
+
 #endif  // OBJC2_UNAVAILABLE

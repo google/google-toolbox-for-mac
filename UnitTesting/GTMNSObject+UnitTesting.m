@@ -654,7 +654,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
                                                           kUTTagClassFilenameExtension);
   _GTMDevAssert(extension, @"No extension for uti: %@", uti);
   
-  return [GTMNSMakeCollectable(extension) autorelease];
+  return GTMCFAutorelease(extension);
 #endif
 }
 

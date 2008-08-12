@@ -23,13 +23,11 @@
   // we don't really run this test because if someone had it in some automated
   // tests, then if something did fail, it could leave things in the login items
   // on the computer which could be a nasty surprise.
-#define TESTS_ENABLED 0
+#define MODIFICATION_TESTS_ENABLED 0
 
 
 @interface GTMLoginItemsTest : GTMTestCase
 @end
-
-#if TESTS_ENABLED
 
 static BOOL ItemsListHasPath(NSArray *items, NSString *path) {
   NSDictionary *item = nil;
@@ -43,14 +41,42 @@ static BOOL ItemsListHasPath(NSArray *items, NSString *path) {
   return NO;
 }
 
-#endif // TESTS_ENABLED
-
 @implementation GTMLoginItemsTest
 
-- (void)testGTMLoginItems {
+- (void)testNoModification {
 
-#if TESTS_ENABLED
+  NSError *error = nil;
+  NSString *bogusAppPath = @"/Applications/AppThatDoesNotExist.app";
+  NSString *bogusAppName = @"AppThatDoesNotExist";
+  
+  // fetch the starting values
+  NSArray *initialItems = [GTMLoginItems loginItems:&error];
+  STAssertNotNil(initialItems, @"shouldn't be nil (%@)", error);
+  STAssertFalse(ItemsListHasPath(initialItems, bogusAppPath),
+                @"bogusApp shouldn't be in list to start for test (%@)", initialItems);
+  
+  // check by path
+  STAssertFalse([GTMLoginItems pathInLoginItems:bogusAppPath], nil);
+  
+  // check by name
+  STAssertFalse([GTMLoginItems itemWithNameInLoginItems:bogusAppName], nil);
+  
+  // remove it by path
+  [GTMLoginItems removePathFromLoginItems:bogusAppPath];
+  NSArray *curItems = [GTMLoginItems loginItems:nil];
+  STAssertEqualObjects(initialItems, curItems, nil);
+  
+  // remove it by name
+  [GTMLoginItems removeItemWithNameFromLoginItems:bogusAppName];
+  curItems = [GTMLoginItems loginItems:nil];
+  STAssertEqualObjects(initialItems, curItems, nil);
 
+}
+
+- (void)testModification {
+
+#if MODIFICATION_TESTS_ENABLED
+  
   NSError *error = nil;
   NSString *textEditPath = @"/Applications/TextEdit.app";
   NSString *textEditName = @"TextEdit";
@@ -79,7 +105,7 @@ static BOOL ItemsListHasPath(NSArray *items, NSString *path) {
   
   // check by path
   STAssertFalse([GTMLoginItems pathInLoginItems:textEditPath], nil);
-
+  
   // check by name
   STAssertFalse([GTMLoginItems itemWithNameInLoginItems:textEditName], nil);
   
@@ -105,8 +131,8 @@ static BOOL ItemsListHasPath(NSArray *items, NSString *path) {
   // check by name
   STAssertFalse([GTMLoginItems itemWithNameInLoginItems:textEditName], nil);
   
-#endif // TESTS_ENABLED
-  
+#endif // MODIFICATION_TESTS_ENABLED
+
 }
 
 @end

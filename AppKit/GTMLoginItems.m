@@ -57,22 +57,28 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
 + (BOOL)compileAndRunScript:(NSString *)script
                   withError:(NSError **)errorInfo {
   if ([script length] == 0) {
+    // COV_NF_START - no real way to test this
     if (errorInfo)
       *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-90 userInfo:nil];
     return NO;
+    // COV_NF_END
   }
   NSAppleScript *query = [[[NSAppleScript alloc] initWithSource:script] autorelease];
   NSDictionary *errDict = nil;
   if ( ![query compileAndReturnError:&errDict]) {
+    // COV_NF_START - no real way to test this
     if (errorInfo)
       *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-91 userInfo:errDict];
     return NO;
+    // COV_NF_END
   }
   NSAppleEventDescriptor *scriptResult = [query executeAndReturnError:&errDict];
   if (!scriptResult) {
+    // COV_NF_START - no real way to test this
     if (*errorInfo)
       *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-92 userInfo:errDict];
     return NO;
+    // COV_NF_END
   }
   // we don't process the result
   return YES;
@@ -90,19 +96,23 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
     NSString *querySource = @"tell application \"System Events\" to get properties of login items";
     query = [[NSAppleScript alloc] initWithSource:querySource];
     if ( ![query compileAndReturnError:&errDict]) {
+      // COV_NF_START - no real way to test this
       if (errorInfo)
         *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-1 userInfo:errDict];
       [query release];
       query = nil;
       return nil;
+      // COV_NF_END
     }
   }
   // run the script
   NSAppleEventDescriptor *scriptResult = [query executeAndReturnError:&errDict];
   if (!scriptResult) {
+    // COV_NF_START - no real way to test this
     if (*errorInfo)
       *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-2 userInfo:errDict];
     return nil;
+    // COV_NF_END
   }
   // build our results
   NSMutableArray *result = [NSMutableArray array];

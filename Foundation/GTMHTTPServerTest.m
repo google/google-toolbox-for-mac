@@ -52,9 +52,8 @@
 
 // helper that throws while handling its request
 @interface TestThrowingServerDelegate : TestServerDelegate
-// since this method ALWAYS throws, we can mark it as noreturn
 - (GTMHTTPResponseMessage *)httpServer:(GTMHTTPServer *)server
-                         handleRequest:(GTMHTTPRequestMessage *)request __attribute__ ((noreturn));
+                         handleRequest:(GTMHTTPRequestMessage *)request;
 @end
 
 // The timings used for waiting for replies
@@ -369,8 +368,10 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     // make sure we see the request at this point
     STAssertEquals([server activeRequestCount], (NSUInteger)1,
                    @"should have started the request by now");
-    // drop the pool to close the connection
-    [localPool release];
+    // force the connection closed and drop the pool to get all the cleanup to
+    // happen.
+    [handle closeFile];
+    [localPool drain];
     // spin the run loop so it should see the close
     loopIntervalDate = [NSDate dateWithTimeIntervalSinceNow:kRunLoopInterval];
     [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate];

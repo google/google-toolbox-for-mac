@@ -1,5 +1,5 @@
 //
-//  NSAppleEventDescriptor+Handler.m
+//  GTMNSAppleEventDescriptor+Handler.m
 //
 //  Copyright 2008 Google Inc.
 //

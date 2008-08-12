@@ -14,6 +14,21 @@
 --  the License.
 --
 
+script parentTestScript
+	property parentTestScriptProperty : 6
+	on parentTestScriptFunc()
+		return "parent"
+	end parentTestScriptFunc
+end script
+
+script testScript
+	property parent : parentTestScript
+	property testScriptProperty : 5
+	on testScriptFunc()
+		return "child"
+	end testScriptFunc
+end script
+
 property foo : 1
 
 on test()
@@ -34,6 +49,10 @@ end testAddParams
 on testAdd of a onto b given otherValue:d
 	return a + b + d
 end testAdd
+
+on testGetScript()
+	return testScript
+end testGetScript
 
 on open
 end open

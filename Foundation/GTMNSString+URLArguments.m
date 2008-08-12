@@ -30,7 +30,7 @@
                                             NULL,
                                             (CFStringRef)@"!*'();:@&=+$,/?%#[]",
                                             kCFStringEncodingUTF8);
-  return [GTMNSMakeCollectable(escaped) autorelease];
+  return GTMCFAutorelease(escaped);
 }
 
 - (NSString*)gtm_stringByUnescapingFromURLArgument {

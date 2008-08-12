@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMLoggerRingBufferWriter.h"
 #import "GTMLogger.h"
-
+#import "GTMUnitTestDevLog.h"
 
 // --------------------------------------------------
 // CountingWriter keeps a count of the number of times it has been
@@ -31,16 +31,17 @@
   NSMutableArray *loggedContents_;
 }
 
-- (int)count;
+- (NSUInteger)count;
 - (NSArray *)loggedContents;
 - (void)reset;
 
 @end  // CountingWriter
 
 @implementation CountingWriter
-
 - (void)logMessage:(NSString *)msg level:(GTMLoggerLevel)level {
-  if (loggedContents_ == nil) loggedContents_ = [[NSMutableArray alloc] init];
+  if (!loggedContents_) {
+    loggedContents_ = [[NSMutableArray alloc] init];
+  }
   [loggedContents_ addObject:msg];
 }  // logMessage
 
@@ -54,8 +55,8 @@
   loggedContents_ = nil;
 }  // reset
 
-- (int)count {
-  return (int)[loggedContents_ count];
+- (NSUInteger)count {
+  return [loggedContents_ count];
 }  // count
 
 - (NSArray *)loggedContents {
@@ -68,7 +69,7 @@
 @interface GTMLoggerRingBufferWriterTest : GTMTestCase {
  @private
   GTMLogger *logger_;
-  __weak CountingWriter *countingWriter_;
+  CountingWriter *countingWriter_;
 }
 @end  // GTMLoggerRingBufferWriterTest
 
@@ -100,12 +101,13 @@
 
 
 - (void)setUp {
-  countingWriter_ = [[[CountingWriter alloc] init] autorelease];
+  countingWriter_ = [[CountingWriter alloc] init];
   logger_ = [[GTMLogger alloc] init];
 }  // setUp
 
 
 - (void)tearDown {
+  [countingWriter_ release];
   [logger_ release];
 }  // tearDown
 
@@ -116,21 +118,18 @@
   GTMLoggerRingBufferWriter *writer =
     [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:32
                                                      writer:countingWriter_];
-  STAssertEquals([writer capacity], 32, nil);
+  STAssertEquals([writer capacity], (NSUInteger)32, nil);
   STAssertTrue([writer writer] == countingWriter_, nil);
-  STAssertEquals([writer count], 0, nil);
-  STAssertEquals([writer droppedLogCount], 0, nil);
-  STAssertEquals([writer totalLogged], 0, nil);
+  STAssertEquals([writer count], (NSUInteger)0, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
+  STAssertEquals([writer totalLogged], (NSUInteger)0, nil);
 
   // Try with invalid arguments.  Should always get nil back.
   writer =
     [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:0
                                                      writer:countingWriter_];
   STAssertNil(writer, nil);
-  writer =
-    [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:-1
-                                                     writer:countingWriter_];
-  STAssertNil(writer, nil);
+
   writer = [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:32
                                                              writer:nil];
   STAssertNil(writer, nil);
@@ -149,28 +148,28 @@
   
   // Shouldn't do anything if there are no contents.
   [writer dumpContents];
-  STAssertEquals([writer count], 0, nil);
-  STAssertEquals([countingWriter_ count], 0, nil);
+  STAssertEquals([writer count], (NSUInteger)0, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)0, nil);
 
   // Log a single item.  Make sure the counts are accurate.
   [logger_ logDebug:@"oop"];
-  STAssertEquals([writer count], 1, nil);
-  STAssertEquals([writer totalLogged], 1, nil);
-  STAssertEquals([writer droppedLogCount], 0, nil);
-  STAssertEquals([countingWriter_ count], 0, nil);
+  STAssertEquals([writer count], (NSUInteger)1, nil);
+  STAssertEquals([writer totalLogged], (NSUInteger)1, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)0, nil);
 
   // Log a second item.  Also make sure counts are accurate.
   [logger_ logDebug:@"ack"];
-  STAssertEquals([writer count], 2, nil);
-  STAssertEquals([writer totalLogged], 2, nil);
-  STAssertEquals([writer droppedLogCount], 0, nil);
-  STAssertEquals([countingWriter_ count], 0, nil);
+  STAssertEquals([writer count], (NSUInteger)2, nil);
+  STAssertEquals([writer totalLogged], (NSUInteger)2, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)0, nil);
 
   // Print them, and make sure the countingWriter sees the right stuff.
   [writer dumpContents];
-  STAssertEquals([countingWriter_ count], 2, nil);
-  STAssertEquals([writer count], 2, nil);  // Should not be zeroed.
-  STAssertEquals([writer totalLogged], 2, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)2, nil);
+  STAssertEquals([writer count], (NSUInteger)2, nil);  // Should not be zeroed.
+  STAssertEquals([writer totalLogged], (NSUInteger)2, nil);
 
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"oop",@"ack", nil]
@@ -180,18 +179,18 @@
   // Wipe the slates clean.
   [writer reset];
   [countingWriter_ reset];
-  STAssertEquals([writer count], 0, nil);
-  STAssertEquals([writer totalLogged], 0, nil);
+  STAssertEquals([writer count], (NSUInteger)0, nil);
+  STAssertEquals([writer totalLogged], (NSUInteger)0, nil);
 
   // An error log level should print the buffer and empty it.
   [logger_ logDebug:@"oop"];
   [logger_ logInfo:@"ack"];
-  STAssertEquals([writer droppedLogCount], 0, nil);
-  STAssertEquals([writer totalLogged], 2, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
+  STAssertEquals([writer totalLogged], (NSUInteger)2, nil);
 
   [logger_ logError:@"blargh"];
-  STAssertEquals([countingWriter_ count], 3, nil);
-  STAssertEquals([writer droppedLogCount], 0, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)3, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
 
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"oop", @"ack",
@@ -205,13 +204,13 @@
   [logger_ logDebug:@"oop"];
   [logger_ logInfo:@"ack"];
   [logger_ logDebug:@"blargh"];
-  STAssertEquals([writer droppedLogCount], 0, nil);
-  STAssertEquals([writer count], 3, nil);
-  STAssertEquals([writer totalLogged], 3, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
+  STAssertEquals([writer count], (NSUInteger)3, nil);
+  STAssertEquals([writer totalLogged], (NSUInteger)3, nil);
 
   [logger_ logAssert:@"ouch"];
-  STAssertEquals([countingWriter_ count], 4, nil);
-  STAssertEquals([writer droppedLogCount], 0, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)4, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"oop", @"ack",
                                      @"blargh", @"ouch", nil]
@@ -224,11 +223,11 @@
   [logger_ logDebug:@"oop"];
   [logger_ logDebug:@"blargh"];
   [logger_ logDebug:@"flong"];  // Fills buffer
-  STAssertEquals([writer droppedLogCount], 0, nil);
-  STAssertEquals([writer count], 4, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)0, nil);
+  STAssertEquals([writer count], (NSUInteger)4, nil);
 
   [logger_ logAssert:@"ouch"];  // should drop "ack"
-  STAssertEquals([countingWriter_ count], 4, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)4, nil);
 
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"oop", @"blargh",
@@ -243,11 +242,11 @@
   [logger_ logDebug:@"blargh"];
   [logger_ logDebug:@"flong"];  // Fills buffer
   [logger_ logDebug:@"bloogie"];  // should drop "ack"
-  STAssertEquals([writer droppedLogCount], 1, nil);
-  STAssertEquals([writer count], 4, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)1, nil);
+  STAssertEquals([writer count], (NSUInteger)4, nil);
 
   [logger_ logAssert:@"ouch"];  // should drop "oop"
-  STAssertEquals([countingWriter_ count], 4, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)4, nil);
 
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"blargh",
@@ -265,22 +264,22 @@
   [logger_ setWriter:writer];
 
   [logger_ logInfo:@"ack"];
-  STAssertEquals([countingWriter_ count], 0, nil);  
-  STAssertEquals([writer count], 1, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)0, nil);  
+  STAssertEquals([writer count], (NSUInteger)1, nil);
   [writer dumpContents];
-  STAssertEquals([countingWriter_ count], 1, nil);  
+  STAssertEquals([countingWriter_ count], (NSUInteger)1, nil);  
 
   [self compareWriter:countingWriter_
         withExpectedLogging:[NSArray arrayWithObjects:@"ack", nil]
                  line:__LINE__];
 
   [logger_ logDebug:@"oop"];  // should drop "ack"
-  STAssertEquals([writer count], 1, nil);
-  STAssertEquals([writer droppedLogCount], 1, nil);
+  STAssertEquals([writer count], (NSUInteger)1, nil);
+  STAssertEquals([writer droppedLogCount], (NSUInteger)1, nil);
 
   [countingWriter_ reset];
   [logger_ logError:@"snoogy"];  // should drop "oop"
-  STAssertEquals([countingWriter_ count], 1, nil);  
+  STAssertEquals([countingWriter_ count], (NSUInteger)1, nil);  
 
   [self compareWriter:countingWriter_
   withExpectedLogging:[NSArray arrayWithObjects:@"snoogy", nil]
@@ -292,7 +291,7 @@
 
 // Run 10 threads, all logging through the same logger.  
 
-static volatile int gStoppedThreads = 0; // Total number that have stopped.
+static volatile NSUInteger gStoppedThreads = 0; // Total number that have stopped.
 
 - (void)bangMe:(id)info {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -320,15 +319,15 @@ static volatile int gStoppedThreads = 0; // Total number that have stopped.
 
 
 - (void)testThreading {
-  const int kThreadCount = 10;
-  const int kCapacity = 10;
+  const NSUInteger kThreadCount = 10;
+  const NSUInteger kCapacity = 10;
 
   GTMLoggerRingBufferWriter *writer =
     [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:kCapacity
                                                      writer:countingWriter_];
   [logger_ setWriter:writer];
 
-  for (int i = 0; i < kThreadCount; i++) {
+  for (NSUInteger i = 0; i < kThreadCount; i++) {
     [NSThread detachNewThreadSelector:@selector(bangMe:)
                              toTarget:self
                            withObject:logger_];
@@ -345,8 +344,8 @@ static volatile int gStoppedThreads = 0; // Total number that have stopped.
 
   // Now make sure we get back what's expected.
   STAssertEquals([writer count], kThreadCount, nil);
-  STAssertEquals([countingWriter_ count], 0, nil);  // Nothing should be logged
-  STAssertEquals([writer totalLogged], 420, nil);
+  STAssertEquals([countingWriter_ count], (NSUInteger)0, nil);  // Nothing should be logged
+  STAssertEquals([writer totalLogged], (NSUInteger)420, nil);
 
   [logger_ logError:@"bork"];
   STAssertEquals([countingWriter_ count], kCapacity, nil);

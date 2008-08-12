@@ -1,5 +1,5 @@
 //
-//  NSAppleEventDescriptor+Foundation.h
+//  GTMNSAppleEventDescriptor+Foundation.h
 //
 //  Copyright 2008 Google Inc.
 //
@@ -18,15 +18,16 @@
 
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
+#import "GTMFourCharCode.h"
 
 // A category for dealing with NSAppleEventDescriptors and NSArrays.
 @interface NSAppleEventDescriptor (GTMAppleEventDescriptorArrayAdditions)
 // Used to register the types you know how to convert into 
 // NSAppleEventDescriptors.
-// See examples in NSAppleEventDescriptor+String, NSAppleEventDescriptor+Number
-// etc.
+// See examples in GTMNSAppleEventDescriptor+Foundation.
 // Args:
 //  selector - selector to call for any of the types in |types|
+//    -(NSAppleEventDesc *)selector_name;
 //  types - an std c array of types of length |count|
 //  count - number of types in |types|
 + (void)gtm_registerSelector:(SEL)selector 
@@ -89,3 +90,11 @@
                       timeOut:(NSTimeInterval)timeout
                         reply:(NSAppleEventDescriptor**)reply;
 @end  
+
+@interface GTMFourCharCode (GTMAppleEventDescriptorObjectAdditions)
+
+// if you call gtm_appleEventDescriptor on GTMFourCharCode it will be of
+// type typeType. If you need something different (like typeProperty) this
+// allows you to define the type you want.
+- (NSAppleEventDescriptor*)gtm_appleEventDescriptorOfType:(DescType)type;
+@end

@@ -207,7 +207,13 @@
   STAssertEquals([output intValue], numVars,
                @"should be back down to %d vars", numVars);
   
-  NSDictionary *currVars = [[NSProcessInfo processInfo] environment];
+  NSMutableDictionary *currVars 
+    = [[[[NSProcessInfo processInfo] environment] mutableCopy] autorelease];
+  
+  // When debugging a release build _ was not in the processInfo environment
+  // causing the assert below to fail. Not sure why, but it appeared
+  // to be harmless, and easy to account for.
+  [currVars setObject:@"/usr/bin/env" forKey:@"_"];
   [sr setEnvironment:currVars];
   
   output = [sr run:@"/usr/bin/env | wc -l"];

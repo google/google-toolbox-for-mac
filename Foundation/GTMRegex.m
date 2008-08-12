@@ -276,7 +276,7 @@ static NSString *const kReplacementPattern =
     }
 
     result = buildResult;
-  } // COV_NF_LINE - radar 5851992 not all brackets reachable w/ obj-c exceptions and coverage
+  } // COV_NF_LINE - radar 5851992 only reachable w/ an uncaught exception which isn't testable
   @finally {
     free(regMatches);
   }
@@ -649,8 +649,7 @@ static NSString *const kReplacementPattern =
                                                    isMatch:isMatch] autorelease];
       nextMatches = nil;
     }
-  } // COV_NF_START - no real way to force this in a test
-  @catch (id e) {
+  } @catch (id e) { // COV_NF_START - no real way to force this in a test
     _GTMDevLog(@"Exceptions while trying to advance enumeration (%@)", e);
     // if we still have something in our temp, free it
     if (nextMatches)

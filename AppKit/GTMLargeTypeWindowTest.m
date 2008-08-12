@@ -20,6 +20,8 @@
 #import "GTMLargeTypeWindow.h"
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMUnitTestDevLog.h"
+#import "GTMGarbageCollection.h"
+#import "GTMSystemVersion.h"
 
 NSString *const kLongTextBlock = 
   @"`Twas brillig, and the slithy toves "
@@ -49,11 +51,31 @@ NSString *const kLongTextBlock =
 
 NSString *const kMediumTextBlock = @"For the Snark was a Boojum, you see.";
 
+NSString *const kShortTextBlock = @"Short";
+
 @interface GTMLargeTypeWindowTest : GTMTestCase
 @end
 
 @implementation GTMLargeTypeWindowTest
-- (void)testLargeTypeWindow {
+- (BOOL)shouldDoAnimateCopy {
+  // NOTE: Animated copy tests are disabled when GC is on.  
+  // See the comment/warning in the GTMLargeTypeWindow.h for more details,
+  // but we disable them to avoid the tests failing (crashing) when it's Apple's 
+  // bug. Please bump the system  check as appropriate when new systems are 
+  // tested. Currently broken on 10.5.4 and below. 
+  // Radar 6137322 CIFilter crashing when run with GC enabled
+  long major, minor, bugfix;
+  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
+  if (!(GTMIsGarbageCollectionEnabled() 
+        && major <= 10 && minor <= 5 && bugfix <= 4)) {
+    return YES;
+  } else {
+    NSLog(@"--- animated copy not run because of GC incompatibilites ---");
+    return NO;
+  }
+}
+
+- (void)testLargeTypeWindowIllegalInits {
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty string"];
   GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
                                  initWithString:@""] autorelease];
@@ -82,9 +104,11 @@ NSString *const kMediumTextBlock = @"For the Snark was a Boojum, you see.";
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty image"];
   window = [[[GTMLargeTypeWindow alloc] initWithImage:nil] autorelease];
   STAssertNil(window, nil);
-  
-  window = [[[GTMLargeTypeWindow alloc] 
-             initWithString:kMediumTextBlock] autorelease];
+}
+
+- (void)testLargeTypeWindowMediumText {
+  GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
+                                 initWithString:kMediumTextBlock] autorelease];
   STAssertNotNil(window, nil);
   STAssertTrue([window canBecomeKeyWindow], nil);
   [window makeKeyAndOrderFront:nil];
@@ -94,52 +118,80 @@ NSString *const kMediumTextBlock = @"For the Snark was a Boojum, you see.";
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMLargeTypeWindowMediumTextTest",
                                         nil); 
-  [window copy:nil];
-  NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  NSString *pbString = [pb stringForType:NSStringPboardType];
-  STAssertEqualObjects(pbString, kMediumTextBlock, nil);
+  if ([self shouldDoAnimateCopy]) {
+    [window copy:nil];
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSString *pbString = [pb stringForType:NSStringPboardType];
+    STAssertEqualObjects(pbString, kMediumTextBlock, nil);
+  }
   [window keyDown:nil];
-  
-  window = [[[GTMLargeTypeWindow alloc] initWithString:@"Short"] autorelease];
+}
+
+- (void)testLargeTypeWindowShortText {
+  GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
+                                 initWithString:kShortTextBlock] autorelease];
   STAssertNotNil(window, nil);
   STAssertTrue([window canBecomeKeyWindow], nil);
   [window makeKeyAndOrderFront:nil];
-  endDate = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+  NSDate *endDate 
+    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMLargeTypeWindowShortTextTest",
                                         nil); 
-  [window copy:nil];
-  pbString = [pb stringForType:NSStringPboardType];
-  STAssertEqualObjects(pbString, @"Short", nil);
+  if ([self shouldDoAnimateCopy]) {
+    [window copy:nil];
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSString *pbString = [pb stringForType:NSStringPboardType];
+    STAssertEqualObjects(pbString, kShortTextBlock, nil);
+  }
   [window resignKeyWindow];
+}
 
-  window = [[[GTMLargeTypeWindow alloc] 
-             initWithString:kLongTextBlock] autorelease];
+- (void)testLargeTypeWindowLongText {
+  GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
+                                 initWithString:kLongTextBlock] autorelease];
   STAssertNotNil(window, nil);
   [window orderFront:nil];
-  endDate = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+  NSDate *endDate
+    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   // Can't do state for long text as it will wrap differently on different
   // sized screens.
   GTMAssertObjectStateEqualToStateNamed(window,
                                         @"GTMLargeTypeWindowLongTextTest", 
                                         nil); 
+  if ([self shouldDoAnimateCopy]) {
+    [window copy:nil];
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSString *pbString = [pb stringForType:NSStringPboardType];
+    STAssertEqualObjects(pbString, kLongTextBlock, nil);
+  }
   [window keyDown:nil];
-  
+}
+
+- (void)testLargeTypeWindowImageText {
   NSImage *image = [NSApp applicationIconImage];
-  window = [[[GTMLargeTypeWindow alloc] initWithImage:image] autorelease];
+  GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
+                                 initWithImage:image] autorelease];
   STAssertNotNil(window, nil);
   [window makeKeyAndOrderFront:nil];
-  endDate = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+  NSDate *endDate 
+    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMLargeTypeWindowImageTest",
                                         nil);
-  [window copy:nil];
-  // Pasteboard should not change for an image
-  pbString = [pb stringForType:NSStringPboardType];
-  STAssertEqualObjects(pbString, @"Short", nil);
+  NSString *testString = @"TestString";
+  NSPasteboard *pb = [NSPasteboard generalPasteboard];
+  [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
+  [pb setString:testString forType:NSStringPboardType];
+  if ([self shouldDoAnimateCopy]) {
+    [window copy:nil];
+    // Pasteboard should not change for an image
+    NSString *pbString = [pb stringForType:NSStringPboardType];
+    STAssertEqualObjects(pbString, testString, nil);
+  }
   [window resignKeyWindow];
 }
 

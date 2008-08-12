@@ -53,6 +53,30 @@ Changes since 1.5.1
   GTMLoggerRingBufferWriter.h for what the basic system and two optional
   additions can do.
 
+- Added GTMNSMakeUncollectable for forcing objects to survive in a GC world.
+
+- Added GTMCFAutorelease to make the [GTMNSMakeCollectable(cfFoo) autorelease] 
+  simpler and clearer, it's now just GTMCFAutorelease(cfFoo), and works in 
+  both GC and non-GC world.
+
+- Added GTMIsGarbageCollectionEnabled to GTMGarbageCollection.h.  See the note
+  there for it's usage.
+
+- Disabled the unittests for things on top of NSAppleScript in a GC world since
+  Apple has bugs and it can crash.  See the unittest for a note about it.
+
+- GTMStackTrace now can figure out ObjC symbols. Downside it is now ObjC only.
+
+- GTMFourCharCode can now be used with NSAppleEventDescriptors easily.
+  typeType, typeKeyword, typeApplSignature, and typeEnumerated all get
+  turned into GTMFourCharCodes.
+
+- Fixed up crash in GTMLoggerRingBufferWriter when used with GC on.
+
+- Significant updates to GTMNSAppleScript+Handler allowing you to 
+  list all handlers and properties (including inherited) and cleans up 
+  several errors in how scripting was being handled.
+  
 
 Release 1.5.1
 Changes since 1.5.0

@@ -69,6 +69,24 @@
     STAssertEqualsWithAccuracy(theColor[2], newValue, 0.001, nil);
     STAssertEqualsWithAccuracy(theColor[3], newValue, 0.001, nil);
   }
+  // Create a shading with 1 color to test that special handling
+  NSColor *purple = [NSColor purpleColor];
+  NSColor *singleColor[1] = { purple };
+  CGFloat singlePosition[1] = { 0.5 };
+  theShading =
+    [GTMLinearRGBShading shadingWithColors:singleColor
+                            fromSpaceNamed:NSCalibratedRGBColorSpace
+                               atPositions:singlePosition
+                                     count:1];
+  // test over a range to make sure we always get the same color
+  for (NSUInteger i = 0; i < kColorCount; i++) {
+    CGFloat newValue = kColorIncrement * i;
+    CGFloat *theColor = (CGFloat*)[theShading valueAtPosition:newValue];
+    STAssertEqualsWithAccuracy(theColor[0], [purple redComponent], 0.001, nil);
+    STAssertEqualsWithAccuracy(theColor[1], [purple greenComponent], 0.001, nil);
+    STAssertEqualsWithAccuracy(theColor[2], [purple blueComponent], 0.001, nil);
+    STAssertEqualsWithAccuracy(theColor[3], [purple alphaComponent], 0.001, nil);
+  }
 }
 
 - (void)testShadeFunction {
@@ -83,6 +101,7 @@
 }
 
 - (void)testColorSpace {
+  // Calibrated RGB
   GTMLinearRGBShading *theShading =
     [GTMLinearRGBShading shadingWithColors:nil
                             fromSpaceNamed:NSCalibratedRGBColorSpace
@@ -91,5 +110,23 @@
   CGColorSpaceRef theColorSpace = [theShading colorSpace];
   STAssertNotNULL(theColorSpace, nil);
   STAssertEquals(CFGetTypeID(theColorSpace), CGColorSpaceGetTypeID(), nil);
+
+  // Device RGB
+  theShading =
+    [GTMLinearRGBShading shadingWithColors:nil
+                            fromSpaceNamed:NSDeviceRGBColorSpace
+                               atPositions:nil
+                                     count:0];
+  theColorSpace = [theShading colorSpace];
+  STAssertNotNULL(theColorSpace, nil);
+  STAssertEquals(CFGetTypeID(theColorSpace), CGColorSpaceGetTypeID(), nil);
+  
+  // Device CMYK (not supported)
+  theShading =
+    [GTMLinearRGBShading shadingWithColors:nil
+                            fromSpaceNamed:NSDeviceCMYKColorSpace
+                               atPositions:nil
+                                     count:0];
+  STAssertNULL(theShading, nil);
 }
 @end

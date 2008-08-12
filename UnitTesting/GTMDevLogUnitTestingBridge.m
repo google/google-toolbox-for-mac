@@ -38,7 +38,7 @@ void _GTMUnitTestDevLog(NSString *format, ...) {
   if (devLogClass) {
     [devLogClass log:format args:argList];
   } else {
-    NSLogv(format, argList);
+    NSLogv(format, argList); // COV_NF_LINE the class is in all our unittest setups
   }
   va_end(argList);
 }

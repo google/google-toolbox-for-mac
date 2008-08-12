@@ -331,7 +331,7 @@ startFailed:
     response = [delegate_ httpServer:self handleRequest:request];
   } @catch (NSException *e) {
     _GTMDevLog(@"Exception trying to handle http request: %@", e);
-  }
+  } // COV_NF_LINE - radar 5851992 only reachable w/ an uncaught exception which isn't testable
   
   if (!response) {
     [self closeConnection:connDict];
@@ -350,14 +350,16 @@ startFailed:
 }
 
 - (NSMutableDictionary *)lookupConnection:(NSFileHandle *)fileHandle {
+  NSMutableDictionary *result = nil;
   NSUInteger max = [connections_ count];
   for (NSUInteger x = 0; x < max; ++x) {
     NSMutableDictionary *connDict = [connections_ objectAtIndex:x];
     if (fileHandle == [connDict objectForKey:kFileHandle]) {
-      return connDict;
+      result = connDict;
+      break;
     }
   }
-  return nil;
+  return result;
 }
 
 - (void)closeConnection:(NSMutableDictionary *)connDict {
@@ -367,6 +369,10 @@ startFailed:
   [center removeObserver:self
                     name:NSFileHandleReadCompletionNotification
                   object:connectionHandle];
+  // in a non GC world, we're fine just letting the connect get closed when
+  // the object is release when it comes out of connections_, but in a GC world
+  // it won't get cleaned up 
+  [connectionHandle closeFile];
   
   // remove it from the list
   [connections_ removeObject:connDict];
@@ -380,11 +386,11 @@ startFailed:
     NSFileHandle *connectionHandle = [connDict objectForKey:kFileHandle];
     NSData *serialized = [response serializedData];
     [connectionHandle writeData:serialized];
-  } @catch (NSException *e) {
+  } @catch (NSException *e) {  // COV_NF_START - causing an exception here is to hard in a test
     // TODO: let the delegate know about the exception (but do it on the main
     // thread)
     _GTMDevLog(@"exception while sending reply: %@", e);
-  }
+  }  // COV_NF_END
   
   // back to the main thread to close things down
   [self performSelectorOnMainThread:@selector(sentResponse:)
@@ -421,28 +427,30 @@ startFailed:
 }
 
 - (void)dealloc {
-  CFRelease(message_);
+  if (message_) {
+    CFRelease(message_);
+  }
   [super dealloc];
 }
 
 - (NSString *)version {
-  return [GTMNSMakeCollectable(CFHTTPMessageCopyVersion(message_)) autorelease];
+  return GTMCFAutorelease(CFHTTPMessageCopyVersion(message_));
 }
 
 - (NSURL *)URL {
-  return [GTMNSMakeCollectable(CFHTTPMessageCopyRequestURL(message_)) autorelease];
+  return GTMCFAutorelease(CFHTTPMessageCopyRequestURL(message_));
 }
 
 - (NSString *)method {
-  return [GTMNSMakeCollectable(CFHTTPMessageCopyRequestMethod(message_)) autorelease];
+  return GTMCFAutorelease(CFHTTPMessageCopyRequestMethod(message_));
 }
 
 - (NSData *)body {
-  return [GTMNSMakeCollectable(CFHTTPMessageCopyBody(message_)) autorelease];
+  return GTMCFAutorelease(CFHTTPMessageCopyBody(message_));
 }
 
 - (NSDictionary *)allHeaderFieldValues {
-  return GTMNSMakeCollectable(CFHTTPMessageCopyAllHeaderFields(message_));
+  return GTMCFAutorelease(CFHTTPMessageCopyAllHeaderFields(message_));
 }
 
 - (NSString *)description {
@@ -471,7 +479,7 @@ startFailed:
   if (key) {
     value = CFHTTPMessageCopyHeaderFieldValue(message_, (CFStringRef)key);
   }
-  return [GTMNSMakeCollectable(value) autorelease];
+  return GTMCFAutorelease(value);
 }
 
 - (UInt32)contentLength {
@@ -578,7 +586,7 @@ startFailed:
 }
 
 - (NSData *)serializedData {
-  return [GTMNSMakeCollectable(CFHTTPMessageCopySerializedMessage(message_)) autorelease];
+  return GTMCFAutorelease(CFHTTPMessageCopySerializedMessage(message_));
 }
 
 @end
