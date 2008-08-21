@@ -1,4 +1,5 @@
 #summary Spotlight importers included with Google Toolbox For Mac
+#labels Featured
 
 = Google Toolbox For Mac Spotlight Importers =
 
