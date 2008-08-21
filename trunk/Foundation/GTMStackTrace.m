@@ -45,7 +45,7 @@ struct GTMClassDescription {
 static struct GTMClassDescription *GTMClassDescriptions(int *total_count) {
   int class_count = objc_getClassList(nil, 0);
   struct GTMClassDescription *class_descs 
-  = calloc(class_count, sizeof(struct GTMClassDescription));
+    = calloc(class_count, sizeof(struct GTMClassDescription));
   if (class_descs) {
     Class *classes = calloc(class_count, sizeof(Class));
     if (classes) {
@@ -61,8 +61,10 @@ static struct GTMClassDescription *GTMClassDescriptions(int *total_count) {
       }
       free(classes);
     } else {
+      // COV_NF_START - Don't know how to force this in a unittest
       free(class_descs);
       class_count = 0;
+      // COV_NF_END
     }
   }
   if (total_count) {
