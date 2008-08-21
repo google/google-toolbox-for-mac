@@ -27,6 +27,7 @@
 		8B58F8700E5726D000A0E02E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B58F86F0E5726D000A0E02E /* Foundation.framework */; };
 		8BF155160E5B442A00D28B05 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF155150E5B442A00D28B05 /* ApplicationServices.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
+		F464A82B0E5DC72D006B02E8 /* schema.xml in Resources */ = {isa = PBXBuildFile; fileRef = F464A82A0E5DC72D006B02E8 /* schema.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		8BF155150E5B442A00D28B05 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		8D576316048677EA00EA77CD /* XcodeProject.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XcodeProject.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F464A82A0E5DC72D006B02E8 /* schema.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = schema.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F464A82A0E5DC72D006B02E8 /* schema.xml */,
 				8D576317048677EA00EA77CD /* Info.plist */,
 				8D5B49A704867FD3000E48DA /* InfoPlist.strings */,
 			);
@@ -198,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */,
+				F464A82B0E5DC72D006B02E8 /* schema.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
