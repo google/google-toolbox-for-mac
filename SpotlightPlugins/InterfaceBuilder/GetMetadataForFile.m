@@ -17,7 +17,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GTMScriptRunner.h"
 #import "GTMGarbageCollection.h"
 
 static BOOL AddStringsToTextContent(NSSet *stringSet, 
@@ -116,32 +115,73 @@ static BOOL ExtractConnections(NSDictionary *ibToolData,
   return AddStringsToTextContent(connectionsSet, attributes);
 }
 
+static NSString *FindIBTool(void) {
+  NSString *result = nil;
+
+  NSString *possiblePaths[] = {
+    @"/usr/bin/ibtool",
+    @"/Developer/usr/bin/ibtool",
+  };
+
+  NSFileManager *fm = [NSFileManager defaultManager];
+  BOOL isDir;
+  for (size_t i = 0; i < (sizeof(possiblePaths) / sizeof(NSString*)); ++i) {
+    if ([fm fileExistsAtPath:possiblePaths[i] isDirectory:&isDir] &&
+        !isDir) {
+      result = possiblePaths[i];
+      break;
+    }
+  }
+
+  return result;
+}
+
+static NSData *CommandOutput(NSString *cmd) {
+  NSMutableData *result = [NSMutableData data];
+
+  // NOTE: we use popen/pclose in here instead of NSTask because NSTask uses
+  // a delayed selector to clean up the process it spawns, so since we have
+  // no runloop it gets ungly trying to clean up the zombie process.
+
+  FILE *fp;
+  char buffer[2048];
+  size_t len;
+  if((fp = popen([cmd UTF8String], "r"))) {
+    // spool it all in
+    while ((len = fread(buffer, 1, sizeof(buffer), fp)) > 0) {
+      [result appendBytes:buffer length:len];
+    }
+    // make sure we get a clean exit status
+    if (pclose(fp) != 0) {
+      result = nil;
+    }
+  }
+  return result;
+}
+
 static BOOL ImportIBFile(NSMutableDictionary *attributes, 
                          NSString *pathToFile) {
   BOOL wasGood = NO;
-  GTMScriptRunner *runner = [GTMScriptRunner runner];
-  NSDictionary *environment 
-    = [NSDictionary dictionaryWithObject:@"/usr/bin:/Developer/usr/bin"
-                                  forKey:@"PATH"];
-  [runner setEnvironment:environment];
-  NSString *cmdString 
-    = @"ibtool --classes --localizable-strings --connections \"%@\"";
-  NSString *cmd = [NSString stringWithFormat:cmdString, pathToFile];
-  NSString *dataString = [runner run:cmd];
-  CFDataRef data 
-    = (CFDataRef)[dataString dataUsingEncoding:NSUTF8StringEncoding];
-  if (data) {
-    NSDictionary *results 
-      = GTMCFAutorelease(CFPropertyListCreateFromXMLData(NULL, 
-                                                         data ,
-                                                         kCFPropertyListImmutable,
-                                                         NULL));
-    if (results && [results isKindOfClass:[NSDictionary class]]) {
-      wasGood = ExtractClasses(results, attributes);
-      wasGood |= ExtractLocalizableStrings(results, attributes);
-      wasGood |= ExtractConnections(results, attributes);
+  NSString *ibtoolPath = FindIBTool();
+  if (ibtoolPath) {
+    NSString *cmdString 
+      = @"%@ --classes --localizable-strings --connections \"%@\"";
+    NSString *cmd = [NSString stringWithFormat:cmdString, ibtoolPath, pathToFile];
+    NSData *data = CommandOutput(cmd);
+    if (data) {
+      NSDictionary *results 
+        = GTMCFAutorelease(CFPropertyListCreateFromXMLData(NULL, 
+                                                           (CFDataRef)data ,
+                                                           kCFPropertyListImmutable,
+                                                           NULL));
+      if (results && [results isKindOfClass:[NSDictionary class]]) {
+        wasGood = ExtractClasses(results, attributes);
+        wasGood |= ExtractLocalizableStrings(results, attributes);
+        wasGood |= ExtractConnections(results, attributes);
+      }
     }
   }
+  
   return wasGood;
 }
 

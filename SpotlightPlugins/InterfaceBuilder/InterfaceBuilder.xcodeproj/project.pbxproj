@@ -25,7 +25,6 @@
 		2C05A19C06CAA52B00D84F6F /* GetMetadataForFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C05A19B06CAA52B00D84F6F /* GetMetadataForFile.m */; };
 		8B1D48820E59F52A000EB8CA /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 8B1D48810E59F52A000EB8CA /* main.c */; };
 		8B58F8700E5726D000A0E02E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B58F86F0E5726D000A0E02E /* Foundation.framework */; };
-		8BF153730E5A436600D28B05 /* GTMScriptRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF153720E5A436600D28B05 /* GTMScriptRunner.m */; };
 		8BF1543C0E5B42F500D28B05 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF1543B0E5B42F500D28B05 /* ApplicationServices.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -48,8 +47,6 @@
 		8B58F75A0E56502600A0E02E /* ReadMe.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = ReadMe.rtf; sourceTree = "<group>"; };
 		8B58F86F0E5726D000A0E02E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8B58F9110E579A1300A0E02E /* LoadableBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LoadableBundle.xcconfig; sourceTree = "<group>"; };
-		8BF153710E5A436600D28B05 /* GTMScriptRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMScriptRunner.h; path = ../../Foundation/GTMScriptRunner.h; sourceTree = SOURCE_ROOT; };
-		8BF153720E5A436600D28B05 /* GTMScriptRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMScriptRunner.m; path = ../../Foundation/GTMScriptRunner.m; sourceTree = SOURCE_ROOT; };
 		8BF1537B0E5A456F00D28B05 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = ../../GTMDefines.h; sourceTree = SOURCE_ROOT; };
 		8BF153C30E5A48C400D28B05 /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMGarbageCollection.h; path = ../../Foundation/GTMGarbageCollection.h; sourceTree = SOURCE_ROOT; };
 		8BF1543B0E5B42F500D28B05 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -109,8 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				8BF1537B0E5A456F00D28B05 /* GTMDefines.h */,
-				8BF153710E5A436600D28B05 /* GTMScriptRunner.h */,
-				8BF153720E5A436600D28B05 /* GTMScriptRunner.m */,
 				8BF153C30E5A48C400D28B05 /* GTMGarbageCollection.h */,
 				2C05A19B06CAA52B00D84F6F /* GetMetadataForFile.m */,
 				8B1D48840E59F591000EB8CA /* PluginID.h */,
@@ -235,7 +230,6 @@
 			files = (
 				2C05A19C06CAA52B00D84F6F /* GetMetadataForFile.m in Sources */,
 				8B1D48820E59F52A000EB8CA /* main.c in Sources */,
-				8BF153730E5A436600D28B05 /* GTMScriptRunner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
