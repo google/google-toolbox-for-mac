@@ -76,7 +76,14 @@ Changes since 1.5.1
 - Significant updates to GTMNSAppleScript+Handler allowing you to 
   list all handlers and properties (including inherited) and cleans up 
   several errors in how scripting was being handled.
-  
+
+- Added GTMGetURLHandler class that gives you a very easy way of supporting
+  Get URL events just by adding a key to your plists, and adding a single
+  method to your class. See GTMGetURLHandler.m for more details.
+
+- Added XcodeProject, AppleScript, and InterfaceBuilder Spotlight Plugins. 
+  Allows you to index .xcodeproj, .scpt, .scptd, .xib, .nib, and 
+  .aib files. See Readmes beside individual projects in SpotlightPlugins.
 
 Release 1.5.1
 Changes since 1.5.0
