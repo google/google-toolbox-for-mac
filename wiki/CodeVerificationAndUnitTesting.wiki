@@ -1,12 +1,31 @@
-#summary Code Verification and Unit Testing in GTM.
 #labels Featured,Phase-Design
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+
+<!-- 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not
+// use this file except in compliance with the License.  You may obtain a copy
+// of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+// License for the specific language governing permissions and limitations under
+// the License.
+-->
+
+<dictionary title="Statz Terminology">
+
+#summary Code Verification and Unit Testing in GTM.
 
 = Introduction =
 
 Google Toolbox For Mac (GTM) is extensively unit tested. As of this writing we have about 91% code coverage with our unit tests. We expect any submissions to GTM to come with a complete unit test suite, testing as much functionality as is reasonably possible. GTM has several enhancement to the standard !SenTestingKit allowing you to do UI unit testing, automated binding unit testing, log tracking, and unit testing on the iPhone, as well as tools for doing static and dynamic testing of your code.
 
 
-=GTM !Unit Testing Basics=
+=GTM Unit Testing Basics=
 At its base GTM uses the !SenTestingKit framework supplied with the Apple Development Tools. We have added significant enhancements though to aid in getting better code coverage, and faster issue resolution. The key files for the basic enhancements is GTMSenTestCase.m/.h. 
 
 Please use the following macros as appropriate instead of falling back on `STAssertTrue`/`STAssertFalse`. These macros will display far more information when an assert fails making debugging easier. For documentation on these asserts please see GTMSenTestCase.h
@@ -51,7 +70,7 @@ Important notes for everything to work well:
   * Your test case classes must inherit from `GTMTestCase` for full functionality. Explicitly the ability to detect if an expected log is never fired.
   * You must use `_GTMDevLog` calls to log. We will not catch `NSLog`, `fprintf`, or any other logging system unless you juryrig support yourself.
 
-=GTM UI !Unit Testing=
+=GTM UI Unit Testing=
 GTM has extensive support for user interface unit tests. It supports testing both the imaging and/or internal state of almost all of the standard Cocoa/UIKit UI objects, and makes it easy for you to extend this support to your own UI objects. The key files for this support are GTMNSObject+UnitTesting.m/.h, and depending on your needs you will probably require one or more of: GTMAppKit+!UnitTesting, GTMCALayer+!UnitTesting or GTMUIKit+!UnitTesting.
 
 To do imaging tests use the `GTMAssertObjectImageEqualToImageNamed` macro. This compares the drawing of an object, and its subviews, to a master image file stored in the test executable's bundle. If the master image file does not exist yet, it will be created and placed on the Desktop and then easily added to the project. Master image files can be specialized on OS Version and architecture in case your image draws differently on Tiger vs Leopard, or ppc vs i386. If a unit test fails it will place a copy of the new image on the desktop as well as an image of a diff of the old vs new images. If your UI object is a subclass of NSView it will most likely unit test correctly with no modifications necessary. If your class is not a subclass of NSView but does drawing you may consider using the `GTMAssertDrawingEqualToImageNamed` macro defined in GTMAppKit+!UnitTesting.h. This allows you to easily test drawing routines that aren't themselves a view. See GTMNSBezierPath+CGPathTest.m for an example of using `GTMAssertDrawingEqualToImageNamed`.
@@ -70,7 +89,7 @@ Important notes for everything to work well:
   * For imaging, make sure that your testing environment is set up correctly.
   * Make sure to test on both Leopard and Tiger (and any other OS as appropriate) as drawing is often subtly different between both OS releases and hardware platforms.
 
-=GTM Binding !Unit Testing=
+=GTM Binding Unit Testing=
 GTM binding unit testing allows you to automatically test any classes you have that support NSBinding, saving you from having to write a whole pile of set/get test code to test them yourself. The files you will require are GTMNSObject+!BindingUnitTest.m/.h. To have your bindings tested, your object will need to implement 
 {{{
 - (NSArray *)exposedBindings
@@ -81,10 +100,10 @@ and
 }}}
 By default calling `GTMTestExposedBindings` on your object that supports bindings will test all of bindings exposed by `-exposedBindings` with several interesting edge cases. For more extensive testing you may possibly want to implement `-gtm_unitTestExposedBindingsToIgnore` and `-gtm_unitTestExposedBindingsTestValues`. See descriptions of those methods in GTMNSObject+!BindingUnitTest.h for details.
 
-=GTM HTTP !Unit Testing=
+=GTM HTTP Unit Testing=
 For testing objects that interact with remote servers we supply `GTMHTTPServer`. `GTMHTTPServer` is probably not what you want to use for an industrial stength webserver, but it works great for easily testing protocols without requiring firing up a webserver in a separate process. See GTMHTTPFetcherTest.m for an example of how to use it effectively.
 
-=GTM iPhone !Unit Testing=
+=GTM iPhone Unit Testing=
 GTM supports all of the features described above on the iPhone if they are applicable. Specifically we support UI unit testing, log tracking and all of the standard (and our additional) STMacros on the iPhone in both Simulator and Device mode. GTM does not support binding unit testing on the iPhone as NSBinding is not supported on the iPhone. To have your tests executed on the phone, make sure your iPhone application's delegate is `GTMIPhoneUnitTestDelegate`, or calls `[GTMIPhoneUnitTestDelegate runTests]` when you want your tests to execute. All of your tests should execute as you would expect. Please see [http://code.google.com/p/google-toolbox-for-mac/wiki/iPhoneUnitTesting iPhoneUnitTesting] for a tutorial on setting up testing for the iPhone.
 
 =GTM Code Coverage Analysis=
