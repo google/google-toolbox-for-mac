@@ -17,10 +17,10 @@ Follow either of the two links above to access the appropriate CLA and instructi
 
   # Join the Google Toolbox for Mac [http://groups.google.com/group/google-toolbox-for-mac/ discussion group].
   # Decide which code you want to submit. A submission should be a set of changes that addresses one issue in the [http://code.google.com/p/google-toolbox-for-mac/issues/list issue tracker]. Please don't mix more than one logical change per submittal, because it makes the history hard to follow. If you want to make a change that doesn't have a corresponding issue in the issue tracker, please create one.
-  # Also, coordinate with team members that are listed on the issue in question. This ensures that work isn't being duplicated and communicating your plan early also generally leads to better patches.
+  # Also, coordinate with team members that are listed on the issue in question. This ensures that work isn't being duplicated. Communicating your plan early also generally leads to better patches.
   # Ensure that your code adheres to the library source code style ([http://google-styleguide.googlecode.com/svn/trunk/objcguide.xml Objective C Style Guide]).
-  # Ensure that there are unit tests for your code.
+  # Ensure that there are unit tests for your code, and that they exercise as much of the code as possible. We prefer 100%.
   # Sign a Contributor License Agreement.
-  # There are two ways to then provide the code for review:
-    * The _preferred_ way is to provide the code is with [http://codereview.appspot.com/ Rietveld], then simply append a comment to the issue your change addresses w/ a link to the review on Rietveld.  This lets anyone look at the changes in content and provides a system for comments on the change. `upload.py` ([http://codereview.appspot.com/static/upload.py here]) automates the uploading from a svn tree.
-    * If you're rather, you can attach the code to the issue it addresses directly. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, `svn diff`).
+  # There are two ways to provide the code for review:
+    * The _preferred_ way is to provide the code is with [http://codereview.appspot.com/ Rietveld], then simply append a comment to the issue your change addresses with a link to the review on Rietveld.  This lets anyone look at the changes in content and provides a system for comments on the change. `upload.py` ([http://codereview.appspot.com/static/upload.py here]) automates the uploading from a svn tree.
+    * If you'd prefer, you can attach the code to the issue it addresses directly. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (`svn diff`).
