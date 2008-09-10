@@ -94,12 +94,20 @@
             @"GTMLoggerUnitTest.log"] retain];
   STAssertNotNil(path_, nil);
   // Make sure we're cleaned up from the last run
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
   [[NSFileManager defaultManager] removeFileAtPath:path_ handler:nil];
+#else
+  [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
+#endif
 }
 
 - (void)tearDown {
   STAssertNotNil(path_, nil);
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
   [[NSFileManager defaultManager] removeFileAtPath:path_ handler:nil];
+#else
+  [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
+#endif
   [path_ release];
   path_ = nil;
 }
@@ -372,8 +380,8 @@
   STAssertNotNil(fmtr, nil);
   
   // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
-  static NSString *const kFormatBasePattern =
-  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} otest\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+  NSString * kFormatBasePattern =
+  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest)|(GTMiPhoneTest))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
   NSString *msg = nil;
   
   msg = [self stringFromFormatter:fmtr

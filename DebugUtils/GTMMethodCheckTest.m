@@ -45,5 +45,9 @@ GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestClassMethod);  // COV_NF_
   // GTMMethodCheck only runs in debug
   STAssertTrue(gTestCheckVar, @"Should be true");
 #endif
+  
+  // Next two calls just verify our code coverage
+  [self GTMMethodCheckTestMethod];
+  [[self class] GTMMethodCheckTestClassMethod];
 }
 @end

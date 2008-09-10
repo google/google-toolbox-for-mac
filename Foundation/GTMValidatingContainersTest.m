@@ -292,6 +292,9 @@
   [dictionary removeObjectForKey:@"Key2"];
   [dictionary removeObjectForKey:@"Key1"];
   STAssertEquals([dictionary count], (NSUInteger)0, @"should have no objects left");
+  
+  // So we get full code coverage
+  [testSubClass_ foo];
 #if !(GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT)
   // If we're not validating, we don't expect any logs
   [GTMUnitTestDevLog resetExpectedLogs];

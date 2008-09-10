@@ -21,6 +21,9 @@
 
 @implementation NSString (GTMStringReplaceAdditions)
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+// 10.5 has stringByReplacingOccurrencesOfString:withString:, use that directly.
+
 - (NSString *)gtm_stringByReplacingString:(NSString *)target
                                withString:(NSString *)replacement {
   // If |target| was nil, then do nothing and return |self|
@@ -44,5 +47,7 @@
                                range:NSMakeRange(0, [result length])];
   return result;
 }
+
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
 
 @end

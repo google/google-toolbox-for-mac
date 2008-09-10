@@ -161,7 +161,7 @@ static int MethodSort(const void *a, const void *b) {
       NSDate *fixtureEndDate = [NSDate date];
       NSTimeInterval fixtureEndTime = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
       NSString *fixtureEndString = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                                    "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n",
+                                    "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n\n",
                                     fixtureName, fixtureEndDate, fixtureTotal, 
                                     fixtureFailures, fixtureFailures,
                                     fixtureEndTime, fixtureEndTime];
@@ -176,7 +176,7 @@ static int MethodSort(const void *a, const void *b) {
   NSDate *suiteEndDate = [NSDate date];
   NSTimeInterval suiteEndTime = [suiteEndDate timeIntervalSinceDate:suiteStartDate];
   NSString *suiteEndString = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                              "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n",
+                              "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n\n",
                               suiteName, suiteEndDate, suiteTotal, 
                               suiteFailures, suiteFailures,
                               suiteEndTime, suiteEndTime];

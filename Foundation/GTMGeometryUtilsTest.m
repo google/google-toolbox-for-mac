@@ -164,6 +164,31 @@
   STAssertEquals(result, rect, nil);
 }
 
+
+- (void)testGTMNSScaleRectToRect {
+  typedef struct  {
+    NSRect expectedRect;
+    GTMScaling scaling;
+    GTMRectAlignment alignment;
+  } TestData;
+  
+  NSRect rect1 = NSMakeRect(0, 0, 4, 4);
+  NSRect rect2 = NSMakeRect(0, 0, 2, 1);
+  
+  TestData data[] = {
+    { NSMakeRect(2, 3, 2, 1), GTMScaleToFillProportionally, GTMRectAlignTopRight },
+    { NSMakeRect(0, 0, 4, 4), GTMScaleToFit, GTMRectAlignCenter },
+    { NSMakeRect(1, 1.5, 2, 1), GTMScaleNone, GTMRectAlignCenter },
+    { NSMakeRect(1, 0, 2, 1), GTMScaleProportionally, GTMRectAlignBottom },
+  };
+  
+  for (size_t i = 0; i < sizeof(data) / sizeof(TestData); i++) {
+    NSRect outRect = GTMNSScaleRectToRect(rect2, rect1, data[i].scaling, data[i].alignment);
+    STAssertEquals(outRect, data[i].expectedRect, nil);
+  }
+}
+
+
 - (void)testGTMNSDistanceBetweenPoints {
   NSPoint pt1 = NSMakePoint(0, 0);
   NSPoint pt2 = NSMakePoint(3, 4);

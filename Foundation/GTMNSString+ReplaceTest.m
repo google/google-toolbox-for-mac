@@ -24,6 +24,8 @@
 
 @implementation GTMNSString_ReplaceTest
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+
 - (void)testStringByReplacingStringWithString {
   NSString *testString = @"a bc debc gh";
   NSString *result;
@@ -51,5 +53,7 @@
   STAssertEqualObjects(testString, result,
                        @"replacing '' with anything should yield the original string");
 }
+
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
 
 @end

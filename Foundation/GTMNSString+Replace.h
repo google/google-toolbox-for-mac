@@ -21,6 +21,9 @@
 /// Give easy search-n-replace functionality to NSString.
 @interface NSString (GTMStringReplaceAdditions)
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+// 10.5 has stringByReplacingOccurrencesOfString:withString:, use that directly.
+
 /// Returns a new autoreleased string by replacing all occurrences of
 // |oldString| with |newString| (case sensitive).  If |oldString| is nil or
 // @"" nothing is done and |self| is returned.  If |newString| is nil, it's
@@ -36,5 +39,7 @@
 //
 - (NSString *)gtm_stringByReplacingString:(NSString *)target
                                withString:(NSString *)replacement;
+
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
 
 @end

@@ -78,6 +78,8 @@ CGRect GTMCGAlignRectangles(CGRect alignee, CGRect aligner, GTMRectAlignment ali
 
 CGRect GTMCGScaleRectangleToSize(CGRect scalee, CGSize size, GTMScaling scaling) {
   switch (scaling) {
+      
+    case GTMScaleToFillProportionally:
     case GTMScaleProportionally: {
       CGFloat height = CGRectGetHeight(scalee);
       CGFloat width = CGRectGetWidth(scalee);
@@ -85,12 +87,14 @@ CGRect GTMCGScaleRectangleToSize(CGRect scalee, CGSize size, GTMScaling scaling)
           (height > size.height || width > size.width)) {
         CGFloat horiz = size.width / width;
         CGFloat vert = size.height / height;
-        CGFloat newScale = horiz < vert ? horiz : vert;
+        BOOL expand = (scaling == GTMScaleToFillProportionally);
+        // We use the smaller scale unless expand is true. In that case, larger.
+        CGFloat newScale = ((horiz < vert) ^ expand) ? horiz : vert;
         scalee = GTMCGRectScale(scalee, newScale, newScale);
       }
       break;
     }
-      
+    
     case GTMScaleToFit:
       scalee.size = size;
       break;

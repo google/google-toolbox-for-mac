@@ -17,21 +17,10 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 
-// Build for ARM
-ARCHS = armv6
-
-// Build only the active architecture
-ONLY_ACTIVE_ARCH = YES
-
 // Code signing. Should be overridden if releasing
 CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
 
 // Default SDK and minimum OS version is the iphone SDK.
 SDKROOT = iphoneos2.0
-
 MACOSX_DEPLOYMENT_TARGET = 10.5
 GCC_VERSION = 4.0
-
-// On iPhone use Obj-C fast dispatch
-GCC_FAST_OBJC_DISPATCH = YES
-

@@ -1,7 +1,8 @@
 //
 //  ReleaseAspenSimulator.xcconfig
 //
-//  Xcode configuration file for building a Release target on iPhone
+//  Xcode configuration file for building a Release configuration of a project
+//  for iPhone.
 //
 //  Copyright 2006-2008 Google Inc.
 //
