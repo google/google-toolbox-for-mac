@@ -85,6 +85,18 @@
 - (BOOL)gtm_shouldEncodeStateForSubviews;
 @end
 
+// Category to help UIImage testing. UIImage can be tested using
+// GTMAssertObjectImageEqualToImageNamed macro, which automatically creates
+// result images and diff images in case test fails.
+@interface UIImage (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
+//  Returns an image containing a representation suitable for use in comparing
+//  against a master image.
+//
+//  Returns:
+//    an image of the object
+- (CGImageRef)gtm_createUnitTestImage;
+@end
+
 //  A view that allows you to delegate out drawing using the formal 
 //  GTMUnitTestViewDelegate protocol
 //  This is useful when writing up unit tests for visual elements.

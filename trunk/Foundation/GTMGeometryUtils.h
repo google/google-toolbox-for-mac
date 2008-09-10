@@ -25,7 +25,8 @@
 enum {
   GTMScaleProportionally = 0,   // Fit proportionally
   GTMScaleToFit,                // Forced fit (distort if necessary)
-  GTMScaleNone                  // Don't scale (clip)
+  GTMScaleNone,                 // Don't scale (clip)
+  GTMScaleToFillProportionally = 101  // Scale proportionally to fill area
 };
 typedef NSUInteger GTMScaling;
 
@@ -398,6 +399,27 @@ CG_INLINE NSRect GTMNSAlignRectangles(NSRect alignee, NSRect aligner,
                                               alignment));
 }  
 
+/// Align a rectangle to another
+//
+//  Args:
+//    scalee - rect to be scaled
+//    scaler - rect to scale to
+//    scaling - way to scale the rectangle
+//    alignment - way to align the scaled rectangle
+CG_INLINE NSRect GTMNSScaleRectToRect(NSRect scalee, 
+                                    NSRect scaler, 
+                                    GTMScaling scaling,
+                                    GTMRectAlignment alignment) {
+  
+  return GTMCGRectToNSRect(
+           GTMCGAlignRectangles(
+             GTMCGScaleRectangleToSize(GTMNSRectToCGRect(scalee),
+                                       GTMNSSizeToCGSize(scaler.size),
+                                       scaling), 
+             GTMNSRectToCGRect(scaler),
+             alignment));
+}  
+                           
 /// Scale rectangle
 //
 //  Args:

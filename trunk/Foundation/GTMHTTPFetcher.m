@@ -697,6 +697,7 @@ CannotBeginFetch:
     { nil, 0 }
   };
 
+  BOOL isGood = NO;
   // NSError's isEqual always returns false for equal but distinct instances
   // of NSError, so we have to compare the domain and code values explicitly
 
@@ -705,10 +706,11 @@ CannotBeginFetch:
     if ([[error domain] isEqual:retries[idx].domain]
         && [error code] == retries[idx].code) {
      
-      return YES;
+      isGood = YES;
+      break;
     }
   }
-  return NO;
+  return isGood;
 }
 
 
@@ -927,11 +929,9 @@ CannotBeginFetch:
   
   cookieStorageMethod_ = method; 
   
-  if (method == kGTMHTTPFetcherCookieStorageMethodSystemDefault) {
-    [request_ setHTTPShouldHandleCookies:YES];
-  } else {
-    [request_ setHTTPShouldHandleCookies:NO];
-  }
+  BOOL handleCookies 
+    = method == kGTMHTTPFetcherCookieStorageMethodSystemDefault ? YES : NO;
+  [request_ setHTTPShouldHandleCookies:handleCookies];
 }
 
 - (id)delegate {
@@ -973,12 +973,10 @@ CannotBeginFetch:
 - (void)setFetchHistory:(NSMutableDictionary *)fetchHistory {
   [fetchHistory_ autorelease];
   fetchHistory_ = [fetchHistory retain];
-  
-  if (fetchHistory_ != nil) {
-    [self setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodFetchHistory];
-  } else {
-    [self setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodStatic];
-  }
+  GTMHTTPFetcherCookieStorageMethod method 
+    = fetchHistory_ ? kGTMHTTPFetcherCookieStorageMethodFetchHistory 
+                    : kGTMHTTPFetcherCookieStorageMethodStatic; 
+  [self setCookieStorageMethod:method];
 }
 
 - (void)setShouldCacheDatedData:(BOOL)flag {

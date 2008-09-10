@@ -19,8 +19,22 @@
 //  the License.
 //
 
-// Build for PPC and Intel
-ARCHS = i386 ppc
+// NOTE: as of Xcode 3.1, for iPhone development, the two SDKs you can match are:
+//   SDK_NAME iphoneos2.0
+//   SDK_NAME iphonesimulator2.0
+// for Mac OS developement, the values are:
+//   SDK_NAME macosx10.4
+//   SDK_NAME macosx10.5
+
+// Build for PPC and Intel (Leopard gets 64bit also)
+ARCHS[sdk=macosx10.4*] = i386 ppc
+ARCHS[sdk=macosx10.5*] = i386 x86_64 ppc ppc64
+// Build for arm for iPhone or Intel for the iPhone Simulator
+ARCHS[sdk=iphoneos*] = armv6
+ARCHS[sdk=iphonesimulator*] = i386
+
+// Build only the active architecture on iphone device targets
+ONLY_ACTIVE_ARCH[sdk=iphoneos*] = YES
 
 // Zerolink prevents link warnings so turn it off
 ZERO_LINK = NO
@@ -46,3 +60,9 @@ ALWAYS_SEARCH_USER_PATHS = NO
 
 // Turn on position dependent code for most cases (overridden where appropriate)
 GCC_DYNAMIC_NO_PIC = YES
+
+// Warn on implicit data conversions in 64bit builds
+GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64*] = YES
+
+// Use Obj-C fast dispatch (configs don't support 10.2 where you don't want it)
+GCC_FAST_OBJC_DISPATCH = YES

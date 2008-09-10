@@ -116,3 +116,11 @@
   return NO;
 }
 @end
+
+@implementation UIImage (GTMUnitTestingAdditions)
+- (CGImageRef)gtm_createUnitTestImage {
+  CGImageRef imageRef = [self CGImage];
+  CGImageRetain(imageRef);
+  return imageRef;
+}
+@end

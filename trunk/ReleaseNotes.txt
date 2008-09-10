@@ -85,6 +85,21 @@ Changes since 1.5.1
   Allows you to index .xcodeproj, .scpt, .scptd, .xib, .nib, and 
   .aib files. See Readmes beside individual projects in SpotlightPlugins.
 
+- Added GTMExceptionalInlines for dealing with cases where you get
+  warning: variable 'r' might be clobbered by 'longjmp' or 'vfork'
+  when using certain Apple inlined functions in @synchronized/@try blocks.
+  
+- Updated to Xcode 3.1 so the GTM and iPhone project have the same baseline.
+  The code should work in other version of xcode, but the projects and
+  xcconfig files now use 3.1 features.
+
+- Added GTMABAddressBook which is a cocoa wrapper for the 'C' AddressBook
+  APIs on the iPhone.
+
+- Added several set environment variable statements to RunIPhoneUnitTest.sh
+  to encourage bugs to come out of the woodwork.
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008

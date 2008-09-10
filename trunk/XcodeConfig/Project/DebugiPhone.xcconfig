@@ -1,7 +1,8 @@
 //
 //  DebugiPhoneSimulator.xcconfig
 //
-//  Xcode configuration file for building a Debug target on iPhone
+//  Xcode configuration file for building a Debug configuration of a project
+//  for iPhone.
 //
 //  Copyright 2006-2008 Google Inc.
 //
