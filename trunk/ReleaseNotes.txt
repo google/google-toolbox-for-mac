@@ -99,6 +99,19 @@ Changes since 1.5.1
 - Added several set environment variable statements to RunIPhoneUnitTest.sh
   to encourage bugs to come out of the woodwork.
 
+- Added GTMTestTimer.h for doing high fidelity timings.
+
+- Added leaks checking to iPhone unit test script. It can be controlled by
+  the GTM_DISABLE_LEAKS environment variable
+
+- Added ability to control using zombies to iPhone unit test script. It can be
+  controlled by the GTM_DISABLE_ZOMBIES environment variable
+
+- Added ability to control termination to iPhone unit test script. It can be
+  controlled by the GTM_DISABLE_TERMINATION environment variable
+
+- Fixed several leaks found with leak checking enabled.
+
 
 Release 1.5.1
 Changes since 1.5.0

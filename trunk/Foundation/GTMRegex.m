@@ -674,6 +674,8 @@ static NSString *const kReplacementPattern =
 - (id)init {
   // make sure init is never called, the class in in the header so someone
   // could try to create it by mistake.
+  // Call super init and release so we don't leak
+  [[super init] autorelease];
   [self doesNotRecognizeSelector:_cmd];
   return nil; // COV_NF_LINE - return is just here to keep gcc happy
 }

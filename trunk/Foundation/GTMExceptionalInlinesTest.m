@@ -35,6 +35,12 @@
   NSRange range1 = GTMNSMakeRange(loc, len);
   NSRange range2 = NSMakeRange(loc, len);
   STAssertTrue(NSEqualRanges(range1, range2), nil);
+ 
+  CFRange cfrange1 = GTMCFRangeMake(loc, len);
+  CFRange cfrange2 = CFRangeMake(loc, len);
+  STAssertEquals(cfrange1.length, cfrange2.length, nil);
+  STAssertEquals(cfrange1.location, cfrange2.location, nil);
+  
   
   CGPoint cgpoint1 = GTMCGPointMake(x, y);
   CGPoint cgpoint2 = CGPointMake(x, y);

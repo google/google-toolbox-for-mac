@@ -22,6 +22,10 @@ NSRange GTMNSMakeRange(NSUInteger loc, NSUInteger len) {
   return NSMakeRange(loc, len);
 }
 
+CFRange GTMCFRangeMake(NSUInteger loc, NSUInteger len) {
+  return CFRangeMake(loc, len);
+}
+
 CGPoint GTMCGPointMake(CGFloat x, CGFloat y) {
   return CGPointMake(x, y);
 }

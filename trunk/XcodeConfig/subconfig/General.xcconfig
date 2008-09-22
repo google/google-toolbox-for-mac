@@ -21,7 +21,9 @@
 
 // NOTE: as of Xcode 3.1, for iPhone development, the two SDKs you can match are:
 //   SDK_NAME iphoneos2.0
+//   SDK_NAME iphoneos2.1
 //   SDK_NAME iphonesimulator2.0
+//   SDK_NAME iphonesimulator2.1
 // for Mac OS developement, the values are:
 //   SDK_NAME macosx10.4
 //   SDK_NAME macosx10.5

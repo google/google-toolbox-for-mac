@@ -1,7 +1,7 @@
 #!/bin/sh
 # BuildAllSDKs.sh
 #
-# This script builds both the Tiger and Leopard versions of the requested
+# This script builds the Tiger, Leopard and iPhone versions of the requested
 # target in the current basic config (debug, release, debug-gcov).
 #
 # Copyright 2006-2008 Google Inc.
@@ -18,21 +18,37 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-PROJECT_TARGET="$1"
+GTM_PROJECT_TARGET="$1"
+GTMIPHONE_PROJECT_TARGET="$2"
 STARTING_TARGET="${TARGET_NAME}"
 SCRIPT_APP="${TMPDIR}DoBuild.app"
 
-REQUESTED_BUILD_STYLE=$(echo "${BUILD_STYLE}" | sed "s/.*OrLater-\(.*\)/\1/")
+REQUESTED_BUILD_STYLE=$(echo "${BUILD_STYLE}" | sed -E "s/(.*OrLater-)?(.*)/\2/")
 # See if we were told to clean instead of build.
 PROJECT_ACTION="build"
 if [ "${ACTION}" == "clean" ]; then
   PROJECT_ACTION="clean"
 fi
 
-# build up our AppleScript
+# build up our GTMiPhone parts
+GTMIPHONE_OPEN_EXTRAS=""
+GTMIPHONE_BUILD_EXTRAS=""
+if [ "${GTMIPHONE_PROJECT_TARGET}" != "" ]; then
+  GTMIPHONE_OPEN_EXTRAS="-- make sure both project files are open
+    open posix file \"${SRCROOT}/GTM.xcodeproj\"
+    open posix file \"${SRCROOT}/GTMiPhone.xcodeproj\""
+  GTMIPHONE_BUILD_EXTRAS="tell project \"GTMiPhone\"
+      -- do the GTMiPhone build
+      ${PROJECT_ACTION} using build configuration \"${REQUESTED_BUILD_STYLE}\"
+      set active target to target \"${STARTING_TARGET}\"
+    end tell"
+fi
+
+# build up our GTM AppleScript
 OUR_BUILD_SCRIPT="on run
   tell application \"Xcode\"
     activate
+    ${GTMIPHONE_OPEN_EXTRAS}
     tell project \"GTM\"
       -- wait for build to finish
       set x to 0
@@ -44,19 +60,22 @@ OUR_BUILD_SCRIPT="on run
           return
         end if
       end repeat
-      -- do the build
+      -- do the GTM builds
       with timeout of 9999 seconds
-        set active target to target \"${PROJECT_TARGET}\"
+        set active target to target \"${GTM_PROJECT_TARGET}\"
         set buildResult to ${PROJECT_ACTION} using build configuration \"TigerOrLater-${REQUESTED_BUILD_STYLE}\"
         if buildResult is not equal to \"Build succeeded\" then
           set active target to target \"${STARTING_TARGET}\"
           return
         end if
-        -- do not need the result since we are not doing another build
-        ${PROJECT_ACTION} using build configuration \"LeopardOrLater-${REQUESTED_BUILD_STYLE}\"
+        set buildResult to ${PROJECT_ACTION} using build configuration \"LeopardOrLater-${REQUESTED_BUILD_STYLE}\"
         set active target to target \"${STARTING_TARGET}\"
+        if buildResult is not equal to \"Build succeeded\" then
+          return
+        end if
       end timeout
     end tell
+    ${GTMIPHONE_BUILD_EXTRAS}
   end tell
 end run"
 
