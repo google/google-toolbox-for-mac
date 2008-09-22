@@ -189,6 +189,7 @@ typedef struct {
 - (id)initWithRecord:(ABRecordRef)record {
   if ((self = [super init])) {
     if ([self class] == [GTMABRecord class]) {
+      [self autorelease];
       [self doesNotRecognizeSelector:_cmd];
     }
     if (!record) {
@@ -509,6 +510,8 @@ typedef struct {
 
 @implementation GTMABMultiValue
 - (id)init {
+  // Call super init and release so we don't leak
+  [[super init] autorelease];
   [self doesNotRecognizeSelector:_cmd];
   return nil;  // COV_NF_LINE
 }

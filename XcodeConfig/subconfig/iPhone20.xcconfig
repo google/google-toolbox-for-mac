@@ -1,8 +1,7 @@
 //
-//  ReleaseiPhone.xcconfig
+//  iPhone20.xcconfig
 //
-//  Xcode configuration file for building a Release configuration of a project
-//  for iPhone.
+//  Xcode configuration file for building a Debug target on iPhone OS 2.0
 //
 //  Copyright 2008 Google Inc.
 //
@@ -18,9 +17,10 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 
-//
-//  This file is deprecated, please use the version specific one instead.
-//
+// Code signing. Should be overridden if releasing
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
 
-#include "ReleaseiPhone20.xcconfig"
-
+// Default SDK and minimum OS version is the iphone SDK.
+SDKROOT = iphoneos2.0
+MACOSX_DEPLOYMENT_TARGET = 10.5
+GCC_VERSION = 4.0

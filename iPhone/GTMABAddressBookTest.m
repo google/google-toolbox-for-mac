@@ -534,24 +534,31 @@
                    thirdRetainCount, 
                    @"Testing type %d, %@", type, val);
     
+    id oldVal = val;
     val = (id)ABMultiValueCopyValueAtIndex(ref, 0);
     NSUInteger fourthRetainCount = [val retainCount];
-    if (type == kABIntegerPropertyType 
-        || type == kABRealPropertyType 
-        || type == kABDictionaryPropertyType) {
-      // We are verifying that yes indeed 6208390 is still broken
-      STAssertEquals(fourthRetainCount, 
-                     thirdRetainCount, 
-                     @"Testing type %d, %@. If you see this error it may "
-                     @"be time to update the code to change retain behaviors" 
-                     @"with this os version", type, val);
+    
+    // kABDictionaryPropertyTypes appear to do an actual copy, so the retain
+    // count checking trick won't work. We only check the retain count if
+    // we didn't get a new version.
+    if (val == oldVal) {
+      if (type == kABIntegerPropertyType 
+          || type == kABRealPropertyType) {
+        // We are verifying that yes indeed 6208390 is still broken
+        STAssertEquals(fourthRetainCount, 
+                       thirdRetainCount, 
+                       @"Testing type %d, %@. If you see this error it may "
+                       @"be time to update the code to change retain behaviors" 
+                       @"with this os version", type, val);
+      } else {
+        STAssertEquals(fourthRetainCount, 
+                       thirdRetainCount + 1, 
+                       @"Testing type %d, %@", type, val);
+        [val release];
+      }
     } else {
-      STAssertEquals(fourthRetainCount, 
-                     thirdRetainCount + 1, 
-                     @"Testing type %d, %@", type, val);
       [val release];
     }
-    
     CFRelease(ref);
   }
 }

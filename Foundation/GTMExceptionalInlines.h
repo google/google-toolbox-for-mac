@@ -37,6 +37,7 @@
 // functions where possible.
 
 FOUNDATION_EXPORT NSRange GTMNSMakeRange(NSUInteger loc, NSUInteger len);
+FOUNDATION_EXPORT CFRange GTMCFRangeMake(NSUInteger loc, NSUInteger len);
 
 FOUNDATION_EXPORT CGPoint GTMCGPointMake(CGFloat x, CGFloat y);
 FOUNDATION_EXPORT CGSize GTMCGSizeMake(CGFloat width, CGFloat height);

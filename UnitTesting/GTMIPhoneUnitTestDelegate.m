@@ -34,6 +34,33 @@ static int MethodSort(const void *a, const void *b) {
   return strcmp(nameA, nameB);
 }
 
+static void RunLeaks(void) {
+  // This is an atexit handler. It runs leaks for us to check if we are 
+  // leaking anything in our tests. Note that leaks and NSZombieEnabled
+  // don't play well together, so we attempt to filter out the zombies from
+  // our leaks when NSZombieEnabled is on.
+  BOOL zombiesOn = getenv("NSZombieEnabled") != NULL;
+  NSString *filterZombies = @"| grep -v _NSZombie";
+  NSString *zombieExplanation = @"echo 'Leaks:0: note: NSZombies being "
+  @"filtered from leaks. If zombies are on, ignore the \"x leaks for y total "
+  @"leaked bytes.\" line above unless actual leaks are reported. "
+  @"Set the 'GTM_DISABLE_ZOMBIES' environment variable to turn off "
+  @"zombies, and to get more information about the leaks.'";
+  NSString *string 
+    = [NSString stringWithFormat:@"/usr/bin/leaks %@ %d %@"
+       @"| /usr/bin/sed \"s/Leak: /Leaks:0: warning: Leak /\"; %@", 
+       zombiesOn ? @"-nocontext -nostacks" : @"", 
+       getpid(), 
+       zombiesOn ? filterZombies : @"", 
+       zombiesOn ? zombieExplanation : @""];
+  int ret = system([string UTF8String]);
+  if (ret) {
+    fprintf(stderr, "%s:%d: Error: Unable to run leaks. 'system' returned: %d", 
+            __FILE__, __LINE__, ret);
+    fflush(stderr);
+  }
+}
+
 @interface UIApplication (iPhoneUnitTestAdditions)
 // "Private" method that we need
 - (void)terminate;
@@ -58,9 +85,20 @@ static int MethodSort(const void *a, const void *b) {
 // that are subclasses of SenTestCase. Terminate the application upon
 // test completion.
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+  // Don't want to get leaks on the device as the device doesn't
+  // have 'leaks'. We check for this by looking for the 
+  // IPHONEOS_DEPLOYMENT_TARGET env var. If it isn't there, we are running
+  // on the simulator.
+  if (!getenv("IPHONEOS_DEPLOYMENT_TARGET")) {
+    if (!getenv("GTM_DISABLE_LEAKS")) {
+      atexit(&RunLeaks);
+    }  
+  }
   [self runTests];
   // Using private call to end our tests
-  [[UIApplication sharedApplication] terminate];
+  if (!getenv("GTM_DISABLE_TERMINATION")) {
+    [[UIApplication sharedApplication] terminate];
+  }
 }
 
 // Run through all the registered classes and run test methods on any

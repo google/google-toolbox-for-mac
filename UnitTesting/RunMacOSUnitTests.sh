@@ -19,21 +19,46 @@
 #  See http://developer.apple.com/technotes/tn2004/tn2124.html for details.
 #
 
-export MallocScribble=YES
-export MallocPreScribble=YES
-export MallocGuardEdges=YES
-# CFZombieLevel disabled because it doesn't play well with the 
-# security framework
-# export CFZombieLevel=3
-export NSAutoreleaseFreedObjectCheckEnabled=YES
-export NSZombieEnabled=YES
-export OBJC_DEBUG_FRAGILE_SUPERCLASSES=YES
+# Controlling environment variables:
+#
+# GTM_NO_MEMORY_STRESS - 
+#   Set to zero to prevent the setting of system library/framework debugging
+#   environment variables that help find problems in code. See
+#   http://developer.apple.com/technotes/tn2004/tn2124.html
+#   for details.
+# GTM_NO_DEBUG_FRAMEWORKS -
+#   Set to zero to prevent the use of the debug versions of system
+#   libraries/frameworks if you have them installed on your system. The frameworks
+#   can be found at http://connect.apple.com > Downloads > Developer Tools
+#   (https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19915)
+
+ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
+ScriptName=$(basename "$0")
+ThisScript="${ScriptDir}/${ScriptName}"
+
+GTMXcodeNote() {
+    echo ${ThisScript}:${1}: note: GTM ${2}
+}
+
+# Jack up some memory stress so we can catch more bugs.
+if [ ! $GTM_NO_MEMORY_STRESS ]; then
+  GTMXcodeNote ${LINENO} "Enabling memory stressing"
+  export MallocScribble=YES
+  export MallocPreScribble=YES
+  export MallocGuardEdges=YES
+  # CFZombieLevel disabled because it doesn't play well with the 
+  # security framework
+  # export CFZombieLevel=3
+  export NSAutoreleaseFreedObjectCheckEnabled=YES
+  export NSZombieEnabled=YES
+  export OBJC_DEBUG_FRAGILE_SUPERCLASSES=YES
+fi
 
 # If we have debug libraries on the machine, we'll use them
 # unless a target has specifically turned them off
 if [ ! $GTM_NO_DEBUG_FRAMEWORKS ]; then
   if [ -f "/System/Library/Frameworks/CoreFoundation.framework/Versions/Current/CoreFoundation_debug" ]; then
-    echo ---- Using _debug frameworks ----
+    GTMXcodeNote ${LINENO} "Using _debug frameworks"
     export DYLD_IMAGE_SUFFIX=_debug
   fi
 fi

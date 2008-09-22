@@ -90,6 +90,7 @@ static NSString *kResponse = @"Response";
 
 - (void)dealloc {
   [self stop];
+  [connections_ release];
   [super dealloc];
 }
 

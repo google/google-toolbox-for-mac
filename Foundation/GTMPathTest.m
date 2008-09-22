@@ -51,6 +51,7 @@
 #else
   [[NSFileManager defaultManager] removeItemAtPath:testDirectory_ error:NULL];
 #endif
+  [testDirectory_ release];
 }
 
 - (void)testBasicCreation {

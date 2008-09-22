@@ -1,9 +1,9 @@
 //
-//  iPhone.xcconfig
+//  iPhone21.xcconfig
 //
-//  Xcode configuration file for building a Debug target on iPhone
+//  Xcode configuration file for building a Debug target on iPhone OS 2.1
 //
-//  Copyright 2006-2008 Google Inc.
+//  Copyright 2008 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -21,6 +21,6 @@
 CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
 
 // Default SDK and minimum OS version is the iphone SDK.
-SDKROOT = iphoneos2.0
+SDKROOT = iphoneos2.1
 MACOSX_DEPLOYMENT_TARGET = 10.5
 GCC_VERSION = 4.0
