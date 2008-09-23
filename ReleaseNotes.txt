@@ -112,6 +112,8 @@ Changes since 1.5.1
 
 - Fixed several leaks found with leak checking enabled.
 
+- Updated the iPhone xcconfigs to support the different OS versions.
+
 
 Release 1.5.1
 Changes since 1.5.0
