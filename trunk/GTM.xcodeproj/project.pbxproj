@@ -16,7 +16,6 @@
 				8B45A0390DA46A20001148C5 /* PBXTargetDependency */,
 				F472042F0D33BEB500E9F378 /* PBXTargetDependency */,
 				F472042D0D33BEB500E9F378 /* PBXTargetDependency */,
-				8B5A9D120E717906005DA441 /* PBXTargetDependency */,
 			);
 			name = "All UnitTests";
 			productName = "All UnitTests";
@@ -43,7 +42,7 @@
 		33C374380DD8D44800E97817 /* GTMNSDictionary+URLArguments.h in Headers */ = {isa = PBXBuildFile; fileRef = 33C374360DD8D44800E97817 /* GTMNSDictionary+URLArguments.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		33C374390DD8D44800E97817 /* GTMNSDictionary+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C374370DD8D44800E97817 /* GTMNSDictionary+URLArguments.m */; };
 		33C3745F0DD8D85B00E97817 /* GTMNSDictionary+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C3745E0DD8D85B00E97817 /* GTMNSDictionary+URLArgumentsTest.m */; };
-		7F3EB38E0E5E09C700A7A75E /* GTMNSImage+Scaling.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */; };
+		7F3EB38E0E5E09C700A7A75E /* GTMNSImage+Scaling.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F3EB38F0E5E09C700A7A75E /* GTMNSImage+Scaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB38D0E5E09C700A7A75E /* GTMNSImage+Scaling.m */; };
 		7F3EB3940E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
 		7F3EB5540E5F0B0400A7A75E /* GTMUnitTestingImage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */; };
@@ -62,7 +61,7 @@
 		8B3344250DBF7A36009FD32C /* GTMNSAppleEventDescriptor+FoundationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B33441D0DBF7A36009FD32C /* GTMNSAppleEventDescriptor+FoundationTest.m */; };
 		8B33455E0DBF8844009FD32C /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		8B3345890DBF8A55009FD32C /* GTMNSAppleEvent+HandlerTest.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = 8B3344200DBF7A36009FD32C /* GTMNSAppleEvent+HandlerTest.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
-		8B3590160E8190FA0041E21C /* GTMTestTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3590150E8190FA0041E21C /* GTMTestTimer.h */; };
+		8B3590160E8190FA0041E21C /* GTMTestTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3590150E8190FA0041E21C /* GTMTestTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B35901B0E8191750041E21C /* GTMTestTimerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B35901A0E8191750041E21C /* GTMTestTimerTest.m */; };
 		8B3AA9F10E033E23007E31B5 /* GTMValidatingContainers.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3AA9EF0E033E23007E31B5 /* GTMValidatingContainers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B3AA9F20E033E23007E31B5 /* GTMValidatingContainers.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3AA9F00E033E23007E31B5 /* GTMValidatingContainers.m */; };
@@ -246,20 +245,6 @@
 			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
 			remoteInfo = UIUnitTestingHarness;
 		};
-		8B5A9D0F0E7178F6005DA441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B5A9D070E7178F6005DA441 /* GTMiPhone.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1D6058910D05DD3D006BFB54;
-			remoteInfo = GTMiPhoneUnitTesting;
-		};
-		8B5A9D110E717906005DA441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8B5A9D070E7178F6005DA441 /* GTMiPhone.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F4C7F9BF0DC62EC8009BEE5B;
-			remoteInfo = "All UnitTests";
-		};
 		8B7DCBA30DFF0EFB0017E983 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -363,7 +348,6 @@
 		8B55479A0DB3B7A50014CC1C /* GTMAppKit+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMAppKit+UnitTesting.h"; sourceTree = "<group>"; };
 		8B55479B0DB3B7A50014CC1C /* GTMAppKit+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMAppKit+UnitTesting.m"; sourceTree = "<group>"; };
 		8B58E9940E547EB000A0E02E /* GTMGetURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGetURLHandler.m; sourceTree = "<group>"; };
-		8B5A9D070E7178F6005DA441 /* GTMiPhone.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = GTMiPhone.xcodeproj; sourceTree = "<group>"; };
 		8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTrace.m; sourceTree = "<group>"; };
 		8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMethodCheck.m; sourceTree = "<group>"; };
 		8B6F31F10DA347720052CA40 /* GTMMethodCheckTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMethodCheckTest.m; sourceTree = "<group>"; };
@@ -583,7 +567,6 @@
 		0867D691FE84028FC02AAC07 /* GTM */ = {
 			isa = PBXGroup;
 			children = (
-				8B5A9D070E7178F6005DA441 /* GTMiPhone.xcodeproj */,
 				F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */,
 				F440EDB70DFECC4B0003E81F /* BuildingAndUsing.txt */,
 				8B1A16050D90344B00CA1E8E /* GTMDefines.h */,
@@ -625,14 +608,6 @@
 				8B45A2A80DA49C47001148C5 /* main.m */,
 			);
 			path = GTMUIUnitTestingHarness;
-			sourceTree = "<group>";
-		};
-		8B5A9D080E7178F6005DA441 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8B5A9D100E7178F6005DA441 /* GTMiPhoneTest.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		F435E46C0DC8F23A0069CDE8 /* TestData */ = {
@@ -1098,12 +1073,6 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* GTM */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 8B5A9D080E7178F6005DA441 /* Products */;
-					ProjectRef = 8B5A9D070E7178F6005DA441 /* GTMiPhone.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				F42E086C0D199A5B00D5DDE0 /* GTM */,
@@ -1117,16 +1086,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		8B5A9D100E7178F6005DA441 /* GTMiPhoneTest.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = GTMiPhoneTest.app;
-			remoteRef = 8B5A9D0F0E7178F6005DA441 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8B45A0230DA4696C001148C5 /* Resources */ = {
@@ -1383,11 +1342,6 @@
 			isa = PBXTargetDependency;
 			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
 			targetProxy = 8B45A2D30DA51A0E001148C5 /* PBXContainerItemProxy */;
-		};
-		8B5A9D120E717906005DA441 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "All UnitTests";
-			targetProxy = 8B5A9D110E717906005DA441 /* PBXContainerItemProxy */;
 		};
 		8B7DCBA40DFF0EFB0017E983 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
