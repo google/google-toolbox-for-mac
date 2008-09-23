@@ -15,7 +15,8 @@ Hopefully your project already has an application target for building something 
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your target
   # Add `google-toolbox-for-mac/GTMDefines.h` to your target
   # Add a new 'run script' build phase as the last step of your target build via "Project Menu > New Build Phase > New Run Script Build Phase", and dragging it to the end of the build steps if needed.
-  # Edit your Run Script Build Phase by double clicking it, and set the script to `"PATH_TO_GTM/UnitTesting/RunIPhoneUnitTest.sh"`, where PATH_TO_GTM is the path to your local version of google-toolbox-for-mac.
+  # Edit your Run Script Build Phase by double clicking it, and set the shell to "/bin/sh" and the script to `"PATH_TO_GTM/UnitTesting/RunIPhoneUnitTest.sh"`, where PATH_TO_GTM is the path to your local version of google-toolbox-for-mac.
+  # Build! Note that if you choose build and go you will see your unit tests executed twice, once as part of the build script, and once being run
 
 Your target should now build cleanly, and if you check the build log you should see something like:
 "Executed 0 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds" at the end.
@@ -31,7 +32,7 @@ Now when you build your target you should now see test cases executing.
 = Notes =
   * I find that having a .h for my tests to be mostly useless, and tend to just move my interface for my tests in with my implementation so I only have one file to worry about.
   * Make sure to check out the extra ST macros that we have added in `GTMSenTestCase.h` that go above and beyond the set included with the default OCUnit.
-  * You can't run the build script while the iPhone simulator is running. Make sure to quit the simulator, or else you will get the following error: `Couldn't register PurpleSystemEventPort with the bootstrap server. Error: unknown error code. This generally means that another instance of this process was already running or is hung in the debugger.`
+  * You can't run the build script while the iPhone simulator is running. The build script does attempt to kill it off before it runs, but if you see `Couldn't register PurpleSystemEventPort with the bootstrap server. Error: unknown error code. This generally means that another instance of this process was already running or is hung in the debugger.` you probably need to figure out why the simulator (or another iPhone process) is running.
 
 = Advanced Stuff =
 
@@ -59,3 +60,12 @@ GTM can also help you test your UI's representation and state.
 Check out `GTMUIKit+UnitTestingTest.m` or `GTMNSBezierPath+RoundRectTest.m` for examples of using` UIUnitTesting`.
 
 For more information on some of this, check out CodeVerificationAndUnitTesting. Hope this helps.
+
+== Unit Test Environment Variables ==
+To encourage "bad behavior" by the code being tested, the `RunIPhoneUnitTest.sh` script sets a variety of environment variables. If you are wondering why the unit tests fail when you are building, but don't fail when you are running, it may be because of a side effect of one of these variables. Take a look at all the `export` commands within `RunIPhoneUnitTest.sh` to see what's actually going on.
+ 
+== Leaks ==
+By default the iPhone unit tests will run leaks after all the tests have completed.  This can be turned off by setting the `GTM_DISABLE_LEAKS` environment variable before you execute the `RunIPhoneUnitTest.sh` script. Out of the box, NSZombies will also be enabled. This however interferes slightly with leaks and makes it difficult to get good backtraces and context. If you want the backtraces and context, set the `GTM_DISABLE_ZOMBIES` environment variable before you execute the `RunIPhoneUnitTest.sh` script. All leaks will appear as warnings on the build console.
+
+== Termination ==
+Some of Apple's tools (such as Instruments) don't want the app to terminate underneath them. By default the iPhone unit test app will terminate when it has finished it's run. Set the `GTM_DISABLE_TERMINATION` environment variable if you want to disable termination and just have the unit test "run" until you are done with it.
