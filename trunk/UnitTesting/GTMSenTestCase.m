@@ -109,13 +109,6 @@
 
 @end
 
-@implementation NSObject (GTMSenTestAdditions)
-- (void)failWithException:(NSException*)exception {
-  [exception raise];
-}
-
-@end
-
 NSString *STComposeString(NSString *formatString, ...) {
   NSString *reason = @"";
   if (formatString) {
@@ -135,6 +128,10 @@ NSString * const SenTestFailureException = @"SenTestFailureException";
 @end
 
 @implementation SenTestCase
+- (void)failWithException:(NSException*)exception {
+  [exception raise];
+}
+
 - (void)setUp {
 }
 
@@ -164,23 +161,23 @@ NSString * const SenTestFailureException = @"SenTestFailureException";
     // have an STMacro in their dealloc which may get called
     // when the pool is cleaned up
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    // We don't log exceptions here, instead we let the person that called
+    // this log the exception.  This ensures they are only logged once but the
+    // outer layers get the exceptions to report counts, etc.
     @try {
       [self setUp];
       @try {
         [self performSelector:currentSelector_];
       } @catch (NSException *exception) {
         e = [exception retain];
-        [self printError:[exception reason]];
       }
       [self tearDown];
     } @catch (NSException *exception) {
       e = [exception retain];
-      [self printError:[exception reason]];
     }
     [pool release];
   } @catch (NSException *exception) {
     e = [exception retain];
-    [self printError:[exception reason]];
   }
   if (e) {
     [e autorelease];
@@ -192,10 +189,10 @@ NSString * const SenTestFailureException = @"SenTestFailureException";
 }
 @end
 
-#endif
+#endif // GTM_IPHONE_SDK
 
 @implementation GTMTestCase : SenTestCase
-- (void) invokeTest {
+- (void)invokeTest {
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   if (devLogClass) {
     [devLogClass performSelector:@selector(enableTracking)];

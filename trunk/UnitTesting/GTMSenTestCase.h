@@ -979,10 +979,6 @@ do { \
 
 // SENTE_END
 
-@interface NSObject (GTMSenTestAdditions)
-- (void)failWithException:(NSException*)exception;
-@end
-
 @interface SenTestCase : NSObject {
   SEL currentSelector_;
 }
@@ -991,6 +987,7 @@ do { \
 - (void)invokeTest;
 - (void)tearDown;
 - (void)performTest:(SEL)sel;
+- (void)failWithException:(NSException*)exception;
 @end
 
 CF_EXPORT NSString * const SenTestFailureException;
