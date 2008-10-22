@@ -507,13 +507,12 @@ static NSMutableDictionary *gTypeMap = nil;
   BOOL isGood = YES;
   AppleEvent replyEvent = { typeNull, NULL };
   OSStatus err = AESendMessage([self aeDesc], &replyEvent, mode, timeout * 60);
+  NSAppleEventDescriptor *replyDesc 
+    = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&replyEvent] autorelease];
   if (err) {
     isGood = NO;
     _GTMDevLog(@"Unable to send message: %@ %d", self, err);
-    replyEvent.descriptorType = typeNull;
-    replyEvent.dataHandle = NULL;
   } 
-  NSAppleEventDescriptor *replyDesc = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&replyEvent] autorelease];
   if (isGood) {
     NSAppleEventDescriptor *errorDesc = [replyDesc descriptorForKeyword:keyErrorNumber];
     if (errorDesc && [errorDesc int32Value]) {

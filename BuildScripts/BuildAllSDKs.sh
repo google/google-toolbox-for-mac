@@ -1,8 +1,8 @@
 #!/bin/sh
 # BuildAllSDKs.sh
 #
-# This script builds the Tiger, Leopard and iPhone versions of the requested
-# target in the current basic config (debug, release, debug-gcov).
+# This script builds the Tiger, Leopard, SnowLeopard and iPhone versions of the 
+# requested target in the current basic config (debug, release, debug-gcov).
 #
 # Copyright 2006-2008 Google Inc.
 #
@@ -30,18 +30,30 @@ if [ "${ACTION}" == "clean" ]; then
   PROJECT_ACTION="clean"
 fi
 
+# get available SDKs and PLATFORMS
+AVAILABLE_MACOS_SDKS=`eval ls ${DEVELOPER_SDK_DIR}`
+AVAILABLE_PLATFORMS=`eval ls ${DEVELOPER_DIR}/Platforms`
+
 # build up our GTMiPhone parts
 GTMIPHONE_OPEN_EXTRAS=""
 GTMIPHONE_BUILD_EXTRAS=""
 if [ "${GTMIPHONE_PROJECT_TARGET}" != "" ]; then
-  GTMIPHONE_OPEN_EXTRAS="-- make sure both project files are open
-    open posix file \"${SRCROOT}/GTM.xcodeproj\"
-    open posix file \"${SRCROOT}/GTMiPhone.xcodeproj\""
-  GTMIPHONE_BUILD_EXTRAS="tell project \"GTMiPhone\"
-      -- do the GTMiPhone build
-      ${PROJECT_ACTION} using build configuration \"${REQUESTED_BUILD_STYLE}\"
-      set active target to target \"${STARTING_TARGET}\"
-    end tell"
+  GTMIPHONE_OPEN_EXTRAS="
+    if \"${AVAILABLE_PLATFORMS}\" contains \"iPhoneSimulator.platform\" then
+      -- make sure both project files are open
+      open posix file \"${SRCROOT}/GTM.xcodeproj\"
+      open posix file \"${SRCROOT}/GTMiPhone.xcodeproj\"
+    end if"
+  GTMIPHONE_BUILD_EXTRAS="
+    if \"${AVAILABLE_PLATFORMS}\" contains \"iPhoneSimulator.platform\" then
+      with timeout of 9999 seconds
+        tell project \"GTMiPhone\"
+          -- do the GTMiPhone build
+          ${PROJECT_ACTION} using build configuration \"${REQUESTED_BUILD_STYLE}\"
+          set active target to target \"${STARTING_TARGET}\"
+        end tell
+      end timeout
+    end if"
 fi
 
 # build up our GTM AppleScript
@@ -49,32 +61,47 @@ OUR_BUILD_SCRIPT="on run
   tell application \"Xcode\"
     activate
     ${GTMIPHONE_OPEN_EXTRAS}
-    tell project \"GTM\"
-      -- wait for build to finish
-      set x to 0
-      repeat while currently building
-        delay 0.5
-        set x to x + 1
-        if x > 6 then
-          display alert \"GTM is still building, can't start.\"
-          return
-        end if
-      end repeat
-      -- do the GTM builds
-      with timeout of 9999 seconds
-        set active target to target \"${GTM_PROJECT_TARGET}\"
-        set buildResult to ${PROJECT_ACTION} using build configuration \"TigerOrLater-${REQUESTED_BUILD_STYLE}\"
-        if buildResult is not equal to \"Build succeeded\" then
-          set active target to target \"${STARTING_TARGET}\"
-          return
-        end if
-        set buildResult to ${PROJECT_ACTION} using build configuration \"LeopardOrLater-${REQUESTED_BUILD_STYLE}\"
-        set active target to target \"${STARTING_TARGET}\"
-        if buildResult is not equal to \"Build succeeded\" then
-          return
-        end if
-      end timeout
-    end tell
+    if \"${AVAILABLE_PLATFORMS}\" contains \"MacOSX.platform\" then
+      tell project \"GTM\"
+        -- wait for build to finish
+        set x to 0
+        repeat while currently building
+          delay 0.5
+          set x to x + 1
+          if x > 6 then
+            display alert \"GTM is still building, can't start.\"
+            return
+          end if
+        end repeat
+        -- do the GTM builds
+        with timeout of 9999 seconds
+          if \"{$AVAILABLE_MACOS_SDKS}\" contains \"MacOSX10.4u.sdk\" then
+            set active target to target \"${GTM_PROJECT_TARGET}\"
+            set buildResult to ${PROJECT_ACTION} using build configuration \"TigerOrLater-${REQUESTED_BUILD_STYLE}\"
+            set active target to target \"${STARTING_TARGET}\"
+            if buildResult is not equal to \"Build succeeded\" then
+              return
+            end if
+          end if
+          if \"{$AVAILABLE_MACOS_SDKS}\" contains \"MacOSX10.5.sdk\" then
+            set active target to target \"${GTM_PROJECT_TARGET}\"
+            set buildResult to ${PROJECT_ACTION} using build configuration \"LeopardOrLater-${REQUESTED_BUILD_STYLE}\"
+            set active target to target \"${STARTING_TARGET}\"
+            if buildResult is not equal to \"Build succeeded\" then
+              return
+            end if
+          end if
+          if \"{$AVAILABLE_MACOS_SDKS}\" contains \"MacOSX10.6.sdk\" then
+            set active target to target \"${GTM_PROJECT_TARGET}\"
+            set buildResult to ${PROJECT_ACTION} using build configuration \"SnowLeopardOrLater-${REQUESTED_BUILD_STYLE}\"
+            set active target to target \"${STARTING_TARGET}\"
+            if buildResult is not equal to \"Build succeeded\" then
+              return
+            end if
+          end if
+        end timeout
+      end tell
+    end if
     ${GTMIPHONE_BUILD_EXTRAS}
   end tell
 end run"

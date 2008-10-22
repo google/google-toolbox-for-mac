@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMProgressMonitorInputStream.h"
 #import "GTMUnitTestDevLog.h"
-
+#import "GTMSystemVersion.h"
 
 @interface GTMProgressMonitorInputStreamTest : GTMTestCase
 @end
@@ -111,10 +111,15 @@ static const unsigned long long kSourceDataByteCount = (10000*10);
   [monStream setDelegate:nil];
   STAssertNil([monStream delegate], nil);
   
-  // error (we get unknown error before we open things)
-  
-  NSError *err = [monStream streamError];
-  STAssertEqualObjects([err domain], @"NSUnknownErrorDomain", nil);
+  if (![GTMSystemVersion isBuildEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+    // error (we get unknown error before we open things)
+    // This was changed on SnowLeopard.
+    // rdar://689714 Calling streamError on unopened stream no longer returns 
+    // error
+    // was filed to check this behaviour.
+    NSError *err = [monStream streamError];
+    STAssertEqualObjects([err domain], @"NSUnknownErrorDomain", nil);
+  }
   
   // status and properties
   

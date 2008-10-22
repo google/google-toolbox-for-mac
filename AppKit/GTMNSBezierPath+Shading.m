@@ -154,7 +154,7 @@
 
 
 @implementation NSBezierPath (GTMBezierPathShadingAdditions)
-GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath); // COV_NF_LINE
+GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath);
 
 - (void)gtm_strokeAxiallyFrom:(NSPoint)fromPoint to:(NSPoint)toPoint 
                extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd

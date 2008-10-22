@@ -26,6 +26,8 @@
 // (GTMABAddressBook.strings).
 //
 // If things seem strange, it may be due to one of the following radars:
+// 6240394 AddressBook framework constants not initialized until 
+//         ABCreateAddressBook called
 // 6208390 Integer and real values don't work in ABMultiValueRefs
 //         (and this isn't part of the title, but dictionaries don't work
 //         either)

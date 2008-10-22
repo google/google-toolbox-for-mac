@@ -44,7 +44,7 @@
 
 - (void)testShadingWith {
   // Create a shading with kColorCount colors and make sure all the values are there.
-  const NSUInteger kColorCount = 100; 
+  enum { kColorCount = 100 };
   NSColor *theColors[kColorCount];
   CGFloat thePositions[kColorCount];
   const CGFloat kColorIncrement = 1.0 / kColorCount;

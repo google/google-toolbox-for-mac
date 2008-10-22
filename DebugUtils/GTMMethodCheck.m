@@ -76,6 +76,7 @@ void GTMMethodCheckMethodChecker(void) {
   // Run through all the classes looking for class methods that are
   // prefixed with xxGMMethodCheckMethod. If it finds one, it calls it.
   // See GTMMethodCheck.h to see what it does.
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   int numClasses = 0;
   int newNumClasses = objc_getClassList(NULL, 0);
   int i;
@@ -156,6 +157,7 @@ void GTMMethodCheckMethodChecker(void) {
   if (classes) {
     free(classes);
   }
+  [pool release];
 }
 
 #endif  // DEBUG

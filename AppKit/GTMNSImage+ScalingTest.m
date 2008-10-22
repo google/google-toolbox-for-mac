@@ -21,6 +21,7 @@
 #import "GTMSenTestCase.h"
 
 #import "GTMNSImage+Scaling.h"
+#import "GTMGeometryUtils.h"
 
 @interface GTMNSImage_ScalingTest : GTMTestCase
 @end
@@ -31,7 +32,16 @@
   NSImage *testImage = [NSImage imageNamed:@"NSApplicationIcon"];
   
   NSImageRep *rep = nil;
-  rep = [testImage gtm_bestRepresentationForSize:NSMakeSize(99, 99)];
+  NSRect bestRepRect = NSMakeRect(0, 0, 99, 99);
+ 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+  rep = [testImage bestRepresentationForRect:bestRepRect 
+                                     context:nil 
+                                       hints:nil]; 
+#else
+  rep = [testImage gtm_bestRepresentationForSize:bestRepRect.size];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+  
   STAssertTrue(NSEqualSizes([rep size], NSMakeSize(128, 128)), nil);
 
   [testImage gtm_createIconRepresentations];
@@ -39,7 +49,14 @@
   STAssertNotNil([testImage gtm_representationOfSize:NSMakeSize(32, 32)], nil);
   
   NSImage *duplicate = [testImage gtm_duplicateOfSize: NSMakeSize(48, 48)];
-  rep = [duplicate gtm_bestRepresentationForSize:NSMakeSize(50, 50)];
+  bestRepRect = NSMakeRect(0, 0, 50, 50);
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+  rep = [duplicate bestRepresentationForRect:bestRepRect 
+                                     context:nil 
+                                       hints:nil]; 
+#else
+  rep = [duplicate gtm_bestRepresentationForSize:bestRepRect.size];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
   STAssertTrue(NSEqualSizes([rep size], NSMakeSize(48, 48)), nil);
   
 }

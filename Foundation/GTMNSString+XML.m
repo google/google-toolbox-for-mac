@@ -40,7 +40,7 @@ static NSString *gXMLEntityList[] = {
   @"&gt;",
 };
 
-FOUNDATION_STATIC_INLINE GTMXMLCharMode XMLModeForUnichar(UniChar c) {
+GTM_INLINE GTMXMLCharMode XMLModeForUnichar(UniChar c) {
 
   // Per XML spec Section 2.2 Characters
   //   ( http://www.w3.org/TR/REC-xml/#charsets )

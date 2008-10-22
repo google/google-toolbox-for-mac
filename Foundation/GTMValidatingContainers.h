@@ -33,7 +33,7 @@
 // GTMValidatingArray *array = [GTMValidatingArray validatingArrayWithTarget:target
 //                                                                  selector:selector];
 // [array addObject:@"foo"]; // Will be good
-// [array addObject:[NSNumber numberWithInt:2]; // Will fail
+// [array addObject:[NSNumber numberWithInt:2]]; // Will fail
 //
 // By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and 
 // GTM_CONTAINERS_VALIDATION_FAILED_ASSERT macros you can control what happens
@@ -84,18 +84,19 @@ void _GTMValidateContainerContainsMemberOfClass(id container, Class cls);
 void _GTMValidateContainerConformsToProtocol(id container, Protocol *prot);
 void _GTMValidateContainerItemsRespondToSelector(id container, SEL sel);
 #else
-inline void _GTMValidateContainer(id container, id target, SEL selector) {
+GTM_INLINE void _GTMValidateContainer(id container, id target, SEL selector) {
 }
-inline void _GTMValidateContainerContainsKindOfClass(id container, Class cls) {
+GTM_INLINE void _GTMValidateContainerContainsKindOfClass(id container,
+                                                         Class cls) {
 }
-inline void _GTMValidateContainerContainsMemberOfClass(id container, 
-                                                       Class cls) {
+GTM_INLINE void _GTMValidateContainerContainsMemberOfClass(id container, 
+                                                           Class cls) {
 }
-inline void _GTMValidateContainerConformsToProtocol(id container, 
-                                                    Protocol *prot) {
+GTM_INLINE void _GTMValidateContainerConformsToProtocol(id container, 
+                                                        Protocol *prot) {
 }
-inline void _GTMValidateContainerItemsRespondToSelector(id container, 
-                                                        SEL sel) {
+GTM_INLINE void _GTMValidateContainerItemsRespondToSelector(id container, 
+                                                            SEL sel) {
 }
 #endif
 

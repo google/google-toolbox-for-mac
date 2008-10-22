@@ -32,3 +32,6 @@
 
 // Release settings
 #include "../subconfig/Release.xcconfig"
+
+// Merge settings
+#include "../subconfig/GTMMerge.xcconfig"

@@ -25,8 +25,8 @@ static BOOL gTestCheckVar = NO;
 @end
 
 @implementation GTMMethodCheckTest
-GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestMethod);  // COV_NF_LINE
-GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestClassMethod);  // COV_NF_LINE
+GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestMethod);
+GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestClassMethod);
 
 - (void)GTMMethodCheckTestMethod {
 }

@@ -491,7 +491,7 @@
     STAssertNotNULL(ref, nil);
     NSString *label = [[NSString alloc] initWithString:@"label"];
     STAssertNotNil(label, nil);
-    id val;
+    id val = nil;
     switch (type) {
       case kABDictionaryPropertyType:
         val = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"1", nil];
@@ -561,5 +561,25 @@
     }
     CFRelease(ref);
   }
+}
+
+// Globals used by testRadar6240394.
+static ABPropertyID gGTMTestID;
+static const ABPropertyID *gGTMTestIDPtr;
+
+void __attribute__((constructor))SetUpIDForTestRadar6240394(void) {
+  // These must be set up BEFORE ABAddressBookCreate is called.
+  gGTMTestID = kABPersonLastNameProperty;
+  gGTMTestIDPtr = &kABPersonLastNameProperty;
+}
+
+- (void)testRadar6240394 {
+  // As of iPhone SDK 2.1, the property IDs aren't initialized until 
+  // ABAddressBookCreate is actually called. They will return zero until
+  // then. Logged as radar 6240394.
+  STAssertEquals(gGTMTestID, 0, @"If this isn't zero, Apple has fixed 6240394");
+  (void)ABAddressBookCreate();
+  STAssertEquals(*gGTMTestIDPtr, kABPersonLastNameProperty, 
+                 @"If this doesn't work, something else has broken");
 }
 @end

@@ -22,7 +22,7 @@
 
 @implementation NSDictionary (GTMNSDictionaryURLArgumentsAdditions)
 
-GTM_METHOD_CHECK(NSString, gtm_stringByEscapingForURLArgument);  // COV_NF_LINE
+GTM_METHOD_CHECK(NSString, gtm_stringByEscapingForURLArgument);
 
 - (NSString *)gtm_httpArgumentsString {
   NSMutableArray* arguments = [NSMutableArray arrayWithCapacity:[self count]];

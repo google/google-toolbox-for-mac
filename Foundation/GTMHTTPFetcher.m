@@ -21,6 +21,7 @@
 #import "GTMHTTPFetcher.h"
 #import "GTMDebugSelectorValidation.h"
 #import "GTMGarbageCollection.h"
+#import "GTMSystemVersion.h"
 
 @interface GTMHTTPFetcher (GTMHTTPFetcherLoggingInternal)
 - (void)logFetchWithError:(NSError *)error;
@@ -1129,13 +1130,9 @@ CannotBeginFetch:
   NSString *scheme = [theURL scheme];
   
   NSString *domain = nil;
-  if ([host isEqual:@"localhost"]) {
-    // the domain stored into NSHTTPCookies for localhost is "localhost.local"
-    domain = @"localhost.local"; 
-  } else {
-    if (host) {
-      domain = [@"." stringByAppendingString:host]; 
-    }
+  
+  if (host) {
+    domain = [[@"." stringByAppendingString:host] lowercaseString]; 
   }
   
   NSUInteger numberOfCookies = [cookieStorageArray count];
@@ -1143,11 +1140,17 @@ CannotBeginFetch:
     
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
     
-    NSString *cookieDomain = [storedCookie domain];
+    NSString *cookieDomain = [[storedCookie domain] lowercaseString];
     NSString *cookiePath = [storedCookie path];
     BOOL cookieIsSecure = [storedCookie isSecure];
     
     BOOL domainIsOK = [domain hasSuffix:cookieDomain];
+    if (!domainIsOK && [domain hasSuffix:@"localhost"]) {
+      // On Leopard and below, localhost Cookies always come back
+      // with a domain of localhost.local. On SnowLeopard they come
+      // back as just localhost.
+      domainIsOK = [@".localhost.local" hasSuffix:cookieDomain];
+    }
     BOOL pathIsOK = [cookiePath isEqual:@"/"] || [path hasPrefix:cookiePath];
     BOOL secureIsOK = (!cookieIsSecure) || [scheme isEqual:@"https"];
     

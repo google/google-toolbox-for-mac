@@ -108,8 +108,16 @@ IMP method_setImplementation(Method method, IMP imp) {
   // because it seems odd that this API won't accept nil for method considering
   // all the other apis will accept nil args.
   // If this does get fixed, remember to enable the unit tests.
-  IMP oldImp = method->method_imp;
-  method->method_imp = imp;
+  // This method works differently on SnowLeopard than
+  // on Leopard. If you pass in a nil for IMP on SnowLeopard
+  // it doesn't change anything. On Leopard it will. Since
+  // attempting to change a sel to nil is probably an error
+  // we follow the SnowLeopard way of doing things.
+  IMP oldImp = NULL;
+  if (imp) {
+    oldImp = method->method_imp;
+    method->method_imp = imp;
+  } 
   return oldImp;
 }
 

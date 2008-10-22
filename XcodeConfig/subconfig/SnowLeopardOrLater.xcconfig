@@ -1,7 +1,9 @@
 //
-//  iPhone20.xcconfig
+//  SnowLeopardOrLater.xcconfig
 //
-//  Xcode configuration file for building a Debug target on iPhone OS 2.0
+//  Xcode configuration file for projects targeting 10.6 SnowLeopard or later. 
+//  These settings produce a Universal binary compatible with 10.6 for 
+//  PPC and Intel.
 //
 //  Copyright 2008 Google Inc.
 //
@@ -16,8 +18,9 @@
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
+//
 
-// Default SDK and minimum OS version is the iphone SDK.
-SDKROOT = iphoneos2.0
-MACOSX_DEPLOYMENT_TARGET = 10.5
+// Default SDK and minimum OS version is 10.6
+SDKROOT = ${DEVELOPER_SDK_DIR}/MacOSX10.6.sdk
+MACOSX_DEPLOYMENT_TARGET = 10.6
 GCC_VERSION = 4.0

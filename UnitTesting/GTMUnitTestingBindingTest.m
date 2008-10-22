@@ -91,11 +91,10 @@ NSString *const kGTMKeyThatIsntEqual = @"keyThatIsntEqual";
                                    nil];
 }
 
-- (NSMutableDictionary*)gtm_unitTestExposedBindingsTestValues:(NSString*)binding {
-  
-  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  [dict setObject:kGTMKeyThatIsntEqual forKey:kGTMKeyThatIsntEqual];
-  return dict;
+- (NSArray*)gtm_unitTestExposedBindingsTestValues:(NSString*)binding {
+  GTMBindingUnitTestData *data 
+    = [GTMBindingUnitTestData testWithIdentityValue:kGTMKeyThatIsntEqual];
+  return [NSArray arrayWithObject:data];
 }
 
 - (Class)valueClassForBinding:(NSString*)binding {

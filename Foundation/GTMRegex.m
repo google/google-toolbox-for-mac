@@ -444,13 +444,16 @@ static NSString *const kReplacementPattern =
   NSString *result = @"internal error";
 
   // size the buffer we need
-  size_t len = regerror(errCode, &regexData_, nil, 0);
-  char buffer[len];
-  // fetch the error
-  if (len == regerror(errCode, &regexData_, buffer, len)) {
-    NSString *generatedError = [NSString stringWithUTF8String:buffer];
-    if (generatedError)
-      result = generatedError;
+  size_t len = regerror(errCode, &regexData_, NULL, 0);
+  char *buffer = (char*)malloc(sizeof(char) * len);
+  if (buffer) {
+    // fetch the error
+    if (len == regerror(errCode, &regexData_, buffer, len)) {
+      NSString *generatedError = [NSString stringWithUTF8String:buffer];
+      if (generatedError)
+        result = generatedError;
+    }
+    free(buffer);
   }
   return result;
 }

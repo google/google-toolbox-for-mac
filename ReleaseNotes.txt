@@ -101,9 +101,6 @@ Changes since 1.5.1
 
 - Added GTMTestTimer.h for doing high fidelity timings.
 
-- Added leaks checking to iPhone unit test script. It can be controlled by
-  the GTM_DISABLE_LEAKS environment variable
-
 - Added ability to control using zombies to iPhone unit test script. It can be
   controlled by the GTM_DISABLE_ZOMBIES environment variable
 
@@ -114,6 +111,49 @@ Changes since 1.5.1
 
 - Updated the iPhone xcconfigs to support the different OS versions.
 
+- GTM_INLINE will make sure a function gets inlined, and provides a consistent
+  way for all GTM code to do it.
+
+- Added GTMDebugThreadValidation to allow you to enforce the fact that your
+  code must run in the main thread in DEBUG builds.
+
+- Updated some internals of the iPhone unittesting so it doesn't double print
+  the test descriptions, file names, or lines numbers of a test failure line.
+  Also includes the test names in the error output.
+
+- Changed the xcconfigs so that know it's easier to set different settings at
+  the different levels and not accidentally overwrite settings set at lower
+  levels in the "settings collapse". Also tightened up warnings significantly.
+
+- Changed how gtm_unitTestExposedBindingsTestValues works. If you have an
+  implementation of gtm_unitTestExposedBindingsTestValues in your own code
+  you will need to update to the new way of calling. See implementations in
+  GTMNSObject+BindingUnitTesting.m for details.
+
+- Added support for grabbing the build number for a particular OS in
+  GTMSystemVersion and easily comparing it to known build numbers, and switched 
+  some types from in GTMSystemVersion from "int" to SInt32 to make 64 bit work 
+  better.
+   
+- Added support for SnowLeopard (10A96). We build cleanly with the 10.6 SDKs and
+  all radar checks were updated accordingly. Build All script was also updated
+  to build on SnowLeopard if you have the SDK available.
+  
+- Turned off building ppc64 GTM because the SnowLeopard SDK currently
+  doesn't have ppc64 support, so SenTestCase isn't defined. This makes it
+  impossible to build the ppc64 10.5 config on SnowLeopard. We have left the
+  setting in the xcconfig for those of you who need it, but have disabled
+  it in the GTM project settings.
+  
+- Turned on stack smashing protection on the debug builds for all Leopard 
+  and above.
+
+- Added ability to easily do leak checking by defining the GTM_ENABLE_LEAKS
+  environment variable. It isn't on by default because several of Apple's
+  frameworks leak. You can work around these false positives by using the
+  GTM_LEAKS_SYMBOLS_TO_IGNORE environment variable. Also if you turn on leaks
+  make sure to turn off zombies by defining the GTM_DISABLE_ZOMBIES variable,
+  otherwise every memory allocation you do will look like a leak.
 
 Release 1.5.1
 Changes since 1.5.0

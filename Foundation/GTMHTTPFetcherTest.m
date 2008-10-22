@@ -19,6 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMHTTPFetcher.h"
 #import "GTMTestHTTPServer.h"
+#import "GTMUnitTestDevLog.h"
 
 @interface GTMHTTPFetcherTest : GTMTestCase {
   // these ivars are checked after fetches, and are reset by resetFetchResponse
@@ -97,7 +98,7 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
 - (void)tearDown {
   [testServer_ release];
   testServer_ = nil;
-
+  
   [self resetFetchResponse];
   
   [fetchHistory_ release];
@@ -136,24 +137,24 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   responseHeaders = [(NSHTTPURLResponse *)fetchedResponse_ allHeaderFields];
   NSString *cookiesSetString = [responseHeaders objectForKey:@"Set-Cookie"];
   NSString *cookieExpected = [NSString stringWithFormat:@"TestCookie=%@",
-    kValidFileName];
+                              kValidFileName];
   STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
   
   // test properties
   NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-    @"val1", @"key1", @"val2", @"key2", nil];
+                        @"val1", @"key1", @"val2", @"key2", nil];
   [fetcher setProperties:dict];
   STAssertEqualObjects([fetcher properties], dict, @"properties as dictionary");
   STAssertEqualObjects([fetcher propertyForKey:@"key2"], @"val2", 
-                      @"single property");
+                       @"single property");
   
   NSDictionary *dict2 = [NSDictionary dictionaryWithObjectsAndKeys:
-    @"valx1", @"key1", @"val3", @"key3", nil];
+                         @"valx1", @"key1", @"val3", @"key3", nil];
   [fetcher setProperty:@"valx1" forKey:@"key1"];
   [fetcher setProperty:nil forKey:@"key2"];
   [fetcher setProperty:@"val3" forKey:@"key3"];
   STAssertEqualObjects([fetcher properties], dict2, @"property changes");
-
+  
   // make a copy of the fetched data to compare with our next fetch from the
   // cache
   NSData *originalFetchedData = [[fetchedData_ copy] autorelease];
@@ -161,7 +162,7 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   // Now fetch again so the "If modified since" header will be set (because
   // we're calling setFetchHistory: below) and caching ON, and verify that we
   // got a good data from the cache, along with a "Not modified" status
-
+  
   [self resetFetchResponse];
   
   [self doFetchWithURLString:urlString cachingDatedData:YES];
@@ -196,19 +197,19 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   [fetchHistory_ removeAllObjects];
   
   [self doFetchWithURLString:urlString cachingDatedData:NO];
-
+  
   STAssertEqualObjects(fetchedData_, originalFetchedData, 
                        @"cache data mismatch");
-
+  
   [self resetFetchResponse];
   [self doFetchWithURLString:urlString cachingDatedData:NO];
-
+  
   STAssertNotNil(fetchedData_, @"");  
   STAssertEquals([fetchedData_ length], (NSUInteger)0, @"unexpected data");
   STAssertEquals(fetchedStatus_, (NSInteger)kGTMHTTPFetcherStatusNotModified, 
                  @"fetching data expected status 304, instead got %d", fetchedStatus_);
   STAssertNil(fetcherError_, @"unexpected error: %@", fetcherError_); 
- 
+  
 }
 
 - (void)testBogusFetch {
@@ -221,29 +222,29 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   if (fetchedStatus_ == kServiceUnavailableStatus) {
     // some proxies give a "service unavailable" error for bogus fetches
   } else {
-  
+    
     if (fetchedData_) {
       NSString *str = [[[NSString alloc] initWithData:fetchedData_
                                              encoding:NSUTF8StringEncoding] autorelease];
       STAssertNil(fetchedData_, @"fetched unexpected data: %@", str);  
     }
-      
+    
     STAssertNotNil(fetcherError_, @"failed to receive fetching error");
     STAssertEquals(fetchedStatus_, (NSInteger)0,
                    @"fetching data expected no status from no response, instead got %d",
                    fetchedStatus_);
   }
-   
+  
   // fetch with a specific status code from our http server
   [self resetFetchResponse];
-
+  
   NSString *invalidWebPageFile =
     [kValidFileName stringByAppendingString:@"?status=400"];
   NSString *statusUrlString =
     [self fileURLStringToTestFileName:invalidWebPageFile];
-
+  
   [self doFetchWithURLString:statusUrlString cachingDatedData:NO];
-    
+  
   STAssertNotNil(fetchedData_, @"fetch lacked data with error info");
   STAssertNil(fetcherError_, @"expected bad status but got an error");
   STAssertEquals(fetchedStatus_, (NSInteger)400,
@@ -258,7 +259,7 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   
   SEL countRetriesSel = @selector(countRetriesFetcher:willRetry:forError:);
   SEL fixRequestSel = @selector(fixRequestFetcher:willRetry:forError:);
-
+  
   //
   // test: retry until timeout, then expect failure with status message
   //
@@ -310,6 +311,44 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   STAssertEquals([fetcher retryCount], 1U, @"retry count unexpected");
 }
 
+- (void)testNilFetch {
+  GTMHTTPFetcher *fetcher = [[GTMHTTPFetcher alloc] init];
+  [GTMUnitTestDevLog expectString:@"beginFetchWithDelegate requires a request"];
+  BOOL wasGood = [fetcher beginFetchWithDelegate:nil
+                               didFinishSelector:NULL 
+                                 didFailSelector:NULL];
+  STAssertFalse(wasGood, nil);
+}
+
+- (void)testCookies {
+  // This is checking part one of
+  // rdar://6293862 NSHTTPCookie cookieWithProperties doesn't work with 
+  //                NSHTTPCookieOriginURL key
+  NSString *urlString = @"http://www.apple.com/index.html";
+  NSURL *url = [NSURL URLWithString:@"http://www.apple.com/index.html"];
+  
+  NSDictionary *properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                              url, NSHTTPCookieOriginURL,
+                              @"testCookies", NSHTTPCookieName,
+                              @"1", NSHTTPCookieValue,
+                              nil];
+  NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+  
+  STAssertNil(cookie, nil);
+  
+  // This is checking part two of
+  // rdar://6293862 NSHTTPCookie cookieWithProperties doesn't work with 
+  //                NSHTTPCookieOriginURL key
+  properties = [NSDictionary dictionaryWithObjectsAndKeys:
+                urlString, NSHTTPCookieOriginURL,
+                @"testCookies", NSHTTPCookieName,
+                @"1", NSHTTPCookieValue,
+                nil];
+  cookie = [NSHTTPCookie cookieWithProperties:properties];
+  
+  STAssertNil(cookie, nil);
+}
+
 #pragma mark -
 
 - (GTMHTTPFetcher *)doFetchWithURLString:(NSString *)urlString 
@@ -327,7 +366,7 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
                            retrySelector:(SEL)retrySel
                         maxRetryInterval:(NSTimeInterval)maxRetryInterval
                                 userData:(id)userData {
-    
+  
   NSURL *url = [NSURL URLWithString:urlString];
   NSURLRequest *req = [NSURLRequest requestWithURL:url
                                        cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -387,7 +426,7 @@ static NSString *const kValidFileName = @"GTMHTTPFetcherTestPage.html";
   
   // return a localhost:port URL for the test file
   NSString *urlString = [NSString stringWithFormat:@"http://localhost:%d/%@",
-    [testServer_ port], name];
+                         [testServer_ port], name];
   
   // we exclude the "?status=" that would indicate that the URL
   // should cause a retryable error

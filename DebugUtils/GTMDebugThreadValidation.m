@@ -1,7 +1,5 @@
 //
-//  iPhone20.xcconfig
-//
-//  Xcode configuration file for building a Debug target on iPhone OS 2.0
+//  GTMDebugThreadValidation.m
 //
 //  Copyright 2008 Google Inc.
 //
@@ -16,8 +14,25 @@
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
+//
 
-// Default SDK and minimum OS version is the iphone SDK.
-SDKROOT = iphoneos2.0
-MACOSX_DEPLOYMENT_TARGET = 10.5
-GCC_VERSION = 4.0
+
+#if DEBUG && MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
+
+#import "GTMDebugThreadValidation.h"
+
+static NSThread *gGTMMainThread = nil;
+
+static __attribute__((constructor)) void _GTMInitThread(void) {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  gGTMMainThread = [NSThread currentThread];
+  [gGTMMainThread retain];
+  [pool release];
+}
+
+
+BOOL _GTMIsRunningOnMainThread(void) {
+  return [[NSThread currentThread] isEqual:gGTMMainThread];
+}
+
+#endif  // DEBUG && MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4

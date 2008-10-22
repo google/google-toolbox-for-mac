@@ -30,7 +30,7 @@
 #endif
 
 @implementation NSApplication (GMUnitTestingAdditions) 
-GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);  // COV_NF_LINE
+GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
   [super gtm_unitTestEncodeState:inCoder];

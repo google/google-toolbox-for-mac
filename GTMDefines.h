@@ -18,6 +18,13 @@
  
 // ============================================================================
 
+#include <AvailabilityMacros.h>
+
+#ifndef MAC_OS_X_VERSION_10_6
+// MAC_OS_X_VERSION_10_6 not defined in some earlier SDKs
+#define MAC_OS_X_VERSION_10_6 1060
+#endif
+
 // ----------------------------------------------------------------------------
 // CPP symbols that can be overridden in a prefix to control how the toolbox
 // is compiled.
@@ -132,6 +139,11 @@ extern void _GTMUnitTestDevLog(NSString *format, ...);
 #if TARGET_OS_IPHONE // iPhone SDK
   // For iPhone specific stuff
   #define GTM_IPHONE_SDK 1
+  #if TARGET_IPHONE_SIMULATOR
+    #define GTM_IPHONE_SIMULATOR 1
+  #else
+    #define GTM_IPHONE_DEVICE 1
+  #endif  // TARGET_IPHONE_SIMULATOR
 #else
   // For MacOS specific stuff
   #define GTM_MACOS_SDK 1
@@ -171,3 +183,15 @@ extern void _GTMUnitTestDevLog(NSString *format, ...);
   #define CGFLOAT_DEFINED 1
  #endif // CGFLOAT_DEFINED
 #endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+
+
+// Give ourselves a consistent way to do inlines.  Apple's macros even use
+// a few different actual definitions, so we're based off of the foundation
+// one.
+#if !defined(GTM_INLINE)
+ #if defined (__GNUC__) && (__GNUC__ == 4)
+  #define GTM_INLINE static __inline__ __attribute__((always_inline))
+ #else
+  #define GTM_INLINE static __inline__
+ #endif
+#endif

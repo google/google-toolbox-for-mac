@@ -64,7 +64,7 @@ NSString *const kShortTextBlock = @"Short";
   // bug. Please bump the system  check as appropriate when new systems are 
   // tested. Currently broken on 10.5.5 and below. 
   // Radar 6137322 CIFilter crashing when run with GC enabled
-  long major, minor, bugfix;
+  SInt32 major, minor, bugfix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
   if (!(GTMIsGarbageCollectionEnabled() 
         && major <= 10 && minor <= 5 && bugfix <= 5)) {
