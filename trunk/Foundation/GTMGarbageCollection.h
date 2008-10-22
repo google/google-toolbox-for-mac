@@ -33,13 +33,13 @@
 // but there may be a reason the you want to make something collectable
 // but not autoreleased, especially in pure GC code where you don't
 // want to bother with the nop autorelease.
-FOUNDATION_STATIC_INLINE id GTMNSMakeCollectable(CFTypeRef cf) { 
+GTM_INLINE id GTMNSMakeCollectable(CFTypeRef cf) { 
   return NSMakeCollectable(cf); 
 }
 
 // GTMNSMakeUncollectable is for global maps, etc. that we don't
 // want released ever. You should still retain these in non-gc code.
-FOUNDATION_STATIC_INLINE void GTMNSMakeUncollectable(id object) {
+GTM_INLINE void GTMNSMakeUncollectable(id object) {
   [[NSGarbageCollector defaultCollector] disableCollectorForPointer:object];
 }
 
@@ -48,21 +48,21 @@ FOUNDATION_STATIC_INLINE void GTMNSMakeUncollectable(id object) {
 // There are some places where GC doesn't work w/ things w/in Apple's
 // frameworks, so this is here so GTM unittests and detect it, and not run
 // individual tests to work around bugs in Apple's frameworks.
-FOUNDATION_STATIC_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
+GTM_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
   return ([NSGarbageCollector defaultCollector] != nil);
 }
 
 #else
 
-FOUNDATION_STATIC_INLINE id GTMNSMakeCollectable(CFTypeRef cf) { 
+GTM_INLINE id GTMNSMakeCollectable(CFTypeRef cf) { 
   // NSMakeCollectable handles NULLs just fine and returns nil as expected.
   return (id)cf;
 }
 
-FOUNDATION_STATIC_INLINE void GTMNSMakeUncollectable(id object) {
+GTM_INLINE void GTMNSMakeUncollectable(id object) {
 }
 
-FOUNDATION_STATIC_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
+GTM_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
   return NO;
 }
 
@@ -71,7 +71,7 @@ FOUNDATION_STATIC_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
 // GTMCFAutorelease makes a CF object collectable in GC mode, or adds it 
 // to the autorelease pool in non-GC mode. Either way it is taken care
 // of.
-FOUNDATION_STATIC_INLINE id GTMCFAutorelease(CFTypeRef cf) {
+GTM_INLINE id GTMCFAutorelease(CFTypeRef cf) {
   return [GTMNSMakeCollectable(cf) autorelease];
 }
 

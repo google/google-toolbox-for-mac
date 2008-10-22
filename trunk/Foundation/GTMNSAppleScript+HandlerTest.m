@@ -36,11 +36,11 @@
   // GTMNSAppleScript+Handler.h for more details, but we disable them to avoid
   // the tests failing (crashing) when it's Apple's bug. Please bump the system
   // check as appropriate when new systems are tested. Currently broken on
-  // 10.5.4 and below. Radar 6126682.
-  long major, minor, bugfix;
+  // 10.5.5 and below. Radar 6126682.
+  SInt32 major, minor, bugfix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
   if (!(GTMIsGarbageCollectionEnabled() 
-        && major <= 10 && minor <= 5 && bugfix <= 4)) {
+        && major <= 10 && minor <= 5 && bugfix <= 5)) {
     [super invokeTest];
   } else {
     NSLog(@"--- %@ NOT run because of GC incompatibilites ---", [self name]);
@@ -286,6 +286,12 @@
                      @"testadd",
                      @"testgetscript",
                      nil];
+  if ([GTMSystemVersion isBuildEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+    // Workaround for bug in SnowLeopard
+    // rdar://66688601 OSAGetHandlersNames returns names in camelcase instead
+    // of smallcaps.
+    handlers = [handlers valueForKey:@"lowercaseString"];
+  }
   STAssertEqualObjects(handlers, expected, @"Unexpected handlers?");
 }
 
@@ -345,13 +351,19 @@
        [GTMFourCharCode fourCharCodeWithFourCharCode:pASWeeks],
        [GTMFourCharCode fourCharCodeWithFourCharCode:pTextItemDelimiters],
        // Applescript properties should be pASSeconds, but
-       // on 10.5.4 it is actually using cSeconds.
+       // on 10.5.4/10.5.5 it is actually using cSeconds.
        // Radar 6132696 Applescript root level property is cSeconds 
        // instead of pASSeconds
        [GTMFourCharCode fourCharCodeWithFourCharCode:cSeconds],
        [GTMFourCharCode fourCharCodeWithFourCharCode:pASHours],
        [GTMFourCharCode fourCharCodeWithFourCharCode:pASTab],
        nil];
+  if ([GTMSystemVersion isBuildEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+    // Workaround for bug in SnowLeopard
+    // rdar://6289077 OSAGetPropertyNames returns names in camelcase instead
+    // of lowercase.
+    properties = [properties valueForKey:@"lowercaseString"];
+  }
   STAssertEqualObjects(properties, expected, @"Unexpected properties?");
   id value = [script gtm_valueForProperty:@"testScriptProperty"];
   STAssertEqualObjects(value, [NSNumber numberWithInt:5], @"bad property?");

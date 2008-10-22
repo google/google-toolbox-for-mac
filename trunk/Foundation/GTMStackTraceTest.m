@@ -47,11 +47,12 @@
 
 - (void)testProgramCountersBasic {
   void *pcs[10];
-  int depth = 10;
+  NSUInteger depth = 10;
   depth = GTMGetStackProgramCounters(pcs, depth);
   
-  STAssertGreaterThan(depth, 3, @"stack trace must have > 3 lines");
-  STAssertLessThanOrEqual(depth, 10, @"stack trace must have < 10 lines");
+  STAssertGreaterThan(depth, (NSUInteger)3, @"stack trace must have > 3 lines");
+  STAssertLessThanOrEqual(depth, (NSUInteger)10, 
+                          @"stack trace must have < 10 lines");
   
   // pcs is an array of program counters from the stack.  pcs[0] should match
   // the call into GTMGetStackProgramCounters, which is tough for us to check.
@@ -63,19 +64,19 @@
 
 - (void)testProgramCountersMore {
   void *pcs0[0];
-  int depth0 = 0;
+  NSUInteger depth0 = 0;
   depth0 = GTMGetStackProgramCounters(pcs0, depth0);
-  STAssertEquals(depth0, 0, @"stack trace must have 0 lines");
+  STAssertEquals(depth0, (NSUInteger)0, @"stack trace must have 0 lines");
 
   void *pcs1[1];
-  int depth1 = 1;
+  NSUInteger depth1 = 1;
   depth1 = GTMGetStackProgramCounters(pcs1, depth1);
-  STAssertEquals(depth1, 1, @"stack trace must have 1 lines");
+  STAssertEquals(depth1, (NSUInteger)1, @"stack trace must have 1 lines");
   
   void *pcs2[2];
-  int depth2 = 2;
+  NSUInteger depth2 = 2;
   depth2 = GTMGetStackProgramCounters(pcs2, depth2);
-  STAssertEquals(depth2, 2, @"stack trace must have 2 lines");
+  STAssertEquals(depth2, (NSUInteger)2, @"stack trace must have 2 lines");
   void *current_pc = __builtin_return_address(0);
   STAssertEquals(pcs2[1], current_pc, @"pcs[1] should equal the current PC");
 }

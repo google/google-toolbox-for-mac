@@ -33,3 +33,5 @@
 // Debug settings
 #include "../subconfig/Debug.xcconfig"
 
+// Merge settings
+#include "../subconfig/GTMMerge.xcconfig"

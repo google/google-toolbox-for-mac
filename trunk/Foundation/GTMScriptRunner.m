@@ -72,6 +72,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 - (void)dealloc {
+  [environment_ release];
   [interpreter_ release];
   [interpreterArgs_ release];
   [super dealloc];

@@ -55,7 +55,7 @@
 // }
 // @end
 
-#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 #import "GTMGarbageCollection.h"
 #import "GTMNSAppleEventDescriptor+Foundation.h"
 #import "GTMMethodCheck.h"
@@ -93,6 +93,7 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent;
  withDescription:(NSString*)string 
     toDescriptor:(NSAppleEventDescriptor *)desc;
 + (id)handlerForBundle:(NSBundle *)bundle;
++ (void)appFinishedLaunchingHandler:(NSNotification*)notification;
 @end
 
 @implementation GTMGetURLHandler
@@ -101,6 +102,15 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
 
 + (void)load {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc addObserver:self
+         selector:@selector(appFinishedLaunchingHandler:)
+             name:NSApplicationDidFinishLaunchingNotification
+           object:nil];
+  [pool release];
+}
+
++ (void)appFinishedLaunchingHandler:(NSNotification*)notification {
   NSBundle *bundle = [NSBundle mainBundle];
   GTMGetURLHandler *handler = [GTMGetURLHandler handlerForBundle:bundle];
   if (handler) {
@@ -111,13 +121,17 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
              andSelector:@selector(getUrl:withReplyEvent:) 
            forEventClass:kInternetEventClass 
               andEventID:kAEGetURL];
-  }
-  [pool release];
+  }  
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc removeObserver:self
+                name:NSApplicationDidFinishLaunchingNotification
+              object:nil];
 }
 
 + (id)handlerForBundle:(NSBundle *)bundle {
   GTMGetURLHandler *handler = nil;
-  NSArray *urlTypes = [bundle objectForInfoDictionaryKey:kGTMCFBundleURLTypesKey];
+  NSArray *urlTypes 
+    = [bundle objectForInfoDictionaryKey:kGTMCFBundleURLTypesKey];
   if (urlTypes) {
     handler = [[[GTMGetURLHandler alloc] initWithTypes:urlTypes] autorelease];
   } else {

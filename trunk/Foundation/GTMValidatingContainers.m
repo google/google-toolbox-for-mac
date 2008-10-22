@@ -34,10 +34,10 @@
 #import <objc/objc-runtime.h>
 #endif  // GTM_IPHONE_SDK
 
-static inline BOOL VerifyObjectWithTargetAndSelectorForContainer(id anObject,
-                                                                 id target,
-                                                                 SEL selector,
-                                                                 id container) {
+GTM_INLINE BOOL VerifyObjectWithTargetAndSelectorForContainer(id anObject,
+                                                              id target,
+                                                              SEL selector,
+                                                              id container) {
   // We must take care here, since Intel leaves junk in high bytes of return 
   // register for predicates that return BOOL.
   // For details see: 
@@ -59,7 +59,7 @@ static inline BOOL VerifyObjectWithTargetAndSelectorForContainer(id anObject,
   return isGood;
 }
 
-static inline void VerifySelectorOnTarget(SEL sel, id target) {
+GTM_INLINE void VerifySelectorOnTarget(SEL sel, id target) {
   GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, 
                                                               sel, 
                                                               @encode(BOOL), 
@@ -207,7 +207,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
                           target:(id)target 
                         selector:(SEL)sel {
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return [[NSMutableArray alloc] initWithCapacity:capacity];
 }
 #endif  // GTM_CONTAINERS_VALIDATE
@@ -282,7 +284,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
                           target:(id)target 
                         selector:(SEL)sel {
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return [[NSMutableDictionary alloc] initWithCapacity:capacity];
 
 }
@@ -359,7 +363,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
 - (id)initValidatingWithCapacity:(NSUInteger)capacity
                           target:(id)target 
                         selector:(SEL)sel {
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return [[NSMutableSet alloc] initWithCapacity:capacity];
 }
 #endif  // GTM_CONTAINERS_VALIDATE
@@ -384,7 +390,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   }
   return self;
 #else  // GTM_CONTAINERS_VALIDATE
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return nil;
 #endif  // GTM_CONTAINERS_VALIDATE
 }
@@ -411,7 +419,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   }
   return self;
 #else  // GTM_CONTAINERS_VALIDATE
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return nil;
 #endif  // GTM_CONTAINERS_VALIDATE
 }
@@ -438,7 +448,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   }
   return self;
 #else  // GTM_CONTAINERS_VALIDATE
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return nil;
 #endif  // GTM_CONTAINERS_VALIDATE
 }
@@ -465,7 +477,9 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   }
   return self;
 #else  // GTM_CONTAINERS_VALIDATE
-  [self release];
+  if ((self = [super init])) {
+    [self release];
+  }
   return nil;
 #endif  // GTM_CONTAINERS_VALIDATE
 }

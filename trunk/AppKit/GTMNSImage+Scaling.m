@@ -23,6 +23,9 @@
 
 @implementation NSImage (GTMNSImageScaling)
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
+// If you are on SnowLeopard use 
+// -[NSImage bestRepresentationForRect:context:hints:] 
 - (NSImageRep *)gtm_bestRepresentationForSize:(NSSize)size {
   NSImageRep *bestRep = [self gtm_representationOfSize:size];
   if (bestRep) {
@@ -37,7 +40,7 @@
   while ((thisRep = [repEnum nextObject])) {
     CGFloat thisDistance;
     thisDistance = MIN(size.width - [thisRep size].width,
-                       size.height-[thisRep size].height);  
+                       size.height - [thisRep size].height);  
     
     if (repDistance < 0 && thisDistance > 0) continue;
     if (ABS(thisDistance) < ABS(repDistance)
@@ -53,6 +56,7 @@
   
   return bestRep;
 }
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
 
 - (NSImageRep *)gtm_representationOfSize:(NSSize)size {
   NSArray *reps = [self representations];
@@ -80,8 +84,15 @@
     return NO;
   }
 
-  NSBitmapImageRep *bestRep = 
-    (NSBitmapImageRep *)[self gtm_bestRepresentationForSize:size];
+  NSBitmapImageRep *bestRep;
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
+  bestRep = (NSBitmapImageRep *)[self gtm_bestRepresentationForSize:size];
+#else
+  bestRep 
+    = (NSBitmapImageRep *)[self bestRepresentationForRect:GTMNSRectOfSize(size)
+                                                  context:nil
+                                                    hints:nil];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
   
   NSRect drawRect = GTMNSScaleRectToRect(GTMNSRectOfSize([bestRep size]), 
                                        GTMNSRectOfSize(size),

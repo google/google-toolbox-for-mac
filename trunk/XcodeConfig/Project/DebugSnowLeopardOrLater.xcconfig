@@ -1,8 +1,13 @@
 //
-//  DebugiPhone21.xcconfig
+//  DebugSnowLeopardOrLater.xcconfig
 //
 //  Xcode configuration file for building a Debug configuration of a project
-//  for iPhone OS 2.1.
+//  on SnowLeopard or later.
+//
+//  This is a _Configuration_ Xcode config file for use in the "Based on" popup
+//  of the project configuration editor. Do _not_ use this as the config base
+//  and individual Xcode target, there are other configuration files for that
+//  purpose.
 //
 //  Copyright 2008 Google Inc.
 //
@@ -17,20 +22,15 @@
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
-
 //
-//  This is a _Configuration_ Xcode config file for use in the "Based on" popup
-//  of the project configuration editor. Do _not_ use this as the config base
-//  and individual Xcode target, there are other configuration files for that
-//  purpose.
 
 // Pull in the general settings
 #include "../subconfig/General.xcconfig"
 
-// iPhone settings
-#include "../subconfig/iPhone21.xcconfig"
+// SnowLeopard or later
+#include "../subconfig/SnowLeopardOrLater.xcconfig"
 
-// Release settings
+// Debug settings
 #include "../subconfig/Debug.xcconfig"
 
 // Merge settings

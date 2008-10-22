@@ -42,7 +42,7 @@ struct GTMClassDescription {
 
 #pragma mark Private utility functions
 
-static struct GTMClassDescription *GTMClassDescriptions(int *total_count) {
+static struct GTMClassDescription *GTMClassDescriptions(NSUInteger *total_count) {
   int class_count = objc_getClassList(nil, 0);
   struct GTMClassDescription *class_descs 
     = calloc(class_count, sizeof(struct GTMClassDescription));
@@ -74,9 +74,9 @@ static struct GTMClassDescription *GTMClassDescriptions(int *total_count) {
 }
 
 static void GTMFreeClassDescriptions(struct GTMClassDescription *class_descs, 
-                                     int count) {
-  if (!class_descs || count < 0) return;
-  for (int i = 0; i < count; ++i) {
+                                     NSUInteger count) {
+  if (!class_descs) return;
+  for (NSUInteger i = 0; i < count; ++i) {
     if (class_descs[i].instance_methods) {
       free(class_descs[i].instance_methods);
     }
@@ -95,7 +95,7 @@ static void GTMFreeClassDescriptions(struct GTMClassDescription *class_descs,
 // great on i386, but PPC requires a little more work because the PC (or link
 // register) isn't always stored on the stack.
 //   
-int GTMGetStackProgramCounters(void *outPcs[], int count) {
+NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count) {
   if (!outPcs || (count < 1)) return 0;
   
   struct GTMStackFrame *fp;
@@ -108,7 +108,7 @@ int GTMGetStackProgramCounters(void *outPcs[], int count) {
 #error architecture not supported
 #endif
 
-  int level = 0;
+  NSUInteger level = 0;
   while (level < count) {
     if (fp == NULL) {
       level--;
@@ -122,15 +122,15 @@ int GTMGetStackProgramCounters(void *outPcs[], int count) {
   return level;
 }
 
-int GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
-                                  int count) {
-  if (count < 1) return 0;
+NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
+                                         NSUInteger count) {
+  if (count < 1 || !outDescs) return 0;
   
   void **pcs = calloc(count, sizeof(void*));
   if (!pcs) return 0;
   
-  int newSize = GTMGetStackProgramCounters(pcs, count);
-  int class_desc_count;
+  NSUInteger newSize = GTMGetStackProgramCounters(pcs, count);
+  NSUInteger class_desc_count;
   
   // Get our obj-c class descriptions. This is expensive, so we do it once
   // at the top. We go through this because dladdr doesn't work with
@@ -139,7 +139,7 @@ int GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
     = GTMClassDescriptions(&class_desc_count);
   
   // Iterate through the stack.
-  for (int i = 0; i < newSize; ++i) {
+  for (NSUInteger i = 0; i < newSize; ++i) {
     const char *class_name = NULL;
     Boolean is_class_method = FALSE;
     size_t smallest_diff = SIZE_MAX;
@@ -147,9 +147,9 @@ int GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
     currDesc->address = pcs[i];
     Method best_method = NULL;
     // Iterate through all the classes we know of.
-    for (int j = 0; j < class_desc_count; ++j) {
+    for (NSUInteger j = 0; j < class_desc_count; ++j) {
       // First check the class methods.
-      for (unsigned int k = 0; k < class_descs[j].class_method_count; ++k) {
+      for (NSUInteger k = 0; k < class_descs[j].class_method_count; ++k) {
         IMP imp = method_getImplementation(class_descs[j].class_methods[k]);
         if (imp <= (IMP)currDesc->address) {
           size_t diff = (size_t)currDesc->address - (size_t)imp;
@@ -162,7 +162,7 @@ int GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
         }
       }
       // Then check the instance methods.
-      for (unsigned int k = 0; k < class_descs[j].instance_method_count; ++k) {
+      for (NSUInteger k = 0; k < class_descs[j].instance_method_count; ++k) {
         IMP imp = method_getImplementation(class_descs[j].instance_methods[k]);
         if (imp <= (IMP)currDesc->address) {
           size_t diff = (size_t)currDesc->address - (size_t)imp;
@@ -194,6 +194,7 @@ int GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
     currDesc->filename = info.dli_fname;
   }
   GTMFreeClassDescriptions(class_descs, class_desc_count);
+  free(pcs);
   return newSize;
 }
 
@@ -201,17 +202,16 @@ NSString *GTMStackTrace(void) {
   // The maximum number of stack frames that we will walk.  We limit this so
   // that super-duper recursive functions (or bugs) don't send us for an
   // infinite loop.
-  const int kMaxStackTraceDepth = 100;
-  struct GTMAddressDescriptor descs[kMaxStackTraceDepth];
-  int depth = kMaxStackTraceDepth;
+  struct GTMAddressDescriptor descs[100];
+  size_t depth = sizeof(descs) / sizeof(struct GTMAddressDescriptor);
   depth = GTMGetStackAddressDescriptors(descs, depth);
   
   NSMutableString *trace = [NSMutableString string];
   
   // Start at the second item so that GTMStackTrace and it's utility calls (of
   // which there is currently 1) is not included in the output.
-  const int kTracesToStrip = 2;
-  for (int i = kTracesToStrip; i < depth; i++) {
+  const size_t kTracesToStrip = 2;
+  for (size_t i = kTracesToStrip; i < depth; i++) {
     if (descs[i].class_name) {
       [trace appendFormat:@"#%-2d 0x%08lx %s[%s %s]  (%s)\n",
        i - kTracesToStrip, descs[i].address, 

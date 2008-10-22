@@ -18,8 +18,6 @@
 //  the License.
 //
 
-#import <mach-o/arch.h>
-
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMSystemVersion.h"
 #import "GTMGarbageCollection.h"
@@ -68,9 +66,7 @@ BOOL GTMIsObjectImageEqualToImageNamed(id object,
       if (isGood) {
         isGood = [object gtm_compareWithImageAt:aPath diffImage:&diff];
       }
-      if (isGood) {
-        CGImageRelease(diff);
-      } else {
+      if (!isGood) {
         if (aPath) {
           filename = [filename stringByAppendingString:@"_Failed"];
         }
@@ -98,7 +94,6 @@ BOOL GTMIsObjectImageEqualToImageNamed(id object,
             NSData *data = nil;
             if (diff) {
               data = [object gtm_imageDataForImage:diff];
-              CFRelease(diff);
             }
             if ([data writeToFile:diffPath atomically:YES]) {
               failString = [NSString stringWithFormat:@"Object image different "
@@ -114,6 +109,7 @@ BOOL GTMIsObjectImageEqualToImageNamed(id object,
           }
         }
       }
+      CGImageRelease(diff);
     } else {
       failString = @"systemSettings not valid for taking image";  // COV_NF_LINE
     }
@@ -225,7 +221,7 @@ BOOL GTMIsObjectStateEqualToStateNamed(id object,
 @end
 
 // Small utility function for checking to see if a is b +/- 1.
-static inline BOOL almostEqual(unsigned char a, unsigned char b) {
+GTM_INLINE BOOL almostEqual(unsigned char a, unsigned char b) {
   unsigned char diff = a > b ? a - b : b - a;
   BOOL notEqual = diff < 2;
   return notEqual;
@@ -468,7 +464,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   _GTMDevAssert(myBundle, @"Couldn't find bundle for class: %@ searching for file:%@.%@", 
             NSStringFromClass(bundleClass), name, extension);
   // System Version
-  long major, minor, bugFix;
+  SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
   NSString *systemVersions[4];
   systemVersions[0] = [NSString stringWithFormat:@".%d.%d.%d", 
@@ -477,33 +473,8 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   systemVersions[2] = [NSString stringWithFormat:@".%d", major];
   systemVersions[3] = @"";
   NSString *extensions[2];
-#if GTM_IPHONE_SDK
-  extensions[0] = @".iPhone";
-#else // !GTM_IPHONE_SDK
-  // In reading arch(3) you'd thing this would work:
-  //
-  // const NXArchInfo *localInfo = NXGetLocalArchInfo();
-  // _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
-  // const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
-  // _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
-  // extensions[0] = [NSString stringWithFormat:@".%s", genericInfo->name];
-  //
-  // but on 64bit it returns the same things as on 32bit, so...
-#if __POWERPC__
- #if __LP64__
-  extensions[0] = @".ppc64";
- #else // !__LP64__
-  extensions[0] = @".ppc";
- #endif // __LP64__
-#else // !__POWERPC__
- #if __LP64__
-  extensions[0] = @".x86_64";
- #else // !__LP64__
-  extensions[0] = @".i386";
- #endif // __LP64__
-#endif // !__POWERPC__
-
-#endif // GTM_IPHONE_SDK
+  extensions[0] 
+    = [NSString stringWithFormat:@".%@", [GTMSystemVersion runtimeArchitecture]];
   extensions[1] = @"";
   
   size_t i, j;
@@ -529,38 +500,12 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 
 - (NSString *)gtm_saveToPathForFileNamed:(NSString*)name 
                                extension:(NSString*)extension {  
-  char const *systemArchitecture;
-#if GTM_IPHONE_SDK
-  systemArchitecture = "iPhone";
-#else
-  // In reading arch(3) you'd thing this would work:
-  //
-  // const NXArchInfo *localInfo = NXGetLocalArchInfo();
-  // _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
-  // const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
-  // _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
-  // system = genericInfo->name;
-  //
-  // but on 64bit it returns the same things as on 32bit, so...
-#if __POWERPC__
- #if __LP64__
-  systemArchitecture = "ppc64";
- #else // !__LP64__
-  systemArchitecture = "ppc";
- #endif // __LP64__
-#else // !__POWERPC__
- #if __LP64__
-  systemArchitecture = "x86_64";
- #else // !__LP64__
-  systemArchitecture = "i386";
- #endif // __LP64__
-#endif // !__POWERPC__
+  NSString *systemArchitecture = [GTMSystemVersion runtimeArchitecture];
   
-#endif
-  long major, minor, bugFix;
+  SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
   
-  NSString *fullName = [NSString stringWithFormat:@"%@.%s.%d.%d.%d", 
+  NSString *fullName = [NSString stringWithFormat:@"%@.%@.%d.%d.%d", 
                         name, systemArchitecture, major, minor, bugFix];
   
   NSString *basePath = [[self class] gtm_getUnitTestSaveToDirectory];
@@ -869,17 +814,14 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
       *diff = CGBitmapContextCreateImage(diffContext);
       free(diffData);
       CFRelease(diffContext);
-      free(fileData);
-      CFRelease(fileContext);
-      free(imageData);
-      CFRelease(imageContext);
-    } else {
-      CFRelease(fileContext);
-      CFRelease(imageContext);
-    }
-    CFRelease(imageRep);
-    CFRelease(fileRep);
+    }       
+    free(fileData);
+    CFRelease(fileContext);
+    free(imageData);
+    CFRelease(imageContext);
   }
+  CGImageRelease(imageRep);
+  CGImageRelease(fileRep);
   return answer;
 }
 

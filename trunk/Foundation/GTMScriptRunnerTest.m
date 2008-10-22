@@ -183,12 +183,13 @@
   GTMScriptRunner *sr = [GTMScriptRunner runner];
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
-  
+  NSString *error = nil;
   STAssertNil([sr environment], @"should start w/ empty env");
   
-  output = [sr run:@"/usr/bin/env | wc -l"];
+  output = [sr run:@"/usr/bin/env | wc -l" standardError:&error];
   int numVars = [output intValue];
-  STAssertGreaterThan(numVars, 0, @"numVars should be positive");
+  STAssertGreaterThan(numVars, 0, 
+                      @"numVars should be positive. StdErr %@", error);
   // By default the environment is wiped clean, however shells often add a few
   // of their own env vars after things have been wiped. For example, sh will 
   // add about 3 env vars (PWD, _, and SHLVL).
@@ -197,15 +198,14 @@
   NSDictionary *newEnv = [NSDictionary dictionaryWithObject:@"bar"
                                                      forKey:@"foo"];
   [sr setEnvironment:newEnv];
-  
-  output = [sr run:@"/usr/bin/env | wc -l"];
+  output = [sr run:@"/usr/bin/env | wc -l" standardError:&error];
   STAssertEquals([output intValue], numVars + 1,
-               @"should have one more env var now");
+               @"should have one more env var now. StdErr %@", error);
   
   [sr setEnvironment:nil];
-  output = [sr run:@"/usr/bin/env | wc -l"];
+  output = [sr run:@"/usr/bin/env | wc -l" standardError:&error];
   STAssertEquals([output intValue], numVars,
-               @"should be back down to %d vars", numVars);
+               @"should be back down to %d vars. StdErr:%@", numVars, error);
   
   NSMutableDictionary *currVars 
     = [[[[NSProcessInfo processInfo] environment] mutableCopy] autorelease];
@@ -216,9 +216,11 @@
   [currVars setObject:@"/usr/bin/env" forKey:@"_"];
   [sr setEnvironment:currVars];
   
-  output = [sr run:@"/usr/bin/env | wc -l"];
-  STAssertEquals([output intValue], (int)[currVars count],
-               @"should be back down to %d vars", numVars);
+  output = [sr run:@"/usr/bin/env | /usr/bin/sort" standardError:&error];
+  NSArray *lineArray = [output componentsSeparatedByString:@"\n"];
+  STAssertEquals([lineArray count], [currVars count],
+                 @"StdErr:%@\nCurrentEnvironment:\n%@\nExpected environment:\n%@", 
+                 error, output, currVars);
 }
 
 - (void)testDescription {

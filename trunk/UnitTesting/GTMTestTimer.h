@@ -37,7 +37,7 @@ typedef struct {
 } GTMTestTimer;
 
 // Create a test timer
-FOUNDATION_STATIC_INLINE GTMTestTimer *GTMTestTimerCreate(void) {
+GTM_INLINE GTMTestTimer *GTMTestTimerCreate(void) {
   GTMTestTimer *t = calloc(sizeof(GTMTestTimer), 1);
   if (t) {
     if (mach_timebase_info(&t->time_base_info_) == KERN_SUCCESS) {
@@ -53,12 +53,12 @@ FOUNDATION_STATIC_INLINE GTMTestTimer *GTMTestTimerCreate(void) {
 }
 
 // Retain a timer
-FOUNDATION_STATIC_INLINE void GTMTestTimerRetain(GTMTestTimer *t) {
+GTM_INLINE void GTMTestTimerRetain(GTMTestTimer *t) {
   t->retainCount_ += 1;
 }
 
 // Release a timer. When release count hits zero, we free it.
-FOUNDATION_STATIC_INLINE void GTMTestTimerRelease(GTMTestTimer *t) {
+GTM_INLINE void GTMTestTimerRelease(GTMTestTimer *t) {
   t->retainCount_ -= 1;
   if (t->retainCount_ == 0) {
     free(t);
@@ -67,13 +67,13 @@ FOUNDATION_STATIC_INLINE void GTMTestTimerRelease(GTMTestTimer *t) {
 
 // Starts a timer timing. Specifically starts a new split. If the timer is
 // currently running, it resets the start time of the current split.
-FOUNDATION_STATIC_INLINE void GTMTestTimerStart(GTMTestTimer *t) {
+GTM_INLINE void GTMTestTimerStart(GTMTestTimer *t) {
   t->start_ = mach_absolute_time();
   t->running_ = true;
 }
 
 // Stops a timer and returns split time (time from last start) in nanoseconds.
-FOUNDATION_STATIC_INLINE uint64_t GTMTestTimerStop(GTMTestTimer *t) {
+GTM_INLINE uint64_t GTMTestTimerStop(GTMTestTimer *t) {
   uint64_t now = mach_absolute_time();
   t->running_ = false;
   ++t->iterations_;
@@ -85,7 +85,7 @@ FOUNDATION_STATIC_INLINE uint64_t GTMTestTimerStop(GTMTestTimer *t) {
 
 // returns the current timer elapsed time (combined value of all splits, plus
 // current split if the timer is running) in nanoseconds.
-FOUNDATION_STATIC_INLINE double GTMTestTimerGetNanoseconds(GTMTestTimer *t) {
+GTM_INLINE double GTMTestTimerGetNanoseconds(GTMTestTimer *t) {
   uint64_t total = t->elapsed_;
   if (t->running_) {
     total += mach_absolute_time() - t->start_;
@@ -96,30 +96,30 @@ FOUNDATION_STATIC_INLINE double GTMTestTimerGetNanoseconds(GTMTestTimer *t) {
 
 // Returns the current timer elapsed time (combined value of all splits, plus
 // current split if the timer is running) in seconds.
-FOUNDATION_STATIC_INLINE double GTMTestTimerGetSeconds(GTMTestTimer *t) {
+GTM_INLINE double GTMTestTimerGetSeconds(GTMTestTimer *t) {
   return GTMTestTimerGetNanoseconds(t) * 0.000000001;
 }
 
 // Returns the current timer elapsed time (combined value of all splits, plus
 // current split if the timer is running) in milliseconds.
-FOUNDATION_STATIC_INLINE double GTMTestTimerGetMilliseconds(GTMTestTimer *t) {
+GTM_INLINE double GTMTestTimerGetMilliseconds(GTMTestTimer *t) {
   return GTMTestTimerGetNanoseconds(t) * 0.000001;
 }
 
 // Returns the current timer elapsed time (combined value of all splits, plus
 // current split if the timer is running) in microseconds.
-FOUNDATION_STATIC_INLINE double GTMTestTimerGetMicroseconds(GTMTestTimer *t) {
+GTM_INLINE double GTMTestTimerGetMicroseconds(GTMTestTimer *t) {
   return GTMTestTimerGetNanoseconds(t) * 0.001;
 }
 
 // Returns the number of splits (start-stop) cycles recorded.
 // GTMTestTimerGetSeconds()/GTMTestTimerGetIterations() gives you an average
 // of all your splits.
-FOUNDATION_STATIC_INLINE NSUInteger GTMTestTimerGetIterations(GTMTestTimer *t) {
+GTM_INLINE NSUInteger GTMTestTimerGetIterations(GTMTestTimer *t) {
   return t->iterations_; 
 }
 
 // Returns true if the timer is running.
-FOUNDATION_STATIC_INLINE bool GTMTestTimerIsRunning(GTMTestTimer *t) { 
+GTM_INLINE bool GTMTestTimerIsRunning(GTMTestTimer *t) { 
   return t->running_;
 }

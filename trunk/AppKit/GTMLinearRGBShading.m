@@ -193,7 +193,7 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals) {
   // lazily create the colorspace as necessary
   if (nil == colorSpace_) {
     if (isCalibrated_) {
-      colorSpace_ = CGColorSpaceCreateWithName(kCGColorSpaceUserRGB);
+      colorSpace_ = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
     } else {
       colorSpace_ = CGColorSpaceCreateDeviceRGB(); 
     }

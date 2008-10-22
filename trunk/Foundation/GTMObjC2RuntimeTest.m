@@ -18,6 +18,10 @@
 
 #import "GTMObjC2Runtime.h"
 #import "GTMSenTestCase.h"
+#import "GTMSystemVersion.h"
+
+
+
 #import <string.h>
 
 @protocol GTMObjC2Runtime_TestProtocol
@@ -270,11 +274,6 @@ AT_REQUIRED
 }
 
 - (void)test_method_setImplementation {
-  // Nil Checks
-  // This case intentionally not tested. Passing nil to method_setImplementation
-  // on Leopard crashes. It does on Tiger as well.
-  // STAssertNULL(method_setImplementation(nil, nil), nil);
-
   // Standard use check
   GTMObjC2Runtime_TestClass *test = [[GTMObjC2Runtime_TestClass alloc] init];
   Method *list = class_copyMethodList(cls_, nil);
@@ -297,12 +296,45 @@ AT_REQUIRED
   STAssertNotEquals(oldImp, newImp, nil);
 
   // test nils
-  oldImp = method_setImplementation(list[0], nil);
-  STAssertNotNULL(oldImp, nil);
-
-  newImp = method_setImplementation(list[0], oldImp);
-  STAssertNULL(newImp, nil);
-
+  // Apparently it was a bug that we could call setImplementation with a nil
+  // so we now test to make sure that setting to nil works as expected on
+  // all systems.
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+  // Built for less then leopard gives us the behaviors we defined...
+  // (doesn't take nil)
+  IMP nullImp = method_setImplementation(list[0], nil);
+  STAssertNULL(nullImp, nil);
+  IMP testImp = method_setImplementation(list[0], newImp);
+  STAssertEquals(testImp, oldImp, nil);
+#else  
+  // Built for leopard or later means we get the os runtime behavior...
+  if ([GTMSystemVersion isLeopard]) {
+    // (takes nil)
+    oldImp = method_setImplementation(list[0], nil);
+    STAssertNotNULL(oldImp, nil);
+    newImp = method_setImplementation(list[0], oldImp);
+    STAssertNULL(newImp, nil);
+  } else {
+    // (doesn't take nil)
+    IMP nullImp = method_setImplementation(list[0], nil);
+    STAssertNULL(nullImp, nil);
+    IMP testImp = method_setImplementation(list[0], newImp);
+    STAssertEquals(testImp, oldImp, nil);
+  }
+#endif
+  
+  // This case intentionally not tested. Passing nil to method_setImplementation
+  // on Leopard crashes. It does on Tiger as well. Half works on SnowLeopard.
+  // We made our Tiger implementation the same as the SnowLeopard 
+  // implementation.
+  // Logged as radar 5572981.
+  if (![GTMSystemVersion isLeopard]) {
+    STAssertNULL(method_setImplementation(nil, nil), nil);
+  }
+  if ([GTMSystemVersion isBuildGreaterThan:kGTMSystemBuild10_6_0_WWDC]) {
+    STAssertNULL(method_setImplementation(nil, newImp), nil);
+  }
+  
   [test release];
   free(list);
 }

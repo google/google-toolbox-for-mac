@@ -22,7 +22,7 @@
 #import <Carbon/Carbon.h>
 
 @implementation NSAppleEventDescriptor (GTMAppleEventDescriptorHandlerAdditions)
-GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);  // COV_NF_LINE
+GTM_METHOD_CHECK(NSProcessInfo, gtm_appleEventDescriptor);
 
 + (id)gtm_descriptorWithPositionalHandler:(NSString*)handler 
                           parametersArray:(NSArray*)params {

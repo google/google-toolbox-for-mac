@@ -17,6 +17,7 @@
 //
 
 #include <CoreFoundation/CoreFoundation.h>
+#import "GTMDefines.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,7 +67,7 @@ NSString *GTMStackTrace(void);
 // Returns:
 //   The number of program counters actually added to outPcs.
 //
-int GTMGetStackProgramCounters(void *outPcs[], int count);
+NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count);
 
 // Returns an array of GTMAddressDescriptors from the current thread's stack.
 // *** You should probably use GTMStackTrace() instead of this function ***
@@ -84,8 +85,8 @@ int GTMGetStackProgramCounters(void *outPcs[], int count);
 // Returns:
 //   The number of program counters actually added to outPcs.
 //
-int GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
-                                  int count);
+NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
+                                         NSUInteger count);
 #ifdef __cplusplus
 }
 #endif

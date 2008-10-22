@@ -112,7 +112,7 @@ do { \
     } \
   }\
   @catch (id anException) {\
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == noErr fails", #a1] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s) fails", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
@@ -990,7 +990,10 @@ do { \
 - (void)failWithException:(NSException*)exception;
 @end
 
-CF_EXPORT NSString * const SenTestFailureException;
+extern NSString *const SenTestFailureException;
+
+extern NSString *const SenTestFilenameKey;
+extern NSString *const SenTestLineNumberKey;
 
 #endif // GTM_IPHONE_SDK
 

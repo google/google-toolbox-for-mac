@@ -17,9 +17,6 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 
-// Code signing. Should be overridden if releasing
-CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
-
 // Default SDK and minimum OS version is the iphone SDK.
 SDKROOT = iphoneos2.1
 MACOSX_DEPLOYMENT_TARGET = 10.5

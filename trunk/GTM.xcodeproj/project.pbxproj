@@ -47,6 +47,9 @@
 		7F3EB3940E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
 		7F3EB5540E5F0B0400A7A75E /* GTMUnitTestingImage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */; };
 		7F3EB5870E5F0CBB00A7A75E /* GTMLargeTypeWindowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */; };
+		84978FBC0EA6A67C00C5DC83 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
+		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */; };
+		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */; };
 		8B1801A20E2533D500280961 /* GTMLargeTypeWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */; };
 		8B1801A30E2533D500280961 /* GTMLargeTypeWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B1801AE0E25341B00280961 /* GTMLargeTypeWindowImageTest.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8B1801A80E25341B00280961 /* GTMLargeTypeWindowImageTest.gtmUTState */; };
@@ -92,7 +95,9 @@
 		8B61FDC00E4CDB8000FF9C21 /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */; };
 		8B6F32080DA34A1B0052CA40 /* GTMObjC2RuntimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F32050DA34A1B0052CA40 /* GTMObjC2RuntimeTest.m */; };
 		8B6F32160DA34C830052CA40 /* GTMMethodCheckTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31F10DA347720052CA40 /* GTMMethodCheckTest.m */; };
-		8B7AD49A0DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.10.5.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8B7AD4970DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.10.5.tiff */; };
+		8B6F4B630E8856CA00425D9F /* GTMDebugThreadValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B6F4B640E8856CA00425D9F /* GTMDebugThreadValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */; };
+		8B7AD49A0DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8B7AD4970DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.tiff */; };
 		8B7AD49B0DABBB5800B84F4A /* GTMNSBezierPath+CGPathTest.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8B7AD4980DABBB5800B84F4A /* GTMNSBezierPath+CGPathTest.tiff */; };
 		8B7AD49C0DABBB5800B84F4A /* GTMNSBezierPath+RoundRectTest.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8B7AD4990DABBB5800B84F4A /* GTMNSBezierPath+RoundRectTest.tiff */; };
 		8B7AD4AE0DABBFEE00B84F4A /* GTMUnitTestingBindingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7AD4AD0DABBFEE00B84F4A /* GTMUnitTestingBindingTest.m */; };
@@ -123,6 +128,7 @@
 		8BE281B20DEC7E930035B3F8 /* GTMNSAppleEventDescriptor+Foundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B33441F0DBF7A36009FD32C /* GTMNSAppleEventDescriptor+Foundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BE2836F0DED0F130035B3F8 /* GTMFourCharCodeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE2836C0DED0F130035B3F8 /* GTMFourCharCodeTest.m */; };
 		8BE283730DED13AB0035B3F8 /* GTMFourCharCode.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BE2836D0DED0F130035B3F8 /* GTMFourCharCode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BE839AA0E8AF72E00C611B0 /* GTMDebugThreadValidationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE839A80E8AF72500C611B0 /* GTMDebugThreadValidationTest.m */; };
 		8BE869730DBE89C100749827 /* GTMNSBezierPath+RoundRectTest.x86_64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BE869720DBE89C100749827 /* GTMNSBezierPath+RoundRectTest.x86_64.tiff */; };
 		8BEEA90D0DA7446300894774 /* GTMUnitTestingImage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */; };
 		8BEEA90E0DA7446300894774 /* GTMUnitTestingWindow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */; };
@@ -303,6 +309,11 @@
 		7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSImage+Scaling.h"; sourceTree = "<group>"; };
 		7F3EB38D0E5E09C700A7A75E /* GTMNSImage+Scaling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSImage+Scaling.m"; sourceTree = "<group>"; };
 		7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSImage+ScalingTest.m"; sourceTree = "<group>"; };
+		848269C80E9FF4BD006E6D9C /* DebugSnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugSnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
+		848269C90E9FF4BD006E6D9C /* ReleaseSnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseSnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
+		84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingImage.10.6.0.tiff; sourceTree = "<group>"; };
+		84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.10.6.0.tiff; sourceTree = "<group>"; };
+		84D99F360EA661C900C007D5 /* BuildAllSDKs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = BuildAllSDKs.sh; sourceTree = "<group>"; };
 		8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLargeTypeWindow.m; sourceTree = "<group>"; };
 		8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMLargeTypeWindow.h; sourceTree = "<group>"; };
 		8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLargeTypeWindowTest.m; sourceTree = "<group>"; };
@@ -355,9 +366,11 @@
 		8B6F32040DA34A1B0052CA40 /* GTMObjC2Runtime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMObjC2Runtime.m; sourceTree = "<group>"; };
 		8B6F32050DA34A1B0052CA40 /* GTMObjC2RuntimeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMObjC2RuntimeTest.m; sourceTree = "<group>"; };
 		8B6F32060DA34A1B0052CA40 /* GTMObjC2Runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMObjC2Runtime.h; sourceTree = "<group>"; };
+		8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDebugThreadValidation.h; sourceTree = "<group>"; };
+		8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDebugThreadValidation.m; sourceTree = "<group>"; };
 		8B726BD00D91C0860090C251 /* GTMCALayer+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMCALayer+UnitTesting.m"; sourceTree = "<group>"; };
 		8B726BD10D91C0860090C251 /* GTMCALayer+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMCALayer+UnitTesting.h"; sourceTree = "<group>"; };
-		8B7AD4970DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.10.5.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+ShadingTest.10.5.tiff"; sourceTree = "<group>"; };
+		8B7AD4970DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+ShadingTest.tiff"; sourceTree = "<group>"; };
 		8B7AD4980DABBB5800B84F4A /* GTMNSBezierPath+CGPathTest.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+CGPathTest.tiff"; sourceTree = "<group>"; };
 		8B7AD4990DABBB5800B84F4A /* GTMNSBezierPath+RoundRectTest.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+RoundRectTest.tiff"; sourceTree = "<group>"; };
 		8B7AD4AD0DABBFEE00B84F4A /* GTMUnitTestingBindingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestingBindingTest.m; sourceTree = "<group>"; };
@@ -370,6 +383,7 @@
 		8BE2836B0DED0F130035B3F8 /* GTMFourCharCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFourCharCode.m; sourceTree = "<group>"; };
 		8BE2836C0DED0F130035B3F8 /* GTMFourCharCodeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFourCharCodeTest.m; sourceTree = "<group>"; };
 		8BE2836D0DED0F130035B3F8 /* GTMFourCharCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFourCharCode.h; sourceTree = "<group>"; };
+		8BE839A80E8AF72500C611B0 /* GTMDebugThreadValidationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDebugThreadValidationTest.m; sourceTree = "<group>"; };
 		8BE869720DBE89C100749827 /* GTMNSBezierPath+RoundRectTest.x86_64.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+RoundRectTest.x86_64.tiff"; sourceTree = "<group>"; };
 		8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingImage.tiff; sourceTree = "<group>"; };
 		8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.tiff; sourceTree = "<group>"; };
@@ -577,6 +591,7 @@
 				F48FE23E0D197F70009257D2 /* XcodeConfig */,
 				F48B91030D94485500D45044 /* TigerGcov */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				84D99F350EA661C900C007D5 /* BuildScripts */,
 				034768DFFF38A50411DB9C8B /* Products */,
 				32DBCF5E0370ADEE00C91783 /* GTM_Prefix.pch */,
 				F42E086E0D199A5B00D5DDE0 /* GTM-Info.plist */,
@@ -600,6 +615,14 @@
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
 		};
+		84D99F350EA661C900C007D5 /* BuildScripts */ = {
+			isa = PBXGroup;
+			children = (
+				84D99F360EA661C900C007D5 /* BuildAllSDKs.sh */,
+			);
+			path = BuildScripts;
+			sourceTree = "<group>";
+		};
 		8B45A2A20DA49C47001148C5 /* GTMUIUnitTestingHarness */ = {
 			isa = PBXGroup;
 			children = (
@@ -613,6 +636,8 @@
 		F435E46C0DC8F23A0069CDE8 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */,
+				84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */,
 				8B45A2DE0DA51A7E001148C5 /* GTMUnitTestingTest.nib */,
 				8B45A6B90DA67DD5001148C5 /* GTMUnitTestingImage.gtmUTState */,
 				8B45A5F50DA5EB9F001148C5 /* GTMUnitTestingWindow.gtmUTState */,
@@ -637,7 +662,7 @@
 				8B7AD4990DABBB5800B84F4A /* GTMNSBezierPath+RoundRectTest.tiff */,
 				F435DE8A0DC0B7620069CDE8 /* GTMNSBezierPath+RoundRectTest.ppc64.tiff */,
 				8BE869720DBE89C100749827 /* GTMNSBezierPath+RoundRectTest.x86_64.tiff */,
-				8B7AD4970DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.10.5.tiff */,
+				8B7AD4970DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.tiff */,
 			);
 			path = TestData;
 			sourceTree = "<group>";
@@ -673,6 +698,7 @@
 			children = (
 				F48FE27C0D198D0E009257D2 /* GTMDelegatingTableColumn.h */,
 				F48FE27D0D198D0E009257D2 /* GTMDelegatingTableColumn.m */,
+				8B58E9940E547EB000A0E02E /* GTMGetURLHandler.m */,
 				8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */,
 				8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */,
 				8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */,
@@ -725,7 +751,6 @@
 				F48FE27E0D198D0E009257D2 /* GTMGeometryUtils.h */,
 				F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */,
 				F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */,
-				8B58E9940E547EB000A0E02E /* GTMGetURLHandler.m */,
 				F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */,
 				F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */,
 				F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */,
@@ -840,8 +865,10 @@
 		F4CA852B0DAFA92A00B4AB10 /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				848269C80E9FF4BD006E6D9C /* DebugSnowLeopardOrLater.xcconfig */,
 				F4CA864A0DB3ACB200B4AB10 /* DebugLeopardOrLater.xcconfig */,
 				F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */,
+				848269C90E9FF4BD006E6D9C /* ReleaseSnowLeopardOrLater.xcconfig */,
 				F4CA864B0DB3ACB200B4AB10 /* ReleaseLeopardOrLater.xcconfig */,
 				F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */,
 			);
@@ -870,6 +897,9 @@
 				8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */,
 				8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */,
 				8B6F31F10DA347720052CA40 /* GTMMethodCheckTest.m */,
+				8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */,
+				8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */,
+				8BE839A80E8AF72500C611B0 /* GTMDebugThreadValidationTest.m */,
 			);
 			path = DebugUtils;
 			sourceTree = "<group>";
@@ -927,6 +957,7 @@
 				8B1B49180E5F8E2100A08972 /* GTMExceptionalInlines.h in Headers */,
 				7F3EB38E0E5E09C700A7A75E /* GTMNSImage+Scaling.h in Headers */,
 				8B3590160E8190FA0041E21C /* GTMTestTimer.h in Headers */,
+				8B6F4B630E8856CA00425D9F /* GTMDebugThreadValidation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1099,6 +1130,8 @@
 				8BEEA90D0DA7446300894774 /* GTMUnitTestingImage.tiff in Resources */,
 				8BEEA90E0DA7446300894774 /* GTMUnitTestingWindow.tiff in Resources */,
 				8BEEA90F0DA7446300894774 /* GTMUnitTestingView.tiff in Resources */,
+				84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */,
+				84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1129,7 +1162,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B7AD49A0DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.10.5.tiff in Resources */,
+				8B7AD49A0DABBB5800B84F4A /* GTMNSBezierPath+ShadingTest.tiff in Resources */,
 				8B7AD49B0DABBB5800B84F4A /* GTMNSBezierPath+CGPathTest.tiff in Resources */,
 				8B7AD49C0DABBB5800B84F4A /* GTMNSBezierPath+RoundRectTest.tiff in Resources */,
 				8BE869730DBE89C100749827 /* GTMNSBezierPath+RoundRectTest.x86_64.tiff in Resources */,
@@ -1216,6 +1249,7 @@
 				8B7DCBC40DFF0F800017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCEF10E002C210017E983 /* GTMDevLogUnitTestingBridge.m in Sources */,
 				8B4D7A150E40D79200EFEDD8 /* GTMObjC2Runtime.m in Sources */,
+				84978FBC0EA6A67C00C5DC83 /* GTMSystemVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1259,6 +1293,7 @@
 				F95803FB0E2FB0A80049A088 /* GTMLoggerRingBufferWriterTest.m in Sources */,
 				F427EFC40E4023DD00ADD2AA /* GTMProgressMonitorInputStreamTest.m in Sources */,
 				8B1B49260E5F97C800A08972 /* GTMExceptionalInlinesTest.m in Sources */,
+				8BE839AA0E8AF72E00C611B0 /* GTMDebugThreadValidationTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1308,6 +1343,7 @@
 				8B58E9950E547EB000A0E02E /* GTMGetURLHandler.m in Sources */,
 				8B1B49190E5F8E2100A08972 /* GTMExceptionalInlines.m in Sources */,
 				7F3EB38F0E5E09C700A7A75E /* GTMNSImage+Scaling.m in Sources */,
+				8B6F4B640E8856CA00425D9F /* GTMDebugThreadValidation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1404,6 +1440,297 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
 			name = "TigerOrLater-Release";
+		};
+		842575E60E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848269C80E9FF4BD006E6D9C /* DebugSnowLeopardOrLater.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575E70E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4CA864C0DB3ACD200B4AB10 /* LoadableBundleGCSupported.xcconfig */;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "GTM-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_NAME = GoogleToolboxForMac;
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575E80E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575E90E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AppKit";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575EA0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				GTM_NO_DEBUG_FRAMEWORKS = YES;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - Foundation";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575EB0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - UnitTesting";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GTMUIUnitTestingHarness.app/Contents/MacOS/GTMUIUnitTestingHarness";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575EC0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = UnitTesting/GTMUIUnitTestingHarness/Info.plist;
+				PRODUCT_NAME = GTMUIUnitTestingHarness;
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575ED0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "Build GTM All SDKs";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575EE0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests All SDKs";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		842575EF0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848269C80E9FF4BD006E6D9C /* DebugSnowLeopardOrLater.xcconfig */;
+			buildSettings = {
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				OTHER_LDFLAGS = "-lgcov";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575F00E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848269C90E9FF4BD006E6D9C /* ReleaseSnowLeopardOrLater.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575F10E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4CA864C0DB3ACD200B4AB10 /* LoadableBundleGCSupported.xcconfig */;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "GTM-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_NAME = GoogleToolboxForMac;
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575F20E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4CA864C0DB3ACD200B4AB10 /* LoadableBundleGCSupported.xcconfig */;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "GTM-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_NAME = GoogleToolboxForMac;
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575F30E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575F40E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575F50E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AppKit";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575F60E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AppKit";
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575F70E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				GTM_NO_DEBUG_FRAMEWORKS = YES;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - Foundation";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575F80E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				GTM_NO_DEBUG_FRAMEWORKS = YES;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - Foundation";
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575F90E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - UnitTesting";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GTMUIUnitTestingHarness.app/Contents/MacOS/GTMUIUnitTestingHarness";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575FA0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - UnitTesting";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GTMUIUnitTestingHarness.app/Contents/MacOS/GTMUIUnitTestingHarness";
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575FB0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = UnitTesting/GTMUIUnitTestingHarness/Info.plist;
+				PRODUCT_NAME = GTMUIUnitTestingHarness;
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575FC0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = UnitTesting/GTMUIUnitTestingHarness/Info.plist;
+				PRODUCT_NAME = GTMUIUnitTestingHarness;
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575FD0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "Build GTM All SDKs";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842575FE0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "Build GTM All SDKs";
+			};
+			name = "SnowLeopardOrLater-Release";
+		};
+		842575FF0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests All SDKs";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		842576000E9FCFB8003E4511 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests All SDKs";
+			};
+			name = "SnowLeopardOrLater-Release";
 		};
 		8B45A02A0DA4696D001148C5 /* TigerOrLater-Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1716,6 +2043,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4CA864A0DB3ACB200B4AB10 /* DebugLeopardOrLater.xcconfig */;
 			buildSettings = {
+				"ARCHS[sdk=macosx10.5*]" = (
+					i386,
+					x86_64,
+					ppc,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
@@ -1798,6 +2130,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4CA864A0DB3ACB200B4AB10 /* DebugLeopardOrLater.xcconfig */;
 			buildSettings = {
+				"ARCHS[sdk=macosx10.5*]" = (
+					i386,
+					x86_64,
+					ppc,
+				);
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1883,6 +2220,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4CA864B0DB3ACB200B4AB10 /* ReleaseLeopardOrLater.xcconfig */;
 			buildSettings = {
+				"ARCHS[sdk=macosx10.5*]" = (
+					i386,
+					x86_64,
+					ppc,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 			};
@@ -1973,6 +2315,9 @@
 				F4CA864F0DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA865A0DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86610DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575E60E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575EF0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575F00E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -1986,6 +2331,9 @@
 				F4CA86540DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA865F0DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86660DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575EB0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575F90E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575FA0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -1999,6 +2347,9 @@
 				F4CA86550DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA86600DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86670DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575EC0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575FB0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575FC0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -2012,6 +2363,9 @@
 				F41A6EE40E02DB4F00788A6C /* LeopardOrLater-Debug */,
 				F41A6EE50E02DB4F00788A6C /* LeopardOrLater-Debug-gcov */,
 				F41A6EE60E02DB4F00788A6C /* LeopardOrLater-Release */,
+				842575ED0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575FD0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575FE0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -2025,6 +2379,9 @@
 				F41A6EFC0E02DCFC00788A6C /* LeopardOrLater-Debug */,
 				F41A6EFD0E02DCFC00788A6C /* LeopardOrLater-Debug-gcov */,
 				F41A6EFE0E02DCFC00788A6C /* LeopardOrLater-Release */,
+				842575EE0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575FF0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842576000E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -2038,6 +2395,9 @@
 				F4CA86530DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA865E0DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86650DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575EA0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575F70E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575F80E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -2051,6 +2411,9 @@
 				F4CA86500DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA865B0DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86620DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575E70E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575F10E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575F20E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -2064,6 +2427,9 @@
 				F4CA86510DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA865C0DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86630DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575E80E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575F30E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575F40E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
@@ -2077,6 +2443,9 @@
 				F4CA86520DB3ACE500B4AB10 /* LeopardOrLater-Debug */,
 				F4CA865D0DB3AD0300B4AB10 /* LeopardOrLater-Debug-gcov */,
 				F4CA86640DB3AD0D00B4AB10 /* LeopardOrLater-Release */,
+				842575E90E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
+				842575F50E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
+				842575F60E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";

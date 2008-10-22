@@ -112,6 +112,7 @@ static void RestoreColorProfile(void) {
   if (gCurrentColorProfile) {
     CGDirectDisplayID displayID = CGMainDisplayID();
     CMError error = CMSetProfileByAVID((UInt32)displayID, gCurrentColorProfile);
+    CMCloseProfile(gCurrentColorProfile);
     if (error) {
       // COV_NF_START
       // No way to force this case in a unittest.
@@ -143,6 +144,7 @@ void SetColorProfileToGenericRGB(void) {
     // COV_NF_END
   }
   if (AreCMProfilesEqual(genericProfile, previousProfile)) {
+    CMCloseProfile(previousProfile);
     return;
   }
   CFStringRef previousProfileName;

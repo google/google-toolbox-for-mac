@@ -26,8 +26,12 @@
 // Return an existing representation of a size
 - (NSImageRep *)gtm_representationOfSize:(NSSize)size;
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
 // Return the exact or next largest representation for a size
+// If you are on SnowLeopard use 
+// -[NSImage bestRepresentationForRect:context:hints:] 
 - (NSImageRep *)gtm_bestRepresentationForSize:(NSSize)size;
+#endif
 
 // Create a new represetation for a given size
 - (BOOL)gtm_createRepresentationOfSize:(NSSize)size;

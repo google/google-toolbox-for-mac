@@ -22,6 +22,7 @@
 #import "GTMNSAppleEventDescriptor+Handler.h"
 #import "GTMFourCharCode.h"
 #import "GTMMethodCheck.h"
+#import "GTMDebugThreadValidation.h"
 
 // Some private methods that we need to call
 @interface NSAppleScript (NSPrivate)
@@ -70,9 +71,9 @@
 @end
 
 @implementation NSAppleScript(GTMAppleScriptHandlerAdditions)
-GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_descriptorWithPositionalHandler:parametersArray:);  // COV_NF_LINE
-GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_descriptorWithLabeledHandler:labels:parameters:count:);  // COV_NF_LINE
-GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);  // COV_NF_LINE
+GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_descriptorWithPositionalHandler:parametersArray:);
+GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_descriptorWithLabeledHandler:labels:parameters:count:);
+GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 
 + (void)load {
   DescType types[] = { 
@@ -104,6 +105,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 
 - (NSAppleEventDescriptor *)gtm_executeAppleEvent:(NSAppleEventDescriptor *)event 
                                             error:(NSDictionary **)error {
+  GTMAssertRunningOnMainThread();
   if (![self isCompiled]) {
     if (![self compileAndReturnError:error]) {
       return nil;
@@ -225,7 +227,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
     desc = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&result] 
             autorelease];
   } else {
-    _GTMDevLog(@"Unable to coerce script %d", error);  // COV_NF_LINE
+    _GTMDevLog(@"Unable to coerce script %d", error);
   }
   return desc;
 }
@@ -247,7 +249,8 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 
 - (void)forwardInvocation:(NSInvocation *)invocation {
   SEL sel = [invocation selector];
-  NSMutableString *handlerName = [NSStringFromSelector(sel) mutableCopy];
+  NSMutableString *handlerName 
+    = [[NSStringFromSelector(sel) mutableCopy] autorelease];
   NSUInteger handlerOrigLength = [handlerName length];
   [handlerName replaceOccurrencesOfString:@":" 
                                withString:@""
@@ -285,6 +288,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 }
 
 - (NSAppleEventDescriptor*)gtm_valueDescriptorForProperty:(id)property {
+  GTMAssertRunningOnMainThread();
   OSAError error = paramErr;
   NSAppleEventDescriptor *desc = nil;
   NSAppleEventDescriptor *propertyName 
@@ -335,6 +339,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 }
 
 - (NSSet*)gtm_scriptHandlers {
+  GTMAssertRunningOnMainThread();
   AEDescList names = { typeNull, NULL };
   NSArray *array = nil;
   ComponentInstance component;
@@ -353,6 +358,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 }
 
 - (NSSet*)gtm_scriptProperties {
+  GTMAssertRunningOnMainThread();
   AEDescList names = { typeNull, NULL };
   NSArray *array = nil;
   ComponentInstance component;
@@ -371,6 +377,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 }
 
 - (OSAID)gtm_genericID:(OSAID)osaID forComponent:(ComponentInstance)component {
+  GTMAssertRunningOnMainThread();
   ComponentInstance genericComponent = [NSAppleScript _defaultScriptingComponent];
   OSAID exactID = osaID;
   OSAError error = OSARealToGenericID(genericComponent, &exactID, component);
@@ -383,6 +390,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 
 - (NSAppleEventDescriptor*)descForScriptID:(OSAID)osaID 
                                  component:(ComponentInstance)component {
+  GTMAssertRunningOnMainThread();
   NSAppleEventDescriptor *desc = nil;
   // If we have a script, return a typeGTMOSAID, otherwise convert it to
   // it's default AEDesc using OSACoerceToDesc with typeWildCard.
@@ -422,6 +430,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:); 
 }
 
 - (OSAID)gtm_realIDAndComponent:(ComponentInstance*)component {
+  GTMAssertRunningOnMainThread();
   if (![self isCompiled]) {
     NSDictionary *error;
     if (![self compileAndReturnError:&error]) {

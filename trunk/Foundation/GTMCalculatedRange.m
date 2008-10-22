@@ -30,7 +30,7 @@
 - (CGFloat)position;
 @end
 
-CG_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
+GTM_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
   return (fpclassify(a - b) == FP_ZERO);
 }
 
