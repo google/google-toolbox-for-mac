@@ -28,10 +28,12 @@
 // If things seem strange, it may be due to one of the following radars:
 // 6240394 AddressBook framework constants not initialized until 
 //         ABCreateAddressBook called
+//         -- CLOSED as designed
 // 6208390 Integer and real values don't work in ABMultiValueRefs
 //         (and this isn't part of the title, but dictionaries don't work
 //         either)
 // 6207605 RecordIDs for people and groups are not unique in AddressBook
+//         -- CLOSED as designed
 // 6204021 kABGroupNameProperty and kABPersonFirstNameProperty have the same 
 //         value
 // 6203982 ABPersonCopyLocalizedPropertyName returns name for 
@@ -39,18 +41,23 @@
 // 6203961 ABPersonGetTypeOfProperty returns a type for kABGroupNameProperty
 // 6203854 ABMultiValues hash to their address
 // 6203836 ABRecords hash to their address
+//         -- CLOSED behaves correctly
 // 6203606 Need CFTypeIDs for AddressBook CFTypes
 // 6202868 ABPersonSetImageData should validate image data
 // 6202860 Passing nil person into ABGroupAddMember crashes
+//         -- CLOSED behaves correctly
 // 6202827 Passing nil info ABMultiValueAddValueAndLabel causes crash
+//         -- CLOSED behaves correctly
 // 6202807 ABMultiValueInsertValueAndLabelAtIndex allows you to insert values 
 //         past end
 // 6201276 Removing a NULL record using ABAddressBookRemoveRecord crashes
+//         -- CLOSED behaves correctly
 // 6201258 Adding a NULL record using ABAddressBookAddRecord crashes
+//         -- CLOSED behaves correctly
 // 6201046 ABRecordSetValue returns true even if you pass in a bad type for a
 //         value
-// 6201032 ABRecordSetValue return "true" even if you pass nil as a value
 // 6201005 ABRecordRemoveValue returns true for value that aren't in the record
+//         -- CLOSED behaves correctly
 // 6200703 ABAddressBookAddRecord doesn't add an item to the people array until 
 //         it's saved
 // 6200638 ABAddressBookHasUnsavedChanges doesn't work

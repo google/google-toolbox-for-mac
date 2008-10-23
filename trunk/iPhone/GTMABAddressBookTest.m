@@ -356,6 +356,29 @@
     = [[[GTMABMutableMultiValue alloc]
         initWithMultiValue:nil] autorelease];
   STAssertNil(mutValue, nil);
+  const ABPropertyType types[] = {
+    kABStringPropertyType,
+    kABIntegerPropertyType,
+    kABRealPropertyType,
+    kABDateTimePropertyType,
+    kABDictionaryPropertyType,
+    kABMultiStringPropertyType,
+    kABMultiIntegerPropertyType,
+    kABMultiRealPropertyType,
+    kABMultiDateTimePropertyType,
+    kABMultiDictionaryPropertyType
+  };
+  for (size_t i = 0; i < sizeof(types) / sizeof(ABPropertyType); ++i) {
+    mutValue = [GTMABMutableMultiValue valueWithPropertyType:types[i]];
+    STAssertNotNil(mutValue, nil);
+    // Oddly the Apple APIs allow you to create a mutable multi value with
+    // either a property type of kABFooPropertyType or kABMultiFooPropertyType
+    // and apparently you get back basically the same thing. However if you
+    // ask a type that you created with kABMultiFooPropertyType for it's type
+    // it returns just kABFooPropertyType.
+    STAssertEquals([mutValue propertyType], 
+                   types[i] & ~kABMultiValueMask, nil);
+  }
   mutValue = [GTMABMutableMultiValue valueWithPropertyType:kABStringPropertyType];
   STAssertNotNil(mutValue, nil);
   value = [[mutValue copy] autorelease];

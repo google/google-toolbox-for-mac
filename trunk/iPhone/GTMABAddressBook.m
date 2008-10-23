@@ -674,7 +674,7 @@ typedef struct {
 
 - (id)initWithPropertyType:(ABPropertyType)type {
   ABMutableMultiValueRef ref = nil;
-  if (!(type & kABMultiValueMask) && (type != kABInvalidPropertyType)) {
+  if (type != kABInvalidPropertyType) {
     ref = ABMultiValueCreateMutable(type);
   }
   self = [super initWithMultiValue:ref];
