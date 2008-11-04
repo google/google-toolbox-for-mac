@@ -24,7 +24,7 @@
 
 @implementation GTMNSString_ReplaceTest
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 - (void)testStringByReplacingStringWithString {
   NSString *testString = @"a bc debc gh";
@@ -54,6 +54,6 @@
                        @"replacing '' with anything should yield the original string");
 }
 
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 @end

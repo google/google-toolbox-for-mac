@@ -232,6 +232,21 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   return desc;
 }
 
+- (BOOL)gtm_hasOpenDocumentsHandler {
+  ComponentInstance component;
+  OSAID osaID = [self gtm_realIDAndComponent:&component];
+  long value = 0;
+  OSAError error = OSAGetScriptInfo(component,
+                                    osaID,
+                                    kASHasOpenHandler,
+                                    &value);
+  if (error) {
+    _GTMDevLog(@"Unable to get script info about open handler %d", error);
+    value = 0;
+  }
+  return value != 0;
+}
+
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
   NSMethodSignature *signature = [super methodSignatureForSelector:aSelector];
   if (!signature) {

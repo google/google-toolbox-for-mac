@@ -87,49 +87,11 @@ static void GTMFreeClassDescriptions(struct GTMClassDescription *class_descs,
   free(class_descs);
 }
 
-#pragma mark Public functions
-
-// __builtin_frame_address(0) is a gcc builtin that returns a pointer to the
-// current frame pointer.  We then use the frame pointer to walk the stack
-// picking off program counters and other saved frame pointers.  This works
-// great on i386, but PPC requires a little more work because the PC (or link
-// register) isn't always stored on the stack.
-//   
-NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count) {
-  if (!outPcs || (count < 1)) return 0;
+static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
+                                                            struct GTMAddressDescriptor outDescs[],
+                                                            NSUInteger count) {
+  if (count < 1 || !pcs || !outDescs) return 0;
   
-  struct GTMStackFrame *fp;
-#if defined (__ppc__) || defined(__ppc64__)
-  outPcs[0] = __builtin_return_address(0);
-  fp = (struct GTMStackFrame *)__builtin_frame_address(1);
-#elif defined (__i386__) || defined(__x86_64__)
-  fp = (struct GTMStackFrame *)__builtin_frame_address(0);
-#else
-#error architecture not supported
-#endif
-
-  NSUInteger level = 0;
-  while (level < count) {
-    if (fp == NULL) {
-      level--;
-      break;
-    }
-    outPcs[level] = fp->saved_pc;
-    level++;
-    fp = (struct GTMStackFrame *)fp->saved_fp;
-  }
-  
-  return level;
-}
-
-NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
-                                         NSUInteger count) {
-  if (count < 1 || !outDescs) return 0;
-  
-  void **pcs = calloc(count, sizeof(void*));
-  if (!pcs) return 0;
-  
-  NSUInteger newSize = GTMGetStackProgramCounters(pcs, count);
   NSUInteger class_desc_count;
   
   // Get our obj-c class descriptions. This is expensive, so we do it once
@@ -139,7 +101,7 @@ NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
     = GTMClassDescriptions(&class_desc_count);
   
   // Iterate through the stack.
-  for (NSUInteger i = 0; i < newSize; ++i) {
+  for (NSUInteger i = 0; i < count; ++i) {
     const char *class_name = NULL;
     Boolean is_class_method = FALSE;
     size_t smallest_diff = SIZE_MAX;
@@ -194,8 +156,84 @@ NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
     currDesc->filename = info.dli_fname;
   }
   GTMFreeClassDescriptions(class_descs, class_desc_count);
+  return count;
+}
+
+static NSString *GTMStackTraceFromAddressDescriptors(struct GTMAddressDescriptor descs[],
+                                                     NSUInteger count) {
+  NSMutableString *trace = [NSMutableString string];
+  
+  for (NSUInteger i = 0; i < count; i++) {
+    // Newline between all the lines
+    if (i) {
+      [trace appendString:@"\n"];
+    }
+    if (descs[i].class_name) {
+      [trace appendFormat:@"#%-2u %#08lx %s[%s %s]  (%s)",
+       i, descs[i].address, 
+       (descs[i].is_class_method ? "+" : "-"),
+       descs[i].class_name,
+       (descs[i].symbol ? descs[i].symbol : "??"),
+       (descs[i].filename ? descs[i].filename : "??")];
+    } else {
+      [trace appendFormat:@"#%-2u %#08lx %s()  (%s)",
+       i, descs[i].address,
+       (descs[i].symbol ? descs[i].symbol : "??"),
+       (descs[i].filename ? descs[i].filename : "??")];
+    }
+  }
+  return trace;
+}
+
+#pragma mark Public functions
+
+// __builtin_frame_address(0) is a gcc builtin that returns a pointer to the
+// current frame pointer.  We then use the frame pointer to walk the stack
+// picking off program counters and other saved frame pointers.  This works
+// great on i386, but PPC requires a little more work because the PC (or link
+// register) isn't always stored on the stack.
+//   
+#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
+NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count) {
+  if (!outPcs || (count < 1)) return 0;
+  
+  struct GTMStackFrame *fp;
+#if defined (__ppc__) || defined(__ppc64__)
+  outPcs[0] = __builtin_return_address(0);
+  fp = (struct GTMStackFrame *)__builtin_frame_address(1);
+#elif defined (__i386__) || defined(__x86_64__)
+  fp = (struct GTMStackFrame *)__builtin_frame_address(0);
+#else
+#error architecture not supported
+#endif
+
+  NSUInteger level = 0;
+  while (level < count) {
+    if (fp == NULL) {
+      level--;
+      break;
+    }
+    outPcs[level] = fp->saved_pc;
+    level++;
+    fp = (struct GTMStackFrame *)fp->saved_fp;
+  }
+  
+  return level;
+}
+
+NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
+                                         NSUInteger count) {
+  if (count < 1 || !outDescs) return 0;
+  
+  void **pcs = calloc(count, sizeof(void*));
+  if (!pcs) return 0;
+  
+  NSUInteger newSize = GTMGetStackProgramCounters(pcs, count);
+  
+  NSUInteger result
+    = GTMGetStackAddressDescriptorsForAddresses(pcs, outDescs, newSize);
   free(pcs);
-  return newSize;
+  return result;
 }
 
 NSString *GTMStackTrace(void) {
@@ -206,25 +244,47 @@ NSString *GTMStackTrace(void) {
   size_t depth = sizeof(descs) / sizeof(struct GTMAddressDescriptor);
   depth = GTMGetStackAddressDescriptors(descs, depth);
   
-  NSMutableString *trace = [NSMutableString string];
-  
   // Start at the second item so that GTMStackTrace and it's utility calls (of
   // which there is currently 1) is not included in the output.
   const size_t kTracesToStrip = 2;
-  for (size_t i = kTracesToStrip; i < depth; i++) {
-    if (descs[i].class_name) {
-      [trace appendFormat:@"#%-2d 0x%08lx %s[%s %s]  (%s)\n",
-       i - kTracesToStrip, descs[i].address, 
-       (descs[i].is_class_method ? "+" : "-"),
-       descs[i].class_name,
-       (descs[i].symbol ? descs[i].symbol : "??"),
-       (descs[i].filename  ? descs[i].filename  : "??")];
-    } else {
-      [trace appendFormat:@"#%-2d 0x%08lx %s()  (%s)\n",
-       i - kTracesToStrip, descs[i].address,
-       (descs[i].symbol ? descs[i].symbol : "??"),
-       (descs[i].filename  ? descs[i].filename  : "??")];
-    }
+  if (depth > kTracesToStrip) {
+    return GTMStackTraceFromAddressDescriptors(&descs[kTracesToStrip],
+                                               (depth - kTracesToStrip));
   }
+  // If we didn't have enough frames, return an empty string
+  return @"";
+}
+#endif // GTM_MACOS_SDK
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
+NSString *GTMStackTraceFromException(NSException *e) {
+  NSString *trace = @"";
+  
+  // collect the addresses
+  NSArray *addresses = [e callStackReturnAddresses];
+  NSUInteger count = [addresses count];
+  if (count) {
+    void **pcs = calloc(count, sizeof(void*));
+    struct GTMAddressDescriptor *descs
+      = calloc(count, sizeof(struct GTMAddressDescriptor));
+    if (pcs && descs) {
+      void **pcsScanner = pcs;
+      for (NSNumber *address in addresses) {
+        NSUInteger addr = [address unsignedIntegerValue];
+        *pcsScanner = (void *)addr;
+        ++pcsScanner;
+      }
+      // Fill in the desc structures
+      count = GTMGetStackAddressDescriptorsForAddresses(pcs, descs, count);
+      // Build the trace
+      trace = GTMStackTraceFromAddressDescriptors(descs, count);
+    }
+    if (pcs) free(pcs);
+    if (descs) free(descs);
+  }
+  
   return trace;
 }
+
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED

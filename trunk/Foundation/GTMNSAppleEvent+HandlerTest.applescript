@@ -27,6 +27,8 @@ script testScript
 	on testScriptFunc()
 		return "child"
 	end testScriptFunc
+	on open foo
+	end open
 end script
 
 property foo : 1
@@ -54,5 +56,5 @@ on testGetScript()
 	return testScript
 end testGetScript
 
-on open
-end open
+on print
+end print

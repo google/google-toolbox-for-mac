@@ -25,6 +25,7 @@
 
 @implementation GTMStackTraceTest
 
+#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
 - (void)testStackTraceBasic {
   NSString *stacktrace = GTMStackTrace();
   NSArray *stacklines = [stacktrace componentsSeparatedByString:@"\n"];
@@ -44,7 +45,46 @@
                     @"First frame should contain #0, stack trace: %@", 
                     stacktrace);
 }
+#endif // GTM_MACOS_SDK
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
+- (void)helperThatThrows {
+  [NSException raise:@"TestException" format:@"TestExceptionDescription"];
+}
+
+- (void)testStackExceptionTrace {
+  NSException *exception = nil;
+  @try {
+    [self helperThatThrows];
+  }
+  @catch (NSException * e) {
+    exception = e;
+  }
+  STAssertNotNil(exception, nil);
+  NSString *stacktrace = GTMStackTraceFromException(exception);
+  NSArray *stacklines = [stacktrace componentsSeparatedByString:@"\n"];
+  
+  STAssertGreaterThan([stacklines count], (NSUInteger)4,
+                      @"stack trace must have > 4 lines");
+  STAssertLessThan([stacklines count], (NSUInteger)25,
+                   @"stack trace must have < 25 lines");
+  STAssertEquals([stacklines count],
+                 [[exception callStackReturnAddresses] count],
+                 @"stack trace should have the same number of lines as the "
+                 @" array of return addresses.  stack trace: %@", stacktrace);
+  
+  // we can't look for it on a specific frame because NSException doesn't
+  // really document how deep the stack will be
+  NSRange range = [stacktrace rangeOfString:@"testStackExceptionTrace"];
+  STAssertNotEquals(range.location, (NSUInteger)NSNotFound,
+                    @"Stack trace should contain testStackExceptionTrace,"
+                    " stack trace: %@", stacktrace);
+}
+
+#endif
+
+#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
 - (void)testProgramCountersBasic {
   void *pcs[10];
   NSUInteger depth = 10;
@@ -80,5 +120,6 @@
   void *current_pc = __builtin_return_address(0);
   STAssertEquals(pcs2[1], current_pc, @"pcs[1] should equal the current PC");
 }
+#endif // GTM_MACOS_SDK
 
 @end

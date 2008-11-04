@@ -128,7 +128,8 @@ GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES
 // GTM should always compile with full warnings.
 GTM_GENERAL_WARNING_CFLAGS1 = -Wall -Wendif-labels -Winvalid-pch -Wformat=2 -Wmissing-format-attribute -Wwrite-strings -Wstack-protector -Wstrict-aliasing=2
 GTM_GENERAL_WARNING_CFLAGS2 = -Wpacked -Wmissing-field-initializers
-GTM_GENERAL_WARNING_CFLAGS3 = -Wextra -Wno-unused-parameter -Wpointer-arith -Wdisabled-optimization -Wfloat-equal
+GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = -Wno-unused-parameter -Wno-sign-compare
+GTM_GENERAL_WARNING_CFLAGS3 = -Wextra $(GTM_EXTRA_WARNING_OVERRIDE_CFLAGS) -Wpointer-arith -Wdisabled-optimization -Wfloat-equal
 GTM_GENERAL_WARNING_CFLAGS = $(GTM_GENERAL_WARNING_CFLAGS1) $(GTM_GENERAL_WARNING_CFLAGS2) $(GTM_GENERAL_WARNING_CFLAGS3) 
 
 // GCC_WARN_UNINITIALIZED_AUTOS is defined in the release/debug xcconfigs.
@@ -140,7 +141,6 @@ GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES
 GCC_WARN_ABOUT_RETURN_TYPE = YES
 GCC_WARN_MISSING_PARENTHESES = YES
 GCC_WARN_ABOUT_POINTER_SIGNEDNESS = YES
-GCC_WARN_SIGN_COMPARE = YES
 GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES
 GCC_WARN_UNKNOWN_PRAGMAS = YES
 GCC_WARN_UNUSED_LABEL = YES
@@ -148,7 +148,12 @@ GCC_WARN_UNUSED_FUNCTION = YES
 GCC_WARN_UNUSED_VALUE = YES
 GCC_WARN_UNUSED_VARIABLE = YES
 GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES
-GCC_WARN_SHADOW = YES
+// We don't turn on shadow and sign comparisons because too many 3rd party
+// libaries don't compile with them turned on (sign compare rarely catches
+// errors, but shadow is very useful).
+// NOTE: sign compare is also controlled by -Wextra, we we override it above.
+// GCC_WARN_SHADOW = YES
+// GCC_WARN_SIGN_COMPARE = YES
 
 GCC_WARN_PEDANTIC = NO
 GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO

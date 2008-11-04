@@ -47,7 +47,7 @@
 #import <objc/Object.h>
 #endif
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 #import "objc/Protocol.h"
 
 #ifdef __cplusplus

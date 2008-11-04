@@ -89,6 +89,10 @@
 		F439ADEC0DBD3C0000BE9B91 /* GTMBase64Test.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEA0DBD3C0000BE9B91 /* GTMBase64Test.m */; };
 		F439ADF00DBD3C4000BE9B91 /* GTMGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */; };
 		F439ADF10DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */; };
+		F4E3B3D80EB5EF2400CB713D /* GTMUIFont+LineHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */; };
+		F4E3B3E20EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */; };
+		F4EF8AD70EBFF814008DD6DA /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EF8AD50EBFF814008DD6DA /* GTMStackTrace.m */; };
+		F4EF8AD80EBFF814008DD6DA /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EF8AD60EBFF814008DD6DA /* GTMStackTraceTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,6 +217,12 @@
 		F439ADED0DBD3C4000BE9B91 /* GTMGeometryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGeometryUtils.h; sourceTree = "<group>"; };
 		F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtils.m; sourceTree = "<group>"; };
 		F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtilsTest.m; sourceTree = "<group>"; };
+		F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIFont+LineHeight.h"; sourceTree = "<group>"; };
+		F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIFont+LineHeight.m"; sourceTree = "<group>"; };
+		F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIFont+LineHeightTest.m"; sourceTree = "<group>"; };
+		F4EF8AD40EBFF814008DD6DA /* GTMStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMStackTrace.h; sourceTree = "<group>"; };
+		F4EF8AD50EBFF814008DD6DA /* GTMStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTrace.m; sourceTree = "<group>"; };
+		F4EF8AD60EBFF814008DD6DA /* GTMStackTraceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTraceTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +297,9 @@
 				8BA5F4070E75669000798036 /* GTMABAddressBook.h */,
 				8BA5F4080E75669000798036 /* GTMABAddressBook.m */,
 				8BA5F52B0E7567AB00798036 /* GTMABAddressBookTest.m */,
+				F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */,
+				F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */,
+				F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */,
 				8BA5F4090E75669000798036 /* TestData */,
 			);
 			path = iPhone;
@@ -303,9 +316,6 @@
 		8BC047760DAE928A00C2D1CA /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				F418AFD40E755D44004FB565 /* GTMPath.h */,
-				F418AFD50E755D44004FB565 /* GTMPath.m */,
-				F418AFD60E755D44004FB565 /* GTMPathTest.m */,
 				F439ADE80DBD3C0000BE9B91 /* GTMBase64.h */,
 				F439ADE90DBD3C0000BE9B91 /* GTMBase64.m */,
 				F439ADEA0DBD3C0000BE9B91 /* GTMBase64Test.m */,
@@ -354,12 +364,18 @@
 				8BC0478C0DAE928A00C2D1CA /* GTMNSString+XMLTest.m */,
 				8BC0478D0DAE928A00C2D1CA /* GTMObjC2Runtime.h */,
 				8BC047900DAE928A00C2D1CA /* GTMObjectSingleton.h */,
+				F418AFD40E755D44004FB565 /* GTMPath.h */,
+				F418AFD50E755D44004FB565 /* GTMPath.m */,
+				F418AFD60E755D44004FB565 /* GTMPathTest.m */,
 				F418AFE80E755F21004FB565 /* GTMProgressMonitorInputStream.h */,
 				F418AFE90E755F21004FB565 /* GTMProgressMonitorInputStream.m */,
 				F418AFEA0E755F21004FB565 /* GTMProgressMonitorInputStreamTest.m */,
 				8BC047910DAE928A00C2D1CA /* GTMRegex.h */,
 				8BC047920DAE928A00C2D1CA /* GTMRegex.m */,
 				8BC047930DAE928A00C2D1CA /* GTMRegexTest.m */,
+				F4EF8AD40EBFF814008DD6DA /* GTMStackTrace.h */,
+				F4EF8AD50EBFF814008DD6DA /* GTMStackTrace.m */,
+				F4EF8AD60EBFF814008DD6DA /* GTMStackTraceTest.m */,
 				8BC04A740DAF145200C2D1CA /* GTMSystemVersion.m */,
 				8BC04A6F0DAF144200C2D1CA /* GTMSystemVersion.h */,
 				8BC04A710DAF144700C2D1CA /* GTMSystemVersionTest.m */,
@@ -596,6 +612,10 @@
 				8BDA25140E759A6500C9769D /* GTMNSData+zlibTest.m in Sources */,
 				8BE839890E89C74B00C611B0 /* GTMDebugThreadValidation.m in Sources */,
 				8BE83A660E8B059A00C611B0 /* GTMDebugThreadValidationTest.m in Sources */,
+				F4E3B3D80EB5EF2400CB713D /* GTMUIFont+LineHeight.m in Sources */,
+				F4E3B3E20EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m in Sources */,
+				F4EF8AD70EBFF814008DD6DA /* GTMStackTrace.m in Sources */,
+				F4EF8AD80EBFF814008DD6DA /* GTMStackTraceTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,6 +654,8 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 			};
 			name = "Debug-gcov";
 		};
@@ -653,6 +675,8 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 			};
 			name = Debug;
 		};
@@ -662,6 +686,8 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 			};
 			name = Release;
 		};

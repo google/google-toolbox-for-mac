@@ -18,7 +18,7 @@
 
 #import "GTMObjC2Runtime.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 #import <stdlib.h>
 #import <string.h>
 

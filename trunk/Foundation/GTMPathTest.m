@@ -46,7 +46,7 @@
   // Make sure it's safe to remove this directory before nuking it.
   STAssertNotNil(testDirectory_, nil);
   STAssertNotEqualObjects(testDirectory_, @"/", nil);
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
   [[NSFileManager defaultManager] removeFileAtPath:testDirectory_ handler:nil];
 #else
   [[NSFileManager defaultManager] removeItemAtPath:testDirectory_ error:NULL];

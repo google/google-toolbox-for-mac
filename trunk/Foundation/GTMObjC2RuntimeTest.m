@@ -299,7 +299,7 @@ AT_REQUIRED
   // Apparently it was a bug that we could call setImplementation with a nil
   // so we now test to make sure that setting to nil works as expected on
   // all systems.
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
   // Built for less then leopard gives us the behaviors we defined...
   // (doesn't take nil)
   IMP nullImp = method_setImplementation(list[0], nil);

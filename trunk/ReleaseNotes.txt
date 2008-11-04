@@ -155,6 +155,13 @@ Changes since 1.5.1
   make sure to turn off zombies by defining the GTM_DISABLE_ZOMBIES variable,
   otherwise every memory allocation you do will look like a leak.
 
+- Added has ability to check if a script has an open handler to
+  GTMNSAppleScript+Handler.
+
+- GTMStackTrace support for building a trace from the call stack in an
+  NSException (for 10.5+ and iPhone).
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008

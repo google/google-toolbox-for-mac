@@ -28,7 +28,7 @@
 // http://developer.apple.com/documentation/Cocoa/Conceptual/GarbageCollection/Articles/gcCoreFoundation.html#//apple_ref/doc/uid/TP40006687-SW1
 // for details.
 
-#if (MAC_OS_X_VERSION_MIN_REQUIRED >= 1050) && !GTM_IPHONE_SDK
+#if (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5) && !GTM_IPHONE_SDK
 // General use would be to call this through GTMCFAutorelease
 // but there may be a reason the you want to make something collectable
 // but not autoreleased, especially in pure GC code where you don't
