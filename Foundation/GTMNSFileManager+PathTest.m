@@ -48,7 +48,7 @@
   if (baseDir_) {
     // clean up our directory
     NSFileManager *fm = [NSFileManager defaultManager];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     NSError *error = nil;
     [fm removeItemAtPath:baseDir_ error:&error];
     STAssertNil(error,
@@ -62,7 +62,7 @@
   }
 }
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 - (void)testCreateFullPathToDirectoryAttributes {
   STAssertNotNil(baseDir_, @"setUp failed");
@@ -91,7 +91,7 @@
                 @"Should have failed when passed (nil)");
 }
 
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 - (void)testfilePathsWithExtensionsInDirectory {
   STAssertNotNil(baseDir_, @"setUp failed");

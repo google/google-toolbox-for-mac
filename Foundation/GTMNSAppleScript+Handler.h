@@ -119,4 +119,8 @@ enum {
 - (BOOL)gtm_setValue:(id)value 
      forPropertyEnum:(DescType)property
     addingDefinition:(BOOL)adding;
+
+// Return YES if the script has an open documents (odoc) handler
+// Does not require script compilation, so it's a fast check.
+- (BOOL)gtm_hasOpenDocumentsHandler;
 @end

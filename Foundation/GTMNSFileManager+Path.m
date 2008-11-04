@@ -20,7 +20,7 @@
 
 @implementation NSFileManager (GMFileManagerPathAdditions)
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 - (BOOL)gtm_createFullPathToDirectory:(NSString *)path
                            attributes:(NSDictionary *)attributes {
@@ -52,7 +52,7 @@
   return YES;
 }
 
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 - (NSArray *)gtm_filePathsWithExtension:(NSString *)extension
                             inDirectory:(NSString *)directoryPath {

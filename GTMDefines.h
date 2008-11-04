@@ -20,9 +20,12 @@
 
 #include <AvailabilityMacros.h>
 
+// Not all MAC_OS_X_VERSION_10_X macros defined in past SDKs
+#ifndef MAC_OS_X_VERSION_10_5
+# define MAC_OS_X_VERSION_10_5 1050
+#endif
 #ifndef MAC_OS_X_VERSION_10_6
-// MAC_OS_X_VERSION_10_6 not defined in some earlier SDKs
-#define MAC_OS_X_VERSION_10_6 1060
+# define MAC_OS_X_VERSION_10_6 1060
 #endif
 
 // ----------------------------------------------------------------------------

@@ -278,7 +278,7 @@
 - (void)testHandlers {
   NSSet *handlers = [script_ gtm_handlers];
   NSSet *expected = [NSSet setWithObjects:
-                     @"aevtodoc",
+                     @"aevtpdoc",
                      @"test",
                      @"testreturnone",
                      @"testreturnparam",
@@ -474,6 +474,14 @@
   NSSet *handlers = [script gtm_handlers];
   STAssertNotNil(handlers, @"Couldn't get handlers");
 }
+
+- (void)testOpenHandler {
+  STAssertFalse([script_ gtm_hasOpenDocumentsHandler], nil);
+  id script = [script_ gtm_valueForProperty:@"testscript"];
+  STAssertNotNil(script, nil);
+  STAssertTrue([script gtm_hasOpenDocumentsHandler], nil);
+}
+
 
 @protocol ScriptInterface
 - (id)test;

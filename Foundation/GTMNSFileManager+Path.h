@@ -22,7 +22,7 @@
 /// A few useful methods for dealing with paths.
 @interface NSFileManager (GMFileManagerPathAdditions)
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 /// For the Unix-y at heart, this is "mkdir -p".  It tries to create 
 /// the directory specified by |path|, and any intervening directories that
@@ -47,7 +47,7 @@
 - (BOOL)gtm_createFullPathToDirectory:(NSString *)path
                            attributes:(NSDictionary *)attributes;
 
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 /// Return an the paths for all resources in |directoryPath| that have the
 /// |extension| file extension.

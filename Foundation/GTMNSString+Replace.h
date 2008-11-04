@@ -21,7 +21,7 @@
 /// Give easy search-n-replace functionality to NSString.
 @interface NSString (GTMStringReplaceAdditions)
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 // 10.5 has stringByReplacingOccurrencesOfString:withString:, use that directly.
 
 /// Returns a new autoreleased string by replacing all occurrences of
@@ -40,6 +40,6 @@
 - (NSString *)gtm_stringByReplacingString:(NSString *)target
                                withString:(NSString *)replacement;
 
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED < 1050
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 @end

@@ -54,7 +54,7 @@
 // Predeclaration of used protocols that are declared later in this file.
 @protocol GTMLogWriter, GTMLogFormatter, GTMLogFilter;
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 #define CHECK_FORMAT_NSSTRING(a, b) __attribute__((format(__NSString__, a, b)))
 #else
 #define CHECK_FORMAT_NSSTRING(a, b)
