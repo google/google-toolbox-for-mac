@@ -57,7 +57,7 @@ GTM can also help you test your UI's representation and state.
   # Add the `CoreGraphics` and `QuartzCore` frameworks to your target.
   # You may also need to add some headers depending on your search paths
 
-Check out `GTMUIKit+UnitTestingTest.m` or `GTMNSBezierPath+RoundRectTest.m` for examples of using` UIUnitTesting`.
+Check out `UnitTesting/GTMUIKit+UnitTestingTest.m` or `AppKit/GTMNSBezierPath+RoundRectTest.m` for examples of using` UIUnitTesting`.
 
 For more information on some of this, check out CodeVerificationAndUnitTesting. Hope this helps.
 
