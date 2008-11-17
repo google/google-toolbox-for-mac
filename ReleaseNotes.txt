@@ -161,6 +161,8 @@ Changes since 1.5.1
 - GTMStackTrace support for building a trace from the call stack in an
   NSException (for 10.5+ and iPhone).
 
+- GTMLightweightProxy for breaking retain cycles.
+
 
 Release 1.5.1
 Changes since 1.5.0
