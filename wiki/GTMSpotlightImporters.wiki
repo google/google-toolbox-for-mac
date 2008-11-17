@@ -1,26 +1,20 @@
 #summary Spotlight importers included with Google Toolbox For Mac
 #labels Featured
 
-= Google Toolbox For Mac Spotlight Importers =
+= [http://google-toolbox-for-mac.googlecode.com/files/DeveloperSpotlightImporters.pkg.zip Google Toolbox For Mac Spotlight Importers] =
 
 Finding source can be difficult. We've built up some importers to help you index your source files.
 
-== [http://google-toolbox-for-mac.googlecode.com/files/AppleScriptSpotlightImporter-1-0.zip AppleScript Importer] ==
+The installer for the importers is [http://google-toolbox-for-mac.googlecode.com/files/DeveloperSpotlightImporters.pkg.zip here], and contains the following three importers
+== !AppleScript Importer ==
 Imports source and description from !AppleScript .scpt and .scptd files.
 
-*N.B.*
-The !AppleScript importer will only work for .scptd files if it is installed in "/Applications/!AppleScript/Script Editor/Contents/Library/Spotlight". It will not import .scptd files if it is installed in "/Library/Spotlight" or "~/Library/Spotlight" (although it will import .scpt files). If you want the dirty details, please look at [http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/SpotlightPlugins/AppleScript/ReadMe.rtf the AppleScript Importer ReadMe]. Hopefully this restriction will be removed in a future version of Mac OS.
-
-== [http://google-toolbox-for-mac.googlecode.com/files/InterfaceBuilderSpotlightImporter-1-0.zip Interface Builder Importer] ==
+== Interface Builder Importer ==
 Imports custom class names, bindings, outlets, actions and localizable strings from .xib and .nib files.
-
-Can be installed in standard location ("~/Library/Spotlight" or "/Library/Spotlight").
 
 Requires Xcode 3 or better (specifically needs ibtool to be available).
 
-== [http://google-toolbox-for-mac.googlecode.com/files/XcodeProjectSpotlightImporter-1-0.zip Xcode Project importer] ==
+== Xcode Project Importer ==
 Imports file names and project comments from .xcodeproj files.
-
-Can be installed in standard location ("~/Library/Spotlight" or "/Library/Spotlight").
 
 Requires Xcode 2.4 or better.
