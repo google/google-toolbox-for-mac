@@ -5,7 +5,7 @@
 
 Finding source can be difficult. We've built up some importers to help you index your source files.
 
-The installer for the importers is [http://google-toolbox-for-mac.googlecode.com/files/DeveloperSpotlightImporters.pkg.zip here], and contains the following three importers
+The installer for the importers is [http://google-toolbox-for-mac.googlecode.com/files/DeveloperSpotlightImporters.pkg.zip here], and contains the following three importers:
 == !AppleScript Importer ==
 Imports source and description from !AppleScript .scpt and .scptd files.
 
