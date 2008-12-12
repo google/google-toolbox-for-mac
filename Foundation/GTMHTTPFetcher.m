@@ -285,7 +285,7 @@ CannotBeginFetch:
     
     [[self retain] autorelease]; // in case the callback releases us
 
-    [delegate performSelector:failedSEL_ 
+    [delegate performSelector:failedSEL
                    withObject:self 
                    withObject:error];
   }
