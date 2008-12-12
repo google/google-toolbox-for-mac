@@ -37,6 +37,7 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
 
 NSString *const kGTMSystemBuild10_5_5 = @"9F33";
 NSString *const kGTMSystemBuild10_6_0_WWDC = @"10A96";
+NSString *const kGTMSystemBuild10_6_0_10A190 = @"10A190";
 
 @implementation GTMSystemVersion
 + (void)initialize {

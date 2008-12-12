@@ -1,5 +1,5 @@
 //
-//  GTMAddressBook.h
+//  GTMABAddressBook.h
 //
 //  Copyright 2008 Google Inc.
 //
@@ -74,7 +74,7 @@
 @class GTMABGroup;
 @class GTMABRecord;
 
-extern NSString *const kGTMABUnknownPropertyName;
+GTM_EXTERN NSString *const kGTMABUnknownPropertyName;
 
 // Wrapper for an AddressBook on iPhone
 @interface GTMABAddressBook : NSObject {

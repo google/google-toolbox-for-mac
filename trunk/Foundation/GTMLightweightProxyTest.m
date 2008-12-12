@@ -31,13 +31,16 @@
 @implementation GTMLightweightProxyTest
 
 - (void)testProxy {
-  id proxy = [[GTMLightweightProxy alloc] initWithRepresentedObject:self];
-  STAssertEqualObjects(self, [proxy representedObject], @"Represented object setup failed");
+  id proxy
+    = [[[GTMLightweightProxy alloc] initWithRepresentedObject:self] autorelease];
+  STAssertEqualObjects(self, [proxy representedObject],
+                       @"Represented object setup failed");
   
   // Check that it identifies itself as a proxy.
   STAssertTrue([proxy isProxy], @"Should identify as a proxy");
   // Check that it passes class requests on
-  STAssertTrue([proxy isMemberOfClass:[self class]], @"Should pass class requests through");
+  STAssertTrue([proxy isMemberOfClass:[self class]],
+               @"Should pass class requests through");
   
   // Check that it claims to respond to its selectors.
   STAssertTrue([proxy respondsToSelector:@selector(initWithRepresentedObject:)],
@@ -50,7 +53,8 @@
   STAssertTrue([proxy respondsToSelector:@selector(returnYes)],
                @"Claims not to respond to returnYes");
   // ... but not to made up selectors.
-  STAssertThrows([proxy someMadeUpMethod], @"Calling a bogus method should throw");
+  STAssertThrows([proxy someMadeUpMethod],
+                 @"Calling a bogus method should throw");
   
   // Check that callthrough works.
   STAssertTrue([proxy returnYes],
@@ -59,14 +63,18 @@
   // Check that nilling out the represented object works.
   [proxy setRepresentedObject:nil];
   STAssertTrue([proxy respondsToSelector:@selector(setRepresentedObject:)],
-               @"Claims not to respond to setRepresentedObject: after nilling out represented object");
+               @"Claims not to respond to setRepresentedObject: after nilling"
+               @" out represented object");
   STAssertFalse([proxy respondsToSelector:@selector(returnYes)],
-                @"Claims to respond to returnYes after nilling out represented object");
+                @"Claims to respond to returnYes after nilling out represented"
+                @" object");
   // Calling through once the represented object is nil should fail silently
   STAssertNoThrow([proxy returnYes],
-                  @"Calling through without a represented object should fail silently");
+                  @"Calling through without a represented object should fail"
+                  @" silently");
   // ... even when they are made up.
-  STAssertNoThrow([proxy someMadeUpMethod], @"Calling a bogus method on a nilled proxy should not throw");
+  STAssertNoThrow([proxy someMadeUpMethod],
+                  @"Calling a bogus method on a nilled proxy should not throw");
 }
 
 // Simple method to test calling through the proxy.

@@ -455,15 +455,20 @@
   NSAppleScript *script 
     = [[[NSAppleScript alloc] initWithSource:@"david hasselhoff"] autorelease];
   [GTMUnitTestDevLog expectPattern:@"Unable to compile script: .*"];
-  [GTMUnitTestDevLog expectPattern:@"Unable to coerce script -2147450879"];
+  [GTMUnitTestDevLog expectString:@"Unable to coerce script -2147450879"];
   NSSet *handlers = [script gtm_handlers];
   STAssertEquals([handlers count], (NSUInteger)0, @"Should have no handlers");
   [GTMUnitTestDevLog expectPattern:@"Unable to compile script: .*"];
-  [GTMUnitTestDevLog expectPattern:@"Unable to coerce script -2147450879"];
+  [GTMUnitTestDevLog expectString:@"Unable to coerce script -2147450879"];
   NSSet *properties = [script gtm_properties];
   STAssertEquals([properties count], 
                  (NSUInteger)0, 
                  @"Should have no properties");
+  [GTMUnitTestDevLog expectPattern:@"Unable to compile script: .*"];
+  [GTMUnitTestDevLog expectString:@"Unable to get script info about "
+   @"open handler -2147450879"];
+  STAssertFalse([script gtm_hasOpenDocumentsHandler],
+                @"Has an opendoc handler?");
 }
 
 - (void)testScriptDescriptors {

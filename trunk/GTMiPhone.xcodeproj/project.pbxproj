@@ -24,6 +24,8 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		6294461C0EDE178D009295EA /* GTMNSArray+MergeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */; };
+		6294461D0EDE17A0009295EA /* GTMNSArray+Merge.m in Sources */ = {isa = PBXBuildFile; fileRef = 629446180EDE177A009295EA /* GTMNSArray+Merge.m */; };
 		67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */; };
 		8B308BCE0DAD0B8400183556 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B308BCD0DAD0B8400183556 /* QuartzCore.framework */; };
 		8B3AA8F30E032FC7007E31B5 /* GTMNSString+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3AA8F10E032FC7007E31B5 /* GTMNSString+URLArguments.m */; };
@@ -113,6 +115,9 @@
 		1D6058910D05DD3D006BFB54 /* GTMiPhoneTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMiPhoneTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* GTM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTM_Prefix.pch; sourceTree = "<group>"; };
+		629446170EDE177A009295EA /* GTMNSArray+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSArray+Merge.h"; sourceTree = "<group>"; };
+		629446180EDE177A009295EA /* GTMNSArray+Merge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSArray+Merge.m"; sourceTree = "<group>"; };
+		629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSArray+MergeTest.m"; sourceTree = "<group>"; };
 		67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIPhoneUnitTestDelegate.h; sourceTree = "<group>"; };
 		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
 		8B308BCD0DAD0B8400183556 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -349,6 +354,9 @@
 				F418AFB10E755B4D004FB565 /* GTMLoggerRingBufferWriter.h */,
 				F418AFB20E755B4D004FB565 /* GTMLoggerRingBufferWriter.m */,
 				F418AFB30E755B4D004FB565 /* GTMLoggerRingBufferWriterTest.m */,
+				629446170EDE177A009295EA /* GTMNSArray+Merge.h */,
+				629446180EDE177A009295EA /* GTMNSArray+Merge.m */,
+				629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */,
 				8BC0477E0DAE928A00C2D1CA /* GTMNSData+zlib.h */,
 				8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */,
 				8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */,
@@ -626,6 +634,8 @@
 				F4EF8AD80EBFF814008DD6DA /* GTMStackTraceTest.m in Sources */,
 				F417115A0ECDFF0400B9B276 /* GTMLightweightProxy.m in Sources */,
 				F417115B0ECDFF0400B9B276 /* GTMLightweightProxyTest.m in Sources */,
+				6294461C0EDE178D009295EA /* GTMNSArray+MergeTest.m in Sources */,
+				6294461D0EDE17A0009295EA /* GTMNSArray+Merge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

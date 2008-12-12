@@ -34,11 +34,6 @@ static int MethodSort(const void *a, const void *b) {
   return strcmp(nameA, nameB);
 }
 
-@interface UIApplication (iPhoneUnitTestAdditions)
-// "Private" method that we need
-- (void)terminateWithSuccess;
-@end
-
 @implementation GTMIPhoneUnitTestDelegate
 
 // Return YES if class is subclass (1 or more generations) of SenTestCase
@@ -62,10 +57,7 @@ static int MethodSort(const void *a, const void *b) {
   
   // Using private call to end our tests
   if (!getenv("GTM_DISABLE_TERMINATION")) {
-    // I call this delayed just to make sure that the stack is clean
-    [application performSelector:@selector(terminateWithSuccess) 
-                      withObject:nil 
-                      afterDelay:0.00];
+    exit(0);
   }
 }
 

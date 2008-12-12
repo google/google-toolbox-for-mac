@@ -25,7 +25,6 @@
 
 @implementation GTMStackTraceTest
 
-#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
 - (void)testStackTraceBasic {
   NSString *stacktrace = GTMStackTrace();
   NSArray *stacklines = [stacktrace componentsSeparatedByString:@"\n"];
@@ -45,7 +44,6 @@
                     @"First frame should contain #0, stack trace: %@", 
                     stacktrace);
 }
-#endif // GTM_MACOS_SDK
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
@@ -84,7 +82,8 @@
 
 #endif
 
-#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+
 - (void)testProgramCountersBasic {
   void *pcs[10];
   NSUInteger depth = 10;
@@ -120,6 +119,7 @@
   void *current_pc = __builtin_return_address(0);
   STAssertEquals(pcs2[1], current_pc, @"pcs[1] should equal the current PC");
 }
-#endif // GTM_MACOS_SDK
+
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 @end

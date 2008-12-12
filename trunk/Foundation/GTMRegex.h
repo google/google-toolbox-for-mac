@@ -60,7 +60,7 @@ typedef NSUInteger GTMRegexOptions;
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
-#define _EXTERN extern
+#define _EXTERN GTM_EXTERN
 #define _INITIALIZE_AS(x)
 #endif
 

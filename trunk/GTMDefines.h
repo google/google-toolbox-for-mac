@@ -22,10 +22,10 @@
 
 // Not all MAC_OS_X_VERSION_10_X macros defined in past SDKs
 #ifndef MAC_OS_X_VERSION_10_5
-# define MAC_OS_X_VERSION_10_5 1050
+  #define MAC_OS_X_VERSION_10_5 1050
 #endif
 #ifndef MAC_OS_X_VERSION_10_6
-# define MAC_OS_X_VERSION_10_6 1060
+  #define MAC_OS_X_VERSION_10_6 1060
 #endif
 
 // ----------------------------------------------------------------------------
@@ -39,10 +39,10 @@
 // the code by providing your own definitions for these w/in a prefix header.
 //
 #ifndef GTM_HTTPFETCHER_ENABLE_LOGGING
-# define GTM_HTTPFETCHER_ENABLE_LOGGING 1
+  #define GTM_HTTPFETCHER_ENABLE_LOGGING 1
 #endif // GTM_HTTPFETCHER_ENABLE_LOGGING
 #ifndef GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING
-# define GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING 0
+  #define GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING 0
 #endif // GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING
 
 // By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and 
@@ -50,7 +50,28 @@
 // when a validation fails. If you implement your own validators, you may want
 // to control their internals using the same macros for consistency.
 #ifndef GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
-#define GTM_CONTAINERS_VALIDATION_FAILED_ASSERT 0
+  #define GTM_CONTAINERS_VALIDATION_FAILED_ASSERT 0
+#endif
+
+// Give ourselves a consistent way to do inlines.  Apple's macros even use
+// a few different actual definitions, so we're based off of the foundation
+// one.
+#if !defined(GTM_INLINE)
+  #if defined (__GNUC__) && (__GNUC__ == 4)
+    #define GTM_INLINE static __inline__ __attribute__((always_inline))
+  #else
+    #define GTM_INLINE static __inline__
+  #endif
+#endif
+
+// Give ourselves a consistent way of doing externs that links up nicely
+// when mixing objc and objc++
+#if !defined (GTM_EXTERN)
+  #if defined __cplusplus
+    #define GTM_EXTERN extern "C"
+  #else
+    #define GTM_EXTERN extern
+  #endif
 #endif
 
 // _GTMDevLog & _GTMDevAssert
@@ -76,9 +97,9 @@
 #ifndef _GTMDevLog
 
 #ifdef DEBUG
- #define _GTMDevLog(...) NSLog(__VA_ARGS__)
+  #define _GTMDevLog(...) NSLog(__VA_ARGS__)
 #else
- #define _GTMDevLog(...) do { } while (0)
+  #define _GTMDevLog(...) do { } while (0)
 #endif
 
 #endif // _GTMDevLog
@@ -86,24 +107,24 @@
 // Declared here so that it can easily be used for logging tracking if
 // necessary. See GTMUnitTestDevLog.h for details.
 @class NSString;
-extern void _GTMUnitTestDevLog(NSString *format, ...);
+GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 
 #ifndef _GTMDevAssert
 // we directly invoke the NSAssert handler so we can pass on the varargs
 // (NSAssert doesn't have a macro we can use that takes varargs)
 #if !defined(NS_BLOCK_ASSERTIONS)
-#define _GTMDevAssert(condition, ...)                                    \
-  do {                                                                   \
-    if (!(condition)) {                                                  \
-      [[NSAssertionHandler currentHandler]                               \
-          handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__] \
-                             file:[NSString stringWithCString:__FILE__]  \
-                       lineNumber:__LINE__                               \
-                      description:__VA_ARGS__];                          \
-    }                                                                    \
-  } while(0)
+  #define _GTMDevAssert(condition, ...)                                    \
+    do {                                                                   \
+      if (!(condition)) {                                                  \
+        [[NSAssertionHandler currentHandler]                               \
+            handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__] \
+                               file:[NSString stringWithCString:__FILE__]  \
+                         lineNumber:__LINE__                               \
+                        description:__VA_ARGS__];                          \
+      }                                                                    \
+    } while(0)
 #else // !defined(NS_BLOCK_ASSERTIONS)
-#define _GTMDevAssert(condition, ...) do { } while (0)
+  #define _GTMDevAssert(condition, ...) do { } while (0)
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
 #endif // _GTMDevAssert
@@ -119,13 +140,13 @@ extern void _GTMUnitTestDevLog(NSString *format, ...);
 // Wrapping this in an #ifndef allows external groups to define their own
 // compile time assert scheme.
 #ifndef _GTMCompileAssert
-// We got this technique from here:
-// http://unixjunkie.blogspot.com/2007/10/better-compile-time-asserts_29.html
+  // We got this technique from here:
+  // http://unixjunkie.blogspot.com/2007/10/better-compile-time-asserts_29.html
 
-#define _GTMCompileAssertSymbolInner(line, msg) _GTMCOMPILEASSERT ## line ## __ ## msg
-#define _GTMCompileAssertSymbol(line, msg) _GTMCompileAssertSymbolInner(line, msg)
-#define _GTMCompileAssert(test, msg) \
-  typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
+  #define _GTMCompileAssertSymbolInner(line, msg) _GTMCOMPILEASSERT ## line ## __ ## msg
+  #define _GTMCompileAssertSymbol(line, msg) _GTMCompileAssertSymbolInner(line, msg)
+  #define _GTMCompileAssert(test, msg) \
+    typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
 #endif // _GTMCompileAssert
 
 // ============================================================================
@@ -156,45 +177,33 @@ extern void _GTMUnitTestDevLog(NSString *format, ...);
 // defines for non Leopard SDKs
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
  // NSInteger/NSUInteger and Max/Mins
- #ifndef NSINTEGER_DEFINED
-  #if __LP64__ || NS_BUILD_32_LIKE_64
-   typedef long NSInteger;
-   typedef unsigned long NSUInteger;
-  #else
-   typedef int NSInteger;
-   typedef unsigned int NSUInteger;
-  #endif
-  #define NSIntegerMax    LONG_MAX
-  #define NSIntegerMin    LONG_MIN
-  #define NSUIntegerMax   ULONG_MAX
-  #define NSINTEGER_DEFINED 1
- #endif  // NSINTEGER_DEFINED
- // CGFloat
- #ifndef CGFLOAT_DEFINED
-  #if defined(__LP64__) && __LP64__
-   // This really is an untested path (64bit on Tiger?)
-   typedef double CGFloat;
-   #define CGFLOAT_MIN DBL_MIN
-   #define CGFLOAT_MAX DBL_MAX
-   #define CGFLOAT_IS_DOUBLE 1
-  #else /* !defined(__LP64__) || !__LP64__ */
-   typedef float CGFloat;
-   #define CGFLOAT_MIN FLT_MIN
-   #define CGFLOAT_MAX FLT_MAX
-   #define CGFLOAT_IS_DOUBLE 0
-  #endif /* !defined(__LP64__) || !__LP64__ */
-  #define CGFLOAT_DEFINED 1
- #endif // CGFLOAT_DEFINED
+  #ifndef NSINTEGER_DEFINED
+    #if __LP64__ || NS_BUILD_32_LIKE_64
+      typedef long NSInteger;
+      typedef unsigned long NSUInteger;
+    #else
+      typedef int NSInteger;
+      typedef unsigned int NSUInteger;
+    #endif
+    #define NSIntegerMax    LONG_MAX
+    #define NSIntegerMin    LONG_MIN
+    #define NSUIntegerMax   ULONG_MAX
+    #define NSINTEGER_DEFINED 1
+  #endif  // NSINTEGER_DEFINED
+  // CGFloat
+  #ifndef CGFLOAT_DEFINED
+    #if defined(__LP64__) && __LP64__
+      // This really is an untested path (64bit on Tiger?)
+      typedef double CGFloat;
+      #define CGFLOAT_MIN DBL_MIN
+      #define CGFLOAT_MAX DBL_MAX
+      #define CGFLOAT_IS_DOUBLE 1
+    #else /* !defined(__LP64__) || !__LP64__ */
+      typedef float CGFloat;
+      #define CGFLOAT_MIN FLT_MIN
+      #define CGFLOAT_MAX FLT_MAX
+      #define CGFLOAT_IS_DOUBLE 0
+    #endif /* !defined(__LP64__) || !__LP64__ */
+    #define CGFLOAT_DEFINED 1
+  #endif // CGFLOAT_DEFINED
 #endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-
-
-// Give ourselves a consistent way to do inlines.  Apple's macros even use
-// a few different actual definitions, so we're based off of the foundation
-// one.
-#if !defined(GTM_INLINE)
- #if defined (__GNUC__) && (__GNUC__ == 4)
-  #define GTM_INLINE static __inline__ __attribute__((always_inline))
- #else
-  #define GTM_INLINE static __inline__
- #endif
-#endif

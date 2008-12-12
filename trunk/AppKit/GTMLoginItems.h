@@ -17,15 +17,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 /// Login items key constants, used as keys in |+loginItems|
 //
 // Item name
-extern NSString * const kGTMLoginItemsNameKey;
+GTM_EXTERN NSString * const kGTMLoginItemsNameKey;
 // Item path
-extern NSString * const kGTMLoginItemsPathKey;
+GTM_EXTERN NSString * const kGTMLoginItemsPathKey;
 // Hidden (NSNumber bool)
-extern NSString * const kGTMLoginItemsHiddenKey;
+GTM_EXTERN NSString * const kGTMLoginItemsHiddenKey;
 
 /// GTMLoginItems
 //

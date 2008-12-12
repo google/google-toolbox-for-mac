@@ -75,6 +75,13 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
     export NSZombieEnabled=YES
   fi
 
+  # Cleanup user home and documents directory
+  if [ -d "$CFFIXED_USER_HOME" ]; then
+    rm -rf "$CFFIXED_USER_HOME"
+  fi
+  mkdir "$CFFIXED_USER_HOME"
+  mkdir "$CFFIXED_USER_HOME/Documents"
+
   # 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if 
   #         CFFIXED_USER_HOME empty
   GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"

@@ -49,11 +49,8 @@
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 #import "objc/Protocol.h"
+#import <libkern/OSAtomic.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-  
 OBJC_EXPORT Class object_getClass(id obj);
 OBJC_EXPORT const char *class_getName(Class cls);
 OBJC_EXPORT BOOL class_conformsToProtocol(Class cls, Protocol *protocol);
@@ -67,7 +64,41 @@ OBJC_EXPORT struct objc_method_description protocol_getMethodDescription(Protoco
                                                                          SEL aSel,
                                                                          BOOL isRequiredMethod,
                                                                          BOOL isInstanceMethod);
-#ifdef __cplusplus
+
+// If building for 10.4 but using the 10.5 SDK, don't include these.
+#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
+// atomics
+// On Leopard these are GC aware
+// Intentionally did not include the non-barrier versions, because I couldn't
+// come up with a case personally where you wouldn't want to use the
+// barrier versions.
+GTM_INLINE bool OSAtomicCompareAndSwapPtrBarrier(void *predicate,
+                                                 void *replacement,
+                                                 volatile void *theValue) {
+#if defined(__LP64__) && __LP64__
+  return OSAtomicCompareAndSwap64Barrier((int64_t)predicate,
+                                         (int64_t)replacement,
+                                         (int64_t *)theValue);
+#else  // defined(__LP64__) && __LP64__
+  return OSAtomicCompareAndSwap32Barrier((int32_t)predicate,
+                                         (int32_t)replacement,
+                                         (int32_t *)theValue);
+#endif  // defined(__LP64__) && __LP64__
+}
+  
+GTM_INLINE BOOL objc_atomicCompareAndSwapGlobalBarrier(id predicate, 
+                                                       id replacement, 
+                                                       volatile id *objectLocation) {
+  return OSAtomicCompareAndSwapPtrBarrier(predicate, 
+                                          replacement, 
+                                          objectLocation);
+}
+GTM_INLINE BOOL objc_atomicCompareAndSwapInstanceVariableBarrier(id predicate, 
+                                                                 id replacement, 
+                                                                 volatile id *objectLocation) {
+  return OSAtomicCompareAndSwapPtrBarrier(predicate, 
+                                          replacement, 
+                                          objectLocation);
 }
 #endif
 

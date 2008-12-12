@@ -7,7 +7,12 @@ Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 Release ?.?.?
 Changes since 1.5.1
 
-- Added GTMSignalHandler for simple signal handling (via kqueue/runloop).
+- Added GTMNSArray+Merge for merging one array into another with or without
+  a custom merging function, returning a new array with the merged contents.
+
+- Added GTMSignalHandler for simple signal handling (via kqueue/runloop). This
+  has gotten an api tweak, so some code that started using it will need
+  updating.
 
 - Fixed up GTMIPhoneUnitTestDelegate to be pickier about which tests it runs
 
@@ -160,8 +165,38 @@ Changes since 1.5.1
 
 - GTMStackTrace support for building a trace from the call stack in an
   NSException (for 10.5+ and iPhone).
+  
+- GTMStackTrace works on 10.5+ (and iPhone) using NSThread to build the call
+  stack.
 
 - GTMLightweightProxy for breaking retain cycles.
+
+- Added GTM_EXTERN that makes it easier to mix and match objc and objc++ code.
+
+- Added GTMHotKeysTextField for display and editing of hot key settings.
+
+- Added GTMCarbonEvent for dealing with Carbon Events and HotKeys in a ObjC
+  like way.
+  
+- Backported the Atomic Barrier Swap functions for Objective C back to Tiger.
+
+- Added a variety of new functions to GTMUnitTestingUtilities for checking
+  if the screensaver is in the way, waiting on user events, and generating 
+  keystrokes. 
+  
+- If you are using any Carbon routines that log (DebugStr, AssertMacros.h) and
+  use GTMUnitTestDevLog, the log routines now go through _GTMDevLog so that
+  they can be caught in GTMUnitTestDevLog and verified like any _GTMDevLog calls
+  you may make. For an example of this in action see GTMCarbonEventTest.m.
+
+- Added GTMFileSystemKQueue.  It provides a simple wrapper for kqueuing
+  something in the file system and tracking changes to it.
+
+- RunIPhoneUnitTest.sh now cleans up the user home directory and creates
+  a documents directory within it, used when requesting a NSDocumentDirectory.
+
+- Added GTMNSFileManager+Carbon which contains routines for path <-> Alias
+  conversion and path <-> FSRef conversion.
 
 
 Release 1.5.1

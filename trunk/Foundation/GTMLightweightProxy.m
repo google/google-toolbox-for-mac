@@ -48,9 +48,9 @@
     // Even though we don't retain this object, we hang it on the lifetime
     // of the calling threads pool so it's lifetime is safe for at least that
     // long.
-    repObject = [[representedObject_ retain] autorelease];
+    repObject = [representedObject_ retain];
   }
-  return repObject;
+  return [repObject autorelease];
 }
 
 - (void)setRepresentedObject:(id)object {

@@ -51,9 +51,7 @@ struct GTMAddressDescriptor {
 // #6  0x000025b9 tart ()  [/Users/me/./StackLog]
 //
 
-#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
 NSString *GTMStackTrace(void);
-#endif
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 // Returns a string containing a nicely formatted stack trace from the
@@ -63,11 +61,14 @@ NSString *GTMStackTrace(void);
 NSString *GTMStackTraceFromException(NSException *e);
 #endif
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 // Returns an array of program counters from the current thread's stack.
 // *** You should probably use GTMStackTrace() instead of this function ***
 // However, if you actually want all the PCs in "void *" form, then this
 // funtion is more convenient. This will include PCs of GTMStaceTrace and
 // its inner utility functions that you may want to strip out.
+//
+// You can use +[NSThread callStackReturnAddresses] in 10.5 or later.
 //
 // Args:
 //   outPcs - an array of "void *" pointers to the program counters found on the
@@ -77,9 +78,8 @@ NSString *GTMStackTraceFromException(NSException *e);
 // Returns:
 //   The number of program counters actually added to outPcs.
 //
-#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
 NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count);
-#endif
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 // Returns an array of GTMAddressDescriptors from the current thread's stack.
 // *** You should probably use GTMStackTrace() instead of this function ***
@@ -97,10 +97,8 @@ NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count);
 // Returns:
 //   The number of program counters actually added to outPcs.
 //
-#ifdef GTM_MACOS_SDK  // currently not supported on iPhone
 NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[], 
                                          NSUInteger count);
-#endif
 
 #ifdef __cplusplus
 }
