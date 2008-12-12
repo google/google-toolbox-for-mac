@@ -16,11 +16,12 @@
 //  the License.
 //
 
-#import "GTMSignalHandler.h"
 #import "GTMSenTestCase.h"
+#import "GTMSignalHandler.h"
+#import "GTMUnitTestDevLog.h"
 
 @interface GTMSignalHandlerTest : GTMTestCase
-@end  // GTMSignalHandlerTest
+@end
 
 @interface SignalCounter : NSObject {
  @public
@@ -29,7 +30,7 @@
 }
 - (int)count;
 - (int)lastSeen;
-- (void)countSignal:(NSNumber *)signo;
+- (void)countSignal:(int)signo;
 + (id)signalCounter;
 @end // SignalCounter
 
@@ -44,11 +45,11 @@
   return lastSeenSignal_;
 }
 // Count the number of times this signal handler has fired.
-- (void)countSignal:(NSNumber *)signo {
+- (void)countSignal:(int)signo {
   signalCount_++;
-  lastSeenSignal_ = [signo intValue];
-}  // countSignal
-@end  // SignalCounter
+  lastSeenSignal_ = signo;
+}
+@end
 
 @implementation GTMSignalHandlerTest
 
@@ -56,13 +57,14 @@
 - (void)giveSomeLove {
   NSDate *endTime = [NSDate dateWithTimeIntervalSinceNow:0.5];
   [[NSRunLoop currentRunLoop] runUntilDate:endTime];
-}  // giveSomeLove
-
+}
 
 - (void)testNillage {
   GTMSignalHandler *handler;
 
   // Just an init should return nil.
+  [GTMUnitTestDevLog expectString:@"Don't call init, use "
+                                  @"initWithSignal:target:action:"];
   handler = [[[GTMSignalHandler alloc] init] autorelease];
   STAssertNil(handler, nil);
 
@@ -70,11 +72,10 @@
   handler = [[[GTMSignalHandler alloc] 
               initWithSignal:0
                       target:self
-                     handler:@selector(nomnomnom:)] autorelease];
+                      action:@selector(nomnomnom:)] autorelease];
   STAssertNil(handler, nil);
 
-}  // testNillage
-
+}
 
 - (void)testSingleHandler {
   SignalCounter *counter = [SignalCounter signalCounter];
@@ -83,7 +84,7 @@
   GTMSignalHandler *handler = [[GTMSignalHandler alloc]
                                 initWithSignal:SIGWINCH
                                         target:counter
-                                       handler:@selector(countSignal:)];
+                                        action:@selector(countSignal:)];
   STAssertNotNil(handler, nil);
   raise(SIGWINCH);
   [self giveSomeLove];
@@ -102,7 +103,7 @@
   STAssertNotNil(counter2, nil);
   [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
                                      target:counter2
-                                    handler:@selector(countSignal:)] autorelease];
+                                     action:@selector(countSignal:)] autorelease];
   
   raise(SIGUSR1);
   [self giveSomeLove];
@@ -123,8 +124,7 @@
   STAssertEquals([counter2 count], 1, nil);
   STAssertEquals([counter2 lastSeen], SIGUSR1, nil);
 
-}  // testSingleHandler
-
+}
 
 - (void)testIgnore {
   SignalCounter *counter = [SignalCounter signalCounter];
@@ -132,12 +132,12 @@
 
   [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
                                      target:counter
-                                    handler:NULL] autorelease];
+                                     action:NULL] autorelease];
 
   raise(SIGUSR1);
   [self giveSomeLove];
   STAssertEquals([counter count], 0, nil);
 
-}  // testIgnore
+}
 
-@end  // GTMSignalHandlerTest
+@end
