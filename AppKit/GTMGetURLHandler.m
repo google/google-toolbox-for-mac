@@ -93,7 +93,8 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent;
  withDescription:(NSString*)string 
     toDescriptor:(NSAppleEventDescriptor *)desc;
 + (id)handlerForBundle:(NSBundle *)bundle;
-+ (void)appFinishedLaunchingHandler:(NSNotification*)notification;
++ (void)getUrl:(NSAppleEventDescriptor *)event 
+withReplyEvent:(NSAppleEventDescriptor *)replyEvent;
 @end
 
 @implementation GTMGetURLHandler
@@ -102,32 +103,28 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
 
 + (void)load {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self
-         selector:@selector(appFinishedLaunchingHandler:)
-             name:NSApplicationDidFinishLaunchingNotification
-           object:nil];
+  NSAppleEventManager *man = [NSAppleEventManager sharedAppleEventManager];
+  [man setEventHandler:self 
+           andSelector:@selector(getUrl:withReplyEvent:) 
+         forEventClass:kInternetEventClass 
+            andEventID:kAEGetURL]; 
   [pool release];
 }
 
-+ (void)appFinishedLaunchingHandler:(NSNotification*)notification {
-  NSBundle *bundle = [NSBundle mainBundle];
-  GTMGetURLHandler *handler = [GTMGetURLHandler handlerForBundle:bundle];
-  if (handler) {
-    [handler retain];
-    GTMNSMakeUncollectable(handler);
-    NSAppleEventManager *man = [NSAppleEventManager sharedAppleEventManager];
-    [man setEventHandler:handler 
-             andSelector:@selector(getUrl:withReplyEvent:) 
-           forEventClass:kInternetEventClass 
-              andEventID:kAEGetURL];
-  }  
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc removeObserver:self
-                name:NSApplicationDidFinishLaunchingNotification
-              object:nil];
++ (void)getUrl:(NSAppleEventDescriptor *)event 
+withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+  static GTMGetURLHandler *sHandler = nil;
+  if (!sHandler) {
+    NSBundle *bundle = [NSBundle mainBundle];
+    sHandler = [GTMGetURLHandler handlerForBundle:bundle];
+    if (sHandler) {
+      [sHandler retain];
+      GTMNSMakeUncollectable(sHandler);
+    }
+  }
+  [sHandler getUrl:event withReplyEvent:replyEvent];
 }
-
+  
 + (id)handlerForBundle:(NSBundle *)bundle {
   GTMGetURLHandler *handler = nil;
   NSArray *urlTypes 
@@ -135,8 +132,11 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
   if (urlTypes) {
     handler = [[[GTMGetURLHandler alloc] initWithTypes:urlTypes] autorelease];
   } else {
+    // COV_NF_START
+    // Hard to test it if we don't have it.
     _GTMDevLog(@"If you don't have CFBundleURLTypes in your plist, you may want"
                @" to remove GTMGetURLHandler.m from your project");
+    // COV_NF_END
   }
   return handler;
 }
@@ -146,7 +146,9 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
     urlTypes_ = [urlTypes retain];
 #if GTM_CHECK_BUNDLE_URL_CLASSES
     // Some debug handling to check to make sure we can handle the
-    // classes properly.
+    // classes properly. We check here instead of at init in case some of the
+    // handlers are being handled by plugins or other imported code that are 
+    // loaded after we have been initialized.
     NSEnumerator *enumerator = [urlTypes_ objectEnumerator];
     NSDictionary *urlType;
     while ((urlType = [enumerator nextObject])) {
@@ -156,14 +158,14 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
         if (cls) {
           if (![cls respondsToSelector:@selector(gtm_openURL:)]) {
             _GTMDevLog(@"Class %@ for URL handler %@ "
-                       "(URL schemes: %@) doesn't respond to openURL:",
+                       @"(URL schemes: %@) doesn't respond to openURL:",
                        className,
                        [urlType objectForKey:kGTMCFBundleURLNameKey],
                        [urlType objectForKey:kGTMCFBundleURLSchemesKey]);
           }
         } else {
           _GTMDevLog(@"Unable to get class %@ for URL handler %@ "
-                     "(URL schemes: %@)",
+                     @"(URL schemes: %@)",
                      className,
                      [urlType objectForKey:kGTMCFBundleURLNameKey],
                      [urlType objectForKey:kGTMCFBundleURLSchemesKey]);
@@ -173,7 +175,7 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
         if ([role caseInsensitiveCompare:kGTMCFBundleViewerRole] == NSOrderedSame ||
             [role caseInsensitiveCompare:kGTMCFBundleEditorRole] == NSOrderedSame) {
           _GTMDevLog(@"Missing %@ for URL handler %@ "
-                     "(URL schemes: %@)",
+                     @"(URL schemes: %@)",
                      kGTMBundleURLClassKey,
                      [urlType objectForKey:kGTMCFBundleURLNameKey],
                      [urlType objectForKey:kGTMCFBundleURLSchemesKey]);
@@ -185,10 +187,14 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
   return self;
 }
 
+// COV_NF_START
+// Singleton is never dealloc'd
 - (void)dealloc {
   [urlTypes_ release];
   [super dealloc];
 }
+// COV_NF_END
+
 
 - (NSURL*)extractURLFromEvent:(NSAppleEventDescriptor*)event
                withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
@@ -197,9 +203,12 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
   NSString *urlstring = [desc stringValue];
   NSURL *url = [NSURL URLWithString:urlstring];
   if (!url) {
+    // COV_NF_START
+    // Can't convince the OS to give me a bad URL
     [self addError:errAECoercionFail 
    withDescription:@"Unable to extract url from key direct object." 
       toDescriptor:replyEvent];
+    // COV_NF_END
   }
   return url;
 }
@@ -227,25 +236,40 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
     if (!cls) {
       NSString *errorString 
         = [NSString stringWithFormat:@"Unable to instantiate class for "
-           "%@:%@ for scheme:%@.", 
+           @"%@:%@ for scheme:%@.", 
            kGTMBundleURLClassKey, class, typeScheme];
       [self addError:errAECorruptData 
      withDescription:errorString
         toDescriptor:replyEvent];
+    } else {
+      if (![cls respondsToSelector:@selector(gtm_openURL:)]) {
+        NSString *errorString 
+          = [NSString stringWithFormat:@"Class %@:%@ for scheme:%@ does not"
+             @"respond to gtm_openURL:",
+             kGTMBundleURLClassKey, class, typeScheme];
+        [self addError:errAECorruptData 
+       withDescription:errorString
+          toDescriptor:replyEvent];
+        cls = Nil;
+      }
     }
   } else {
+    // COV_NF_START
+    // Don't know how to force an URL that we don't respond to upon ourselves.
     NSString *errorString 
       = [NSString stringWithFormat:@"Unable to find handler for scheme %@.", 
          scheme];
     [self addError:errAECorruptData 
    withDescription:errorString
       toDescriptor:replyEvent];
+    // COV_NF_END
+
   }
   return cls;
 }
 
 - (void)getUrl:(NSAppleEventDescriptor *)event 
-withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
+withReplyEvent:(NSAppleEventDescriptor *)replyEvent {  
   NSURL *url = [self extractURLFromEvent:event withReplyEvent:replyEvent];
   if (!url) {
     return;

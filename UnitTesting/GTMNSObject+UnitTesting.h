@@ -414,8 +414,8 @@ do { \
 // notification so that objects who want to add data to the encoded objects unit
 // test state can do so. The Coder will be in the userInfo dictionary for the
 // notification under the GTMUnitTestingEncoderKey key.
-extern NSString *const GTMUnitTestingEncodedObjectNotification;
+GTM_EXTERN NSString *const GTMUnitTestingEncodedObjectNotification;
 
 // Key for finding the encoder in the userInfo dictionary for
 // GTMUnitTestingEncodedObjectNotification notifications.
-extern NSString *const GTMUnitTestingEncoderKey;
+GTM_EXTERN NSString *const GTMUnitTestingEncoderKey;

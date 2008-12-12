@@ -17,7 +17,8 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 
-// Default SDK and minimum OS version is the iphone SDK.
+// Set default SDK.
 SDKROOT = iphoneos2.0
+
+// iPhone currently deploys on 10.5 only
 MACOSX_DEPLOYMENT_TARGET = 10.5
-GCC_VERSION = 4.0

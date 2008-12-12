@@ -990,10 +990,10 @@ do { \
 - (void)failWithException:(NSException*)exception;
 @end
 
-extern NSString *const SenTestFailureException;
+GTM_EXTERN NSString *const SenTestFailureException;
 
-extern NSString *const SenTestFilenameKey;
-extern NSString *const SenTestLineNumberKey;
+GTM_EXTERN NSString *const SenTestFilenameKey;
+GTM_EXTERN NSString *const SenTestLineNumberKey;
 
 #endif // GTM_IPHONE_SDK
 

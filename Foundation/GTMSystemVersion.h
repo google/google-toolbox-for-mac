@@ -72,14 +72,15 @@
 // Architecture Strings
 // TODO: Should probably break iPhone up into iPhone_ARM and iPhone_Simulator
 //       but haven't found a need yet.
-extern NSString *const kGTMArch_iPhone;
-extern NSString *const kGTMArch_ppc;
-extern NSString *const kGTMArch_ppc64;
-extern NSString *const kGTMArch_x86_64;
-extern NSString *const kGTMArch_i386;
+GTM_EXTERN NSString *const kGTMArch_iPhone;
+GTM_EXTERN NSString *const kGTMArch_ppc;
+GTM_EXTERN NSString *const kGTMArch_ppc64;
+GTM_EXTERN NSString *const kGTMArch_x86_64;
+GTM_EXTERN NSString *const kGTMArch_i386;
 
 // System Build Number constants
-extern NSString *const kGTMSystemBuild10_5_5;
-extern NSString *const kGTMSystemBuild10_6_0_WWDC;
+GTM_EXTERN NSString *const kGTMSystemBuild10_5_5;
+GTM_EXTERN NSString *const kGTMSystemBuild10_6_0_WWDC;
+GTM_EXTERN NSString *const kGTMSystemBuild10_6_0_10A190;
 
 

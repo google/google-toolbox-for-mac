@@ -46,6 +46,12 @@ ARCHS[sdk=iphonesimulator*] = i386
 // Build only the active architecture on iphone device targets
 ONLY_ACTIVE_ARCH[sdk=iphoneos*] = YES
 
+// iPhone currently deploys on 10.5 only
+MACOSX_DEPLOYMENT_TARGET[sdk=iphone*] = 10.5
+
+// We want our pngs compressed when they are copied
+COMPRESS_PNG_FILES = YES
+
 // Zerolink prevents link warnings so turn it off
 ZERO_LINK = NO
 

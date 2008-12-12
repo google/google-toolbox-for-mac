@@ -17,8 +17,39 @@
 //
 
 #import "GTMUnitTestDevLog.h"
+
+
 #import "GTMRegex.h"
 #import "GTMSenTestCase.h"
+
+#if !GTM_IPHONE_SDK
+// Add support for grabbing messages from Carbon.
+#import <CoreServices/CoreServices.h>
+static void GTMDevLogDebugAssert(OSType componentSignature,
+                                 UInt32 options, 
+                                 const char *assertionString, 
+                                 const char *exceptionLabelString, 
+                                 const char *errorString, 
+                                 const char *fileName, 
+                                 long lineNumber, 
+                                 void *value, 
+                                 ConstStr255Param outputMsg) {
+  NSString *outLog = [[[NSString alloc] initWithBytes:&(outputMsg[1])
+                                               length:StrLength(outputMsg)
+                                             encoding:NSMacOSRomanStringEncoding]
+                      autorelease];
+  _GTMDevLog(outLog);
+}
+static inline void GTMInstallDebugAssertOutputHandler(void) {
+  InstallDebugAssertOutputHandler(GTMDevLogDebugAssert);
+}
+static inline void GTMUninstallDebugAssertOutputHandler(void) {
+  InstallDebugAssertOutputHandler(NULL);
+}
+#else  // GTM_IPHONE_SDK
+static inline void GTMInstallDebugAssertOutputHandler(void) {};
+static inline void GTMUninstallDebugAssertOutputHandler(void) {};
+#endif  // GTM_IPHONE_SDK
 
 @implementation GTMUnitTestDevLog
 // If unittests are ever being run on separate threads, this may need to be
@@ -38,10 +69,12 @@ static BOOL gTrackingEnabled = NO;
 }
 
 + (void)enableTracking {
+  GTMInstallDebugAssertOutputHandler();
   gTrackingEnabled = YES;
 }
 
 + (void)disableTracking {
+  GTMUninstallDebugAssertOutputHandler();
   gTrackingEnabled = NO;
 }
 
