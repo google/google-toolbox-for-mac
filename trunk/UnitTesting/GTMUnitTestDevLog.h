@@ -67,4 +67,7 @@
 + (void)resetExpectedLogs;
 @end
 
-
+// Does the same as GTMUnitTestDevLog, but the logs are only expected in debug.
+// ie-the expect requests don't count in release builds.
+@interface GTMUnitTestDevLogDebug : GTMUnitTestDevLog
+@end

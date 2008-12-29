@@ -18,7 +18,7 @@
 
 #import "GTMFileSystemKQueue.h"
 #import <unistd.h>
-
+#import "GTMDefines.h"
 #import "GTMDebugSelectorValidation.h"
 
 

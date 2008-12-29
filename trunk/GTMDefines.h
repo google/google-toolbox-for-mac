@@ -74,6 +74,12 @@
   #endif
 #endif
 
+// Give ourselves a consistent way of exporting things if we have visibility
+// set to hidden.
+#if !defined (GTM_EXPORT)
+  #define GTM_EXPORT __attribute__((visibility("default")))
+#endif
+
 // _GTMDevLog & _GTMDevAssert
 //
 // _GTMDevLog & _GTMDevAssert are meant to be a very lightweight shell for

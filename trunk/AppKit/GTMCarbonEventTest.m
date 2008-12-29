@@ -208,7 +208,7 @@ static const UInt32 kTestParameterValue = 'bam ';
 }
 
 - (void)testEventHandler {
-  [GTMUnitTestDevLog expectPattern:
+  [GTMUnitTestDevLogDebug expectPattern:
    @"DebugAssert: GoogleToolboxForMac: event CantUseParams .*"];
   STAssertErr([handler_ handleEvent:nil handler:nil], eventNotHandledErr, nil);
 }
@@ -265,7 +265,7 @@ static const UInt32 kTestParameterValue = 'bam ';
     UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask 
                       | NSAlternateKeyMask | NSCommandKeyMask);
     EventHotKeyRef hotKey;
-    [GTMUnitTestDevLog expectPattern:@"DebugAssert: GoogleToolboxForMac: "
+    [GTMUnitTestDevLogDebug expectPattern:@"DebugAssert: GoogleToolboxForMac: "
      @"newKey CantCreateKey .*"];
     STAssertNULL([dispatcher registerHotKey:0x5 
                                   modifiers:keyMods
@@ -273,13 +273,16 @@ static const UInt32 kTestParameterValue = 'bam ';
                                      action:nil
                                 whenPressed:YES], 
                  @"Shouldn't have created hotkey");
+#if DEBUG
+    // This test debug selector validation, so we only can do it in debug.
     STAssertThrowsSpecificNamed([dispatcher registerHotKey:0x5 
                                                  modifiers:keyMods
                                                     target:self 
                                                     action:@selector(badSelector:) 
                                                whenPressed:YES],
                                 NSException, NSInternalInconsistencyException,
-                                hotKey, @"Shouldn't have created hotkey");
+                                @"Shouldn't have created hotkey");
+#endif
     hotKey = [dispatcher registerHotKey:0x5 
                               modifiers:keyMods
                                  target:self 

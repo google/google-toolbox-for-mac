@@ -48,8 +48,8 @@
   STAssertEqualObjects(path, path4, nil);
   
   // Failure cases
-  [GTMUnitTestDevLog expectPattern:@"DebugAssert: "
-   @"GoogleToolboxForMac: FSPathMakeRef.*"];
+  [GTMUnitTestDevLogDebug expectPattern:@"DebugAssert: "
+    @"GoogleToolboxForMac: FSPathMakeRef.*"];
   STAssertNULL([fileManager gtm_FSRefForPath:@"/ptah/taht/dosent/esixt/"], 
                nil);
 
@@ -59,7 +59,7 @@
   STAssertNil([fileManager gtm_pathFromAliasData:nil], nil);
   STAssertNil([fileManager gtm_pathFromAliasData:[NSData data]], nil);
   
-  [GTMUnitTestDevLog expectPattern:@"DebugAssert: "
+  [GTMUnitTestDevLogDebug expectPattern:@"DebugAssert: "
    @"GoogleToolboxForMac: FSPathMakeRef.*"];
   STAssertNil([fileManager gtm_aliasDataForPath:@"/ptah/taht/dosent/esixt/"], nil);
   STAssertNil([fileManager gtm_aliasDataForPath:@""], nil);

@@ -374,7 +374,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
   if (major <= 10 && minor <= 5 && bugFix <= 5) {
-    // rdar://5849154 - NSScroller exposes binding with no value class for NSValueBinding
+    // rdar://5849154 - NSScroller exposes binding with no value 
+    //                  class for NSValueBinding
     [array addObject:NSValueBinding];
   }
   if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
@@ -404,10 +405,12 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   NSMutableArray *array = [super gtm_unitTestExposedBindingsTestValues:binding];
   if ([binding isEqualToString:NSAlignmentBinding]) {
     if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
-      // rdar://5851487 - If NSAlignmentBinding for a NSTextField is set to -1 and then got it returns 7
+      // rdar://5851487 - If NSAlignmentBinding for a NSTextField is set to -1 
+      //                  and then got it returns 7
+      NSNumber *textAlignment = [NSNumber numberWithInt:NSNaturalTextAlignment];
       GTMBindingUnitTestData *dataToRemove =
         [GTMBindingUnitTestData testWithValue:[NSNumber numberWithInt:-1] 
-                                    expecting:[NSNumber numberWithInt:NSNaturalTextAlignment]];
+                                    expecting:textAlignment];
       [array removeObject:dataToRemove];
       GTMBindingUnitTestData *dataToAdd =
         [GTMBindingUnitTestData testWithValue:[NSNumber numberWithInt:-1] 
@@ -428,9 +431,10 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
   SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
-  if (major <= 10 && minor <= 5 && bugFix <= 5) {
-    // rdar://5851491 - Setting NSAlignmentBinding of search field to NSCenterTextAlignment broken
-    // Broken on 10.5.5 and below.
+  if (major <= 10 && minor <= 5 && bugFix <= 6) {
+    // rdar://5851491 - Setting NSAlignmentBinding of search field to 
+    //                  NSCenterTextAlignment broken
+    // Broken on 10.5.6 and below.
     [array addObject:NSAlignmentBinding];
   }
   // Not KVC Compliant
@@ -504,7 +508,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
   if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
-    //rdar://5849335 - NSTextView only partially KVC compliant for key NSAttributedStringBinding
+    //rdar://5849335 - NSTextView only partially KVC compliant for key 
+    //                 NSAttributedStringBinding
     [array addObject:NSAttributedStringBinding];
   }
   // Not KVC Compliant
@@ -524,7 +529,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
   if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
-    // rdar://5849248 - NSTabView exposes binding with no value class for NSSelectedIdentifierBinding 
+    // rdar://5849248 - NSTabView exposes binding with no value class 
+    //                  for NSSelectedIdentifierBinding 
     [array addObject:NSSelectedIdentifierBinding];
   }
   // Not KVC Compliant
