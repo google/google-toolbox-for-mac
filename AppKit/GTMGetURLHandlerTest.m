@@ -59,12 +59,12 @@ static BOOL sURLHandlerWasHit;
 - (void)testURLCall {
   sURLHandlerWasHit = NO;
   
-  [GTMUnitTestDevLog expectPattern:@"Class GTMGetURLHandlerBadClassWarning "
+  [GTMUnitTestDevLogDebug expectPattern:@"Class GTMGetURLHandlerBadClassWarning "
    @"for URL handler GTMGetURLHandlerBadClassURL .*"];
-  [GTMUnitTestDevLog expectPattern:@"Unable to get class "
+  [GTMUnitTestDevLogDebug expectPattern:@"Unable to get class "
    @"GTMGetURLHandlerMissingClassWarning for URL handler "
    @"GTMGetURLHandlerMissingClassURL .*"];
-  [GTMUnitTestDevLog expectPattern:@"Missing GTMBundleURLClass for URL handler "
+  [GTMUnitTestDevLogDebug expectPattern:@"Missing GTMBundleURLClass for URL handler "
    @"GTMGetURLHandlerMissingHandlerURL .*"];
   STAssertTrue([self openURLString:@"gtmgeturlhandlertest://test.foo"], nil);
   STAssertTrue(sURLHandlerWasHit, @"URL handler not called");

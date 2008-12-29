@@ -185,3 +185,19 @@ casesOfPattern:(NSString*)format
   }
 }
 @end
+
+
+@implementation GTMUnitTestDevLogDebug
+
++ (void)expect:(NSUInteger)n 
+casesOfPattern:(NSString*)format 
+          args:(va_list)args {
+#if DEBUG
+  // In debug, let the base work happen
+  [super expect:n casesOfPattern:format args:args];
+#else
+  // nothing when not in debug
+#endif
+}
+
+@end

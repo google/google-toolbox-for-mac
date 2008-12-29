@@ -575,6 +575,13 @@
   STAssertEquals([desc descriptorType], (DescType)typeKeyword, nil);
 }
 
+- (void)testDescriptorWithDescriptor {
+  NSAppleEventDescriptor *desc
+    = [NSAppleEventDescriptor descriptorWithString:@"foo"];
+  NSAppleEventDescriptor *desc2 = [desc gtm_appleEventDescriptor];
+  STAssertEqualObjects(desc, desc2, nil);
+}
+
 - (void)handleEvent:(NSAppleEventDescriptor*)event 
           withReply:(NSAppleEventDescriptor*)reply {
   gotEvent_ = YES;

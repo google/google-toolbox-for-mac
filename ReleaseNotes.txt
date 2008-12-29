@@ -198,6 +198,12 @@ Changes since 1.5.1
 - Added GTMNSFileManager+Carbon which contains routines for path <-> Alias
   conversion and path <-> FSRef conversion.
 
+- Added GTM_EXPORT as a standard way of exporting symbols.
+
+- Added GTMUnitTestDevLogDebug which extends GTMUnitTestDevLog to only look
+  for the messages in debug builds, to make it easier to validate messages
+  that are only present in debug builds.
+
 
 Release 1.5.1
 Changes since 1.5.0

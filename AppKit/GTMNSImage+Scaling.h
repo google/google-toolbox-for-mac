@@ -20,6 +20,7 @@
 
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 @interface NSImage (GTMNSImageScaling)
 

@@ -234,6 +234,10 @@ static NSMutableDictionary *gTypeMap = nil;
   return [GTMFourCharCode fourCharCodeWithFourCharCode:[self typeCodeValue]];
 }
 
+- (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
+  return self;
+}
+
 @end
 
 @implementation NSObject (GTMAppleEventDescriptorObjectAdditions)
