@@ -314,10 +314,9 @@ static void _GTMRunLeaks(void) {
   if (cExclusionsEnv) {
     NSString *exclusionsEnv = [NSString stringWithUTF8String:cExclusionsEnv];
     NSArray *exclusionsArray = [exclusionsEnv componentsSeparatedByString:@","];
-    NSEnumerator *exclusionsEnum = [exclusionsArray objectEnumerator];
     NSString *exclusion;
     NSCharacterSet *wcSet = [NSCharacterSet whitespaceCharacterSet];
-    while ((exclusion = [exclusionsEnum nextObject])) {
+    GTM_FOREACH_OBJECT(exclusion, exclusionsArray) {
       exclusion = [exclusion stringByTrimmingCharactersInSet:wcSet];
       [exclusions appendFormat:@"-exclude \"%@\" ", exclusion];
     }
@@ -345,7 +344,8 @@ static __attribute__((constructor)) void _GTMInstallLeaks(void) {
       if (checkLeaks) {
         fprintf(stderr, "Leak Checking Enabled\n");
         fflush(stderr);
-        _GTMDevAssert(atexit(&_GTMRunLeaks) == 0, 
+        int ret = atexit(&_GTMRunLeaks);
+        _GTMDevAssert(ret == 0, 
                       @"Unable to install _GTMRunLeaks as an atexit handler (%d)", 
                       errno);
       }  

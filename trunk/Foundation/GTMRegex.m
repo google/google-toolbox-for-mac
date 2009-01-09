@@ -190,6 +190,7 @@ static NSString *const kReplacementPattern =
   return self;
 }
 
+#if GTM_SUPPORT_GC
 - (void)finalize {
   // we used pattern_ as our flag that we initialized the regex_t
   if (pattern_) {
@@ -200,6 +201,7 @@ static NSString *const kReplacementPattern =
   }
   [super finalize];
 }
+#endif
 
 - (void)dealloc {
   // we used pattern_ as our flag that we initialized the regex_t
@@ -390,9 +392,8 @@ static NSString *const kReplacementPattern =
         // no replacements, they want to eat matches, nothing to do
       } else {
         // spin over the split up replacement
-        NSEnumerator *replacementEnumerator = [replacements objectEnumerator];
         GTMRegexStringSegment *replacementSegment = nil;
-        while ((replacementSegment = [replacementEnumerator nextObject]) != nil) {
+        GTM_FOREACH_OBJECT(replacementSegment, replacements) {
           if (![replacementSegment isMatch]) {
             // not a match, raw text to put in
             [result appendString:[replacementSegment string]];

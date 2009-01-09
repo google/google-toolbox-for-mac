@@ -189,15 +189,6 @@ if [ ! $GTM_DISABLE_ZOMBIES ]; then
   export NSZombieEnabled=YES
 fi
 
-# If we have debug libraries on the machine, we'll use them
-# unless a target has specifically turned them off
-if [ ! $GTM_NO_DEBUG_FRAMEWORKS ]; then
-  if [ -f "/System/Library/Frameworks/CoreFoundation.framework/Versions/Current/CoreFoundation_debug" ]; then
-    GTMXcodeNote ${LINENO} "Using _debug frameworks"
-    export DYLD_IMAGE_SUFFIX=_debug
-  fi
-fi
-
 # If leaks testing is enabled, we have to go through our convoluted path
 # to handle architectures that don't allow us to do leak testing.
 if [ GTM_ENABLE_LEAKS ]; then

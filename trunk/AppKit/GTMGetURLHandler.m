@@ -149,9 +149,8 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
     // classes properly. We check here instead of at init in case some of the
     // handlers are being handled by plugins or other imported code that are 
     // loaded after we have been initialized.
-    NSEnumerator *enumerator = [urlTypes_ objectEnumerator];
     NSDictionary *urlType;
-    while ((urlType = [enumerator nextObject])) {
+    GTM_FOREACH_OBJECT(urlType, urlTypes_) {
       NSString *className = [urlType objectForKey:kGTMBundleURLClassKey];
       if ([className length]) {
         Class cls = NSClassFromString(className);
@@ -215,17 +214,20 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
 
 - (Class)getClassForScheme:(NSString *)scheme 
             withReplyEvent:(NSAppleEventDescriptor*)replyEvent {
-  NSEnumerator *typeEnumerator = [urlTypes_ objectEnumerator];
   NSDictionary *urlType;
   Class cls = nil;
   NSString *typeScheme = nil;
-  while (!typeScheme && (urlType = [typeEnumerator nextObject])) {
+  GTM_FOREACH_OBJECT(urlType, urlTypes_) {
     NSArray *schemes = [urlType objectForKey:kGTMCFBundleURLSchemesKey];
-    NSEnumerator *schemeEnumerator = [schemes objectEnumerator];
-    while ((typeScheme = [schemeEnumerator nextObject])) {
-      if ([typeScheme caseInsensitiveCompare:scheme] == NSOrderedSame) {
+    NSString *aScheme;
+    GTM_FOREACH_OBJECT(aScheme, schemes) {
+      if ([aScheme caseInsensitiveCompare:scheme] == NSOrderedSame) {
+        typeScheme = aScheme;
         break;
       }
+    }
+    if (typeScheme) {
+      break;
     }
   }
   if (typeScheme) {

@@ -17,6 +17,7 @@
 //
 
 #import "GTMLogger+ASL.h"
+#import "GTMDefines.h"
 
 
 @implementation GTMLogger (GTMLoggerASLAdditions)
@@ -107,10 +108,12 @@
   [super dealloc];
 }
 
+#if GTM_SUPPORT_GC
 - (void)finalize {
   if (client_) asl_close(client_);
   [super finalize];
 }
+#endif
 
 // We don't test this one line because we don't want to pollute actual system 
 // logs with test messages.

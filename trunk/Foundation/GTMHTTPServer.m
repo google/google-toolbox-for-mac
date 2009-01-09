@@ -94,10 +94,12 @@ static NSString *kResponse = @"Response";
   [super dealloc];
 }
 
+#if GTM_SUPPORT_GC
 - (void)finalize {
   [self stop];
   [super finalize];
 }
+#endif
 
 - (id)delegate {
   return delegate_;

@@ -17,6 +17,7 @@
 //
 
 #import "GTMLinearRGBShading.h"
+#import "GTMDefines.h"
 
 // Carbon callback function required for CoreGraphics
 static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
@@ -57,6 +58,7 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
   return self;
 }
 
+#if GTM_SUPPORT_GC
 - (void)finalize {
   if (nil != function_) {
     CGFunctionRelease(function_);
@@ -66,6 +68,7 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
   }
   [super finalize];
 }
+#endif
 
 - (void)dealloc {
   if (nil != function_) {

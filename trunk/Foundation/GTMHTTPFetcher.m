@@ -398,9 +398,8 @@ CannotBeginFetch:
     // any headers in the redirect override headers in the original.
     NSDictionary *redirectHeaders = [redirectRequest allHTTPHeaderFields];
     if (redirectHeaders) {
-      NSEnumerator *enumerator = [redirectHeaders keyEnumerator];
       NSString *key;
-      while (nil != (key = [enumerator nextObject])) {
+      GTM_FOREACH_KEY(key, redirectHeaders) {
         NSString *value = [redirectHeaders objectForKey:key];
         [newRequest setValue:value forHTTPHeaderField:key];
       }
@@ -1198,10 +1197,9 @@ CannotBeginFetch:
   
   [self removeExpiredCookiesInArray:cookieStorageArray];
 
-  NSEnumerator *newCookieEnum = [newCookies objectEnumerator];
   NSHTTPCookie *newCookie;
   
-  while ((newCookie = [newCookieEnum nextObject]) != nil) {
+  GTM_FOREACH_OBJECT(newCookie, newCookies) {
     
     if ([[newCookie name] length] > 0
         && [[newCookie domain] length] > 0

@@ -188,6 +188,9 @@ Changes since 1.5.1
   use GTMUnitTestDevLog, the log routines now go through _GTMDevLog so that
   they can be caught in GTMUnitTestDevLog and verified like any _GTMDevLog calls
   you may make. For an example of this in action see GTMCarbonEventTest.m.
+  Since we have turned this on, we have turned off using _debug frameworks
+  from the RunUnitTests.sh because it was reporting a pile of uninteresting
+  issues that were interfering with unittests.
 
 - Added GTMFileSystemKQueue.  It provides a simple wrapper for kqueuing
   something in the file system and tracking changes to it.
@@ -203,6 +206,18 @@ Changes since 1.5.1
 - Added GTMUnitTestDevLogDebug which extends GTMUnitTestDevLog to only look
   for the messages in debug builds, to make it easier to validate messages
   that are only present in debug builds.
+
+- Added GTM_SUPPORT_GC for controlling the inclusion of GC related code.
+
+- If you are using GTMUnitTestDevLog, it also tries to capture logs from
+  NSAssert.
+
+- Added GTM_FOREACH_OBJECT/GTM_FOREACH_KEY that uses NSEnumerator and
+  objectEnumerator/keyEnumerator on 10.4, but on 10.5+/iPhone uses
+  FastEnumeration.
+
+- GTMNSWorkspace+Running gives a variety of ways of determining the attributes
+  of running processes.
 
 
 Release 1.5.1
@@ -291,8 +306,7 @@ Changes since 1.0.0
 
 - Added RunMacOSUnitTests shell script. We run this script for starting up our
   unittests because it turns on a variety of "enhancements" (such as zombies,
-  scribbling etc) to encourage our unittests to fail for us. It also will run
-  the unittests using the _debug frameworks if you have them.
+  scribbling etc) to encourage our unittests to fail for us. 
   
   https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19915
 

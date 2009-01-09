@@ -441,10 +441,8 @@ typedef struct {
   NSArray *people 
     = GTMCFAutorelease(ABGroupCopyArrayOfAllMembers([self recordRef]));
   NSMutableArray *gtmPeople = [NSMutableArray arrayWithCapacity:[people count]];
-  NSEnumerator *enumerator = [people objectEnumerator];
-  ABRecordRef person;
-  while ((person = [enumerator nextObject])) {
-    [gtmPeople addObject:[GTMABPerson recordWithRecord:person]];
+  for (id person in people) {
+    [gtmPeople addObject:[GTMABPerson recordWithRecord:(ABRecordRef)person]];
   }
   return gtmPeople;
 }  

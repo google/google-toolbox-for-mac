@@ -38,7 +38,7 @@ static void GTMDevLogDebugAssert(OSType componentSignature,
                                                length:StrLength(outputMsg)
                                              encoding:NSMacOSRomanStringEncoding]
                       autorelease];
-  _GTMDevLog(outLog);
+  _GTMDevLog(@"%@", outLog); // Don't want any percents in outLog honored
 }
 static inline void GTMInstallDebugAssertOutputHandler(void) {
   InstallDebugAssertOutputHandler(GTMDevLogDebugAssert);
@@ -50,6 +50,57 @@ static inline void GTMUninstallDebugAssertOutputHandler(void) {
 static inline void GTMInstallDebugAssertOutputHandler(void) {};
 static inline void GTMUninstallDebugAssertOutputHandler(void) {};
 #endif  // GTM_IPHONE_SDK
+
+@interface GTMUnttestDevLogAssertionHandler : NSAssertionHandler
+@end
+
+@implementation GTMUnttestDevLogAssertionHandler
+- (void)handleFailureInMethod:(SEL)selector 
+                       object:(id)object 
+                         file:(NSString *)fileName 
+                   lineNumber:(NSInteger)line 
+                  description:(NSString *)format, ... {
+  va_list argList;
+  va_start(argList, format);
+  NSString *descStr
+    = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
+  va_end(argList);
+  
+  // You need a format that will be useful in logs, but won't trip up Xcode or
+  // any other build systems parsing of the output.
+  NSString *outLog
+    = [NSString stringWithFormat:@"RecordedNSAssert in %@ - %@ (%@:%ld)",
+                                 NSStringFromSelector(selector),
+                                 descStr,
+                                 fileName, (long)line];
+  _GTMDevLog(@"%@", outLog); // Don't want any percents in outLog honored
+  [NSException raise:NSInternalInconsistencyException
+              format:@"NSAssert raised"];
+}
+
+- (void)handleFailureInFunction:(NSString *)functionName 
+                           file:(NSString *)fileName 
+                     lineNumber:(NSInteger)line 
+                    description:(NSString *)format, ... {
+  va_list argList;
+  va_start(argList, format);
+  NSString *descStr
+    = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
+  va_end(argList);
+  
+  // You need a format that will be useful in logs, but won't trip up Xcode or
+  // any other build systems parsing of the output.
+  NSString *outLog
+    = [NSString stringWithFormat:@"RecordedNSAssert in %@ - %@ (%@:%ld)",
+                                 functionName,
+                                 descStr,
+                                 fileName, (long)line];
+  _GTMDevLog(@"%@", outLog); // Don't want any percents in outLog honored
+  [NSException raise:NSInternalInconsistencyException
+              format:@"NSAssert raised"];
+}
+
+@end
 
 @implementation GTMUnitTestDevLog
 // If unittests are ever being run on separate threads, this may need to be
@@ -70,11 +121,29 @@ static BOOL gTrackingEnabled = NO;
 
 + (void)enableTracking {
   GTMInstallDebugAssertOutputHandler();
+
+  NSMutableDictionary *threadDictionary 
+    = [[NSThread currentThread] threadDictionary];
+  if ([threadDictionary objectForKey:@"NSAssertionHandler"] != nil) {
+    NSLog(@"Warning: replacing NSAssertionHandler to capture assertions");
+  }
+
+  // Install an assertion handler to capture those.
+  GTMUnttestDevLogAssertionHandler *handler = 
+    [[[GTMUnttestDevLogAssertionHandler alloc] init] autorelease];
+  [threadDictionary setObject:handler forKey:@"NSAssertionHandler"];
+
   gTrackingEnabled = YES;
 }
 
 + (void)disableTracking {
   GTMUninstallDebugAssertOutputHandler();
+
+  // Clear our assertion handler back out.
+  NSMutableDictionary *threadDictionary
+    = [[NSThread currentThread] threadDictionary];
+  [threadDictionary removeObjectForKey:@"NSAssertionHandler"];
+
   gTrackingEnabled = NO;
 }
 

@@ -19,6 +19,7 @@
 #import "GTMNSDictionary+URLArguments.h"
 #import "GTMNSString+URLArguments.h"
 #import "GTMMethodCheck.h"
+#import "GTMDefines.h"
 
 @implementation NSDictionary (GTMNSDictionaryURLArgumentsAdditions)
 
@@ -26,9 +27,8 @@ GTM_METHOD_CHECK(NSString, gtm_stringByEscapingForURLArgument);
 
 - (NSString *)gtm_httpArgumentsString {
   NSMutableArray* arguments = [NSMutableArray arrayWithCapacity:[self count]];
-  NSEnumerator* keyEnumerator = [self keyEnumerator];
   NSString* key;
-  while ((key = [keyEnumerator nextObject])) {
+  GTM_FOREACH_KEY(key, self) {
     [arguments addObject:[NSString stringWithFormat:@"%@=%@",
                           [key gtm_stringByEscapingForURLArgument],
                           [[[self objectForKey:key] description] gtm_stringByEscapingForURLArgument]]];

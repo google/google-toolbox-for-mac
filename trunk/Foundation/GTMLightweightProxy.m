@@ -17,7 +17,7 @@
 //
 
 #import "GTMLightweightProxy.h"
-
+#import "GTMDefines.h"
 
 @implementation GTMLightweightProxy
 
@@ -28,11 +28,13 @@
 }
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+#if GTM_SUPPORT_GC
 // -[NSProxy finalize] is only in 10.5 or later
 - (void)finalize {
   representedObject_ = nil;
   [super finalize];
 }
+#endif
 #endif
 
 - (void)dealloc {
