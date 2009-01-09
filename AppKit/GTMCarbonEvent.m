@@ -141,6 +141,7 @@
   return carbonEvent;
 }
 
+#if GTM_SUPPORT_GC
 - (void)finalize {
   if (event_) {
     ReleaseEvent(event_);
@@ -148,6 +149,7 @@
   }
   [super finalize];
 }
+#endif
 
 // releases our retained event
 //
@@ -596,9 +598,8 @@ CantRegisterHotkey:
   BOOL handled = [event getEventHotKeyIDParameterNamed:kEventParamDirectObject 
                                                   data:&keyID];
   if (handled) {
-    NSEnumerator *dictEnumerator = [hotkeys_ objectEnumerator];
     GTMCarbonHotKey *hotkey;
-    while ((hotkey = [dictEnumerator nextObject])) {
+    GTM_FOREACH_OBJECT(hotkey, [hotkeys_ allValues]) {
       if ([hotkey matchesHotKeyID:keyID]) {
         EventKind kind = [event eventKind];
         BOOL onKeyDown = [hotkey onKeyDown];

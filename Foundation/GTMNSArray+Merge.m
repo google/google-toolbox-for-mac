@@ -56,8 +56,7 @@
                  : nil;
     
     id newItem = nil;
-    NSEnumerator *itemEnum = [sortedNewArray objectEnumerator];
-    while ((newItem = [itemEnum nextObject])) {
+    GTM_FOREACH_OBJECT(newItem, sortedNewArray) {
       BOOL stillLooking = YES;
       while (oldIndex < oldCount && stillLooking) {
         // We must take care here, since Intel leaves junk in high bytes of

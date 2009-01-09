@@ -81,9 +81,8 @@ GTM_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
 
 - (void)insertStop:(id)item atPosition:(CGFloat)position {
   NSUInteger positionIndex = 0;
-  NSEnumerator *theEnumerator = [storage_ objectEnumerator];
   GTMCalculatedRangeStopPrivate *theStop;
-  while (nil != (theStop = [theEnumerator nextObject])) {
+  GTM_FOREACH_OBJECT(theStop, storage_) {
     if ([theStop position] < position) {
       positionIndex += 1;
     }
@@ -100,9 +99,8 @@ GTM_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
 - (BOOL)removeStopAtPosition:(CGFloat)position {
   NSUInteger positionIndex = 0;
   BOOL foundStop = NO;
-  NSEnumerator *theEnumerator = [storage_ objectEnumerator];
   GTMCalculatedRangeStopPrivate *theStop;
-  while (nil != (theStop = [theEnumerator nextObject])) {
+  GTM_FOREACH_OBJECT(theStop, storage_) {
     if (FPEqual([theStop position], position)) {
       break;
     } else {
@@ -135,8 +133,7 @@ GTM_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
 - (id)valueAtPosition:(CGFloat)position {
   id theValue = nil;
   GTMCalculatedRangeStopPrivate *theStop;
-  NSEnumerator *theEnumerator = [storage_ objectEnumerator];
-  while (nil != (theStop = [theEnumerator nextObject])) {
+  GTM_FOREACH_OBJECT(theStop, storage_) {
     if (FPEqual([theStop position], position)) {
       theValue = [theStop item];
       break;

@@ -100,15 +100,22 @@ static NSMutableDictionary *gTypeMap = nil;
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
   NSAppleEventDescriptor *userRecord = [self descriptorForKeyword:keyASUserRecordFields];
   if (userRecord) {
-    NSEnumerator *userItems = [[userRecord gtm_arrayValue] objectEnumerator];
-    NSString *key;
-    while ((key = [userItems nextObject])) {
-      NSString *value = [userItems nextObject];
-      if (!value) {
-        _GTMDevLog(@"Got a key %@ with no value in %@", key, userItems);
-        return nil;
+    NSArray *userItems = [userRecord gtm_arrayValue];
+    NSString *key = nil;
+    NSString *item;
+    GTM_FOREACH_OBJECT(item, userItems) {
+      if (key) {
+        // Save the pair and reset our state
+        [dictionary setObject:item forKey:key];
+        key = nil;
+      } else {
+        // Save it for the next pair
+        key = item;
       }
-      [dictionary setObject:value forKey:key];
+    }
+    if (key) {
+      _GTMDevLog(@"Got a key %@ with no value in %@", key, userItems);
+      return nil;
     }
   } else {
     NSUInteger count = [self numberOfItems];
@@ -291,10 +298,9 @@ static NSMutableDictionary *gTypeMap = nil;
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
-  NSEnumerator* keys = [self keyEnumerator];
   Class keyClass = nil;
   id key = nil;
-  while ((key = [keys nextObject])) {
+  GTM_FOREACH_KEY(key, self) {
     if (!keyClass) {
       if ([key isKindOfClass:[GTMFourCharCode class]]) {
         keyClass = [GTMFourCharCode class];
@@ -314,8 +320,7 @@ static NSMutableDictionary *gTypeMap = nil;
   NSAppleEventDescriptor *desc = [NSAppleEventDescriptor recordDescriptor];
   if ([keyClass isEqual:[NSString class]]) {
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[self count] * 2];
-    keys = [self keyEnumerator];
-    while ((key = [keys nextObject])) {
+    GTM_FOREACH_KEY(key, self) {
       [array addObject:key];
       [array addObject:[self objectForKey:key]];
     }
@@ -325,8 +330,7 @@ static NSMutableDictionary *gTypeMap = nil;
     }
     [desc setDescriptor:userRecord forKeyword:keyASUserRecordFields];
   } else {
-    keys = [self keyEnumerator];
-    while ((key = [keys nextObject])) {
+    GTM_FOREACH_KEY(key, self) {
       id value = [self objectForKey:key];
       NSAppleEventDescriptor *valDesc = [value gtm_appleEventDescriptor];
       if (!valDesc) {

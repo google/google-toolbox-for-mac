@@ -33,9 +33,8 @@
 // Iterates through all of our subviews testing the exposed bindings
 - (void)doSubviewBindingTest:(NSView*)view {
   NSArray *subviews = [view subviews];
-  NSEnumerator *subviewEnum = [subviews objectEnumerator];
   NSView *subview;
-  while ((subview = [subviewEnum nextObject])) {
+  GTM_FOREACH_OBJECT(subview, subviews) {
     GTMTestExposedBindings(subview, @"testing %@", subview);
     [self doSubviewBindingTest:subview];
   }

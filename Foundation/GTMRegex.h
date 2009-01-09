@@ -84,12 +84,10 @@ _EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError
 // Example usage:
 //
 //   NSArray *inputArrayOfStrings = ...
-//   NSEnumerator *enumerator = [inputArrayOfString objectEnumerator];
-//   NSString *curStr = nil;
 //   NSArray *matches = [NSMutableArray array];
 //
 //   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo.*bar"];
-//   while ((curStr = [enumerator nextObject]) != nil) {
+//   for (NSString *curStr in inputArrayOfStrings) {
 //     if ([regex matchesString:curStr])
 //       [matches addObject:curStr];
 //   }

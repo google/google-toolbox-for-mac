@@ -31,9 +31,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   NSArray *bindings = [object exposedBindings];
   if ([bindings count]) {
     NSArray *bindingsToIgnore = [object gtm_unitTestExposedBindingsToIgnore];
-    NSEnumerator *bindingsEnum = [bindings objectEnumerator];
     NSString *bindingKey;
-    while ((bindingKey = [bindingsEnum nextObject])) {
+    GTM_FOREACH_OBJECT(bindingKey, bindings) {
       if (![bindingsToIgnore containsObject:bindingKey]) {
         Class theClass = [object valueClassForBinding:bindingKey];
         if (!theClass) {
@@ -54,9 +53,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
           }  // COV_NF_LINE - compiler bug
           NSArray *testValues 
             = [object gtm_unitTestExposedBindingsTestValues:bindingKey];
-          NSEnumerator *testEnum = [testValues objectEnumerator];
           GTMBindingUnitTestData *testData;
-          while ((testData = [testEnum nextObject])) {
+          GTM_FOREACH_OBJECT(testData, testValues) {
             id valueToSet = [testData valueToSet];
             [object setValue:valueToSet forKey:bindingKey];
             id valueReceived = [object valueForKey:bindingKey];

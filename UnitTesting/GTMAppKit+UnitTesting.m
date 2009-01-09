@@ -37,10 +37,9 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   ENCODE_NSINTEGER(inCoder, [[self mainWindow] windowNumber], @"ApplicationMainWindow");
    
   // Descend down into the windows allowing them to store their state
-  NSEnumerator *windowEnum = [[self windows] objectEnumerator];
   NSWindow *window = nil;
   int i = 0;
-  while ((window = [windowEnum nextObject])) {
+  GTM_FOREACH_OBJECT(window, [self windows]) {
     if ([window isVisible]) {
       // Only record visible windows because invisible windows may be closing on us
       // This appears to happen differently in 64 bit vs 32 bit, and items
@@ -190,10 +189,12 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
     }
   }
   // Descend down into the menuitems allowing them to store their state
-  NSEnumerator *menuItemEnum = [[self itemArray] objectEnumerator];
   NSMenuItem *menuItem = nil;
-  for (int i = 0; (menuItem = [menuItemEnum nextObject]); ++i) {
-    [inCoder encodeObject:menuItem forKey:[NSString stringWithFormat:@"MenuItem %d", i]];
+  int i = 0;
+  GTM_FOREACH_OBJECT(menuItem, [self itemArray]) {
+    [inCoder encodeObject:menuItem
+                   forKey:[NSString stringWithFormat:@"MenuItem %d", i]];
+    ++i;
   }
 }
 
@@ -324,10 +325,9 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [super gtm_unitTestEncodeState:inCoder];
   [inCoder encodeBool:[self isHidden] forKey:@"ViewIsHidden"];
   if ([self gtm_shouldEncodeStateForSubviews]) {
-    NSEnumerator *subviewEnum = [[self subviews] objectEnumerator];
     NSView *subview = nil;
     int i = 0;
-    while ((subview = [subviewEnum nextObject])) {
+    GTM_FOREACH_OBJECT(subview, [self subviews]) {
       [inCoder encodeObject:subview forKey:[NSString stringWithFormat:@"ViewSubView %d", i]];
       i = i + 1;
     }

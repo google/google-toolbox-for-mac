@@ -48,12 +48,14 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 @implementation GTMHotKeyTextField
 
+#if GTM_SUPPORT_GC
 - (void)finalize {
   if (boundObject_ && boundKeyPath_) {
     [boundObject_ removeObserver:self forKeyPath:boundKeyPath_];
   }
   [super finalize];
 }
+#endif
 
 - (void)dealloc {
   
@@ -690,10 +692,12 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
                          sizeof(uchrChars) / sizeof(UniChar),
                          &uchrCharLength, 
                          uchrChars);
-    if (err != noErr) { // COV_NF_START
+    if (err != noErr) {
+      // COV_NF_START
       _GTMDevLog(@"failed to translate the keycode, err=%d", err);
       return nil;
-    }  // COV_NF_END
+      // COV_NF_END
+    }
     if (uchrCharLength < 1) return nil;
     keystrokeString = [NSString stringWithCharacters:uchrChars 
                                               length:uchrCharLength];

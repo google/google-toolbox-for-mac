@@ -17,6 +17,7 @@
 //
 
 #import "GTMNSFileManager+Path.h"
+#import "GTMDefines.h"
 
 @implementation NSFileManager (GMFileManagerPathAdditions)
 
@@ -34,10 +35,9 @@
     return YES;
   
   NSString *actualPath = @"/";
-  NSEnumerator *directoryEnumerator = [[path pathComponents] objectEnumerator];
   NSString *directory;
   
-  while ((directory = [directoryEnumerator nextObject])) {
+  GTM_FOREACH_OBJECT(directory, [path pathComponents]) {
     actualPath = [actualPath stringByAppendingPathComponent:directory];
     
     if ([self fileExistsAtPath:actualPath isDirectory:&isDir] && isDir) {
@@ -84,10 +84,9 @@
   
   NSMutableArray *paths = [NSMutableArray arrayWithCapacity:[basenames count]];
   NSString *basename;
-  NSEnumerator *basenamesEnumerator = [basenames objectEnumerator];
   
   // Convert all the |basenames| to full paths.
-  while ((basename = [basenamesEnumerator nextObject])) {
+  GTM_FOREACH_OBJECT(basename, basenames) {
     NSString *fullPath = [directoryPath stringByAppendingPathComponent:basename];
     [paths addObject:fullPath];
   }

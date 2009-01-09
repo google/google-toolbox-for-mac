@@ -42,9 +42,8 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
                             loginItems:(NSArray *)items {
   if (!value || !key || !items) return NSNotFound;
   NSDictionary *item = nil;
-  NSEnumerator *itemsEnum  = [items objectEnumerator];
   NSInteger found = -1;
-  while ((item = [itemsEnum nextObject])) {
+  GTM_FOREACH_OBJECT(item, items) {
     ++found;
     id itemValue = [item objectForKey:key];
     if (itemValue && [itemValue isEqual:value]) {

@@ -93,13 +93,11 @@
     [layer gtm_unitTestEncodeState:inCoder];
   }
   if ([self gtm_shouldEncodeStateForSubviews]) {
-    NSEnumerator *subviewEnum = [[self subviews] objectEnumerator];
-    UIView *subview = nil;
     int i = 0;
-    while ((subview = [subviewEnum nextObject])) {
+    for (UIView *subview in [self subviews]) {
       [inCoder encodeObject:subview 
                      forKey:[NSString stringWithFormat:@"ViewSubView %d", i]];
-      i = i + 1;
+      i++;
     }
   }
 }
