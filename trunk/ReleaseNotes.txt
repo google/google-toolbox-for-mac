@@ -12,7 +12,8 @@ Changes since 1.5.1
 
 - Added GTMSignalHandler for simple signal handling (via kqueue/runloop). This
   has gotten an api tweak, so some code that started using it will need
-  updating.
+  updating.  Initial landing had a bug where it could leak memory due to
+  how CFRunLoops work, now fixed.
 
 - Fixed up GTMIPhoneUnitTestDelegate to be pickier about which tests it runs
 
@@ -193,7 +194,8 @@ Changes since 1.5.1
   issues that were interfering with unittests.
 
 - Added GTMFileSystemKQueue.  It provides a simple wrapper for kqueuing
-  something in the file system and tracking changes to it.
+  something in the file system and tracking changes to it. Initial landing
+  had a bug where it could leak memory due to how CFRunLoops work, now fixed.
 
 - RunIPhoneUnitTest.sh now cleans up the user home directory and creates
   a documents directory within it, used when requesting a NSDocumentDirectory.

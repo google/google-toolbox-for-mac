@@ -107,6 +107,12 @@ static CFSocketRef gRunLoopSocket = NULL;
 // Cribbed from Advanced Mac OS X Programming.
 static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
                            CFDataRef address, const void *data, void *info) {
+  // We're using CFRunLoop calls here. Even when used on the main thread, they
+  // don't trigger the draining of the main application's autorelease pool that
+  // NSRunLoop provides. If we're used in a UI-less app, this means that
+  // autoreleased objects would never go away, so we provide our own pool here.
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
   struct kevent event;
   
   if (kevent(gFileSystemKQueueFileDescriptor, NULL, 0, &event, 1, NULL) == -1) {
@@ -116,6 +122,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
     [fskq notify:event.fflags];
   }
 
+  [pool drain];
 }
 
 // Cribbed from Advanced Mac OS X Programming
