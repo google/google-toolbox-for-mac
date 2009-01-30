@@ -221,6 +221,9 @@ Changes since 1.5.1
 - GTMNSWorkspace+Running gives a variety of ways of determining the attributes
   of running processes.
 
+- If the iPhone unittesting support is exiting when done, it now properly sets
+  the exit code based on test success/failure.
+
 
 Release 1.5.1
 Changes since 1.5.0
