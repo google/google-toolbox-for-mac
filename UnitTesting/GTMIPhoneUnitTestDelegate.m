@@ -34,10 +34,8 @@ static int MethodSort(const void *a, const void *b) {
   return strcmp(nameA, nameB);
 }
 
-@implementation GTMIPhoneUnitTestDelegate
-
 // Return YES if class is subclass (1 or more generations) of SenTestCase
-- (BOOL)isTestFixture:(Class)aClass {
+static BOOL IsTestFixture(Class aClass) {
   BOOL iscase = NO;
   Class testCaseClass = [SenTestCase class];
   Class superclass;
@@ -49,15 +47,19 @@ static int MethodSort(const void *a, const void *b) {
   return iscase;
 }
 
+@implementation GTMIPhoneUnitTestDelegate
+
 // Run through all the registered classes and run test methods on any
 // that are subclasses of SenTestCase. Terminate the application upon
 // test completion.
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
   [self runTests];
   
-  // Using private call to end our tests
   if (!getenv("GTM_DISABLE_TERMINATION")) {
-    exit(0);
+    // To help using xcodebuild, make the exit status 0/1 to signal the tests
+    // success/failure.
+    int exitStatus = (([self totalFailures] == 0U) ? 0 : 1);
+    exit(exitStatus);
   }
 }
 
@@ -66,29 +68,30 @@ static int MethodSort(const void *a, const void *b) {
 // the default output.
 - (void)runTests {
   int count = objc_getClassList(NULL, 0);
-  NSMutableData *classData = [NSMutableData dataWithLength:sizeof(Class) * count];
+  NSMutableData *classData
+    = [NSMutableData dataWithLength:sizeof(Class) * count];
   Class *classes = (Class*)[classData mutableBytes];
   _GTMDevAssert(classes, @"Couldn't allocate class list");
   objc_getClassList(classes, count);
-  int suiteSuccesses = 0;
-  int suiteFailures = 0;
-  int suiteTotal = 0;
+  totalFailures_ = 0;
+  totalSuccesses_ = 0;
   NSString *suiteName = [[NSBundle mainBundle] bundlePath];
   NSDate *suiteStartDate = [NSDate date];
-  NSString *suiteStartString = [NSString stringWithFormat:@"Test Suite '%@' started at %@\n",
-                                suiteName, suiteStartDate];
+  NSString *suiteStartString
+    = [NSString stringWithFormat:@"Test Suite '%@' started at %@\n",
+                                 suiteName, suiteStartDate];
   fputs([suiteStartString UTF8String], stderr);
   fflush(stderr);
   for (int i = 0; i < count; ++i) {
     Class currClass = classes[i];
-    if ([self isTestFixture:currClass]) {
+    if (IsTestFixture(currClass)) {
       NSDate *fixtureStartDate = [NSDate date];
       NSString *fixtureName = NSStringFromClass(currClass);
-      NSString *fixtureStartString = [NSString stringWithFormat:@"Test Suite '%@' started at %@\n",
-                                      fixtureName, fixtureStartDate];
+      NSString *fixtureStartString
+        = [NSString stringWithFormat:@"Test Suite '%@' started at %@\n",
+                                     fixtureName, fixtureStartDate];
       int fixtureSuccesses = 0;
       int fixtureFailures = 0;
-      int fixtureTotal = 0;
       fputs([fixtureStartString UTF8String], stderr);
       fflush(stderr);
       id testcase = [[currClass alloc] init];
@@ -99,8 +102,8 @@ static int MethodSort(const void *a, const void *b) {
       if (!methods) {
         // If the class contains no methods, head on to the next class
         NSString *output = [NSString stringWithFormat:@"Test Suite '%@' "
-                            "finished at %@.\nExecuted 0 tests, with 0 "
-                            "failures (0 unexpected) in 0 (0) seconds\n",
+                            @"finished at %@.\nExecuted 0 tests, with 0 "
+                            @"failures (0 unexpected) in 0 (0) seconds\n",
                             fixtureName, fixtureStartDate];
         
         fputs([output UTF8String], stderr);
@@ -134,7 +137,6 @@ static int MethodSort(const void *a, const void *b) {
         if (returnType  // True if name starts with "test"
             && strcmp(returnType, @encode(void)) == 0
             && method_getNumberOfArguments(currMethod) == 2) {
-          fixtureTotal += 1;
           BOOL failed = NO;
           NSDate *caseStartDate = [NSDate date];
           @try {
@@ -147,39 +149,58 @@ static int MethodSort(const void *a, const void *b) {
           } else {
             fixtureSuccesses += 1;
           }
-          NSTimeInterval caseEndTime = [[NSDate date] timeIntervalSinceDate:caseStartDate];
-          NSString *caseEndString = [NSString stringWithFormat:@"Test Case '-[%@ %s]' %s (%0.3f seconds).\n",
-                                     fixtureName, name,
-                                     failed ? "failed" : "passed", caseEndTime];
+          NSTimeInterval caseEndTime
+            = [[NSDate date] timeIntervalSinceDate:caseStartDate];
+          NSString *caseEndString
+            = [NSString stringWithFormat:@"Test Case '-[%@ %s]' %@ (%0.3f "
+                                         @"seconds).\n",
+                                         fixtureName, name,
+                                         failed ? @"failed" : @"passed",
+                                         caseEndTime];
           fputs([caseEndString UTF8String], stderr);
           fflush(stderr);
         }
       }
       [testcase release];
       NSDate *fixtureEndDate = [NSDate date];
-      NSTimeInterval fixtureEndTime = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
-      NSString *fixtureEndString = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                                    "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n\n",
-                                    fixtureName, fixtureEndDate, fixtureTotal, 
-                                    fixtureFailures, fixtureFailures,
-                                    fixtureEndTime, fixtureEndTime];
+      NSTimeInterval fixtureEndTime
+        = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
+      NSString *fixtureEndString
+        = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
+                                     @"Executed %d tests, with %d failures (%d "
+                                     @"unexpected) in %0.3f (%0.3f) seconds\n\n",
+                                     fixtureName, fixtureEndDate,
+                                     fixtureSuccesses + fixtureFailures, 
+                                     fixtureFailures, fixtureFailures,
+                                     fixtureEndTime, fixtureEndTime];
       
       fputs([fixtureEndString UTF8String], stderr);
       fflush(stderr);
-      suiteTotal += fixtureTotal;
-      suiteSuccesses += fixtureSuccesses;
-      suiteFailures += fixtureFailures;      
+      totalSuccesses_ += fixtureSuccesses;
+      totalFailures_ += fixtureFailures;      
     }
   }
   NSDate *suiteEndDate = [NSDate date];
-  NSTimeInterval suiteEndTime = [suiteEndDate timeIntervalSinceDate:suiteStartDate];
-  NSString *suiteEndString = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                              "Executed %d tests, with %d failures (%d unexpected) in %0.3f (%0.3f) seconds\n\n",
-                              suiteName, suiteEndDate, suiteTotal, 
-                              suiteFailures, suiteFailures,
-                              suiteEndTime, suiteEndTime];
+  NSTimeInterval suiteEndTime
+    = [suiteEndDate timeIntervalSinceDate:suiteStartDate];
+  NSString *suiteEndString
+    = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
+                                 @"Executed %d tests, with %d failures (%d "
+                                 @"unexpected) in %0.3f (%0.3f) seconds\n\n",
+                                 suiteName, suiteEndDate,
+                                 totalSuccesses_ + totalFailures_, 
+                                 totalFailures_, totalFailures_,
+                                 suiteEndTime, suiteEndTime];
   fputs([suiteEndString UTF8String], stderr);
   fflush(stderr);
+}
+
+- (NSUInteger)totalSuccesses {
+  return totalSuccesses_;
+}
+
+- (NSUInteger)totalFailures {
+  return totalFailures_;
 }
 
 @end
