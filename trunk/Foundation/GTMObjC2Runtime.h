@@ -47,9 +47,10 @@
 #import <objc/Object.h>
 #endif
 
+#import <libkern/OSAtomic.h>
+
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 #import "objc/Protocol.h"
-#import <libkern/OSAtomic.h>
 
 OBJC_EXPORT Class object_getClass(id obj);
 OBJC_EXPORT const char *class_getName(Class cls);

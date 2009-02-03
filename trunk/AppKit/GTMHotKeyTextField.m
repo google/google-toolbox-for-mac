@@ -20,6 +20,7 @@
 #import <Carbon/Carbon.h>
 #import "GTMSystemVersion.h"
 #import "GTMObjectSingleton.h"
+#import "GTMNSObject+KeyValueObserving.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 typedef struct __TISInputSource* TISInputSourceRef;
@@ -51,7 +52,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #if GTM_SUPPORT_GC
 - (void)finalize {
   if (boundObject_ && boundKeyPath_) {
-    [boundObject_ removeObserver:self forKeyPath:boundKeyPath_];
+    [boundObject_ gtm_removeObserver:self 
+                          forKeyPath:boundKeyPath_ 
+                            selector:@selector(hotKeyValueChanged:)];
   }
   [super finalize];
 }
@@ -60,7 +63,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 - (void)dealloc {
   
   if (boundObject_ && boundKeyPath_) {
-    [boundObject_ removeObserver:self forKeyPath:boundKeyPath_];
+    [boundObject_ gtm_removeObserver:self 
+                          forKeyPath:boundKeyPath_ 
+                            selector:@selector(hotKeyValueChanged:)];
   }
   [boundObject_ release];
   [boundKeyPath_ release];
@@ -93,7 +98,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   // Clean up value on unbind
   if ([binding isEqualToString:NSValueBinding]) {
     if (boundObject_ && boundKeyPath_) {
-      [boundObject_ removeObserver:self forKeyPath:boundKeyPath_];
+      [boundObject_ gtm_removeObserver:self
+                            forKeyPath:boundKeyPath_ 
+                              selector:@selector(hotKeyValueChanged:)];
     }
     [boundObject_ release];
     boundObject_ = nil;
@@ -104,31 +111,32 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object 
-                        change:(NSDictionary *)change context:(void *)context {
-  
-  if ((object == boundObject_) && [boundKeyPath_ isEqualToString:keyPath]) {
-    // Our binding has changed, update
-    id changedValue = [change objectForKey:NSKeyValueChangeNewKey];
-    // NSUserDefaultsController does not appear to pass on the new object and,
-    // perhaps other controllers may not, so if we get a nil or NSNull back
-    // here let's directly retrieve the hotKeyDict_ from the object.
-    if (!changedValue || changedValue == [NSNull null]) {
-      changedValue = [object valueForKeyPath:keyPath];
-    }
-    [hotKeyDict_ autorelease];
-    hotKeyDict_ = [changedValue copy];
-    [self updateDisplayedPrettyString];
-  }  
-  
-}
+- (void)hotKeyValueChanged:(GTMKeyValueChangeNotification *)note {
+  NSDictionary *change = [note change];
+  // Our binding has changed, update
+  id changedValue = [change objectForKey:NSKeyValueChangeNewKey];
+  // NSUserDefaultsController does not appear to pass on the new object and,
+  // perhaps other controllers may not, so if we get a nil or NSNull back
+  // here let's directly retrieve the hotKeyDict_ from the object.
+  if (!changedValue || changedValue == [NSNull null]) {
+    id object = [note object];
+    NSString *keyPath = [note keyPath];
+    changedValue = [object valueForKeyPath:keyPath];
+  }
+  [hotKeyDict_ autorelease];
+  hotKeyDict_ = [changedValue copy];
+  [self updateDisplayedPrettyString];
+}  
+
 
 // Private convenience method for attaching to a new binding
 - (void)setupBinding:(id)bound withPath:(NSString *)path {
   
   // Release previous
   if (boundObject_ && boundKeyPath_) {
-    [boundObject_ removeObserver:self forKeyPath:boundKeyPath_];
+    [boundObject_ gtm_removeObserver:self
+                          forKeyPath:boundKeyPath_ 
+                            selector:@selector(hotKeyValueChanged:)];
   }
   [boundObject_ release];
   [boundKeyPath_ release];
@@ -136,10 +144,11 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   boundObject_ = [bound retain];
   boundKeyPath_ = [path copy];
   // Make ourself an observer
-  [boundObject_ addObserver:self 
+  [boundObject_ gtm_addObserver:self 
                  forKeyPath:boundKeyPath_ 
-                    options:NSKeyValueObservingOptionNew 
-                    context:nil];
+                       selector:@selector(hotKeyValueChanged:)
+                       userInfo:nil
+                        options:NSKeyValueObservingOptionNew];
   // Pull in any current value
   [hotKeyDict_ autorelease];
   hotKeyDict_ = [[boundObject_ valueForKeyPath:boundKeyPath_] copy];

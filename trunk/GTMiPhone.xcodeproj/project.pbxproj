@@ -40,6 +40,8 @@
 		8B5547CA0DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */; };
 		8B5547CB0DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */; };
 		8B5A9E200E71CB6C005DA441 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */; };
+		8B6C18740F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */; };
+		8B6C18750F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
 		8B7DCEAA0DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */; };
 		8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */; };
 		8BA5F40B0E75669000798036 /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA5F4080E75669000798036 /* GTMABAddressBook.m */; };
@@ -141,6 +143,9 @@
 		8B5547C80DB3BBF20014CC1C /* GTMUIKit+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIKit+UnitTesting.h"; sourceTree = "<group>"; };
 		8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIKit+UnitTestingTest.m"; sourceTree = "<group>"; };
 		8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		8B6C18710F3769D200E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
+		8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObserving.m"; sourceTree = "<group>"; };
+		8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObservingTest.m"; sourceTree = "<group>"; };
 		8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDevLogUnitTestingBridge.m; sourceTree = "<group>"; };
 		8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUnitTestDevLog.h; sourceTree = "<group>"; };
 		8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestDevLog.m; sourceTree = "<group>"; };
@@ -369,6 +374,9 @@
 				8BC047840DAE928A00C2D1CA /* GTMNSFileManager+Path.h */,
 				8BC047850DAE928A00C2D1CA /* GTMNSFileManager+Path.m */,
 				8BC047860DAE928A00C2D1CA /* GTMNSFileManager+PathTest.m */,
+				8B6C18710F3769D200E51E5D /* GTMNSObject+KeyValueObserving.h */,
+				8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */,
+				8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */,
 				8BC047870DAE928A00C2D1CA /* GTMNSString+HTML.h */,
 				8BC047880DAE928A00C2D1CA /* GTMNSString+HTML.m */,
 				8BC047890DAE928A00C2D1CA /* GTMNSString+HTMLTest.m */,
@@ -636,6 +644,8 @@
 				F417115B0ECDFF0400B9B276 /* GTMLightweightProxyTest.m in Sources */,
 				6294461C0EDE178D009295EA /* GTMNSArray+MergeTest.m in Sources */,
 				6294461D0EDE17A0009295EA /* GTMNSArray+Merge.m in Sources */,
+				8B6C18740F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
+				8B6C18750F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -224,6 +224,14 @@ Changes since 1.5.1
 - If the iPhone unittesting support is exiting when done, it now properly sets
   the exit code based on test success/failure.
 
+- Added GTMNSObject+KeyValueObserving to make it easier on folks to do KVO
+  "correctly". Based on some excellent code by Michael Ash.
+  http://www.mikeash.com/?page=pyblog/key-value-observing-done-right.html
+  This has been added for iPhone and OS X.
+  
+- Fixed up GTMSenTestCase on iPhone so that it has a description that matches
+  that of OCUnit.
+
 
 Release 1.5.1
 Changes since 1.5.0
