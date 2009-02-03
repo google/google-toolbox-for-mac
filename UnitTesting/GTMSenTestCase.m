@@ -281,6 +281,12 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 
 - (void)tearDown {
 }
+
+- (NSString *)description {
+  // This matches the description OCUnit would return to you
+  return [NSString stringWithFormat:@"-[%@ %@]", [self class], 
+          NSStringFromSelector(currentSelector_)];
+}
 @end
 
 #endif  // GTM_IPHONE_SDK
