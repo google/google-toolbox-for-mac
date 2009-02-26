@@ -20,6 +20,14 @@
 #import "GTMDefines.h"
 
 // Process Dictionary keys
+//
+// NOTE: According to ProcessInformationCopyDictionary, the following may not be
+// in the dictionary depending on the type of process:
+//   kGTMWorkspaceRunningParentPSN, kGTMWorkspaceRunningFileType,
+//   kGTMWorkspaceRunningFileCreator, kGTMWorkspaceRunningPID,
+//   kGTMWorkspaceRunningBundlePath, kGTMWorkspaceRunningBundleIdentifier,
+//   kGTMWorkspaceRunningBundleName, kGTMWorkspaceRunningBundleExecutable,
+
 // Make sure to use numberToProcessSerialNumber: on the return values
 // of these keys to get valid PSNs on both Leopard and Tiger.
 // Numeric types come back as a NSNumber.
@@ -37,10 +45,12 @@ GTM_EXTERN NSString *const kGTMWorkspaceRunningIsHidden;  // bool
 GTM_EXTERN NSString *const kGTMWorkspaceRunningCheckedIn;  // bool
 GTM_EXTERN NSString *const kGTMWorkspaceRunningLSUIPresentationMode;  // Short
 GTM_EXTERN NSString *const kGTMWorkspaceRunningBundlePath;  // NSString
-GTM_EXTERN NSString *const kGTMWorkspaceRunningBundleExecutable;  // NSString
-GTM_EXTERN NSString *const kGTMWorkspaceRunningBundleName;  // NSString
-GTM_EXTERN NSString *const kGTMWorkspaceRunningBundleIdentifier;  // NSString
 GTM_EXTERN NSString *const kGTMWorkspaceRunningBundleVersion;  // NSString
+// The docs for ProcessInformationCopyDictionary say we should use the constants
+// instead of the raw string values, so map our values to those keys.
+#define kGTMWorkspaceRunningBundleIdentifier  (NSString*)kCFBundleIdentifierKey // NSString
+#define kGTMWorkspaceRunningBundleName        (NSString*)kCFBundleNameKey // NSString
+#define kGTMWorkspaceRunningBundleExecutable  (NSString*)kCFBundleExecutableKey // NSString
 
 // A category for getting information about other running processes
 @interface NSWorkspace (GTMWorkspaceRunningAdditions)

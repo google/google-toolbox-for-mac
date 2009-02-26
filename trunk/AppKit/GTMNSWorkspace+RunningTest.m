@@ -57,16 +57,16 @@
   processInfo = [ws gtm_processInfoDictionaryForActiveApp];
   STAssertNotNil(processInfo, nil);
   
+  // Only check the keys that have to be there
   NSString *const keys[] = {
-    kGTMWorkspaceRunningPSN, kGTMWorkspaceRunningParentPSN,
+    kGTMWorkspaceRunningPSN,
     kGTMWorkspaceRunningFlavor, kGTMWorkspaceRunningAttributes,
-    kGTMWorkspaceRunningFileType, kGTMWorkspaceRunningFileCreator,
-    kGTMWorkspaceRunningPID, kGTMWorkspaceRunningLSBackgroundOnly,
+    kGTMWorkspaceRunningLSBackgroundOnly,
     kGTMWorkspaceRunningLSUIElement, kGTMWorkspaceRunningIsHidden,
-    kGTMWorkspaceRunningCheckedIn, kGTMWorkspaceRunningBundleIdentifier,
-    kGTMWorkspaceRunningBundleVersion, kGTMWorkspaceRunningBundleName,
-    kGTMWorkspaceRunningLSUIPresentationMode, kGTMWorkspaceRunningBundlePath,
-    kGTMWorkspaceRunningBundleExecutable
+    kGTMWorkspaceRunningCheckedIn,
+    kGTMWorkspaceRunningBundleVersion,
+    kGTMWorkspaceRunningLSUIPresentationMode,
+    
   };
   for (size_t i = 0; i < sizeof(keys) / sizeof(NSString *); ++i) {
     NSString *const key = keys[i];
