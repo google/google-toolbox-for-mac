@@ -28,7 +28,7 @@
 //   = [[[GTMLargeTypeWindow alloc] initWithString:@"Foo"] autorelease];
 // [window makeKeyAndOrderFront:nil];
 
-// NB This class appears to have a problem with GC on 10.5.5 and below.
+// NB This class appears to have a problem with GC on 10.5.6 and below.
 // Radar 6137322 CIFilter crashing when run with GC enabled
 // This appears to be an Apple bug with GC.
 // We do a copy animation that causes things to crash, but only with GC

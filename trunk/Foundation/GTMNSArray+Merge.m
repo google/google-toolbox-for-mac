@@ -44,7 +44,7 @@
   // Sort and merge the contents of |self| with |newArray|.
   NSArray *sortedMergedArray = nil;
   if ([self count] && [newArray count]) {
-    NSMutableArray *mergingArray = [[self mutableCopy] autorelease];
+    NSMutableArray *mergingArray = [NSMutableArray arrayWithArray:self];
     [mergingArray sortUsingSelector:comparer];
     NSArray *sortedNewArray
       = [newArray sortedArrayUsingSelector:comparer];

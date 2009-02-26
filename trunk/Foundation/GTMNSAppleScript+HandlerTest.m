@@ -36,11 +36,11 @@
   // GTMNSAppleScript+Handler.h for more details, but we disable them to avoid
   // the tests failing (crashing) when it's Apple's bug. Please bump the system
   // check as appropriate when new systems are tested. Currently broken on
-  // 10.5.5 and below. Radar 6126682.
+  // 10.5.6 and below. Radar 6126682.
   SInt32 major, minor, bugfix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
   if (!(GTMIsGarbageCollectionEnabled() 
-        && major <= 10 && minor <= 5 && bugfix <= 5)) {
+        && major <= 10 && minor <= 5 && bugfix <= 6)) {
     [super invokeTest];
   } else {
     NSLog(@"--- %@ NOT run because of GC incompatibilites ---", [self name]);
