@@ -45,7 +45,9 @@
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 @interface NSURLConnection (LeopardMethodsOnTigerBuilds)
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate startImmediately:(BOOL)startImmediately;
+- (id)initWithRequest:(NSURLRequest *)request 
+             delegate:(id)delegate 
+     startImmediately:(BOOL)startImmediately;
 - (void)start;
 - (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSString *)mode;
 @end
@@ -60,11 +62,12 @@ static Class gGTMFetcherConnectionClass = nil;
 static NSArray *gGTMFetcherDefaultRunLoopModes = nil;
 
 const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
-                   
+
 @interface GTMHTTPFetcher (PrivateMethods)
 - (void)setCookies:(NSArray *)newCookies
            inArray:(NSMutableArray *)cookieStorageArray;
-- (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
+- (NSArray *)cookiesForURL:(NSURL *)theURL 
+                   inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
 - (BOOL)shouldRetryNowForStatus:(NSInteger)status error:(NSError *)error;
 - (void)retryTimerFired:(NSTimer *)timer;
@@ -93,7 +96,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 
 - (id)initWithRequest:(NSURLRequest *)request {
   if ((self = [super init]) != nil) {
-
+    
     request_ = [request mutableCopy];
     
     [self setCookieStorageMethod:kGTMHTTPFetcherCookieStorageMethodStatic];        
@@ -105,7 +108,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 
 - (void)dealloc {
   [self stopFetching]; // releases connection_
-
+  
   [request_ release];
   [downloadedData_ release];
   [credential_ release];
@@ -137,11 +140,22 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
              didFinishSelector:(SEL)finishedSEL
                didFailSelector:(SEL)failedSEL {
   
-  GTMAssertSelectorNilOrImplementedWithArguments(delegate, finishedSEL, @encode(GTMHTTPFetcher *), @encode(NSData *), NULL);
-  GTMAssertSelectorNilOrImplementedWithArguments(delegate, failedSEL, @encode(GTMHTTPFetcher *), @encode(NSError *), NULL);
-  GTMAssertSelectorNilOrImplementedWithArguments(delegate, receivedDataSEL_, @encode(GTMHTTPFetcher *), @encode(NSData *), NULL);
-  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(delegate, retrySEL_, @encode(BOOL), @encode(GTMHTTPFetcher *), @encode(BOOL), @encode(NSError *), NULL);
-    
+  GTMAssertSelectorNilOrImplementedWithArguments(delegate, finishedSEL, 
+                                                 @encode(GTMHTTPFetcher *), 
+                                                 @encode(NSData *), NULL);
+  GTMAssertSelectorNilOrImplementedWithArguments(delegate, failedSEL, 
+                                                 @encode(GTMHTTPFetcher *),
+                                                 @encode(NSError *), NULL);
+  GTMAssertSelectorNilOrImplementedWithArguments(delegate, receivedDataSEL_, 
+                                                 @encode(GTMHTTPFetcher *), 
+                                                 @encode(NSData *), NULL);
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(delegate, retrySEL_, 
+                                                              @encode(BOOL), 
+                                                              @encode(GTMHTTPFetcher *), 
+                                                              @encode(BOOL), 
+                                                              @encode(NSError *), 
+                                                              NULL);
+  
   if (connection_ != nil) {
     // COV_NF_START - since we want the assert, we can't really test this
     _GTMDevAssert(connection_ != nil,
@@ -164,7 +178,8 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   failedSEL_ = failedSEL;
   
   if (postData_ || postStream_) {
-    if ([request_ HTTPMethod] == nil || [[request_ HTTPMethod] isEqual:@"GET"]) {
+    if ([request_ HTTPMethod] == nil || 
+        [[request_ HTTPMethod] isEqual:@"GET"]) {
       [request_ setHTTPMethod:@"POST"];
     }
     
@@ -192,7 +207,8 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     // want to pull results from a cache
     [request_ setCachePolicy:NSURLRequestReloadIgnoringCacheData];
     
-    NSDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryLastModifiedKey];
+    NSDictionary* lastModifiedDict 
+      = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryLastModifiedKey];
     NSString* urlString = [[request_ URL] absoluteString];
     NSString* lastModifiedStr = [lastModifiedDict objectForKey:urlString];
     
@@ -201,7 +217,8 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
         && [request_ HTTPBody] == nil
         && [request_ HTTPBodyStream] == nil) {
       
-      [request_ addValue:lastModifiedStr forHTTPHeaderField:kGTMIfModifiedSinceHeader];
+      [request_ addValue:lastModifiedStr 
+        forHTTPHeaderField:kGTMIfModifiedSinceHeader];
     }
   }
   
@@ -213,18 +230,21 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     
     if ([cookies count]) {
       
-      NSDictionary *headerFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
-      NSString *cookieHeader = [headerFields objectForKey:@"Cookie"]; // key used in header dictionary
+      NSDictionary *headerFields 
+        = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
+      NSString *cookieHeader 
+        = [headerFields objectForKey:@"Cookie"];  // key used in header dict
       if (cookieHeader) {
-        [request_ addValue:cookieHeader forHTTPHeaderField:@"Cookie"]; // header name
+        [request_ addValue:cookieHeader 
+          forHTTPHeaderField:@"Cookie"];  // header name
       }
     }
   }
   
   // finally, start the connection
-	
+  
   Class connectionClass = [[self class] connectionClass];
-	
+  
   NSArray *runLoopModes = nil;
   
   if ([[self class] doesSupportRunLoopModes]) {
@@ -242,7 +262,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     
     // if no run loop modes were specified, then we'll start the connection 
     // on the current run loop in the current mode
-   connection_ = [[connectionClass connectionWithRequest:request_
+    connection_ = [[connectionClass connectionWithRequest:request_
                                                  delegate:self] retain];
   } else {
     
@@ -264,7 +284,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     goto CannotBeginFetch;
     // COV_NF_END
   }
-
+  
   // we'll retain the delegate only during the outstanding connection (similar
   // to what Cocoa does with performSelectorOnMainThread:) since we'd crash
   // if the delegate was released in the interim.  We don't retain the selector
@@ -274,9 +294,9 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   
   downloadedData_ = [[NSMutableData alloc] init];
   return YES;
-
+  
 CannotBeginFetch:
-
+  
   if (failedSEL) {
     
     NSError *error = [NSError errorWithDomain:kGTMHTTPFetcherErrorDomain
@@ -284,12 +304,12 @@ CannotBeginFetch:
                                      userInfo:nil];
     
     [[self retain] autorelease]; // in case the callback releases us
-
+    
     [delegate performSelector:failedSEL
                    withObject:self 
                    withObject:error];
   }
-    
+  
   return NO;
 }
 
@@ -305,7 +325,7 @@ CannotBeginFetch:
   NSInteger statusCode;
   
   if (response_ != nil 
-    && [response_ respondsToSelector:@selector(statusCode)]) {
+      && [response_ respondsToSelector:@selector(statusCode)]) {
     
     statusCode = [(NSHTTPURLResponse *)response_ statusCode];
   } else {
@@ -319,7 +339,7 @@ CannotBeginFetch:
 // Cancel the fetch of the URL that's currently in progress.
 - (void)stopFetching {
   [self destroyRetryTimer];
-
+  
   if (connection_) {
     // in case cancelling the connection calls this recursively, we want
     // to ensure that we'll only release the connection and delegate once,
@@ -331,7 +351,7 @@ CannotBeginFetch:
     // this may be called in a callback from the connection, so use autorelease
     [oldConnection cancel];
     [oldConnection autorelease]; 
-
+    
     // balance the retain done when the connection was opened
     [delegate_ release];
   }
@@ -369,7 +389,7 @@ CannotBeginFetch:
 - (NSURLRequest *)connection:(NSURLConnection *)connection
              willSendRequest:(NSURLRequest *)redirectRequest
             redirectResponse:(NSURLResponse *)redirectResponse {
-
+  
   if (redirectRequest && redirectResponse) {
     NSMutableURLRequest *newRequest = [[request_ mutableCopy] autorelease];
     // copy the URL
@@ -390,11 +410,11 @@ CannotBeginFetch:
     }
     
     NSString *newUrlString = [NSString stringWithFormat:@"%@:%@",
-      redirectScheme, newResourceSpecifier];
+                              redirectScheme, newResourceSpecifier];
     
     NSURL *newURL = [NSURL URLWithString:newUrlString];
     [newRequest setURL:newURL];
-
+    
     // any headers in the redirect override headers in the original.
     NSDictionary *redirectHeaders = [redirectRequest allHTTPHeaderFields];
     if (redirectHeaders) {
@@ -412,30 +432,32 @@ CannotBeginFetch:
     // log the response we just received
     [self setResponse:redirectResponse];
     [self logFetchWithError:nil];
-
+    
     // update the request for future logging
     [self setRequest:redirectRequest];
-}
+  }
   return redirectRequest;
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+- (void)connection:(NSURLConnection *)connection 
+        didReceiveResponse:(NSURLResponse *)response {
   
   // this method is called when the server has determined that it
   // has enough information to create the NSURLResponse
   // it can be called multiple times, for example in the case of a 
   // redirect, so each time we reset the data.
   [downloadedData_ setLength:0];
-
+  
   [self setResponse:response];
-
+  
   // save cookies from the response
   [self handleCookiesForResponse:response];  
 }
 
 
 // handleCookiesForResponse: handles storage of cookies for responses passed to
-// connection:willSendRequest:redirectResponse: and connection:didReceiveResponse:
+// connection:willSendRequest:redirectResponse: and 
+// connection:didReceiveResponse:
 - (void)handleCookiesForResponse:(NSURLResponse *)response {
   
   if (cookieStorageMethod_ == kGTMHTTPFetcherCookieStorageMethodSystemDefault) {
@@ -447,11 +469,13 @@ CannotBeginFetch:
     // grab the cookies from the header as NSHTTPCookies and store them either
     // into our static array or into the fetchHistory
     
-    NSDictionary *responseHeaderFields = [(NSHTTPURLResponse *)response allHeaderFields];
+    NSDictionary *responseHeaderFields 
+      = [(NSHTTPURLResponse *)response allHeaderFields];
     if (responseHeaderFields) {
       
-      NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:responseHeaderFields
-                                                                forURL:[response URL]]; 
+      NSArray *cookies 
+        = [NSHTTPCookie cookiesWithResponseHeaderFields:responseHeaderFields
+                                                 forURL:[response URL]]; 
       if ([cookies count] > 0) {
         
         NSMutableArray *cookieArray = nil;
@@ -466,10 +490,12 @@ CannotBeginFetch:
         } else if (cookieStorageMethod_ == kGTMHTTPFetcherCookieStorageMethodFetchHistory
                    && fetchHistory_ != nil) {
           
-          cookieArray = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryCookiesKey];
+          cookieArray 
+            = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryCookiesKey];
           if (cookieArray == nil) {
             cookieArray = [NSMutableArray array];
-            [fetchHistory_ setObject:cookieArray forKey:kGTMHTTPFetcherHistoryCookiesKey];
+            [fetchHistory_ setObject:cookieArray
+                              forKey:kGTMHTTPFetcherHistoryCookiesKey];
           }
         }
         
@@ -517,13 +543,15 @@ CannotBeginFetch:
   // report the error, putting the challenge as a value in the userInfo
   // dictionary
   // Store the challenge first to ensure that it lives past being cancelled.
-  NSDictionary *userInfo = [NSDictionary dictionaryWithObject:challenge
-                                                       forKey:kGTMHTTPFetcherErrorChallengeKey];
+  NSDictionary *userInfo 
+    = [NSDictionary dictionaryWithObject:challenge
+                                  forKey:kGTMHTTPFetcherErrorChallengeKey];
   [[challenge sender] cancelAuthenticationChallenge:challenge];
   
-  NSError *error = [NSError errorWithDomain:kGTMHTTPFetcherErrorDomain
-                                       code:kGTMHTTPFetcherErrorAuthenticationChallengeFailed
-                                   userInfo:userInfo];
+  NSError *error
+    = [NSError errorWithDomain:kGTMHTTPFetcherErrorDomain
+                          code:kGTMHTTPFetcherErrorAuthenticationChallengeFailed
+                      userInfo:userInfo];
   
   [self connection:connection didFailWithError:error];  
 }
@@ -534,9 +562,9 @@ CannotBeginFetch:
   [downloadedData_ appendData:data];
   
   if (receivedDataSEL_) {
-   [delegate_ performSelector:receivedDataSEL_
-                   withObject:self
-                   withObject:downloadedData_];
+    [delegate_ performSelector:receivedDataSEL_
+                    withObject:self
+                    withObject:downloadedData_];
   }
 }
 
@@ -548,21 +576,25 @@ CannotBeginFetch:
     if ([response_ respondsToSelector:@selector(allHeaderFields)]) {
       NSDictionary *headers = [(NSHTTPURLResponse *)response_ allHeaderFields];
       NSString* lastModifiedStr = [headers objectForKey:kGTMLastModifiedHeader];
-    
+      
       // get the dictionary mapping URLs to last-modified dates
-      NSMutableDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryLastModifiedKey];
+      NSMutableDictionary* lastModifiedDict 
+        = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryLastModifiedKey];
       if (!lastModifiedDict) {
         lastModifiedDict = [NSMutableDictionary dictionary];
-        [fetchHistory_ setObject:lastModifiedDict forKey:kGTMHTTPFetcherHistoryLastModifiedKey];
+        [fetchHistory_ setObject:lastModifiedDict 
+                          forKey:kGTMHTTPFetcherHistoryLastModifiedKey];
       }
-
+      
       NSMutableDictionary* datedDataCache = nil;
       if (shouldCacheDatedData_) {
         // get the dictionary mapping URLs to cached, dated data
-        datedDataCache = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryDatedDataKey];
+        datedDataCache 
+          = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryDatedDataKey];
         if (!datedDataCache) {
           datedDataCache = [NSMutableDictionary dictionary];
-          [fetchHistory_ setObject:datedDataCache forKey:kGTMHTTPFetcherHistoryDatedDataKey];
+          [fetchHistory_ setObject:datedDataCache 
+                            forKey:kGTMHTTPFetcherHistoryDatedDataKey];
         }
       }
       
@@ -574,8 +606,12 @@ CannotBeginFetch:
         // entry for this URL. Also cache or delete the data, if appropriate 
         // (when datedDataCache is non-nil.)
         if (lastModifiedStr && statusCode < 300) {
-          [lastModifiedDict setValue:lastModifiedStr forKey:urlString];
-          [datedDataCache setValue:downloadedData_ forKey:urlString];
+          [lastModifiedDict setObject:lastModifiedStr forKey:urlString];
+          if (downloadedData_) {
+            [datedDataCache setObject:downloadedData_ forKey:urlString];
+          } else {
+            [datedDataCache removeObjectForKey:urlString];
+          }
         } else { 
           [lastModifiedDict removeObjectForKey:urlString];
           [datedDataCache removeObjectForKey:urlString];
@@ -597,7 +633,8 @@ CannotBeginFetch:
     // get the dictionary of URLs and data
     NSString* urlString = [[request_ URL] absoluteString];
     
-    NSDictionary* datedDataCache = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryDatedDataKey];
+    NSDictionary* datedDataCache 
+      = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryDatedDataKey];
     NSData* cachedData = [datedDataCache objectForKey:urlString];
     
     if (cachedData) {
@@ -612,7 +649,7 @@ CannotBeginFetch:
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
   
   [self updateFetchHistory];
-
+  
   [[self retain] autorelease]; // in case the callback releases us
   
   [self logFetchWithError:nil];
@@ -637,7 +674,7 @@ CannotBeginFetch:
         NSError *error = [NSError errorWithDomain:kGTMHTTPFetcherStatusDomain 
                                              code:status
                                          userInfo:userInfo];
-
+        
         [delegate_ performSelector:failedSEL_ 
                         withObject:self 
                         withObject:error];
@@ -657,8 +694,9 @@ CannotBeginFetch:
   
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-
+- (void)connection:(NSURLConnection *)connection 
+  didFailWithError:(NSError *)error {
+  
   [self logFetchWithError:error];
   
   if ([self shouldRetryNowForStatus:0 error:error]) {
@@ -666,10 +704,10 @@ CannotBeginFetch:
     [self beginRetryTimer];
     
   } else {    
-  
+    
     if (failedSEL_) {
       [[self retain] autorelease]; // in case the callback releases us
-
+      
       [delegate_ performSelector:failedSEL_ 
                       withObject:self 
                       withObject:error];
@@ -696,16 +734,16 @@ CannotBeginFetch:
     { NSURLErrorDomain, NSURLErrorNetworkConnectionLost },
     { nil, 0 }
   };
-
+  
   BOOL isGood = NO;
   // NSError's isEqual always returns false for equal but distinct instances
   // of NSError, so we have to compare the domain and code values explicitly
-
+  
   for (int idx = 0; retries[idx].domain != nil; idx++) {
     
     if ([[error domain] isEqual:retries[idx].domain]
         && [error code] == retries[idx].code) {
-     
+      
       isGood = YES;
       break;
     }
@@ -727,9 +765,9 @@ CannotBeginFetch:
       
       if (error == nil) {
         // make an error for the status
-       error = [NSError errorWithDomain:kGTMHTTPFetcherStatusDomain
-                                   code:status
-                               userInfo:nil]; 
+        error = [NSError errorWithDomain:kGTMHTTPFetcherStatusDomain
+                                    code:status
+                                userInfo:nil]; 
       }
       
       BOOL willRetry = [self isRetryError:error];
@@ -758,9 +796,9 @@ CannotBeginFetch:
   
   NSTimeInterval nextInterval = [self nextRetryInterval];
   NSTimeInterval maxInterval = [self maxRetryInterval];
-
+  
   NSTimeInterval newInterval = MIN(nextInterval, maxInterval);
-    
+  
   [self primeTimerWithNewTimeInterval:newInterval];
 }
 
@@ -771,19 +809,19 @@ CannotBeginFetch:
   lastRetryInterval_ = secs;
   
   retryTimer_ = [NSTimer scheduledTimerWithTimeInterval:secs
-                                  target:self
-                                selector:@selector(retryTimerFired:)
-                                userInfo:nil
-                                 repeats:NO];
+                                                 target:self
+                                               selector:@selector(retryTimerFired:)
+                                               userInfo:nil
+                                                repeats:NO];
   [retryTimer_ retain];
 }
 
 - (void)retryTimerFired:(NSTimer *)timer {
-
+  
   [self destroyRetryTimer];
   
   retryCount_++;
-
+  
   [self retryFetch];
 }
 
@@ -930,7 +968,7 @@ CannotBeginFetch:
   cookieStorageMethod_ = method; 
   
   BOOL handleCookies 
-    = method == kGTMHTTPFetcherCookieStorageMethodSystemDefault ? YES : NO;
+    = (method == kGTMHTTPFetcherCookieStorageMethodSystemDefault) ? YES : NO;
   [request_ setHTTPShouldHandleCookies:handleCookies];
 }
 
@@ -975,7 +1013,7 @@ CannotBeginFetch:
   fetchHistory_ = [fetchHistory retain];
   GTMHTTPFetcherCookieStorageMethod method 
     = fetchHistory_ ? kGTMHTTPFetcherCookieStorageMethodFetchHistory 
-                    : kGTMHTTPFetcherCookieStorageMethodStatic; 
+    : kGTMHTTPFetcherCookieStorageMethodStatic; 
   [self setCookieStorageMethod:method];
 }
 
@@ -1071,7 +1109,7 @@ CannotBeginFetch:
 // be valid (non-nil name, domains, paths)
 - (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie
                                inArray:(NSArray *)cookieStorageArray {
-
+  
   NSUInteger numberOfCookies = [cookieStorageArray count];
   NSString *name = [cookie name];
   NSString *domain = [cookie domain];
@@ -1084,7 +1122,7 @@ CannotBeginFetch:
   for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
     
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
-
+    
     if ([[storedCookie name] isEqual:name]
         && [[storedCookie domain] isEqual:domain]
         && [[storedCookie path] isEqual:path]) {
@@ -1115,12 +1153,13 @@ CannotBeginFetch:
 // retrieve all cookies appropriate for the given URL, considering
 // domain, path, cookie name, expiration, security setting.
 // Side effect: removed expired cookies from the storage array
-- (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray {
+- (NSArray *)cookiesForURL:(NSURL *)theURL 
+                   inArray:(NSMutableArray *)cookieStorageArray {
   
   [self removeExpiredCookiesInArray:cookieStorageArray];
   
   NSMutableArray *foundCookies = [NSMutableArray array];
-
+  
   // we'll prepend "." to the desired domain, since we want the
   // actual domain "nytimes.com" to still match the cookie domain ".nytimes.com"
   // when we check it below with hasSuffix
@@ -1169,10 +1208,13 @@ CannotBeginFetch:
   if (cookieStorageMethod_ == kGTMHTTPFetcherCookieStorageMethodStatic) {
     cookieStorageArray = gGTMFetcherStaticCookies;
   } else if (cookieStorageMethod_ == kGTMHTTPFetcherCookieStorageMethodFetchHistory) {
-    cookieStorageArray = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryCookiesKey];
+    cookieStorageArray 
+      = [fetchHistory_ objectForKey:kGTMHTTPFetcherHistoryCookiesKey];
   } else {
     // kGTMHTTPFetcherCookieStorageMethodSystemDefault
-    cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:theURL];    
+    NSHTTPCookieStorage *storage 
+      = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    cookies = [storage cookiesForURL:theURL];    
   }
   
   if (cookieStorageArray) {
@@ -1196,7 +1238,7 @@ CannotBeginFetch:
            inArray:(NSMutableArray *)cookieStorageArray {
   
   [self removeExpiredCookiesInArray:cookieStorageArray];
-
+  
   NSHTTPCookie *newCookie;
   
   GTM_FOREACH_OBJECT(newCookie, newCookies) {
@@ -1204,7 +1246,7 @@ CannotBeginFetch:
     if ([[newCookie name] length] > 0
         && [[newCookie domain] length] > 0
         && [[newCookie path] length] > 0) {
-
+      
       // remove the cookie if it's currently in the array
       NSHTTPCookie *oldCookie = [self cookieMatchingCookie:newCookie
                                                    inArray:cookieStorageArray];
@@ -1305,7 +1347,8 @@ static NSString* gLoggingProcessName = nil;
       NSString *const kGTMLogFolderName = @"GTMHTTPDebugLogs";
       
       NSString *desktopPath = [arr objectAtIndex:0];
-      NSString *logsFolderPath = [desktopPath stringByAppendingPathComponent:kGTMLogFolderName];
+      NSString *logsFolderPath 
+        = [desktopPath stringByAppendingPathComponent:kGTMLogFolderName];
       
       BOOL doesFolderExist;
       BOOL isDir = NO;
@@ -1349,11 +1392,11 @@ static NSString* gLoggingProcessName = nil;
     NSString *procName = [[NSProcessInfo processInfo] processName];
     NSMutableString *loggingProcessName;
     loggingProcessName = [[NSMutableString alloc] initWithString:procName];
-    
+    NSRange nameRange = NSMakeRange(0, [gLoggingProcessName length]);
     [loggingProcessName replaceOccurrencesOfString:@" " 
                                         withString:@"_" 
                                            options:0 
-                                             range:NSMakeRange(0, [gLoggingProcessName length])];
+                                             range:nameRange];
     gLoggingProcessName = loggingProcessName;
   } 
   return gLoggingProcessName;
@@ -1431,8 +1474,9 @@ static NSString* gLoggingProcessName = nil;
   if (data == nil) return nil;
   
   // optimistically, see if the whole data block is UTF-8
-  NSString *streamDataStr = [[[NSString alloc] initWithData:data
-                                                   encoding:NSUTF8StringEncoding] autorelease];
+  NSString *streamDataStr 
+    = [[[NSString alloc] initWithData:data 
+                             encoding:NSUTF8StringEncoding] autorelease];
   if (streamDataStr) return streamDataStr;
   
   // Munge a buffer by replacing non-ASCII bytes with underscores,
@@ -1447,8 +1491,9 @@ static NSString* gLoggingProcessName = nil;
     }
   }
   
-  NSString *mungedStr = [[[NSString alloc] initWithData:mutableData
-                                               encoding:NSUTF8StringEncoding] autorelease];
+  NSString *mungedStr
+    = [[[NSString alloc] initWithData:mutableData
+                             encoding:NSUTF8StringEncoding] autorelease];
   if (mungedStr != nil) {
     
     // scan for the boundary string
@@ -1473,8 +1518,9 @@ static NSString* gLoggingProcessName = nil;
         NSRange range = NSMakeRange(offset, partSize);
         NSData *origPartData = [data subdataWithRange:range];
         
-        NSString *origPartStr = [[[NSString alloc] initWithData:origPartData
-                                                       encoding:NSUTF8StringEncoding] autorelease];
+        NSString *origPartStr 
+          = [[[NSString alloc] initWithData:origPartData
+                                   encoding:NSUTF8StringEncoding] autorelease];
         if (origPartStr) {
           // we could make this original part into UTF-8; use the string
           [origParts addObject:origPartStr];
@@ -1549,8 +1595,9 @@ static NSString* gLoggingProcessName = nil;
     responseBaseName = [NSString stringWithFormat:@"%@_http_response_%@_%d",
                         processName, dateStamp, zResponseCounter];
     
-    NSString *dataStr = [[[NSString alloc] initWithData:downloadedData_ 
-                                               encoding:NSUTF8StringEncoding] autorelease];
+    NSString *dataStr 
+      = [[[NSString alloc] initWithData:downloadedData_ 
+                               encoding:NSUTF8StringEncoding] autorelease];
     if (dataStr) {
       // we were able to make a UTF-8 string from the response data
       
@@ -1562,8 +1609,10 @@ static NSString* gLoggingProcessName = nil;
       //
       // we'll use <textarea rows="33" cols="108" readonly=true wrap=soft>
       //   </textarea>  to fit inside our iframe
-      responseDataUnformattedFileName = [responseBaseName stringByAppendingPathExtension:@"html"];
-      NSString *textFilePath = [logDirectory stringByAppendingPathComponent:responseDataUnformattedFileName];
+      responseDataUnformattedFileName 
+        = [responseBaseName stringByAppendingPathExtension:@"html"];
+      NSString *textFilePath 
+        = [logDirectory stringByAppendingPathComponent:responseDataUnformattedFileName];
       
       NSString* wrapFmt = @"<textarea rows=\"33\" cols=\"108\" readonly=true"
       " wrap=soft>\n%@\n</textarea>";
@@ -1599,8 +1648,10 @@ static NSString* gLoggingProcessName = nil;
     // if we have an extension, save the raw data in a file with that 
     // extension to be our "formatted" display file
     if (responseDataExtn) {
-      responseDataFormattedFileName = [responseBaseName stringByAppendingPathExtension:responseDataExtn];
-      NSString *formattedFilePath = [logDirectory stringByAppendingPathComponent:responseDataFormattedFileName];
+      responseDataFormattedFileName 
+        = [responseBaseName stringByAppendingPathExtension:responseDataExtn];
+      NSString *formattedFilePath 
+        = [logDirectory stringByAppendingPathComponent:responseDataFormattedFileName];
       
       [downloadedData_ writeToFile:formattedFilePath atomically:NO];
     }
@@ -1621,17 +1672,22 @@ static NSString* gLoggingProcessName = nil;
   // we need file names for the various div's that we're going to show and hide,
   // names unique to this response's bundle of data, so we format our div
   // names with the counter that we incremented earlier
-  NSString *requestHeadersName = [NSString stringWithFormat:@"RequestHeaders%d", zResponseCounter];
-  NSString *postDataName = [NSString stringWithFormat:@"PostData%d", zResponseCounter];
+  NSString *requestHeadersName 
+    = [NSString stringWithFormat:@"RequestHeaders%d", zResponseCounter];
+  NSString *postDataName 
+    = [NSString stringWithFormat:@"PostData%d", zResponseCounter];
   
-  NSString *responseHeadersName = [NSString stringWithFormat:@"ResponseHeaders%d", zResponseCounter];
-  NSString *responseDataDivName = [NSString stringWithFormat:@"ResponseData%d", zResponseCounter];
-  NSString *dataIFrameID = [NSString stringWithFormat:@"DataIFrame%d", zResponseCounter];
+  NSString *responseHeadersName 
+    = [NSString stringWithFormat:@"ResponseHeaders%d", zResponseCounter];
+  NSString *responseDataDivName 
+    = [NSString stringWithFormat:@"ResponseData%d", zResponseCounter];
+  NSString *dataIFrameID 
+    = [NSString stringWithFormat:@"DataIFrame%d", zResponseCounter];
   
   // we need a header to say we'll have UTF-8 text
   if (!didFileExist) {
     [outputHTML appendFormat:@"<html><head><meta http-equiv=\"content-type\" "
-     "content=\"text/html; charset=UTF-8\"><title>%@ HTTP fetch log %@</title>",
+     @"content=\"text/html; charset=UTF-8\"><title>%@ HTTP fetch log %@</title>",
      processName, dateStamp];
   }
   
@@ -1639,7 +1695,7 @@ static NSString* gLoggingProcessName = nil;
   // customized with our current response number, since they'll share
   // the html page with other responses
   NSString *styleFormat = @"<style type=\"text/css\">div#%@ "
-  "{ margin: 0px 20px 0px 20px; display: none; }</style>\n";
+    @"{ margin: 0px 20px 0px 20px; display: none; }</style>\n";
   
   [outputHTML appendFormat:styleFormat, requestHeadersName];
   [outputHTML appendFormat:styleFormat, postDataName];
@@ -1650,8 +1706,9 @@ static NSString* gLoggingProcessName = nil;
     // write javascript functions.  The first one shows/hides the layer 
     // containing the iframe.
     NSString *scriptFormat = @"<script type=\"text/javascript\"> "
-    "function toggleLayer(whichLayer){ var style2 = document.getElementById(whichLayer).style; "
-    "style2.display = style2.display ? \"\":\"block\";}</script>\n";
+      @"function toggleLayer(whichLayer){ "
+      @"var style2 = document.getElementById(whichLayer).style; "
+      @"style2.display = style2.display ? \"\":\"block\";}</script>\n";
     [outputHTML appendFormat:scriptFormat];
     
     // the second function is passed the src file; if it's what's shown, it 
@@ -1660,11 +1717,11 @@ static NSString* gLoggingProcessName = nil;
     // whenever we show the iframe too since Firefox seems to format it wrong 
     // when showing it if we don't reload it.
     NSString *toggleIFScriptFormat = @"<script type=\"text/javascript\"> "
-    "function toggleIFrame(whichLayer,iFrameID,newsrc)"
-    "{ \n var iFrameElem=document.getElementById(iFrameID); "
-    "if (iFrameElem.src.indexOf(newsrc) != -1) { toggleLayer(whichLayer); } "
-    "else { document.getElementById(whichLayer).style.display=\"block\"; } "
-    "iFrameElem.src=newsrc; }</script>\n</head>\n<body>\n";
+      @"function toggleIFrame(whichLayer,iFrameID,newsrc)"
+      @"{ \n var iFrameElem=document.getElementById(iFrameID); "
+      @"if (iFrameElem.src.indexOf(newsrc) != -1) { toggleLayer(whichLayer); } "
+      @"else { document.getElementById(whichLayer).style.display=\"block\"; } "
+      @"iFrameElem.src=newsrc; }</script>\n</head>\n<body>\n";
     [outputHTML appendFormat:toggleIFScriptFormat];
   }
   
@@ -1681,7 +1738,7 @@ static NSString* gLoggingProcessName = nil;
   NSDictionary *requestHeaders = [request allHTTPHeaderFields];
   if ([requestHeaders count]) {
     NSString *requestHeadersFormat = @"<a href=\"javascript:toggleLayer('%@');\">"
-    "request headers (%d)</a><div id=\"%@\"><pre>%@</pre></div><br>\n";
+      @"request headers (%d)</a><div id=\"%@\"><pre>%@</pre></div><br>\n";
     [outputHTML appendFormat:requestHeadersFormat,
      requestHeadersName, // layer name
      [requestHeaders count],
@@ -1730,8 +1787,9 @@ static NSString* gLoggingProcessName = nil;
       statusString = @"200";
       if (status != 200) {
         // purple for errors
-        statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%d</FONT>",
-                        status];
+        statusString 
+          = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%d</FONT>",
+             status];
       }
     }
     
@@ -1741,7 +1799,7 @@ static NSString* gLoggingProcessName = nil;
     
     if (responseURL && ![responseURL isEqual:[request URL]]) {
       NSString *responseURLFormat = @"<br><FONT COLOR=\"#FF00FF\">response URL:"
-      "</FONT> <code>%@</code>";
+        @"</FONT> <code>%@</code>";
       responseURLStr = [NSString stringWithFormat:responseURLFormat,
                         [responseURL absoluteString]];
     }
@@ -1751,7 +1809,7 @@ static NSString* gLoggingProcessName = nil;
       responseHeaders = [(NSHTTPURLResponse *)response allHeaderFields];
     }
     [outputHTML appendFormat:@"<b>response:</b> <i>status:</i> %@ <i>  "
-     "&nbsp;&nbsp;&nbsp;MIMEType:</i><code> %@</code>%@<br>\n",
+      @"&nbsp;&nbsp;&nbsp;MIMEType:</i><code> %@</code>%@<br>\n",
      statusString,
      [response MIMEType], 
      responseURLStr,
@@ -1763,8 +1821,8 @@ static NSString* gLoggingProcessName = nil;
       NSString *cookiesSet = [responseHeaders objectForKey:@"Set-Cookie"];
       
       NSString *responseHeadersFormat = @"<a href=\"javascript:toggleLayer("
-      "'%@');\">response headers (%d)  %@</a><div id=\"%@\"><pre>%@</pre>"
-      "</div><br>\n";
+        @"'%@');\">response headers (%d)  %@</a><div id=\"%@\"><pre>%@</pre>"
+        @"</div><br>\n";
       [outputHTML appendFormat:responseHeadersFormat,
        responseHeadersName,
        [responseHeaders count],
@@ -1795,7 +1853,7 @@ static NSString* gLoggingProcessName = nil;
       
       // inline (iframe) link
       NSString *responseInlineFormattedDataNameFormat = @"&nbsp;&nbsp;<a "
-      "href=\"javascript:toggleIFrame('%@','%@','%@');\">inline</a>\n";
+        @"href=\"javascript:toggleIFrame('%@','%@','%@');\">inline</a>\n";
       [outputHTML appendFormat:responseInlineFormattedDataNameFormat,
        responseDataDivName, // div ID
        dataIFrameID, // iframe ID (for reloading)
@@ -1812,7 +1870,7 @@ static NSString* gLoggingProcessName = nil;
       
       // inline (iframe) link
       NSString *responseInlineDataNameFormat = @"&nbsp;&nbsp;<a href=\""
-      "javascript:toggleIFrame('%@','%@','%@');\">inline</a> \n";
+        @"javascript:toggleIFrame('%@','%@','%@');\">inline</a> \n";
       [outputHTML appendFormat:responseInlineDataNameFormat,
        responseDataDivName, // div ID
        dataIFrameID, // iframe ID (for reloading)
@@ -1828,9 +1886,10 @@ static NSString* gLoggingProcessName = nil;
     NSString *divHTMLFormat = @"<div id=\"%@\">%@</div><br>\n";
     NSString *src = responseDataFormattedFileName ?  
     responseDataFormattedFileName : responseDataUnformattedFileName;
-    NSString *escapedSrc = [src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *escapedSrc 
+      = [src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *iframeFmt = @" <iframe src=\"%@\" id=\"%@\" width=800 height=400>"
-    "\n<a href=\"%@\">%@</a>\n </iframe>\n";
+      @"\n<a href=\"%@\">%@</a>\n </iframe>\n";
     NSString *dataIFrameHTML = [NSString stringWithFormat:iframeFmt,
                                 escapedSrc, dataIFrameID, escapedSrc, src];
     [outputHTML appendFormat:divHTMLFormat, 
@@ -1854,7 +1913,8 @@ static NSString* gLoggingProcessName = nil;
   // make a symlink to the latest html
   NSString *symlinkName = [NSString stringWithFormat:@"%@_http_log_newest.html", 
                            processName];
-  NSString *symlinkPath = [logDirectory stringByAppendingPathComponent:symlinkName];
+  NSString *symlinkPath 
+    = [logDirectory stringByAppendingPathComponent:symlinkName];
   
   // removeFileAtPath might be going away, but removeItemAtPath does not exist
   // in 10.4
@@ -1870,7 +1930,7 @@ static NSString* gLoggingProcessName = nil;
 }
 
 - (void)logCapturePostStream {
-
+  
 #if GTM_HTTPFETCHER_ENABLE_INPUTSTREAM_LOGGING
   // This is called when beginning a fetch.  The caller should have already
   // verified that logging is enabled, and should have allocated 
@@ -1887,7 +1947,7 @@ static NSString* gLoggingProcessName = nil;
   postStream_ = [GTMInputStreamLogger inputStreamWithStream:postStream_
                                                      length:0];
   [postStream_ retain];
-
+  
   // we don't really want monitoring callbacks; our subclass will be
   // calling our appendLoggedStreamData: method at every read instead
   [(GTMInputStreamLogger *)postStream_ setMonitorDelegate:self
