@@ -36,9 +36,6 @@ NSString *const kGTMWorkspaceRunningCheckedIn = @"IsCheckedInAttr";
 NSString *const kGTMWorkspaceRunningLSUIPresentationMode 
   = @"LSUIPresentationMode";
 NSString *const kGTMWorkspaceRunningBundlePath = @"BundlePath";
-NSString *const kGTMWorkspaceRunningBundleExecutable = @"CFBundleExecutable";
-NSString *const kGTMWorkspaceRunningBundleName = @"CFBundleName";
-NSString *const kGTMWorkspaceRunningBundleIdentifier = @"CFBundleIdentifier"; 
 NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 
 @implementation NSWorkspace (GTMWorkspaceRunningAdditions)
