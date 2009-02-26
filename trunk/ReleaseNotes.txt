@@ -232,6 +232,11 @@ Changes since 1.5.1
 - Fixed up GTMSenTestCase on iPhone so that it has a description that matches
   that of OCUnit.
 
+- Added GTMAbstractDOListener, GTMTransientRootProxy, and
+  GTMTransientRootSocketProxy.  These classes can be used to simplify the
+  use of distributed objects.  GTMAbstractDOListener can be used to handle
+  connections from any type of port.  GTMTransientRootProxy is designed for
+  NSMachPorts while GTMTransientRootSocketProxy is for NSSocketPorts.
 
 Release 1.5.1
 Changes since 1.5.0
