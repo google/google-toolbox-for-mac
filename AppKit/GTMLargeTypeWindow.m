@@ -65,7 +65,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
                      range:fullRange];
   
   NSMutableParagraphStyle *style 
-  = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
   [style setAlignment:NSCenterTextAlignment];
   [attrString addAttribute:NSParagraphStyleAttributeName 
                      value:style 

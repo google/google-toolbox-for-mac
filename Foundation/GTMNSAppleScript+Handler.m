@@ -265,7 +265,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 - (void)forwardInvocation:(NSInvocation *)invocation {
   SEL sel = [invocation selector];
   NSMutableString *handlerName 
-    = [[NSStringFromSelector(sel) mutableCopy] autorelease];
+    = [NSMutableString stringWithString:NSStringFromSelector(sel)];
   NSUInteger handlerOrigLength = [handlerName length];
   [handlerName replaceOccurrencesOfString:@":" 
                                withString:@""

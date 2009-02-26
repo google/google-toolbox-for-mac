@@ -755,8 +755,10 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if (!keystrokeString || ![keystrokeString length]) return nil;
   
   // Sanity check the keystroke string for unprintable characters
-  NSMutableCharacterSet *validChars 
-    = [[[NSCharacterSet alphanumericCharacterSet] mutableCopy] autorelease];
+  NSMutableCharacterSet *validChars =
+    [[[NSMutableCharacterSet alloc] init] autorelease];
+
+  [validChars formUnionWithCharacterSet:[NSCharacterSet alphanumericCharacterSet]];
   [validChars formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
   [validChars formUnionWithCharacterSet:[NSCharacterSet symbolCharacterSet]];
   for (unsigned int i = 0; i < [keystrokeString length]; i++) {
