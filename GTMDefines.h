@@ -119,15 +119,15 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 // we directly invoke the NSAssert handler so we can pass on the varargs
 // (NSAssert doesn't have a macro we can use that takes varargs)
 #if !defined(NS_BLOCK_ASSERTIONS)
-  #define _GTMDevAssert(condition, ...)                                    \
-    do {                                                                   \
-      if (!(condition)) {                                                  \
-        [[NSAssertionHandler currentHandler]                               \
-            handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__] \
-                               file:[NSString stringWithCString:__FILE__]  \
-                         lineNumber:__LINE__                               \
-                        description:__VA_ARGS__];                          \
-      }                                                                    \
+  #define _GTMDevAssert(condition, ...)                                       \
+    do {                                                                      \
+      if (!(condition)) {                                                     \
+        [[NSAssertionHandler currentHandler]                                  \
+            handleFailureInFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__] \
+                               file:[NSString stringWithUTF8String:__FILE__]  \
+                         lineNumber:__LINE__                                  \
+                        description:__VA_ARGS__];                             \
+      }                                                                       \
     } while(0)
 #else // !defined(NS_BLOCK_ASSERTIONS)
   #define _GTMDevAssert(condition, ...) do { } while (0)

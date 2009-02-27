@@ -151,7 +151,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   if (view) {
     bounds = [view bounds];
   }
-  if (bounds.size.height <= 0 || bounds.size.width <= 0) {
+  if (!view || bounds.size.height <= 0 || bounds.size.width <= 0) {
     _GTMDevLog(@"GTMLargeTypeWindow got an empty view");
     [self release];
     return nil;
@@ -270,6 +270,14 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
 
 @implementation GTMLargeTypeBackgroundView
 GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
+
+- (void)dealloc {
+  // If we get released while animating, we'd better clean up.
+  [animation_ stopAnimation];
+  [animation_ release];
+  [transition_ release];
+  [super dealloc];
+}
 
 - (BOOL)isOpaque {
   return NO;

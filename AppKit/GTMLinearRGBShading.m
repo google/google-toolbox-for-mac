@@ -98,7 +98,6 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
   positionIndex += 1;
   CGFloat stop2Position = 0.0;
   NSColor *stop2Color = nil;
-  NSColor *theColor = nil;
   if (colorCount > 1) {
     stop2Color = [self stopAtIndex:positionIndex position:&stop2Position];
     positionIndex += 1;
@@ -117,7 +116,6 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
 
   if (position <= stop1Position) {
     // if we are less than our lowest position, return our first color
-    theColor = stop1Color;
     [stop1Color getRed:&colorValue_[0] green:&colorValue_[1] 
                   blue:&colorValue_[2] alpha:&colorValue_[3]];
   } else if (position >= stop2Position) {

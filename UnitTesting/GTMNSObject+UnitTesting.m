@@ -417,11 +417,9 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   // we're on an automated build system, so use the build products dir as an
   // override instead of writing on the desktop.
   NSDictionary *env = [[NSProcessInfo processInfo] environment];
-  BOOL foundBuildNumber = NO;
   NSString *key;
   GTM_FOREACH_KEY(key, env) {
     if ([key hasSuffix:@"BUILD_NUMBER"]) {
-      foundBuildNumber = YES;
       break;
     }
   }
