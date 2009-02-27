@@ -238,6 +238,12 @@ Changes since 1.5.1
   connections from any type of port.  GTMTransientRootProxy is designed for
   NSMachPorts while GTMTransientRootSocketProxy is for NSSocketPorts.
 
+- Finally dropped GTMHTTPFetcher and GTMProgressMonitorInputStream, GData
+  versions now pretty much line up w/ these, so rather then both projects
+  maintaing them, we've dropped them and point folks at the gdata versions
+  which can be used independent of the rest of GData.
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
