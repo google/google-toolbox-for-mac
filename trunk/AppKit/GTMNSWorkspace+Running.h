@@ -27,6 +27,8 @@
 //   kGTMWorkspaceRunningFileCreator, kGTMWorkspaceRunningPID,
 //   kGTMWorkspaceRunningBundlePath, kGTMWorkspaceRunningBundleIdentifier,
 //   kGTMWorkspaceRunningBundleName, kGTMWorkspaceRunningBundleExecutable,
+// And experience says the follow might also not be there:
+//   kGTMWorkspaceRunningIsHidden
 
 // Make sure to use numberToProcessSerialNumber: on the return values
 // of these keys to get valid PSNs on both Leopard and Tiger.

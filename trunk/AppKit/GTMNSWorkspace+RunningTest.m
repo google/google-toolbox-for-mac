@@ -62,7 +62,7 @@
     kGTMWorkspaceRunningPSN,
     kGTMWorkspaceRunningFlavor, kGTMWorkspaceRunningAttributes,
     kGTMWorkspaceRunningLSBackgroundOnly,
-    kGTMWorkspaceRunningLSUIElement, kGTMWorkspaceRunningIsHidden,
+    kGTMWorkspaceRunningLSUIElement,
     kGTMWorkspaceRunningCheckedIn,
     kGTMWorkspaceRunningBundleVersion,
     kGTMWorkspaceRunningLSUIPresentationMode,
