@@ -74,7 +74,7 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
   NSAppleEventDescriptor *scriptResult = [query executeAndReturnError:&errDict];
   if (!scriptResult) {
     // COV_NF_START - no real way to test this
-    if (*errorInfo)
+    if (errorInfo)
       *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-92 userInfo:errDict];
     return NO;
     // COV_NF_END
@@ -108,7 +108,7 @@ NSString * const kGTMLoginItemsHiddenKey = @"Hide";
   NSAppleEventDescriptor *scriptResult = [query executeAndReturnError:&errDict];
   if (!scriptResult) {
     // COV_NF_START - no real way to test this
-    if (*errorInfo)
+    if (errorInfo)
       *errorInfo = [NSError errorWithDomain:@"GTMLoginItems" code:-2 userInfo:errDict];
     return nil;
     // COV_NF_END

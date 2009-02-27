@@ -32,10 +32,9 @@
 // General use would be to call this through GTMCFAutorelease
 // but there may be a reason the you want to make something collectable
 // but not autoreleased, especially in pure GC code where you don't
-// want to bother with the nop autorelease.
-GTM_INLINE id GTMNSMakeCollectable(CFTypeRef cf) { 
-  return NSMakeCollectable(cf); 
-}
+// want to bother with the nop autorelease. Done as a define instead of an 
+// inline so that tools like Clang's scan-build don't report code as leaking.
+#define GTMNSMakeCollectable(cf) ((id)NSMakeCollectable(cf))
 
 // GTMNSMakeUncollectable is for global maps, etc. that we don't
 // want released ever. You should still retain these in non-gc code.
@@ -54,10 +53,7 @@ GTM_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
 
 #else
 
-GTM_INLINE id GTMNSMakeCollectable(CFTypeRef cf) { 
-  // NSMakeCollectable handles NULLs just fine and returns nil as expected.
-  return (id)cf;
-}
+#define GTMNSMakeCollectable(cf) ((id)(cf))
 
 GTM_INLINE void GTMNSMakeUncollectable(id object) {
 }
@@ -70,8 +66,7 @@ GTM_INLINE BOOL GTMIsGarbageCollectionEnabled(void) {
 
 // GTMCFAutorelease makes a CF object collectable in GC mode, or adds it 
 // to the autorelease pool in non-GC mode. Either way it is taken care
-// of.
-GTM_INLINE id GTMCFAutorelease(CFTypeRef cf) {
-  return [GTMNSMakeCollectable(cf) autorelease];
-}
+// of. Done as a define instead of an inline so that tools like Clang's
+// scan-build don't report code as leaking.
+#define GTMCFAutorelease(cf) ([GTMNSMakeCollectable(cf) autorelease])
 

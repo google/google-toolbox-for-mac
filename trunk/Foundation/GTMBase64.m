@@ -532,7 +532,6 @@ GTM_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
         curDest[0] = kBase64PaddingChar;
         curDest[1] = kBase64PaddingChar;
         curDest += 2;
-        destLen -= 2;
       }
       break;
     case 2:
@@ -548,7 +547,6 @@ GTM_INLINE NSUInteger GuessDecodedLength(NSUInteger srcLen) {
         _GTMDevAssert(destLen >= 1, @"our calc for encoded length was wrong");
         curDest[0] = kBase64PaddingChar;
         curDest += 1;
-        destLen -= 1;
       }
       break;
   }

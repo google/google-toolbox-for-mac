@@ -31,7 +31,7 @@
 
 @interface GTMHTTPServer (PrivateMethods)
 - (void)acceptedConnectionNotification:(NSNotification *)notification;
-- (NSMutableDictionary *)newConnectionWithFileHandle:(NSFileHandle *)fileHandle;
+- (NSMutableDictionary *)connectionWithFileHandle:(NSFileHandle *)fileHandle;
 - (void)dataAvailableNotification:(NSNotification *)notification;
 - (NSMutableDictionary *)lookupConnection:(NSFileHandle *)fileHandle;
 - (void)closeConnection:(NSMutableDictionary *)connDict;
@@ -258,11 +258,11 @@ startFailed:
   // on it.
   
   NSMutableDictionary *connDict =
-    [self newConnectionWithFileHandle:newConnection];
+    [self connectionWithFileHandle:newConnection];
   [connections_ addObject:connDict];
 }
 
-- (NSMutableDictionary *)newConnectionWithFileHandle:(NSFileHandle *)fileHandle {
+- (NSMutableDictionary *)connectionWithFileHandle:(NSFileHandle *)fileHandle {
   NSMutableDictionary *result = [NSMutableDictionary dictionary];
 
   [result setObject:fileHandle forKey:kFileHandle];
