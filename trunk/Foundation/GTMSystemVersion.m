@@ -102,7 +102,7 @@ NSString *const kGTMSystemBuild10_6_0_10A190 = @"10A190";
   if (minor) {
     *minor = sGTMSystemVersionMinor;
   }
-  if (major) {
+  if (bugFix) {
     *bugFix = sGTMSystemVersionBugFix;
   }
 }

@@ -28,7 +28,10 @@
   SInt32 minor;
   SInt32 bugFix;
   
-  [GTMSystemVersion getMajor:nil minor:nil bugFix:nil];
+  [GTMSystemVersion getMajor:NULL minor:NULL bugFix:NULL];
+  [GTMSystemVersion getMajor:&major minor:NULL bugFix:NULL];
+  [GTMSystemVersion getMajor:NULL minor:&minor bugFix:NULL];
+  [GTMSystemVersion getMajor:NULL minor:NULL bugFix:&bugFix];
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
 #if GTM_IPHONE_SDK
   STAssertTrue(major >= 2 && minor >= 0 && bugFix >= 0, nil);
