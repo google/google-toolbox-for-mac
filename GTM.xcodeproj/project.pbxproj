@@ -59,6 +59,12 @@
 		7F3EB3940E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
 		7F3EB5540E5F0B0400A7A75E /* GTMUnitTestingImage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */; };
 		7F3EB5870E5F0CBB00A7A75E /* GTMLargeTypeWindowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */; };
+		7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */; };
+		7F511DFC0F4B0378009F41B6 /* GTMTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF60F4B0378009F41B6 /* GTMTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7F511DFE0F4B0378009F41B6 /* GTMTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF80F4B0378009F41B6 /* GTMTheme.m */; };
+		7F511E010F4B03B4009F41B6 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
+		7F511E020F4B03BC009F41B6 /* GTMThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */; };
 		84978FBC0EA6A67C00C5DC83 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
 		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */; };
 		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */; };
@@ -357,6 +363,12 @@
 		7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSImage+Scaling.h"; sourceTree = "<group>"; };
 		7F3EB38D0E5E09C700A7A75E /* GTMNSImage+Scaling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSImage+Scaling.m"; sourceTree = "<group>"; };
 		7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSImage+ScalingTest.m"; sourceTree = "<group>"; };
+		7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSColor+Luminance.h"; sourceTree = "<group>"; };
+		7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+Luminance.m"; sourceTree = "<group>"; };
+		7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+LuminanceTest.m"; sourceTree = "<group>"; };
+		7F511DF60F4B0378009F41B6 /* GTMTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTheme.h; sourceTree = "<group>"; };
+		7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMThemeTest.m; sourceTree = "<group>"; };
+		7F511DF80F4B0378009F41B6 /* GTMTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTheme.m; sourceTree = "<group>"; };
 		848269C80E9FF4BD006E6D9C /* DebugSnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugSnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
 		848269C90E9FF4BD006E6D9C /* ReleaseSnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseSnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
 		84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingImage.10.6.0.tiff; sourceTree = "<group>"; };
@@ -789,12 +801,18 @@
 				F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */,
 				F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */,
 				F47F1C110D490BC000925B8F /* GTMNSBezierPath+ShadingTest.m */,
+				7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */,
+				7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */,
+				7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */,
 				7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */,
 				7F3EB38D0E5E09C700A7A75E /* GTMNSImage+Scaling.m */,
 				7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */,
 				8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */,
 				8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */,
 				8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */,
+				7F511DF60F4B0378009F41B6 /* GTMTheme.h */,
+				7F511DF80F4B0378009F41B6 /* GTMTheme.m */,
+				7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */,
 				F47F1C740D490E5C00925B8F /* GTMShading.h */,
 				F435E4840DC8F3DC0069CDE8 /* TestData */,
 			);
@@ -1061,6 +1079,8 @@
 				8BA01B5E0F144BD800926923 /* GTMNSWorkspace+Running.h in Headers */,
 				8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */,
 				1012DF560F4252BD004794DB /* GTMAbstractDOListener.h in Headers */,
+				7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */,
+				7F511DFC0F4B0378009F41B6 /* GTMTheme.h in Headers */,
 				10998E920F4B5952007F179D /* GTMTransientRootProxy.h in Headers */,
 				10998EF50F4B5D1A007F179D /* GTMTransientRootSocketProxy.h in Headers */,
 			);
@@ -1465,6 +1485,8 @@
 				8BA01B5D0F144BD800926923 /* GTMNSWorkspace+Running.m in Sources */,
 				8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
 				1012DF570F4252BD004794DB /* GTMAbstractDOListener.m in Sources */,
+				7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */,
+				7F511DFE0F4B0378009F41B6 /* GTMTheme.m in Sources */,
 				10998E8F0F4B593E007F179D /* GTMTransientRootProxy.m in Sources */,
 				10998EF40F4B5D1A007F179D /* GTMTransientRootSocketProxy.m in Sources */,
 			);
@@ -1474,6 +1496,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F511E010F4B03B4009F41B6 /* GTMNSColor+LuminanceTest.m in Sources */,
+				7F511E020F4B03BC009F41B6 /* GTMThemeTest.m in Sources */,
 				F42E082F0D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
 				F42E09450D199BA400D5DDE0 /* GTMNSObject+UnitTesting.m in Sources */,
 				F43DCEC70D47BEA000959A62 /* GTMLoginItemsTest.m in Sources */,
