@@ -28,7 +28,7 @@
 
 @implementation GTMNSBezierPath_CGPathTest
 
-- (void)testCreateCGPath {
+- (void)testCGPath {
   GTMAssertDrawingEqualToImageNamed(self, 
                                     NSMakeSize(100, 100), 
                                     @"GTMNSBezierPath+CGPathTest", 
@@ -62,7 +62,7 @@
   // test close
   [thePath closePath];
   
-  CGPathRef cgPath = [thePath gtm_createCGPath];
+  CGPathRef cgPath = [thePath gtm_CGPath];
   STAssertNotNULL(cgPath, @"Nil CGPath");
 
   CGContextRef cgContext = [[NSGraphicsContext currentContext] graphicsPort];
@@ -70,7 +70,6 @@
   
   CGContextAddPath(cgContext, cgPath);
   CGContextStrokePath(cgContext);
-  CGPathRelease(cgPath);
 }
 
 @end

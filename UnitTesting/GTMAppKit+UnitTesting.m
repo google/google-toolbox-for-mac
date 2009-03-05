@@ -22,6 +22,7 @@
 #import "GTMAppKit+UnitTesting.h"
 #import "GTMGeometryUtils.h"
 #import "GTMMethodCheck.h"
+#import "GTMGarbageCollection.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
  #define ENCODE_NSINTEGER(coder, i, key) [(coder) encodeInt:(i) forKey:(key)]
@@ -62,8 +63,8 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @implementation NSWindow (GMUnitTestingAdditions) 
 
-- (CGImageRef)gtm_createUnitTestImage {  
-  return [[[self contentView] superview] gtm_createUnitTestImage];
+- (CGImageRef)gtm_unitTestImage {  
+  return [[[self contentView] superview] gtm_unitTestImage];
 }
 
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
@@ -143,14 +144,15 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [inCoder encodeObject:[self name] forKey:@"ImageName"];
 }
 
-- (CGImageRef)gtm_createUnitTestImage {
+- (CGImageRef)gtm_unitTestImage {
   // Create up a context
   NSSize size = [self size];
   NSRect rect = GTMNSRectOfSize(size);
-  CGContextRef contextRef = [self gtm_createUnitTestBitmapContextOfSize:GTMNSSizeToCGSize(size)
-                                                                   data:NULL];
-  NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithGraphicsPort:contextRef
-                                                                                flipped:NO];
+  CGSize cgSize = GTMNSSizeToCGSize(size);
+  CGContextRef contextRef = GTMCreateUnitTestBitmapContextOfSizeWithData(cgSize,
+                                                                         NULL);
+  NSGraphicsContext *bitmapContext 
+    = [NSGraphicsContext graphicsContextWithGraphicsPort:contextRef flipped:NO];
   _GTMDevAssert(bitmapContext, @"Couldn't create ns bitmap context");
   
   [NSGraphicsContext saveGraphicsState];
@@ -160,7 +162,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   CGImageRef image = CGBitmapContextCreateImage(contextRef);
   CFRelease(contextRef);
   [NSGraphicsContext restoreGraphicsState];
-  return image;
+  return (CGImageRef)GTMCFAutorelease(image);
 }
 
 @end
@@ -279,13 +281,14 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 //
 //  Returns:
 //    an image of the object
-- (CGImageRef)gtm_createUnitTestImage {
+- (CGImageRef)gtm_unitTestImage {
   // Create up a context
   NSRect bounds = [self bounds];
-  CGContextRef contextRef = [self gtm_createUnitTestBitmapContextOfSize:GTMNSSizeToCGSize(bounds.size)
-                                                                   data:NULL];
-  NSGraphicsContext *bitmapContext = [NSGraphicsContext graphicsContextWithGraphicsPort:contextRef
-                                                                                flipped:NO];
+  CGSize cgSize = GTMNSSizeToCGSize(bounds.size);
+  CGContextRef contextRef = GTMCreateUnitTestBitmapContextOfSizeWithData(cgSize,
+                                                                         NULL);
+  NSGraphicsContext *bitmapContext 
+    = [NSGraphicsContext graphicsContextWithGraphicsPort:contextRef flipped:NO];
   _GTMDevAssert(bitmapContext, @"Couldn't create ns bitmap context");
   
   // Save our state and turn off font smoothing and antialias.
@@ -296,7 +299,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
   CGImageRef image = CGBitmapContextCreateImage(contextRef);
   CFRelease(contextRef);
-  return image;
+  return (CGImageRef)GTMCFAutorelease(image);
 }
 
 //  Returns whether gtm_unitTestEncodeState should recurse into subviews

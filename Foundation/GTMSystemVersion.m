@@ -19,7 +19,7 @@
 #import "GTMSystemVersion.h"
 #import "GTMGarbageCollection.h"
 #if GTM_MACOS_SDK
-#import <Carbon/Carbon.h>
+#import <CoreServices/CoreServices.h>
 #endif
 
 static SInt32 sGTMSystemVersionMajor = 0;

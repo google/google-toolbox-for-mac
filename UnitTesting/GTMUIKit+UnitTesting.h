@@ -65,12 +65,6 @@
 //  See GTMNSObject+UnitTesting.h for details.
 @interface UIView (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
 
-//  Returns an image containing a representation suitable for use in comparing against a master image.
-//
-//  Returns:
-//    an image of the object
-- (CGImageRef)gtm_createUnitTestImage;
-
 //  Encodes the state of an object in a manner suitable for comparing against a master state file
 //  This enables us to determine whether the object is in a suitable state.
 //
@@ -89,12 +83,6 @@
 // GTMAssertObjectImageEqualToImageNamed macro, which automatically creates
 // result images and diff images in case test fails.
 @interface UIImage (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
-//  Returns an image containing a representation suitable for use in comparing
-//  against a master image.
-//
-//  Returns:
-//    an image of the object
-- (CGImageRef)gtm_createUnitTestImage;
 @end
 
 //  A view that allows you to delegate out drawing using the formal 
