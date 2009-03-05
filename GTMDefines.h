@@ -19,6 +19,7 @@
 // ============================================================================
 
 #include <AvailabilityMacros.h>
+#include <TargetConditionals.h>
 
 // Not all MAC_OS_X_VERSION_10_X macros defined in past SDKs
 #ifndef MAC_OS_X_VERSION_10_5
@@ -149,7 +150,7 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 // does keys, so pick the right thing, nothing is done on the FastEnumeration
 // side to be sure you're getting what you wanted.
 #ifndef GTM_FOREACH_OBJECT
-  #if defined(TARGET_OS_IPHONE) || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
+  #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
     #define GTM_FOREACH_OBJECT(element, collection) \
       for (element in collection)
     #define GTM_FOREACH_KEY(element, collection) \
@@ -174,7 +175,6 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 
 // Provide a single constant CPP symbol that all of GTM uses for ifdefing
 // iPhone code.
-#include <TargetConditionals.h>
 #if TARGET_OS_IPHONE // iPhone SDK
   // For iPhone specific stuff
   #define GTM_IPHONE_SDK 1
