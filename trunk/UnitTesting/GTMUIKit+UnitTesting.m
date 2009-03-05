@@ -74,9 +74,9 @@
 //
 //  Returns:
 //    an image of the object
-- (CGImageRef)gtm_createUnitTestImage {
+- (CGImageRef)gtm_unitTestImage {
   CALayer* layer = [self layer];
-  return [layer gtm_createUnitTestImage];
+  return [layer gtm_unitTestImage];
 }
 
 //  Encodes the state of an object in a manner suitable for comparing
@@ -116,9 +116,7 @@
 @end
 
 @implementation UIImage (GTMUnitTestingAdditions)
-- (CGImageRef)gtm_createUnitTestImage {
-  CGImageRef imageRef = [self CGImage];
-  CGImageRetain(imageRef);
-  return imageRef;
+- (CGImageRef)gtm_unitTestImage {
+  return [self CGImage];
 }
 @end

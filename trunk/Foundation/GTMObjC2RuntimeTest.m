@@ -78,6 +78,20 @@ AT_REQUIRED
 @end
 
 @implementation GTMObjC2NotificationWatcher
+- (id)init {
+  if ((self = [super init])) {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    // We release ourselves when we are notified.
+    [self retain];
+    [nc addObserver:self 
+           selector:@selector(startedTest:) 
+               name:SenTestSuiteDidStartNotification 
+             object:nil];
+    
+  }
+  return self;
+}
+
 - (void)startedTest:(NSNotification *)notification {
   // Logs if we are testing on Tiger or Leopard runtime.
   NSString *testName = [(SenTest*)[[notification object] test] name];
@@ -101,14 +115,7 @@ AT_REQUIRED
 
 + (void)initialize {
   // This allows us to track which runtime we are actually testing.
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-
-  // Watcher is released when it is notified.
-  GTMObjC2NotificationWatcher *watcher = [[GTMObjC2NotificationWatcher alloc] init];
-  [nc addObserver:watcher 
-         selector:@selector(startedTest:) 
-             name:SenTestSuiteDidStartNotification 
-           object:nil];
+  [[[GTMObjC2NotificationWatcher alloc] init] autorelease];
 }
 
 - (void)setUp {

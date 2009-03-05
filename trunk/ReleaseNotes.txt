@@ -243,6 +243,16 @@ Changes since 1.5.1
   maintaing them, we've dropped them and point folks at the gdata versions
   which can be used independent of the rest of GData.
 
+- Changed gtm_createCGPath to gtm_cgPath in GTMNSBezier+CGPath. The path
+  returned is now autoreleased so you don't need to worry about releasing it.
+
+- Made some changes to the GTMNSObject+UnitTesting APIs. Specifically renamed
+  gtm_createUnitTestImage to gtm_unitTestImage. The value it returns is now
+  autoreleased, so no need to release it. Also change 
+  gtm_createUnitTestBitmapOfSize:withData: to a C function.
+  
+- Cleaned up GTM so that it passes the Clang checker without any warnings.
+
 
 Release 1.5.1
 Changes since 1.5.0

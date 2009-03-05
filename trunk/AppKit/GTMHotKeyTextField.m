@@ -209,7 +209,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
-- (int)integerValue {
+- (NSInteger)integerValue {
   
   // Defeating NSControl
   _GTMDevAssert(NO, @"Hot key fields don't take numbers.");

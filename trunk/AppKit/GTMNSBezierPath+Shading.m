@@ -154,19 +154,18 @@
 
 
 @implementation NSBezierPath (GTMBezierPathShadingAdditions)
-GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath);
+GTM_METHOD_CHECK(NSBezierPath, gtm_CGPath);
 
 - (void)gtm_strokeAxiallyFrom:(NSPoint)fromPoint to:(NSPoint)toPoint 
                extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                       shading:(id<GTMShading>)shading {
-  CGPathRef thePath = [self gtm_createCGPath];
+  CGPathRef thePath = [self gtm_CGPath];
   if (nil != thePath) {
     [self gtm_fillCGPath:thePath axially:YES asStroke:YES 
                     from:fromPoint fromRadius:(CGFloat)0.0
                       to:toPoint toRadius:(CGFloat)0.0
           extendingStart:extendingStart extendingEnd:extendingEnd 
                  shading:shading];
-    CGPathRelease(thePath);
   }
 }
 
@@ -175,14 +174,13 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath);
                             to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
                 extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                        shading:(id<GTMShading>)shading {
-  CGPathRef thePath = [self gtm_createCGPath];
+  CGPathRef thePath = [self gtm_CGPath];
   if (nil != thePath) {
     [self gtm_fillCGPath:thePath axially:NO asStroke:YES 
                     from:fromPoint fromRadius:fromRadius
                       to:toPoint toRadius:toRadius
           extendingStart:extendingStart extendingEnd:extendingEnd 
                  shading:shading];
-    CGPathRelease(thePath);
   }
 }
 
@@ -190,14 +188,13 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath);
 - (void)gtm_fillAxiallyFrom:(NSPoint)fromPoint to:(NSPoint)toPoint 
              extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                     shading:(id<GTMShading>)shading {
-  CGPathRef thePath = [self gtm_createCGPath];
+  CGPathRef thePath = [self gtm_CGPath];
   if (nil != thePath) {
     [self gtm_fillCGPath:thePath axially:YES asStroke:NO 
                     from:fromPoint fromRadius:(CGFloat)0.0
                       to:toPoint toRadius:(CGFloat)0.0
           extendingStart:extendingStart extendingEnd:extendingEnd 
                  shading:shading];
-    CGPathRelease(thePath);
   }
 }
 
@@ -206,14 +203,13 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_createCGPath);
                           to:(NSPoint)toPoint toRadius:(CGFloat)toRadius
               extendingStart:(BOOL)extendingStart extendingEnd:(BOOL)extendingEnd
                      shading:(id<GTMShading>)shading {
-  CGPathRef thePath = [self gtm_createCGPath];
+  CGPathRef thePath = [self gtm_CGPath];
   if (nil != thePath) {
     [self gtm_fillCGPath:thePath axially:NO asStroke:NO 
                     from:fromPoint fromRadius:fromRadius
                       to:toPoint toRadius:toRadius
           extendingStart:extendingStart extendingEnd:extendingEnd 
                  shading:shading];
-    CGPathRelease(thePath);
   }
 }
 

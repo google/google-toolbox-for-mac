@@ -24,7 +24,7 @@
 #define kServerShuttingDownNotification @"serverShuttingDown"
 
 // === Start off declaring some auxillary data structures ===
-static NSString *const kTestServerName = @"test";
+static NSString *const kTestServerName = @"gtm_test_server";
 
 // The @protocol that we'll use for testing with.
 @protocol DOTestProtocol
@@ -40,7 +40,7 @@ static NSString *const kTestServerName = @"test";
  @private
   BOOL quit_;
 }
-- (void)runThread:(id)ignore;
+- (void)runThread:(NSString *)serverName;
 - (void)shutdownServer;
 @end
 
@@ -54,7 +54,7 @@ static NSString *const kTestServerName = @"test";
   return returnValue;
 }
 
-- (void)runThread:(id)ignore {
+- (void)runThread:(NSString *)serverName {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -62,9 +62,9 @@ static NSString *const kTestServerName = @"test";
 
   NSConnection *conn = [NSConnection defaultConnection];
   [conn setRootObject:self];
-  if (![conn registerName:kTestServerName]) {
+  if (![conn registerName:serverName]) {
     _GTMDevLog(@"Failed to register DO root object with name '%@'",
-               kTestServerName);
+               serverName);
     // We hit an error, we are shutting down.
     quit_ = YES;
   }
@@ -134,16 +134,20 @@ static NSString *const kTestServerName = @"test";
            object:nil];
   serverOffline_ = NO;
 
-  // Setup our server.
+  // Setup our server and create a unqiue server name every time we run
+  NSTimeInterval timeStamp = [[NSDate date] timeIntervalSinceReferenceDate];
+  NSString *serverName =
+    [NSString stringWithFormat:@"%@_%f", kTestServerName, timeStamp];
+
   server_ = [[[DOTestServer alloc] init] autorelease];
   [NSThread detachNewThreadSelector:@selector(runThread:)
                            toTarget:server_
-                         withObject:nil];
+                         withObject:serverName];
   // Sleep for 1 second to give the new thread time to set stuff up
   [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 
   GTMTransientRootProxy<DOTestProtocol> *proxy =
-    [GTMTransientRootProxy rootProxyWithRegisteredName:kTestServerName
+    [GTMTransientRootProxy rootProxyWithRegisteredName:serverName
                                                   host:nil
                                               protocol:@protocol(DOTestProtocol)
                                         requestTimeout:kDefaultTimeout
@@ -156,7 +160,7 @@ static NSString *const kTestServerName = @"test";
   // Redo the *exact* same test to make sure we can have multiple instances
   // in the same app.
   proxy =
-    [GTMTransientRootProxy rootProxyWithRegisteredName:kTestServerName
+    [GTMTransientRootProxy rootProxyWithRegisteredName:serverName
                                                   host:nil
                                               protocol:@protocol(DOTestProtocol)
                                         requestTimeout:kDefaultTimeout
@@ -169,7 +173,7 @@ static NSString *const kTestServerName = @"test";
   // the server again.
 
   GTMRootProxyCatchAll<DOTestProtocol> *catchProxy =
-    [GTMRootProxyCatchAll rootProxyWithRegisteredName:kTestServerName
+    [GTMRootProxyCatchAll rootProxyWithRegisteredName:serverName
                                                  host:nil
                                              protocol:@protocol(DOTestProtocol)
                                        requestTimeout:kDefaultTimeout
@@ -209,6 +213,10 @@ static NSString *const kTestServerName = @"test";
     [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
   }
 
+  // The server did not shutdown and we want to capture this as an error
+  STAssertTrue([self serverStatus], @"The server did not shutdown gracefully "
+               @"before the timeout.");
+  
   [pool drain];
 }
 
