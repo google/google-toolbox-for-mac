@@ -240,11 +240,9 @@ static CFLocaleRef gCurrentLocale = NULL;
   if (db_) {
     int rc = sqlite3_close(db_);
     if (rc != SQLITE_OK) {
-      // COV_NF_START
       _GTMDevLog(@"Unable to close \"%@\", error code: %d", self, rc);
       _GTMDevLog(@"Did you forget to call -[GTMSQLiteStatement"
                  @" finalizeStatement] on one of your statements?");
-      // COV_NF_END
     }
   }
   [path_ release];
@@ -1286,24 +1284,20 @@ static void LikeGlobCompare(sqlite3_context *context,
            !((patternChar == matchAll) || (patternChar == matchOne) ||
            (setSupport && (patternChar == 0x5B)))) {  // "["
       if (patternChar == escape) {
-        // COV_NF_START - this code doesn't appear to be hittable
-        // setSupport implies that the escape char is NULL
-        // additionally, setSupport implies GLOB, and running a GLOB
-        // query with an escape clause appears to not work in SQLITE3
-        // when I tried it from the command line
         // No matter what the character follows the escape copy it to the
         // buffer
         patternIndex++;
         if (patternIndex >= patternLength) {
+          // COV_NF_START
           // Oops, escape came at end of pattern, that's an error
           sqlite3_result_error(context,
                                "LIKE or GLOB CF implementation found " \
                                "escape character at end of pattern", -1);
           return;
+          // COV_NF_END
         }
         patternChar = CFStringGetCharacterFromInlineBuffer(&patternBuffer,
                                                            patternIndex);
-        // COV_NF_END
       }
       // At this point the patternChar is either the escaped character or the
       // original normal character
