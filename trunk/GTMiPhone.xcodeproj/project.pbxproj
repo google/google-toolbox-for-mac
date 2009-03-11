@@ -543,7 +543,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\"\n";
+			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

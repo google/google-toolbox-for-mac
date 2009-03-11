@@ -257,6 +257,10 @@ Changes since 1.5.1
 
 - Added GTMTheme for doing product wide theme modifications.
 
+- The Run*UnitTest.sh script now support an env var to have them delete the
+  current target/configs *.gcda files to avoid coverage data warning when you
+  edit source.
+
 
 Release 1.5.1
 Changes since 1.5.0

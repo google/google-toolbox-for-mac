@@ -43,6 +43,11 @@
 #   Please feel free to add other symbols as you find them but make sure to 
 #   reference Radars or other bug systems so we can track them.
 #
+# GTM_REMOVE_GCOV_DATA
+#   Before starting the test, remove any *.gcda files for the current run so
+#   you won't get errors when the source file has changed and the data can't
+#   be merged.
+#
 
 ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
 ScriptName=$(basename "$0")
@@ -187,6 +192,16 @@ if [ ! $GTM_DISABLE_ZOMBIES ]; then
   # security framework
   # export CFZombieLevel=3
   export NSZombieEnabled=YES
+fi
+
+if [ $GTM_REMOVE_GCOV_DATA ]; then
+  if [ "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" != "-" ]; then
+    if [ -d "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" ]; then
+      GTMXcodeNote ${LINENO} "Removing any .gcda files"
+      (cd "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" && \
+          find . -type f -name "*.gcda" -print0 | xargs -0 rm -f )
+    fi
+  fi
 fi
 
 # If leaks testing is enabled, we have to go through our convoluted path
