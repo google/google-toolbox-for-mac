@@ -177,7 +177,14 @@ static BOOL gTrackingEnabled = NO;
                       format:@"Unexpected log: %@", logString];
         }
       } else {
-        NSLog(@"Expected Log: %@", logString);
+        static BOOL envChecked = NO;
+        static BOOL showExpectedLogs = YES;
+        if (!envChecked) {
+          showExpectedLogs = getenv("GTM_SHOW_UNITTEST_DEVLOGS") ? YES : NO;
+        }
+        if (showExpectedLogs) {
+          NSLog(@"Expected Log: %@", logString);
+        }
       }
     }
   } else {

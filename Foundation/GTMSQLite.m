@@ -172,7 +172,7 @@ static CFLocaleRef gCurrentLocale = NULL;
       rc = sqlite3_open([path_ fileSystemRepresentation], &db_);
     } else {
       CFStringEncoding cfEncoding;
-#if __BIG_ENDIAN__
+#if TARGET_RT_BIG_ENDIAN
       cfEncoding = kCFStringEncodingUTF16BE;
 #else
       cfEncoding = kCFStringEncodingUTF16LE;
@@ -982,12 +982,10 @@ static int Collate16(void *userContext, int length1, const void *str1,
   // we must.
   CFStringRef string1 = NULL, string2 = NULL;
   if ((userArgs->textRep == SQLITE_UTF16) ||
-#if defined __BIG_ENDIAN__
+#if TARGET_RT_BIG_ENDIAN
       (userArgs->textRep == SQLITE_UTF16BE)
-#elif defined __LITTLE_ENDIAN__
-      (userArgs->textRep == SQLITE_UTF16LE)
 #else
-#error Not big or little endian?
+      (userArgs->textRep == SQLITE_UTF16LE)
 #endif
   ) {
     string1 = CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,
@@ -1379,9 +1377,11 @@ static void Like8(sqlite3_context *context, int argc, sqlite3_value **argv) {
   const char *pattern = (const char *)sqlite3_value_text(argv[0]);
   const char *target = (const char *)sqlite3_value_text(argv[1]);
   if (!pattern || !target) {
+    // COV_NF_START
     sqlite3_result_error(context,
                          "LIKE CF implementation missing pattern or value", -1);
     return;
+    // COV_NF_END
   }
   CFStringRef patternString =
     CFStringCreateWithCStringNoCopy(kCFAllocatorDefault,
@@ -1469,9 +1469,11 @@ static void Like16(sqlite3_context *context, int argc, sqlite3_value **argv) {
   int targetByteCount = sqlite3_value_bytes16(argv[1]);
   const UniChar *targetText = (void *)sqlite3_value_text16(argv[1]);
   if (!patternByteCount || !patternText || !targetByteCount || !targetText) {
+    // COV_NF_START
     sqlite3_result_error(context,
                          "LIKE CF implementation missing pattern or value", -1);
     return;
+    // COV_NF_END
   }
   CFStringRef patternString =
     CFStringCreateWithCharactersNoCopy(kCFAllocatorDefault,

@@ -17,7 +17,7 @@
 //
 
 #import "GTMDefines.h"
-#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 

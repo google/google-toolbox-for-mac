@@ -150,6 +150,10 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
     long long temp = [number longLongValue];
     UInt32 hi = (UInt32)((temp >> 32) & 0x00000000FFFFFFFFLL);
     UInt32 lo = (UInt32)((temp >> 0) & 0x00000000FFFFFFFFLL);
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    outPSN.highLongOfPSN = hi;
+    outPSN.lowLongOfPSN = lo;
+#else  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
     if ([GTMSystemVersion isLeopardOrGreater]) {
       outPSN.highLongOfPSN = hi;
       outPSN.lowLongOfPSN = lo;
@@ -160,8 +164,9 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 #else
       outPSN.highLongOfPSN = lo;
       outPSN.lowLongOfPSN = hi;
-#endif
+#endif  // TARGET_RT_BIG_ENDIAN
     }
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
   }
   return outPSN;
 }

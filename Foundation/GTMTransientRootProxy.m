@@ -23,7 +23,7 @@
 // been available since 10.0, but Apple didn't add it to the headers until 10.5
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 @interface NSMethodSignature (UndeclaredMethods)
-+ (NSMethodSignature *)signatureWithObjCTypes:(const char *)fp8;
++ (NSMethodSignature *)signatureWithObjCTypes:(const char *)types;
 @end
 #endif // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 
@@ -105,8 +105,10 @@
   mdesc = protocol_getMethodDescription(protocol_, selector, YES, YES);
   NSMethodSignature *returnValue = nil;
   if (mdesc.types == NULL) {
+    // COV_NF_START
     _GTMDevLog(@"Unable to get the protocol method description.  Returning "
                @"nil.");
+    // COV_NF_END
   } else {
     returnValue = [NSMethodSignature signatureWithObjCTypes:mdesc.types];
   }

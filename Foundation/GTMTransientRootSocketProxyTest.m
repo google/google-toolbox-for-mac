@@ -133,7 +133,6 @@
 }
 
 - (void)testTransientRootSocketProxy {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   // Register for server notifications
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self
@@ -154,6 +153,19 @@
   NSSocketPort *receivePort =
     [[NSSocketPort alloc] initRemoteWithTCPPort:[server_ listeningPort]
                                            host:@"localhost"];
+
+  GTMTransientRootSocketProxy<DOSocketTestProtocol> *failProxy =
+    [GTMTransientRootSocketProxy rootProxyWithSocketPort:nil
+                                                protocol:@protocol(DOSocketTestProtocol)
+                                          requestTimeout:kDefaultTimeout
+                                            replyTimeout:kDefaultTimeout];
+  STAssertNil(failProxy, @"should have failed w/o a port");
+  failProxy =
+    [GTMTransientRootSocketProxy rootProxyWithSocketPort:receivePort
+                                                protocol:nil
+                                          requestTimeout:kDefaultTimeout
+                                            replyTimeout:kDefaultTimeout];
+  STAssertNil(failProxy, @"should have failed w/o a protocol");
 
   GTMTransientRootSocketProxy<DOSocketTestProtocol> *proxy =
     [GTMTransientRootSocketProxy rootProxyWithSocketPort:receivePort
@@ -181,14 +193,13 @@
 
   // Wait for the server to shutdown so we clean up nicely.  The max amount of
   // time we will wait until we abort this test.
-  NSDate *timeout = [NSDate dateWithTimeIntervalSinceNow:30.0];
+  id timeout = [NSDate dateWithTimeIntervalSinceNow:30.0];
   while (![self serverStatus] &&
-         ([[[NSDate date] laterDate:timeout] isEqualToDate:timeout])) {
+         ([[NSDate date] compare:timeout] != NSOrderedDescending)) {
     NSDate *runUntil = [NSDate dateWithTimeIntervalSinceNow:2.0];
     [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
   }
 
-  [pool drain];
 }
 
 @end

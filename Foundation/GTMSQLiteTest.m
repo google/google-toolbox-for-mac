@@ -496,7 +496,14 @@ static void TestUpperLower16Impl(sqlite3_context *context,
     STAssertTrue([db likeComparisonOptions] == 0,
                  @"LIKE Comparison options setter/getter does not work!");
 
-    err = [db executeSQL:@"CREATE TABLE foo (bar TEXT);"];
+    NSString *createString = nil;
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    createString = @"CREATE TABLE foo (bar NODIACRITIC_WIDTHINSENSITIVE TEXT);";
+#else
+    createString = @"CREATE TABLE foo (bar TEXT);";
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
+    err = [db executeSQL:createString];
     STAssertEquals(err, SQLITE_OK,
                    @"Failed to create table for like comparison options test");
 
@@ -523,6 +530,24 @@ static void TestUpperLower16Impl(sqlite3_context *context,
     err = [statement stepRow];
     STAssertEquals(err, SQLITE_ROW, @"failed to retrieve row!");
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    // Now try adding in 10.5 only flags
+    c |= (kCFCompareDiacriticInsensitive | kCFCompareWidthInsensitive);
+    [db setLikeComparisonOptions:c];
+    // Make a new statement
+    [statement finalizeStatement];
+    statement =
+      [GTMSQLiteStatement statementWithSQL:@"select * from foo where bar like '%LIKE%'"
+                                inDatabase:db
+                                 errorCode:&err];
+    
+    STAssertNotNil(statement, @"failed to create statement");
+    STAssertEquals(err, SQLITE_OK, @"failed to create statement");
+    
+    err = [statement stepRow];
+    STAssertEquals(err, SQLITE_ROW, @"failed to retrieve row!");
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    
     // Now reset comparison options
     [db setLikeComparisonOptions:oldFlags];
 
@@ -740,10 +765,10 @@ static void TestUpperLower16Impl(sqlite3_context *context,
 
 }
 
-// Diacritic & width insensitive collations are not supported
-// on Tiger
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 - (void)testDiacriticAndWidthInsensitiveCollations {
+  // Diacritic & width insensitive collations are not supported
+  // on Tiger, so most of the test is Leopard or later
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   int err;
   GTMSQLiteDatabase *db =
     [[[GTMSQLiteDatabase alloc] initInMemoryWithCFAdditions:YES
@@ -793,8 +818,30 @@ static void TestUpperLower16Impl(sqlite3_context *context,
   STAssertEquals([statement stepRow], SQLITE_ROW,
                  @"Comparison ignoring diacritics did not succeed");
   [statement finalizeStatement];
+#else
+  // On Tiger just make sure it causes the dev log.
+  int err;
+  GTMSQLiteDatabase *db =
+    [[[GTMSQLiteDatabase alloc] initInMemoryWithCFAdditions:YES
+                                                       utf8:YES
+                                                  errorCode:&err] autorelease];
+  STAssertNotNil(db, @"Failed to create DB");
+  STAssertEquals(err, SQLITE_OK, @"Failed to create DB");
+  
+  NSString *tableSQL =
+    @"CREATE TABLE FOOBAR (collated TEXT"
+    @"                     COLLATE NODIACRITIC_WIDTHINSENSITIVE_NOCASE,"
+    @"                     noncollated TEXT);";
+
+  // Expect one log for each unsupported flag
+  [GTMUnitTestDevLog expect:2
+              casesOfString:@"GTMSQLiteDatabase 10.5 collating not available "
+                            @"on 10.4 or earlier"];
+  err = [db executeSQL:tableSQL];
+  STAssertEquals(err, SQLITE_OK, @"error creating table");
+
+#endif // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 }
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_
 
 - (void)testCFStringLikeGlob {
 
@@ -1119,9 +1166,7 @@ static NSArray* LikeGlobTestHelper(GTMSQLiteDatabase *db, NSString *sql) {
     id result = [statement resultFoundationObjectAtPosition:0];
     if (result) [resultArray addObject:result];
   }
-  if (err != SQLITE_DONE && err != SQLITE_OK) {
-    resultArray = nil;
-  }
+  if (err != SQLITE_DONE && err != SQLITE_OK) resultArray = nil;
   [statement finalizeStatement];
 
   return resultArray;
