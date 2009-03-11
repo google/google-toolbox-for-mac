@@ -125,7 +125,6 @@ static NSString *const kTestServerName = @"gtm_test_server";
 }
 
 - (void)testTransientRootProxy {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   // Register for server notifications
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self
@@ -146,6 +145,23 @@ static NSString *const kTestServerName = @"gtm_test_server";
   // Sleep for 1 second to give the new thread time to set stuff up
   [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 
+  GTMTransientRootProxy<DOTestProtocol> *failProxy =
+    [GTMTransientRootProxy rootProxyWithRegisteredName:nil
+                                                  host:nil
+                                              protocol:@protocol(DOTestProtocol)
+                                        requestTimeout:kDefaultTimeout
+                                          replyTimeout:kDefaultTimeout];
+  STAssertNil(failProxy, @"should have failed w/o a name");
+  failProxy =
+    [GTMTransientRootProxy rootProxyWithRegisteredName:serverName
+                                                  host:nil
+                                              protocol:nil
+                                        requestTimeout:kDefaultTimeout
+                                          replyTimeout:kDefaultTimeout];
+  STAssertNil(failProxy, @"should have failed w/o a protocol");
+  failProxy = [[[GTMTransientRootProxy alloc] init] autorelease];
+  STAssertNil(failProxy, @"should have failed just calling init");
+  
   GTMTransientRootProxy<DOTestProtocol> *proxy =
     [GTMTransientRootProxy rootProxyWithRegisteredName:serverName
                                                   host:nil
@@ -206,9 +222,9 @@ static NSString *const kTestServerName = @"gtm_test_server";
 
   // Wait for the server to shutdown so we clean up nicely.
   // The max amount of time we will wait until we abort this test.
-  NSDate *timeout = [NSDate dateWithTimeIntervalSinceNow:30.0];
+  id timeout = [NSDate dateWithTimeIntervalSinceNow:30.0];
   while (![self serverStatus] &&
-         ([[[NSDate date] laterDate:timeout] isEqualToDate:timeout])) {
+         ([[NSDate date] compare:timeout] != NSOrderedDescending)) {
     NSDate *runUntil = [NSDate dateWithTimeIntervalSinceNow:2.0];
     [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
   }
@@ -216,8 +232,6 @@ static NSString *const kTestServerName = @"gtm_test_server";
   // The server did not shutdown and we want to capture this as an error
   STAssertTrue([self serverStatus], @"The server did not shutdown gracefully "
                @"before the timeout.");
-  
-  [pool drain];
 }
 
 @end
