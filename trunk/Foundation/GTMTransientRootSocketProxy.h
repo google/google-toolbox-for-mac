@@ -19,24 +19,32 @@
 #import <Foundation/Foundation.h>
 #import "GTMTransientRootProxy.h"
 
-@interface GTMTransientRootSocketProxy : GTMTransientRootProxy {
+@interface GTMTransientRootPortProxy : GTMTransientRootProxy {
  @private
-  NSSocketPort *port_;
+  NSPort *receivePort_;
+  NSPort *sendPort_;
 }
 
-// Returns an autoreleased instance
-+ (id)rootProxyWithSocketPort:(NSSocketPort *)port
-                     protocol:(Protocol *)protocol
-               requestTimeout:(NSTimeInterval)requestTimeout
-                 replyTimeout:(NSTimeInterval)replyTimeout;
+// Returns an autoreleased instance. See below for details on args.
++ (id)rootProxyWithReceivePort:(NSPort *)receivePort
+                      sendPort:(NSPort *)sendPort
+                      protocol:(Protocol *)protocol
+                requestTimeout:(NSTimeInterval)requestTimeout
+                  replyTimeout:(NSTimeInterval)replyTimeout;
 
-// This function will return a GTMTransientRootProxy that is using NSSocketPorts
-// for the connection.  The |port| argument must be allocated and configured by
-// the caller.
-//
-- (id)initWithSocketPort:(NSSocketPort *)port
-                protocol:(Protocol *)protocol
-          requestTimeout:(NSTimeInterval)requestTimeout
-            replyTimeout:(NSTimeInterval)replyTimeout;
+// This function will return a GTMTransientRootProxy that is using NSPorts
+// for the connection. The |receivePort| and |sendPort| conventions
+// follow the same conventions as -[NSConnection initWithReceivePort:sendPort:].
+// Note that due to Radar 6676818 "NSConnection leaks when initialized with nil
+// sendPort" that you will leak a connection if you pass in "nil" for your
+// sendPort if you are using NSPorts (mach or socket) to communicate between
+// threads. The leak occurs on 10.5.6, and SL 10A286. This simple answer
+// is just to always use two ports to communicate. Check out the test to see
+// how we do cross thread communication.
+- (id)initWithReceivePort:(NSPort *)receivePort
+                 sendPort:(NSPort *)sendPort
+                 protocol:(Protocol *)protocol
+           requestTimeout:(NSTimeInterval)requestTimeout
+             replyTimeout:(NSTimeInterval)replyTimeout;
 
 @end

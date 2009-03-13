@@ -1,5 +1,5 @@
 //
-//  GTMTransientRootSocketProxyTest.m
+//  GTMTransientRootPortProxyTest.m
 //
 //  Copyright 2006-2009 Google Inc.
 //
@@ -19,17 +19,19 @@
 #import "GTMSenTestCase.h"
 #import "GTMTransientRootSocketProxy.h"
 
-// Needed to get the socket port.
-#import <netinet/in.h>
-#import <arpa/inet.h>
-
 #define kDefaultTimeout 5.0
-#define kServerShuttingDownNotification @"serverShuttingDown"
+
+enum {
+  kGTMTransientThreadConditionStarting = 777,
+  kGTMTransientThreadConditionStarted,
+  kGTMTransientThreadConditionQuitting,
+  kGTMTransientThreadConditionQuitted
+};
 
 // === Start off declaring some auxillary data structures ===
 
 // The @protocol that we'll use for testing with.
-@protocol DOSocketTestProtocol
+@protocol DOPortTestProtocol
 - (oneway void)doOneWayVoid;
 - (bycopy NSString *)doReturnStringBycopy;
 @end
@@ -37,59 +39,54 @@
 // The "server" we'll use to test the DO connection.  This server will implement
 // our test protocol, and it will run in a separate thread from the main
 // unit testing thread, so the DO requests can be serviced.
-@interface DOSocketTestServer : NSObject <DOSocketTestProtocol> {
-@private
-  BOOL quit_;
-  unsigned short listeningPort_;
+@interface DOPortTestServer : NSObject <DOPortTestProtocol> {
+ @private
+  NSPort *clientSendPort_;
+  NSPort *clientReceivePort_;
 }
-- (void)runThread:(id)ignore;
-- (unsigned short)listeningPort;
-- (void)shutdownServer;
+- (void)runThread:(NSConditionLock *)lock;
+- (NSPort *)clientSendPort;
+- (NSPort *)clientReceivePort;
 @end
 
-@implementation DOSocketTestServer
+@implementation DOPortTestServer
 
-- (BOOL)shouldServerQuit {
-  BOOL returnValue = NO;
-  @synchronized(self) {
-    returnValue = quit_;
-  }
-  return returnValue;
-}
-
-- (void)runThread:(id)ignore {
+- (void)runThread:(NSConditionLock *)lock {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  NSDate *future = [NSDate dateWithTimeIntervalSinceNow:kDefaultTimeout];
+  if(![lock lockWhenCondition:kGTMTransientThreadConditionStarting
+                   beforeDate:future]) {
+    _GTMDevLog(@"Unable to acquire lock in runThread! This is BAD!");
+    [pool drain];
+    [NSThread exit];
+  }
 
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  quit_ = NO;
+  clientSendPort_ = [NSPort port];
+  clientReceivePort_ = [NSPort port];
 
-  NSSocketPort *serverPort = [[NSSocketPort alloc] init];
-
-  // We will need the port so we can hand if off to the client
-  // The structure will get us this information.
-  struct sockaddr_in addrIn =
-  *(struct sockaddr_in *)[[serverPort address] bytes];
-  listeningPort_ = htons(addrIn.sin_port);
-
-  NSConnection *conn = [NSConnection connectionWithReceivePort:serverPort
-                                                      sendPort:nil];
-  // Port is retained by the NSConnection
-  [serverPort release];
+  NSConnection *conn
+    = [[NSConnection alloc] initWithReceivePort:clientSendPort_
+                                       sendPort:clientReceivePort_];
   [conn setRootObject:self];
-
-  while (![self shouldServerQuit]) {
-    NSDate* runUntil = [NSDate dateWithTimeIntervalSinceNow:0.5];
+  [lock unlockWithCondition:kGTMTransientThreadConditionStarted];
+  while (![lock tryLockWhenCondition:kGTMTransientThreadConditionQuitting]) {
+    NSDate *runUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
     [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
   }
-
-  [conn invalidate];
+  [conn setRootObject:nil];
+  [clientSendPort_ invalidate];
+  [clientReceivePort_ invalidate];
   [conn release];
-  [nc postNotificationName:kServerShuttingDownNotification object:nil];
   [pool drain];
+  [lock unlockWithCondition:kGTMTransientThreadConditionQuitted];
 }
 
-- (unsigned short)listeningPort {
-  return listeningPort_;
+- (NSPort *)clientSendPort {
+  return clientSendPort_;
+}
+
+- (NSPort *)clientReceivePort {
+  return clientReceivePort_;
 }
 
 - (oneway void)doOneWayVoid {
@@ -99,79 +96,59 @@
   return @"TestString";
 }
 
-- (void)shutdownServer {
-  @synchronized(self) {
-    quit_ = YES;
-  }
-}
-
 @end
 
 // === Done with auxillary data structures, now for the main test class ===
 
-@interface GTMTransientRootSocketProxyTest : GTMTestCase {
-  DOSocketTestServer *server_;
-  BOOL serverOffline_;
+@interface GTMTransientRootPortProxyTest : GTMTestCase {
+  DOPortTestServer *server_;
+  NSConditionLock *syncLock_;
 }
 
 @end
 
-@implementation GTMTransientRootSocketProxyTest
+@implementation GTMTransientRootPortProxyTest
 
-- (void)serverIsShuttingDown:(NSNotification *)note {
-  @synchronized(self) {
-    serverOffline_ = YES;
-  }
-}
-
-- (BOOL)serverStatus {
-  BOOL returnValue = NO;
-  @synchronized(self) {
-    returnValue = serverOffline_;
-  }
-  return returnValue;
-}
-
-- (void)testTransientRootSocketProxy {
-  // Register for server notifications
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self
-         selector:@selector(serverIsShuttingDown:)
-             name:kServerShuttingDownNotification
-           object:nil];
-  serverOffline_ = NO;
+- (void)testTransientRootPortProxy {
+  syncLock_ = [[[NSConditionLock alloc]
+                initWithCondition:kGTMTransientThreadConditionStarting]
+               autorelease];
 
   // Setup our server.
-  server_ = [[[DOSocketTestServer alloc] init] autorelease];
+  server_ = [[[DOPortTestServer alloc] init] autorelease];
   [NSThread detachNewThreadSelector:@selector(runThread:)
                            toTarget:server_
-                         withObject:nil];
-  // Sleep for 1 second to give the new thread time to set stuff up
-  [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+                         withObject:syncLock_];
+  NSDate *future = [NSDate dateWithTimeIntervalSinceNow:kDefaultTimeout];
+  STAssertTrue([syncLock_ lockWhenCondition:kGTMTransientThreadConditionStarted
+                                 beforeDate:future],
+               @"Unable to start thread");
+  [syncLock_ unlockWithCondition:kGTMTransientThreadConditionStarted];
 
-  // Create our NSSocketPort
-  NSSocketPort *receivePort =
-    [[NSSocketPort alloc] initRemoteWithTCPPort:[server_ listeningPort]
-                                           host:@"localhost"];
+  NSPort *receivePort = [server_ clientReceivePort];
+  NSPort *sendPort = [server_ clientSendPort];
 
-  GTMTransientRootSocketProxy<DOSocketTestProtocol> *failProxy =
-    [GTMTransientRootSocketProxy rootProxyWithSocketPort:nil
-                                                protocol:@protocol(DOSocketTestProtocol)
-                                          requestTimeout:kDefaultTimeout
-                                            replyTimeout:kDefaultTimeout];
+  GTMTransientRootPortProxy<DOPortTestProtocol> *failProxy =
+    [GTMTransientRootPortProxy rootProxyWithReceivePort:nil
+                                               sendPort:nil
+                                               protocol:@protocol(DOPortTestProtocol)
+                                         requestTimeout:kDefaultTimeout
+                                           replyTimeout:kDefaultTimeout];
   STAssertNil(failProxy, @"should have failed w/o a port");
   failProxy =
-    [GTMTransientRootSocketProxy rootProxyWithSocketPort:receivePort
-                                                protocol:nil
-                                          requestTimeout:kDefaultTimeout
-                                            replyTimeout:kDefaultTimeout];
+    [GTMTransientRootPortProxy rootProxyWithReceivePort:receivePort
+                                               sendPort:sendPort
+                                               protocol:nil
+                                         requestTimeout:kDefaultTimeout
+                                           replyTimeout:kDefaultTimeout];
   STAssertNil(failProxy, @"should have failed w/o a protocol");
 
-  GTMTransientRootSocketProxy<DOSocketTestProtocol> *proxy =
-    [GTMTransientRootSocketProxy rootProxyWithSocketPort:receivePort
-                                                protocol:@protocol(DOSocketTestProtocol)
-                                          requestTimeout:kDefaultTimeout
-                                            replyTimeout:kDefaultTimeout];
+  GTMTransientRootPortProxy<DOPortTestProtocol> *proxy =
+    [GTMTransientRootPortProxy rootProxyWithReceivePort:receivePort
+                                               sendPort:sendPort
+                                               protocol:@protocol(DOPortTestProtocol)
+                                         requestTimeout:kDefaultTimeout
+                                           replyTimeout:kDefaultTimeout];
 
   STAssertEqualObjects([proxy doReturnStringBycopy],
                        @"TestString", @"proxy should have returned "
@@ -180,26 +157,26 @@
   // Redo the *exact* same test to make sure we can have multiple instances
   // in the same app.
   proxy =
-    [GTMTransientRootSocketProxy rootProxyWithSocketPort:receivePort
-                                                protocol:@protocol(DOSocketTestProtocol)
-                                          requestTimeout:kDefaultTimeout
-                                            replyTimeout:kDefaultTimeout];
+    [GTMTransientRootPortProxy rootProxyWithReceivePort:receivePort
+                                               sendPort:sendPort
+                                               protocol:@protocol(DOPortTestProtocol)
+                                         requestTimeout:kDefaultTimeout
+                                           replyTimeout:kDefaultTimeout];
 
   STAssertEqualObjects([proxy doReturnStringBycopy],
                        @"TestString", @"proxy should have returned "
                        @"'TestString'");
+  [syncLock_ tryLockWhenCondition:kGTMTransientThreadConditionStarted];
+  [syncLock_ unlockWithCondition:kGTMTransientThreadConditionQuitting];
 
-  [server_ shutdownServer];
-
-  // Wait for the server to shutdown so we clean up nicely.  The max amount of
-  // time we will wait until we abort this test.
-  id timeout = [NSDate dateWithTimeIntervalSinceNow:30.0];
-  while (![self serverStatus] &&
-         ([[NSDate date] compare:timeout] != NSOrderedDescending)) {
-    NSDate *runUntil = [NSDate dateWithTimeIntervalSinceNow:2.0];
-    [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
-  }
-
+  // Wait for the server to shutdown so we clean up nicely.
+  // The max amount of time we will wait until we abort this test.
+  NSDate *timeout = [NSDate dateWithTimeIntervalSinceNow:kDefaultTimeout];
+  // The server did not shutdown and we want to capture this as an error
+  STAssertTrue([syncLock_ lockWhenCondition:kGTMTransientThreadConditionQuitted
+                                 beforeDate:timeout],
+               @"The server did not shutdown gracefully before the timeout.");
+  [syncLock_ unlockWithCondition:kGTMTransientThreadConditionQuitted];
 }
 
 @end
