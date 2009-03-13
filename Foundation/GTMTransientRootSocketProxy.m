@@ -19,33 +19,35 @@
 #import "GTMTransientRootSocketProxy.h"
 #import "GTMObjC2Runtime.h"
 
-@interface GTMTransientRootSocketProxy (ProtectedMethods)
-// Returns an NSConnection for NSSocketPorts.  This method overrides the one in
+@interface GTMTransientRootPortProxy (ProtectedMethods)
+// Returns an NSConnection for NSPorts.  This method overrides the one in
 // the GTMTransientRootProxy which allows us to create a connection with a
-// NSSocketPort.
+// NSPort.
 //
 - (NSConnection *)makeConnection;
 @end
 
 
+@implementation GTMTransientRootPortProxy
 
-@implementation GTMTransientRootSocketProxy
-
-+ (id)rootProxyWithSocketPort:(NSSocketPort *)port
-                     protocol:(Protocol *)protocol
-               requestTimeout:(NSTimeInterval)requestTimeout
-                 replyTimeout:(NSTimeInterval)replyTimeout {
-  return [[[self alloc] initWithSocketPort:port
-                                  protocol:protocol
-                            requestTimeout:requestTimeout
-                              replyTimeout:replyTimeout] autorelease];
++ (id)rootProxyWithReceivePort:(NSPort *)receivePort
+                      sendPort:(NSPort *)sendPort
+                      protocol:(Protocol *)protocol
+                requestTimeout:(NSTimeInterval)requestTimeout
+                  replyTimeout:(NSTimeInterval)replyTimeout {
+  return [[[self alloc] initWithReceivePort:receivePort
+                                   sendPort:sendPort
+                                   protocol:protocol
+                             requestTimeout:requestTimeout
+                               replyTimeout:replyTimeout] autorelease];
 }
 
-- (id)initWithSocketPort:(NSSocketPort *)port
-                protocol:(Protocol *)protocol
-          requestTimeout:(NSTimeInterval)requestTimeout
-            replyTimeout:(NSTimeInterval)replyTimeout {
-  if (!port || !protocol) {
+- (id)initWithReceivePort:(NSPort *)receivePort
+                 sendPort:(NSPort *)sendPort
+                 protocol:(Protocol *)protocol
+           requestTimeout:(NSTimeInterval)requestTimeout
+             replyTimeout:(NSTimeInterval)replyTimeout {
+  if ((!sendPort && !receivePort) || !protocol) {
     [self release];
     return nil;
   }
@@ -53,23 +55,26 @@
   requestTimeout_ = requestTimeout;
   replyTimeout_ = replyTimeout;
 
-  port_ = [port retain];
-
+  receivePort_ = [receivePort retain];
+  sendPort_ = [sendPort retain];
+  
   protocol_ = protocol;  // Protocols can't be retained
   return self;
 }
 
 - (void)dealloc {
-  [port_ release];
+  [receivePort_ release];
+  [sendPort_ release];
   [super dealloc];
 }
 
 @end
 
-@implementation GTMTransientRootSocketProxy (ProtectedMethods)
+@implementation GTMTransientRootPortProxy (ProtectedMethods)
 
 - (NSConnection *)makeConnection {
-  return [NSConnection connectionWithReceivePort:nil sendPort:port_];
+  return [NSConnection connectionWithReceivePort:receivePort_
+                                        sendPort:sendPort_];
 }
 
 @end

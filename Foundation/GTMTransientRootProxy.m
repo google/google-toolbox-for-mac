@@ -89,6 +89,8 @@
 
 - (void)dealloc {
   [self releaseRealProxy];
+  [registeredName_ release];
+  [host_ release];
   [super dealloc];
 }
 
@@ -135,13 +137,13 @@
         || [exName isEqualToString:NSFailedAuthenticationException]
         || [exName isEqualToString:NSPortSendException]
         || [exName isEqualToString:NSPortReceiveException]) {
-      [self releaseRealProxy];
+      [self releaseRealProxy];  // COV_NF_LINE
     } else {
       // If the exception was any other type (commonly
       // NSInvalidArgumentException) then we'll just re-throw it to the caller.
       @throw;
     }
-  }
+  }  // COV_NF_LINE
 }
 
 @end
@@ -160,7 +162,8 @@
     if (realProxy_) return realProxy_;
 
     NSConnection *conn = [self makeConnection];
-
+    [conn setRequestTimeout:requestTimeout_];
+    [conn setReplyTimeout:replyTimeout_];
     @try {
       // Try to get the root proxy for this connection's vended object.
       realProxy_ = [conn rootProxy];
@@ -169,9 +172,11 @@
       // specified by the timeout above.  This may happen, for example, if the
       // server process is stopped (via SIGSTOP).  We'll just ignore this, and
       // try again at the next message.
+      [conn invalidate];
       return nil;
     }
     if (!realProxy_) {
+      [conn invalidate];
       // Again, no change in connection status
       return nil;
     }

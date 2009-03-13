@@ -21,10 +21,18 @@
 #import "GTMUnitTestDevLog.h"
 
 #define kDefaultTimeout 5.0
-#define kServerShuttingDownNotification @"serverShuttingDown"
 
 // === Start off declaring some auxillary data structures ===
 static NSString *const kTestServerName = @"gtm_test_server";
+static NSString *const kGTMTransientRootNameKey = @"GTMTransientRootNameKey";
+static NSString *const kGTMTransientRootLockKey = @"GTMTransientRootLockKey";
+
+enum {
+  kGTMTransientThreadConditionStarting = 777,
+  kGTMTransientThreadConditionStarted,
+  kGTMTransientThreadConditionQuitting,
+  kGTMTransientThreadConditionQuitted
+};
 
 // The @protocol that we'll use for testing with.
 @protocol DOTestProtocol
@@ -34,50 +42,44 @@ static NSString *const kTestServerName = @"gtm_test_server";
 @end
 
 // The "server" we'll use to test the DO connection.  This server will implement
-// our test protocol, and it will run in a separate thread from the main 
+// our test protocol, and it will run in a separate thread from the main
 // unit testing thread, so the DO requests can be serviced.
 @interface DOTestServer : NSObject <DOTestProtocol> {
- @private
-  BOOL quit_;
 }
-- (void)runThread:(NSString *)serverName;
-- (void)shutdownServer;
+- (void)runThread:(NSDictionary *)args;
 @end
 
 @implementation DOTestServer
 
-- (BOOL)shouldServerQuit {
-  BOOL returnValue = NO;
-  @synchronized(self) {
-    returnValue = quit_;
-  }
-  return returnValue;
-}
-
-- (void)runThread:(NSString *)serverName {
+- (void)runThread:(NSDictionary *)args {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  quit_ = NO;
+  NSConditionLock *lock = [args objectForKey:kGTMTransientRootLockKey];
+  NSString *serverName = [args objectForKey:kGTMTransientRootNameKey];
+  NSDate *future = [NSDate dateWithTimeIntervalSinceNow:kDefaultTimeout];
+  if(![lock lockWhenCondition:kGTMTransientThreadConditionStarting
+                   beforeDate:future]) {
+    _GTMDevLog(@"Unable to acquire lock in runThread! This is BAD!");
+    [pool drain];
+    [NSThread exit];
+  }
 
   NSConnection *conn = [NSConnection defaultConnection];
   [conn setRootObject:self];
   if (![conn registerName:serverName]) {
     _GTMDevLog(@"Failed to register DO root object with name '%@'",
                serverName);
-    // We hit an error, we are shutting down.
-    quit_ = YES;
+    [pool drain];
+    [NSThread exit];
   }
-
-  while (![self shouldServerQuit]) {
-    NSDate* runUntil = [NSDate dateWithTimeIntervalSinceNow:0.5];
+  [lock unlockWithCondition:kGTMTransientThreadConditionStarted];
+  while (![lock tryLockWhenCondition:kGTMTransientThreadConditionQuitting]) {
+    NSDate* runUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
     [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
   }
-
-  [conn invalidate];
-  [conn release];
-  [nc postNotificationName:kServerShuttingDownNotification object:nil];
+  [conn setRootObject:nil];
+  [conn registerName:nil];
   [pool drain];
+  [lock unlockWithCondition:kGTMTransientThreadConditionQuitted];
 }
 
 - (oneway void)doOneWayVoid {
@@ -85,12 +87,6 @@ static NSString *const kTestServerName = @"gtm_test_server";
 }
 - (bycopy NSString *)doReturnStringBycopy {
   return @"TestString";
-}
-
-- (void)shutdownServer {
-  @synchronized(self) {
-    quit_ = YES;
-  }
 }
 
 - (void)throwException {
@@ -104,46 +100,33 @@ static NSString *const kTestServerName = @"gtm_test_server";
 @interface GTMTransientRootProxyTest : GTMTestCase {
  @private
   DOTestServer *server_;
-  BOOL serverOffline_;
+  NSConditionLock *syncLock_;
 }
 @end
 
 @implementation GTMTransientRootProxyTest
 
-- (void)serverIsShuttingDown:(NSNotification *)note {
-  @synchronized(self) {
-    serverOffline_ = YES;
-  }
-}
-
-- (BOOL)serverStatus {
-  BOOL returnValue = NO;
-  @synchronized(self) {
-    returnValue = serverOffline_;
-  }
-  return returnValue;
-}
-
 - (void)testTransientRootProxy {
-  // Register for server notifications
-  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self
-         selector:@selector(serverIsShuttingDown:)
-             name:kServerShuttingDownNotification
-           object:nil];
-  serverOffline_ = NO;
-
   // Setup our server and create a unqiue server name every time we run
   NSTimeInterval timeStamp = [[NSDate date] timeIntervalSinceReferenceDate];
   NSString *serverName =
     [NSString stringWithFormat:@"%@_%f", kTestServerName, timeStamp];
-
   server_ = [[[DOTestServer alloc] init] autorelease];
+  syncLock_ = [[[NSConditionLock alloc]
+                initWithCondition:kGTMTransientThreadConditionStarting]
+               autorelease];
+  NSDictionary *args = [NSDictionary dictionaryWithObjectsAndKeys:
+                        syncLock_, kGTMTransientRootLockKey,
+                        serverName, kGTMTransientRootNameKey,
+                        nil];
   [NSThread detachNewThreadSelector:@selector(runThread:)
                            toTarget:server_
-                         withObject:serverName];
-  // Sleep for 1 second to give the new thread time to set stuff up
-  [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+                         withObject:args];
+  NSDate *future = [NSDate dateWithTimeIntervalSinceNow:kDefaultTimeout];
+  STAssertTrue([syncLock_ lockWhenCondition:kGTMTransientThreadConditionStarted
+                                 beforeDate:future],
+               @"Unable to start thread");
+  [syncLock_ unlockWithCondition:kGTMTransientThreadConditionStarted];
 
   GTMTransientRootProxy<DOTestProtocol> *failProxy =
     [GTMTransientRootProxy rootProxyWithRegisteredName:nil
@@ -161,7 +144,7 @@ static NSString *const kTestServerName = @"gtm_test_server";
   STAssertNil(failProxy, @"should have failed w/o a protocol");
   failProxy = [[[GTMTransientRootProxy alloc] init] autorelease];
   STAssertNil(failProxy, @"should have failed just calling init");
-  
+
   GTMTransientRootProxy<DOTestProtocol> *proxy =
     [GTMTransientRootProxy rootProxyWithRegisteredName:serverName
                                                   host:nil
@@ -169,9 +152,8 @@ static NSString *const kTestServerName = @"gtm_test_server";
                                         requestTimeout:kDefaultTimeout
                                           replyTimeout:kDefaultTimeout];
 
-  STAssertEqualObjects([proxy doReturnStringBycopy],
-                       @"TestString", @"proxy should have returned "
-                       @"'TestString'");
+    STAssertEqualObjects([proxy doReturnStringBycopy], @"TestString",
+                         @"proxy should have returned 'TestString'");
 
   // Redo the *exact* same test to make sure we can have multiple instances
   // in the same app.
@@ -205,7 +187,8 @@ static NSString *const kTestServerName = @"gtm_test_server";
   } @catch (id ex) {
     e = ex;
   }
-  STAssertNil(e, @"The GTMRootProxyCatchAll did not catch the exception: %@.", e);
+  STAssertNil(e, @"The GTMRootProxyCatchAll did not catch the exception: %@.",
+              e);
 
   proxy =
     [GTMTransientRootProxy rootProxyWithRegisteredName:@"FAKE_SERVER"
@@ -218,20 +201,28 @@ static NSString *const kTestServerName = @"gtm_test_server";
   STAssertFalse([proxy isConnected], @"the proxy shouldn't be connected due to "
                 @"the fake server");
 
-  [server_ shutdownServer];
+  // Now set up a proxy, and then kill our server. We put a super short time
+  // out on it, because we are expecting it to fail.
+  proxy =
+    [GTMTransientRootProxy rootProxyWithRegisteredName:serverName
+                                                  host:nil
+                                              protocol:@protocol(DOTestProtocol)
+                                        requestTimeout:0.01
+                                          replyTimeout:0.01];
+  [syncLock_ tryLockWhenCondition:kGTMTransientThreadConditionStarted];
+  [syncLock_ unlockWithCondition:kGTMTransientThreadConditionQuitting];
 
   // Wait for the server to shutdown so we clean up nicely.
   // The max amount of time we will wait until we abort this test.
-  id timeout = [NSDate dateWithTimeIntervalSinceNow:30.0];
-  while (![self serverStatus] &&
-         ([[NSDate date] compare:timeout] != NSOrderedDescending)) {
-    NSDate *runUntil = [NSDate dateWithTimeIntervalSinceNow:2.0];
-    [[NSRunLoop currentRunLoop] runUntilDate:runUntil];
-  }
-
+  NSDate *timeout = [NSDate dateWithTimeIntervalSinceNow:kDefaultTimeout];
   // The server did not shutdown and we want to capture this as an error
-  STAssertTrue([self serverStatus], @"The server did not shutdown gracefully "
-               @"before the timeout.");
+  STAssertTrue([syncLock_ lockWhenCondition:kGTMTransientThreadConditionQuitted
+                                   beforeDate:timeout],
+                 @"The server did not shutdown gracefully before the timeout.");
+  [syncLock_ unlockWithCondition:kGTMTransientThreadConditionQuitted];
+
+  // This should fail gracefully because the server is dead.
+  STAssertNil([proxy doReturnStringBycopy], @"proxy should have returned nil");
 }
 
 @end
