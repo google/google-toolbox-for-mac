@@ -1,5 +1,5 @@
 //
-//  GTMTransientRootSocketProxy.m
+//  GTMTransientRootPortProxy.m
 //
 //  Copyright 2006-2009 Google Inc.
 //
@@ -16,7 +16,7 @@
 //  the License.
 //
 
-#import "GTMTransientRootSocketProxy.h"
+#import "GTMTransientRootPortProxy.h"
 #import "GTMObjC2Runtime.h"
 
 @interface GTMTransientRootPortProxy (ProtectedMethods)
