@@ -17,7 +17,7 @@
 //
 
 #import "GTMSenTestCase.h"
-#import "GTMTransientRootSocketProxy.h"
+#import "GTMTransientRootPortProxy.h"
 
 #define kDefaultTimeout 5.0
 

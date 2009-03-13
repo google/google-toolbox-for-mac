@@ -1,5 +1,5 @@
 //
-//  GTMTransientRootSocketProxy.h
+//  GTMTransientRootPortProxy.h
 //
 //  Copyright 2006-2009 Google Inc.
 //
