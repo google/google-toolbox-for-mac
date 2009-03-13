@@ -24,6 +24,13 @@
 @end
 
 @implementation GTMStackTraceTest
++ (BOOL)classMethodTest {
+  NSString *stacktrace = GTMStackTrace();
+  NSArray *stacklines = [stacktrace componentsSeparatedByString:@"\n"];
+  NSString *firstFrame = [stacklines objectAtIndex:0];
+  NSRange range = [firstFrame rangeOfString:@"+"];
+  return range.location != NSNotFound;
+}
 
 - (void)testStackTraceBasic {
   NSString *stacktrace = GTMStackTrace();
@@ -43,6 +50,13 @@
   STAssertNotEquals(range.location, (NSUInteger)NSNotFound,
                     @"First frame should contain #0, stack trace: %@", 
                     stacktrace);
+  
+  range = [firstFrame rangeOfString:@"-"];
+  STAssertNotEquals(range.location, (NSUInteger)NSNotFound,
+                    @"First frame should contain - since it's "
+                    @"an instance method: %@", stacktrace);
+  STAssertTrue([[self class] classMethodTest], @"First frame should contain"
+               @"+ since it's a class method");
 }
 
 -(void)testGetStackAddressDescriptors {
