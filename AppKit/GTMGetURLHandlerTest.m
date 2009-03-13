@@ -46,8 +46,7 @@ static BOOL sURLHandlerWasHit;
   NSAppleEventDescriptor *keyDesc 
     = [NSAppleEventDescriptor descriptorWithString:url];
   [event setParamDescriptor:keyDesc forKeyword:keyDirectObject];
-  AppleEvent replyEvent = { typeNull, NULL };
-  OSStatus err = AESendMessage([event aeDesc], &replyEvent, kAEWaitReply, 60);
+  OSStatus err = AESendMessage([event aeDesc], NULL, kAEWaitReply, 60);
   return err == noErr ? YES : NO;
 }
 

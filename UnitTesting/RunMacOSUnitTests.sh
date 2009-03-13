@@ -165,6 +165,7 @@ RunTests() {
   AppendToSymbolsLeaksShouldIgnore "+[IKSFEffectDescription initialize]"
   
   # Running leaks on architectures that support leaks.
+  export MallocStackLogging=YES
   export GTM_LEAKS_SYMBOLS_TO_IGNORE="${GTM_LEAKS_SYMBOLS_TO_IGNORE}"
   ARCHS="${LEAK_TEST_ARCHS}"
   VALID_ARCHS="${LEAK_TEST_ARCHS}"
@@ -182,7 +183,6 @@ RunTests() {
 export MallocScribble=YES
 export MallocPreScribble=YES
 export MallocGuardEdges=YES
-export MallocStackLogging=YES
 export NSAutoreleaseFreedObjectCheckEnabled=YES
 export OBJC_DEBUG_FRAGILE_SUPERCLASSES=YES
 
@@ -206,7 +206,7 @@ fi
 
 # If leaks testing is enabled, we have to go through our convoluted path
 # to handle architectures that don't allow us to do leak testing.
-if [ GTM_ENABLE_LEAKS ]; then
+if [ $GTM_ENABLE_LEAKS ]; then
   RunTests  
 else
   "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"

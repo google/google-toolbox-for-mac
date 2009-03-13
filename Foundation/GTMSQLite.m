@@ -240,9 +240,10 @@ static CFLocaleRef gCurrentLocale = NULL;
   if (db_) {
     int rc = sqlite3_close(db_);
     if (rc != SQLITE_OK) {
-      _GTMDevLog(@"Unable to close \"%@\", error code: %d", self, rc);
-      _GTMDevLog(@"Did you forget to call -[GTMSQLiteStatement"
-                 @" finalizeStatement] on one of your statements?");
+      _GTMDevLog(@"Unable to close \"%@\", error code: %d\r"
+                 @"Did you forget to call -[GTMSQLiteStatement"
+                 @" finalizeStatement] on one of your statements?",
+                 self, rc);
     }
   }
   [path_ release];
@@ -1717,17 +1718,19 @@ static void Glob16(sqlite3_context *context, int argc, sqlite3_value **argv) {
 
 #if GTM_SUPPORT_GC
 - (void)finalize {
-  _GTMDevAssert(!statement_,
-                @"-[GTMSQLiteStatement finalizeStatement] must be called when"
-                @" statement is no longer needed");
+  if (statement_) {
+    _GTMDevLog(@"-[GTMSQLiteStatement finalizeStatement] must be called when"
+               @" statement is no longer needed");
+  }
   [super finalize];
 }
 #endif
 
 - (void)dealloc {
-  _GTMDevAssert(!statement_,
-                @"-[GTMSQLiteStatement finalizeStatement] must be called when"
-                @" statement is no longer needed");
+  if (statement_) {
+    _GTMDevLog(@"-[GTMSQLiteStatement finalizeStatement] must be called when"
+               @" statement is no longer needed");
+  }
   [super dealloc];
 }
 
