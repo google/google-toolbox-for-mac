@@ -93,7 +93,7 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
   // Iterate through the stack.
   for (NSUInteger i = 0; i < count; ++i) {
     const char *class_name = NULL;
-    Boolean is_class_method = FALSE;
+    BOOL is_class_method = NO;
     size_t smallest_diff = SIZE_MAX;
     struct GTMAddressDescriptor *currDesc = &outDescs[i];
     currDesc->address = pcs[i];
@@ -108,7 +108,7 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
           if (diff < smallest_diff) {
             best_method = class_descs[j].class_methods[k];
             class_name = class_descs[j].class_name;
-            is_class_method = TRUE;
+            is_class_method = YES;
             smallest_diff = diff;
           }
         }
@@ -121,7 +121,7 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
           if (diff < smallest_diff) {
             best_method = class_descs[j].instance_methods[k];
             class_name = class_descs[j].class_name;
-            is_class_method = TRUE;
+            is_class_method = NO;
             smallest_diff = diff;
           }
         }
@@ -140,7 +140,7 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
     dladdr(currDesc->address, &info);
     if ((size_t)currDesc->address - (size_t)info.dli_saddr < smallest_diff) {
       currDesc->symbol = info.dli_sname;
-      currDesc->is_class_method = FALSE;
+      currDesc->is_class_method = NO;
       currDesc->class_name = NULL;
     }
     currDesc->filename = info.dli_fname;
