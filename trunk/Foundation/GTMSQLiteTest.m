@@ -1776,9 +1776,8 @@ static NSArray* LikeGlobTestHelper(GTMSQLiteDatabase *db, NSString *sql) {
       @"when statement is no longer needed";
 
     [GTMUnitTestDevLog expectString:expectedLog];
-
-    STAssertThrows([localPool drain],
-                   @"Failing to clean up database did not throw assertion!");
+    [GTMUnitTestDevLog expectPattern:@"Unable to close .*"];
+    [localPool drain];
   }
 }
 
