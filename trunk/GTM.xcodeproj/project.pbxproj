@@ -1185,6 +1185,7 @@
 				F42E08690D199A5B00D5DDE0 /* Resources */,
 				F42E086A0D199A5B00D5DDE0 /* Sources */,
 				F42E086B0D199A5B00D5DDE0 /* Frameworks */,
+				F4D9A60D0F6B6E3000BB52C5 /* Clean gcov data */,
 			);
 			buildRules = (
 			);
@@ -1343,6 +1344,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+		};
+		F4D9A60D0F6B6E3000BB52C5 /* Clean gcov data */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Clean gcov data";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Since the unittests link the framework, we just nuke any gcda's each time\n# we build to be sure we get coverage data for the unittesting runs.\n\nOBJ_FILE_DIR_VAR=\"${OBJECT_FILE_DIR}-${CURRENT_VARIANT}\"\nif [ ${OBJ_FILE_DIR_VAR} != \"-\" ]; then\n  if [ -d ${OBJ_FILE_DIR_VAR} ]; then\n    (cd ${OBJ_FILE_DIR_VAR} && \\\n        find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
