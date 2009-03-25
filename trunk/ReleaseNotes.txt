@@ -262,6 +262,10 @@ Changes since 1.5.1
   current target/configs *.gcda files to avoid coverage data warning when you
   edit source.
 
+- Added OBJC_DEBUG_UNLOAD=YES, and OBJC_DEBUG_NIL_SYNC=YES to our unittest shell 
+  scripts to try and flush out some more bugs. We have intentionally NOT turned
+  on OBJC_DEBUG_FINALIZERS beacuse it spits out a lot of unnecessary false 
+  positives.
 
 Release 1.5.1
 Changes since 1.5.0
