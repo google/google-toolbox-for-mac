@@ -82,8 +82,14 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   export MallocGuardEdges=YES
   export MallocStackLogging=YES
   export NSAutoreleaseFreedObjectCheckEnabled=YES
+
+  # Turn on the mostly undocumented OBJC_DEBUG stuff.
   export OBJC_DEBUG_FRAGILE_SUPERCLASSES=YES
-  
+  export OBJC_DEBUG_UNLOAD=YES
+  # Turned off due to the amount of false positives from NS classes.
+  # export OBJC_DEBUG_FINALIZERS=YES  
+  export OBJC_DEBUG_NIL_SYNC=YES
+
   if [ ! $GTM_DISABLE_ZOMBIES ]; then
     GTMXcodeNote ${LINENO} "Enabling zombies"
     export CFZombieLevel=3
