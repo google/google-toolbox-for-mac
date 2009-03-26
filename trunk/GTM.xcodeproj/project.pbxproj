@@ -65,7 +65,6 @@
 		7F511DFE0F4B0378009F41B6 /* GTMTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF80F4B0378009F41B6 /* GTMTheme.m */; };
 		7F511E010F4B03B4009F41B6 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
 		7F511E020F4B03BC009F41B6 /* GTMThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */; };
-		84978FBC0EA6A67C00C5DC83 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
 		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */; };
 		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */; };
 		8B1801A20E2533D500280961 /* GTMLargeTypeWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */; };
@@ -99,7 +98,6 @@
 		8B45A2040DA46DF6001148C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		8B45A21A0DA46E1D001148C5 /* GTMGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */; };
 		8B45A21E0DA46E34001148C5 /* GTMObjC2Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F32040DA34A1B0052CA40 /* GTMObjC2Runtime.m */; };
-		8B45A22C0DA46E51001148C5 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
 		8B45A2AA0DA49C47001148C5 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8B45A2A50DA49C47001148C5 /* MainMenu.nib */; };
 		8B45A2AC0DA49C47001148C5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B45A2A80DA49C47001148C5 /* main.m */; };
 		8B45A2B30DA49CA9001148C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
@@ -1370,7 +1368,6 @@
 				8B45A0D50DA46A57001148C5 /* GTMNSObject+UnitTesting.m in Sources */,
 				8B45A0D60DA46A57001148C5 /* GTMNSObject+BindingUnitTesting.m in Sources */,
 				8B45A21A0DA46E1D001148C5 /* GTMGeometryUtils.m in Sources */,
-				8B45A22C0DA46E51001148C5 /* GTMSystemVersion.m in Sources */,
 				8B45A2E20DA51ABC001148C5 /* GTMUnitTestingTest.m in Sources */,
 				8B7AD4AE0DABBFEE00B84F4A /* GTMUnitTestingBindingTest.m in Sources */,
 				8B55479C0DB3B7A50014CC1C /* GTMAppKit+UnitTesting.m in Sources */,
@@ -1391,7 +1388,6 @@
 				8B7DCBC40DFF0F800017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCEF10E002C210017E983 /* GTMDevLogUnitTestingBridge.m in Sources */,
 				8B4D7A150E40D79200EFEDD8 /* GTMObjC2Runtime.m in Sources */,
-				84978FBC0EA6A67C00C5DC83 /* GTMSystemVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
