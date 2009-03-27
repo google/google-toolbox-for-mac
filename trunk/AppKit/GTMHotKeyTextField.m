@@ -61,7 +61,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #endif
 
 - (void)dealloc {
-  
   if (boundObject_ && boundKeyPath_) {
     [boundObject_ gtm_removeObserver:self 
                           forKeyPath:boundKeyPath_ 
@@ -71,7 +70,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   [boundKeyPath_ release];
   [hotKeyDict_ release];
   [super dealloc];
-  
 }
 
 #pragma mark Bindings
@@ -80,7 +78,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 - (void)bind:(NSString *)binding toObject:(id)observableController 
  withKeyPath:(NSString *)keyPath 
      options:(NSDictionary *)options {
-  
   if ([binding isEqualToString:NSValueBinding]) {
     // Update to our new binding
     [self setupBinding:observableController withPath:keyPath];
@@ -90,11 +87,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
      toObject:observableController
   withKeyPath:keyPath
       options:options];
-  
 }
 
 - (void)unbind:(NSString *)binding {
-  
   // Clean up value on unbind
   if ([binding isEqualToString:NSValueBinding]) {
     if (boundObject_ && boundKeyPath_) {
@@ -108,7 +103,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     boundKeyPath_ = nil;
   }
   [super unbind:binding];
-  
 }
 
 - (void)hotKeyValueChanged:(GTMKeyValueChangeNotification *)note {
@@ -131,7 +125,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 // Private convenience method for attaching to a new binding
 - (void)setupBinding:(id)bound withPath:(NSString *)path {
-  
   // Release previous
   if (boundObject_ && boundKeyPath_) {
     [boundObject_ gtm_removeObserver:self
@@ -154,174 +147,117 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   hotKeyDict_ = [[boundObject_ valueForKeyPath:boundKeyPath_] copy];
   // Update the display string
   [self updateDisplayedPrettyString];
-  
 }
 
 #pragma mark Defeating NSControl
 
-- (double)doubleValue {
-  
+- (int)logBadValueAccess {
   // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return 0.0;
-  
+  _GTMDevLog(@"Hot key fields don't take numbers.");
+  return 0;
+}
+
+- (void)logBadStringValueAccess {
+  // Defeating NSControl
+  _GTMDevLog(@"Hot key fields want dictionaries, not strings.");
+}
+
+
+- (double)doubleValue {
+  return [self logBadValueAccess];
 }
 
 - (void)setDoubleValue:(double)value {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess];
 }
 
 - (float)floatValue {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return 0.0f;
-  
+  return [self logBadValueAccess];  
 }
 
 - (void)setFloatValue:(float)value {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess];
 }
 
 - (int)intValue {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return 0;
-  
+  return [self logBadValueAccess]; 
 }
 
 - (void)setIntValue:(int)value {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess];
 }
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 - (NSInteger)integerValue {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return 0;
-  
+  return [self logBadValueAccess]; 
 }
 
 - (void)setIntegerValue:(NSInteger)value {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess]; 
 }
 
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 - (id)objectValue {
-  
   return [self hotKeyValue];
-  
 }
 
 - (void)setObjectValue:(id)object {
-  
   [self setHotKeyValue:object];
-  
 }
 
 - (NSString *)stringValue {
-  
   return [[self class] displayStringForHotKey:hotKeyDict_];
-  
 }
 
 - (void)setStringValue:(NSString *)string {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields want dictionaries, not strings.");
-  return;
-  
+  [self logBadStringValueAccess];
 }
 
 - (NSAttributedString *)attributedStringValue {
-  
+  NSAttributedString *attrString = nil;
   NSString *prettyString = [self stringValue];
-  if (!prettyString) return nil;
-  return [[[NSAttributedString alloc] initWithString:prettyString] autorelease];
-  
+  if (prettyString) {
+    attrString = [[[NSAttributedString alloc] 
+                   initWithString:prettyString] autorelease];
+  }
+  return attrString;
 }
 
 - (void)setAttributedStringValue:(NSAttributedString *)string {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields want dictionaries, not strings.");
-  return;
-  
+  [self logBadStringValueAccess];
 }
 
 - (void)takeDoubleValueFrom:(id)sender {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess];
 }
 
 - (void)takeFloatValueFrom:(id)sender {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess];
 }
 
 - (void)takeIntValueFrom:(id)sender {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't take numbers.");
-  return;
-  
+  [self logBadValueAccess];
 }
 
 - (void)takeObjectValueFrom:(id)sender {
-  
   // Defeating NSControl
-  _GTMDevAssert(NO,
-                @"Hot key fields want dictionaries via bindings, not from controls.");
-  return;
-  
+  _GTMDevLog(@"Hot key fields want dictionaries via bindings, "
+             @"not from controls.");
 }
 
 - (void)takeStringValueFrom:(id)sender {
-  
-  // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields want dictionaries, not strings.");
-  return;
-  
+  [self logBadStringValueAccess];
 }
 
 - (id)formatter {
-  
   return nil;
-  
 }
 
 - (void)setFormatter:(NSFormatter *)newFormatter {
-  
   // Defeating NSControl
-  _GTMDevAssert(NO, @"Hot key fields don't accept formatters.");
-  return;
-  
+  _GTMDevLog(@"Hot key fields don't accept formatters.");
 }
 
 #pragma mark Hot Key Support
@@ -338,7 +274,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 }
 
 - (void)setHotKeyValue:(NSDictionary *)hotKey {
-  
   // Sanity only if set, nil is OK
   if (hotKey && ![[self class] isValidHotKey:hotKey]) {
     return;
@@ -348,26 +283,21 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if (boundObject_ && boundKeyPath_) {
     // If the change is accepted this will call us back as an observer
     [boundObject_ setValue:hotKey forKeyPath:boundKeyPath_];
-    return;
+  } else {
+    // Otherwise we directly update ourself
+    [hotKeyDict_ autorelease];
+    hotKeyDict_ = [hotKey copy];
+    [self updateDisplayedPrettyString];
   }
-  
-  // Otherwise we directly update ourself
-  [hotKeyDict_ autorelease];
-  hotKeyDict_ = [hotKey copy];
-  [self updateDisplayedPrettyString];
-  
 }
 
 - (NSDictionary *)hotKeyValue {
-  
   return hotKeyDict_;
-  
 }
 
 // Private method to update the displayed text of the field with the
 // user-readable representation.
 - (void)updateDisplayedPrettyString {
-  
   // Basic validation
   if (![[self class] isValidHotKey:hotKeyDict_]) {
     [super setStringValue:@""];
@@ -384,7 +314,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 }
 
 + (NSString *)displayStringForHotKey:(NSDictionary *)hotKeyDict {
-  
   if (!hotKeyDict) return nil;
   
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -406,14 +335,12 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
                                               resourceBundle:bundle];
   if (!keystroke || ![keystroke length]) return nil;
   return [NSString stringWithFormat:@"%@%@", mods, keystroke];
-  
 }
 
 
 #pragma mark Field Editor Callbacks
 
 - (BOOL)textShouldBeginEditing:(GTMHotKeyFieldEditor *)fieldEditor {
-  
   // Sanity
   if (![fieldEditor isKindOfClass:[GTMHotKeyFieldEditor class]]) {
     _GTMDevLog(@"Field editor not appropriate for field, check window delegate");
@@ -431,11 +358,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   // Update the field editor internal hotkey representation
   [fieldEditor setHotKeyDictionary:hotKeyDict_];  // OK if its nil
   return YES;
-  
 }
 
 - (void)textDidChange:(NSNotification *)notification {
-  
   // Sanity
   GTMHotKeyFieldEditor *fieldEditor = [notification object];
   if (![fieldEditor isKindOfClass:[GTMHotKeyFieldEditor class]]) {
@@ -449,11 +374,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   
   // Let super handle the notifications
   [super textDidChange:notification];
-  
 }
 
 - (BOOL)textShouldEndEditing:(GTMHotKeyFieldEditor *)fieldEditor {
-  
   // Sanity
   if (![fieldEditor isKindOfClass:[GTMHotKeyFieldEditor class]]) {
     _GTMDevLog(@"Field editor not appropriate for field, check window delegate");
@@ -475,7 +398,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   [self setHotKeyValue:[fieldEditor hotKeyDictionary]];
   
   return YES;
-  
 }
 
 #pragma mark Class methods building strings for use w/in the UI.
@@ -511,7 +433,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 // conflicts.
 
 + (NSString *)stringForModifierFlags:(unsigned int)flags {
-  
   UniChar modChars[4];  // We only look for 4 flags
   unsigned int charCount = 0;
   // These are in the same order as the menu manager shows them
@@ -521,13 +442,11 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if (flags & NSCommandKeyMask) modChars[charCount++] = kCommandUnicode;
   if (charCount == 0) return nil;
   return [NSString stringWithCharacters:modChars length:charCount];
-  
 }
 
 + (NSString *)stringForKeycode:(UInt16)keycode 
                       useGlyph:(BOOL)useGlyph
                 resourceBundle:(NSBundle *)bundle {
-  
   // Some keys never move in any layout (to the best of our knowledge at least)
   // so we can hard map them.
   UniChar key = 0;
@@ -774,7 +693,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   }
   
   return keystrokeString;
-  
 }
 
 @end
@@ -784,45 +702,37 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
 
 - (id)init {
-  
-  self = [super init];
-  if (!self) return nil;
-  [self setFieldEditor:YES];  // We are a field editor
-  
+  if ((self = [super init])) {
+    [self setFieldEditor:YES];  // We are a field editor
+  }
   return self;
-  
 }
 
+// COV_NF_START
+// Singleton so never called.
 - (void)dealloc {
-  
   [hotKeyDict_ release];
   [super dealloc];
-  
 }
+// COV_NF_END
+
 
 - (NSArray *)acceptableDragTypes {
-  
   // Don't take drags
   return [NSArray array];
-  
 }
 
 - (NSArray *)readablePasteboardTypes {
-  
   // No pasting
   return [NSArray array];
-  
 }
 
 - (NSArray *)writablePasteboardTypes {
-  
   // No copying
   return [NSArray array];
-  
 }
 
 - (BOOL)becomeFirstResponder {
-  
   // We need to lose focus any time the window is not key
   NSNotificationCenter *dc = [NSNotificationCenter defaultCenter];
   [dc addObserver:self
@@ -830,55 +740,45 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
              name:NSWindowDidResignKeyNotification
            object:[self window]];
   return [super becomeFirstResponder];
-  
 }
 
 - (BOOL)resignFirstResponder {
-  
   // No longer interested in window resign
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   return [super resignFirstResponder];
-  
 }
 
 // Private method we use to get out of global hotkey capture when the window
 // is no longer front
 - (void)windowResigned:(NSNotification *)notification {
-  
   // Lose our focus
-  [[self window] makeFirstResponder:[self window]];
+  NSWindow *window = [self window];
+  [window makeFirstResponder:window];
   
 }
 
 - (BOOL)shouldDrawInsertionPoint {
-  
   // Show an insertion point, because we'll kill our own focus after
   // each entry
   return YES;
-  
 }
 
 - (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange 
                               granularity:(NSSelectionGranularity)granularity {
-  
   // Always select everything
   return NSMakeRange(0, [[self textStorage] length]);
-  
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
-  
   if ([self shouldBypassEvent:theEvent]) {
     [super keyDown:theEvent];
   } else {
     // Try to eat the event
     [self processEventToHotKeyAndString:theEvent];
   }  
-  
 }
 
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
-  
   if ([self shouldBypassEvent:theEvent]) {
     return [super performKeyEquivalent:theEvent];
   } else {
@@ -886,12 +786,10 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
     [self processEventToHotKeyAndString:theEvent];
     return YES;
   }
-  
 }
 
 // Private do method that tell us to ignore certain events
 - (BOOL)shouldBypassEvent:(NSEvent *)theEvent {
-  
   UInt16 keyCode = [theEvent keyCode];
   NSUInteger modifierFlags
     = [theEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask;
@@ -920,13 +818,11 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   }
   
   return NO;
-  
 }
 
 // Private method that turns events into strings and dictionaries for our
 // hotkey plumbing.
 - (void)processEventToHotKeyAndString:(NSEvent *)theEvent {
-  
   // Construct a dictionary of the event as a hotkey pref
   NSDictionary *newHotKey = [self hotKeyDictionaryForEvent:theEvent];
   if (!newHotKey) {
@@ -964,17 +860,13 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   // its better than constantly capturing user events. This is exactly
   // like the Apple editor in their Keyboard pref pane.
   [[[self delegate] cell] endEditing:self];
-  
 }
 
 - (NSDictionary *)hotKeyDictionary {
-  
   return hotKeyDict_;
-  
 }
 
 - (void)setHotKeyDictionary:(NSDictionary *)hotKey {
-  
   [hotKeyDict_ autorelease];
   hotKeyDict_ = [hotKey copy];
   // Update content
@@ -986,11 +878,9 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
     prettyString = @"";
   }
   [self setString:prettyString];
-  
 }
 
-- (NSDictionary *)hotKeyDictionaryForEvent:(NSEvent *)event{
-  
+- (NSDictionary *)hotKeyDictionaryForEvent:(NSEvent *)event {
   if (!event) return nil;
   
   // Check event
@@ -1018,7 +908,6 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
           [NSNumber numberWithUnsignedInt:cleanFlags],
           kGTMHotKeyModifierFlagsKey,
           nil];
-  
 }
-@end
 
+@end

@@ -258,9 +258,9 @@ Changes since 1.5.1
 
 - Added GTMTheme for doing product wide theme modifications.
 
-- The Run*UnitTest.sh script now support an env var to have them delete the
-  current target/configs *.gcda files to avoid coverage data warning when you
-  edit source.
+- The Run*UnitTest.sh script now delete the current projects *.gcda files to 
+  avoid coverage data warning when you edit source. If you do not want this to
+  occur, you can set GTM_DO_NOT_REMOVE_GCOV_DATA to a non-zero value.
 
 - Added OBJC_DEBUG_UNLOAD=YES, and OBJC_DEBUG_NIL_SYNC=YES to our unittest shell 
   scripts to try and flush out some more bugs. We have intentionally NOT turned

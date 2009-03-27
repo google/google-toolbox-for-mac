@@ -43,10 +43,16 @@
 #   Please feel free to add other symbols as you find them but make sure to 
 #   reference Radars or other bug systems so we can track them.
 #
-# GTM_REMOVE_GCOV_DATA
-#   Before starting the test, remove any *.gcda files for the current run so
-#   you won't get errors when the source file has changed and the data can't
-#   be merged.
+# GTM_DO_NOT_REMOVE_GCOV_DATA
+#   By default before starting the test, we remove any *.gcda files for the 
+#   current project build configuration so you won't get errors when a source 
+#   file has changed and the gcov data can't be merged. 
+#   We remove all the gcda files for the  current configuration for the entire 
+#   project so that if you are building a test bundle to test another separate 
+#   bundle we make sure to clean up the files for the test bundle and the bundle
+#   that you are testing.
+#   If you DO NOT want this to occur, set GTM_DO_NOT_REMOVE_GCOV_DATA to a
+#   non-zero value.
 #
 
 ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
@@ -200,11 +206,11 @@ if [ ! $GTM_DISABLE_ZOMBIES ]; then
   export NSZombieEnabled=YES
 fi
 
-if [ $GTM_REMOVE_GCOV_DATA ]; then
-  if [ "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" != "-" ]; then
-    if [ -d "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" ]; then
-      GTMXcodeNote ${LINENO} "Removing any .gcda files"
-      (cd "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" && \
+if [ ! $GTM_DO_NOT_REMOVE_GCOV_DATA ]; then
+  if [ "${CONFIGURATION_TEMP_DIR}" != "-" ]; then
+    if [ -d "${CONFIGURATION_TEMP_DIR}" ]; then
+      GTMXcodeNote ${LINENO} "Removing gcov data files from ${CONFIGURATION_TEMP_DIR}"
+        (cd "${CONFIGURATION_TEMP_DIR}" && \
           find . -type f -name "*.gcda" -print0 | xargs -0 rm -f )
     fi
   fi
