@@ -91,7 +91,7 @@
 					<key>MenuItemIsSeparator</key>
 					<false/>
 					<key>MenuItemKeyEquivalent</key>
-					<string>q</string>
+					<string></string>
 					<key>MenuItemState</key>
 					<integer>0</integer>
 					<key>MenuItemTag</key>

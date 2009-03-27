@@ -312,6 +312,8 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 // Don't want to get leaks on the iPhone Device as the device doesn't
 // have 'leaks'. The simulator does though.
 
+// COV_NF_START
+// We don't have leak checking on by default, so this won't be hit.
 static void _GTMRunLeaks(void) {
   // This is an atexit handler. It runs leaks for us to check if we are 
   // leaking anything in our tests. 
@@ -338,6 +340,7 @@ static void _GTMRunLeaks(void) {
     fflush(stderr);
   }
 }
+// COV_NF_END
 
 static __attribute__((constructor)) void _GTMInstallLeaks(void) {
   BOOL checkLeaks = YES;
@@ -347,15 +350,16 @@ static __attribute__((constructor)) void _GTMInstallLeaks(void) {
   if (checkLeaks) {
     checkLeaks = getenv("GTM_ENABLE_LEAKS") ? YES : NO;
     if (checkLeaks) {
-      if (checkLeaks) {
-        fprintf(stderr, "Leak Checking Enabled\n");
-        fflush(stderr);
-        int ret = atexit(&_GTMRunLeaks);
-        _GTMDevAssert(ret == 0, 
-                      @"Unable to install _GTMRunLeaks as an atexit handler (%d)", 
-                      errno);
-      }  
-    }
+      // COV_NF_START
+      // We don't have leak checking on by default, so this won't be hit.
+      fprintf(stderr, "Leak Checking Enabled\n");
+      fflush(stderr);
+      int ret = atexit(&_GTMRunLeaks);
+      _GTMDevAssert(ret == 0, 
+                    @"Unable to install _GTMRunLeaks as an atexit handler (%d)", 
+                    errno);
+      // COV_NF_END
+    }  
   }
 }
 

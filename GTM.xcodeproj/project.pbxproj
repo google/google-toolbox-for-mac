@@ -11,11 +11,9 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = F47204340D33BEDF00E9F378 /* Build configuration list for PBXAggregateTarget "All UnitTests" */;
 			buildPhases = (
+				8BAA9A2B0F7AF44A00DF4F12 /* ShellScript */,
 			);
 			dependencies = (
-				8B45A0390DA46A20001148C5 /* PBXTargetDependency */,
-				F472042F0D33BEB500E9F378 /* PBXTargetDependency */,
-				F472042D0D33BEB500E9F378 /* PBXTargetDependency */,
 			);
 			name = "All UnitTests";
 			productName = "All UnitTests";
@@ -56,15 +54,11 @@
 		6294454C0EDDF89A009295EA /* GTMNSArray+MergeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6294454B0EDDF89A009295EA /* GTMNSArray+MergeTest.m */; };
 		7F3EB38E0E5E09C700A7A75E /* GTMNSImage+Scaling.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F3EB38F0E5E09C700A7A75E /* GTMNSImage+Scaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB38D0E5E09C700A7A75E /* GTMNSImage+Scaling.m */; };
-		7F3EB3940E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
 		7F3EB5540E5F0B0400A7A75E /* GTMUnitTestingImage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */; };
-		7F3EB5870E5F0CBB00A7A75E /* GTMLargeTypeWindowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */; };
 		7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */; };
 		7F511DFC0F4B0378009F41B6 /* GTMTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF60F4B0378009F41B6 /* GTMTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F511DFE0F4B0378009F41B6 /* GTMTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF80F4B0378009F41B6 /* GTMTheme.m */; };
-		7F511E010F4B03B4009F41B6 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
-		7F511E020F4B03BC009F41B6 /* GTMThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */; };
 		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */; };
 		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */; };
 		8B1801A20E2533D500280961 /* GTMLargeTypeWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */; };
@@ -98,7 +92,6 @@
 		8B45A2040DA46DF6001148C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		8B45A21A0DA46E1D001148C5 /* GTMGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */; };
 		8B45A21E0DA46E34001148C5 /* GTMObjC2Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F32040DA34A1B0052CA40 /* GTMObjC2Runtime.m */; };
-		8B45A2AA0DA49C47001148C5 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8B45A2A50DA49C47001148C5 /* MainMenu.nib */; };
 		8B45A2AC0DA49C47001148C5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B45A2A80DA49C47001148C5 /* main.m */; };
 		8B45A2B30DA49CA9001148C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		8B45A2D00DA51A01001148C5 /* GTMUnitTestingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B45A2680DA498A0001148C5 /* GTMUnitTestingUtilities.m */; };
@@ -143,16 +136,27 @@
 		8B7DCE1B0DFF39850017E983 /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */; };
 		8B7DCEF10E002C210017E983 /* GTMDevLogUnitTestingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCBE10DFF18720017E983 /* GTMDevLogUnitTestingBridge.m */; };
 		8B8B10290EEB8B1600E543D0 /* GTMHotKeyTextFieldTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A420EE0EDDF8E000397A11 /* GTMHotKeyTextFieldTest.m */; };
-		8B8B102A0EEB8B2900E543D0 /* GTMCarbonEventTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */; };
 		8B8B10F90EEB8B9E00E543D0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		8B8B10FD0EEB8BC300E543D0 /* GTMUnitTestingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B45A2680DA498A0001148C5 /* GTMUnitTestingUtilities.m */; };
-		8B8B11000EEB8CD000E543D0 /* GTMGetURLHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B10FF0EEB8CD000E543D0 /* GTMGetURLHandlerTest.m */; };
 		8B8EC87D0EF17C270044D13F /* GTMNSFileManager+Carbon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B8EC87B0EF17C270044D13F /* GTMNSFileManager+Carbon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B8EC87E0EF17C270044D13F /* GTMNSFileManager+Carbon.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8EC87C0EF17C270044D13F /* GTMNSFileManager+Carbon.m */; };
 		8B8EC8800EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8EC87F0EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m */; };
 		8BA01B5D0F144BD800926923 /* GTMNSWorkspace+Running.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */; };
 		8BA01B5E0F144BD800926923 /* GTMNSWorkspace+Running.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BA01B600F144BE500926923 /* GTMNSWorkspace+RunningTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */; };
+		8BAA9B570F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BAA9B560F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib */; };
+		8BAA9E380F7C19D500DF4F12 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BAA9E360F7C19D500DF4F12 /* MainMenu.xib */; };
+		8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */; };
+		8BAA9EF30F7C2AB500DF4F12 /* GTMGetURLHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8B10FF0EEB8CD000E543D0 /* GTMGetURLHandlerTest.m */; };
+		8BAA9EF40F7C2AB500DF4F12 /* GTMLargeTypeWindowTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */; };
+		8BAA9EF50F7C2AB500DF4F12 /* GTMLinearRGBShadingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E44790D4918B20041161F /* GTMLinearRGBShadingTest.m */; };
+		8BAA9EF60F7C2AB500DF4F12 /* GTMLoginItemsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */; };
+		8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */; };
+		8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */; };
+		8BAA9EF90F7C2AB500DF4F12 /* GTMNSBezierPath+ShadingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1C110D490BC000925B8F /* GTMNSBezierPath+ShadingTest.m */; };
+		8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
+		8BAA9EFB0F7C2AB500DF4F12 /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
+		8BAA9EFC0F7C2AB500DF4F12 /* GTMNSWorkspace+RunningTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */; };
+		8BAA9EFD0F7C2AB500DF4F12 /* GTMThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */; };
 		8BC045C20DAE899100C2D1CA /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */; };
 		8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */; };
 		8BC04CD80DB003D800C2D1CA /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -188,8 +192,6 @@
 		F425977F0E23FE43003BEA3E /* GTMNSString+FindFolderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42597780E23FE3A003BEA3E /* GTMNSString+FindFolderTest.m */; };
 		F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F428FF040D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */; };
-		F428FF090D48E57300382ED1 /* GTMNSBezierPath+CGPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */; };
-		F42E082F0D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */; };
 		F42E08330D19992100D5DDE0 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
 		F42E08340D19992100D5DDE0 /* GTMSystemVersionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */; };
 		F42E08610D199A2B00D5DDE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
@@ -223,10 +225,8 @@
 		F437F5620D50BC1D00F5C3A4 /* GTMRegexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */; };
 		F43DCDCD0D4796C600959A62 /* GTMLoginItems.h in Headers */ = {isa = PBXBuildFile; fileRef = F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F43DCDCE0D4796C600959A62 /* GTMLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */; };
-		F43DCEC70D47BEA000959A62 /* GTMLoginItemsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */; };
 		F43E447A0D4918B20041161F /* GTMLinearRGBShading.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E44770D4918B20041161F /* GTMLinearRGBShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F43E447B0D4918B20041161F /* GTMLinearRGBShading.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E44780D4918B20041161F /* GTMLinearRGBShading.m */; };
-		F43E447F0D4918BC0041161F /* GTMLinearRGBShadingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E44790D4918B20041161F /* GTMLinearRGBShadingTest.m */; };
 		F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E4C250D4E361D0041161F /* GTMNSString+XML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F43E4C290D4E361D0041161F /* GTMNSString+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C260D4E361D0041161F /* GTMNSString+XML.m */; };
 		F43E4C2D0D4E36230041161F /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
@@ -241,7 +241,6 @@
 		F47A798B0D746EFC002302AB /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };
 		F47F1C120D490BC000925B8F /* GTMNSBezierPath+Shading.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1C0D0D490BC000925B8F /* GTMNSBezierPath+Shading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47F1C130D490BC000925B8F /* GTMNSBezierPath+Shading.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1C0E0D490BC000925B8F /* GTMNSBezierPath+Shading.m */; };
-		F47F1C1B0D490BD200925B8F /* GTMNSBezierPath+ShadingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1C110D490BC000925B8F /* GTMNSBezierPath+ShadingTest.m */; };
 		F47F1C750D490E5C00925B8F /* GTMShading.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1C740D490E5C00925B8F /* GTMShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47F1D300D4914AD00925B8F /* GTMCalculatedRange.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47F1D310D4914AD00925B8F /* GTMCalculatedRange.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */; };
@@ -277,13 +276,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B45A0380DA46A20001148C5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B45A0270DA4696C001148C5;
-			remoteInfo = "UnitTest - UnitTesting";
-		};
 		8B45A2D30DA51A0E001148C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -298,12 +290,12 @@
 			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
 			remoteInfo = GTM;
 		};
-		F41D254E0DB9067C00774EEB /* PBXContainerItemProxy */ = {
+		8BAA9A340F7AF50600DF4F12 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8B45A0270DA4696C001148C5;
-			remoteInfo = "UnitTest - UnitTesting";
+			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
+			remoteInfo = UIUnitTestingHarness;
 		};
 		F42E08760D199A9B00D5DDE0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -318,20 +310,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
 			remoteInfo = GTM;
-		};
-		F472042C0D33BEB500E9F378 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F48FE2630D198C1E009257D2;
-			remoteInfo = "UnitTest - AppKit";
-		};
-		F472042E0D33BEB500E9F378 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F42E08110D19987200D5DDE0;
-			remoteInfo = "UnitTest - Foundation";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -409,7 +387,6 @@
 		8B45A2670DA498A0001148C5 /* GTMUnitTestingUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUnitTestingUtilities.h; sourceTree = "<group>"; };
 		8B45A2680DA498A0001148C5 /* GTMUnitTestingUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestingUtilities.m; sourceTree = "<group>"; };
 		8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMUIUnitTestingHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B45A2A60DA49C47001148C5 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		8B45A2A70DA49C47001148C5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B45A2A80DA49C47001148C5 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8B45A2DE0DA51A7E001148C5 /* GTMUnitTestingTest.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = GTMUnitTestingTest.nib; sourceTree = "<group>"; };
@@ -450,6 +427,9 @@
 		8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+Running.m"; sourceTree = "<group>"; };
 		8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSWorkspace+Running.h"; sourceTree = "<group>"; };
 		8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+RunningTest.m"; sourceTree = "<group>"; };
+		8BAA9B540F7B4A5000DF4F12 /* GTMHotKeyTextFieldTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHotKeyTextFieldTest.h; sourceTree = "<group>"; };
+		8BAA9B560F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMHotKeyTextFieldTest.xib; sourceTree = "<group>"; };
+		8BAA9E370F7C19D500DF4F12 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = UnitTesting/GTMUIUnitTestingHarness/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		8BC04D140DB0061300C2D1CA /* RunMacOSUnitTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = RunMacOSUnitTests.sh; sourceTree = "<group>"; };
 		8BE2836B0DED0F130035B3F8 /* GTMFourCharCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFourCharCode.m; sourceTree = "<group>"; };
@@ -708,7 +688,7 @@
 		8B45A2A20DA49C47001148C5 /* GTMUIUnitTestingHarness */ = {
 			isa = PBXGroup;
 			children = (
-				8B45A2A50DA49C47001148C5 /* MainMenu.nib */,
+				8BAA9E360F7C19D500DF4F12 /* MainMenu.xib */,
 				8B45A2A70DA49C47001148C5 /* Info.plist */,
 				8B45A2A80DA49C47001148C5 /* main.m */,
 			);
@@ -780,7 +760,9 @@
 				8B8B10FF0EEB8CD000E543D0 /* GTMGetURLHandlerTest.m */,
 				F4A420EC0EDDF8E000397A11 /* GTMHotKeyTextField.h */,
 				F4A420ED0EDDF8E000397A11 /* GTMHotKeyTextField.m */,
+				8BAA9B540F7B4A5000DF4F12 /* GTMHotKeyTextFieldTest.h */,
 				F4A420EE0EDDF8E000397A11 /* GTMHotKeyTextFieldTest.m */,
+				8BAA9B560F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib */,
 				8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */,
 				8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */,
 				8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */,
@@ -1183,7 +1165,6 @@
 				F42E08690D199A5B00D5DDE0 /* Resources */,
 				F42E086A0D199A5B00D5DDE0 /* Sources */,
 				F42E086B0D199A5B00D5DDE0 /* Frameworks */,
-				F4D9A60D0F6B6E3000BB52C5 /* Clean gcov data */,
 			);
 			buildRules = (
 			);
@@ -1206,8 +1187,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				8BAA9A350F7AF50600DF4F12 /* PBXTargetDependency */,
 				F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */,
-				F41D254F0DB9067C00774EEB /* PBXTargetDependency */,
 			);
 			name = "UnitTest - AppKit";
 			productName = "UnitTest - AppKit";
@@ -1264,7 +1245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B45A2AA0DA49C47001148C5 /* MainMenu.nib in Resources */,
+				8BAA9E380F7C19D500DF4F12 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1298,6 +1279,7 @@
 				8B1801B30E25341B00280961 /* GTMLargeTypeWindowShortTextTest.gtmUTState in Resources */,
 				8B1802420E25592200280961 /* GTMLargeTypeWindowMediumTextTest.gtmUTState in Resources */,
 				7F3EB5540E5F0B0400A7A75E /* GTMUnitTestingImage.tiff in Resources */,
+				8BAA9B570F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1315,7 +1297,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
+		};
+		8BAA9A2B0F7AF44A00DF4F12 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "GTMXcodeNote() {\n  echo ${ThisScript}:${1}: note: GTM ${2}\n}\n\nGTMXcodeNote ${LINENO} \"Removing gcov data files from ${CONFIGURATION_TEMP_DIR}\"\n( cd \"${CONFIGURATION_TEMP_DIR}\" &&  find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - UnitTesting\" -configuration \"${CONFIGURATION}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - Foundation\" -configuration \"${CONFIGURATION}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AppKit\" -configuration \"${CONFIGURATION}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1";
 		};
 		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1328,7 +1323,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
 		};
 		F48FE2620D198C1E009257D2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1341,22 +1336,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
-		};
-		F4D9A60D0F6B6E3000BB52C5 /* Clean gcov data */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Clean gcov data";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Since the unittests link the framework, we just nuke any gcda's each time\n# we build to be sure we get coverage data for the unittesting runs.\n\nOBJ_FILE_DIR_VAR=\"${OBJECT_FILE_DIR}-${CURRENT_VARIANT}\"\nif [ ${OBJ_FILE_DIR_VAR} != \"-\" ]; then\n  if [ -d ${OBJ_FILE_DIR_VAR} ]; then\n    (cd ${OBJ_FILE_DIR_VAR} && \\\n        find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n  fi\nfi\n";
-			showEnvVarsInLog = 0;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1508,36 +1488,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F511E010F4B03B4009F41B6 /* GTMNSColor+LuminanceTest.m in Sources */,
-				7F511E020F4B03BC009F41B6 /* GTMThemeTest.m in Sources */,
-				F42E082F0D19991400D5DDE0 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
 				F42E09450D199BA400D5DDE0 /* GTMNSObject+UnitTesting.m in Sources */,
-				F43DCEC70D47BEA000959A62 /* GTMLoginItemsTest.m in Sources */,
-				F428FF090D48E57300382ED1 /* GTMNSBezierPath+CGPathTest.m in Sources */,
-				F47F1C1B0D490BD200925B8F /* GTMNSBezierPath+ShadingTest.m in Sources */,
-				F43E447F0D4918BC0041161F /* GTMLinearRGBShadingTest.m in Sources */,
 				8B5547B90DB3BB220014CC1C /* GTMAppKit+UnitTesting.m in Sources */,
 				8B7DCBC10DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCBED0DFF1A4F0017E983 /* GTMUnitTestDevLog.m in Sources */,
 				8B7DCE190DFF39850017E983 /* GTMSenTestCase.m in Sources */,
-				7F3EB3940E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m in Sources */,
-				7F3EB5870E5F0CBB00A7A75E /* GTMLargeTypeWindowTest.m in Sources */,
 				8B8B10290EEB8B1600E543D0 /* GTMHotKeyTextFieldTest.m in Sources */,
-				8B8B102A0EEB8B2900E543D0 /* GTMCarbonEventTest.m in Sources */,
 				8B8B10FD0EEB8BC300E543D0 /* GTMUnitTestingUtilities.m in Sources */,
-				8B8B11000EEB8CD000E543D0 /* GTMGetURLHandlerTest.m in Sources */,
-				8BA01B600F144BE500926923 /* GTMNSWorkspace+RunningTest.m in Sources */,
+				8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */,
+				8BAA9EF30F7C2AB500DF4F12 /* GTMGetURLHandlerTest.m in Sources */,
+				8BAA9EF40F7C2AB500DF4F12 /* GTMLargeTypeWindowTest.m in Sources */,
+				8BAA9EF50F7C2AB500DF4F12 /* GTMLinearRGBShadingTest.m in Sources */,
+				8BAA9EF60F7C2AB500DF4F12 /* GTMLoginItemsTest.m in Sources */,
+				8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */,
+				8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
+				8BAA9EF90F7C2AB500DF4F12 /* GTMNSBezierPath+ShadingTest.m in Sources */,
+				8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */,
+				8BAA9EFB0F7C2AB500DF4F12 /* GTMNSImage+ScalingTest.m in Sources */,
+				8BAA9EFC0F7C2AB500DF4F12 /* GTMNSWorkspace+RunningTest.m in Sources */,
+				8BAA9EFD0F7C2AB500DF4F12 /* GTMThemeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8B45A0390DA46A20001148C5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8B45A0270DA4696C001148C5 /* UnitTest - UnitTesting */;
-			targetProxy = 8B45A0380DA46A20001148C5 /* PBXContainerItemProxy */;
-		};
 		8B45A2D40DA51A0E001148C5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
@@ -1548,10 +1523,10 @@
 			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
 			targetProxy = 8B7DCBA30DFF0EFB0017E983 /* PBXContainerItemProxy */;
 		};
-		F41D254F0DB9067C00774EEB /* PBXTargetDependency */ = {
+		8BAA9A350F7AF50600DF4F12 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8B45A0270DA4696C001148C5 /* UnitTest - UnitTesting */;
-			targetProxy = F41D254E0DB9067C00774EEB /* PBXContainerItemProxy */;
+			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
+			targetProxy = 8BAA9A340F7AF50600DF4F12 /* PBXContainerItemProxy */;
 		};
 		F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1563,25 +1538,16 @@
 			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
 			targetProxy = F42E08780D199AA600D5DDE0 /* PBXContainerItemProxy */;
 		};
-		F472042D0D33BEB500E9F378 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F48FE2630D198C1E009257D2 /* UnitTest - AppKit */;
-			targetProxy = F472042C0D33BEB500E9F378 /* PBXContainerItemProxy */;
-		};
-		F472042F0D33BEB500E9F378 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F42E08110D19987200D5DDE0 /* UnitTest - Foundation */;
-			targetProxy = F472042E0D33BEB500E9F378 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		8B45A2A50DA49C47001148C5 /* MainMenu.nib */ = {
+		8BAA9E360F7C19D500DF4F12 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				8B45A2A60DA49C47001148C5 /* English */,
+				8BAA9E370F7C19D500DF4F12 /* English */,
 			);
-			name = MainMenu.nib;
+			name = MainMenu.xib;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
