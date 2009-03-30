@@ -365,7 +365,7 @@
   
   // Now try some typing
   NSWindow *window = [controller_ window];
-  [window makeFirstResponder:field];
+  STAssertTrue([window makeFirstResponder:field], nil);
   [self pressKey:@"A" code:0 modifierFlags:NSShiftKeyMask window:window];
   stringValue = [field stringValue];
   STAssertEqualObjects(stringValue, @"⇧A", nil);
@@ -373,34 +373,41 @@
   // field is supposed to give up first responder when editing is done.
   STAssertNotEqualObjects([window firstResponder], field, nil);
   
-  [window makeFirstResponder:field];
-  [self pressKey:@"A" code:0 modifierFlags:NSCommandKeyMask window:window];
+  // Do NOT attempt to set the key via pressKey to the same cmd-key combo
+  // as a menu item. This works fine on Leopard, but fails on Tiger (and fails
+  // on Leopard if you have linked to the Tiger libs). I hope control-shift-opt
+  // J won't be used in our simple test app.
+  STAssertTrue([window makeFirstResponder:field], nil);
+  [self pressKey:@"J" 
+            code:38 
+   modifierFlags:NSAlternateKeyMask | NSShiftKeyMask | NSControlKeyMask
+          window:window];
   stringValue = [field stringValue];
-  STAssertEqualObjects(stringValue, @"⌘A", nil);
+  STAssertEqualObjects(stringValue, @"⌃⌥⇧J", nil);
   
   // Try without a modifier. This should fail.
-  [window makeFirstResponder:field];
-  [self pressKey:@"s" code:1 modifierFlags:0 window:window];
+  STAssertTrue([window makeFirstResponder:field], nil);
+  [self pressKey:@"j" code:38 modifierFlags:0 window:window];
   stringValue = [field stringValue];
-  STAssertEqualObjects(stringValue, @"⌘A", nil);
+  STAssertEqualObjects(stringValue, @"⌃⌥⇧J", nil);
  
   // Try cmd-q this should fail
-  [window makeFirstResponder:field];
+  STAssertTrue([window makeFirstResponder:field], nil);
   [self pressKey:@"Q" code:12 modifierFlags:NSCommandKeyMask window:window];
   stringValue = [field stringValue];
-  STAssertEqualObjects(stringValue, @"⌘A", nil);
+  STAssertEqualObjects(stringValue, @"⌃⌥⇧J", nil);
   
   // Try cmd-w this should fail
-  [window makeFirstResponder:field];
+  STAssertTrue([window makeFirstResponder:field], nil);
   [self pressKey:@"W" code:13 modifierFlags:NSCommandKeyMask window:window];
   stringValue = [field stringValue];
-  STAssertEqualObjects(stringValue, @"⌘A", nil);
+  STAssertEqualObjects(stringValue, @"⌃⌥⇧J", nil);
   
   // Try cmd-tab this should fail
-  [window makeFirstResponder:field];
+  STAssertTrue([window makeFirstResponder:field], nil);
   [self pressKey:@"\t" code:48 modifierFlags:NSCommandKeyMask window:window];
   stringValue = [field stringValue];
-  STAssertEqualObjects(stringValue, @"⌘A", nil);
+  STAssertEqualObjects(stringValue, @"⌃⌥⇧J", nil);
   
   // Do it by dictionary
   NSDictionary *cmdSHotKey
