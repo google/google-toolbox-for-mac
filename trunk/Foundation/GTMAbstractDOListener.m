@@ -120,6 +120,8 @@ static NSMutableSet *gAllListeners = nil;
   requestTimeout_ = -1;
   replyTimeout_ = -1;
 
+  heartRate_ = (NSTimeInterval)10.0;
+
   _GTMDevAssert(gAllListeners, @"gAllListeners is not nil");
   @synchronized (gAllListeners) {
     [gAllListeners addObject:self];
@@ -173,6 +175,14 @@ static NSMutableSet *gAllListeners = nil;
 
 - (void)setReplyTimeout:(NSTimeInterval)timeout {
   replyTimeout_ = timeout;
+}
+
+- (void)setThreadHeartRate:(NSTimeInterval)heartRate {
+  heartRate_ = heartRate;
+}
+
+- (NSTimeInterval)ThreadHeartRate {
+  return heartRate_;
 }
 
 - (NSConnection *)connection {
@@ -370,7 +380,7 @@ static NSMutableSet *gAllListeners = nil;
       NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
       // Wrap our runloop in case we get an exception from DO
       @try {
-        NSDate *waitDate = [NSDate dateWithTimeIntervalSinceNow:10];
+        NSDate *waitDate = [NSDate dateWithTimeIntervalSinceNow:heartRate_];
         [[NSRunLoop currentRunLoop] runUntilDate:waitDate];
       } @catch (id e) {
         _GTMDevLog(@"Listener '%@' caught exception: %@", registeredName_, e);
