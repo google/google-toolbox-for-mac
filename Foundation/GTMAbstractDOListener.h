@@ -41,6 +41,7 @@
   NSTimeInterval requestTimeout_;
   NSTimeInterval replyTimeout_;
   NSPort *port_;
+  NSTimeInterval heartRate_;
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
   GTMReceivePortDelegate *receivePortDelegate_;  // Strong (only used on Tiger)
@@ -107,6 +108,13 @@
 //
 - (NSTimeInterval)replyTimeout;
 - (void)setReplyTimeout:(NSTimeInterval)timeout;
+
+// Get/set how long the thread will spin the run loop.  This only takes affect
+// if runInNewThreadWithErrorTarget:selector:withObjectArgument: is used.  The
+// default heart rate is 10.0 seconds.
+//
+- (void)setThreadHeartRate:(NSTimeInterval)heartRate;
+- (NSTimeInterval)ThreadHeartRate;
 
 // Returns the listeners associated NSConnection.  May be nil if no connection
 // has been setup yet.
