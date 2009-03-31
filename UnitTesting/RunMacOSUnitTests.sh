@@ -210,10 +210,8 @@ if [ ! $GTM_DO_NOT_REMOVE_GCOV_DATA ]; then
   if [ "${CONFIGURATION_TEMP_DIR}" != "-" ]; then
     if [ -d "${CONFIGURATION_TEMP_DIR}" ]; then
       GTMXcodeNote ${LINENO} "Removing gcov data files from ${CONFIGURATION_TEMP_DIR}"
-      SavedDir=$(pwd)
       (cd "${CONFIGURATION_TEMP_DIR}" && \
         find . -type f -name "*.gcda" -print0 | xargs -0 rm -f )
-      cd "${SavedDir}"
     fi
   fi
 fi
