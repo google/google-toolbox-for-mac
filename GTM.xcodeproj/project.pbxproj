@@ -1310,7 +1310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "GTMXcodeNote() {\n  echo ${ThisScript}:${1}: note: GTM ${2}\n}\n\nGTMXcodeNote ${LINENO} \"Removing gcov data files from ${CONFIGURATION_TEMP_DIR}\"\n( cd \"${CONFIGURATION_TEMP_DIR}\" &&  find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - UnitTesting\" -configuration \"${CONFIGURATION}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - Foundation\" -configuration \"${CONFIGURATION}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AppKit\" -configuration \"${CONFIGURATION}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1";
+			shellScript = "GTMXcodeNote() {\n  echo ${ThisScript}:${1}: note: GTM ${2}\n}\n\nGTMXcodeNote ${LINENO} \"Removing gcov data files from ${CONFIGURATION_TEMP_DIR}\"\n( cd \"${CONFIGURATION_TEMP_DIR}\" &&  find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - UnitTesting\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - Foundation\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AppKit\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1";
 		};
 		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
