@@ -308,6 +308,10 @@ static NSMutableSet *gAllListeners = nil;
   if (result) {
     // Call the virtual "runIn*" initializer
     result = [self doRunInitialization];
+  } else {
+    [connection_ invalidate];
+    [connection_ release];
+    connection_ = nil;
   }
 
   [pool drain];
