@@ -161,6 +161,10 @@ enum {
   [lock_ unlockWithCondition:kGTMAbstractDOConditionReceivedMessage];
 }
 
+- (void)listenerErrorEncountered:(id)error {
+  // Do nothing
+}
+
 - (void)testAbstractDOListenerProtocol {
   lock_ =
     [[NSConditionLock alloc] initWithCondition:kGTMAbstractDOConditionWaiting];
@@ -209,6 +213,63 @@ enum {
   [lock_ unlockWithCondition:kGTMAbstractDOConditionWaiting];
 }
 
+- (void)testAbstractDOListenerBadInitializers {
+  [GTMUnitTestDevLog expectString:
+    @"Failed to create a listener, a protocol must be specified"];
+  [GTMUnitTestDevLog expectString:
+    @"Failed to create a listener, a name must be specified"];
+  TestServer *listener = [[TestServer alloc] init];
+  STAssertNil(listener, @"We should not have created a server using init");
+
+  [GTMUnitTestDevLog expectString:
+    @"Failed to create a listener, a name must be specified"];
+  listener =
+    [[TestServer alloc] initWithRegisteredName:nil
+                                      protocol:@protocol(TestServerDOProtocol)
+                                          port:[NSMachPort port]];
+  STAssertNil(listener, @"We should not have created a server with a nil name");
+
+  [GTMUnitTestDevLog expectString:
+    @"Failed to create a listener, a protocol must be specified"];
+  listener =
+    [[TestServer alloc] initWithRegisteredName:@"NilProtocol"
+                                      protocol:nil
+                                          port:[NSMachPort port]];
+  STAssertNil(listener,
+              @"We should not have created a server with a nil protocol");
+
+  [GTMUnitTestDevLog expectString:
+    @"Failed to create a listener, a port must be specified"];
+  listener =
+    [[TestServer alloc] initWithRegisteredName:@"NilPort"
+                                      protocol:@protocol(TestServerDOProtocol)
+                                          port:nil];
+  STAssertNil(listener, @"We should not have created a server with a nil port");
+
+}
+
+- (void)testAbstractDOListenerMultipleRegistration {
+  TestServer *listener =
+    [[TestServer alloc] initWithRegisteredName:@"MyUniqueName"
+                                      protocol:@protocol(TestServerDOProtocol)
+                                          port:[NSMachPort port]];
+  [GTMUnitTestDevLog expectPattern:@"listening on.*"];
+  [listener runInCurrentThread];
+
+  TestServer *copyCat =
+  [[TestServer alloc] initWithRegisteredName:@"copyCat"
+                                    protocol:@protocol(TestServerDOProtocol)
+                                        port:[NSMachPort port]];
+  STAssertTrue(([[copyCat registeredName] isEqualToString:@"copyCat"]),
+               @"The name we set to register with is not correct.");
+
+  [listener setRegisteredName:@"MyUniqueName"];
+  [GTMUnitTestDevLog expectPattern:@"failed to register.*"];
+  [listener runInCurrentThread];
+  STAssertNil([listener connection], @"We should not have been able to created "
+              @"a server with a name that has already been taken.");
+}
+
 - (void)testAbstractDOListenerRequestTimeout {
   NSString *serverName = @"RequestTimeoutTest";
 
@@ -219,10 +280,22 @@ enum {
   [listener autorelease];
   [listener setReplyTimeout:kDefaultTimeout];
   [listener setRequestTimeout:kDefaultTimeout];
+
+  STAssertLessThanOrEqual(ABS([listener replyTimeout] - kDefaultTimeout),
+                          (kDefaultTimeout / pow(kDefaultTimeout, 15)), nil);
+
+  STAssertLessThanOrEqual(ABS([listener requestTimeout] - kDefaultTimeout),
+                          (kDefaultTimeout / pow(kDefaultTimeout, 15)), nil);
+
+  NSTimeInterval customHeartRate = 0.25;
   [listener setThreadHeartRate:0.25];
+
+  STAssertLessThanOrEqual(ABS([listener ThreadHeartRate] - customHeartRate),
+                          (customHeartRate / pow(customHeartRate, 15)), nil);
+
   [GTMUnitTestDevLog expectPattern:@"listening on.*"];
-  [listener runInNewThreadWithErrorTarget:nil
-                                 selector:NULL
+  [listener runInNewThreadWithErrorTarget:self
+                                 selector:@selector(listenerErrorEncountered:)
                        withObjectArgument:nil];
 
   // It will take a little while for the new thread to spin up and start
@@ -258,8 +331,8 @@ enum {
     [[NSRunLoop currentRunLoop] runUntilDate:waitTime];
   }
 
-  STAssertNil([listener connection], @"The connection should be nil after "
-              @"shutdown.");
+  STAssertNil([listener connection],
+              @"The connection should be nil after shutdown.");
 }
 
 - (void)testAbstractDOListenerRelease {
