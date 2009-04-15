@@ -1166,7 +1166,7 @@
 					<key>MenuItemTag</key>
 					<integer>0</integer>
 					<key>MenuItemTitle</key>
-					<string>Show Fonts</string>
+					<string>¬Menu Item</string>
 				</dict>
 				<key>MenuItem 1</key>
 				<dict>
@@ -1188,12 +1188,12 @@
 					<string>Show Colors</string>
 				</dict>
 				<key>MenuTitle</key>
-				<string>Format</string>
+				<string>¬Menu Title</string>
 			</dict>
 			<key>MenuItemTag</key>
 			<integer>0</integer>
 			<key>MenuItemTitle</key>
-			<string>Format</string>
+			<string>¬Menu Title</string>
 		</dict>
 		<key>MenuItem 4</key>
 		<dict>
@@ -1411,6 +1411,26 @@
 			</dict>
 			<key>ViewSubView 11</key>
 			<dict>
+				<key>TabItem 0</key>
+				<dict>
+					<key>TabLabel</key>
+					<string>Tab</string>
+					<key>TabView</key>
+					<dict>
+						<key>ViewIsHidden</key>
+						<false/>
+					</dict>
+				</dict>
+				<key>TabItem 1</key>
+				<dict>
+					<key>TabLabel</key>
+					<string>View</string>
+					<key>TabView</key>
+					<dict>
+						<key>ViewIsHidden</key>
+						<false/>
+					</dict>
+				</dict>
 				<key>ViewIsHidden</key>
 				<false/>
 				<key>ViewSubView 0</key>

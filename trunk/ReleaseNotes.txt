@@ -267,6 +267,16 @@ Changes since 1.5.1
   on OBJC_DEBUG_FINALIZERS beacuse it spits out a lot of unnecessary false 
   positives.
 
+- Added GTMUILocalizer.m for automatically localizing nib files with strings.
+
+- Added better support for NSTabViews to GTMAppKit+UnitTesting. Previously we
+  didn't check the tabs, or recurse into the views.
+
+- Adds support for toolTips, accessibilityHelp and accessibilityDescription to
+  GTMAppKit+UnitTesting. This will break your UI tests based on the older
+  state information. 
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
