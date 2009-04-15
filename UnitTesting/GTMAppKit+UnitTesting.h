@@ -49,6 +49,12 @@
 @interface NSMenuItem (GTMUnitTestingAdditions)
 @end
 
+@interface NSTabView (GTMUnitTestingAdditions)
+@end
+
+@interface NSTabViewItem (GTMUnitTestingAdditions)
+@end
+
 @protocol GTMUnitTestViewDrawer;
 
 //  Fails when the |a1|'s drawing in an area |a2| does not equal the image file named |a3|.

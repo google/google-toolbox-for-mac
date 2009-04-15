@@ -112,6 +112,26 @@
 		</dict>
 		<key>ViewSubView 11</key>
 		<dict>
+			<key>TabItem 0</key>
+			<dict>
+				<key>TabLabel</key>
+				<string>Tab</string>
+				<key>TabView</key>
+				<dict>
+					<key>ViewIsHidden</key>
+					<false/>
+				</dict>
+			</dict>
+			<key>TabItem 1</key>
+			<dict>
+				<key>TabLabel</key>
+				<string>View</string>
+				<key>TabView</key>
+				<dict>
+					<key>ViewIsHidden</key>
+					<false/>
+				</dict>
+			</dict>
 			<key>ViewIsHidden</key>
 			<false/>
 			<key>ViewSubView 0</key>
