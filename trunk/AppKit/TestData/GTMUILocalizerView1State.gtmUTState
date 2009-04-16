@@ -34,6 +34,8 @@
 	</dict>
 	<key>ViewSubView 1</key>
 	<dict>
+		<key>ButtonAlternateTitle</key>
+		<string></string>
 		<key>ControlIsEnabled</key>
 		<true/>
 		<key>ControlSelectedCell</key>

@@ -37,6 +37,9 @@
 @interface NSTextField (GTMUnitTestingAdditions)
 @end
 
+@interface NSButton (GTMUnitTestingAdditions) 
+@end
+
 @interface NSCell (GTMUnitTestingAdditions)
 @end
 

@@ -32,11 +32,12 @@
 // be looked up in the Localizable.strings table without the caret as the 
 // key. 
 // Things that will be localized are:
-//  - Titles (for menus, buttons, windows, menuitems, tabViewItem)
+//  - Titles and altTitles (for menus, buttons, windows, menuitems, tabViewItem)
 //  - stringValue (for labels)
 //  - tooltips
 //  - accessibility help
 //  - accessibility description
+//  - menus
 //  
 // As an example if I wanted to localize a button with the word "Print" on
 // it, I would put it in a window controlled by a NSWindowController that was

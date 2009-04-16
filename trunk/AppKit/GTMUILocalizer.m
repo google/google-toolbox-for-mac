@@ -152,6 +152,17 @@
       }
     }
     
+    // Must do the menu before the titles, or else this will screw up
+    // popup menus on us.
+    [self localizeMenu:[view menu] recursively:recursive];
+    if (recursive) {
+      NSArray *subviews = [view subviews];
+      NSView *subview = nil;
+      GTM_FOREACH_OBJECT(subview, subviews) {
+        [self localizeView:subview recursively:recursive];
+      }
+    }
+    
     // Then do titles
     if ([view isKindOfClass:[NSTextField class]]) {
       NSString *title = [(NSTextField *)view stringValue];
@@ -168,6 +179,17 @@
           [view performSelector:@selector(setTitle:) withObject:localizedTitle];
         }
       }
+      if ([view respondsToSelector:@selector(alternateTitle)] 
+          && [view respondsToSelector:@selector(setAlternateTitle:)]) {
+        title = [view performSelector:@selector(alternateTitle)];
+        if (title) {
+          NSString *localizedTitle = [self localizedStringForString:title];
+          if (localizedTitle) {
+            [view performSelector:@selector(setAlternateTitle:) 
+                       withObject:localizedTitle];
+          }
+        }
+      }
     } else if ([view respondsToSelector:@selector(tabViewItems)]) {
       NSArray *items = [view performSelector:@selector(tabViewItems)];
       NSEnumerator *itemEnum = [items objectEnumerator];
@@ -181,14 +203,6 @@
         if (recursive) {
           [self localizeView:[item view] recursively:recursive];
         }
-      }
-    }
-    [self localizeMenu:[view menu] recursively:recursive];
-    if (recursive) {
-      NSArray *subviews = [view subviews];
-      NSView *subview = nil;
-      GTM_FOREACH_OBJECT(subview, subviews) {
-        [self localizeView:subview recursively:recursive];
       }
     }
   }
