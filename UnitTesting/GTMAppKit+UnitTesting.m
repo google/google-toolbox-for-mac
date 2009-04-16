@@ -100,6 +100,24 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
+@implementation NSButton (GTMUnitTestingAdditions) 
+
+//  Encodes the state of an object in a manner suitable for comparing
+//  against a master state file so we can determine whether the
+//  object is in a suitable state.
+//
+//  Arguments:
+//    inCoder - the coder to encode our state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+  NSString *alternateTitle = [self alternateTitle];
+  if (alternateTitle) {
+    [inCoder encodeObject:alternateTitle forKey:@"ButtonAlternateTitle"];
+  }
+}
+
+@end
+
 @implementation NSTextField (GTMUnitTestingAdditions)
 
 - (BOOL)gtm_shouldEncodeStateForSubviews {
@@ -376,7 +394,10 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
       = [self accessibilityAttributeValue:NSAccessibilityDescriptionAttribute];
     [inCoder encodeObject:description forKey:@"ViewAccessibilityDescription"];
   }
-  
+  NSMenu *menu = [self menu];
+  if (menu) {
+    [inCoder encodeObject:menu forKey:@"ViewMenu"];
+  }
   if ([self gtm_shouldEncodeStateForSubviews]) {
     NSView *subview = nil;
     int i = 0;

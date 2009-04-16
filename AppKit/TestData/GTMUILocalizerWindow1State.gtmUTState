@@ -12,6 +12,8 @@
 		<false/>
 		<key>ViewSubView 0</key>
 		<dict>
+			<key>ButtonAlternateTitle</key>
+			<string></string>
 			<key>ControlIsEnabled</key>
 			<true/>
 			<key>ControlSelectedCell</key>
@@ -36,6 +38,8 @@
 		</dict>
 		<key>ViewSubView 1</key>
 		<dict>
+			<key>ButtonAlternateTitle</key>
+			<string></string>
 			<key>ControlIsEnabled</key>
 			<true/>
 			<key>ControlSelectedCell</key>
@@ -135,6 +139,75 @@
 			<string>^Label2</string>
 			<key>ViewIsHidden</key>
 			<false/>
+		</dict>
+		<key>ViewSubView 5</key>
+		<dict>
+			<key>ButtonAlternateTitle</key>
+			<string></string>
+			<key>ControlIsEnabled</key>
+			<true/>
+			<key>ControlSelectedCell</key>
+			<dict>
+				<key>CellState</key>
+				<integer>1</integer>
+				<key>CellTag</key>
+				<integer>0</integer>
+				<key>CellTitle</key>
+				<string>Localized Item 2</string>
+				<key>CellValue</key>
+				<string>1</string>
+			</dict>
+			<key>ControlTag</key>
+			<integer>0</integer>
+			<key>ControlType</key>
+			<string>NSPopUpButton</string>
+			<key>ControlValue</key>
+			<string>1</string>
+			<key>ViewIsHidden</key>
+			<false/>
+			<key>ViewMenu</key>
+			<dict>
+				<key>MenuItem 0</key>
+				<dict>
+					<key>MenuItemIndentationLevel</key>
+					<integer>0</integer>
+					<key>MenuItemIsAlternate</key>
+					<false/>
+					<key>MenuItemIsEnabled</key>
+					<true/>
+					<key>MenuItemIsSeparator</key>
+					<false/>
+					<key>MenuItemKeyEquivalent</key>
+					<string></string>
+					<key>MenuItemState</key>
+					<integer>0</integer>
+					<key>MenuItemTag</key>
+					<integer>0</integer>
+					<key>MenuItemTitle</key>
+					<string>Localized Item 1</string>
+				</dict>
+				<key>MenuItem 1</key>
+				<dict>
+					<key>MenuItemIndentationLevel</key>
+					<integer>0</integer>
+					<key>MenuItemIsAlternate</key>
+					<false/>
+					<key>MenuItemIsEnabled</key>
+					<true/>
+					<key>MenuItemIsSeparator</key>
+					<false/>
+					<key>MenuItemKeyEquivalent</key>
+					<string></string>
+					<key>MenuItemState</key>
+					<integer>1</integer>
+					<key>MenuItemTag</key>
+					<integer>0</integer>
+					<key>MenuItemTitle</key>
+					<string>Localized Item 2</string>
+				</dict>
+				<key>MenuTitle</key>
+				<string>OtherViews</string>
+			</dict>
 		</dict>
 	</dict>
 	<key>WindowIsMain</key>

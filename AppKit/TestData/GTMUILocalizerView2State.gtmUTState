@@ -10,6 +10,8 @@
 	<false/>
 	<key>ViewSubView 0</key>
 	<dict>
+		<key>ButtonAlternateTitle</key>
+		<string></string>
 		<key>ControlIsEnabled</key>
 		<true/>
 		<key>ControlSelectedCell</key>
