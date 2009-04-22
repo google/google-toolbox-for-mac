@@ -23,14 +23,18 @@
 #import "GTMNSBezierPath+RoundRect.h"
 #import "GTMMethodCheck.h"
 
-// Amount of time to fade the window in or out
-const NSTimeInterval kGTMLargeTypeWindowFadeTime = 0.333;
 
 // How far to inset the text from the edge of the window
 static const CGFloat kEdgeInset = 16.0;
 
 // Give us an alpha value for our backing window
 static const CGFloat kTwoThirdsAlpha = 0.66;
+
+// Amount of time to do copy animations
+static NSTimeInterval gGTMLargeTypeWindowCopyAnimationDuration = 0.5;
+
+// Amount of time to do fade animations
+static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
 
 @interface GTMLargeTypeCopyAnimation : NSAnimation
 @end
@@ -39,7 +43,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   CIFilter *transition_;
   GTMLargeTypeCopyAnimation *animation_;
 }
-- (void)animateCopy;
+- (void)animateCopyWithDuration:(NSTimeInterval)duration;
 @end
 
 @interface GTMLargeTypeWindow (GTMLargeTypeWindowPrivate)
@@ -193,6 +197,22 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   return self;
 }
 
++ (NSTimeInterval)copyAnimationDuration {
+  return gGTMLargeTypeWindowCopyAnimationDuration;
+}
+
++ (void)setCopyAnimationDuration:(NSTimeInterval)duration {
+  gGTMLargeTypeWindowCopyAnimationDuration = duration;
+}
+
++ (NSTimeInterval)fadeAnimationDuration {
+  return gGTMLargeTypeWindowFadeAnimationDuration;
+}
+
++ (void)setFadeAnimationDuration:(NSTimeInterval)duration {
+  gGTMLargeTypeWindowFadeAnimationDuration = duration;
+}
+
 - (void)copy:(id)sender {
   id firstResponder = [self initialFirstResponder];
   if ([firstResponder respondsToSelector:@selector(textStorage)]) {
@@ -203,7 +223,8 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   }
   
   // Give the user some feedback that a copy has occurred
-  [(GTMLargeTypeBackgroundView*)[self contentView] animateCopy];
+  NSTimeInterval dur = [[self class] copyAnimationDuration];
+  [(GTMLargeTypeBackgroundView*)[self contentView] animateCopyWithDuration:dur];
 }
 
 - (BOOL)canBecomeKeyWindow { 
@@ -262,7 +283,7 @@ static const CGFloat kTwoThirdsAlpha = 0.66;
   NSArray *animation = [NSArray arrayWithObject:fadeIn];
   NSViewAnimation *viewAnim 
     = [[[NSViewAnimation alloc] initWithViewAnimations:animation] autorelease];
-  [viewAnim setDuration:kGTMLargeTypeWindowFadeTime];
+  [viewAnim setDuration:[[self class] fadeAnimationDuration]];
   [viewAnim setAnimationBlockingMode:NSAnimationBlocking];
   [viewAnim startAnimation];
 }
@@ -306,7 +327,7 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   }
 }
 
-- (void)animateCopy {
+- (void)animateCopyWithDuration:(NSTimeInterval)duration {
   // This does a photocopy swipe to show folks that their copy has succceeded
   // Store off a copy of our background
   NSRect bounds = [self bounds];
@@ -333,7 +354,7 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   [transition valueForKey:@"outputImage"];
   [image release];
   transition_ = [transition retain];  
-  animation_ = [[GTMLargeTypeCopyAnimation alloc] initWithDuration:0.5
+  animation_ = [[GTMLargeTypeCopyAnimation alloc] initWithDuration:duration
                                                     animationCurve:NSAnimationLinear];
   [animation_ setFrameRate:0.0f];
   [animation_ setDelegate:self];

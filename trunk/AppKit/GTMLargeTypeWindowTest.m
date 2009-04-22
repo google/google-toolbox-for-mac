@@ -75,6 +75,16 @@ NSString *const kShortTextBlock = @"Short";
   }
 }
 
+- (void)setUp {
+  [GTMLargeTypeWindow setCopyAnimationDuration:0];
+  [GTMLargeTypeWindow setFadeAnimationDuration:0];
+}
+
+- (void)tearDown {
+  [GTMLargeTypeWindow setCopyAnimationDuration:0.5];
+  [GTMLargeTypeWindow setFadeAnimationDuration:0.333];
+}
+
 - (void)testLargeTypeWindowIllegalInits {
   [GTMUnitTestDevLog expectString:@"GTMLargeTypeWindow got an empty string"];
   GTMLargeTypeWindow *window = [[[GTMLargeTypeWindow alloc] 
@@ -113,7 +123,7 @@ NSString *const kShortTextBlock = @"Short";
   STAssertTrue([window canBecomeKeyWindow], nil);
   [window makeKeyAndOrderFront:nil];
   NSDate *endDate 
-    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+    = [NSDate dateWithTimeIntervalSinceNow:.1];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMLargeTypeWindowMediumTextTest",
@@ -134,7 +144,7 @@ NSString *const kShortTextBlock = @"Short";
   STAssertTrue([window canBecomeKeyWindow], nil);
   [window makeKeyAndOrderFront:nil];
   NSDate *endDate 
-    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+    = [NSDate dateWithTimeIntervalSinceNow:.1];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMLargeTypeWindowShortTextTest",
@@ -154,7 +164,7 @@ NSString *const kShortTextBlock = @"Short";
   STAssertNotNil(window, nil);
   [window orderFront:nil];
   NSDate *endDate
-    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+    = [NSDate dateWithTimeIntervalSinceNow:.1];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   // Can't do state for long text as it will wrap differently on different
   // sized screens.
@@ -177,7 +187,7 @@ NSString *const kShortTextBlock = @"Short";
   STAssertNotNil(window, nil);
   [window makeKeyAndOrderFront:nil];
   NSDate *endDate 
-    = [NSDate dateWithTimeIntervalSinceNow:kGTMLargeTypeWindowFadeTime];
+    = [NSDate dateWithTimeIntervalSinceNow:.1];
   [[NSRunLoop currentRunLoop] runUntilDate:endDate];
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMLargeTypeWindowImageTest",
