@@ -37,10 +37,18 @@
 // at this time on our test machines. 
 // Dual-Core Intel Xeon with ATI Radeon X1300
 
-// Amount of time to fade the window in or out
-const NSTimeInterval kGTMLargeTypeWindowFadeTime;
-
 @interface GTMLargeTypeWindow : NSPanel
+
+// Setter and getter for the copy animation duration. Default value is .5s.
+// Note that this affects all windows.
++ (NSTimeInterval)copyAnimationDuration;
++ (void)setCopyAnimationDuration:(NSTimeInterval)duration;
+
+// Setter and getter for the fade animation duration. Default value is .3s.
+// Note that this affects all windows.
++ (NSTimeInterval)fadeAnimationDuration;
++ (void)setFadeAnimationDuration:(NSTimeInterval)duration;
+
 // Creates a display window with |string| displayed.
 // Formats |string| as best as possible to fill the screen.
 - (id)initWithString:(NSString *)string;
@@ -57,4 +65,6 @@ const NSTimeInterval kGTMLargeTypeWindowFadeTime;
 // as part of the responder chain so that the user can copy the displayed text
 // using cmd-c.
 - (void)copy:(id)sender;
+
+
 @end

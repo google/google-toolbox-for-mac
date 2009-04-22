@@ -276,6 +276,9 @@ Changes since 1.5.1
   GTMAppKit+UnitTesting. This will break your UI tests based on the older
   state information. 
 
+- Added support for duration to GTMLargeTypeWindow mainly to make the unittests
+  run at a decent speed.
+
 
 Release 1.5.1
 Changes since 1.5.0
