@@ -24,6 +24,12 @@
 #import "GTMMethodCheck.h"
 #import "GTMDebugThreadValidation.h"
 
+// Keys for passing AppleScript calls from other threads to the main thread
+// and back through gtm_internalExecuteAppleEvent:
+static NSString *const GTMNSAppleScriptEventKey = @"GTMNSAppleScriptEvent";
+static NSString *const GTMNSAppleScriptResultKey = @"GTMNSAppleScriptResult";
+static NSString *const GTMNSAppleScriptErrorKey = @"GTMNSAppleScriptError";
+
 // Some private methods that we need to call
 @interface NSAppleScript (NSPrivate)
 + (ComponentInstance)_defaultScriptingComponent;
@@ -68,6 +74,8 @@
 // Utility methods for converting between real and generic OSAIDs.
 - (OSAID)gtm_genericID:(OSAID)osaID forComponent:(ComponentInstance)component;
 - (OSAID)gtm_realIDAndComponent:(ComponentInstance*)component;
+
+- (void)gtm_internalExecuteAppleEvent:(NSMutableDictionary *)data;
 @end
 
 @implementation NSAppleScript(GTMAppleScriptHandlerAdditions)
@@ -105,29 +113,15 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 
 - (NSAppleEventDescriptor *)gtm_executeAppleEvent:(NSAppleEventDescriptor *)event 
                                             error:(NSDictionary **)error {
-  GTMAssertRunningOnMainThread();
-  if (![self isCompiled]) {
-    if (![self compileAndReturnError:error]) {
-      return nil;
-    }
+  NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                               event, GTMNSAppleScriptEventKey, nil];
+  [self performSelectorOnMainThread:@selector(gtm_internalExecuteAppleEvent:)
+                         withObject:data 
+                      waitUntilDone:YES];
+  if (error) {
+    *error = [data objectForKey:GTMNSAppleScriptErrorKey];
   }
-  NSAppleEventDescriptor *desc = nil;
-  ComponentInstance component;
-  OSAID scriptID = [self gtm_realIDAndComponent:&component];
-  OSAID valueID;
-  OSAError err = OSAExecuteEvent(component, [event aeDesc], scriptID, 
-                                 kOSAModeNull, &valueID);
-  if (err == noErr) {
-    // descForScriptID:component: is what sets this apart from the
-    // standard executeAppelEvent:error: in that it handles
-    // taking script results and turning them into AEDescs of typeGTMOSAID 
-    // instead of typeScript.
-    desc = [self descForScriptID:valueID component:component];
-  }
-  if (err && error) {
-    *error = [NSAppleScript _infoForOSAError:err];
-  }
-  return desc;
+  return [data objectForKey:GTMNSAppleScriptResultKey];
 }
 
 - (NSAppleEventDescriptor*)gtm_executePositionalHandler:(NSString*)handler 
@@ -461,6 +455,39 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     genericID = kOSANullScript; // COV_NF_LINE
   }
   return genericID;
+}
+
+- (void)gtm_internalExecuteAppleEvent:(NSMutableDictionary *)data {
+  GTMAssertRunningOnMainThread();
+  NSDictionary *error = nil;
+  if (![self isCompiled]) {
+    [self compileAndReturnError:&error];
+  }
+  if (!error) {
+    NSAppleEventDescriptor *desc = nil;
+    NSAppleEventDescriptor *event = [data objectForKey:GTMNSAppleScriptEventKey];
+    ComponentInstance component;
+    OSAID scriptID = [self gtm_realIDAndComponent:&component];
+    OSAID valueID;
+    OSAError err = OSAExecuteEvent(component, [event aeDesc], scriptID, 
+                                   kOSAModeNull, &valueID);
+    if (err == noErr) {
+      // descForScriptID:component: is what sets this apart from the
+      // standard executeAppelEvent:error: in that it handles
+      // taking script results and turning them into AEDescs of typeGTMOSAID 
+      // instead of typeScript.
+      desc = [self descForScriptID:valueID component:component];
+      if (desc) {
+        [data setObject:desc forKey:GTMNSAppleScriptResultKey];
+      }
+    }
+    if (err) {
+      error = [NSAppleScript _infoForOSAError:err];
+    }
+  }
+  if (error) {
+    [data setObject:error forKey:GTMNSAppleScriptErrorKey];
+  }
 }
 
 @end
