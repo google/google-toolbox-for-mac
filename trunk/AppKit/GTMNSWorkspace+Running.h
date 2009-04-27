@@ -89,4 +89,11 @@ GTM_EXTERN NSString *const kGTMWorkspaceRunningBundleVersion;  // NSString
 // Converts PSNs stored in NSNumbers to real PSNs
 - (ProcessSerialNumber)gtm_numberToProcessSerialNumber:(NSNumber*)number;
 
+// Returns a dictionary of launched applications like
+// -[NSWorkspace launchedApplications], but does it much faster than the current
+// version in Leopard which appears to regenerate the dictionary from scratch
+// each time you request it. 
+// NB The main runloop has to run for this to stay up to date.
+- (NSArray *)gtm_launchedApplications;
+
 @end

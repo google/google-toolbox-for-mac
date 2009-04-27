@@ -279,6 +279,12 @@ Changes since 1.5.1
 - Added support for duration to GTMLargeTypeWindow mainly to make the unittests
   run at a decent speed.
 
+- All calls to GTMNSAppleScript+Handler execute: calls will now actually
+  execute the script on the main thread.
+  
+- Added gtm_launchedApplications to GTMNSWorkspace+Running. It is significantly
+  faster than calling [NSWorkspace launchedApplications]
+  
 
 Release 1.5.1
 Changes since 1.5.0
