@@ -253,12 +253,10 @@ NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
   NSColor *backgroundColor = [self backgroundColor];
   switch (style) {
     case GTMThemeStyleTabBarDeselected: {
-      NSColor *startColor = [[backgroundColor gtm_colorAdjustedFor:uses[2] 
-                                                             faded:!active] 
-            colorWithAlphaComponent:0.667];
-      NSColor *endColor = [[backgroundColor gtm_colorAdjustedFor:uses[2] 
-                                                           faded:!active] 
-                           colorWithAlphaComponent:0.667];  
+      NSColor *startColor = [backgroundColor gtm_colorAdjustedFor:uses[2] 
+                                                            faded:!active];
+      NSColor *endColor = [backgroundColor gtm_colorAdjustedFor:uses[2] 
+                                                          faded:!active];  
       
       gradient = [[[NSGradient alloc] initWithStartingColor:startColor
                                                 endingColor:endColor]
