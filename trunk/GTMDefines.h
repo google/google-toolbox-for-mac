@@ -166,17 +166,20 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 // side to be sure you're getting what you wanted.
 #ifndef GTM_FOREACH_OBJECT
   #if TARGET_OS_IPHONE || (GTM_MAC_OS_X_VERSION_MINIMUM_REQUIRED >= MAC_OS_X_VERSION_10_5)
+    #define GTM_FOREACH_ENUMEREE(element, enumeration) \
+      for (element in enumeration)
     #define GTM_FOREACH_OBJECT(element, collection) \
       for (element in collection)
     #define GTM_FOREACH_KEY(element, collection) \
       for (element in collection)
   #else
+    #define GTM_FOREACH_ENUMEREE(element, enumeration) \
+      for (NSEnumerator *_ ## element ## _enum = enumeration; \
+           (element = [_ ## element ## _enum nextObject]) != nil; )
     #define GTM_FOREACH_OBJECT(element, collection) \
-      for (NSEnumerator * _ ## element ## _enum = [collection objectEnumerator]; \
-           (element = [_ ## element ## _enum nextObject]) != nil; )
+      GTM_FOREACH_ENUMEREE(element, [collection objectEnumerator])
     #define GTM_FOREACH_KEY(element, collection) \
-      for (NSEnumerator * _ ## element ## _enum = [collection keyEnumerator]; \
-           (element = [_ ## element ## _enum nextObject]) != nil; )
+      GTM_FOREACH_ENUMEREE(element, [collection keyEnumerator])
   #endif
 #endif
 
@@ -202,6 +205,17 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   // For MacOS specific stuff
   #define GTM_MACOS_SDK 1
 #endif
+
+// Some of our own availability macros
+#if GTM_MACOS_SDK
+#define GTM_WEAK_ON_MACOS __weak
+#define GTM_AVAILABLE_ONLY_ON_IPHONE UNAVAILABLE_ATTRIBUTE
+#define GTM_AVAILABLE_ONLY_ON_MACOS
+#else 
+#define GTM_WEAK_ON_MACOS
+#define GTM_AVAILABLE_ONLY_ON_IPHONE
+#define GTM_AVAILABLE_ONLY_ON_MACOS UNAVAILABLE_ATTRIBUTE
+#endif 
 
 // Provide a symbol to include/exclude extra code for GC support.  (This mainly
 // just controls the inclusion of finalize methods).

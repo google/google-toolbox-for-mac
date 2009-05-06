@@ -214,9 +214,9 @@ Changes since 1.5.1
 - If you are using GTMUnitTestDevLog, it also tries to capture logs from
   NSAssert.
 
-- Added GTM_FOREACH_OBJECT/GTM_FOREACH_KEY that uses NSEnumerator and
-  objectEnumerator/keyEnumerator on 10.4, but on 10.5+/iPhone uses
-  FastEnumeration.
+- Added GTM_FOREACH_OBJECT/GTM_FOREACH_KEY/GTM_FOREACH_ENUMEREE that uses 
+  NSEnumerator and objectEnumerator/keyEnumerator on 10.4, but on 10.5+/iPhone 
+  uses FastEnumeration.
 
 - GTMNSWorkspace+Running gives a variety of ways of determining the attributes
   of running processes.
@@ -284,6 +284,10 @@ Changes since 1.5.1
   
 - Added gtm_launchedApplications to GTMNSWorkspace+Running. It is significantly
   faster than calling [NSWorkspace launchedApplications]
+  
+- Moved GTMABAddressBook out of iPhone and into the AddressBook directory, 
+  because it now works on both the Desktop and the iPhone giving you a single
+  interface to do AddressBook work on both platforms.
   
 
 Release 1.5.1

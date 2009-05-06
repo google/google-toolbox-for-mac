@@ -182,6 +182,17 @@
 		8BEEA90D0DA7446300894774 /* GTMUnitTestingImage.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */; };
 		8BEEA90E0DA7446300894774 /* GTMUnitTestingWindow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */; };
 		8BEEA90F0DA7446300894774 /* GTMUnitTestingView.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */; };
+		8BFE13B60FB0F2C0001BE894 /* GTMABAddressBook.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFE13B00FB0F2B9001BE894 /* GTMABAddressBook.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BFE13B70FB0F2C0001BE894 /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE13B10FB0F2B9001BE894 /* GTMABAddressBook.m */; };
+		8BFE13ED0FB0F2D8001BE894 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		8BFE13EE0FB0F2D8001BE894 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E086D0D199A5B00D5DDE0 /* GoogleToolboxForMac.framework */; };
+		8BFE13EF0FB0F2D8001BE894 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */; };
+		8BFE14C10FB0F333001BE894 /* GTMABAddressBookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE13B30FB0F2B9001BE894 /* GTMABAddressBookTest.m */; };
+		8BFE158D0FB0F34C001BE894 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFE158C0FB0F34C001BE894 /* AddressBook.framework */; };
+		8BFE158E0FB0F34C001BE894 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFE158C0FB0F34C001BE894 /* AddressBook.framework */; };
+		8BFE15970FB0F3C9001BE894 /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */; };
+		8BFE17F40FB1F6E5001BE894 /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE13B20FB0F2B9001BE894 /* GTMABAddressBook.strings */; };
+		8BFE17F50FB1F6EA001BE894 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE13B50FB0F2B9001BE894 /* phone.png */; };
 		F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */ = {isa = PBXBuildFile; fileRef = F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */; };
 		F41390920D75F64D00F72B31 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
@@ -308,6 +319,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
 			remoteInfo = UIUnitTestingHarness;
+		};
+		8BFE13BE0FB0F2D8001BE894 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
+			remoteInfo = UIUnitTestingHarness;
+		};
+		8BFE13C00FB0F2D8001BE894 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
+			remoteInfo = GTM;
 		};
 		F42E08760D199A9B00D5DDE0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -465,6 +490,13 @@
 		8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingImage.tiff; sourceTree = "<group>"; };
 		8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.tiff; sourceTree = "<group>"; };
 		8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingView.tiff; sourceTree = "<group>"; };
+		8BFE13B00FB0F2B9001BE894 /* GTMABAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMABAddressBook.h; sourceTree = "<group>"; };
+		8BFE13B10FB0F2B9001BE894 /* GTMABAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBook.m; sourceTree = "<group>"; };
+		8BFE13B20FB0F2B9001BE894 /* GTMABAddressBook.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = GTMABAddressBook.strings; sourceTree = "<group>"; };
+		8BFE13B30FB0F2B9001BE894 /* GTMABAddressBookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBookTest.m; sourceTree = "<group>"; };
+		8BFE13B50FB0F2B9001BE894 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
+		8BFE13FC0FB0F2D8001BE894 /* UnitTest - AddressBook.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest - AddressBook.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFE158C0FB0F34C001BE894 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = /System/Library/Frameworks/AddressBook.framework; sourceTree = "<absolute>"; };
 		F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileManager+Path.h"; sourceTree = "<group>"; };
 		F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+Path.m"; sourceTree = "<group>"; };
 		F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+PathTest.m"; sourceTree = "<group>"; };
@@ -614,6 +646,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BFE13EC0FB0F2D8001BE894 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFE13ED0FB0F2D8001BE894 /* Cocoa.framework in Frameworks */,
+				8BFE13EE0FB0F2D8001BE894 /* GoogleToolboxForMac.framework in Frameworks */,
+				8BFE13EF0FB0F2D8001BE894 /* SenTestingKit.framework in Frameworks */,
+				8BFE158E0FB0F34C001BE894 /* AddressBook.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F42E081C0D19987200D5DDE0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -635,6 +678,7 @@
 				F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */,
 				F43E4F6D0D4E60C50041161F /* libz.dylib in Frameworks */,
 				8B4D78080E40AFFA00EFEDD8 /* QuartzCore.framework in Frameworks */,
+				8BFE158D0FB0F34C001BE894 /* AddressBook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,6 +704,7 @@
 				F42E086D0D199A5B00D5DDE0 /* GoogleToolboxForMac.framework */,
 				8B45A0280DA4696C001148C5 /* UnitTest - UnitTesting.octest */,
 				8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */,
+				8BFE13FC0FB0F2D8001BE894 /* UnitTest - AddressBook.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -670,6 +715,7 @@
 				F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */,
 				F440EDB70DFECC4B0003E81F /* BuildingAndUsing.txt */,
 				8B1A16050D90344B00CA1E8E /* GTMDefines.h */,
+				8BFE13AF0FB0F2B9001BE894 /* AddressBook */,
 				F48FE26F0D198CBA009257D2 /* AppKit */,
 				F48FE2720D198CCE009257D2 /* Foundation */,
 				F4FF22760D9D47FB003880AC /* DebugUtils */,
@@ -689,6 +735,7 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8BFE158C0FB0F34C001BE894 /* AddressBook.framework */,
 				F99161B40F0B151400213D3B /* libsqlite3.dylib */,
 				8B45A1990DA46AAA001148C5 /* QuartzCore.framework */,
 				F43E4F6C0D4E60C50041161F /* libz.dylib */,
@@ -727,6 +774,26 @@
 				8B409BE50F9442C800DF540E /* Localizable.strings */,
 			);
 			path = GTMUIUnitTestingHarness;
+			sourceTree = "<group>";
+		};
+		8BFE13AF0FB0F2B9001BE894 /* AddressBook */ = {
+			isa = PBXGroup;
+			children = (
+				8BFE13B00FB0F2B9001BE894 /* GTMABAddressBook.h */,
+				8BFE13B10FB0F2B9001BE894 /* GTMABAddressBook.m */,
+				8BFE13B20FB0F2B9001BE894 /* GTMABAddressBook.strings */,
+				8BFE13B30FB0F2B9001BE894 /* GTMABAddressBookTest.m */,
+				8BFE13B40FB0F2B9001BE894 /* TestData */,
+			);
+			path = AddressBook;
+			sourceTree = "<group>";
+		};
+		8BFE13B40FB0F2B9001BE894 /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				8BFE13B50FB0F2B9001BE894 /* phone.png */,
+			);
+			path = TestData;
 			sourceTree = "<group>";
 		};
 		F435E46C0DC8F23A0069CDE8 /* TestData */ = {
@@ -1110,6 +1177,7 @@
 				10998E920F4B5952007F179D /* GTMTransientRootProxy.h in Headers */,
 				10998EF50F4B5D1A007F179D /* GTMTransientRootPortProxy.h in Headers */,
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
+				8BFE13B60FB0F2C0001BE894 /* GTMABAddressBook.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1183,6 +1251,26 @@
 			productName = UnitTestingTestHarness;
 			productReference = 8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8BFE13BC0FB0F2D8001BE894 /* UnitTest - AddressBook */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BFE13F20FB0F2D8001BE894 /* Build configuration list for PBXNativeTarget "UnitTest - AddressBook" */;
+			buildPhases = (
+				8BFE13C10FB0F2D8001BE894 /* Resources */,
+				8BFE13D70FB0F2D8001BE894 /* Sources */,
+				8BFE13EC0FB0F2D8001BE894 /* Frameworks */,
+				8BFE13F10FB0F2D8001BE894 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BFE13BD0FB0F2D8001BE894 /* PBXTargetDependency */,
+				8BFE13BF0FB0F2D8001BE894 /* PBXTargetDependency */,
+			);
+			name = "UnitTest - AddressBook";
+			productName = "UnitTest - AppKit";
+			productReference = 8BFE13FC0FB0F2D8001BE894 /* UnitTest - AddressBook.octest */;
+			productType = "com.apple.product-type.bundle";
 		};
 		F42E08110D19987200D5DDE0 /* UnitTest - Foundation */ = {
 			isa = PBXNativeTarget;
@@ -1260,6 +1348,7 @@
 			targets = (
 				F42E086C0D199A5B00D5DDE0 /* GTM */,
 				F472042B0D33BEAF00E9F378 /* All UnitTests */,
+				8BFE13BC0FB0F2D8001BE894 /* UnitTest - AddressBook */,
 				F48FE2630D198C1E009257D2 /* UnitTest - AppKit */,
 				F42E08110D19987200D5DDE0 /* UnitTest - Foundation */,
 				8B45A0270DA4696C001148C5 /* UnitTest - UnitTesting */,
@@ -1294,6 +1383,15 @@
 			files = (
 				8BAA9E380F7C19D500DF4F12 /* MainMenu.xib in Resources */,
 				8B409BE60F9442C800DF540E /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFE13C10FB0F2D8001BE894 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFE17F40FB1F6E5001BE894 /* GTMABAddressBook.strings in Resources */,
+				8BFE17F50FB1F6EA001BE894 /* phone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1366,7 +1464,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "GTMXcodeNote() {\n  echo ${ThisScript}:${1}: note: GTM ${2}\n}\n\nGTMXcodeNote ${LINENO} \"Removing gcov data files from ${CONFIGURATION_TEMP_DIR}\"\n( cd \"${CONFIGURATION_TEMP_DIR}\" &&  find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - UnitTesting\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - Foundation\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AppKit\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1";
+			shellScript = "GTMXcodeNote() {\n  echo ${ThisScript}:${1}: note: GTM ${2}\n}\n\nGTMXcodeNote ${LINENO} \"Removing gcov data files from ${CONFIGURATION_TEMP_DIR}\"\n( cd \"${CONFIGURATION_TEMP_DIR}\" &&  find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - UnitTesting\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - Foundation\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AppKit\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AddressBook\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1";
+		};
+		8BFE13F10FB0F2D8001BE894 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
 		};
 		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1424,6 +1535,15 @@
 				8B7DCBC40DFF0F800017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCEF10E002C210017E983 /* GTMDevLogUnitTestingBridge.m in Sources */,
 				8B4D7A150E40D79200EFEDD8 /* GTMObjC2Runtime.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFE13D70FB0F2D8001BE894 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFE15970FB0F3C9001BE894 /* GTMSenTestCase.m in Sources */,
+				8BFE14C10FB0F333001BE894 /* GTMABAddressBookTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1538,6 +1658,7 @@
 				10998E8F0F4B593E007F179D /* GTMTransientRootProxy.m in Sources */,
 				10998EF40F4B5D1A007F179D /* GTMTransientRootPortProxy.m in Sources */,
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
+				8BFE13B70FB0F2C0001BE894 /* GTMABAddressBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1585,6 +1706,16 @@
 			isa = PBXTargetDependency;
 			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
 			targetProxy = 8BAA9A340F7AF50600DF4F12 /* PBXContainerItemProxy */;
+		};
+		8BFE13BD0FB0F2D8001BE894 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
+			targetProxy = 8BFE13BE0FB0F2D8001BE894 /* PBXContainerItemProxy */;
+		};
+		8BFE13BF0FB0F2D8001BE894 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
+			targetProxy = 8BFE13C00FB0F2D8001BE894 /* PBXContainerItemProxy */;
 		};
 		F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2039,6 +2170,129 @@
 				PRODUCT_NAME = GTMUIUnitTestingHarness;
 			};
 			name = "TigerOrLater-Release";
+		};
+		8BFE13F30FB0F2D8001BE894 /* TigerOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "TigerOrLater-Debug";
+		};
+		8BFE13F40FB0F2D8001BE894 /* TigerOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "TigerOrLater-Debug-gcov";
+		};
+		8BFE13F50FB0F2D8001BE894 /* TigerOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "TigerOrLater-Release";
+		};
+		8BFE13F60FB0F2D8001BE894 /* LeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "LeopardOrLater-Debug";
+		};
+		8BFE13F70FB0F2D8001BE894 /* LeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "LeopardOrLater-Debug-gcov";
+		};
+		8BFE13F80FB0F2D8001BE894 /* LeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "LeopardOrLater-Release";
+		};
+		8BFE13F90FB0F2D8001BE894 /* SnowLeopardOrLater-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "SnowLeopardOrLater-Debug";
+		};
+		8BFE13FA0FB0F2D8001BE894 /* SnowLeopardOrLater-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "SnowLeopardOrLater-Debug-gcov";
+		};
+		8BFE13FB0FB0F2D8001BE894 /* SnowLeopardOrLater-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(value)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
+				);
+				GCC_ENABLE_OBJC_GC = supported;
+				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_NAME = "UnitTest - AddressBook";
+			};
+			name = "SnowLeopardOrLater-Release";
 		};
 		F41A6EE10E02DB4F00788A6C /* TigerOrLater-Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2626,6 +2880,22 @@
 				842575EC0E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
 				842575FB0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
 				842575FC0E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "TigerOrLater-Release";
+		};
+		8BFE13F20FB0F2D8001BE894 /* Build configuration list for PBXNativeTarget "UnitTest - AddressBook" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BFE13F30FB0F2D8001BE894 /* TigerOrLater-Debug */,
+				8BFE13F40FB0F2D8001BE894 /* TigerOrLater-Debug-gcov */,
+				8BFE13F50FB0F2D8001BE894 /* TigerOrLater-Release */,
+				8BFE13F60FB0F2D8001BE894 /* LeopardOrLater-Debug */,
+				8BFE13F70FB0F2D8001BE894 /* LeopardOrLater-Debug-gcov */,
+				8BFE13F80FB0F2D8001BE894 /* LeopardOrLater-Release */,
+				8BFE13F90FB0F2D8001BE894 /* SnowLeopardOrLater-Debug */,
+				8BFE13FA0FB0F2D8001BE894 /* SnowLeopardOrLater-Debug-gcov */,
+				8BFE13FB0FB0F2D8001BE894 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
