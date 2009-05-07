@@ -104,8 +104,13 @@ typedef CFIndex GTMABPropertyType;
 #define kGTMABPersonLastNameProperty kABPersonLastNameProperty
 #define kGTMABPersonBirthdayProperty kABPersonBirthdayProperty
 #define kGTMABPersonPhoneProperty kABPersonPhoneProperty
-#define kGTMABPersonPhoneMainLabel kABPersonPhoneMainLabel
 #define kGTMABGroupNameProperty kABGroupNameProperty
+
+#define kGTMABPersonPhoneMainLabel ((NSString *)kABPersonPhoneMainLabel)
+#define kGTMABPersonPhoneMobileLabel ((NSString *)kABPersonPhoneMobileLabel)
+#define kGTMABPersonPhoneHomeLabel ((NSString *)kABHomeLabel)
+#define kGTMABPersonPhoneWorkLabel ((NSString *)kABWorkLabel)
+#define kGTMABOtherLabel ((NSString *)kABOtherLabel)
 
 #define kGTMABMultiValueInvalidIdentifier kABMultiValueInvalidIdentifier
 #define kGTMABRecordInvalidID kABRecordInvalidID
@@ -139,8 +144,13 @@ typedef CFIndex GTMABPropertyType;
 #define kGTMABPersonLastNameProperty kABLastNameProperty
 #define kGTMABPersonBirthdayProperty kABBirthdayProperty
 #define kGTMABPersonPhoneProperty kABPhoneProperty
-#define kGTMABPersonPhoneMainLabel kABPhoneMainLabel
 #define kGTMABGroupNameProperty kABGroupNameProperty
+
+#define kGTMABPersonPhoneMainLabel kABPhoneMainLabel
+#define kGTMABPersonPhoneMobileLabel kABPhoneMobileLabel
+#define kGTMABPersonPhoneHomeLabel kABPhoneHomeLabel
+#define kGTMABPersonPhoneWorkLabel kABPhoneWorkLabel
+#define kGTMABOtherLabel kABOtherLabel
 
 #define kGTMABMultiValueInvalidIdentifier @"ABMultiValueInvalidIdentifier"
 #define kGTMABRecordInvalidID @"ABRecordInvalidID"
