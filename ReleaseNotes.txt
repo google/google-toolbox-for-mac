@@ -288,7 +288,9 @@ Changes since 1.5.1
 - Moved GTMABAddressBook out of iPhone and into the AddressBook directory, 
   because it now works on both the Desktop and the iPhone giving you a single
   interface to do AddressBook work on both platforms.
-  
+
+- Added GTMNSScanner+JSON for scanning out JSON objects and arrays. We don't
+  parse JSON as there are several other frameworks out there for doing that.
 
 Release 1.5.1
 Changes since 1.5.0
