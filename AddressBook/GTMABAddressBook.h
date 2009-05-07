@@ -117,6 +117,7 @@ typedef CFIndex GTMABPropertyType;
 
 #else  // GTM_IPHONE_SDK
 
+@class NSImage;
 typedef NSString* GTMABRecordID;
 typedef NSString* GTMABPropertyID;
 typedef NSString* GTMABMultiValueIdentifier;

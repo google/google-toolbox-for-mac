@@ -19,6 +19,12 @@
 #import "GTMABAddressBook.h"
 #import "GTMGarbageCollection.h"
 
+#if GTM_IPHONE_SDK
+#import <UIKit/UIKit.h>
+#else  // GTM_IPHONE_SDK
+#import <Cocoa/Cocoa.h>
+#endif  // GTM_IPHONE_SDK
+
 NSString *const kGTMABUnknownPropertyName = @"UNKNOWN_PROPERTY";
 
 typedef struct {
@@ -225,8 +231,22 @@ typedef struct {
 // Performs a prefix search on the composite names of people in an address book 
 // and returns an array of persons that match the search criteria.
 - (NSArray *)peopleWithCompositeNameWithPrefix:(NSString *)prefix {
+#if GTM_IPHONE_SDK
+  NSArray *people = 
+    GTMCFAutorelease(ABAddressBookCopyPeopleWithName(addressBook_,
+                                                     (CFStringRef)prefix));
+  NSMutableArray *gtmPeople = [NSMutableArray arrayWithCapacity:[people count]];
+  id person;
+  GTM_FOREACH_OBJECT(person, people) {
+    GTMABPerson *gtmPerson = [GTMABPerson recordWithRecord:person];
+    [gtmPeople addObject:gtmPerson];
+  }
+  return gtmPeople;
+#else
   // TODO(dmaclach): Change over to recordsMatchingSearchElement as an
   // optimization?
+  // TODO(dmaclach): Make this match the way that the iPhone does it (by
+  // checking both first and last names) and adding unittests for all this.
   NSArray *people = [self people];
   NSMutableArray *foundPeople = [NSMutableArray array];
   GTMABPerson *person;
@@ -234,12 +254,15 @@ typedef struct {
     NSString *compositeName = [person compositeName];
     NSRange range = [compositeName rangeOfString:prefix
                                          options:(NSCaseInsensitiveSearch 
+                                                  | NSDiacriticInsensitiveSearch
+                                                  | NSWidthInsensitiveSearch
                                                   | NSAnchoredSearch)];
     if (range.location != NSNotFound) {
       [foundPeople addObject:person];
     }
   }
   return foundPeople;
+#endif
 }
 
 // Performs a prefix search on the composite names of groups in an address book 
@@ -252,6 +275,8 @@ typedef struct {
     NSString *compositeName = [group compositeName];
     NSRange range = [compositeName rangeOfString:prefix
                                          options:(NSCaseInsensitiveSearch 
+                                                  | NSDiacriticInsensitiveSearch
+                                                  | NSWidthInsensitiveSearch
                                                   | NSAnchoredSearch)];
     if (range.location != NSNotFound) {
       [foundGroups addObject:group];
