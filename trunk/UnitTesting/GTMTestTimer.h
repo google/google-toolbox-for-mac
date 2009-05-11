@@ -38,7 +38,7 @@ typedef struct {
 
 // Create a test timer
 GTM_INLINE GTMTestTimer *GTMTestTimerCreate(void) {
-  GTMTestTimer *t = calloc(sizeof(GTMTestTimer), 1);
+  GTMTestTimer *t = (GTMTestTimer *)calloc(sizeof(GTMTestTimer), 1);
   if (t) {
     if (mach_timebase_info(&t->time_base_info_) == KERN_SUCCESS) {
       t->retainCount_ = 1;
