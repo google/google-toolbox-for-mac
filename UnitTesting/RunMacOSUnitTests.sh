@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 #  RunMacOSUnitTests.sh
 #  Copyright 2008 Google Inc.
@@ -19,30 +20,30 @@
 #  See http://developer.apple.com/technotes/tn2004/tn2124.html for details.
 #
 
+set -o errexit
+set -o nounset 
+set -o verbose
+
 # Controlling environment variables:
 #
 # GTM_DISABLE_ZOMBIES - 
 #   Set to a non-zero value to turn on zombie checks. You will probably
 #   want to turn this off if you enable leaks.
-#
+GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=0}
+
 # GTM_ENABLE_LEAKS -
 #   Set to a non-zero value to turn on the leaks check. You will probably want
 #   to disable zombies, otherwise you will get a lot of false positives.
-#
-# GTM_NO_DEBUG_FRAMEWORKS -
-#   Set to zero to prevent the use of the debug versions of system
-#   libraries/frameworks if you have them installed on your system. The 
-#   frameworks can be found at 
-#   http://connect.apple.com > Downloads > Developer Tools
-#   (https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19915)
-# 
+GTM_ENABLE_LEAKS=${GTM_ENABLE_LEAKS:=0}
+
 # GTM_LEAKS_SYMBOLS_TO_IGNORE
 #   List of comma separated symbols that leaks should ignore. Mainly to control 
 #   leaks in frameworks you don't have control over. 
 #   Search this file for GTM_LEAKS_SYMBOLS_TO_IGNORE to see examples. 
 #   Please feel free to add other symbols as you find them but make sure to 
 #   reference Radars or other bug systems so we can track them.
-#
+GTM_LEAKS_SYMBOLS_TO_IGNORE=${GTM_LEAKS_SYMBOLS_TO_IGNORE:=""}
+
 # GTM_DO_NOT_REMOVE_GCOV_DATA
 #   By default before starting the test, we remove any *.gcda files for the 
 #   current project build configuration so you won't get errors when a source 
@@ -53,11 +54,7 @@
 #   that you are testing.
 #   If you DO NOT want this to occur, set GTM_DO_NOT_REMOVE_GCOV_DATA to a
 #   non-zero value.
-#
-
-set -o errexit
-set -o nounset
-set -o verbose
+GTM_DO_NOT_REMOVE_GCOV_DATA=${GTM_DO_NOT_REMOVE_GCOV_DATA:=0}
 
 ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
 ScriptName=$(basename "$0")
@@ -173,17 +170,18 @@ RunTests() {
   AppendToSymbolsLeaksShouldIgnore "-[IMServiceAgentImpl allServices]"
   # radar 6264034 +[IKSFEffectDescription initialize] Leaks
   AppendToSymbolsLeaksShouldIgnore "+[IKSFEffectDescription initialize]"
-  
+
   # Running leaks on architectures that support leaks.
   export MallocStackLogging=YES
   export GTM_LEAKS_SYMBOLS_TO_IGNORE="${GTM_LEAKS_SYMBOLS_TO_IGNORE}"
   ARCHS="${LEAK_TEST_ARCHS}"
   VALID_ARCHS="${LEAK_TEST_ARCHS}"
+  GTMXcodeNote ${LINENO} "Leak checking enabled for $ARCHS. Ignoring leaks from $GTM_LEAKS_SYMBOLS_TO_IGNORE."
   "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
   
   # Running leaks on architectures that don't support leaks.
   unset MallocStackLogging
-  unset GTM_ENABLE_LEAKS
+  GTM_ENABLE_LEAKS=0
   ARCHS="${NO_LEAK_TEST_ARCHS}"
   VALID_ARCHS="${NO_LEAK_TEST_ARCHS}"
   "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
@@ -202,7 +200,7 @@ export OBJC_DEBUG_UNLOAD=YES
 # export OBJC_DEBUG_FINALIZERS=YES
 export OBJC_DEBUG_NIL_SYNC=YES
 
-if [ ! $GTM_DISABLE_ZOMBIES ]; then
+if [ $GTM_DISABLE_ZOMBIES -eq 0 ]; then
   GTMXcodeNote ${LINENO} "Enabling zombies"
   # CFZombieLevel disabled because it doesn't play well with the 
   # security framework
@@ -222,8 +220,9 @@ fi
 
 # If leaks testing is enabled, we have to go through our convoluted path
 # to handle architectures that don't allow us to do leak testing.
-if [ $GTM_ENABLE_LEAKS ]; then
+if [ $GTM_ENABLE_LEAKS -ne 0 ]; then
   RunTests  
 else
+  GTMXcodeNote ${LINENO} "Leak checking disabled."
   "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
 fi
