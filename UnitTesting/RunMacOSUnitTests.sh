@@ -55,6 +55,10 @@
 #   non-zero value.
 #
 
+set -o errexit
+set -o nounset
+set -o verbose
+
 ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
 ScriptName=$(basename "$0")
 ThisScript="${ScriptDir}/${ScriptName}"
