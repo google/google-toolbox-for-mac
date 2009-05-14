@@ -110,6 +110,10 @@ typedef CFIndex GTMABPropertyType;
 #define kGTMABPersonPhoneMobileLabel ((NSString *)kABPersonPhoneMobileLabel)
 #define kGTMABPersonPhoneHomeLabel ((NSString *)kABHomeLabel)
 #define kGTMABPersonPhoneWorkLabel ((NSString *)kABWorkLabel)
+#define kGTMABPersonPhoneWorkFaxLabel ((NSString *)kABPersonPhoneWorkFAXLabel)
+#define kGTMABPersonPhoneHomeFaxLabel ((NSString *)kABPersonPhoneHomeFAXLabel)
+#define kGTMABPersonPhonePagerLabel ((NSString *)kABPersonPhonePagerLabel)
+
 #define kGTMABOtherLabel ((NSString *)kABOtherLabel)
 
 #define kGTMABMultiValueInvalidIdentifier kABMultiValueInvalidIdentifier
@@ -151,6 +155,10 @@ typedef CFIndex GTMABPropertyType;
 #define kGTMABPersonPhoneMobileLabel kABPhoneMobileLabel
 #define kGTMABPersonPhoneHomeLabel kABPhoneHomeLabel
 #define kGTMABPersonPhoneWorkLabel kABPhoneWorkLabel
+#define kGTMABPersonPhoneWorkFaxLabel kABPhoneWorkFAXLabel
+#define kGTMABPersonPhoneHomeFaxLabel kABPhoneHomeFAXLabel
+#define kGTMABPersonPhonePagerLabel kABPhonePagerLabel
+
 #define kGTMABOtherLabel kABOtherLabel
 
 #define kGTMABMultiValueInvalidIdentifier @"ABMultiValueInvalidIdentifier"
