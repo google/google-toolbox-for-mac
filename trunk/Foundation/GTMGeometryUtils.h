@@ -22,6 +22,10 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 enum {
   GTMScaleProportionally = 0,   // Fit proportionally
   GTMScaleToFit,                // Forced fit (distort if necessary)
@@ -450,3 +454,7 @@ GTM_INLINE CGFloat GTMNSDistanceBetweenPoints(NSPoint pt1, NSPoint pt2) {
 }
 
 #endif //  !GTM_IPHONE_SDK
+  
+#ifdef __cplusplus
+}
+#endif
