@@ -56,7 +56,7 @@ GTM_LEAKS_SYMBOLS_TO_IGNORE=${GTM_LEAKS_SYMBOLS_TO_IGNORE:=""}
 #   non-zero value.
 GTM_DO_NOT_REMOVE_GCOV_DATA=${GTM_DO_NOT_REMOVE_GCOV_DATA:=0}
 
-ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
+ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 ScriptName=$(basename "$0")
 ThisScript="${ScriptDir}/${ScriptName}"
 

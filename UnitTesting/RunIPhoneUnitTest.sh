@@ -50,7 +50,7 @@ GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=1}
 #
 GTM_REMOVE_GCOV_DATA=${GTM_REMOVE_GCOV_DATA:=0}
 
-ScriptDir=$(dirname $(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,"))
+ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 ScriptName=$(basename "$0")
 ThisScript="${ScriptDir}/${ScriptName}"
 
