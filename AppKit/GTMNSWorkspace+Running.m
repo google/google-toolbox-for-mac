@@ -232,7 +232,18 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
                       selector:@selector(didLaunchOrTerminateApp:)
                           name:NSWorkspaceDidTerminateApplicationNotification
                         object:nil];
-      launchedApps_ = [[ws launchedApplications] retain];
+      NSDictionary *ourApp = [ws activeApplication];
+      NSArray *launchedApps = [ws launchedApplications];
+      
+      // Right now launchedApplications from NSWorkspace does not contain 
+      // UIElement apps. We may want to change our implementation. But at
+      // the very least we want to include ourselves in the list of running
+      // apps.
+      // TODO(dmaclach): revisit this and decide on something decent.
+      if (![launchedApps containsObject:ourApp]) {
+        launchedApps = [launchedApps arrayByAddingObject:ourApp];
+      }
+      launchedApps_ = [launchedApps retain];
     }
     // We want to keep launchedApps_ in the autoreleasepool of this thread
     [[launchedApps_ retain] autorelease];
