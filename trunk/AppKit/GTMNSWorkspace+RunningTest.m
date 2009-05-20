@@ -27,7 +27,13 @@
 
 - (void)testBasics {
   NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  
+  // Test an app that should be running
   STAssertTrue([ws gtm_isAppWithIdentifierRunning:@"com.apple.finder"], nil);
+  
+  // Check to make sure that we are on the list
+  STAssertTrue([ws gtm_isAppWithIdentifierRunning:
+                @"com.google.GTMUIUnitTestingHarness"], nil);
   STAssertFalse([ws gtm_isAppWithIdentifierRunning:@"com.google.nothing"], nil);
   
   NSDictionary *processInfo = [ws gtm_processInfoDictionary];
