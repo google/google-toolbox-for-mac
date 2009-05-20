@@ -292,6 +292,12 @@ Changes since 1.5.1
 - Added GTMNSScanner+JSON for scanning out JSON objects and arrays. We don't
   parse JSON as there are several other frameworks out there for doing that.
 
+- Fixed up GTMABAddressBook so that it will compile and run on Tiger as well.
+  This did mean some slight functional differences in terms of the 
+  *WithCompositeNameWithPrefix methods as they can't do diacritic or width
+  insensitive search on Tiger, but this shouldn't affect most users.
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008

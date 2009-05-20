@@ -25,6 +25,15 @@
 #import <Cocoa/Cocoa.h>
 #endif  // GTM_IPHONE_SDK
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
+// Tiger does not have this functionality, so we just set them to 0
+// as they are "or'd" in. This does change the functionality slightly.
+enum {
+  NSDiacriticInsensitiveSearch = 0,
+  NSWidthInsensitiveSearch = 0
+};
+#endif
+
 NSString *const kGTMABUnknownPropertyName = @"UNKNOWN_PROPERTY";
 
 typedef struct {
