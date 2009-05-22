@@ -297,6 +297,7 @@ Changes since 1.5.1
   *WithCompositeNameWithPrefix methods as they can't do diacritic or width
   insensitive search on Tiger, but this shouldn't affect most users.
 
+- Added GTMGoogleSearch to foundation to make doing google searches easier.
 
 Release 1.5.1
 Changes since 1.5.0
