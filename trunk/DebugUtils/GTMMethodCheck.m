@@ -44,6 +44,7 @@ static BOOL ConformsToNSObjectProtocol(Class cls) {
   // On iPhone we check Object as well
   if ((strncmp(className, "NS", 2) == 0) 
        || (strncmp(className, "_NS", 3) == 0)
+       || (strncmp(className, "__NS", 4) == 0)
        || (strcmp(className, "CFObject") == 0)
 #if GTM_IPHONE_SDK
        || (strcmp(className, "Object") == 0)
