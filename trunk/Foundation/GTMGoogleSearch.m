@@ -18,8 +18,6 @@
 
 #import "GTMGoogleSearch.h"
 #import "GTMObjectSingleton.h"
-#import "GTMNSString+URLArguments.h"
-#import "GTMMethodCheck.h"
 #import "GTMGarbageCollection.h"
 
 #if GTM_IPHONE_SDK
@@ -37,9 +35,6 @@ typedef struct {
 // this is a seed mapping from languages to domains for google search.
 // this doesn't have to be complete, as it is just a seed.
 //
-// initial values for the table were taken from the GDWin code.
-// (/googleclient/totalrecall/common/url_tools.cpp, but moved to
-// /google3/java/com/google/totalrecall/production/config/gpac.xml)
 //
 static LanguageDefaultInfo kLanguageListDefaultMappingTable[] = {
   // order is important, first match is taken
@@ -126,13 +121,10 @@ static NSString *const kSearchURLTemplate = @"http://www.google.%@/%@?%@";
              language:(NSString**)preferredLanguage;
 - (void)reloadAllAppCachedValues:(NSNotification*)notification;
 - (void)updateAllAppsDomain:(NSString*)domain language:(NSString*)language;
-- (NSDictionary *)normalizeGoogleArguments:(NSDictionary *)args;
 @end
 
 
 @implementation GTMGoogleSearch
-
-GTM_METHOD_CHECK(NSString, gtm_stringByEscapingForURLArgument);
 
 GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
 
@@ -178,7 +170,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
     
     NSDictionary *appArgs 
       = [bundle objectForInfoDictionaryKey:GTMGoogleSearchClientAppArgsKey];
-    globalSearchArguments_ = [[self normalizeGoogleArguments:appArgs] retain];
+    globalSearchArguments_ = [appArgs retain];
   }
   return self;
 }
@@ -309,19 +301,17 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
 }
 
 - (void)setGlobalSearchArguments:(NSDictionary *)args {
-  args = [self normalizeGoogleArguments:args];
   [globalSearchArguments_ autorelease];
-  globalSearchArguments_ = [args retain];
+  globalSearchArguments_ = [args copy];
 }
 
 - (NSString*)searchURLFor:(NSString*)queryText
                    ofType:(NSString*)type 
                 arguments:(NSDictionary *)localArgs {
-  NSString *url = nil;
-  if (!queryText) {
+  if (!type) {
     return nil;
   }
-
+  
   NSString *language;
   NSString *domain;
   [self preferredDomain:&domain
@@ -333,28 +323,50 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
        @"UTF-8", @"ie",
        @"UTF-8", @"oe",
        language, @"hl", 
-       [queryText gtm_stringByEscapingForURLArgument], @"q", 
        nil];
+  if (queryText) {
+    [args setObject:queryText forKey:@"q"];
+  }
   
   NSDictionary *globalSearchArgs = [self globalSearchArguments];
   if (globalSearchArgs) {
     [args addEntriesFromDictionary:globalSearchArgs];
   }
   if (localArgs) {
-    localArgs = [self normalizeGoogleArguments:localArgs];
     [args addEntriesFromDictionary:localArgs];
   }
   
   NSMutableArray *clientArgs = [NSMutableArray array];
   NSString *key;
+  NSNull *nsNull = [NSNull null];
   GTM_FOREACH_KEY(key, args) {
     NSString *object = [args objectForKey:key];
-    NSString *arg = [NSString stringWithFormat:@"%@=%@", key, object];
-    [clientArgs addObject:arg];
+    if (![object isEqualTo:nsNull]) {
+#if DEBUG
+      // In debug we check key and object for things that should be escaped.
+      // Note that percent is not in there because escaped strings will have
+      // percents in them
+      NSCharacterSet *cs = [NSCharacterSet characterSetWithCharactersInString:
+                            @"!*'();:@&=+$,/?#[] "];
+      NSRange range = [key rangeOfCharacterFromSet:cs];
+      if (range.location != NSNotFound) {
+        _GTMDevLog(@"Unescaped string %@ in argument pair {%@, %@} in -[%@ %@]", 
+                   key, key, object, [self class], NSStringFromSelector(_cmd));
+      }
+      range = [object rangeOfCharacterFromSet:cs];
+      if (range.location != NSNotFound) {
+        _GTMDevLog(@"Unescaped string %@ in argument pair {%@,%@ } in -[%@ %@]",
+                   object, key, object, [self class], 
+                   NSStringFromSelector(_cmd));
+      }
+#endif  // DEBUG
+      NSString *arg = [NSString stringWithFormat:@"%@=%@", key, object];
+      [clientArgs addObject:arg];
+    }
   }
   NSString *clientArg = [clientArgs componentsJoinedByString:@"&"];
-  url = [NSString stringWithFormat:kSearchURLTemplate,
-         domain, type, clientArg];
+  NSString *url = [NSString stringWithFormat:kSearchURLTemplate,
+                   domain, type, clientArg];
   return url;
 }
 
@@ -510,18 +522,6 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
   [distCenter postNotificationName:kNotificationName
                             object:nil
                           userInfo:nil];
-}
-
-- (NSDictionary *)normalizeGoogleArguments:(NSDictionary *)args {
-  NSMutableDictionary *outArgs = [NSMutableDictionary dictionary];
-  NSString *key;
-  GTM_FOREACH_KEY(key, args) {
-    NSString *object = [args objectForKey:key];
-    key = [[key gtm_stringByEscapingForURLArgument] lowercaseString];
-    object = [object gtm_stringByEscapingForURLArgument];
-    [outArgs setObject:object forKey:key];
-  }
-  return outArgs;
 }
 
 @end

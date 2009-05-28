@@ -18,6 +18,7 @@
 
 #import "GTMGoogleSearch.h"
 #import "GTMSenTestCase.h"
+#import "GTMUnitTestDevLog.h"
 #import <unistd.h>
 
 @interface GTMGoogleSearchTest : GTMTestCase
@@ -52,13 +53,13 @@
   
   size_t count = sizeof(testSearches) / sizeof(testSearches[0]);
   NSDictionary *globalArgs 
-    = [NSDictionary dictionaryWithObject:@"f" forKey:@"fo o"];
+    = [NSDictionary dictionaryWithObject:@"f" forKey:@"foo"];
   [googleSearch setGlobalSearchArguments:globalArgs];
-  NSDictionary *args = [NSDictionary dictionaryWithObject:@"Ba ba"
+  NSDictionary *args = [NSDictionary dictionaryWithObject:@"Baba"
                                                   forKey:@"BaR"];
   NSString *expectedStrings[] = { 
     @"oe=UTF-8", @"hl=yyy", @"q=Foobar", 
-    @"fo%20o=f", @"ie=UTF-8", @"bar=Ba%20ba" 
+    @"foo=f", @"ie=UTF-8", @"BaR=Baba" 
   };
   for (size_t i = 0; i < count; i++) {
     // test building the url
@@ -82,6 +83,26 @@
   [googleSearch clearPreferredDomainAndLanguageForCurrentApplication];
 }
 
+- (void)testBadInputs {
+  GTMGoogleSearch *googleSearch = [GTMGoogleSearch sharedInstance];
+  STAssertNotNil(googleSearch, nil);
+  NSDictionary *args = [NSDictionary dictionaryWithObject:@"Ba!ba"
+                                                   forKey:@"Ba=R"];
+  [GTMUnitTestDevLogDebug expectString:
+   @"Unescaped string Foo bar in argument pair {q,Foo bar } "
+   @"in -[GTMGoogleSearch searchURLFor:ofType:arguments:]"];
+  [GTMUnitTestDevLogDebug expectString:
+   @"Unescaped string Ba=R in argument pair {Ba=R, Ba!ba} "
+   @"in -[GTMGoogleSearch searchURLFor:ofType:arguments:]"];
+  [GTMUnitTestDevLogDebug expectString:
+   @"Unescaped string Ba!ba in argument pair {Ba=R,Ba!ba } "
+   @"in -[GTMGoogleSearch searchURLFor:ofType:arguments:]"];
+  NSString *urlString = [googleSearch searchURLFor:@"Foo bar" 
+                                            ofType:GTMGoogleSearchFroogle
+                                         arguments:args];
+  STAssertNotNil(urlString, nil);
+}
+  
 - (void)testPreferredDefaults {
   GTMGoogleSearch *googleSearch = [GTMGoogleSearch sharedInstance];
   STAssertNotNil(googleSearch, nil);

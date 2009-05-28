@@ -32,7 +32,8 @@
 #define GTMGoogleSearchBooks @"books"
 #define GTMGoogleSearchWeb @"search"
 
-// Composes URLs and searches for google properties in the correct language and domain.
+// Composes URLs and searches for google properties in the correct language 
+// and domain.
 @interface GTMGoogleSearch : NSObject {
   // the cached values
   NSString *allAppsCachedDomain_;
@@ -58,7 +59,11 @@
 // or override settings stored in globalSearchArguments.
 // example dictionary to do an I'm feeling lucky search would be:
 // [NSDictionary dictionaryWithObject:@"1" key:@"btnI"];
-//
+// If queryText is nil, no query will be put in. 
+// Arguments passed in in args must be properly URL escaped.
+// If you want to remove one of the arguments that will be included in the
+// global search arguments, set the object for the key you want to remove to
+// [NSNull null].
 - (NSString*)searchURLFor:(NSString *)queryText 
                    ofType:(NSString *)type
                 arguments:(NSDictionary *)args;
@@ -79,7 +84,8 @@
 // to strings where they are the args you want passed to all Google searches.
 // You can override these with your localArgs when you actually perform the
 // search if you wish.
-// This arguments will affect all searches.
+// This arguments will affect all searches. Arguments must be properly URL
+// escaped.
 - (void)setGlobalSearchArguments:(NSDictionary *)args;
 
 // Returns the global search arguments.
@@ -130,7 +136,5 @@
 // "all apps" value (or default).
 //
 - (void)clearPreferredDomainAndLanguageForAllApps;
-
- 
 
 @end
