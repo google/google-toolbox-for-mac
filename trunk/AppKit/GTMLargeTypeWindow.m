@@ -47,7 +47,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
 @end
 
 @interface GTMLargeTypeWindow (GTMLargeTypeWindowPrivate)
-+ (CGFloat)displayWidth;
++ (CGSize)displaySize;
 - (void)animateWithEffect:(NSString*)effect;
 @end
 
@@ -59,7 +59,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
     [self release];
     return nil;
   }
-  CGFloat displayWidth = [[self class] displayWidth];
+  CGSize displaySize = [[self class] displaySize];
   NSMutableAttributedString *attrString
     = [[[NSMutableAttributedString alloc] initWithString:string] autorelease];
   
@@ -88,19 +88,16 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
   // We start going 50 pixels at a time, then 10, then 1
   int size = -26;  // start at 24 (-26 + 50)
   int offsets[] = { 50, 10, 1 };
-  NSSize bigSize = NSMakeSize(MAXFLOAT, MAXFLOAT);
-  NSStringDrawingOptions options = (NSStringDrawingUsesDeviceMetrics | 
-                                    NSStringDrawingOneShot);
   for (size_t i = 0; i < sizeof(offsets) / sizeof(int); ++i) {
     for(size = size + offsets[i]; size >= 24 && size < 300; size += offsets[i]) {
       NSFont *font = [NSFont boldSystemFontOfSize:size] ;
       [attrString addAttribute:NSFontAttributeName 
                          value:font
                          range:fullRange];
-      NSRect textSize = [attrString boundingRectWithSize:bigSize
-                                                 options:options];
+      NSSize textSize = [attrString size];
       NSSize maxAdvanceSize = [font maximumAdvancement];
-      if (textSize.size.width + maxAdvanceSize.width > displayWidth) {
+      if (textSize.width + maxAdvanceSize.width > displaySize.width || 
+        textSize.height > displaySize.height) {
         size = size - offsets[i];
         break;
       }
@@ -125,8 +122,8 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
     [self release];
     return nil;
   }
-  CGFloat displayWidth =[[self class] displayWidth];
-  NSRect frame = NSMakeRect(0, 0, displayWidth, 0);
+  CGSize displaySize = [[self class] displaySize];
+  NSRect frame = NSMakeRect(0, 0, displaySize.width, 0);
   NSTextView *textView = [[[NSTextView alloc] initWithFrame:frame] autorelease];
   [textView setEditable:NO];
   [textView setSelectable:NO];
@@ -268,11 +265,13 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
   [super orderOut:sender];
 }  
 
-+ (CGFloat)displayWidth {
++ (CGSize)displaySize {
   NSRect screenRect = [[NSScreen mainScreen] frame];
   // This is just a rough calculation to make us fill a good proportion
   // of the main screen.
-  return NSWidth( screenRect ) * 11.0 / 12.0 - 2.0 * kEdgeInset;
+  CGFloat width = (NSWidth(screenRect) * 11.0 / 12.0) - (2.0 * kEdgeInset);
+  CGFloat height = (NSHeight(screenRect) * 11.0 / 12.0) - (2.0 * kEdgeInset);
+  return CGSizeMake(width, height);
 }
 
 - (void)animateWithEffect:(NSString*)effect {
