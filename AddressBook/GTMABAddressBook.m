@@ -484,7 +484,6 @@ typedef struct {
     if (!isGood) {
       // COV_NF_START
       // Marked as NF because I don't know how to force an error
-      [person release];
       person = nil;
       // COV_NF_END
     }
@@ -642,7 +641,6 @@ typedef struct {
     if (![group setValue:name forProperty:kABGroupNameProperty]) {
       // COV_NF_START
       // Can't get setValue to fail for me
-      [group release];
       group = nil;
       // COV_NF_END
     }
