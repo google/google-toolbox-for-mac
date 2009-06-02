@@ -299,6 +299,9 @@ Changes since 1.5.1
 
 - Added GTMGoogleSearch to foundation to make doing google searches easier.
 
+- Added GTMUIImage+Resize for iPhone to conveniently handle generating resized
+  UIImages while preserving aspect ratios.
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
