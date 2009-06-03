@@ -171,7 +171,7 @@ extern NSString* const kABGroupRecordType;
 // Wrapper for an AddressBook on iPhone
 @interface GTMABAddressBook : NSObject {
  @private
-  GTM_WEAK_ON_MACOS ABAddressBookRef addressBook_;
+  ABAddressBookRef addressBook_;
 }
 
 // Returns a new instance of an address book.

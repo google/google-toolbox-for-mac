@@ -208,11 +208,9 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 
 // Some of our own availability macros
 #if GTM_MACOS_SDK
-#define GTM_WEAK_ON_MACOS __weak
 #define GTM_AVAILABLE_ONLY_ON_IPHONE UNAVAILABLE_ATTRIBUTE
 #define GTM_AVAILABLE_ONLY_ON_MACOS
 #else 
-#define GTM_WEAK_ON_MACOS
 #define GTM_AVAILABLE_ONLY_ON_IPHONE
 #define GTM_AVAILABLE_ONLY_ON_MACOS UNAVAILABLE_ATTRIBUTE
 #endif 

@@ -80,6 +80,7 @@ typedef struct {
     addressBook_ = ABAddressBookCreate();
 #else  // GTM_IPHONE_SDK
     addressBook_ = ABGetSharedAddressBook();
+    CFRetain(addressBook_);
 #endif  // GTM_IPHONE_SDK
     if (!addressBook_) {
       // COV_NF_START
@@ -92,11 +93,9 @@ typedef struct {
 }
 
 - (void)dealloc {
-#if GTM_IPHONE_SDK
   if (addressBook_) {
     CFRelease(addressBook_);
   }
-#endif  // GTM_IPHONE_SDK
   [super dealloc];
 }
 
