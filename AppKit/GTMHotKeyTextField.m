@@ -494,7 +494,8 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     case 36: key = '\r'; localizedKey = @"Return"; break;
     case 76: key = 0x3; localizedKey = @"Enter"; break;
     case 48: key = 0x9; localizedKey = @"Tab"; break;
-    case 49: key = 0xA0; localizedKey = @"Space"; break;
+      // 0x2423 is the Open Box
+    case 49: key = 0x2423; localizedKey = @"Space"; break;
       // Control keys
     case 51: key = 0x8; localizedKey = @"Delete"; break;
     case 71: key = NSClearDisplayFunctionKey; localizedKey = @"Clear"; break;
