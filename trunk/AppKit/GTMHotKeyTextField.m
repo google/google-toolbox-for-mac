@@ -532,8 +532,10 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   // If they asked for strings, and we have one return it.  Otherwise, return
   // any key we've picked.
   if (!useGlyph && localizedKey) {
-    return NSLocalizedStringFromTableInBundle(localizedKey, @"KeyCode", 
-                                              bundle, @"");
+    return NSLocalizedStringFromTableInBundle(localizedKey, 
+                                              @"GTMHotKeyTextField", 
+                                              bundle, 
+                                              @"");
   } else if (key != 0) {
     return [NSString stringWithFormat:@"%C", key];
   }
