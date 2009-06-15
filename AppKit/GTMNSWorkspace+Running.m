@@ -68,7 +68,7 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
   return dict;
 }
 
-- (NSDictionary *)gtm_processInfoDictionaryForPSN:(ProcessSerialNumberPtr)psn {
+- (NSDictionary *)gtm_processInfoDictionaryForPSN:(ProcessSerialNumberPtr const)psn {
   NSDictionary *dict = nil;
   if (psn) {
     CFDictionaryRef cfDict 

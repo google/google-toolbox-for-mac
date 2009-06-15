@@ -199,15 +199,13 @@
 }
 
 - (void)releaseRealProxy {
-  BOOL connectionChanged = NO;
   @synchronized (self) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Only trigger if we had a proxy before
     if (realProxy_) {
-      connectionChanged = YES;
+      [realProxy_ release];
+      realProxy_ = nil;
     }
-    [realProxy_ release];
-    realProxy_ = nil;
   }
 }
 
