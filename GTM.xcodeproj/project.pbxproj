@@ -275,6 +275,7 @@
 		F47F1D300D4914AD00925B8F /* GTMCalculatedRange.h in Headers */ = {isa = PBXBuildFile; fileRef = F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47F1D310D4914AD00925B8F /* GTMCalculatedRange.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */; };
 		F47F1D350D4914B600925B8F /* GTMCalculatedRangeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */; };
+		F48D000D0FE994C900428D0B /* GTMUnitTestingWindow.10.5.7.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F48D000C0FE994BF00428D0B /* GTMUnitTestingWindow.10.5.7.tiff */; };
 		F49FA8440EEF2AB700077669 /* GTMFileSystemKQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = F49FA8420EEF2AB700077669 /* GTMFileSystemKQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F49FA8450EEF2AB700077669 /* GTMFileSystemKQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = F49FA8430EEF2AB700077669 /* GTMFileSystemKQueue.m */; };
 		F49FA88B0EEF303D00077669 /* GTMFileSystemKQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F49FA88A0EEF303D00077669 /* GTMFileSystemKQueueTest.m */; };
@@ -589,6 +590,7 @@
 		F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRange.m; sourceTree = "<group>"; };
 		F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRangeTest.m; sourceTree = "<group>"; };
 		F48B91040D94487D00D45044 /* libgcov_readme.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = libgcov_readme.html; sourceTree = "<group>"; };
+		F48D000C0FE994BF00428D0B /* GTMUnitTestingWindow.10.5.7.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.10.5.7.tiff; sourceTree = "<group>"; };
 		F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugTigerOrLater.xcconfig; sourceTree = "<group>"; };
 		F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugUnittest.xcconfig; sourceTree = "<group>"; };
 		F48FE2430D197F9A009257D2 /* LoadableBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LoadableBundle.xcconfig; sourceTree = "<group>"; };
@@ -837,15 +839,16 @@
 		F435E46C0DC8F23A0069CDE8 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
-				84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */,
-				84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */,
-				8B2789950EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff */,
 				8B45A2DE0DA51A7E001148C5 /* GTMUnitTestingTest.nib */,
 				8B45A6B90DA67DD5001148C5 /* GTMUnitTestingImage.gtmUTState */,
 				8B45A5F50DA5EB9F001148C5 /* GTMUnitTestingWindow.gtmUTState */,
 				8B45A5F60DA5EB9F001148C5 /* GTMUnitTestingTestApp.gtmUTState */,
 				8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */,
+				84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */,
 				8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */,
+				8B2789950EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff */,
+				F48D000C0FE994BF00428D0B /* GTMUnitTestingWindow.10.5.7.tiff */,
+				84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */,
 				8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */,
 			);
 			path = TestData;
@@ -1444,6 +1447,7 @@
 				84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */,
 				84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */,
 				8B2789960EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff in Resources */,
+				F48D000D0FE994C900428D0B /* GTMUnitTestingWindow.10.5.7.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
