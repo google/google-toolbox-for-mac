@@ -40,7 +40,7 @@
   SInt32 major, minor, bugfix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
   if (!(GTMIsGarbageCollectionEnabled() 
-        && major <= 10 && minor <= 5 && bugfix <= 6)) {
+        && major <= 10 && minor <= 5 && bugfix <= 7)) {
     [super invokeTest];
   } else {
     NSLog(@"--- %@ NOT run because of GC incompatibilites ---", [self name]);
