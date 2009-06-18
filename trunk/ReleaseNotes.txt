@@ -7,6 +7,8 @@ Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 Release ?.?.?
 Changes since 1.5.1
 
+- Added GTMWindowSheetController for creating and controlling tab-modal sheets.
+
 - Added GTMNSArray+Merge for merging one array into another with or without
   a custom merging function, returning a new array with the merged contents.
 
