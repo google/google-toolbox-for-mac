@@ -32,7 +32,6 @@
   }
   CGFloat aspectRatio = imageSize.width / imageSize.height;
   CGFloat targetAspectRatio = targetSize.width / targetSize.height;
-
   CGRect projectTo = CGRectZero;
   if (preserveAspectRatio) {
     if (trimToFit) {
@@ -76,25 +75,12 @@
   integralRect.size = targetSize;
   targetSize = CGRectIntegral(integralRect).size;
 
-  // iPhone recommended settings.
-  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-  CGBitmapInfo bitmapInfo = (kCGBitmapByteOrder32Little |
-                             kCGImageAlphaPremultipliedFirst);
-
-  CGContextRef context = CGBitmapContextCreate(nil,  // data
-                                               targetSize.width,
-                                               targetSize.height,
-                                               8,  // bitsPerPixel
-                                               0,  // bytesPerRow
-                                               colorSpace,
-                                               bitmapInfo);
-  CGColorSpaceRelease(colorSpace);
-  // Produce the image
-  CGContextDrawImage(context, projectTo, [self CGImage]);
-  CGImageRef resizedRef = CGBitmapContextCreateImage(context);
-  CGContextRelease(context);
-  UIImage *resized = [UIImage imageWithCGImage:resizedRef];
-  CGImageRelease(resizedRef);
-  return resized;
+  // Resize photo. Use UIImage drawing methods because they respect
+  // UIImageOrientation as opposed to CGContextDrawImage().
+  UIGraphicsBeginImageContext(targetSize);
+  [self drawInRect:projectTo];
+  UIImage* resizedPhoto = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return resizedPhoto;
 }
 @end
