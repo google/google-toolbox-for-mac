@@ -206,6 +206,15 @@
       }
     }
   }
+  
+  // Do NSSearchField placeholders
+  if ([view isKindOfClass:[NSSearchField class]]) {
+    NSString *placeholder = [[(NSSearchField *)view cell] placeholderString];
+    NSString *localizedPlaceholer = [self localizedStringForString:placeholder];
+    if (localizedPlaceholer) {
+      [[(NSSearchField *)view cell] setPlaceholderString:localizedPlaceholer];
+    }
+  }
 }
 
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive {
