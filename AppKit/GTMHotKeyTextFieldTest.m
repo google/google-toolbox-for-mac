@@ -153,12 +153,12 @@
             kGTMHotKeyModifierFlagsKey,
             nil];
   STAssertNotNil(hkDict, nil);
-  STAssertNotNil([GTMHotKeyTextField displayStringForHotKey:hkDict], nil);
+  STAssertNil([GTMHotKeyTextField displayStringForHotKey:hkDict], nil);
   
   hkDict = [NSDictionary dictionaryWithObjectsAndKeys:
             [NSNumber numberWithBool:NO],
             kGTMHotKeyDoubledModifierKey,
-            [NSNumber numberWithUnsignedInt:114],
+            [NSNumber numberWithUnsignedInt:'A'],
             kGTMHotKeyKeyCodeKey,
             nil];
   STAssertNotNil(hkDict, nil);

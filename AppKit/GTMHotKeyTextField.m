@@ -36,6 +36,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 - (void)updateDisplayedPrettyString;
 + (BOOL)isValidHotKey:(NSDictionary *)hotKey;
 + (NSString *)displayStringForHotKey:(NSDictionary *)hotKey;
++ (BOOL)doesKeyCodeRequireModifier:(UInt16)keycode;
 @end
 
 @interface GTMHotKeyFieldEditor (PrivateMethods)
@@ -321,19 +322,26 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   // Modifiers
   unsigned int flags
     = [[hotKeyDict objectForKey:kGTMHotKeyModifierFlagsKey] unsignedIntValue];
-  NSString *mods = [GTMHotKeyTextField stringForModifierFlags:flags];
-  if (!mods || ![mods length]) return nil;
+  NSString *mods = [[self class] stringForModifierFlags:flags];
+  if (flags && ![mods length]) return nil;
   // Handle double modifier case
   if ([[hotKeyDict objectForKey:kGTMHotKeyDoubledModifierKey] boolValue]) {
     return [NSString stringWithFormat:@"%@ + %@", mods, mods];
   }
   // Keycode
+  NSNumber *keyCodeNumber = [hotKeyDict objectForKey:kGTMHotKeyKeyCodeKey];
+  if (!keyCodeNumber) return nil;
   unsigned int keycode
-    = [[hotKeyDict objectForKey:kGTMHotKeyKeyCodeKey] unsignedIntValue];
-  NSString *keystroke = [GTMHotKeyTextField stringForKeycode:keycode
-                                                    useGlyph:NO
-                                              resourceBundle:bundle];
+    = [keyCodeNumber unsignedIntValue];
+  NSString *keystroke = [[self class] stringForKeycode:keycode
+                                              useGlyph:NO
+                                        resourceBundle:bundle];
   if (!keystroke || ![keystroke length]) return nil;
+  if ([[self class] doesKeyCodeRequireModifier:keycode] 
+      && ![mods length]) {
+    return nil;
+  }
+  
   return [NSString stringWithFormat:@"%@%@", mods, keystroke];
 }
 
@@ -425,6 +433,36 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 #pragma mark Useful String Class Methods
 
++ (BOOL)doesKeyCodeRequireModifier:(UInt16)keycode {
+  BOOL doesRequire = YES;
+  switch(keycode) {
+    // These are the keycodes that map to the 
+    //unichars in the associated comment.
+    case 122:  //  NSF1FunctionKey 
+    case 120:  //  NSF2FunctionKey
+    case 99:   //  NSF3FunctionKey
+    case 118:  //  NSF4FunctionKey
+    case 96:   //  NSF5FunctionKey
+    case 97:   //  NSF6FunctionKey
+    case 98:   //  NSF7FunctionKey
+    case 100:  //  NSF8FunctionKey
+    case 101:  //  NSF9FunctionKey
+    case 109:  //  NSF10FunctionKey
+    case 103:  //  NSF11FunctionKey
+    case 111:  //  NSF12FunctionKey
+    case 105:  //  NSF13FunctionKey
+    case 107:  //  NSF14FunctionKey
+    case 113:  //  NSF15FunctionKey
+    case 106:  //  NSF16FunctionKey
+      doesRequire = NO;
+      break;
+    default:
+      doesRequire = YES;
+      break;
+  }
+  return doesRequire;
+}
+
 // These are not in a category on NSString because this class could be used
 // within multiple preference panes at the same time. If we put it in a category
 // it would require setting up some magic so that the categories didn't conflict
@@ -440,7 +478,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if (flags & NSAlternateKeyMask) modChars[charCount++] = kOptionUnicode;
   if (flags & NSShiftKeyMask) modChars[charCount++] = kShiftUnicode;
   if (flags & NSCommandKeyMask) modChars[charCount++] = kCommandUnicode;
-  if (charCount == 0) return nil;
+  if (charCount == 0) return @"";
   return [NSString stringWithCharacters:modChars length:charCount];
 }
 
@@ -462,22 +500,22 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     case 124: key = NSRightArrowFunctionKey; break;
     case 125: key = NSDownArrowFunctionKey; break;
     case 126: key = NSUpArrowFunctionKey; break;
-    case 122: key = NSF1FunctionKey; break; 
-    case 120: key = NSF2FunctionKey; break;
-    case 99:  key = NSF3FunctionKey; break; 
-    case 118: key = NSF4FunctionKey; break;
-    case 96:  key = NSF5FunctionKey; break;
-    case 97:  key = NSF6FunctionKey; break;
-    case 98:  key = NSF7FunctionKey; break; 
-    case 100: key = NSF8FunctionKey; break; 
-    case 101: key = NSF9FunctionKey; break;
-    case 109: key = NSF10FunctionKey; break;
-    case 103: key = NSF11FunctionKey; break;
-    case 111: key = NSF12FunctionKey; break; 
-    case 105: key = NSF13FunctionKey; break;
-    case 107: key = NSF14FunctionKey; break;
-    case 113: key = NSF15FunctionKey; break;
-    case 106: key = NSF16FunctionKey; break;
+    case 122: key = NSF1FunctionKey; localizedKey = @"F1"; break; 
+    case 120: key = NSF2FunctionKey; localizedKey = @"F2"; break;
+    case 99:  key = NSF3FunctionKey; localizedKey = @"F3"; break; 
+    case 118: key = NSF4FunctionKey; localizedKey = @"F4"; break;
+    case 96:  key = NSF5FunctionKey; localizedKey = @"F5"; break;
+    case 97:  key = NSF6FunctionKey; localizedKey = @"F6"; break;
+    case 98:  key = NSF7FunctionKey; localizedKey = @"F7"; break; 
+    case 100: key = NSF8FunctionKey; localizedKey = @"F8"; break; 
+    case 101: key = NSF9FunctionKey; localizedKey = @"F9"; break;
+    case 109: key = NSF10FunctionKey; localizedKey = @"F10"; break;
+    case 103: key = NSF11FunctionKey; localizedKey = @"F11"; break;
+    case 111: key = NSF12FunctionKey; localizedKey = @"F12"; break; 
+    case 105: key = NSF13FunctionKey; localizedKey = @"F13"; break;
+    case 107: key = NSF14FunctionKey; localizedKey = @"F14"; break;
+    case 113: key = NSF15FunctionKey; localizedKey = @"F15"; break;
+    case 106: key = NSF16FunctionKey; localizedKey = @"F16"; break;
       // Forward delete is a terrible name so we'll use the glyph Apple puts on
       // their current keyboards
     case 117: key = 0x2326; break;
@@ -793,34 +831,29 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
 
 // Private do method that tell us to ignore certain events
 - (BOOL)shouldBypassEvent:(NSEvent *)theEvent {
+  BOOL bypass = NO;
   UInt16 keyCode = [theEvent keyCode];
   NSUInteger modifierFlags
     = [theEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask;
 
-  // Ignore all events containing tabs. They have special meaning to fields
-  // and some (Cmd Tab variants) are always consumed by the Dock, so users 
-  // just shouldn't be able to use them.
   if (keyCode == 48) {  // Tab
+    // Ignore all events that the dock cares about
     // Just to be extra clear if the user is trying to use Dock hotkeys beep
     // at them
     if ((modifierFlags == NSCommandKeyMask) || 
         (modifierFlags == (NSCommandKeyMask | NSShiftKeyMask))) {
       NSBeep();
+      bypass = YES;
     }
-    return YES;
+  } else if ((keyCode == 12) && (modifierFlags == NSCommandKeyMask)) {
+    // Don't eat Cmd-Q. Users could have it as a hotkey, but its more likely
+    // they're trying to quit  
+    bypass = YES;
+  } else if ((keyCode == 13) && (modifierFlags == NSCommandKeyMask)) {
+    // Same for Cmd-W, user is probably trying to close the window
+    bypass = YES;
   }
-  
-  // Don't eat Cmd-Q. Users could have it as a hotkey, but its more likely
-  // they're trying to quit
-  if ((keyCode == 12) && (modifierFlags == NSCommandKeyMask)) {
-    return YES;
-  }
-  // Same for Cmd-W, user is probably trying to close the window
-  if ((keyCode == 13) && (modifierFlags == NSCommandKeyMask)) {
-    return YES;
-  }
-  
-  return NO;
+  return bypass;
 }
 
 // Private method that turns events into strings and dictionaries for our
@@ -892,9 +925,15 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   // If the event has no modifiers do nothing
   NSUInteger allModifiers = (NSCommandKeyMask | NSAlternateKeyMask |
                              NSControlKeyMask | NSShiftKeyMask);
-  if (!(flags & allModifiers)) return nil;
-  // If the event has high bits in keycode do nothing
-  if (keycode & 0xFF00) return nil;
+
+  BOOL requiresModifiers 
+    = [GTMHotKeyTextField doesKeyCodeRequireModifier:keycode];
+  if (requiresModifiers) {
+    // If we aren't a function key, and have no modifiers do nothing.
+    if (!(flags & allModifiers)) return nil;
+    // If the event has high bits in keycode do nothing
+    if (keycode & 0xFF00) return nil;
+  }
   
   // Clean the flags to only contain things we care about
   UInt32 cleanFlags = 0;
