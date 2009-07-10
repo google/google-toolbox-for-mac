@@ -200,7 +200,7 @@ NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
           CIFilter *filter = [CIFilter filterWithName:@"CIColorControls"
                                         keysAndValues:
                                @"inputSaturation",
-                               [NSNumber numberWithFloat:0.8],
+                               [NSNumber numberWithFloat:0.8f],
                                @"inputBrightness",
                                [NSNumber numberWithFloat:0.2f],
                                @"inputContrast",
