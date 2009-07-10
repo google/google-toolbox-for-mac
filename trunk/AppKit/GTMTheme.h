@@ -31,48 +31,85 @@ enum {
   GTMThemeStyleToolBar,
   GTMThemeStyleToolBarButton,
   GTMThemeStyleToolBarButtonPressed,
-  GTMThemeStyleBookmarksBar,
+  GTMThemeStyleBookmarksBarButton,
 };
 typedef NSUInteger GTMThemeStyle;
+
+enum {
+  GTMThemeStateActiveWindow = 1 << 0
+};
+typedef NSUInteger GTMThemeState;
 
 // GTMTheme provides a range of values for procedural drawing of UI elements 
 // based on interpolation of a single background color
 
 @interface GTMTheme : NSObject {
- @private
+@private
   NSColor *backgroundColor_;  // bound to user defaults 
   NSImage *backgroundImage_;  // bound to user defaults 
   NSMutableDictionary *values_; // cached values
+  NSString *basePath_; // base path for referenced resources
 }
 
 // Access the global theme. By default this is bound to user defaults
 + (GTMTheme *)defaultTheme;
 + (void)setDefaultTheme:(GTMTheme *)theme;
 
+// Bind this theme to user defaults
+- (void)bindToUserDefaults;
+
 // returns base theme color
 - (NSColor *)backgroundColor;
+
+// sets the base theme color
+- (void)setBackgroundColor:(NSColor *)value;
 
 // base background color
 - (NSImage *)backgroundImage;
 
-// NSColor (or pattern color) for the background of the window
-- (NSColor *)windowBackgroundColor:(BOOL)active;
+// NSImage pattern background
+- (NSImage *)backgroundImageForStyle:(GTMThemeStyle)style
+                               state:(GTMThemeState)state;
+
+// NSColor of the above image, if present, else gradientForStyle
+- (NSColor *)backgroundPatternColorForStyle:(GTMThemeStyle)style 
+                                      state:(GTMThemeState)state;
 
 // NSGradient for specific usage, active indicates whether the window is key
-- (NSGradient *)gradientForStyle:(GTMThemeStyle)style active:(BOOL)active;
+- (NSGradient *)gradientForStyle:(GTMThemeStyle)style state:(GTMThemeState)state;
 
 // Outline color for stroke, active indicates whether the window is key
-- (NSColor *)strokeColorForStyle:(GTMThemeStyle)style active:(BOOL)active;
+- (NSColor *)strokeColorForStyle:(GTMThemeStyle)style state:(GTMThemeState)state;
 
 // Indicates whether luminance is dark or light
-- (BOOL)styleIsDark:(GTMThemeStyle)style active:(BOOL)active;
+- (BOOL)styleIsDark:(GTMThemeStyle)style state:(GTMThemeState)state;
 
 // Background style for this style and state
 - (NSBackgroundStyle)interiorBackgroundStyleForStyle:(GTMThemeStyle)style
-                                              active:(BOOL)active;
+                                               state:(GTMThemeState)state;
 
-// NSColor version of the gradient (for window backgrounds, etc)
-- (NSColor *)patternColorForStyle:(GTMThemeStyle)style active:(BOOL)active;
+- (NSColor *)iconColorForStyle:(GTMThemeStyle)style
+                         state:(GTMThemeState)state;
+
+// Manually set a theme value
+- (void)setValue:(id)value 
+    forAttribute:(NSString *)attribute 
+           style:(GTMThemeStyle)style
+           state:(GTMThemeState)state;
+@end
+
+// Convenience categories for NSWindow and NSView to access the current theme
+// Default implementation polls the window delegate
+@interface NSWindow (GTMTheme)
+- (GTMTheme *)gtm_theme;
+@end
+
+@interface NSView (GTMTheme)
+- (GTMTheme *)gtm_theme;
+@end
+
+@protocol GTMThemeDelegate
+- (GTMTheme *)gtm_themeForWindow:(NSWindow *)window;
 @end
 
 #endif // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
