@@ -40,6 +40,17 @@
   STAssertNotNil(aliasData, nil);
   NSString *path2 = [fileManager gtm_pathFromAliasData:aliasData];
   STAssertEqualObjects(path, path2, nil);
+
+  path2 = [fileManager gtm_pathFromAliasData:aliasData
+                                     resolve:YES
+                                      withUI:NO];
+  STAssertEqualObjects(path, path2, nil);
+  
+  path2 = [fileManager gtm_pathFromAliasData:aliasData
+                                     resolve:NO
+                                      withUI:NO];
+  STAssertEqualObjects(path, path2, nil);
+
   NSData *aliasData2 = [fileManager gtm_aliasDataForPath:path2];
   STAssertNotNil(aliasData2, nil);
   NSString *path3 = [fileManager gtm_pathFromAliasData:aliasData2];
@@ -65,5 +76,4 @@
   STAssertNil([fileManager gtm_aliasDataForPath:@""], nil);
   STAssertNil([fileManager gtm_aliasDataForPath:nil], nil);
 }
- 
 @end

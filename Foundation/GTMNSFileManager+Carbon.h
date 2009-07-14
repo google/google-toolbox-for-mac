@@ -40,6 +40,19 @@
 //
 - (NSString *)gtm_pathFromAliasData:(NSData *)alias;
 
+// Converts an alias to a path without triggering UI
+// Args:
+//   alias - an alias wrapped up in an NSData
+//   resolve - whether to try to resolve the alias, or simply read path data
+//   withUI - whether to show UI when trying to resolve
+//
+// Returns:
+//   The path. Nil on failure.
+//
+- (NSString *)gtm_pathFromAliasData:(NSData *)alias 
+                            resolve:(BOOL)resolve 
+                             withUI:(BOOL)withUI;
+  
 // Converts a path to an FSRef *
 // Args:
 //   path - the path to convert
