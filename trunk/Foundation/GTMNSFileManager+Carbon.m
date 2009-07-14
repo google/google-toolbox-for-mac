@@ -45,6 +45,12 @@ CantUseParams:
 } 
 
 - (NSString *)gtm_pathFromAliasData:(NSData *)data {
+  return [self gtm_pathFromAliasData:data resolve:YES withUI:YES];
+} 
+
+- (NSString *)gtm_pathFromAliasData:(NSData *)data 
+                            resolve:(BOOL)resolve 
+                             withUI:(BOOL)withUI {
   NSString *path = nil;
   require_quiet(data, CantUseParams);
   
@@ -57,14 +63,25 @@ CantUseParams:
   Boolean wasChanged;
   // we don't use a require here because it is quite legitimate for an alias
   // resolve to fail.
-  if (FSResolveAlias(NULL, alias, &ref, &wasChanged) == noErr) {
-    path = [self gtm_pathFromFSRef:&ref];
+
+  if (resolve) { 
+    OSStatus err
+      = FSResolveAliasWithMountFlags(NULL, alias, &ref, &wasChanged,
+                                     withUI ? kResolveAliasFileNoUI : 0);
+    if (err == noErr) {
+      path = [self gtm_pathFromFSRef:&ref];
+    }
+  } else {
+    OSStatus err
+      = FSCopyAliasInfo (alias, NULL, NULL, (CFStringRef *)(&path), NULL, NULL);
+    if (err != noErr) path = nil;
+    [path autorelease];
   }
   DisposeHandle((Handle)alias);
 CantMakeHandle:
 CantUseParams:
   return path;
-} 
+}
 
 - (FSRef *)gtm_FSRefForPath:(NSString *)path {
   FSRef* fsRef = NULL;
