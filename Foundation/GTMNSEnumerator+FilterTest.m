@@ -44,7 +44,8 @@
     gtm_enumeratorByMakingEachObjectPerformSelector:@selector(stringByAppendingString:) 
                                          withObject:@" "];
   STAssertNil([e nextObject],
-              @"shouldn't have gotten anything from first advance of enumerator");
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
 }
 
 - (void)testFilteredEnumeratorByMakingEachObjectPerformSelector {
@@ -69,7 +70,8 @@
     gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:) 
                                                  withObject:@"foo"];
   STAssertNil([e nextObject],
-              @"shouldn't have gotten anything from first advance of enumerator");
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
   
   // test an set that will filter out
   NSSet *filterAway = [NSSet setWithObjects:@"bar", @"baz", nil];
@@ -77,7 +79,8 @@
     gtm_filteredEnumeratorByMakingEachObjectPerformSelector:@selector(hasPrefix:) 
                                                  withObject:@"foo"];
   STAssertNil([e nextObject],
-              @"shouldn't have gotten anything from first advance of enumerator");
+              @"shouldn't have gotten anything from first advance of " 
+              @"enumerator");
 }
 
 - (void)testEnumeratorByTargetPerformOnEachSelector {
@@ -98,8 +101,40 @@
     gtm_enumeratorByTarget:target
      performOnEachSelector:@selector(stringByAppendingString:)];
   STAssertNil([e nextObject],
-              @"shouldn't have gotten anything from first advance of enumerator");
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
 }
+
+- (id)prependString:(NSString*)pre toString:(NSString *)post {
+  return [pre stringByAppendingString:post];
+}
+
+- (void)testEnumeratorByTargetPerformOnEachSelectorWithObject {
+  // test w/ a set of strings
+  NSSet *numbers = [NSSet setWithObjects: @"1", @"2", @"3", nil];
+  NSEnumerator *e = [[numbers objectEnumerator]
+                     gtm_enumeratorByTarget:self
+                     performOnEachSelector:@selector(prependString:toString:)
+                                 withObject:@"bar"];
+  // since the set iterates in any order, compare as sets
+  NSSet *collectedValues = [NSSet setWithArray:[e allObjects]];
+  NSSet *expectedValues = [NSSet setWithObjects:@"1bar", 
+                           @"2bar",
+                           @"3bar", 
+                           nil];
+  STAssertEqualObjects(collectedValues, expectedValues, @"");
+  
+  // test an empty set
+  NSSet *empty = [NSSet set];
+  e = [[empty objectEnumerator]
+       gtm_enumeratorByTarget:self
+        performOnEachSelector:@selector(prependString:toString:)
+                   withObject:@"bar"];
+  STAssertNil([e nextObject],
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
+}
+
 
 - (void)testFilteredEnumeratorByTargetPerformOnEachSelector {
   // test w/ a set of strings
@@ -119,15 +154,55 @@
     gtm_filteredEnumeratorByTarget:target
              performOnEachSelector:@selector(containsObject:)];
   STAssertNil([e nextObject],
-              @"shouldn't have gotten anything from first advance of enumerator");
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
 
-  // test an set that will filter out
+  // test a set that will filter out
   NSSet *filterAway = [NSSet setWithObjects:@"bar", @"baz", nil];
   e = [[filterAway objectEnumerator]
     gtm_filteredEnumeratorByTarget:target
              performOnEachSelector:@selector(containsObject:)];
   STAssertNil([e nextObject],
-              @"shouldn't have gotten anything from first advance of enumerator");
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
 }
+
+- (BOOL)is:(id)a equalTo:(id)b {
+  return [a isEqual:b];
+}
+
+- (void)testFilteredEnumeratorByTargetPerformOnEachSelectorWithObject {
+  // test w/ a set of strings
+  NSSet *numbers = [NSSet setWithObjects:@"1", @"2", @"3", @"4", nil];
+  NSEnumerator *e = [[numbers objectEnumerator]
+                     gtm_filteredEnumeratorByTarget:self
+                     performOnEachSelector:@selector(is:equalTo:)
+                     withObject:@"2"];
+  // since the set iterates in any order, compare as sets
+  NSSet *filteredValues = [NSSet setWithArray:[e allObjects]];
+  NSSet *expectedValues = [NSSet setWithObjects:@"2", nil];
+  STAssertEqualObjects(filteredValues, expectedValues, @"");
+  
+  // test an empty set
+  NSSet *empty = [NSSet set];
+  e = [[empty objectEnumerator]
+       gtm_filteredEnumeratorByTarget:self
+       performOnEachSelector:@selector(is:equalTo:)
+       withObject:@"2"];
+  STAssertNil([e nextObject],
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
+  
+  // test a set that will filter out
+  NSSet *filterAway = [NSSet setWithObjects:@"bar", @"baz", nil];
+  e = [[filterAway objectEnumerator]
+       gtm_filteredEnumeratorByTarget:self
+       performOnEachSelector:@selector(is:equalTo:)
+       withObject:@"2"];
+  STAssertNil([e nextObject],
+              @"shouldn't have gotten anything from first advance of "
+              @"enumerator");
+}
+
 
 @end

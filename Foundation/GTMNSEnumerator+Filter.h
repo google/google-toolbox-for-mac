@@ -1,7 +1,7 @@
 //
 //  GTMNSEnumerator+Filter.h
 //
-//  Copyright 2007-2008 Google Inc.
+//  Copyright 2007-2009 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -18,36 +18,52 @@
 
 #import <Foundation/Foundation.h>
 
-/// A generic category for methods that allow us to filter enumeratable
-/// containers, inspired by C++ Standard Library's use of iterators.
-/// Like in C++, these assume the underlying container is not modified during
-/// the lifetime of the iterator.
-///
+// A generic category for methods that allow us to filter enumeratable
+// containers, inspired by C++ Standard Library's use of iterators.
+// Like in C++, these assume the underlying container is not modified during
+// the lifetime of the iterator.
+//
 @interface NSEnumerator (GTMEnumeratorFilterAdditions)
 
-/// @argument predicate - the function return BOOL. will be applied to each element
-/// @argument argument - optional argument to pass to predicate
-/// @returns an enumerator that contains only elements where [element sel:argument] is true
+// Performs -[element predicate:argument] on each object in self.
+// Returns an enumerator where -[element predicate:argument] returned YES.
+// Predicate must be of form -(BOOL)predicate:(id)argument.
 - (NSEnumerator *)gtm_filteredEnumeratorByMakingEachObjectPerformSelector:(SEL)predicate
                                                                withObject:(id)argument;
 
-/// @argument selector - the function return a transformed object. will be applied to each element
-/// @argument argument - optional argument to pass to transformer
-/// @returns an enumerator that contains the transformed elements
+// Performs -[element selector:argument] on each object in self.
+// Returns an enumerator of the return values of -[element selector:argument].
+// Selector must be of form -(id)selector:(id)argument.
 - (NSEnumerator *)gtm_enumeratorByMakingEachObjectPerformSelector:(SEL)selector
                                                        withObject:(id)argument;
 
-/// @argument target - receiver for each method
-/// @argument predicate - as  in, [target predicate: [self nextObject]], return a BOOL
-/// @returns an enumerator that contains only elements where [element sel:argument] is true
+// Performs -[target predicate:element] on each object in self.
+// Returns an enumerator where -[target predicate:element] returned YES.
+// Predicate must be of form -(BOOL)predicate:(id)element.
 - (NSEnumerator *)gtm_filteredEnumeratorByTarget:(id)target
                            performOnEachSelector:(SEL)predicate;
 
-/// @argument target - receiver for each method
-/// @argument sel - as  in, [target selector: [self nextObject]], return a transformed object
-/// @returns an enumerator that contains the transformed elements
+// Performs -[target predicate:element withObject:object] on each object in self.
+// Returns an enumerator where -[target predicate:element withObject:object]
+// returned YES.
+// Predicate must be of form -(BOOL)predicate:(id)element withObject:(id)object.
+- (NSEnumerator *)gtm_filteredEnumeratorByTarget:(id)target
+                           performOnEachSelector:(SEL)predicate
+                                      withObject:(id)object;
+
+// Performs -[target selector:element] on each object in self.
+// Returns an enumerator of the return values of -[target selector:element].
+// Selector must be of form -(id)selector:(id)element.
 - (NSEnumerator *)gtm_enumeratorByTarget:(id)target
                    performOnEachSelector:(SEL)selector;
+
+// Performs -[target selector:element withObject:object] on each object in self.
+// Returns an enumerator of the return values of 
+// -[target selector:element withObject:object].
+// Selector must be of form -(id)selector:(id)element withObject:(id)object.
+- (NSEnumerator *)gtm_enumeratorByTarget:(id)target
+                   performOnEachSelector:(SEL)selector
+                              withObject:(id)object;
 
 @end
 
