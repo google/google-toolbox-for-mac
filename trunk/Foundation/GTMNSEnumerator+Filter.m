@@ -1,7 +1,7 @@
 //
 //  GTMNSEnumerator+Filter.m
 //
-//  Copyright 2007-2008 Google Inc.
+//  Copyright 2007-2009 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -32,9 +32,10 @@
 // behavior is in the subclasses.
 @interface GTMEnumeratorPrivateBase : NSEnumerator {
  @protected
-  NSEnumerator *base_;  // STRONG
+  NSEnumerator *base_;
   SEL operation_; // either a predicate or a transform depending on context.
-  id other_;  // STRONG, may be nil
+  id target_;  // may be nil
+  id object_;  // may be nil
 }
 @end
 
@@ -45,6 +46,7 @@
 @implementation GTMEnumeratorPrivateBase
 - (id)initWithBase:(NSEnumerator *)base
                sel:(SEL)filter
+            target:(id)optionalTarget
             object:(id)optionalOther {
   self = [super init];
   if (self) {
@@ -54,7 +56,8 @@
     _GTMDevAssert(base, @"can't initWithBase: a nil base enumerator");
     base_ = [base retain];
     operation_ = filter;
-    other_ = [optionalOther retain];
+    target_ = [optionalTarget retain];
+    object_ = [optionalOther retain];
   }
   return self;
 }
@@ -65,7 +68,8 @@
 
 - (void)dealloc {
   [base_ release];
-  [other_ release];
+  [target_ release];
+  [object_ release];
   [super dealloc];
 }
 
@@ -85,7 +89,7 @@
 @end
 @implementation GTMEnumeratorTransformer
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
-  *resultp = [obj performSelector:operation_ withObject:other_];
+  *resultp = [obj performSelector:operation_ withObject:object_];
   return nil != *resultp;
 }
 @end
@@ -96,7 +100,9 @@
 @end
 @implementation GTMEnumeratorTargetTransformer
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
-  *resultp = [other_ performSelector:operation_ withObject:obj];
+  *resultp = [target_ performSelector:operation_ 
+                           withObject:obj 
+                           withObject:object_];
   return nil != *resultp;
 }
 @end
@@ -113,7 +119,7 @@
 // http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
   *resultp = obj;
-  return ((BOOL (*)(id, SEL, id))objc_msgSend)(obj, operation_, other_);
+  return ((BOOL (*)(id, SEL, id))objc_msgSend)(obj, operation_, object_);
 }
 @end
 
@@ -130,7 +136,7 @@
 // http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
   *resultp = obj;
-  return ((BOOL (*)(id, SEL, id))objc_msgSend)(other_, operation_, obj);
+  return ((BOOL (*)(id, SEL, id, id))objc_msgSend)(target_, operation_, obj, object_);
 }
 @end
 
@@ -140,6 +146,7 @@
                                                                withObject:(id)argument {
   return [[[GTMEnumeratorFilter alloc] initWithBase:self
                                                 sel:selector
+                                             target:nil
                                              object:argument] autorelease];
 }
 
@@ -147,20 +154,37 @@
                                                        withObject:(id)argument {
   return [[[GTMEnumeratorTransformer alloc] initWithBase:self
                                                      sel:selector
+                                                  target:nil
                                                   object:argument] autorelease];
 }
 
 
 - (NSEnumerator *)gtm_filteredEnumeratorByTarget:(id)target
-                           performOnEachSelector:(SEL)selector {
+                           performOnEachSelector:(SEL)predicate {
   // make sure the object impls this selector taking an object as an arg.
-  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, selector,
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, predicate,
                                                               @encode(BOOL),
                                                               @encode(id),
                                                               NULL);
-  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self
-                                                      sel:selector
-                                                   object:target] autorelease];
+  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self 
+                                                      sel:predicate 
+                                                   target:target 
+                                                   object:nil] autorelease];
+}
+
+- (NSEnumerator *)gtm_filteredEnumeratorByTarget:(id)target
+                           performOnEachSelector:(SEL)predicate
+                                      withObject:(id)object {
+  // make sure the object impls this selector taking an object as an arg.
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, predicate,
+                                                              @encode(BOOL),
+                                                              @encode(id),
+                                                              @encode(id),
+                                                              NULL);
+  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self 
+                                                      sel:predicate 
+                                                   target:target 
+                                                   object:object] autorelease];
 }
 
 - (NSEnumerator *)gtm_enumeratorByTarget:(id)target
@@ -172,7 +196,25 @@
                                                               NULL);
   return [[[GTMEnumeratorTargetTransformer alloc] initWithBase:self
                                                            sel:selector
-                                                        object:target] autorelease];
+                                                        target:target
+                                                        object:nil] 
+          autorelease];
+}
+
+- (NSEnumerator *)gtm_enumeratorByTarget:(id)target
+                   performOnEachSelector:(SEL)selector 
+                              withObject:(id)object {
+  // make sure the object impls this selector taking an object as an arg.
+  GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, selector,
+                                                              @encode(id),
+                                                              @encode(id),
+                                                              @encode(id),
+                                                              NULL);
+  return [[[GTMEnumeratorTargetTransformer alloc] initWithBase:self
+                                                           sel:selector
+                                                        target:target
+                                                        object:object] 
+          autorelease];
 }
 
 @end

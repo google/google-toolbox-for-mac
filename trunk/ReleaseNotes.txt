@@ -304,6 +304,10 @@ Changes since 1.5.1
 - Added GTMUIImage+Resize for iPhone to conveniently handle generating resized
   UIImages while preserving aspect ratios.
 
+- Added support for passing in a context object to some of the 
+  GTMNSEnumerator+Filter routines.
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
