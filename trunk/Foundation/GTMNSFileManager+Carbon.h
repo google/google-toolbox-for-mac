@@ -40,7 +40,7 @@
 //
 - (NSString *)gtm_pathFromAliasData:(NSData *)alias;
 
-// Converts an alias to a path without triggering UI
+// Converts an alias to a path without optional triggering of UI.
 // Args:
 //   alias - an alias wrapped up in an NSData
 //   resolve - whether to try to resolve the alias, or simply read path data
