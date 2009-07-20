@@ -46,7 +46,6 @@ NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
 @end
 
 @interface GTMTheme ()
-- (void)bindToUserDefaults;
 - (void)sendChangeNotification;
 @end
 
@@ -189,7 +188,7 @@ NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
       // TODO(alcor): dim images when disabled
       color = [NSColor colorWithPatternImage:backgroundImage_];
 
-      if (state != GTMThemeStateActiveWindow) {
+      if ((state & GTMThemeStateActiveWindow) != GTMThemeStateActiveWindow) {
         NSImage *image =
             [self backgroundImageForStyle:style
                                     state:GTMThemeStateActiveWindow];
@@ -218,7 +217,7 @@ NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
     }
   }
 
-  if (value) [self cacheValue:value forSelector:_cmd style:style state:state];
+  [self cacheValue:value forSelector:_cmd style:style state:state];
   return value;
 }
 

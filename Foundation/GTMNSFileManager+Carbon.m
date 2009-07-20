@@ -73,9 +73,9 @@ CantUseParams:
     }
   } else {
     OSStatus err
-      = FSCopyAliasInfo (alias, NULL, NULL, (CFStringRef *)(&path), NULL, NULL);
+      = FSCopyAliasInfo(alias, NULL, NULL, (CFStringRef *)(&path), NULL, NULL);
     if (err != noErr) path = nil;
-    [path autorelease];
+    GTMCFAutorelease(path);
   }
   DisposeHandle((Handle)alias);
 CantMakeHandle:

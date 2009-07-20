@@ -44,11 +44,10 @@ typedef NSUInteger GTMThemeState;
 // based on interpolation of a single background color
 
 @interface GTMTheme : NSObject {
-@private
+ @private
   NSColor *backgroundColor_;  // bound to user defaults 
   NSImage *backgroundImage_;  // bound to user defaults 
   NSMutableDictionary *values_; // cached values
-  NSString *basePath_; // base path for referenced resources
 }
 
 // Access the global theme. By default this is bound to user defaults
