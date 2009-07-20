@@ -20,6 +20,7 @@
 #import <CoreServices/CoreServices.h>
 #import <sys/param.h>
 #import "GTMDefines.h"
+#import "GTMGarbageCollection.h"
 
 @implementation NSFileManager (GTMFileManagerCarbonAdditions)
 
