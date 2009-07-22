@@ -251,7 +251,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
     = [NSInvocation invocationWithMethodSignature:methodSig];
   [invocation setTarget:target_];
   [invocation setSelector:action_];
-  [invocation setArgument:self atIndex:2];
+  [invocation setArgument:&self atIndex:2];
   [invocation setArgument:&eventFFlags atIndex:3];
   [invocation invoke];
 }
