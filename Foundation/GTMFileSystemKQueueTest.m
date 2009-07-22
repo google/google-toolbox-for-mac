@@ -32,6 +32,7 @@
 @interface GTMFSKQTestHelper : NSObject {
  @private
   int writes_, renames_, deletes_;
+  __weak GTMFileSystemKQueue *queue_;
 }
 @end
 
@@ -39,6 +40,19 @@
 
 - (void)callbackForQueue:(GTMFileSystemKQueue *)queue 
                   events:(GTMFileSystemKQueueEvents)event {
+  // Can't use standard ST macros here because our helper
+  // is not a subclass of GTMTestCase. This is intentional.
+  if (queue != queue_) {
+    NSString *file = [NSString stringWithUTF8String:__FILE__];
+    NSException *exception 
+      = [NSException failureInEqualityBetweenObject:queue
+                                          andObject:queue_
+                                             inFile:file
+                                             atLine:__LINE__
+                                    withDescription:nil];
+    [exception raise];
+  }
+  
   if (event & kGTMFileSystemKQueueWriteEvent) {
     ++writes_;
   }
@@ -61,6 +75,11 @@
 - (int)deletes {
   return deletes_;
 }
+
+- (void)setKQueue:(GTMFileSystemKQueue *)queue {
+  queue_ = queue;
+}
+
 @end
 
 
@@ -178,6 +197,7 @@
                                          action:@selector(callbackForQueue:events:)];
   STAssertNotNil(testKQ, nil);
   STAssertEqualObjects([testKQ path], testPath_, nil);
+  [helper setKQueue:testKQ];
   
   // Write to the file
   [testFH writeData:[@"doh!" dataUsingEncoding:NSUnicodeStringEncoding]];
@@ -226,6 +246,8 @@
                                          action:@selector(callbackForQueue:events:)];
   STAssertNotNil(testKQ, nil);
   STAssertEqualObjects([testKQ path], testPath_, nil);
+  [helper setKQueue:testKQ];
+  
   GTMFileSystemKQueue *testKQ2
     = [[GTMFileSystemKQueue alloc] initWithPath:testPath_
                                       forEvents:kGTMFileSystemKQueueAllEvents
@@ -234,6 +256,7 @@
                                          action:@selector(callbackForQueue:events:)];
   STAssertNotNil(testKQ2, nil);
   STAssertEqualObjects([testKQ2 path], testPath_, nil);
+  [helper2 setKQueue:testKQ2];
   
   // Write to the file
   [testFH writeData:[@"doh!" dataUsingEncoding:NSUnicodeStringEncoding]];
@@ -313,6 +336,8 @@
                                          action:@selector(callbackForQueue:events:)];
   STAssertNotNil(testKQ, nil);
   STAssertEqualObjects([testKQ path], testPath_, nil);
+  [helper setKQueue:testKQ];
+  
   GTMFileSystemKQueue *testKQ2
     = [[GTMFileSystemKQueue alloc] initWithPath:testPath_
                                       forEvents:kGTMFileSystemKQueueAllEvents
@@ -321,6 +346,7 @@
                                          action:@selector(callbackForQueue:events:)];
   STAssertNotNil(testKQ2, nil);
   STAssertEqualObjects([testKQ2 path], testPath_, nil);
+  [helper2 setKQueue:testKQ2];
   
   // Write to the file
   [testFH writeData:[@"doh!" dataUsingEncoding:NSUnicodeStringEncoding]];
