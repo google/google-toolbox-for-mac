@@ -23,7 +23,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 static GTMTheme *gGTMDefaultTheme = nil;
-NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
+NSString *const kGTMThemeDidChangeNotification = @"GTMThemeDidChangeNotification";
+NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 
 @implementation NSWindow (GTMTheme)
 - (GTMTheme *)gtm_theme {
@@ -187,8 +188,11 @@ NSString *kGTMThemeDidChangeNotification = @"kGTMThemeDidChangeNotification";
     if (!state) {
       // TODO(alcor): dim images when disabled
       color = [NSColor colorWithPatternImage:backgroundImage_];
+      // TODO(alcor): |color| is never used!
 
       if ((state & GTMThemeStateActiveWindow) != GTMThemeStateActiveWindow) {
+        // TODO(alcor): this recursive call will also return nil since when you
+        // ask for the active style, it never returns anything.
         NSImage *image =
             [self backgroundImageForStyle:style
                                     state:GTMThemeStateActiveWindow];
