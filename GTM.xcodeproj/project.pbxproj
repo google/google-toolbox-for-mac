@@ -456,7 +456,7 @@
 		8B409BE30F9442C400DF540E /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B409E3E0F950DE900DF540E /* GTMUILocalizerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUILocalizerTest.h; sourceTree = "<group>"; };
 		8B409E8B0F952C2C00DF540E /* GTMUILocalizerTestWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerTestWindow.xib; sourceTree = "<group>"; };
-		8B409E970F952CD700DF540E /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B409E970F952CD700DF540E /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B409EC30F9530C200DF540E /* GTMUILocalizerWindow1State.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerWindow1State.gtmUTState; sourceTree = "<group>"; };
 		8B409EE80F95325000DF540E /* GTMUILocalizerWindow2State.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerWindow2State.gtmUTState; sourceTree = "<group>"; };
 		8B409EF30F95331500DF540E /* GTMUILocalizerMenuState.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerMenuState.gtmUTState; sourceTree = "<group>"; };
