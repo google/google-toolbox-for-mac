@@ -58,6 +58,9 @@
 @interface NSTabViewItem (GTMUnitTestingAdditions)
 @end
 
+@interface NSMatrix (GTMUnitTestingAdditions)
+@end
+
 @protocol GTMUnitTestViewDrawer;
 
 //  Fails when the |a1|'s drawing in an area |a2| does not equal the image file named |a3|.

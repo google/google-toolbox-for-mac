@@ -209,6 +209,129 @@
 				<string>OtherViews</string>
 			</dict>
 		</dict>
+		<key>ViewSubView 6</key>
+		<dict>
+			<key>ButtonAlternateTitle</key>
+			<string></string>
+			<key>ControlIsEnabled</key>
+			<true/>
+			<key>ControlSelectedCell</key>
+			<dict>
+				<key>CellState</key>
+				<integer>1</integer>
+				<key>CellTag</key>
+				<integer>0</integer>
+				<key>CellTitle</key>
+				<string>Localized Checkbox 1</string>
+				<key>CellValue</key>
+				<string>1</string>
+			</dict>
+			<key>ControlTag</key>
+			<integer>0</integer>
+			<key>ControlType</key>
+			<string>NSButton</string>
+			<key>ControlValue</key>
+			<string>1</string>
+			<key>ViewIsHidden</key>
+			<false/>
+		</dict>
+		<key>ViewSubView 7</key>
+		<dict>
+			<key>ButtonAlternateTitle</key>
+			<string></string>
+			<key>ControlIsEnabled</key>
+			<true/>
+			<key>ControlSelectedCell</key>
+			<dict>
+				<key>CellState</key>
+				<integer>1</integer>
+				<key>CellTag</key>
+				<integer>0</integer>
+				<key>CellTitle</key>
+				<string>Localized Checkbox 2</string>
+				<key>CellValue</key>
+				<string>1</string>
+			</dict>
+			<key>ControlTag</key>
+			<integer>0</integer>
+			<key>ControlType</key>
+			<string>NSButton</string>
+			<key>ControlValue</key>
+			<string>1</string>
+			<key>ViewIsHidden</key>
+			<false/>
+		</dict>
+		<key>ViewSubView 8</key>
+		<dict>
+			<key>ControlIsEnabled</key>
+			<true/>
+			<key>ControlSelectedCell</key>
+			<dict>
+				<key>CellState</key>
+				<integer>1</integer>
+				<key>CellTag</key>
+				<integer>1</integer>
+				<key>CellTitle</key>
+				<string>Localized Radio 1</string>
+				<key>CellValue</key>
+				<string>1</string>
+			</dict>
+			<key>ControlTag</key>
+			<integer>0</integer>
+			<key>ControlType</key>
+			<string>NSMatrix</string>
+			<key>ControlValue</key>
+			<string>1</string>
+			<key>MatrixAllowEmptySelection</key>
+			<false/>
+			<key>MatrixAutosizesCells</key>
+			<true/>
+			<key>MatrixCell 0</key>
+			<dict>
+				<key>CellState</key>
+				<integer>1</integer>
+				<key>CellTag</key>
+				<integer>1</integer>
+				<key>CellTitle</key>
+				<string>Localized Radio 1</string>
+				<key>CellValue</key>
+				<string>1</string>
+			</dict>
+			<key>MatrixCell 1</key>
+			<dict>
+				<key>CellState</key>
+				<integer>0</integer>
+				<key>CellTag</key>
+				<integer>0</integer>
+				<key>CellTitle</key>
+				<string>Localized Radio 2</string>
+				<key>CellValue</key>
+				<string>0</string>
+			</dict>
+			<key>MatrixCellPrototype</key>
+			<dict>
+				<key>CellState</key>
+				<integer>0</integer>
+				<key>CellTag</key>
+				<integer>0</integer>
+				<key>CellTitle</key>
+				<string>Radio</string>
+				<key>CellValue</key>
+				<string>0</string>
+			</dict>
+			<key>MatrixColumnCount</key>
+			<integer>1</integer>
+			<key>MatrixIntercellSpacing</key>
+			<string>{4, 2}</string>
+			<key>MatrixMode</key>
+			<integer>0</integer>
+			<key>MatrixRowCount</key>
+			<integer>2</integer>
+			<key>MatrixSelectionByRect</key>
+			<true/>
+			<key>ViewIsHidden</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>WindowIsMain</key>
 	<false/>

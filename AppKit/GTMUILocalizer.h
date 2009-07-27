@@ -73,6 +73,7 @@
 - (void)localizeWindow:(NSWindow *)window recursively:(BOOL)recursive;
 - (void)localizeView:(NSView *)view recursively:(BOOL)recursive;
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive;
+- (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive;
 
 // A method for subclasses to override in case you have a different
 // way to go about getting localized strings.
