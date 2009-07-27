@@ -289,6 +289,40 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
+@implementation NSMatrix (GTMUnitTestingAdditions) 
+
+//  Encodes the state of an object in a manner suitable for comparing
+//  against a master state file so we can determine whether the
+//  object is in a suitable state.
+//
+//  Arguments:
+//    inCoder - the coder to encode our state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+
+  ENCODE_NSINTEGER(inCoder, [self mode], @"MatrixMode");
+  ENCODE_NSINTEGER(inCoder, [self numberOfRows], @"MatrixRowCount");
+  ENCODE_NSINTEGER(inCoder, [self numberOfColumns], @"MatrixColumnCount");
+  [inCoder encodeBool:[self allowsEmptySelection]
+               forKey:@"MatrixAllowEmptySelection"];
+  [inCoder encodeBool:[self isSelectionByRect] forKey:@"MatrixSelectionByRect"];
+  [inCoder encodeBool:[self autosizesCells] forKey:@"MatrixAutosizesCells"];
+  [inCoder encodeSize:[self intercellSpacing] forKey:@"MatrixIntercellSpacing"];
+
+  [inCoder encodeObject:[self prototype] forKey:@"MatrixCellPrototype"];
+  
+  // Dump the list of cells
+  NSCell *cell;
+  long i = 0;
+  GTM_FOREACH_OBJECT(cell, [self cells]) {
+    [inCoder encodeObject:cell
+                   forKey:[NSString stringWithFormat:@"MatrixCell %ld", i]];
+    ++i;
+  }
+}
+
+@end
+
 //  A view that allows you to delegate out drawing using the formal
 //  GTMUnitTestViewDelegate protocol above. This is useful when writing up unit
 //  tests for visual elements.

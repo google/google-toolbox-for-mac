@@ -97,6 +97,8 @@
       // Do the main menu
       NSMenu *menu = [object mainMenu];
       [self localizeMenu:menu recursively:recursive];
+    } else if ([object isKindOfClass:[NSCell class]]) {
+      [self localizeCell:(NSCell *)object recursively:recursive];
     }
   }
 }
@@ -215,6 +217,24 @@
       [[(NSSearchField *)view cell] setPlaceholderString:localizedPlaceholer];
     }
   }
+
+  // Do any NSMatrix placeholders
+  if ([view isKindOfClass:[NSMatrix class]]) {
+    NSMatrix *matrix = (NSMatrix *)view;
+    // Process the prototype
+    id cell = [matrix prototype];
+    [self localizeCell:cell recursively:recursive];
+    // Process the cells
+    GTM_FOREACH_OBJECT(cell, [matrix cells]) {
+      [self localizeCell:cell recursively:recursive];
+      // The tooltip isn't on a cell, so we do it via the matrix.
+      NSString *toolTip = [matrix toolTipForCell:cell];
+      NSString *localizedToolTip = [self localizedStringForString:toolTip];
+      if (localizedToolTip) {
+        [matrix setToolTip:localizedToolTip forCell:cell];
+      }
+    }
+  }
 }
 
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive {
@@ -238,4 +258,18 @@
     }
   }    
 }
+
+- (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive {
+  if (cell) {
+    NSString *title = [cell title];
+    NSString *localizedTitle = [self localizedStringForString:title];
+    if (localizedTitle) {
+      [cell setTitle:localizedTitle];
+    }
+    [self localizeMenu:[cell menu] recursively:recursive];
+    id obj = [cell representedObject];
+    [self localizeObject:obj recursively:recursive];
+  }
+}
+
 @end

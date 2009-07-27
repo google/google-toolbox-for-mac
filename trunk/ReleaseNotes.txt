@@ -310,6 +310,10 @@ Changes since 1.5.1
 - Fixed up bug in GTMFileSystemKQueue where we were passing the kqueue argument
   in incorrectly. Added appropriate tests.
 
+- Added NSMatrix to the UIState support.
+
+- Added NSMatrix and NSCell to GTMLocalizer support.
+
 
 Release 1.5.1
 Changes since 1.5.0
