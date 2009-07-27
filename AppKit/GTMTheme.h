@@ -22,7 +22,10 @@
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 // Sent whenever the theme changes. Object => GTMTheme that changed
-GTM_EXTERN NSString *kGTMThemeDidChangeNotification;
+GTM_EXTERN NSString *const kGTMThemeDidChangeNotification;
+
+// Key for user defaults defining background color
+GTM_EXTERN NSString *const kGTMThemeBackgroundColorKey;
 
 enum {
   GTMThemeStyleTabBarSelected,
