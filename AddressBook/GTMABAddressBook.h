@@ -67,9 +67,11 @@
 
 #if GTM_IPHONE_SDK
 #import <AddressBook/AddressBook.h>
+@class UIImage;
 #else  // GTM_IPHONE_SDK
 #import <AddressBook/AddressBook.h>
 #import <AddressBook/ABAddressBookC.h>
+@class NSImage;
 #endif  // GTM_IPHONE_SDK
 
 @class GTMABPerson;
