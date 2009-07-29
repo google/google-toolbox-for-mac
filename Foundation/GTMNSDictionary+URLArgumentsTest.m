@@ -25,6 +25,39 @@
 
 @implementation GTMNSDictionary_URLArgumentsTest
 
+- (void)testFromArgumentsString {
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@""],
+                       [NSDictionary dictionary],
+                       @"- empty arguments string should give an empty dictionary");
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@"a"],
+                       [NSDictionary dictionaryWithObject:@"" forKey:@"a"],
+                       @"- missing '=' should result in an empty string value");
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@"a="],
+                       [NSDictionary dictionaryWithObject:@"" forKey:@"a"],
+                       @"- no value");
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@"&a=1"],
+                       [NSDictionary dictionaryWithObject:@"1" forKey:@"a"],
+                       @"- empty segment should be skipped");
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@"abc=123"],
+                       [NSDictionary dictionaryWithObject:@"123" forKey:@"abc"],
+                       @"- simple one-pair dictionary should work");
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@"a=1&a=2&a=3"],
+                       [NSDictionary dictionaryWithObject:@"1" forKey:@"a"],
+                       @"- only first occurrence of a key is returned");
+  NSString* complex = @"a%2Bb=specialkey&complex=1%2B1%21%3D3%20%26%202%2A6%2F3%3D4&c";
+  NSDictionary* result = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"1+1!=3 & 2*6/3=4", @"complex",
+                                @"specialkey", @"a+b",
+                                          @"", @"c",
+                                               nil];
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:complex],
+                       result,
+                       @"- keys and values should be unescaped correctly");
+  STAssertEqualObjects([NSDictionary gtm_dictionaryWithHttpArgumentsString:@"a=%FC"],
+                       [NSDictionary dictionaryWithObject:@"" forKey:@"a"],
+                       @"- invalid UTF8 characters result in an empty value, not a crash");
+}
+
 - (void)testArgumentsString {
   STAssertEqualObjects([[NSDictionary dictionary] gtm_httpArgumentsString], @"",
                        @"- empty dictionary should give an empty string");
