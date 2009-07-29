@@ -24,6 +24,37 @@
 @implementation NSDictionary (GTMNSDictionaryURLArgumentsAdditions)
 
 GTM_METHOD_CHECK(NSString, gtm_stringByEscapingForURLArgument);
+GTM_METHOD_CHECK(NSString, gtm_stringByUnescapingFromURLArgument);
+
++ (NSDictionary *)gtm_dictionaryWithHttpArgumentsString:(NSString *)argString {
+  NSMutableDictionary* ret = [NSMutableDictionary dictionary];
+  NSArray* components = [argString componentsSeparatedByString:@"&"];
+  NSString* component;
+  // Use reverse order so that the first occurrence of a key replaces
+  // those subsequent.
+  GTM_FOREACH_ENUMEREE(component, [components reverseObjectEnumerator]) {
+    if ([component length] == 0)
+      continue;
+    NSRange pos = [component rangeOfString:@"="];
+    NSString *key;
+    NSString *val;
+    if (pos.location == NSNotFound) {
+      key = [component gtm_stringByUnescapingFromURLArgument];
+      val = @"";
+    } else {
+      key = [[component substringToIndex:pos.location]
+             gtm_stringByUnescapingFromURLArgument];
+      val = [[component substringFromIndex:pos.location + pos.length]
+             gtm_stringByUnescapingFromURLArgument];
+    }
+    // gtm_stringByUnescapingFromURLArgument returns nil on invalid UTF8
+    // and NSMutableDictionary raises an exception when passed nil values.
+    if (!key) key = @"";
+    if (!val) val = @"";
+    [ret setObject:val forKey:key];
+  }
+  return ret;
+}
 
 - (NSString *)gtm_httpArgumentsString {
   NSMutableArray* arguments = [NSMutableArray arrayWithCapacity:[self count]];

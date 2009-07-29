@@ -314,6 +314,8 @@ Changes since 1.5.1
 
 - Added NSMatrix and NSCell to GTMLocalizer support.
 
+- Added gtm_dictionaryWithHttpArgumentsString to NSDictionary+URLArguments.
+
 
 Release 1.5.1
 Changes since 1.5.0
