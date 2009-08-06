@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -34,7 +34,7 @@
 
 - (void)awakeFromNib {
   if (owner_) {
-    NSBundle *newBundle = [self bundleForOwner:owner_];
+    NSBundle *newBundle = [[self class] bundleForOwner:owner_];
     bundle_ = [newBundle retain];
     [self localizeObject:owner_ recursively:YES];
     [self localizeObject:otherObjectToLocalize_ recursively:YES];
@@ -44,7 +44,7 @@
   }
 }
 
-- (NSBundle *)bundleForOwner:(id)owner {
++ (NSBundle *)bundleForOwner:(id)owner {
   NSBundle *newBundle = nil;
   if (owner) {
     Class class = [NSWindowController class];
@@ -67,8 +67,8 @@
   if (bundle_ && [string hasPrefix:@"^"]) {
     NSString *notFoundValue = @"__GTM_NOT_FOUND__";
     NSString *key = [string substringFromIndex:1];
-    localized = [bundle_ localizedStringForKey:key 
-                                         value:notFoundValue 
+    localized = [bundle_ localizedStringForKey:key
+                                         value:notFoundValue
                                          table:nil];
     if ([localized isEqualToString:notFoundValue]) {
       localized = nil;
@@ -125,14 +125,14 @@
         [view setToolTip:localizedToolTip];
       }
     }
-    
+
     // Then do accessibility stuff
     NSArray *supportedAttrs = [view accessibilityAttributeNames];
     if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
-      NSString *accessibilityHelp 
+      NSString *accessibilityHelp
         = [view accessibilityAttributeValue:NSAccessibilityHelpAttribute];
       if (accessibilityHelp) {
-        NSString *localizedAccessibilityHelp 
+        NSString *localizedAccessibilityHelp
           = [self localizedStringForString:accessibilityHelp];
         if (localizedAccessibilityHelp) {
           [view accessibilitySetValue:localizedAccessibilityHelp
@@ -140,12 +140,12 @@
         }
       }
     }
-    
+
     if ([supportedAttrs containsObject:NSAccessibilityDescriptionAttribute]) {
-      NSString *accessibilityDesc 
+      NSString *accessibilityDesc
         = [view accessibilityAttributeValue:NSAccessibilityDescriptionAttribute];
       if (accessibilityDesc) {
-        NSString *localizedAccessibilityDesc 
+        NSString *localizedAccessibilityDesc
           = [self localizedStringForString:accessibilityDesc];
         if (localizedAccessibilityDesc) {
           [view accessibilitySetValue:localizedAccessibilityDesc
@@ -153,7 +153,7 @@
         }
       }
     }
-    
+
     // Must do the menu before the titles, or else this will screw up
     // popup menus on us.
     [self localizeMenu:[view menu] recursively:recursive];
@@ -164,7 +164,7 @@
         [self localizeView:subview recursively:recursive];
       }
     }
-    
+
     // Then do titles
     if ([view isKindOfClass:[NSTextField class]]) {
       NSString *title = [(NSTextField *)view stringValue];
@@ -172,7 +172,7 @@
       if (localizedTitle) {
         [(NSTextField *)view setStringValue:localizedTitle];
       }
-    } else if ([view respondsToSelector:@selector(title)] 
+    } else if ([view respondsToSelector:@selector(title)]
         && [view respondsToSelector:@selector(setTitle:)]) {
       NSString *title = [view performSelector:@selector(title)];
       if (title) {
@@ -181,13 +181,13 @@
           [view performSelector:@selector(setTitle:) withObject:localizedTitle];
         }
       }
-      if ([view respondsToSelector:@selector(alternateTitle)] 
+      if ([view respondsToSelector:@selector(alternateTitle)]
           && [view respondsToSelector:@selector(setAlternateTitle:)]) {
         title = [view performSelector:@selector(alternateTitle)];
         if (title) {
           NSString *localizedTitle = [self localizedStringForString:title];
           if (localizedTitle) {
-            [view performSelector:@selector(setAlternateTitle:) 
+            [view performSelector:@selector(setAlternateTitle:)
                        withObject:localizedTitle];
           }
         }
@@ -208,7 +208,7 @@
       }
     }
   }
-  
+
   // Do NSSearchField placeholders
   if ([view isKindOfClass:[NSSearchField class]]) {
     NSString *placeholder = [[(NSSearchField *)view cell] placeholderString];
@@ -256,7 +256,7 @@
         [self localizeMenu:[menuItem submenu] recursively:recursive];
       }
     }
-  }    
+  }
 }
 
 - (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive {
