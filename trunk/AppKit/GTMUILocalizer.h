@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -25,12 +25,12 @@
 // NSViewController or NSApplication. Using the bundle of the nib it will then
 // localize any items in the NSWindowController's window and subviews, or the
 // NSViewController's view and subviews or the NSApplication's main menu
-// and dockmenu at when awakeFromNib is called on the GTMUILocalizer instance. 
-// You can optionally hook up otherObjectToLocalize_ and 
+// and dockmenu at when awakeFromNib is called on the GTMUILocalizer instance.
+// You can optionally hook up otherObjectToLocalize_ and
 // yetAnotherObjectToLocalize_ and those will also be localized. Strings in the
 // nib that you want localized must start with ^ (shift-6). The strings will
-// be looked up in the Localizable.strings table without the caret as the 
-// key. 
+// be looked up in the Localizable.strings table without the caret as the
+// key.
 // Things that will be localized are:
 //  - Titles and altTitles (for menus, buttons, windows, menuitems, tabViewItem)
 //  - stringValue (for labels)
@@ -38,15 +38,15 @@
 //  - accessibility help
 //  - accessibility description
 //  - menus
-//  
+//
 // As an example if I wanted to localize a button with the word "Print" on
 // it, I would put it in a window controlled by a NSWindowController that was
 // the owner of the nib. I would set it's title to be "^Print". I would then
 // create an instance of GTMUILocalizer and set it's owner_ to be the owner
 // of the nib.
-// In my Localizable.strings file in my fr.lproj directory for the bundle 
+// In my Localizable.strings file in my fr.lproj directory for the bundle
 // I would put "Print" = "Imprimer";
-// Then when my app launched in French I would get a button labeled 
+// Then when my app launched in French I would get a button labeled
 // "Imprimer". Note that GTMUILocalizer is only for strings, and doesn't
 // resize, move or change text alignment on any of the things it modifies.
 // If you absolutely need a caret at the beginning of the string
@@ -81,5 +81,5 @@
 // If |string| is nil, you should return nil
 - (NSString *)localizedStringForString:(NSString *)string;
 // Allows subclasses to override how the bundle is picked up
-- (NSBundle *)bundleForOwner:(id)owner;
++ (NSBundle *)bundleForOwner:(id)owner;
 @end
