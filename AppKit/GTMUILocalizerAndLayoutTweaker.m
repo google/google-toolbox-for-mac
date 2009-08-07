@@ -261,7 +261,10 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
     // TODO: We need to check the type of button before doing this.
     if ([view isKindOfClass:[NSButton class]]) {
       const float kExtraPaddingAmount = 12;
-      const float kMinButtonWidth = 70; // The default button size in IB.
+      // Width is tricky, new buttons in IB are 96 wide, Carbon seems to have
+      // defaulted to 70, Cocoa seems to like 82.  But we go with 96 since
+      // that's what IB is doing these days.
+      const float kMinButtonWidth = 96;
       newFrame.size.width = NSWidth(newFrame) + kExtraPaddingAmount;
       if (NSWidth(newFrame) < kMinButtonWidth) {
         newFrame.size.width = kMinButtonWidth;
