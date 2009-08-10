@@ -221,6 +221,9 @@ willPositionSheet:(NSWindow*)sheet
     [sheetWindow setFrame:NSZeroRect display:NO];
 
     [overlayWindow setIgnoresMouseEvents:YES];
+
+    // Make sure the now invisible sheet doesn't keep keyboard focus
+    [[overlayWindow parentWindow] makeKeyWindow];
   }
 
   activeView_ = view;
@@ -248,6 +251,8 @@ willPositionSheet:(NSWindow*)sheet
     [sheetWindow setAlphaValue:newSheetInfo->sheetAlpha_];
 
     [self viewDidChangeSize:view];
+
+    [overlayWindow makeKeyWindow];
   }
 }
 
