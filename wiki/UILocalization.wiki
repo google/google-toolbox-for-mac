@@ -67,7 +67,7 @@ Wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see somethi
 
  http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/cbox_list_result.png
 
-=== _Example:_ A label and a text field in the window and how every much the label grows/shrinks, the text field will move and grow/shrink to consume the space ===
+=== _Example:_ A label and a text field in the window and how much the label grows/shrinks, the text field will move and grow/shrink to consume the space ===
 
 Create the nib file, and set the title to be your localization key:
 
@@ -77,11 +77,11 @@ Then select the label and tell Interface Builder to embed the object into a Cust
 
  http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/label_field_setup.png http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
 
-Wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+Now wire the `viewToSlideAndResize_` outlet of the `GTMWidthBasedTweaker` to the text field. Lastly, wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
 
  http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/label_field_result.png
 
-=== _Example:_ A set of labels and a text fields in the window and how every much the labels grow/shrink, the text fields will move and grow/shrink to consume the space ===
+=== _Example:_ A set of labels and a text fields in the window and how much the labels grow/shrink, the text fields will move and grow/shrink to consume the space ===
 
 Create the nib file, and set the title to be your localization key:
 
@@ -110,9 +110,34 @@ Now wire the `viewToSlideAndResize_` outlet of the `GTMWidthBasedTweaker` to the
 As the Tweaker grows or shirks based on the localization, it keeps the box holding the text fields next to it and makes it grown/shirk as needed.  The sprints and struts within that box are what make the text field then size to match.
 
 
-=== TVL: slide object (left and right) ===
+=== _Example:_ A label and a text field in the window and how much the label grows/shrinks, the text field will move and grow/shrink to consume the space and a second label under the text field will be kept inline with it ===
 
-=== TVL: auto size another object ===
+Create the nib file, and set the title to be your localization key:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_slide_initial.png 
+
+Then select the label and tell Interface Builder to embed the object into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.  Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the top and left but unanchored to the bottom and right.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_slide_setup.png http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
+
+Now wire the `viewToSlideAndResize_` outlet of the `GTMWidthBasedTweaker` to the text field. Wire the `viewToSlide_` outlet to the label under the text field. Lastly, wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_slide_result.png
+
+=== _Example:_ A label with a horizontal line that grows/shrinks with the label ===
+
+Create the nib file, and set the title to be your localization key:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_resize_initial.png 
+
+Then select the label and tell Interface Builder to embed the object into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.  Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the top and left but unanchored to the bottom and right.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_resize_setup.png http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
+
+Now wire the `viewToResize_` outlet of the `GTMWidthBasedTweaker` to the horizontal line. Lastly, wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_resize_result.png
+
 
 === TVL: effect the window ===
 
