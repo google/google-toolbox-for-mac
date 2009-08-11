@@ -138,7 +138,42 @@ Now wire the `viewToResize_` outlet of the `GTMWidthBasedTweaker` to the horizon
 
  http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/with_resize_result.png
 
+=== _Example:_ A label and a text field in the window and how much the label grows/shrinks, the text field will move over and then the window will resize to match the label width change ===
 
-=== TVL: effect the window ===
+Create the nib file, and set the title to be your localization key:
 
-=== TVL: combine them ===
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/resize_window_initial.png 
+
+Then select the label and tell Interface Builder to embed the object into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/resize_window_setup.png
+
+Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the top and left but unanchored to the bottom and right.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
+
+Set the struts of the Text Field so it is anchored to the top, left, and right and it's width with resize with the window.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_r_t_g_w.png
+
+Now wire the `viewToSlideAndResize_` outlet of the `GTMWidthBasedTweaker` to the text field.  Wire the `viewToResize_` outlet to the window.  Lastly, wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/resize_window_result.png
+
+This may seem odd, but what happens is the text field will grow/shrink by the opposite amount the label changed size.  Then the window size will be adjusted by the amount the same amount label changed, putting the text field back at the size it was to start with.
+
+=== _Example:_ Using more then one `GTMWidthBasedTweaker` ===
+
+You can use more then one `GTMWidthBasedTweaker` to handle your layout.  But you really can only have one set to use its `viewToResize_` to point at the window.  But the combine effects can result in things like:
+
+Initial setup:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/combo_initial.png 
+
+With the `GTMWidthBasedTweaker`s added:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/combo_setup.png 
+
+Resulting in:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/combo_result.png 
