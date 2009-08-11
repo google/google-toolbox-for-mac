@@ -25,8 +25,7 @@ Your target should now build cleanly, and if you check the build log you should 
   # Add the source you want to test to your target. For example if you want to test class Foo, make sure to add Foo.h and Foo.m to your target.
   # Add a new unit test file to your target via "File > New File" and choose "Objective-C test case class" from the "Mac OS X" Cocoa category. Call it `FooTest.m`, or follow whatever convention your project has for naming test classes.
   # In `FooTest.h`, change `#import <SenTestingKit/SenTestingKit.h>` to `#import "GTMSenTestCase.h"`
-  # Also set up your class so that it inherits from GTMTestCase instead of SenTestCase (@interface MyTestCase : GTMTestCase { ...)
-
+  # Also set up your class so that it inherits from GTMTestCase (_not_ GTMSenTestCase) instead of SenTestCase <br> {{{ @interface MyTestCase : GTMTestCase { ... } }}}
   # Add test cases as you normally would. See [http://developer.apple.com/tools/unittest.html Apple's Documentation] for a good tutorial on how to test in Objective C. The key is that your test case methods are declared `- (void)testBar`. The name must start with "test" and they must return nothing and have no arguments.
  
 Now when you build your target you should now see test cases executing.  You can repeat this process creating additional source files for each class you want to write Unittests for.
