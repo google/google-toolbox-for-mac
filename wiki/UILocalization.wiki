@@ -1,0 +1,119 @@
+#summary Use of GTMUILocalizer and GTMUILocalizerAndLayoutTweaker for runtime localization and layout adjustment
+
+<wiki:toc max_depth="2" />
+
+= Introduction =
+
+Mac OS X supports loading nib files out of language folders to provide a means of localization ([http://developer.apple.com/internationalization/localization/ Apple's Localization Documentation]).  However depending on the complexity of a product's UI, that can greatly enlarge the size of the resulting application bundle.  GTM provides some support for doing basic runtime localization so developer don't need to maintain copies of their nibs for every language.
+
+= `GTMUILocalizer` =
+
+`GTMUILocalizer` can be used from code or within a nib file to localize string data in a UI.  When used within a nib file, at `awakeFromNib`, it will walk the UI objects it is wired to, and attempt to localize all strings that start with a caret by looking them up in the `.strings` files to get the translations.  You can also subclass `GTMUILocalizer` to override how the strings are looked up to put some other backend in place.  Please see the [http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/AppKit/GTMUILocalizer.h header file] for more details on how to use `GTMUILocalizer`.
+
+= `GTMUILocalizerAndLayoutTweaker` =
+
+When localizing a UI, it is not uncommon that the UI needs to have some of it's size/layout adjusted to handle the different string lengths that can result from translation.  `GTMUILocalizerAndLayoutTweaker` builds on `GTMUILocalizer` to provide some simple adjustments to UIs so you can avoid having to maintain multiple nib files.  Since it is just about impossible to handle all possible needs, `GTMUILocalizerAndLayoutTweaker` provides some flexibility in how it is used:
+  * You can use it on a per window/view bases.  In that you can let it fix up just some of your UI, and handle the rest other ways (though your own code, through `.lproj` folders, etc.).
+  * You can use it with a nib file living in `Application.app/Contents/Resources` to handle most locales, but when then for the small number that still need some more manual tweaking, you can maintain a nib specific to those languages in the right `.lproj` subfolder.
+
+The [http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/AppKit/GTMUILocalizerAndLayoutTweaker.h header file] for `GTMUILocalizerAndLayoutTweaker` gives a good overview of what is possible, but this is one of those case where some examples and pictures can greatly help; so with further delay...
+
+== Nib Setup ==
+
+For common, add a new `NSObject` to your nib file, and set the class to `GTMUILocalizerAndLayoutTweaker`.  Then wire the `localizerOwner_` outlet to the nib owner, and wire the `uiObject_` to the object that you want to be localized and _tweaked_.
+
+If you need a custom subclass of `GTMUILocalizer`, you can also add that to the nib and wire the `localizer_` to it (when you don't provide this, a stock `GTMUILocalizer` is used, and the `localizerOwner_` is used so it can figure out where to load it's strings for localization.
+
+_NOTE:_ Do *not* wire up any of the `GTMUILocalizer`'s outlets, see the next section for why.
+
+== `awakeFromNib` Work ==
+
+When the `GTMUILocalizerAndLayoutTweaker` receives `awakeFromNib` it does the following in order:
+  # If `localizer_` is unset, creates a `GTMUILocalizer`.
+  # Passes `uiObject_` to `localizer_` to have all marked strings in the UI localized.
+  # Recursively walks the hierarchy of `GTMUILocalizerAndLayoutTweaker` looking for instances of `GTMWidthBasedTweaker` and letting them do their layout work.
+
+_NOTE_: Step 2 is an important detail here.  You do not want to wire up any outlets from `GTMUILocalizer` you are using with a `GTMUILocalizerAndLayoutTweaker `.  The order that all `awakeFromNib` methods are called is not well defined (it depends on the graph created by the objects in the nib, [http://devworld.apple.com/documentation/Cocoa/Reference/ApplicationKit/Protocols/NSNibAwaking_Protocol/Reference/Reference.html#//apple_ref/doc/uid/20000425-DontLinkElementID_ Apple's docs on awakeFromNib]), so there is no way to say for sure that the `GTMUILocalizer` will get awoken before the `GTMUILocalizerAndLayoutTweaker`.
+
+== `GTMWidthBasedTweaker` ==
+
+`GTMWidthBasedTweaker` is a custom `NSView` that causes it's children to try and size to their content.  Basically, it loops over it's children calling `sizeToFit` on any that support the selector, and then tries to use their layout and `autosizingMask` to get them in the right positions.  Base on the size changes of its children, it can optional adjust other objects.
+
+=== _Example:_ A row of buttons in the window to be right align and resize to fit their localized text ===
+
+Create the nib file, and set the titles to be your localization keys:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/button_row_initial.png 
+
+Then select the two buttons and tell Interface Builder to embed the objects into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.  Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the bottom and right but unanchored to the top and left.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/button_row_setup.png http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_r_b.png
+
+Wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/button_row_result.png
+
+=== _Example:_ A list of checkboxes and would like to keep the clickable areas limited to text length ===
+
+Create the nib file, and set the titles to be your localization keys:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/cbox_list_initial.png 
+
+Then select the checkboxes and tell Interface Builder to embed the objects into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.  Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the top and left but unanchored to the bottom and right.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/cbox_list_setup.png http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
+
+Wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/cbox_list_result.png
+
+=== _Example:_ A label and a text field in the window and how every much the label grows/shrinks, the text field will move and grow/shrink to consume the space ===
+
+Create the nib file, and set the title to be your localization key:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/label_field_initial.png 
+
+Then select the label and tell Interface Builder to embed the object into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.  Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the top and left but unanchored to the bottom and right.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/label_field_setup.png http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
+
+Wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/label_field_result.png
+
+=== _Example:_ A set of labels and a text fields in the window and how every much the labels grow/shrink, the text fields will move and grow/shrink to consume the space ===
+
+Create the nib file, and set the title to be your localization key:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/labels_fields_initial.png 
+
+Then select the labels and tell Interface Builder to embed the objects into a Custom View, and set the class of that view to `GTMWidthBasedTweaker`.  Then select the text fields and embed them in a Box.  The box should be made transparent, but in the the diagram below we're making it visible:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/labels_fields_setup.png
+
+Set the struts on the `GTMWidthBasedTweaker` so it is anchored to the top and left but unanchored to the bottom and right.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_t.png
+
+Make sure the labels within the `GTMWidthBasedTweaker` are anchored on the right but unanchored on the left (so they will line up against the text fields per UI guidelines).
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_r_t.png
+
+Lastly, text fields within the box are set to be anchored to the top, left and right, and have there width adjust with the box they are in.
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/a_l_r_t_g_w.png
+
+Now wire the `viewToSlideAndResize_` outlet of the `GTMWidthBasedTweaker` to the box that is enclosing the text fields.  Lastly, wire in the `GTMUILocalizerAndLayoutTweaker`, and at runtime, you'll see something like this:
+
+ http://google-toolbox-for-mac.googlecode.com/svn/site/wiki-images/labels_fields_result.png
+
+As the Tweaker grows or shirks based on the localization, it keeps the box holding the text fields next to it and makes it grown/shirk as needed.  The sprints and struts within that box are what make the text field then size to match.
+
+
+=== TVL: slide object (left and right) ===
+
+=== TVL: auto size another object ===
+
+=== TVL: effect the window ===
+
+=== TVL: combine them ===
