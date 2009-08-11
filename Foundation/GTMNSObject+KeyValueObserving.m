@@ -465,6 +465,7 @@ static char* GTMKeyValueObservingHelperContext
   [self _gtmDebugDidChangeValueForKey:key];
 }
 
+@end
+
 #endif  // DEBUG
 
-@end
