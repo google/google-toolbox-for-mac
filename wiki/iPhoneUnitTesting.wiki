@@ -7,7 +7,7 @@ This is a quick tutorial on doing iPhone unit testing using the facilities in th
 
 = Basic Project Setup =
 Hopefully your project already has an application target for building something for the iPhone.
-  # Create a new iPhone Target (Cocoa Touch Application) via "Project Menu > New Target...". Choose a name that makes some sense such as "Unit Test".
+  # Create a new iPhone Target of type "Cocoa Touch Application" via "Project Menu > New Target...". Choose a name that makes some sense such as "Unit Test". Be sure to use a "Cocoa Touch Application" target as opposed to a "Cocoa Application" target or a "Cocoa Touch Static Library" target.
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestMain.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.h` to your target
