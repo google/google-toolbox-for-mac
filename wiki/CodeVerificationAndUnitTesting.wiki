@@ -109,7 +109,7 @@ Example of usage:
 Classes (or one of their superclasses) being checked must conform to the  NSObject protocol. We will check this, and spit out a warning if a class does not conform to NSObject. `GTM_METHOD_CHECK` is defined in GTMMethodCheck.h and requires you to link in GTMMethodCheck.m as well. None of this code is compiled into release builds. See GTMNSAppleScript+Handler.m for examples of using `GTM_METHOD_CHECK`.
 
 ==RunMacOSUnitTests==
-The unit tests in GTM use an enhanced script for running their unit tests that "encourages" unit tests to fail by setting a variety of environment variables such as zombies, !MallocDebug etc. All unit test targets should use !RunMasOSUnitTests to run their unit tests as part of their build.  See !RunMacOSUnitTests.sh for details.
+The unit tests in GTM use an enhanced script for running their unit tests that "encourages" unit tests to fail by setting a variety of environment variables such as zombies, !MallocDebug etc. All unit test targets should use RunMacOSUnitTests to run their unit tests as part of their build.  See RunMacOSUnitTests.sh for details.
 
 ==Strict Compiler Warning Settings==
 We are slowly but surely tightening down on the warnings settings in GTM. These settings will be changed in the appropriate xcconfig files. If your code stops compiling because of a new release of GTM it will likely be because of these warning changes. We realize in some cases that it is a pain to "work around" a warning, but in general if a warning is flying there is usually an easy way to fix it and in the end it leads to better code safety.
