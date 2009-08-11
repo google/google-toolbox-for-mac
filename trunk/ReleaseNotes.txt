@@ -316,6 +316,11 @@ Changes since 1.5.1
 
 - Added gtm_dictionaryWithHttpArgumentsString to NSDictionary+URLArguments.
 
+- Added GTMDebugKeyValueObserving category to NSObject. This makes debugging 
+  KVO a little easier in some cases. To turn it on, set the "GTMDebugKVO"
+  environment variable to "1". It will output a lot of data about adding and
+  removing KVO observers, and when the values are actually changed.
+  
 
 Release 1.5.1
 Changes since 1.5.0

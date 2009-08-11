@@ -131,6 +131,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
 - (id)init {
   self = [super init];
   if (self != nil) {
+#if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
     // register for the notification
     NSDistributedNotificationCenter *distCenter =
       [NSDistributedNotificationCenter defaultCenter];
@@ -138,7 +139,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
                    selector:@selector(reloadAllAppCachedValues:)
                        name:kNotificationName
                      object:nil];
-
+#endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
     // load the allApps value
     [self reloadAllAppCachedValues:nil];
 
@@ -175,13 +176,17 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
   return self;
 }
 
+#if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
 - (void)finalize {
   [[NSDistributedNotificationCenter defaultCenter] removeObject:self];
   [super finalize];
 }
+#endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
 
 - (void)dealloc {
+#if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
   [[NSDistributedNotificationCenter defaultCenter] removeObject:self];
+#endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
   [allAppsCachedDomain_ release];
   [allAppsCachedLanguage_ release];
   [curAppCachedDomain_ release];
@@ -341,7 +346,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
   NSNull *nsNull = [NSNull null];
   GTM_FOREACH_KEY(key, args) {
     NSString *object = [args objectForKey:key];
-    if (![object isEqualTo:nsNull]) {
+    if (![object isEqual:nsNull]) {
 #if DEBUG
       // In debug we check key and object for things that should be escaped.
       // Note that percent is not in there because escaped strings will have
@@ -515,6 +520,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
   allAppsCachedDomain_ = [domain copy];
   allAppsCachedLanguage_ = [language copy];
 
+#if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
   // NOTE: we'll go ahead and reload when this comes back to ourselves since
   // there is a race here if two folks wrote at about the same time.
   NSDistributedNotificationCenter *distCenter =
@@ -522,6 +528,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
   [distCenter postNotificationName:kNotificationName
                             object:nil
                           userInfo:nil];
+#endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
 }
 
 @end

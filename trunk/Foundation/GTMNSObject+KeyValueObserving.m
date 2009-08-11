@@ -27,8 +27,6 @@
 // See comment in header.
 
 #import "GTMNSObject+KeyValueObserving.h"
-
-#import <libkern/OSAtomic.h>
 #import "GTMDefines.h"
 #import "GTMDebugSelectorValidation.h"
 #import "GTMObjC2Runtime.h"
@@ -113,6 +111,13 @@ static char* GTMKeyValueObservingHelperContext
                 context:GTMKeyValueObservingHelperContext];
   }
   return self;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:
+          @"%@ <observer = %@ keypath = %@ target = %@ selector = %@>", 
+          [self class], observer_, keyPath_, target_, 
+          NSStringFromSelector(selector_)];
 }
 
 - (void)dealloc {
@@ -327,6 +332,12 @@ static char* GTMKeyValueObservingHelperContext
           && [change_ isEqual:[object change]]);
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:
+          @"%@ <object = %@ keypath = %@ userInfo = %@ change = %@>", 
+          [self class], object_, keyPath_, userInfo_, change_];
+}
+
 - (NSUInteger)hash {
   return [keyPath_ hash] + [object_ hash] + [userInfo_ hash] + [change_ hash];
 }
@@ -346,5 +357,114 @@ static char* GTMKeyValueObservingHelperContext
 - (NSDictionary *)change {
   return change_;
 }
+
+@end
+
+#ifdef DEBUG
+
+// This category exists to attempt to help debug tricky KVO issues.
+// Set the GTMDebugKVO environment variable to 1 and you will get a whole
+// pile of KVO notifications that may help you track down problems.
+@interface NSObject (GTMDebugKeyValueObserving)
+@end
+
+@implementation NSObject (GTMDebugKeyValueObserving)
++ (void)load {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  NSDictionary *env = [[NSProcessInfo processInfo] environment];
+  id debugKeyValue = [env valueForKey:@"GTMDebugKVO"];
+  BOOL debug = NO;
+  if ([debugKeyValue isKindOfClass:[NSNumber class]]) {
+    debug = [debugKeyValue intValue] != 0 ? YES : NO;
+  } else if ([debugKeyValue isKindOfClass:[NSString class]]) {
+    debug = ([debugKeyValue hasPrefix:@"Y"] || [debugKeyValue hasPrefix:@"T"] ||
+             [debugKeyValue intValue]);
+  }
+  if (debug) {
+    Class cls = [NSObject class];
+    SEL addSelector 
+      = NSSelectorFromString(@"addObserver:forKeyPath:options:context:");
+    SEL removeSelector = NSSelectorFromString(@"removeObserver:forKeyPath:");
+    SEL debugAddSelector 
+      = NSSelectorFromString(@"_gtmDebugAddObserver:forKeyPath:options:context:");
+    SEL debugRemoveSelector 
+      = NSSelectorFromString(@"_gtmDebugRemoveObserver:forKeyPath:");
+    SEL willChangeValueSelector = NSSelectorFromString(@"willChangeValueForKey:");
+    SEL didChangeValueSelector = NSSelectorFromString(@"didChangeValueForKey:");
+    SEL debugWillChangeValueSelector 
+      = NSSelectorFromString(@"_gtmDebugWillChangeValueForKey:");
+    SEL debugDidChangeValueSelector 
+      = NSSelectorFromString(@"_gtmDebugDidChangeValueForKey:");
+    
+    Method m1 = class_getInstanceMethod(cls, addSelector);
+    Method m2 = class_getInstanceMethod(cls, debugAddSelector);
+    method_exchangeImplementations(m1, m2);
+    m1 = class_getInstanceMethod(cls, removeSelector);
+    m2 = class_getInstanceMethod(cls, debugRemoveSelector);
+    method_exchangeImplementations(m1, m2);
+    m1 = class_getInstanceMethod(cls, willChangeValueSelector);
+    m2 = class_getInstanceMethod(cls, debugWillChangeValueSelector);
+    method_exchangeImplementations(m1, m2);
+    m1 = class_getInstanceMethod(cls, didChangeValueSelector);
+    m2 = class_getInstanceMethod(cls, debugDidChangeValueSelector);
+    method_exchangeImplementations(m1, m2);
+    
+    debugAddSelector 
+      = NSSelectorFromString(@"_gtmDebugArrayAddObserver:forKeyPath:options:context:");
+    debugRemoveSelector 
+      = NSSelectorFromString(@"_gtmDebugArrayRemoveObserver:forKeyPath:");
+    
+    cls = [NSArray class];
+    m1 = class_getInstanceMethod(cls, addSelector);
+    m2 = class_getInstanceMethod(cls, debugAddSelector);
+    method_exchangeImplementations(m1, m2);
+    m1 = class_getInstanceMethod(cls, removeSelector);
+    m2 = class_getInstanceMethod(cls, debugRemoveSelector);
+    method_exchangeImplementations(m1, m2);
+  }
+  [pool release];
+}
+
+- (void)_gtmDebugAddObserver:(NSObject *)observer 
+                  forKeyPath:(NSString *)keyPath 
+                     options:(NSKeyValueObservingOptions)options
+                     context:(void *)context {
+  _GTMDevLog(@"Adding observer %@ to %@ keypath '%@'", observer, self, keyPath);
+  [self _gtmDebugAddObserver:observer forKeyPath:keyPath 
+                     options:options context:context];
+}
+
+- (void)_gtmDebugArrayAddObserver:(NSObject *)observer 
+                       forKeyPath:(NSString *)keyPath 
+                          options:(NSKeyValueObservingOptions)options
+                          context:(void *)context {
+  _GTMDevLog(@"Array adding observer %@ to %@ keypath '%@'", observer, self, keyPath);
+  [self _gtmDebugArrayAddObserver:observer forKeyPath:keyPath 
+                          options:options context:context];
+}
+
+- (void)_gtmDebugRemoveObserver:(NSObject *)observer 
+                     forKeyPath:(NSString *)keyPath {
+  _GTMDevLog(@"Removing observer %@ from %@ keypath '%@'", observer, self, keyPath);
+  [self _gtmDebugRemoveObserver:observer forKeyPath:keyPath];
+}
+
+- (void)_gtmDebugArrayRemoveObserver:(NSObject *)observer 
+                          forKeyPath:(NSString *)keyPath {
+  _GTMDevLog(@"Array removing observer %@ from %@ keypath '%@'", observer, self, keyPath);
+  [self _gtmDebugArrayRemoveObserver:observer forKeyPath:keyPath];
+}
+
+- (void)_gtmDebugWillChangeValueForKey:(NSString*)key {
+  _GTMDevLog(@"Will change '%@' of %@", key, self);
+  [self _gtmDebugWillChangeValueForKey:key];
+}
+
+- (void)_gtmDebugDidChangeValueForKey:(NSString*)key {
+  _GTMDevLog(@"Did change '%@' of %@", key, self);
+  [self _gtmDebugDidChangeValueForKey:key];
+}
+
+#endif  // DEBUG
 
 @end
