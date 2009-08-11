@@ -87,6 +87,9 @@
                 selector:@selector(observeValueChange:) 
                 userInfo:@"userInfo" 
                  options:NSKeyValueObservingOptionNew];
+  [dict_ gtm_removeObserver:self 
+                 forKeyPath:@"key" 
+                   selector:@selector(observeValueChange:)];  
 }
 
 - (void)observeValueChange:(GTMKeyValueChangeNotification *)notification {

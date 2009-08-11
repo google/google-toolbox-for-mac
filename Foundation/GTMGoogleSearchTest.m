@@ -166,15 +166,20 @@
   STAssertEqualObjects(domain, @"domain", nil);
   STAssertEqualObjects(lang, @"lang", nil);
   STAssertFalse(areCurrentAppOnly, nil);
+#if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
+  // We don't test launching other tasks on the phone since this isn't a valid
+  // case until we can support real multiple tasks on the phone.
   
   // try changing the value directly in the plist file (as if another app had
   // done it) and sending our notification.
   [[NSTask launchedTaskWithLaunchPath:@"/usr/bin/defaults"
                             arguments:[NSArray arrayWithObjects:@"write",
                               @"com.google.GoogleSearchAllApps",
-                              @"{ \"com.google.PreferredDomain\" = xxx; \"com.google.PreferredLanguage\" = yyy; }",
+                              @"{ \"com.google.PreferredDomain\" = xxx;"
+                                @"\"com.google.PreferredLanguage\" = yyy; }",
                               nil]] waitUntilExit];
-  // Sleep for a moment to let things flush (seen rarely as a problem on aharper's machine)
+  // Sleep for a moment to let things flush 
+  // (seen rarely as a problem on aharper's machine).
   sleep(1);
   NSDistributedNotificationCenter *distCenter =
     [NSDistributedNotificationCenter defaultCenter];
@@ -184,7 +189,8 @@
                            options:NSNotificationDeliverImmediately];
   
   // Spin the runloop so the notifications fire.
-  [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+  NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+  [currentLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
   // did we get what we expected?
   [googleSearch preferredDomain:&domain
                        language:&lang
@@ -192,7 +198,8 @@
   STAssertEqualObjects(domain, @"xxx", nil);
   STAssertEqualObjects(lang, @"yyy", nil);
   STAssertFalse(areCurrentAppOnly, nil);
-
+#endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
+  
   // lastly, clean up what we set for all apps to leave the system at the
   // default.
   [googleSearch clearPreferredDomainAndLanguageForAllApps];

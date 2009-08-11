@@ -29,21 +29,6 @@
   #define MAC_OS_X_VERSION_10_6 1060
 #endif
 
-// These definitions exist to allow headerdoc to parse this file.
-// Headerdoc 8.6 gives warnings about misuses of MAC_OS_X_VERSION_MIN_REQUIRED
-// and MAC_OS_X_VERSION_MAX_ALLOWED if you use them directly. 
-// By defining GTM versions with slightly different names (MIN vs MINIMUM) 
-// we get around headerdoc's issues. Hopefully we can work around this in the
-// future and get rid of the GTM versions, so please use the default ones
-// wherever you can.
-#ifndef GTM_MAC_OS_X_VERSION_MINIMUM_REQUIRED
-  #define GTM_MAC_OS_X_VERSION_MINIMUM_REQUIRED MAC_OS_X_VERSION_MIN_REQUIRED
-#endif
-
-#ifndef GTM_MAC_OS_X_VERSION_MAXIMUM_ALLOWED
-  #define GTM_MAC_OS_X_VERSION_MAXIMUM_ALLOWED MAC_OS_X_VERSION_MAX_ALLOWED
-#endif
-
 // ----------------------------------------------------------------------------
 // CPP symbols that can be overridden in a prefix to control how the toolbox
 // is compiled.
@@ -165,7 +150,7 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 // does keys, so pick the right thing, nothing is done on the FastEnumeration
 // side to be sure you're getting what you wanted.
 #ifndef GTM_FOREACH_OBJECT
-  #if TARGET_OS_IPHONE || (GTM_MAC_OS_X_VERSION_MINIMUM_REQUIRED >= MAC_OS_X_VERSION_10_5)
+  #if TARGET_OS_IPHONE || !(MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
     #define GTM_FOREACH_ENUMEREE(element, enumeration) \
       for (element in enumeration)
     #define GTM_FOREACH_OBJECT(element, collection) \
@@ -224,7 +209,7 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #else
     // We can't find a symbol to tell if GC is supported/required, so best we
     // do on Mac targets is include it if we're on 10.5 or later.
-    #if GTM_MAC_OS_X_VERSION_MAXIMUM_ALLOWED <= MAC_OS_X_VERSION_10_4
+    #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
       #define GTM_SUPPORT_GC 0
     #else
       #define GTM_SUPPORT_GC 1
@@ -234,7 +219,7 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 
 // To simplify support for 64bit (and Leopard in general), we provide the type
 // defines for non Leopard SDKs
-#if GTM_MAC_OS_X_VERSION_MAXIMUM_ALLOWED <= MAC_OS_X_VERSION_10_4
+#if !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
  // NSInteger/NSUInteger and Max/Mins
   #ifndef NSINTEGER_DEFINED
     #if __LP64__ || NS_BUILD_32_LIKE_64
@@ -265,4 +250,4 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
     #endif /* !defined(__LP64__) || !__LP64__ */
     #define CGFLOAT_DEFINED 1
   #endif // CGFLOAT_DEFINED
-#endif  // GTM_MAC_OS_X_VERSION_MAXIMUM_ALLOWED <= MAC_OS_X_VERSION_10_4
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5

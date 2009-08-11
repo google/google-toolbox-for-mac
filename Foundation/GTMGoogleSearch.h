@@ -32,6 +32,10 @@
 #define GTMGoogleSearchBooks @"books"
 #define GTMGoogleSearchWeb @"search"
 
+// iPhone doesn't support distributed notifications, so this controls whether
+// or not we enable them in this class.
+#define GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS GTM_MACOS_SDK
+
 // Composes URLs and searches for google properties in the correct language 
 // and domain.
 @interface GTMGoogleSearch : NSObject {
