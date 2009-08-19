@@ -77,11 +77,21 @@ typedef NSUInteger GTMThemeState;
 - (NSColor *)backgroundPatternColorForStyle:(GTMThemeStyle)style 
                                       state:(GTMThemeState)state;
 
-// NSGradient for specific usage, active indicates whether the window is key
-- (NSGradient *)gradientForStyle:(GTMThemeStyle)style state:(GTMThemeState)state;
+// NSGradient for specific usage
+- (NSGradient *)gradientForStyle:(GTMThemeStyle)style
+                           state:(GTMThemeState)state;
 
-// Outline color for stroke, active indicates whether the window is key
-- (NSColor *)strokeColorForStyle:(GTMThemeStyle)style state:(GTMThemeState)state;
+// Outline color for stroke
+- (NSColor *)strokeColorForStyle:(GTMThemeStyle)style
+                           state:(GTMThemeState)state;
+
+// Text color
+- (NSColor *)textColorForStyle:(GTMThemeStyle)style
+                         state:(GTMThemeState)state;
+
+// Base background color (a plain (non pattern/gradient) NSColor)
+- (NSColor *)backgroundColorForStyle:(GTMThemeStyle)style
+                               state:(GTMThemeState)state;
 
 // Indicates whether luminance is dark or light
 - (BOOL)styleIsDark:(GTMThemeStyle)style state:(GTMThemeState)state;

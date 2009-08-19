@@ -33,7 +33,7 @@
   
   // When there are no values, use window default colors
   STAssertEqualObjects([theme backgroundColor], 
-                       [NSColor colorWithCalibratedWhite:0.667 alpha:1.0], nil);
+                       [NSColor colorWithCalibratedWhite:0.5 alpha:1.0], nil);
   STAssertNil([theme backgroundImageForStyle:GTMThemeStyleWindow
                                        state:GTMThemeStateActiveWindow],
               nil);
@@ -44,6 +44,10 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults setObject:colorData forKey:kGTMThemeBackgroundColorKey];
   
+  STAssertNotNil([theme textColorForStyle:GTMThemeStyleToolBar
+                                    state:GTMThemeStateActiveWindow], nil);
+  STAssertNotNil([theme backgroundColorForStyle:GTMThemeStyleToolBar
+                                          state:GTMThemeStateActiveWindow], nil);
   STAssertNotNil([theme backgroundPatternColorForStyle:GTMThemeStyleToolBar
                                          state:GTMThemeStateActiveWindow], nil);
   STAssertNotNil([theme strokeColorForStyle:GTMThemeStyleToolBar
