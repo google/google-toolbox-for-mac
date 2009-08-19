@@ -31,7 +31,7 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   GTMTheme *theme = nil;
   if ([[self delegate] conformsToProtocol:
        @protocol(GTMThemeDelegate)]) {
-    theme = [[self delegate] gtm_themeForWindow:self];
+    theme = [(id <GTMThemeDelegate>)[self delegate] gtm_themeForWindow:self];
   } else if ([[self windowController] conformsToProtocol:
        @protocol(GTMThemeDelegate)]) {
     theme = [[self windowController] gtm_themeForWindow:self];
@@ -162,7 +162,7 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 - (NSColor *)backgroundColor {
   // For nil, we return a color that works with a normal textured window
   if (!backgroundColor_)
-    return [NSColor colorWithCalibratedWhite:0.667 alpha:1.0];
+    return [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
   return backgroundColor_;
 }
 
@@ -258,7 +258,7 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   if (color) return color;
 
   NSImage *image = [self backgroundImageForStyle:style state:state];
-  if (!image) {
+  if (!image && backgroundColor_) {
     NSGradient *gradient = [self gradientForStyle:style state:state];
     if (gradient) {
       // create a gradient image for the background
@@ -301,7 +301,8 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
       [image addRepresentation:rep];
     }
   }
-  color = [NSColor colorWithPatternImage:image];
+  if (image)
+    color = [NSColor colorWithPatternImage:image];
   [self cacheValue:color forSelector:_cmd style:style state:state];
   return color;
 }
@@ -462,6 +463,19 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   } else {
     color = [NSColor blackColor];
   }
+
+  [self cacheValue:color forSelector:_cmd style:style state:state];
+  return color;
+}
+
+- (NSColor *)backgroundColorForStyle:(GTMThemeStyle)style
+                               state:(GTMThemeState)state {
+  NSColor *color = [self valueForSelector:_cmd style:style state:state];
+  if (color) return color;
+
+  // TODO(alcor): calculate this based off base background color
+  // Generally this will be set by a theme provider
+  color = [self backgroundColor];
 
   [self cacheValue:color forSelector:_cmd style:style state:state];
   return color;
