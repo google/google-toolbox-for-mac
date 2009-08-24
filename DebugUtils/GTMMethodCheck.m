@@ -151,13 +151,9 @@ void GTMMethodCheckMethodChecker(void) {
         }
       }
     }
-    if (methods) {
-      free(methods);
-    }
+    free(methods);
   }
-  if (classes) {
-    free(classes);
-  }
+  free(classes);
   [pool release];
 }
 
