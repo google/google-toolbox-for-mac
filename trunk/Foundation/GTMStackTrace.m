@@ -261,7 +261,7 @@ NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
       // Fill in the desc structures
       result = GTMGetStackAddressDescriptorsForAddresses(pcs, outDescs, addrCount);
     }
-    if (pcs) free(pcs);
+    free(pcs);
   }
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
@@ -316,8 +316,8 @@ NSString *GTMStackTrace(void) {
                                                      (count - kTracesToStrip));
       }
     }
-    if (pcs) free(pcs);
-    if (descs) free(descs);
+    free(pcs);
+    free(descs);
   }
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
@@ -348,8 +348,8 @@ NSString *GTMStackTraceFromException(NSException *e) {
       // Build the trace
       trace = GTMStackTraceFromAddressDescriptors(descs, count);
     }
-    if (pcs) free(pcs);
-    if (descs) free(descs);
+    free(pcs);
+    free(descs);
   }
   
   return trace;

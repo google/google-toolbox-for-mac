@@ -514,10 +514,7 @@ static NSString *const kReplacementPattern =
 
 // Don't need a finalize because savedRegMatches_ is marked __strong
 - (void)dealloc {
-  if (savedRegMatches_) {
-    free(savedRegMatches_);
-    savedRegMatches_ = nil;
-  }
+  free(savedRegMatches_);
   [regex_ release];
   [utf8StrBuf_ release];
   [super dealloc];
@@ -656,8 +653,7 @@ static NSString *const kReplacementPattern =
   } @catch (id e) { // COV_NF_START - no real way to force this in a test
     _GTMDevLog(@"Exceptions while trying to advance enumeration (%@)", e);
     // if we still have something in our temp, free it
-    if (nextMatches)
-      free(nextMatches);
+    free(nextMatches);
   } // COV_NF_END
 
   return result;
@@ -685,10 +681,7 @@ static NSString *const kReplacementPattern =
 }
 
 - (void)dealloc {
-  if (regMatches_) {
-    free(regMatches_);
-    regMatches_ = nil;
-  }
+  free(regMatches_);
   [utf8StrBuf_ release];
   [super dealloc];
 }
