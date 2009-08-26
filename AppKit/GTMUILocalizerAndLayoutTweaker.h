@@ -17,6 +17,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "GTMDefines.h"
 
 @class GTMUILocalizer;
 
@@ -38,6 +39,13 @@
 // where sizeToFit doesn't product a view that meets UI guidelines.
 // Returns the amount the view changed in size.
 + (NSSize)sizeToFitView:(NSView *)view;
+
+// If you call sizeToFit on a NSTextField it will try not to word wrap, so it
+// can get really wide.  This method will keep the width fixed, but figure out
+// how tall the textfield needs to be to fit its text.
+// Returns the amount the field changed height.
++ (NSUInteger)sizeToFitFixedWidthTextField:(NSTextField *)textField;
+
 @end
 
 // This is a Tweaker that will call sizeToFit on everything within it (that
