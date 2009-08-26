@@ -16,7 +16,6 @@
 //  the License.
 //
 
-#import "GTMDefines.h"
 #import "GTMUILocalizerAndLayoutTweaker.h"
 #import "GTMUILocalizer.h"
 
@@ -89,6 +88,15 @@ static BOOL IsRightAnchored(NSView *view);
 
 + (NSSize)sizeToFitView:(NSView *)view {
   return SizeToFit(view, NSZeroPoint);
+}
+
++ (NSUInteger)sizeToFitFixedWidthTextField:(NSTextField *)textField {
+  NSRect initialFrame = [textField frame];
+  NSSize newSize = [[textField cell] cellSizeForBounds:initialFrame];
+  NSRect newFrame = initialFrame;
+  newFrame.size.height = newSize.height;
+  [textField setFrame:newFrame];
+  return initialFrame.size.height - newSize.height;
 }
 
 @end
