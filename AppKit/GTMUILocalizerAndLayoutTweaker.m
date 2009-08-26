@@ -90,7 +90,7 @@ static BOOL IsRightAnchored(NSView *view);
   return SizeToFit(view, NSZeroPoint);
 }
 
-+ (NSUInteger)sizeToFitFixedWidthTextField:(NSTextField *)textField {
++ (CGFloat)sizeToFitFixedWidthTextField:(NSTextField *)textField {
   NSRect initialFrame = [textField frame];
   NSSize newSize = [[textField cell] cellSizeForBounds:initialFrame];
   NSRect newFrame = initialFrame;

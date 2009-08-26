@@ -44,7 +44,7 @@
 // can get really wide.  This method will keep the width fixed, but figure out
 // how tall the textfield needs to be to fit its text.
 // Returns the amount the field changed height.
-+ (NSUInteger)sizeToFitFixedWidthTextField:(NSTextField *)textField;
++ (CGFloat)sizeToFitFixedWidthTextField:(NSTextField *)textField;
 
 @end
 
