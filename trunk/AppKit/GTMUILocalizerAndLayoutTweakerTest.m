@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMUILocalizerAndLayoutTweakerTest.h"
 #import "GTMNSObject+UnitTesting.h"
-#import "GTMUILocalizer.h"
+#import "GTMUILocalizerAndLayoutTweaker.h"
 
 static NSUInteger gTestPass = 0;
 
@@ -54,6 +54,48 @@ static NSUInteger gTestPass = 0;
         (long)gTestPass];
     GTMAssertObjectImageEqualToImageNamed(window, imageName,
                                           @"Pass %ld", (long)gTestPass);
+    [controller release];
+  }
+}
+
+- (void)testSizeToFitFixedWidthTextField {
+  // In the xib, the one field is over sized, the other is undersized, this
+  // way we make sure the code handles both condions as there was a bahavior
+  // change between the 10.4 and 10.5 SDKs.
+  NSString *kTestStrings[] = {
+    @"The quick brown fox jumps over the lazy dog.",
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox jumps "
+      @"over the lazy dog.  The quick brown fox jumps over the lazy dog.  "
+      @"The quick brown fox jumps over the lazy dog.  The quick brown fox "
+      @"jumps over the lazy dog.",
+    @"The quick brown fox jumps over the lazy dog.\nThe quick brown fox jumps "
+      @"over the lazy dog.\nThe quick brown fox jumps over the lazy dog.\n"
+      @"The quick brown fox jumps over the lazy dog.\nThe quick brown fox "
+      @"jumps over the lazy dog.",
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox jumps "
+      @"over the lazy dog.\nThe quick brown fox jumps over the lazy dog.  "
+      @"The quick brown fox jumps over the lazy dog.  The quick brown fox "
+      @"jumps over the lazy dog.  The quick brown fox jumps over the lazy "
+      @"dog.  The quick brown fox jumps over the lazy dog.\n\nThe End.",
+  };
+  for (size_t lp = 0; lp < (sizeof(kTestStrings) / sizeof(NSString*)); ++lp) {
+    GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
+      [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
+        initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest3"];
+    NSWindow *window = [controller window];
+    STAssertNotNil(window, @"Pass %ld", (long)lp);
+    NSTextField *field;
+    GTM_FOREACH_OBJECT(field, [[window contentView] subviews]) {
+      STAssertTrue([field isMemberOfClass:[NSTextField class]],
+                   @"Pass %ld", (long)lp);
+      [field setStringValue:kTestStrings[lp]];
+      [GTMUILocalizerAndLayoutTweaker sizeToFitFixedWidthTextField:field];
+    }
+    NSString *imageName =
+      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest3-%ld",
+       (long)lp];
+    GTMAssertObjectImageEqualToImageNamed(window, imageName,
+                                          @"Pass %ld", (long)lp);
     [controller release];
   }
 }

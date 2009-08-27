@@ -92,11 +92,10 @@ static BOOL IsRightAnchored(NSView *view);
 
 + (CGFloat)sizeToFitFixedWidthTextField:(NSTextField *)textField {
   NSRect initialFrame = [textField frame];
-  NSSize newSize = [[textField cell] cellSizeForBounds:initialFrame];
-  NSRect newFrame = initialFrame;
-  newFrame.size.height = newSize.height;
-  [textField setFrame:newFrame];
-  return initialFrame.size.height - newSize.height;
+  NSRect sizeRect = NSMakeRect(0, 0, NSWidth(initialFrame), CGFLOAT_MAX);
+  NSSize newSize = [[textField cell] cellSizeForBounds:sizeRect];
+  [textField setFrameSize:newSize];
+  return newSize.height - NSHeight(initialFrame);
 }
 
 @end
