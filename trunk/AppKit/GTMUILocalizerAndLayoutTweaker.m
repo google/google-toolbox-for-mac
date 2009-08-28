@@ -59,6 +59,11 @@ static BOOL IsRightAnchored(NSView *view);
   // Localize first
   [localizer localizeObject:uiObject recursively:YES];
 
+  // Then tweak!
+  [self tweakUI:uiObject];
+}
+
+- (void)tweakUI:(id)uiObject {
   // Figure out where we start
   NSView *startView;
   if ([uiObject isKindOfClass:[NSWindow class]]) {
@@ -68,8 +73,8 @@ static BOOL IsRightAnchored(NSView *view);
                   @"should have been a subclass of NSView");
     startView = (NSView *)uiObject;
   }
-
-  // And Tweak!
+  
+  // Tweak away!
   [self tweakView:startView];
 }
 

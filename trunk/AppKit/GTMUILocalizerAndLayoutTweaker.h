@@ -31,8 +31,14 @@
   IBOutlet GTMUILocalizer *localizer_;  // If nil, one will be created
   IBOutlet id localizerOwner_;  // Set if you want the default GTMUILocalizer
 }
+// Localize the the UI and then tweak the layout in the given object.
 - (void)applyLocalizer:(GTMUILocalizer *)localizer
             tweakingUI:(id)uiObject;
+
+// Don't do any localization, just runs the tweaks, useful if you just need
+// layout adjusted based on content from elsewhere.  |uiObject| should be
+// a NSWindow or NSView (or subclass).
+- (void)tweakUI:(id)uiObject;
 
 // This checks to see if |view| implements @selector(sizeToFit) and calls it.
 // It then checks the class of |view| and does some fixup for known issues
