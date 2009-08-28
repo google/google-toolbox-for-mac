@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		13C1ED4F104896C900907CD8 /* GTMUIView+SubtreeDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1ED4C104896C900907CD8 /* GTMUIView+SubtreeDescription.m */; };
+		13C1ED50104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1ED4D104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m */; };
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -132,6 +134,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		13C1ED4C104896C900907CD8 /* GTMUIView+SubtreeDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIView+SubtreeDescription.m"; sourceTree = "<group>"; };
+		13C1ED4D104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIView+SubtreeDescriptionTest.m"; sourceTree = "<group>"; };
+		13C1ED4E104896C900907CD8 /* GTMUIView+SubtreeDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIView+SubtreeDescription.h"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* GTMiPhoneTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMiPhoneTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -374,6 +379,9 @@
 				64D0F5C50FD3E65C00506CC7 /* GTMUIImage+Resize.h */,
 				64D0F5C70FD3E65C00506CC7 /* GTMUIImage+Resize.m */,
 				64D0F5C60FD3E65C00506CC7 /* GTMUIImage+ResizeTest.m */,
+				13C1ED4C104896C900907CD8 /* GTMUIView+SubtreeDescription.m */,
+				13C1ED4D104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m */,
+				13C1ED4E104896C900907CD8 /* GTMUIView+SubtreeDescription.h */,
 				64D0F5CB0FD3E66A00506CC7 /* TestData */,
 			);
 			path = iPhone;
@@ -736,6 +744,8 @@
 				8BF4D4190FC7499D009ABC3F /* GTMGoogleSearch.m in Sources */,
 				64D0F5C80FD3E65C00506CC7 /* GTMUIImage+ResizeTest.m in Sources */,
 				64D0F5C90FD3E65C00506CC7 /* GTMUIImage+Resize.m in Sources */,
+				13C1ED4F104896C900907CD8 /* GTMUIView+SubtreeDescription.m in Sources */,
+				13C1ED50104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
