@@ -480,18 +480,22 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
 
 ///  Find the path for a file named name.extension in your bundle.
 //  Searches for the following:
-//  "name.extension", 
-//  "name.arch.extension", 
-//  "name.arch.OSVersionMajor.extension"
-//  "name.arch.OSVersionMajor.OSVersionMinor.extension"
-//  "name.arch.OSVersionMajor.OSVersionMinor.OSVersion.bugfix.extension"
-//  "name.arch.OSVersionMajor.extension"
-//  "name.OSVersionMajor.arch.extension"
+//  "name.CompilerSDK.OSVersionMajor.OSVersionMinor.OSVersionBugFix.arch.extension"
+//  "name.CompilerSDK.OSVersionMajor.OSVersionMinor.arch.extension"
+//  "name.CompilerSDK.OSVersionMajor.arch.extension"
+//  "name.CompilerSDK.arch.extension"
+//  "name.CompilerSDK.OSVersionMajor.OSVersionMinor.OSVersionBugFix.extension"
+//  "name.CompilerSDK.OSVersionMajor.OSVersionMinor.extension"
+//  "name.CompilerSDK.OSVersionMajor.extension"
+//  "name.CompilerSDK.extension"
+//  "name.OSVersionMajor.OSVersionMinor.OSVersionBugFix.arch.extension"
 //  "name.OSVersionMajor.OSVersionMinor.arch.extension"
-//  "name.OSVersionMajor.OSVersionMinor.OSVersion.bugfix.arch.extension"
-//  "name.OSVersionMajor.extension"
+//  "name.OSVersionMajor.arch.extension"
+//  "name.arch.extension"
+//  "name.OSVersionMajor.OSVersionMinor.OSVersionBugFix.extension"
 //  "name.OSVersionMajor.OSVersionMinor.extension"
-//  "name.OSVersionMajor.OSVersionMinor.OSVersion.bugfix.extension"
+//  "name.OSVersionMajor.extension"
+//  "name.extension"
 //  Do not include the ".extension" extension on your name.
 //
 //  Args:
@@ -519,27 +523,52 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   systemVersions[1] = [NSString stringWithFormat:@".%d.%d", major, minor];
   systemVersions[2] = [NSString stringWithFormat:@".%d", major];
   systemVersions[3] = @"";
-  NSString *extensions[2];
-  extensions[0] 
+  // Architecture
+  NSString *architecture[2];
+  architecture[0] 
     = [NSString stringWithFormat:@".%@", 
        [GTMSystemVersion runtimeArchitecture]];
-  extensions[1] = @"";
+  architecture[1] = @"";
+  // Compiler SDK
+#if GTM_MACOS_SDK
+  // Some times Apple changes how things work based on the SDK built against.
+  NSString *sdks[2];
+# if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+  sdks[0] = @".10_6_SDK";
+# elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  sdks[0] = @".10_5_SDK";
+# elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_4
+  sdks[0] = @".10_4_SDK";
+# elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_3
+  sdks[0] = @".10_3_SDK";
+# elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_2
+  sdks[0] = @".10_2_SDK";
+# elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_1
+  sdks[0] = @".10_1_SDK";
+# else
+  sdks[0] = @".10_0_SDK";
+# endif
+  sdks[1] = @"";
+#else  // !GTM_MACOS_SDK
+  // iPhone doesn't current support SDK specific images (hopefully it won't
+  // be needed.
+  NSString *sdks[] = { @"" };
+#endif  // GTM_MACOS_SDK
   
-  size_t i, j;
   // Note that we are searching for the most exact match first.
-  for (i = 0; 
-       !thePath && i < sizeof(extensions) / sizeof(*extensions); 
+  for (size_t i = 0; 
+       !thePath && i < sizeof(sdks) / sizeof(*sdks); 
        ++i) {
-    for (j = 0; 
-         !thePath && j < sizeof(systemVersions) / sizeof(*systemVersions); 
+    for (size_t j = 0; 
+         !thePath && j < sizeof(architecture) / sizeof(*architecture); 
          j++) {
-      NSString *fullName = [NSString stringWithFormat:@"%@%@%@", 
-                            name, extensions[i], systemVersions[j]];
-      thePath = [myBundle pathForResource:fullName ofType:extension];
-      if (thePath) break;
-      fullName = [NSString stringWithFormat:@"%@%@%@", 
-                  name, systemVersions[j], extensions[i]];
-      thePath = [myBundle pathForResource:fullName ofType:extension];
+      for (size_t k = 0;
+           !thePath && k < sizeof(systemVersions) / sizeof(*systemVersions); 
+           k++) {
+        NSString *fullName = [NSString stringWithFormat:@"%@%@%@%@", 
+                    name, sdks[i], systemVersions[k], architecture[j]];
+        thePath = [myBundle pathForResource:fullName ofType:extension];
+      }
     }
   }
   
@@ -553,8 +582,10 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
   
+  // We don't include the CompilerSDK in here because it is not something that
+  // that is commonly needed.
   NSString *fullName = [NSString stringWithFormat:@"%@.%@.%d.%d.%d", 
-                        name, systemArchitecture, major, minor, bugFix];
+                        name, major, minor, bugFix, systemArchitecture];
   
   NSString *basePath = [[self class] gtm_getUnitTestSaveToDirectory];
   return [[basePath stringByAppendingPathComponent:fullName]

@@ -27,6 +27,7 @@ static NSUInteger gTestPass = 0;
 @end
 
 @implementation GTMUILocalizerAndLayoutTweakerTest
+
 - (void)testWindowLocalization {
   // Test with nib 1
   for (gTestPass = 0; gTestPass < 3; ++gTestPass) {
@@ -96,6 +97,29 @@ static NSUInteger gTestPass = 0;
        (long)lp];
     GTMAssertObjectImageEqualToImageNamed(window, imageName,
                                           @"Pass %ld", (long)lp);
+    [controller release];
+  }
+}
+
+- (void)testButtonStyleLocalizations {
+  // Since we special case standard push buttons, test all button types.
+
+  // This also tests the vertical vs. horizontal layout code on widthbox, if
+  // you look at the xib in IB, turn on the bounds rectagle display, and you'll
+  // see how IB's left alignment is a visual alignment, it doesn't actually
+  // align the bounds of the views.
+
+  for (gTestPass = 0; gTestPass < 3; ++gTestPass) {
+    GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
+      [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
+        initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest4"];
+    NSWindow *window = [controller window];
+    STAssertNotNil(window, @"Pass %ld", (long)gTestPass);
+    NSString *imageName =
+      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest4-%ld",
+        (long)gTestPass];
+    GTMAssertObjectImageEqualToImageNamed(window, imageName,
+                                          @"Pass %ld", (long)gTestPass);
     [controller release];
   }
 }

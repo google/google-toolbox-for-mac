@@ -320,7 +320,14 @@ Changes since 1.5.1
   KVO a little easier in some cases. To turn it on, set the "GTMDebugKVO"
   environment variable to "1". It will output a lot of data about adding and
   removing KVO observers, and when the values are actually changed.
-  
+
+- Added better support for NSBox to GTMAppKit+UnitTesting. Previously we
+  didn't check any box specific attributes.
+
+- Updated how GTMNSObject+UnitTesting searches for files to include the Target
+  SDK from compile time.  Also removed some of the formatting options so
+  try and make it simpler to follow.
+
 
 Release 1.5.1
 Changes since 1.5.0

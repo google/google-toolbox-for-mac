@@ -26,7 +26,7 @@
 static NSSize SizeToFit(NSView *view, NSPoint offset);
 // Compare function for -[NSArray sortedArrayUsingFunction:context:]
 static NSInteger CompareFrameX(id view1, id view2, void *context);
-// Check if the view is anchored on the right (fixed right, flexable left).
+// Check if the view is anchored on the right (fixed right, flexible left).
 static BOOL IsRightAnchored(NSView *view);
 
 @interface GTMUILocalizerAndLayoutTweaker (PrivateMethods)
@@ -122,9 +122,13 @@ static BOOL IsRightAnchored(NSView *view);
   NSMutableArray *rightAlignedSubViews = nil;
   NSMutableArray *rightAlignedSubViewDeltas = nil;
   if ([subviews count] > 1) {
-    // Do they share left edges (within a pixel)
-    if (fabs(NSMinX([[subviews objectAtIndex:0] frame]) -
-             NSMinX([[subviews objectAtIndex:1] frame])) > 1.0) {
+    // Check if the frames are in a row by seeing if when they are left aligned
+    // they overlap.  If they don't overlap in this case, it means they are
+    // probably stacked instead.
+    NSRect rect1 = [[subviews objectAtIndex:0] frame];
+    NSRect rect2 = [[subviews objectAtIndex:1] frame];
+    rect1.origin.x = rect2.origin.x = 0;
+    if (NSIntersectsRect(rect1, rect2)) {
       // No, so walk them x order moving them along so they don't overlap.
       sumMode = YES;
       subviews = [subviews sortedArrayUsingFunction:CompareFrameX context:NULL];
@@ -259,7 +263,6 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
     // to what is in them as they are for users to enter things so honor their
     // current size.
   } else {
-
     // Genericaly fire a sizeToFit if it has one.
     if ([view respondsToSelector:@selector(sizeToFit)]) {
       [view performSelector:@selector(sizeToFit)];
@@ -267,19 +270,23 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
       newFrame = fitFrame;
     }
 
-    // -[NSButton sizeToFit] gives much worse results than IB's Size to Fit
-    // option. This is the amount of padding IB adds over a sizeToFit,
-    // empirically determined.
-    // TODO: We need to check the type of button before doing this.
     if ([view isKindOfClass:[NSButton class]]) {
-      const float kExtraPaddingAmount = 12;
-      // Width is tricky, new buttons in IB are 96 wide, Carbon seems to have
-      // defaulted to 70, Cocoa seems to like 82.  But we go with 96 since
-      // that's what IB is doing these days.
-      const float kMinButtonWidth = 96;
-      newFrame.size.width = NSWidth(newFrame) + kExtraPaddingAmount;
-      if (NSWidth(newFrame) < kMinButtonWidth) {
-        newFrame.size.width = kMinButtonWidth;
+      NSButton *button = (NSButton *)view;
+      // -[NSButton sizeToFit] gives much worse results than IB's Size to Fit
+      // option for standard push buttons.
+      if (([button bezelStyle] == NSRoundedBezelStyle) &&
+          ([[button cell] controlSize] == NSRegularControlSize)) {
+        // This is the amount of padding IB adds over a sizeToFit, empirically
+        // determined.
+        const CGFloat kExtraPaddingAmount = 12.0;
+        // Width is tricky, new buttons in IB are 96 wide, Carbon seems to have
+        // defaulted to 70, Cocoa seems to like 82.  But we go with 96 since
+        // that's what IB is doing these days.
+        const CGFloat kMinButtonWidth = (CGFloat)96.0;
+        newFrame.size.width = NSWidth(newFrame) + kExtraPaddingAmount;
+        if (NSWidth(newFrame) < kMinButtonWidth) {
+          newFrame.size.width = kMinButtonWidth;
+        }
       }
     }
   }
