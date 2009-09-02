@@ -21,9 +21,11 @@
 
 @interface GTMUILocalizerTestWindowController : NSWindowController {
   IBOutlet NSWindow *otherWindow_;
+  IBOutlet NSWindow *anotherWindow_;
   IBOutlet NSMenu *otherMenu_;
 }
 - (NSWindow *)otherWindow;
+- (NSWindow *)anotherWindow;
 - (NSMenu *)otherMenu;
 @end
 

@@ -360,6 +360,26 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
+@implementation NSBox (GTMUnitTestingAdditions)
+
+//  Encodes the state of an object in a manner suitable for comparing
+//  against a master state file so we can determine whether the
+//  object is in a suitable state.
+//
+//  Arguments:
+//    inCoder - the coder to encode our state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+
+  [inCoder encodeObject:[self title] forKey:@"BoxTitle"];
+  ENCODE_NSINTEGER(inCoder, [self titlePosition], @"BoxTitlePosition");
+  ENCODE_NSINTEGER(inCoder, [self boxType], @"BoxType");
+  ENCODE_NSINTEGER(inCoder, [self borderType], @"BoxBorderType");
+  // 10.5+ [inCoder encodeBool:[self isTransparent] forKey:@"BoxIsTransparent"];
+}
+
+@end
+
 @implementation NSView (GTMUnitTestingAdditions) 
 
 //  Returns an image containing a representation of the object

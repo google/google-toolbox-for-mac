@@ -40,6 +40,11 @@
   [localizer localizeObject:window recursively:YES];
   GTMAssertObjectStateEqualToStateNamed(window, 
                                         @"GTMUILocalizerWindow2State", nil);
+  window = [controller anotherWindow];
+  STAssertNotNil(window, nil);
+  [localizer localizeObject:window recursively:YES];
+  GTMAssertObjectStateEqualToStateNamed(window, 
+                                        @"GTMUILocalizerWindow3State", nil);
   NSMenu *menu = [controller otherMenu];
   STAssertNotNil(menu, nil);
   [localizer localizeObject:menu recursively:YES];
@@ -77,6 +82,10 @@
 
 - (NSWindow *)otherWindow {
   return otherWindow_;
+}
+
+- (NSWindow *)anotherWindow {
+  return anotherWindow_;
 }
 
 - (NSMenu *)otherMenu {
