@@ -26,7 +26,7 @@
 // Test Timers are not thread safe. Test Timers do NOT check their arguments
 // for NULL. You will crash if you pass a NULL argument in.
 
-typedef struct {
+typedef struct GTMTestTimer {
   mach_timebase_info_data_t time_base_info_;
   bool running_;
   uint64_t start_;
