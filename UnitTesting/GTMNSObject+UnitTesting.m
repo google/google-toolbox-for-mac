@@ -584,7 +584,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   
   // We don't include the CompilerSDK in here because it is not something that
   // that is commonly needed.
-  NSString *fullName = [NSString stringWithFormat:@"%@.%@.%d.%d.%d", 
+  NSString *fullName = [NSString stringWithFormat:@"%@.%d.%d.%d.%@", 
                         name, major, minor, bugFix, systemArchitecture];
   
   NSString *basePath = [[self class] gtm_getUnitTestSaveToDirectory];
