@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0B859D9F104D08160064FE46 /* GTMNSData+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B859D9A104D08050064FE46 /* GTMNSData+Hex.m */; };
+		0B859DA0104D08160064FE46 /* GTMNSData+HexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B859D9B104D08050064FE46 /* GTMNSData+HexTest.m */; };
+		0B859DA1104D08160064FE46 /* GTMNSDictionary+CaseInsensitive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B859D9D104D08050064FE46 /* GTMNSDictionary+CaseInsensitive.m */; };
+		0B859DA2104D08160064FE46 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B859D9E104D08050064FE46 /* GTMNSDictionary+CaseInsensitiveTest.m */; };
 		13C1ED4F104896C900907CD8 /* GTMUIView+SubtreeDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1ED4C104896C900907CD8 /* GTMUIView+SubtreeDescription.m */; };
 		13C1ED50104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1ED4D104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m */; };
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
@@ -134,6 +138,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B859D99104D08050064FE46 /* GTMNSData+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+Hex.h"; sourceTree = "<group>"; };
+		0B859D9A104D08050064FE46 /* GTMNSData+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+Hex.m"; sourceTree = "<group>"; };
+		0B859D9B104D08050064FE46 /* GTMNSData+HexTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+HexTest.m"; sourceTree = "<group>"; };
+		0B859D9C104D08050064FE46 /* GTMNSDictionary+CaseInsensitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSDictionary+CaseInsensitive.h"; sourceTree = "<group>"; };
+		0B859D9D104D08050064FE46 /* GTMNSDictionary+CaseInsensitive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSDictionary+CaseInsensitive.m"; sourceTree = "<group>"; };
+		0B859D9E104D08050064FE46 /* GTMNSDictionary+CaseInsensitiveTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSDictionary+CaseInsensitiveTest.m"; sourceTree = "<group>"; };
 		13C1ED4C104896C900907CD8 /* GTMUIView+SubtreeDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIView+SubtreeDescription.m"; sourceTree = "<group>"; };
 		13C1ED4D104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIView+SubtreeDescriptionTest.m"; sourceTree = "<group>"; };
 		13C1ED4E104896C900907CD8 /* GTMUIView+SubtreeDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIView+SubtreeDescription.h"; sourceTree = "<group>"; };
@@ -390,6 +400,12 @@
 		8BC047760DAE928A00C2D1CA /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				0B859D99104D08050064FE46 /* GTMNSData+Hex.h */,
+				0B859D9A104D08050064FE46 /* GTMNSData+Hex.m */,
+				0B859D9B104D08050064FE46 /* GTMNSData+HexTest.m */,
+				0B859D9C104D08050064FE46 /* GTMNSDictionary+CaseInsensitive.h */,
+				0B859D9D104D08050064FE46 /* GTMNSDictionary+CaseInsensitive.m */,
+				0B859D9E104D08050064FE46 /* GTMNSDictionary+CaseInsensitiveTest.m */,
 				F439ADE80DBD3C0000BE9B91 /* GTMBase64.h */,
 				F439ADE90DBD3C0000BE9B91 /* GTMBase64.m */,
 				F439ADEA0DBD3C0000BE9B91 /* GTMBase64Test.m */,
@@ -746,6 +762,10 @@
 				64D0F5C90FD3E65C00506CC7 /* GTMUIImage+Resize.m in Sources */,
 				13C1ED4F104896C900907CD8 /* GTMUIView+SubtreeDescription.m in Sources */,
 				13C1ED50104896C900907CD8 /* GTMUIView+SubtreeDescriptionTest.m in Sources */,
+				0B859D9F104D08160064FE46 /* GTMNSData+Hex.m in Sources */,
+				0B859DA0104D08160064FE46 /* GTMNSData+HexTest.m in Sources */,
+				0B859DA1104D08160064FE46 /* GTMNSDictionary+CaseInsensitive.m in Sources */,
+				0B859DA2104D08160064FE46 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
