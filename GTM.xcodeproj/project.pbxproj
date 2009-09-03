@@ -34,6 +34,12 @@
 /* End PBXAppleScriptBuildPhase section */
 
 /* Begin PBXBuildFile section */
+		0BFAD4C5104D06EF002BEB27 /* GTMNSData+Hex.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BFAD4BF104D06EF002BEB27 /* GTMNSData+Hex.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0BFAD4C6104D06EF002BEB27 /* GTMNSData+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAD4C0104D06EF002BEB27 /* GTMNSData+Hex.m */; };
+		0BFAD4C8104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BFAD4C2104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0BFAD4C9104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAD4C3104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m */; };
+		0BFAD4CB104D06FE002BEB27 /* GTMNSData+HexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAD4C1104D06EF002BEB27 /* GTMNSData+HexTest.m */; };
+		0BFAD4CC104D06FE002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAD4C4104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m */; };
 		1012DF560F4252BD004794DB /* GTMAbstractDOListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 1012DF540F4252BD004794DB /* GTMAbstractDOListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1012DF570F4252BD004794DB /* GTMAbstractDOListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 1012DF550F4252BD004794DB /* GTMAbstractDOListener.m */; };
 		1012DF5A0F425525004794DB /* GTMAbstractDOListenerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1012DF590F425525004794DB /* GTMAbstractDOListenerTest.m */; };
@@ -388,6 +394,12 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		0BFAD4BF104D06EF002BEB27 /* GTMNSData+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+Hex.h"; sourceTree = "<group>"; };
+		0BFAD4C0104D06EF002BEB27 /* GTMNSData+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+Hex.m"; sourceTree = "<group>"; };
+		0BFAD4C1104D06EF002BEB27 /* GTMNSData+HexTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+HexTest.m"; sourceTree = "<group>"; };
+		0BFAD4C2104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSDictionary+CaseInsensitive.h"; sourceTree = "<group>"; };
+		0BFAD4C3104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSDictionary+CaseInsensitive.m"; sourceTree = "<group>"; };
+		0BFAD4C4104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSDictionary+CaseInsensitiveTest.m"; sourceTree = "<group>"; };
 		1012DF540F4252BD004794DB /* GTMAbstractDOListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMAbstractDOListener.h; sourceTree = "<group>"; };
 		1012DF550F4252BD004794DB /* GTMAbstractDOListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMAbstractDOListener.m; sourceTree = "<group>"; };
 		1012DF590F425525004794DB /* GTMAbstractDOListenerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMAbstractDOListenerTest.m; sourceTree = "<group>"; };
@@ -1040,6 +1052,12 @@
 		F48FE2720D198CCE009257D2 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				0BFAD4BF104D06EF002BEB27 /* GTMNSData+Hex.h */,
+				0BFAD4C0104D06EF002BEB27 /* GTMNSData+Hex.m */,
+				0BFAD4C1104D06EF002BEB27 /* GTMNSData+HexTest.m */,
+				0BFAD4C2104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h */,
+				0BFAD4C3104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m */,
+				0BFAD4C4104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m */,
 				F95B567B0F46208E0051A6F1 /* GTMSQLite.h */,
 				F95B567C0F46208E0051A6F1 /* GTMSQLite.m */,
 				F95B567D0F46208E0051A6F1 /* GTMSQLiteTest.m */,
@@ -1248,6 +1266,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BFAD4C5104D06EF002BEB27 /* GTMNSData+Hex.h in Headers */,
+				0BFAD4C8104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h in Headers */,
 				F93207DE0F4B82DB005F37EA /* GTMSQLite.h in Headers */,
 				F42E09490D199BBF00D5DDE0 /* GTMDelegatingTableColumn.h in Headers */,
 				F42E094B0D199BBF00D5DDE0 /* GTMGarbageCollection.h in Headers */,
@@ -1778,6 +1798,8 @@
 				108930850F4CCB380018D4A0 /* GTMTransientRootPortProxyTest.m in Sources */,
 				8BD35B940FB22986009058F5 /* GTMNSScanner+JSONTest.m in Sources */,
 				8BF4D2E80FC70751009ABC3F /* GTMGoogleSearchTest.m in Sources */,
+				0BFAD4CB104D06FE002BEB27 /* GTMNSData+HexTest.m in Sources */,
+				0BFAD4CC104D06FE002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1846,6 +1868,8 @@
 				8BF4D2E70FC7073A009ABC3F /* GTMGoogleSearch.m in Sources */,
 				8207B89C0FEA7AA1008A527B /* GTMWindowSheetController.m in Sources */,
 				F43C7A581021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m in Sources */,
+				0BFAD4C6104D06EF002BEB27 /* GTMNSData+Hex.m in Sources */,
+				0BFAD4C9104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

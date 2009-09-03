@@ -328,6 +328,9 @@ Changes since 1.5.1
   SDK from compile time.  Also removed some of the formatting options so
   try and make it simpler to follow.
 
+- Added GTMNSDictionary+CaseInsensitive, e.g. for use with HTTP headers.
+
+- Added GTMNSData+Hex for conversion to and from hex strings.
 
 Release 1.5.1
 Changes since 1.5.0
