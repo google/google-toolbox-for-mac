@@ -70,6 +70,9 @@
 		7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */; };
 		7F97DBA4104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest1.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 7F97DBA2104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest1.tiff */; };
 		7F97DBA5104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest2.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 7F97DBA3104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest2.tiff */; };
+		7FF768E31051B17900D34F4B /* GTMNSImage+SearchCacheTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF768E11051B17900D34F4B /* GTMNSImage+SearchCacheTest.m */; };
+		7FF768E41051B17E00D34F4B /* GTMNSImage+SearchCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FF768DF1051B17900D34F4B /* GTMNSImage+SearchCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7FF768E51051B17E00D34F4B /* GTMNSImage+SearchCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF768E01051B17900D34F4B /* GTMNSImage+SearchCache.m */; };
 		8207B89B0FEA7A9E008A527B /* GTMWindowSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8207B8970FEA7A98008A527B /* GTMWindowSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8207B89C0FEA7AA1008A527B /* GTMWindowSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8207B8980FEA7A98008A527B /* GTMWindowSheetController.m */; };
 		8207B89D0FEA7AA6008A527B /* GTMWindowSheetControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */; };
@@ -439,6 +442,9 @@
 		7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingTextFieldCellTest.m; sourceTree = "<group>"; };
 		7F97DBA2104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest1.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMFadeTruncatingTextFieldCellTest1.tiff; sourceTree = "<group>"; };
 		7F97DBA3104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMFadeTruncatingTextFieldCellTest2.tiff; sourceTree = "<group>"; };
+		7FF768DF1051B17900D34F4B /* GTMNSImage+SearchCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSImage+SearchCache.h"; sourceTree = "<group>"; };
+		7FF768E01051B17900D34F4B /* GTMNSImage+SearchCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSImage+SearchCache.m"; sourceTree = "<group>"; };
+		7FF768E11051B17900D34F4B /* GTMNSImage+SearchCacheTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSImage+SearchCacheTest.m"; sourceTree = "<group>"; };
 		8207B8970FEA7A98008A527B /* GTMWindowSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMWindowSheetController.h; sourceTree = "<group>"; };
 		8207B8980FEA7A98008A527B /* GTMWindowSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMWindowSheetController.m; sourceTree = "<group>"; };
 		8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMWindowSheetControllerTest.m; sourceTree = "<group>"; };
@@ -1035,6 +1041,9 @@
 				7F3EB38C0E5E09C700A7A75E /* GTMNSImage+Scaling.h */,
 				7F3EB38D0E5E09C700A7A75E /* GTMNSImage+Scaling.m */,
 				7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */,
+				7FF768DF1051B17900D34F4B /* GTMNSImage+SearchCache.h */,
+				7FF768E01051B17900D34F4B /* GTMNSImage+SearchCache.m */,
+				7FF768E11051B17900D34F4B /* GTMNSImage+SearchCacheTest.m */,
 				8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */,
 				8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */,
 				8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */,
@@ -1349,6 +1358,7 @@
 				8207B89B0FEA7A9E008A527B /* GTMWindowSheetController.h in Headers */,
 				F43C7A571021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h in Headers */,
 				7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */,
+				7FF768E41051B17E00D34F4B /* GTMNSImage+SearchCache.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1889,6 +1899,7 @@
 				7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */,
 				0BFAD4C6104D06EF002BEB27 /* GTMNSData+Hex.m in Sources */,
 				0BFAD4C9104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m in Sources */,
+				7FF768E51051B17E00D34F4B /* GTMNSImage+SearchCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1919,6 +1930,7 @@
 				8207B89D0FEA7AA6008A527B /* GTMWindowSheetControllerTest.m in Sources */,
 				F42E2C69102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m in Sources */,
 				7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */,
+				7FF768E31051B17900D34F4B /* GTMNSImage+SearchCacheTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
