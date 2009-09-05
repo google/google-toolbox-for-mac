@@ -19,6 +19,10 @@
 #import <Cocoa/Cocoa.h>
 #import "GTMDefines.h"
 
+// TODO(alcor): this test is 10.5 only due to the toolbar in the xib
+// if we support 10.4, we should find another way to test
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 @interface GTMUILocalizerTestWindowController : NSWindowController {
   IBOutlet NSWindow *otherWindow_;
   IBOutlet NSWindow *anotherWindow_;
@@ -29,7 +33,6 @@
 - (NSMenu *)otherMenu;
 @end
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 @interface GTMUILocalizerTestViewController : NSViewController {
   IBOutlet NSView *otherView_;
 }

@@ -112,6 +112,23 @@
   if (recursive) {
     NSView *content = [window contentView];
     [self localizeView:content recursively:recursive];
+    NSToolbar *toolbar = [window toolbar];
+    if (toolbar)
+      [self localizeToolbar:toolbar];
+  }
+}
+
+- (void)localizeToolbar:(NSToolbar *)toolbar {
+  for (NSToolbarItem *item in [toolbar items]) {
+    NSString *label = [item label];
+    NSString *paletteLabel = [item paletteLabel];
+    NSString *toolTip = [item toolTip];
+    label = [self localizedStringForString:label];
+    paletteLabel = [self localizedStringForString:paletteLabel];
+    toolTip = [self localizedStringForString:toolTip];
+    [item setLabel:label];
+    [item setPaletteLabel:paletteLabel];
+    [item setToolTip:toolTip];
   }
 }
 

@@ -71,6 +71,7 @@
 - (id)initWithBundle:(NSBundle *)bundle;
 - (void)localizeObject:(id)object recursively:(BOOL)recursive;
 - (void)localizeWindow:(NSWindow *)window recursively:(BOOL)recursive;
+- (void)localizeToolbar:(NSToolbar *)toolbar;
 - (void)localizeView:(NSView *)view recursively:(BOOL)recursive;
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive;
 - (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive;

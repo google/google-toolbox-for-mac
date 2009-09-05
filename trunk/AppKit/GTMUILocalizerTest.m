@@ -16,10 +16,13 @@
 //  the License.
 //
 
+
 #import "GTMSenTestCase.h"
 #import "GTMUILocalizerTest.h"
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMUILocalizer.h"
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 @interface GTMUILocalizerTest : GTMTestCase
 @end
@@ -54,7 +57,6 @@
   [controller release];
 }
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 - (void)testViewLocalization {
   GTMUILocalizerTestViewController *controller 
     = [[GTMUILocalizerTestViewController alloc] init];
