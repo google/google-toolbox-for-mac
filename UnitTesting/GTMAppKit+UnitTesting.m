@@ -77,6 +77,9 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   // [inCoder encodeBool:[self isKeyWindow] forKey:@"WindowIsKey"];
   [inCoder encodeBool:[self isMainWindow] forKey:@"WindowIsMain"];
   [inCoder encodeObject:[self contentView] forKey:@"WindowContent"];
+  if ([self toolbar]) {
+    [inCoder encodeObject:[self toolbar] forKey:@"WindowToolbar"];
+  }
 }
 
 @end
@@ -285,6 +288,44 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [super gtm_unitTestEncodeState:inCoder];
   [inCoder encodeObject:[self label] forKey:@"TabLabel"];
   [inCoder encodeObject:[self view] forKey:@"TabView"];
+}
+
+@end
+
+@implementation NSToolbar (GTMUnitTestingAdditions) 
+
+//  Encodes the state of an object in a manner suitable for comparing
+//  against a master state file so we can determine whether the
+//  object is in a suitable state.
+//
+//  Arguments:
+//    inCoder - the coder to encode our state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+  NSToolbarItem *item = nil;
+  NSUInteger i = 0;
+  GTM_FOREACH_OBJECT(item, [self items]) {
+    NSString *key = [NSString stringWithFormat:@"ToolbarItem %d", i];
+    [inCoder encodeObject:item forKey:key];
+    i = i + 1;
+  }
+}
+
+@end
+
+@implementation NSToolbarItem (GTMUnitTestingAdditions) 
+
+//  Encodes the state of an object in a manner suitable for comparing
+//  against a master state file so we can determine whether the
+//  object is in a suitable state.
+//
+//  Arguments:
+//    inCoder - the coder to encode our state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+  [inCoder encodeObject:[self label] forKey:@"Label"];
+  [inCoder encodeObject:[self paletteLabel] forKey:@"PaletteLabel"];
+  [inCoder encodeObject:[self toolTip] forKey:@"ToolTip"];
 }
 
 @end

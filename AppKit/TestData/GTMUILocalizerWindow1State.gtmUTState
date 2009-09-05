@@ -339,5 +339,15 @@
 	<false/>
 	<key>WindowTitle</key>
 	<string>Window</string>
+	<key>WindowToolbar</key>
+	<dict>
+		<key>ToolbarItem 0</key>
+		<dict>
+			<key>Label</key>
+			<string></string>
+			<key>PaletteLabel</key>
+			<string></string>
+		</dict>
+	</dict>
 </dict>
 </plist>
