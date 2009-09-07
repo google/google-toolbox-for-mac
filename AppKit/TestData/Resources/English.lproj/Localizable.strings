@@ -21,6 +21,8 @@
 "Label1" = "Localized Label";
 "Tab1" = "Localized Tab";
 "WindowTest" = "Localized Window";
+"ToolbarItemLabel" = "Localized Toolbar Item Label";
+"ToolbarItemPaletteLabel" = "Localized Toolbar Item Palette Label";
 "MenuTest" = "Localized Menu";
 "MenuItemTest" = "Localized Menu Item";
 "Button" = "Localized Button";
