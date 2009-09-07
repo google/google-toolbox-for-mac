@@ -22,8 +22,6 @@
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMUILocalizer.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 @interface GTMUILocalizerTest : GTMTestCase
 @end
 
@@ -33,8 +31,14 @@
     = [[GTMUILocalizerTestWindowController alloc] init];
   NSWindow *window = [controller window];
   STAssertNotNil(window, nil);
+  
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   GTMAssertObjectStateEqualToStateNamed(window,
                                         @"GTMUILocalizerWindow1State", nil);
+#else
+  GTMAssertObjectStateEqualToStateNamed(window,
+                                       @"GTMUILocalizerWindow1State.10.4", nil);
+#endif
   
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   GTMUILocalizer *localizer = [[GTMUILocalizer alloc] initWithBundle:bundle];
@@ -57,6 +61,7 @@
   [controller release];
 }
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 - (void)testViewLocalization {
   GTMUILocalizerTestViewController *controller 
     = [[GTMUILocalizerTestViewController alloc] init];
@@ -79,7 +84,11 @@
 
 @implementation GTMUILocalizerTestWindowController
 - (id)init {
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   return [self initWithWindowNibName:@"GTMUILocalizerTestWindow"];
+#else
+  return [self initWithWindowNibName:@"GTMUILocalizerTestWindow10.4"];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 }
 
 - (NSWindow *)otherWindow {

@@ -121,14 +121,28 @@
 - (void)localizeToolbar:(NSToolbar *)toolbar {
   for (NSToolbarItem *item in [toolbar items]) {
     NSString *label = [item label];
+    if (label) {
+      label = [self localizedStringForString:label];
+      if (label) {
+        [item setLabel:label];
+      }
+    }
+
     NSString *paletteLabel = [item paletteLabel];
+    if (paletteLabel) {
+      paletteLabel = [self localizedStringForString:paletteLabel];
+      if (paletteLabel) {
+        [item setPaletteLabel:paletteLabel];
+      }
+    }
+
     NSString *toolTip = [item toolTip];
-    label = [self localizedStringForString:label];
-    paletteLabel = [self localizedStringForString:paletteLabel];
-    toolTip = [self localizedStringForString:toolTip];
-    [item setLabel:label];
-    [item setPaletteLabel:paletteLabel];
-    [item setToolTip:toolTip];
+    if (toolTip) {
+      toolTip = [self localizedStringForString:toolTip];
+      if (toolTip) {
+        [item setToolTip:toolTip];
+      }
+    }
   }
 }
 
