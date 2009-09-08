@@ -337,6 +337,10 @@ Changes since 1.5.1
 
 - Added GTMNSData+Hex for conversion to and from hex strings.
 
+- Added GTMNSNumber+64Bit for working with CGFloats, NSIntegers and NSUInters
+  using NSNumber on all supported SDKs.
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
