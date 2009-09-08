@@ -119,7 +119,8 @@
 }
 
 - (void)localizeToolbar:(NSToolbar *)toolbar {
-  for (NSToolbarItem *item in [toolbar items]) {
+  NSToolbarItem *item;
+  GTM_FOREACH_OBJECT(item, [toolbar items]) {
     NSString *label = [item label];
     if (label) {
       label = [self localizedStringForString:label];
