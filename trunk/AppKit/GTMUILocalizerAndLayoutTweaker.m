@@ -18,6 +18,7 @@
 
 #import "GTMUILocalizerAndLayoutTweaker.h"
 #import "GTMUILocalizer.h"
+#import "GTMNSNumber+64Bit.h"
 
 // Helper that will try to do a SizeToFit on any UI items and do the special
 // case handling we also need to end up with a usable UI item.  It also takes
@@ -160,7 +161,8 @@ static BOOL IsRightAnchored(NSView *view);
     // once we know this view's size.
     if (IsRightAnchored(subView)) {
       [rightAlignedSubViews addObject:subView];
-      [rightAlignedSubViewDeltas addObject:[NSNumber numberWithDouble:delta]];
+      NSNumber *nsDelta = [NSNumber gtm_numberWithCGFloat:delta];
+      [rightAlignedSubViewDeltas addObject:nsDelta];
     }
   }
 

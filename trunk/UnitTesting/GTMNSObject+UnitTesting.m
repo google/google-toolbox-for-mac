@@ -21,6 +21,7 @@
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMSystemVersion.h"
 #import "GTMGarbageCollection.h"
+#import "GTMNSNumber+64Bit.h"
 
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>
@@ -664,7 +665,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   // LZW Compression for TIFF
   NSDictionary *tiffDict 
     = [NSDictionary dictionaryWithObjectsAndKeys:
-       [NSNumber numberWithInt:NSTIFFCompressionLZW],
+       [NSNumber gtm_numberWithUnsignedInteger:NSTIFFCompressionLZW],
        (const NSString*)kCGImagePropertyTIFFCompression,
        nil];
   NSDictionary *destProps 

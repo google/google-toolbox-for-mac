@@ -178,6 +178,9 @@
 		64D0F5DD0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_100x100_to_50x50.png"; path = "TestData/GTMUIImage+Resize_100x100_to_50x50.png"; sourceTree = "<group>"; };
 		67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIPhoneUnitTestDelegate.h; sourceTree = "<group>"; };
 		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
+		8B30806F1056BDCE006C4C7A /* GTMNSNumber+64Bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSNumber+64Bit.h"; sourceTree = "<group>"; };
+		8B3080701056BDCE006C4C7A /* GTMNSNumber+64Bit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSNumber+64Bit.m"; sourceTree = "<group>"; };
+		8B3080711056BDCE006C4C7A /* GTMNSNumber+64BitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSNumber+64BitTest.m"; sourceTree = "<group>"; };
 		8B308BCD0DAD0B8400183556 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B3AA8F00E032FC7007E31B5 /* GTMNSString+URLArguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+URLArguments.h"; sourceTree = "<group>"; };
 		8B3AA8F10E032FC7007E31B5 /* GTMNSString+URLArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+URLArguments.m"; sourceTree = "<group>"; };
@@ -449,6 +452,9 @@
 				8BC047840DAE928A00C2D1CA /* GTMNSFileManager+Path.h */,
 				8BC047850DAE928A00C2D1CA /* GTMNSFileManager+Path.m */,
 				8BC047860DAE928A00C2D1CA /* GTMNSFileManager+PathTest.m */,
+				8B30806F1056BDCE006C4C7A /* GTMNSNumber+64Bit.h */,
+				8B3080701056BDCE006C4C7A /* GTMNSNumber+64Bit.m */,
+				8B3080711056BDCE006C4C7A /* GTMNSNumber+64BitTest.m */,
 				8B6C18710F3769D200E51E5D /* GTMNSObject+KeyValueObserving.h */,
 				8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */,
 				8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */,
