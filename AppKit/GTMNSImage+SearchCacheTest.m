@@ -35,9 +35,12 @@
   testImage = [NSImage gtm_imageNamed:@"com.apple.Xcode"];
   STAssertNotNil(testImage, nil);
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  // The stencil images only exist on 10.5+
   testImage = [NSImage gtm_imageNamed:NSImageNameBonjour];
   STAssertNotNil(testImage, nil);
-  
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
   testImage = [NSImage gtm_imageNamed:(NSString *)kUTTypeFolder];
   STAssertNotNil(testImage, nil);
   
