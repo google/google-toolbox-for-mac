@@ -326,6 +326,10 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [inCoder encodeObject:[self label] forKey:@"Label"];
   [inCoder encodeObject:[self paletteLabel] forKey:@"PaletteLabel"];
   [inCoder encodeObject:[self toolTip] forKey:@"ToolTip"];
+  NSView *view = [self view];
+  if (view) {
+    [inCoder encodeObject:view forKey:@"View"];
+  }
 }
 
 @end

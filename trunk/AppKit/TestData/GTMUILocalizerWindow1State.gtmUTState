@@ -348,7 +348,16 @@
 			<key>PaletteLabel</key>
 			<string>Localized Toolbar Item Palette Label</string>
 			<key>ToolTip</key>
-			<string></string>
+			<string>Localized ToolTip</string>
+		</dict>
+		<key>ToolbarItem 1</key>
+		<dict>
+			<key>Label</key>
+			<string>ToolbarItemLabel</string>
+			<key>PaletteLabel</key>
+			<string>ToolbarItemPaletteLabel</string>
+			<key>ToolTip</key>
+			<string>ToolTip</string>
 		</dict>
 	</dict>
 </dict>
