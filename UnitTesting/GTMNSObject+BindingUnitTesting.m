@@ -429,7 +429,7 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
   SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
-  if (major <= 10 && minor <= 5 && bugFix <= 7) {
+  if (major <= 10 && minor <= 5 && bugFix <= 8) {
     // rdar://5851491 - Setting NSAlignmentBinding of search field to 
     //                  NSCenterTextAlignment broken
     // Broken on 10.5.7 and below.
