@@ -71,10 +71,16 @@
 - (id)initWithBundle:(NSBundle *)bundle;
 - (void)localizeObject:(id)object recursively:(BOOL)recursive;
 - (void)localizeWindow:(NSWindow *)window recursively:(BOOL)recursive;
-- (void)localizeToolbar:(NSToolbar *)toolbar;
 - (void)localizeView:(NSView *)view recursively:(BOOL)recursive;
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive;
 - (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive;
+
+// NOTE: NSToolbar localization support is limited to only working on the
+// default items in the toolbar. We cannot localize items that are on of the
+// customization palette but not in the default items because there is not an
+// API for NSToolbar to get all possible items. You are responsible for
+// localizing all non-default toolbar items by hand.
+- (void)localizeToolbar:(NSToolbar *)toolbar;
 
 // A method for subclasses to override in case you have a different
 // way to go about getting localized strings.

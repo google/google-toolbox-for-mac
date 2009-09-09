@@ -119,6 +119,9 @@
 }
 
 - (void)localizeToolbar:(NSToolbar *)toolbar {
+  // NOTE: Like the header says, -items only gives us what is in the toolbar
+  // which is usually the default items, if the toolbar supports customization
+  // there is no way to fetch those possible items to tweak their contents.
   NSToolbarItem *item;
   GTM_FOREACH_OBJECT(item, [toolbar items]) {
     NSString *label = [item label];
@@ -265,6 +268,16 @@
       if (localizedToolTip) {
         [matrix setToolTip:localizedToolTip forCell:cell];
       }
+    }
+  }
+
+  // Do NSTableView column headers.
+  if ([view isKindOfClass:[NSTableView class]]) {
+    NSTableView *tableView = (NSTableView *)view;
+    NSArray *columns = [tableView tableColumns];
+    NSTableColumn *column = nil;
+    GTM_FOREACH_OBJECT(column, columns) {
+      [self localizeCell:[column headerCell] recursively:recursive];
     }
   }
 }
