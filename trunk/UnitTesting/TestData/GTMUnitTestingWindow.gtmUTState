@@ -70,6 +70,14 @@
 		</dict>
 		<key>ViewSubView 1</key>
 		<dict>
+			<key>BoxBorderType</key>
+			<integer>3</integer>
+			<key>BoxTitle</key>
+			<string>Box</string>
+			<key>BoxTitlePosition</key>
+			<integer>0</integer>
+			<key>BoxType</key>
+			<integer>2</integer>
 			<key>ViewIsHidden</key>
 			<false/>
 		</dict>

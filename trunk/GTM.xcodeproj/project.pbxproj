@@ -276,6 +276,7 @@
 		F42E2D24102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F42E2D21102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-0.tiff */; };
 		F42E2D25102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-1.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F42E2D22102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-1.tiff */; };
 		F42E2D26102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-2.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F42E2D23102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-2.tiff */; };
+		F42F50F91057E99200BFC735 /* GTMUnitTestingWindow.10.5.8.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F42F50E81057E91A00BFC735 /* GTMUnitTestingWindow.10.5.8.tiff */; };
 		F431221D0DD4E3B800F45252 /* GTMStackTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = F431221A0DD4E3B800F45252 /* GTMStackTrace.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F431221F0DD4E3C900F45252 /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */; };
 		F435DE7C0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F435DE7A0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff */; };
@@ -632,6 +633,7 @@
 		F42E2D21102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest2-0.tiff"; sourceTree = "<group>"; };
 		F42E2D22102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-1.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest2-1.tiff"; sourceTree = "<group>"; };
 		F42E2D23102B24E5004DF054 /* GTMUILocalizerAndLayoutTweakerTest2-2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest2-2.tiff"; sourceTree = "<group>"; };
+		F42F50E81057E91A00BFC735 /* GTMUnitTestingWindow.10.5.8.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.10.5.8.tiff; sourceTree = "<group>"; };
 		F431221A0DD4E3B800F45252 /* GTMStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMStackTrace.h; sourceTree = "<group>"; };
 		F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTraceTest.m; sourceTree = "<group>"; };
 		F435DE7A0DC0B6580069CDE8 /* GTMNSBezierPath+CGPathTest.ppc64.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMNSBezierPath+CGPathTest.ppc64.tiff"; sourceTree = "<group>"; };
@@ -941,6 +943,7 @@
 				8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */,
 				8B2789950EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff */,
 				F48D000C0FE994BF00428D0B /* GTMUnitTestingWindow.10.5.7.tiff */,
+				F42F50E81057E91A00BFC735 /* GTMUnitTestingWindow.10.5.8.tiff */,
 				84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */,
 				8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */,
 			);
@@ -1595,6 +1598,7 @@
 				84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */,
 				8B2789960EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff in Resources */,
 				F48D000D0FE994C900428D0B /* GTMUnitTestingWindow.10.5.7.tiff in Resources */,
+				F42F50F91057E99200BFC735 /* GTMUnitTestingWindow.10.5.8.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
