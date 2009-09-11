@@ -220,6 +220,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
 }
 
 - (NSArray *)launchedApplications {
+  NSArray *localReturn = nil;
   @synchronized (self) {
     if (!launchedApps_) {
       NSWorkspace *ws = [NSWorkspace sharedWorkspace];
@@ -245,10 +246,11 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
       }
       launchedApps_ = [launchedApps retain];
     }
+    localReturn = launchedApps_;
     // We want to keep launchedApps_ in the autoreleasepool of this thread
-    [[launchedApps_ retain] autorelease];
+    [[localReturn retain] autorelease];
   }
-  return launchedApps_;
+  return localReturn;
 }
   
 @end
