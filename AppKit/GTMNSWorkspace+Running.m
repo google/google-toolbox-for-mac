@@ -219,32 +219,39 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
   }
 }
 
+- (void)updateApps {
+  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+  NSNotificationCenter *workSpaceNC = [ws notificationCenter];
+  [workSpaceNC addObserver:self
+                  selector:@selector(didLaunchOrTerminateApp:)
+                      name:NSWorkspaceDidLaunchApplicationNotification
+                    object:nil];
+  [workSpaceNC addObserver:self
+                  selector:@selector(didLaunchOrTerminateApp:)
+                      name:NSWorkspaceDidTerminateApplicationNotification
+                    object:nil];
+  NSArray *launchedApps = [ws launchedApplications];
+  NSDictionary *ourApp = [ws activeApplication];
+  NSLog(@"%@", launchedApps);
+  NSLog(@"%@", ourApp);
+  // Right now launchedApplications from NSWorkspace does not contain 
+  // UIElement apps. We may want to change our implementation. But at
+  // the very least we want to include ourselves in the list of running
+  // apps.
+  // TODO(dmaclach): revisit this and decide on something decent.
+  if (![launchedApps containsObject:ourApp]) {
+    launchedApps = [launchedApps arrayByAddingObject:ourApp];
+  }
+  launchedApps_ = [launchedApps retain];
+}
+
 - (NSArray *)launchedApplications {
   NSArray *localReturn = nil;
   @synchronized (self) {
     if (!launchedApps_) {
-      NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-      NSNotificationCenter *workSpaceNC = [ws notificationCenter];
-      [workSpaceNC addObserver:self
-                      selector:@selector(didLaunchOrTerminateApp:)
-                          name:NSWorkspaceDidLaunchApplicationNotification
-                        object:nil];
-      [workSpaceNC addObserver:self
-                      selector:@selector(didLaunchOrTerminateApp:)
-                          name:NSWorkspaceDidTerminateApplicationNotification
-                        object:nil];
-      NSDictionary *ourApp = [ws activeApplication];
-      NSArray *launchedApps = [ws launchedApplications];
-      
-      // Right now launchedApplications from NSWorkspace does not contain 
-      // UIElement apps. We may want to change our implementation. But at
-      // the very least we want to include ourselves in the list of running
-      // apps.
-      // TODO(dmaclach): revisit this and decide on something decent.
-      if (![launchedApps containsObject:ourApp]) {
-        launchedApps = [launchedApps arrayByAddingObject:ourApp];
-      }
-      launchedApps_ = [launchedApps retain];
+      [self performSelectorOnMainThread:@selector(updateApps)
+                             withObject:nil 
+                          waitUntilDone:YES];
     }
     localReturn = launchedApps_;
     // We want to keep launchedApps_ in the autoreleasepool of this thread
