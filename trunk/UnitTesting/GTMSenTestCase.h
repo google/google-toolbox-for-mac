@@ -197,7 +197,7 @@ do { \
 #define STAssertNotEquals(a1, a2, description, ...) \
 do { \
   @try { \
-    if (@encode(__typeof__(a1)) != @encode(__typeof__(a2))) { \
+    if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                   atLine:__LINE__ \
                                          withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
@@ -238,16 +238,16 @@ do { \
   @try { \
     id a1value = (a1); \
     id a2value = (a2); \
-    if ( (@encode(__typeof__(a1value)) == @encode(id)) && \
-         (@encode(__typeof__(a2value)) == @encode(id)) && \
-         ![(id)a1value isEqual:(id)a2value] ) continue; \
-         NSString *_expression = [NSString stringWithFormat:@"%s('%@') != %s('%@')", #a1, [a1 description], #a2, [a2 description]]; \
-         if (desc != nil) { \
-           _expression = [NSString stringWithFormat:@"%@: %@", _expression, STComposeString(desc, ##__VA_ARGS__)]; \
-         } \
-         [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
-                                                     atLine:__LINE__ \
-                                            withDescription:_expression]]; \
+    if ((strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
+        (strcmp(@encode(__typeof__(a2value)), @encode(id)) == 0) && \
+        ![(id)a1value isEqual:(id)a2value]) continue; \
+    NSString *_expression = [NSString stringWithFormat:@"%s('%@') != %s('%@')", #a1, [a1 description], #a2, [a2 description]]; \
+    if (desc != nil) { \
+      _expression = [NSString stringWithFormat:@"%@: %@", _expression, STComposeString(desc, ##__VA_ARGS__)]; \
+    } \
+    [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
+                                                atLine:__LINE__ \
+                                       withDescription:_expression]]; \
   } \
   @catch (id anException) { \
     [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) != (%s)", #a1, #a2] \
@@ -269,7 +269,7 @@ do { \
 #define STAssertOperation(a1, a2, op, description, ...) \
 do { \
   @try { \
-    if (@encode(__typeof__(a1)) != @encode(__typeof__(a2))) { \
+    if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                   atLine:__LINE__ \
                                          withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
@@ -486,9 +486,9 @@ do { \
     id a1value = (a1); \
     id a2value = (a2); \
     if (a1value == a2value) continue; \
-    if ( (@encode(__typeof__(a1value)) == @encode(id)) && \
-         (@encode(__typeof__(a2value)) == @encode(id)) && \
-         [(id)a1value isEqual: (id)a2value] ) continue; \
+    if ((strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
+        (strcmp(@encode(__typeof__(a2value)),@encode(id) == 0) && \
+        [(id)a1value isEqual: (id)a2value]) continue; \
     [self failWithException:[NSException failureInEqualityBetweenObject: a1value \
                                                               andObject: a2value \
                                                                  inFile: [NSString stringWithUTF8String:__FILE__] \
@@ -516,7 +516,7 @@ do { \
 #define STAssertEquals(a1, a2, description, ...) \
 do { \
   @try { \
-    if (@encode(__typeof__(a1)) != @encode(__typeof__(a2))) { \
+    if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
                                                                         withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
@@ -562,7 +562,7 @@ do { \
 #define STAssertEqualsWithAccuracy(a1, a2, accuracy, description, ...) \
 do { \
   @try { \
-    if (@encode(__typeof__(a1)) != @encode(__typeof__(a2))) { \
+    if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
                                                                         withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
