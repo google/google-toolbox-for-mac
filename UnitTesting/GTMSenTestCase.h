@@ -487,7 +487,7 @@ do { \
     id a2value = (a2); \
     if (a1value == a2value) continue; \
     if ((strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
-        (strcmp(@encode(__typeof__(a2value)),@encode(id) == 0) && \
+        (strcmp(@encode(__typeof__(a2value)), @encode(id)) == 0) && \
         [(id)a1value isEqual: (id)a2value]) continue; \
     [self failWithException:[NSException failureInEqualityBetweenObject: a1value \
                                                               andObject: a2value \
