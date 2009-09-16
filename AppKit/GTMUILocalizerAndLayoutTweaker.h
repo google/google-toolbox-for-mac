@@ -52,6 +52,14 @@
 // Returns the amount the field changed height.
 + (CGFloat)sizeToFitFixedWidthTextField:(NSTextField *)textField;
 
+// Resizes |window| by |delta| without letting the subviews of |window| get
+// resized.  Useful when you've done manual tweaking by things like
+// +sizeToFitFixedWidthTextField.  The window's origin is not adjusted.  Passes
+// |NO| to for -setFrame:display:'s |displayViews| flag on the assumptions
+// the caller is doing all the invals/updates needed.
++ (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window
+                                          delta:(NSSize)delta;
+
 @end
 
 // This is a Tweaker that will call sizeToFit on everything within it (that
