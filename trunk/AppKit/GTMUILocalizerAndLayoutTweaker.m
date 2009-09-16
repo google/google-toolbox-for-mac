@@ -104,6 +104,30 @@ static BOOL IsRightAnchored(NSView *view);
   return newSize.height - NSHeight(initialFrame);
 }
 
++ (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window
+                                          delta:(NSSize)delta {
+  NSView *contentView = [window contentView];
+
+  // Clear autosizesSubviews (saving the state).
+  BOOL autoresizesSubviews = [contentView autoresizesSubviews];
+  if (autoresizesSubviews) {
+    [contentView setAutoresizesSubviews:NO];
+  }
+
+  NSRect rect = [window frame];
+  rect.size.width += delta.width;
+  rect.size.height += delta.height;
+  [window setFrame:rect display:NO];
+  // For some reason the content view is resizing, but some times not adjusting
+  // its origin, so correct it manually.
+  [contentView setFrameOrigin:NSMakePoint(0, 0)];
+
+  // Restore autosizesSubviews.
+  if (autoresizesSubviews) {
+    [contentView setAutoresizesSubviews:YES];
+  }
+}
+
 @end
 
 @implementation GTMWidthBasedTweaker
