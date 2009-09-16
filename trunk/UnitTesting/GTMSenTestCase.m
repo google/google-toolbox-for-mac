@@ -18,6 +18,7 @@
 
 #import "GTMSenTestCase.h"
 #import <unistd.h>
+#import "GTMObjC2Runtime.h"
 
 #if !GTM_IPHONE_SDK
 #import "GTMGarbageCollection.h"
@@ -305,6 +306,36 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
     [devLogClass performSelector:@selector(disableTracking)];
   }
 }
+
++ (BOOL)isAbstractTestCase {
+  int numClasses = objc_getClassList(NULL, 0);
+  BOOL isAbstract = NO;
+  if (numClasses > 0) {
+    Class *classes = malloc(sizeof(Class) * numClasses);
+    numClasses = objc_getClassList(classes, numClasses);
+    for (int i = 0; i < numClasses && !isAbstract; ++i) {
+      Class cls = classes[i];
+      if (class_respondsToSelector(cls, @selector(superclass))) {
+        Class superClass = [cls superclass];
+        if ([self isEqualTo:superClass]) {
+          isAbstract = YES;
+        }
+      }
+    }
+    free(classes);
+  }
+  return isAbstract;
+}
+
+
++ (NSArray *)testInvocations {
+  NSArray *invocations = nil;
+  if (![self isAbstractTestCase]) {
+    invocations = [super testInvocations];
+  }
+  return invocations;
+}
+
 @end
 
 // Leak detection

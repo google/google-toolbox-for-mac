@@ -58,6 +58,10 @@ Class class_getSuperclass(Class cls) {
   return cls->super_class;
 }
 
+BOOL class_respondsToSelector(Class cls, SEL sel) {
+  return class_getInstanceMethod(cls, sel) != nil;
+}
+
 Method *class_copyMethodList(Class cls, unsigned int *outCount) {
   if (!cls) return NULL;
 

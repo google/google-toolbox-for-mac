@@ -1008,4 +1008,27 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 // to set up our logging system correctly to verify logging calls.
 // See GTMUnitTestDevLog.h for details
 @interface GTMTestCase : SenTestCase
+
+// Returns YES if this is an abstract testCase class as opposed to a concrete
+// testCase class that you want tests run against. SenTestCase is not designed
+// out of the box to handle an abstract class hierarchy descending from it with
+// some concrete subclasses.  In some cases we want all the "concrete"
+// subclasses of an abstract subclass of SenTestCase to run a test, but we don't
+// want that test to be run against an instance of an abstract subclass itself.
+// By returning "YES" here, the tests defined by this class won't be run against
+// an instance of this class. As an example class hierarchy:
+//
+//                                    FooExtensionTestCase
+// GTMTestCase <- ExtensionTestCase <
+//                                    BarExtensionTestCase
+// 
+// So FooExtensionTestCase and BarExtensionTestCase inherit from
+// ExtensionTestCase (and probably FooExtension and BarExtension inherit from a
+// class named Extension). We want the tests in ExtensionTestCase to be run as
+// part of FooExtensionTestCase and BarExtensionTestCase, but we don't want them
+// run against ExtensionTestCase. The default implementation of
+// isAbstractTestCase returns NO if self (being a class) has no subclasses and
+// YES otherwise.
++ (BOOL)isAbstractTestCase;
+
 @end
