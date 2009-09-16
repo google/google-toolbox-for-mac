@@ -55,6 +55,7 @@
 OBJC_EXPORT Class object_getClass(id obj);
 OBJC_EXPORT const char *class_getName(Class cls);
 OBJC_EXPORT BOOL class_conformsToProtocol(Class cls, Protocol *protocol);
+OBJC_EXPORT BOOL class_respondsToSelector(Class cls, SEL sel);
 OBJC_EXPORT Class class_getSuperclass(Class cls);
 OBJC_EXPORT Method *class_copyMethodList(Class cls, unsigned int *outCount);
 OBJC_EXPORT SEL method_getName(Method m);

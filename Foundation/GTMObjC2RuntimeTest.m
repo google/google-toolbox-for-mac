@@ -160,6 +160,15 @@ AT_REQUIRED
                nil);
 }
 
+- (void)test_class_respondsToSelector {
+  // Nil Checks
+  STAssertFalse(class_respondsToSelector(cls_, @selector(setUp)), nil);
+  STAssertFalse(class_respondsToSelector(cls_, nil), nil);
+  
+  // Standard use check
+  STAssertTrue(class_respondsToSelector(cls_, @selector(kwyjibo)), nil); 
+}
+
 - (void)test_class_getSuperclass {
   // Nil Checks
   STAssertNil(class_getSuperclass(nil), nil);
