@@ -232,8 +232,6 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
                     object:nil];
   NSArray *launchedApps = [ws launchedApplications];
   NSDictionary *ourApp = [ws activeApplication];
-  NSLog(@"%@", launchedApps);
-  NSLog(@"%@", ourApp);
   // Right now launchedApplications from NSWorkspace does not contain 
   // UIElement apps. We may want to change our implementation. But at
   // the very least we want to include ourselves in the list of running
