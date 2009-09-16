@@ -449,11 +449,14 @@ willPositionSheet:(NSWindow*)sheet
   static const size_t kGTMWSCSystemSheetInfoDataSize =
       sizeof(kGTMWSCSystemSheetInfoData)/sizeof(kGTMWSCSystemSheetInfoData[0]);
 
-  NSString* className = NSStringFromClass([systemSheet class]);
-  for (size_t i = 0; i < kGTMWSCSystemSheetInfoDataSize; ++i)
-    if ([kGTMWSCSystemSheetInfoData[i].className_ isEqualToString:className])
+  for (size_t i = 0; i < kGTMWSCSystemSheetInfoDataSize; ++i) {
+    Class testClass =
+      NSClassFromString(kGTMWSCSystemSheetInfoData[i].className_);
+    if (testClass && [systemSheet isKindOfClass:testClass]) {
       return &kGTMWSCSystemSheetInfoData[i];
-
+    }
+  }
+  
   _GTMDevLog(@"Failed to find info for sheet of type %@", [systemSheet class]);
   return nil;
 }
