@@ -986,15 +986,23 @@ do { \
 
 // SENTE_END
 
-@interface SenTestCase : NSObject {
-  SEL currentSelector_;
-}
-
+@protocol SenTestCase
++ (id)testCaseWithInvocation:(NSInvocation *)anInvocation;
+- (id)initWithInvocation:(NSInvocation *)anInvocation;
 - (void)setUp;
 - (void)invokeTest;
 - (void)tearDown;
-- (void)performTest:(SEL)sel;
+- (void)performTest;
 - (void)failWithException:(NSException*)exception;
+- (NSInvocation *)invocation;
+- (SEL)selector;
++ (NSArray *)testInvocations;
+@end
+
+@interface SenTestCase : NSObject<SenTestCase> {
+ @private
+  NSInvocation *invocation_;
+}
 @end
 
 GTM_EXTERN NSString *const SenTestFailureException;

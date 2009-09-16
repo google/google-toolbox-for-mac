@@ -27,26 +27,6 @@
 #import <UIKit/UIKit.h>
 #import "GTMSenTestCase.h"
 
-// Used for sorting methods below
-static int MethodSort(const void *a, const void *b) {
-  const char *nameA = sel_getName(method_getName(*(Method*)a));
-  const char *nameB = sel_getName(method_getName(*(Method*)b));
-  return strcmp(nameA, nameB);
-}
-
-// Return YES if class is subclass (1 or more generations) of SenTestCase
-static BOOL IsTestFixture(Class aClass) {
-  BOOL iscase = NO;
-  Class testCaseClass = [SenTestCase class];
-  Class superclass;
-  for (superclass = aClass; 
-       !iscase && superclass; 
-       superclass = class_getSuperclass(superclass)) {
-    iscase = superclass == testCaseClass ? YES : NO;
-  }
-  return iscase;
-}
-
 @implementation GTMIPhoneUnitTestDelegate
 
 // Run through all the registered classes and run test methods on any
@@ -83,8 +63,10 @@ static BOOL IsTestFixture(Class aClass) {
   fputs([suiteStartString UTF8String], stderr);
   fflush(stderr);
   for (int i = 0; i < count; ++i) {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     Class currClass = classes[i];
-    if (IsTestFixture(currClass)) {
+    if (class_respondsToSelector(currClass, @selector(conformsToProtocol:)) &&
+        [currClass conformsToProtocol:@protocol(SenTestCase)]) {
       NSDate *fixtureStartDate = [NSDate date];
       NSString *fixtureName = NSStringFromClass(currClass);
       NSString *fixtureStartString
@@ -94,53 +76,16 @@ static BOOL IsTestFixture(Class aClass) {
       int fixtureFailures = 0;
       fputs([fixtureStartString UTF8String], stderr);
       fflush(stderr);
-      id testcase = [[currClass alloc] init];
-      _GTMDevAssert(testcase, @"Unable to instantiate Test Suite: '%@'\n",
-                    fixtureName);
-      unsigned int methodCount;
-      Method *methods = class_copyMethodList(currClass, &methodCount);
-      if (!methods) {
-        // If the class contains no methods, head on to the next class
-        NSString *output = [NSString stringWithFormat:@"Test Suite '%@' "
-                            @"finished at %@.\nExecuted 0 tests, with 0 "
-                            @"failures (0 unexpected) in 0 (0) seconds\n",
-                            fixtureName, fixtureStartDate];
-        
-        fputs([output UTF8String], stderr);
-        continue;
-      }
-      // This handles disposing of methods for us even if an
-      // exception should fly. 
-      [NSData dataWithBytesNoCopy:methods
-                           length:sizeof(Method) * methodCount];
-      // Sort our methods so they are called in Alphabetical order just
-      // because we can.
-      qsort(methods, methodCount, sizeof(Method), MethodSort);
-      for (size_t j = 0; j < methodCount; ++j) {
-        Method currMethod = methods[j];
-        SEL sel = method_getName(currMethod);
-        char *returnType = NULL;
-        const char *name = sel_getName(sel);
-        // If it starts with test, takes 2 args (target and sel) and returns
-        // void run it.
-        if (strstr(name, "test") == name) {
-          returnType = method_copyReturnType(currMethod);
-          if (returnType) {
-            // This handles disposing of returnType for us even if an
-            // exception should fly. Length +1 for the terminator, not that
-            // the length really matters here, as we never reference inside
-            // the data block.
-            [NSData dataWithBytesNoCopy:returnType
-                                 length:strlen(returnType) + 1];
-          }
-        }
-        if (returnType  // True if name starts with "test"
-            && strcmp(returnType, @encode(void)) == 0
-            && method_getNumberOfArguments(currMethod) == 2) {
+      NSArray *invocations = [currClass testInvocations];
+      if ([invocations count]) {
+        NSInvocation *invocation;
+        GTM_FOREACH_OBJECT(invocation, invocations) {
+          GTMTestCase *testCase 
+            = [[currClass alloc] initWithInvocation:invocation];
           BOOL failed = NO;
           NSDate *caseStartDate = [NSDate date];
           @try {
-            [testcase performTest:sel];
+            [testCase performTest];
           } @catch (NSException *exception) {
             failed = YES;
           }
@@ -151,17 +96,18 @@ static BOOL IsTestFixture(Class aClass) {
           }
           NSTimeInterval caseEndTime
             = [[NSDate date] timeIntervalSinceDate:caseStartDate];
+          NSString *selectorName = NSStringFromSelector([invocation selector]);
           NSString *caseEndString
-            = [NSString stringWithFormat:@"Test Case '-[%@ %s]' %@ (%0.3f "
-                                         @"seconds).\n",
-                                         fixtureName, name,
-                                         failed ? @"failed" : @"passed",
-                                         caseEndTime];
+            = [NSString stringWithFormat:@"Test Case '-[%@ %@]' %@ (%0.3f "
+               @"seconds).\n",
+               fixtureName, selectorName,
+               failed ? @"failed" : @"passed",
+               caseEndTime];
           fputs([caseEndString UTF8String], stderr);
           fflush(stderr);
+          [testCase release];
         }
       }
-      [testcase release];
       NSDate *fixtureEndDate = [NSDate date];
       NSTimeInterval fixtureEndTime
         = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
@@ -179,6 +125,7 @@ static BOOL IsTestFixture(Class aClass) {
       totalSuccesses_ += fixtureSuccesses;
       totalFailures_ += fixtureFailures;      
     }
+    [pool release];
   }
   NSDate *suiteEndDate = [NSDate date];
   NSTimeInterval suiteEndTime

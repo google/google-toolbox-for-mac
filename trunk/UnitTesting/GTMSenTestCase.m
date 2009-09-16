@@ -214,6 +214,22 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 @end
 
 @implementation SenTestCase
++ (id)testCaseWithInvocation:(NSInvocation *)anInvocation {
+  return [[[[self class] alloc] initWithInvocation:anInvocation] autorelease];
+}
+
+- (id)initWithInvocation:(NSInvocation *)anInvocation {
+  if ((self = [super init])) {
+    invocation_ = [anInvocation retain];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [invocation_ release];
+  [super dealloc];
+}
+
 - (void)failWithException:(NSException*)exception {
   [exception raise];
 }
@@ -221,15 +237,22 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 - (void)setUp {
 }
 
-- (void)performTest:(SEL)sel {
-  currentSelector_ = sel;
+- (void)performTest {
   @try {
     [self invokeTest];
   } @catch (NSException *exception) {
     [[self class] printException:exception
-                    fromTestName:NSStringFromSelector(sel)];
+                    fromTestName:NSStringFromSelector([self selector])];
     [exception raise];
   }
+}
+
+- (NSInvocation *)invocation {
+  return invocation_;
+}
+
+- (SEL)selector {
+  return [invocation_ selector];
 }
 
 + (void)printException:(NSException *)exception fromTestName:(NSString *)name {
@@ -262,7 +285,9 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
     @try {
       [self setUp];
       @try {
-        [self performSelector:currentSelector_];
+        NSInvocation *invocation = [self invocation];
+        [invocation setTarget:self];
+        [invocation invoke];
       } @catch (NSException *exception) {
         e = [exception retain];
       }
@@ -286,8 +311,60 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 - (NSString *)description {
   // This matches the description OCUnit would return to you
   return [NSString stringWithFormat:@"-[%@ %@]", [self class], 
-          NSStringFromSelector(currentSelector_)];
+          NSStringFromSelector([self selector])];
 }
+
+// Used for sorting methods below
+static int MethodSort(const void *a, const void *b) {
+  const char *nameA = sel_getName(method_getName(*(Method*)a));
+  const char *nameB = sel_getName(method_getName(*(Method*)b));
+  return strcmp(nameA, nameB);
+}
+
++ (NSArray *)testInvocations {
+  NSMutableArray *invocations = nil;
+  unsigned int methodCount;
+  Method *methods = class_copyMethodList(self, &methodCount);
+  if (methods) {
+    // This handles disposing of methods for us even if an exception should fly.
+    [NSData dataWithBytesNoCopy:methods
+                         length:sizeof(Method) * methodCount];
+    // Sort our methods so they are called in Alphabetical order just
+    // because we can.
+    qsort(methods, methodCount, sizeof(Method), MethodSort);
+    invocations = [NSMutableArray arrayWithCapacity:methodCount];
+    for (size_t i = 0; i < methodCount; ++i) {
+      Method currMethod = methods[i];
+      SEL sel = method_getName(currMethod);
+      char *returnType = NULL;
+      const char *name = sel_getName(sel);
+      // If it starts with test, takes 2 args (target and sel) and returns
+      // void run it.
+      if (strstr(name, "test") == name) {
+        returnType = method_copyReturnType(currMethod);
+        if (returnType) {
+          // This handles disposing of returnType for us even if an
+          // exception should fly. Length +1 for the terminator, not that
+          // the length really matters here, as we never reference inside
+          // the data block.
+          [NSData dataWithBytesNoCopy:returnType
+                               length:strlen(returnType) + 1];
+        }
+      }
+      if (returnType  // True if name starts with "test"
+          && strcmp(returnType, @encode(void)) == 0
+          && method_getNumberOfArguments(currMethod) == 2) {
+        NSMethodSignature *sig = [self instanceMethodSignatureForSelector:sel];
+        NSInvocation *invocation 
+          = [NSInvocation invocationWithMethodSignature:sig];
+        [invocation setSelector:sel];
+        [invocations addObject:invocation];
+      }
+    }
+  }
+  return invocations;
+}
+
 @end
 
 #endif  // GTM_IPHONE_SDK
@@ -311,7 +388,11 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
   int numClasses = objc_getClassList(NULL, 0);
   BOOL isAbstract = NO;
   if (numClasses > 0) {
-    Class *classes = malloc(sizeof(Class) * numClasses);
+    size_t size = sizeof(Class) * numClasses;
+    Class *classes = malloc(size);
+    // This handles disposing of classes for us even if an exception should fly.
+    [NSData dataWithBytesNoCopy:classes
+                         length:size];
     numClasses = objc_getClassList(classes, numClasses);
     for (int i = 0; i < numClasses && !isAbstract; ++i) {
       Class cls = classes[i];
@@ -322,7 +403,6 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
         }
       }
     }
-    free(classes);
   }
   return isAbstract;
 }
