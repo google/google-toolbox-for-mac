@@ -398,7 +398,7 @@ static int MethodSort(const void *a, const void *b) {
       Class cls = classes[i];
       if (class_respondsToSelector(cls, @selector(superclass))) {
         Class superClass = [cls superclass];
-        if ([self isEqualTo:superClass]) {
+        if ([self isEqual:superClass]) {
           isAbstract = YES;
         }
       }
