@@ -23,10 +23,10 @@
 NSString *const kGTMWindowNibName = @"GTMUnitTestingTest";
 NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
 
-@interface GTMAbstractUnitTestingTest : GTMTestCase
+@interface GTMUnitTestingAbstractTest : GTMTestCase
 @end
 
-@interface GTMUnitTestingTest : GTMAbstractUnitTestingTest {
+@interface GTMUnitTestingTest : GTMUnitTestingAbstractTest {
   int expectedFailureCount_;
 }
 @end
@@ -47,7 +47,7 @@ NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
 @interface GTMUnitTestingProxyTest : NSProxy
 @end
 
-@implementation GTMAbstractUnitTestingTest
+@implementation GTMUnitTestingAbstractTest
 - (void)testAbstractUnitTest {
   static int testCount = 0;
   testCount += 1;

@@ -1026,17 +1026,17 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 // By returning "YES" here, the tests defined by this class won't be run against
 // an instance of this class. As an example class hierarchy:
 //
-//                                    FooExtensionTestCase
-// GTMTestCase <- ExtensionTestCase <
-//                                    BarExtensionTestCase
+//                                            FooExtensionTestCase
+// GTMTestCase <- ExtensionAbstractTestCase <
+//                                            BarExtensionTestCase
 // 
 // So FooExtensionTestCase and BarExtensionTestCase inherit from
-// ExtensionTestCase (and probably FooExtension and BarExtension inherit from a
-// class named Extension). We want the tests in ExtensionTestCase to be run as
-// part of FooExtensionTestCase and BarExtensionTestCase, but we don't want them
-// run against ExtensionTestCase. The default implementation of
-// isAbstractTestCase returns NO if self (being a class) has no subclasses and
-// YES otherwise.
+// ExtensionAbstractTestCase (and probably FooExtension and BarExtension inherit
+// from a class named Extension). We want the tests in ExtensionAbstractTestCase
+// to be run as part of FooExtensionTestCase and BarExtensionTestCase, but we
+// don't want them run against ExtensionAbstractTestCase. The default
+// implementation checks to see if the name of the class contains the word
+// "AbstractTest" (case sensitive).
 + (BOOL)isAbstractTestCase;
 
 @end
