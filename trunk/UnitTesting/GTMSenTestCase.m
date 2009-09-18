@@ -385,28 +385,9 @@ static int MethodSort(const void *a, const void *b) {
 }
 
 + (BOOL)isAbstractTestCase {
-  int numClasses = objc_getClassList(NULL, 0);
-  BOOL isAbstract = NO;
-  if (numClasses > 0) {
-    size_t size = sizeof(Class) * numClasses;
-    Class *classes = malloc(size);
-    // This handles disposing of classes for us even if an exception should fly.
-    [NSData dataWithBytesNoCopy:classes
-                         length:size];
-    numClasses = objc_getClassList(classes, numClasses);
-    for (int i = 0; i < numClasses && !isAbstract; ++i) {
-      Class cls = classes[i];
-      if (class_respondsToSelector(cls, @selector(superclass))) {
-        Class superClass = [cls superclass];
-        if ([self isEqual:superClass]) {
-          isAbstract = YES;
-        }
-      }
-    }
-  }
-  return isAbstract;
+  NSString *name = NSStringFromClass(self);
+  return [name rangeOfString:@"AbstractTest"].location != NSNotFound;
 }
-
 
 + (NSArray *)testInvocations {
   NSArray *invocations = nil;
