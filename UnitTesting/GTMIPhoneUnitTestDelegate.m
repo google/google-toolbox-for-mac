@@ -39,7 +39,14 @@
     // To help using xcodebuild, make the exit status 0/1 to signal the tests
     // success/failure.
     int exitStatus = (([self totalFailures] == 0U) ? 0 : 1);
-    exit(exitStatus);
+    // Alternative to exit(status); so it cleanly terminates the UIApplication
+    // and classes that depend on this signal to exit cleanly.
+    if ([application respondsToSelector:@selector(_terminateWithStatus:)]) {
+      [application performSelector:@selector(_terminateWithStatus:)
+                        withObject:(id)exitStatus];
+    } else {
+      exit(exitStatus);
+    }
   }
 }
 
