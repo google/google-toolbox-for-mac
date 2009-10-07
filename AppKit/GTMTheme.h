@@ -39,6 +39,7 @@ enum {
 typedef NSUInteger GTMThemeStyle;
 
 enum {
+  GTMThemeStateInactiveWindow = 0,
   GTMThemeStateActiveWindow = 1 << 0
 };
 typedef NSUInteger GTMThemeState;
@@ -49,7 +50,8 @@ typedef NSUInteger GTMThemeState;
 @interface GTMTheme : NSObject {
  @private
   NSColor *backgroundColor_;  // bound to user defaults 
-  NSImage *backgroundImage_;  // bound to user defaults 
+  NSImage *backgroundImage_;  // bound to user defaults
+  NSPoint backgroundImagePhase_;  // bound to user defaults
   NSMutableDictionary *values_; // cached values
 }
 
@@ -66,8 +68,17 @@ typedef NSUInteger GTMThemeState;
 // sets the base theme color
 - (void)setBackgroundColor:(NSColor *)value;
 
-// base background color
+// base background image
 - (NSImage *)backgroundImage;
+
+// set base background image
+- (void)setBackgroundImage:(NSImage *)value;
+
+// the phase of the background image
+- (NSPoint)backgroundImagePhase;
+
+// set the phase of the background image
+- (void)setBackgroundImagePhase:(NSPoint)phase;
 
 // NSImage pattern background
 - (NSImage *)backgroundImageForStyle:(GTMThemeStyle)style
