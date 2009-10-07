@@ -88,6 +88,11 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
               NSUnarchiveFromDataTransformerName,
               NSValueTransformerNameBindingOption,
               nil]];
+
+  [self bind:@"backgroundImagePhase"
+    toObject:controller
+ withKeyPath:@"values.GTMThemeBackgroundImagePhase"
+     options:nil];
 }
 
 - (id)init {
@@ -101,12 +106,14 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 - (void)finalize {
   [self unbind:@"backgroundColor"];
   [self unbind:@"backgroundImage"];
+  [self unbind:@"backgroundImagePhase"];
   [super finalize];
 }
 
 - (void)dealloc {
   [self unbind:@"backgroundColor"];
   [self unbind:@"backgroundImage"];
+  [self unbind:@"backgroundImagePhase"];
   [values_ release];
   [super dealloc];
 }
@@ -176,6 +183,15 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 
 - (NSImage *)backgroundImage {
   return backgroundImage_;
+}
+
+- (NSPoint)backgroundImagePhase {
+  return backgroundImagePhase_;
+}
+
+- (void)setBackgroundImagePhase:(NSPoint)phase {
+  backgroundImagePhase_ = phase;
+  [self sendChangeNotification];
 }
 
 - (NSImage *)backgroundImageForStyle:(GTMThemeStyle)style

@@ -23,7 +23,9 @@
 #import "GTMSenTestCase.h"
 #import "GTMTheme.h"
 
-@interface GTMThemeTest : GTMTestCase
+@interface GTMThemeTest : GTMTestCase {
+ @private
+  BOOL themeNotificationCalled_;
 @end
   
 @implementation GTMThemeTest
@@ -65,6 +67,24 @@
   
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:
     @"GTMThemeBackgroundColor"];
+}
+
+- (void)testPhase {
+  GTMTheme *theme = [GTMTheme defaultTheme];
+  STAssertEquals([theme backgroundImagePhase], NSZeroPoint, nil);
+  
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc addObserver:self 
+         selector:@selector(themeDidChangeNotification:) 
+             name:kGTMThemeDidChangeNotification 
+           object:theme];
+  themeNotificationCalled_ = NO;
+  NSPoint newPhase = NSMakePoint(20, 30);
+  [theme setBackgroundImagePhase:newPhase];
+  STAssertTrue(themeNotificationCalled_, nil);
+  themeNotificationCalled_ = NO;
+  STAssertEquals([theme backgroundImagePhase], newPhase, nil);
+  [nc removeObserver:self name:kGTMThemeDidChangeNotification object:theme];
 }
 
 @end
