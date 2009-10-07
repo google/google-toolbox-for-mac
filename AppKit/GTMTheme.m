@@ -89,9 +89,9 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
               NSValueTransformerNameBindingOption,
               nil]];
 
-  [self bind:@"backgroundImagePhase"
+  [self bind:@"backgroundPatternPhase"
     toObject:controller
- withKeyPath:@"values.GTMThemeBackgroundImagePhase"
+ withKeyPath:@"values.GTMThemeBackgroundPatternPhase"
      options:nil];
 }
 
@@ -106,14 +106,14 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 - (void)finalize {
   [self unbind:@"backgroundColor"];
   [self unbind:@"backgroundImage"];
-  [self unbind:@"backgroundImagePhase"];
+  [self unbind:@"backgroundPatternPhase"];
   [super finalize];
 }
 
 - (void)dealloc {
   [self unbind:@"backgroundColor"];
   [self unbind:@"backgroundImage"];
-  [self unbind:@"backgroundImagePhase"];
+  [self unbind:@"backgroundPatternPhase"];
   [values_ release];
   [super dealloc];
 }
@@ -150,12 +150,23 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
     forAttribute:(NSString *)attribute
            style:(GTMThemeStyle)style
           state:(GTMThemeState)state {
-  NSString *selector = [NSString stringWithFormat:@"%@ForStyle:state:",
-                        attribute];
+  NSString *selectorString = [NSString stringWithFormat:@"%@ForStyle:state:",
+                              attribute];
   [self cacheValue:value
-       forSelector:NSSelectorFromString(selector)
+       forSelector:NSSelectorFromString(selectorString)
              style:style
             state:state];
+}
+
+- (id)valueForAttribute:(NSString *)attribute 
+                  style:(GTMThemeStyle)style
+                  state:(GTMThemeState)state {
+  NSString *selectorString = [NSString stringWithFormat:@"%@ForStyle:state:",
+                              attribute];
+  id key = [self keyForSelector:NSSelectorFromString(selectorString)
+                          style:style 
+                          state:state];
+  return [values_ objectForKey:key];
 }
 
 - (void)setBackgroundColor:(NSColor *)value {
@@ -185,12 +196,12 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   return backgroundImage_;
 }
 
-- (NSPoint)backgroundImagePhase {
-  return backgroundImagePhase_;
+- (NSPoint)backgroundPatternPhase {
+  return backgroundPatternPhase_;
 }
 
-- (void)setBackgroundImagePhase:(NSPoint)phase {
-  backgroundImagePhase_ = phase;
+- (void)setBackgroundPatternPhase:(NSPoint)phase {
+  backgroundPatternPhase_ = phase;
   [self sendChangeNotification];
 }
 

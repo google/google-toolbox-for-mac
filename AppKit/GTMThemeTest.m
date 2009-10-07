@@ -26,6 +26,7 @@
 @interface GTMThemeTest : GTMTestCase {
  @private
   BOOL themeNotificationCalled_;
+}
 @end
   
 @implementation GTMThemeTest
@@ -69,9 +70,14 @@
     @"GTMThemeBackgroundColor"];
 }
 
+- (void)themeDidChangeNotification:(NSNotification *)notification {
+  STAssertEquals(themeNotificationCalled_, NO, nil);
+  themeNotificationCalled_ = YES;
+}
+
 - (void)testPhase {
   GTMTheme *theme = [GTMTheme defaultTheme];
-  STAssertEquals([theme backgroundImagePhase], NSZeroPoint, nil);
+  STAssertEquals([theme backgroundPatternPhase], NSZeroPoint, nil);
   
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self 
@@ -80,10 +86,10 @@
            object:theme];
   themeNotificationCalled_ = NO;
   NSPoint newPhase = NSMakePoint(20, 30);
-  [theme setBackgroundImagePhase:newPhase];
+  [theme setBackgroundPatternPhase:newPhase];
   STAssertTrue(themeNotificationCalled_, nil);
   themeNotificationCalled_ = NO;
-  STAssertEquals([theme backgroundImagePhase], newPhase, nil);
+  STAssertEquals([theme backgroundPatternPhase], newPhase, nil);
   [nc removeObserver:self name:kGTMThemeDidChangeNotification object:theme];
 }
 

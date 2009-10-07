@@ -51,7 +51,7 @@ typedef NSUInteger GTMThemeState;
  @private
   NSColor *backgroundColor_;  // bound to user defaults 
   NSImage *backgroundImage_;  // bound to user defaults
-  NSPoint backgroundImagePhase_;  // bound to user defaults
+  NSPoint backgroundPatternPhase_;  // bound to user defaults
   NSMutableDictionary *values_; // cached values
 }
 
@@ -74,11 +74,11 @@ typedef NSUInteger GTMThemeState;
 // set base background image
 - (void)setBackgroundImage:(NSImage *)value;
 
-// the phase of the background image
-- (NSPoint)backgroundImagePhase;
+// the phase of the background pattern
+- (NSPoint)backgroundPatternPhase;
 
-// set the phase of the background image
-- (void)setBackgroundImagePhase:(NSPoint)phase;
+// set the phase of the background pattern
+- (void)setBackgroundPatternPhase:(NSPoint)phase;
 
 // NSImage pattern background
 - (NSImage *)backgroundImageForStyle:(GTMThemeStyle)style
@@ -119,6 +119,11 @@ typedef NSUInteger GTMThemeState;
     forAttribute:(NSString *)attribute 
            style:(GTMThemeStyle)style
            state:(GTMThemeState)state;
+
+// Manually extract a theme value
+- (id)valueForAttribute:(NSString *)attribute 
+                  style:(GTMThemeStyle)style
+                  state:(GTMThemeState)state;
 @end
 
 // Convenience categories for NSWindow and NSView to access the current theme
