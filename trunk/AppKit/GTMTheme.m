@@ -26,17 +26,42 @@ static GTMTheme *gGTMDefaultTheme = nil;
 NSString *const kGTMThemeDidChangeNotification = @"GTMThemeDidChangeNotification";
 NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 
+@interface GTMTheme ()
+- (void)sendChangeNotification;
+@end
+
 @implementation NSWindow (GTMTheme)
+- (id<GTMThemeDelegate>)gtm_themeDelegate {
+  id delegate = nil;
+  id tempDelegate = [self delegate];
+  if ([tempDelegate conformsToProtocol:@protocol(GTMThemeDelegate)]) {
+    delegate = tempDelegate;
+  }
+  if (!delegate) {
+    tempDelegate = [self windowController];
+    if ([tempDelegate conformsToProtocol:@protocol(GTMThemeDelegate)]) {
+      delegate = tempDelegate;
+    }
+  }
+  return delegate;
+}
+
 - (GTMTheme *)gtm_theme {
   GTMTheme *theme = nil;
-  if ([[self delegate] conformsToProtocol:
-       @protocol(GTMThemeDelegate)]) {
-    theme = [(id <GTMThemeDelegate>)[self delegate] gtm_themeForWindow:self];
-  } else if ([[self windowController] conformsToProtocol:
-       @protocol(GTMThemeDelegate)]) {
-    theme = [[self windowController] gtm_themeForWindow:self];
+  id<GTMThemeDelegate>delegate = [self gtm_themeDelegate];
+  if (delegate) {
+    theme = [delegate gtm_themeForWindow:self];
   }
   return theme;
+}
+
+- (NSPoint)gtm_themePatternPhase {
+  NSPoint phase = NSZeroPoint;
+  id<GTMThemeDelegate>delegate = [self gtm_themeDelegate];
+  if (delegate) {
+    phase = [delegate gtm_themePatternPhaseForWindow:self];
+  }
+  return phase;
 }
 @end
 
@@ -44,10 +69,10 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 - (GTMTheme *)gtm_theme {
   return [[self window] gtm_theme];
 }
-@end
 
-@interface GTMTheme ()
-- (void)sendChangeNotification;
+- (NSPoint)gtm_themePatternPhase {
+  return [[self window] gtm_themePatternPhase];
+}
 @end
 
 @implementation GTMTheme
@@ -88,11 +113,6 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
               NSUnarchiveFromDataTransformerName,
               NSValueTransformerNameBindingOption,
               nil]];
-
-  [self bind:@"backgroundPatternPhase"
-    toObject:controller
- withKeyPath:@"values.GTMThemeBackgroundPatternPhase"
-     options:nil];
 }
 
 - (id)init {
@@ -106,14 +126,12 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 - (void)finalize {
   [self unbind:@"backgroundColor"];
   [self unbind:@"backgroundImage"];
-  [self unbind:@"backgroundPatternPhase"];
   [super finalize];
 }
 
 - (void)dealloc {
   [self unbind:@"backgroundColor"];
   [self unbind:@"backgroundImage"];
-  [self unbind:@"backgroundPatternPhase"];
   [values_ release];
   [super dealloc];
 }
@@ -194,15 +212,6 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 
 - (NSImage *)backgroundImage {
   return backgroundImage_;
-}
-
-- (NSPoint)backgroundPatternPhase {
-  return backgroundPatternPhase_;
-}
-
-- (void)setBackgroundPatternPhase:(NSPoint)phase {
-  backgroundPatternPhase_ = phase;
-  [self sendChangeNotification];
 }
 
 - (NSImage *)backgroundImageForStyle:(GTMThemeStyle)style
