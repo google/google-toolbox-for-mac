@@ -51,7 +51,6 @@ typedef NSUInteger GTMThemeState;
  @private
   NSColor *backgroundColor_;  // bound to user defaults 
   NSImage *backgroundImage_;  // bound to user defaults
-  NSPoint backgroundPatternPhase_;  // bound to user defaults
   NSMutableDictionary *values_; // cached values
 }
 
@@ -73,12 +72,6 @@ typedef NSUInteger GTMThemeState;
 
 // set base background image
 - (void)setBackgroundImage:(NSImage *)value;
-
-// the phase of the background pattern
-- (NSPoint)backgroundPatternPhase;
-
-// set the phase of the background pattern
-- (void)setBackgroundPatternPhase:(NSPoint)phase;
 
 // NSImage pattern background
 - (NSImage *)backgroundImageForStyle:(GTMThemeStyle)style
@@ -130,14 +123,17 @@ typedef NSUInteger GTMThemeState;
 // Default implementation polls the window delegate
 @interface NSWindow (GTMTheme)
 - (GTMTheme *)gtm_theme;
+- (NSPoint)gtm_themePatternPhase;
 @end
 
 @interface NSView (GTMTheme)
 - (GTMTheme *)gtm_theme;
+- (NSPoint)gtm_themePatternPhase;
 @end
 
 @protocol GTMThemeDelegate
 - (GTMTheme *)gtm_themeForWindow:(NSWindow *)window;
+- (NSPoint)gtm_themePatternPhaseForWindow:(NSWindow *)window;
 @end
 
 #endif // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
