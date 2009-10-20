@@ -20,6 +20,10 @@
 #import "GTMUILocalizer.h"
 #import "GTMNSNumber+64Bit.h"
 
+// Controls if +wrapString:width:font: uses a subclassed TypeSetter to do
+// its work in one pass.
+#define GTM_USE_TYPESETTER 1
+
 // Helper that will try to do a SizeToFit on any UI items and do the special
 // case handling we also need to end up with a usable UI item.  It also takes
 // an offset so we can slide the item if we need to.
@@ -30,9 +34,48 @@ static NSInteger CompareFrameX(id view1, id view2, void *context);
 // Check if the view is anchored on the right (fixed right, flexible left).
 static BOOL IsRightAnchored(NSView *view);
 
+#if GTM_USE_TYPESETTER
+
+@interface GTMBreakRecordingTypeSetter : NSATSTypesetter {
+ @private
+  NSMutableArray *array_;
+}
+@end
+
+@implementation GTMBreakRecordingTypeSetter
+- (id)init {
+  if ((self = [super init])) {
+    array_ = [[NSMutableArray alloc] init];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [array_ release];
+  [super dealloc];
+}
+
+- (BOOL)shouldBreakLineByWordBeforeCharacterAtIndex:(NSUInteger)charIndex {
+  [array_ addObject:[NSNumber gtm_numberWithUnsignedInteger:charIndex]];
+  return YES;
+}
+
+- (NSArray*)breakArray {
+  return array_;
+}
+
+@end
+
+#endif  // GTM_USE_TYPESETTER
+
 @interface GTMUILocalizerAndLayoutTweaker (PrivateMethods)
 // Recursively walk the UI triggering Tweakers.
 - (void)tweakView:(NSView *)view;
+// Insert newlines so the string wraps to the given width using the requested
+// font.
++ (NSString*)wrapString:(NSString *)string
+                  width:(CGFloat)width
+                   font:(NSFont *)font;
 @end
 
 @interface GTMWidthBasedTweaker (InternalMethods)
@@ -74,7 +117,7 @@ static BOOL IsRightAnchored(NSView *view);
                   @"should have been a subclass of NSView");
     startView = (NSView *)uiObject;
   }
-  
+
   // Tweak away!
   [self tweakView:startView];
 }
@@ -92,6 +135,86 @@ static BOOL IsRightAnchored(NSView *view);
   }
 }
 
++ (NSString*)wrapString:(NSString *)string
+                  width:(CGFloat)width
+                   font:(NSFont *)font {
+  // This is what opt-return in IB would put in to force a wrap.
+  NSString * const kForcedWrapString = @"\xA";
+
+  // Set up the objects needed for the layout work.
+  NSRect targetRect = NSMakeRect(0, 0, width, CGFLOAT_MAX);
+  NSTextContainer* textContainer =
+    [[[NSTextContainer alloc] initWithContainerSize:targetRect.size]
+     autorelease];
+  NSLayoutManager* layoutManager = [[[NSLayoutManager alloc] init] autorelease];
+  NSTextStorage* textStorage =
+    [[[NSTextStorage alloc] initWithString:string] autorelease];
+
+  [textStorage addLayoutManager:layoutManager];
+  [layoutManager addTextContainer:textContainer];
+  // From playing in interface builder, the padding seems to be 2 on the line
+  // fragments to get the same wrapping as what the NSCell will do in the end.
+  [textContainer setLineFragmentPadding:2.0f];
+
+  // Apply the font.
+  [textStorage setFont:font];
+
+  // Get the mutable string for the layout, remove any forced wraps in it.
+  NSMutableString* workerStr = [textStorage mutableString];
+  [workerStr replaceOccurrencesOfString:kForcedWrapString
+                             withString:@""
+                                options:NSLiteralSearch
+                                  range:NSMakeRange(0, [workerStr length])];
+
+#if GTM_USE_TYPESETTER
+  // Put in the recording type setter.
+  GTMBreakRecordingTypeSetter *typeSetter =
+    [[[GTMBreakRecordingTypeSetter alloc] init] autorelease];
+  [layoutManager setTypesetter:typeSetter];
+  // Make sure things are layed out (10.5 has a clean API for this, 10.4
+  // doesn't).
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  [layoutManager ensureLayoutForCharacterRange:NSMakeRange(0,
+                                                           [textStorage length])];
+#else
+  [layoutManager lineFragmentRectForGlyphAtIndex:[layoutManager numberOfGlyphs]-1
+                                  effectiveRange:NULL];
+#endif
+
+  // Insert the breaks everywere the type setter got asked about breaks.
+  NSEnumerator *reverseEnumerator =
+    [[typeSetter breakArray] reverseObjectEnumerator];
+  NSNumber *number;
+  while ((number = [reverseEnumerator nextObject]) != nil) {
+    [workerStr insertString:kForcedWrapString
+                    atIndex:[number gtm_unsignedIntegerValue]];
+  }
+#else
+  // Find out how tall lines would be for the layout loop.
+  CGFloat lineHeight = [layoutManager defaultLineHeightForFont:font];
+  targetRect.size.height = lineHeight;
+
+  // Loop until all glyphs are layout out.
+  NSUInteger numGlyphsUsed = 0;
+  while (numGlyphsUsed < [layoutManager numberOfGlyphs]) {
+    // See what fits in the current rect
+    NSRange range = [layoutManager glyphRangeForBoundingRect:targetRect
+                                             inTextContainer:textContainer];
+    numGlyphsUsed = NSMaxRange(range);
+    if (numGlyphsUsed < [layoutManager numberOfGlyphs]) {
+      // Didn't all fit, add a break, and grow the rect to try again.
+      NSRange charRange = [layoutManager glyphRangeForCharacterRange:range
+                                                actualCharacterRange:nil];
+      [workerStr insertString:kForcedWrapString atIndex:NSMaxRange(charRange)];
+      targetRect.size.height += lineHeight;
+    }
+  }
+#endif  // GTM_USE_TYPESETTER
+
+  // Return the string with forced wraps
+  return [[workerStr copy] autorelease];
+}
+
 + (NSSize)sizeToFitView:(NSView *)view {
   return SizeToFit(view, NSZeroPoint);
 }
@@ -102,6 +225,33 @@ static BOOL IsRightAnchored(NSView *view);
   NSSize newSize = [[textField cell] cellSizeForBounds:sizeRect];
   [textField setFrameSize:newSize];
   return newSize.height - NSHeight(initialFrame);
+}
+
++ (void)wrapButtonTitleForWidth:(NSButton *)button {
+  NSCell *cell = [button cell];
+  NSRect frame = [button frame];
+
+  NSRect titleFrame = [cell titleRectForBounds:frame];
+
+  NSString* newTitle = [self wrapString:[button title]
+                                  width:NSWidth(titleFrame)
+                                   font:[button font]];
+  [button setTitle:newTitle];
+}
+
++ (void)wrapRadioGroupForWidth:(NSMatrix *)radioGroup {
+  NSSize cellSize = [radioGroup cellSize];
+  NSRect tmpRect = NSMakeRect(0, 0, cellSize.width, cellSize.height);
+  NSFont *font = [radioGroup font];
+
+  NSCell *cell;
+  GTM_FOREACH_OBJECT(cell, [radioGroup cells]) {
+    NSRect titleFrame = [cell titleRectForBounds:tmpRect];
+    NSString* newTitle = [self wrapString:[cell title]
+                                    width:NSWidth(titleFrame)
+                                     font:font];
+    [cell setTitle:newTitle];
+  }
 }
 
 + (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window

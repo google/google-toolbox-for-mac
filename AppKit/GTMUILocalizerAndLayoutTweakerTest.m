@@ -35,12 +35,12 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest1"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %ld", (long)gTestPass);
+    STAssertNotNil(window, @"Pass %zu", gTestPass);
     NSString *imageName =
       [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest1-%ld",
         (long)gTestPass];
     GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %ld", (long)gTestPass);
+                                          @"Pass %zu", gTestPass);
     [controller release];
   }
   // Test with nib 2
@@ -49,12 +49,12 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest2"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %ld", (long)gTestPass);
+    STAssertNotNil(window, @"Pass %zu", gTestPass);
     NSString *imageName =
       [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest2-%ld",
         (long)gTestPass];
     GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %ld", (long)gTestPass);
+                                          @"Pass %zu", gTestPass);
     [controller release];
   }
 }
@@ -79,16 +79,18 @@ static NSUInteger gTestPass = 0;
       @"jumps over the lazy dog.  The quick brown fox jumps over the lazy "
       @"dog.  The quick brown fox jumps over the lazy dog.\n\nThe End.",
   };
-  for (size_t lp = 0; lp < (sizeof(kTestStrings) / sizeof(NSString*)); ++lp) {
+  for (size_t lp = 0;
+       lp < (sizeof(kTestStrings) / sizeof(kTestStrings[0]));
+       ++lp) {
     GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest3"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %ld", (long)lp);
+    STAssertNotNil(window, @"Pass %zu", lp);
     NSTextField *field;
     GTM_FOREACH_OBJECT(field, [[window contentView] subviews]) {
       STAssertTrue([field isMemberOfClass:[NSTextField class]],
-                   @"Pass %ld", (long)lp);
+                   @"Pass %zu", lp);
       [field setStringValue:kTestStrings[lp]];
       [GTMUILocalizerAndLayoutTweaker sizeToFitFixedWidthTextField:field];
     }
@@ -96,7 +98,7 @@ static NSUInteger gTestPass = 0;
       [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest3-%ld",
        (long)lp];
     GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %ld", (long)lp);
+                                          @"Pass %zu", lp);
     [controller release];
   }
 }
@@ -114,12 +116,57 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest4"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %ld", (long)gTestPass);
+    STAssertNotNil(window, @"Pass %zu", gTestPass);
     NSString *imageName =
       [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest4-%ld",
         (long)gTestPass];
     GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %ld", (long)gTestPass);
+                                          @"Pass %zu", gTestPass);
+    [controller release];
+  }
+}
+
+- (void)testWrapStartTitleForWidth {
+  NSString *kTestStrings[] = {
+    @"The fox jumps the dog.",
+    @"The quick brown fox jumps over the lazy dog.",
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox jumps "
+      @"over the lazy dog.  The quick brown fox jumps over the lazy dog.  "
+      @"The quick brown fox jumps over the lazy dog.",
+  };
+  for (size_t lp = 0;
+       lp < (sizeof(kTestStrings) / sizeof(kTestStrings[0]));
+       ++lp) {
+    GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
+      [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
+        initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest5"];
+    NSWindow *window = [controller window];
+    STAssertNotNil(window, @"Pass %zu", lp);
+    NSView *view;
+    GTM_FOREACH_OBJECT(view, [[window contentView] subviews]) {
+      if ([view isMemberOfClass:[NSButton class]]) {
+        NSButton *btn = (id)view;
+        [btn setTitle:kTestStrings[lp]];
+        [GTMUILocalizerAndLayoutTweaker wrapButtonTitleForWidth:btn];
+      } else {
+        STAssertTrue([view isMemberOfClass:[NSMatrix class]],
+                     @"Pass %zu", lp);
+        NSMatrix *mtx = (id)view;
+        NSCell *cell;
+        int i = 0;
+        GTM_FOREACH_OBJECT(cell, [mtx cells]) {
+          [cell setTitle:[NSString stringWithFormat:@"%d %@",
+                          ++i, kTestStrings[lp]]];
+        }
+        [GTMUILocalizerAndLayoutTweaker wrapRadioGroupForWidth:mtx];
+      }
+      [GTMUILocalizerAndLayoutTweaker sizeToFitView:view];
+    }
+    NSString *imageName =
+      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest5-%ld",
+       (long)lp];
+    GTMAssertObjectImageEqualToImageNamed(window, imageName,
+                                          @"Pass %zu", lp);
     [controller release];
   }
 }
