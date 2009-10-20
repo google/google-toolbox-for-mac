@@ -52,6 +52,14 @@
 // Returns the amount the field changed height.
 + (CGFloat)sizeToFitFixedWidthTextField:(NSTextField *)textField;
 
+// Insert newlines into the title of the button (radio or checkbox) or all cells
+// in the radio group (NSMatrix) so they will word wrap to the item's current
+// width.  Then +sizeToFitView can be called to have then resize to the exact
+// width and height needed.  Note: any existing Opt-Return forced wraps are
+// removed from the existing titles.
++ (void)wrapButtonTitleForWidth:(NSButton *)button;
++ (void)wrapRadioGroupForWidth:(NSMatrix *)radioGroup;
+
 // Resizes |window| by |delta| without letting the subviews of |window| get
 // resized.  Useful when you've done manual tweaking by things like
 // +sizeToFitFixedWidthTextField.  The window's origin is not adjusted.  Passes
