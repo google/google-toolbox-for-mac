@@ -247,7 +247,7 @@ Changes since 1.5.1
   with supplied NSPorts.
 
 - Finally dropped GTMHTTPFetcher and GTMProgressMonitorInputStream, GData
-  versions now pretty much line up w/ these, so rather then both projects
+  versions now pretty much line up with these, so rather then both projects
   maintaing them, we've dropped them and point folks at the gdata versions
   which can be used independent of the rest of GData.
 
@@ -340,12 +340,14 @@ Changes since 1.5.1
 - Added GTMNSNumber+64Bit for working with CGFloats, NSIntegers and NSUInters
   using NSNumber on all supported SDKs.
 
+- Added GTMIBArray for building arrays in nib files.
+
 
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
 
-- Fixed building tiger gcov w/ a directory path that contains a space.
+- Fixed building tiger gcov with a directory path that contains a space.
 
 
 Release 1.5.0
@@ -401,7 +403,7 @@ Changes since 1.0.0
 - Renamed the actual framework to "GoogleToolboxForMac.framework" (it should
   have matched the project on code.google.com from the start)
 
-- added a Debug-gcov target that will product debug bits w/ code coverage
+- added a Debug-gcov target that will product debug bits with code coverage
   support to check unittests, etc.
 
 - GTMDebugSelectorValidation to provide something to include in class impls
@@ -440,7 +442,7 @@ Changes since 1.0.0
 - Added GTMHTTPFetcher and GTMProgressMonitorInputStream.
 
 - Moved the data files for unittests into subdirectories call TestData to
-  help make it a little easier to find files w/in the main directories.
+  help make it a little easier to find files within the main directories.
 
 - GTMDelegatingTableColumn get an overhaul to match the 10.5 sdk so it's closer
   to a dropin for previous sdks.

@@ -323,6 +323,10 @@
 		F4C0B9DA108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F4C0B9D7108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-0.tiff */; };
 		F4C0B9DB108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-1.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F4C0B9D8108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-1.tiff */; };
 		F4C0B9DC108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-2.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F4C0B9D9108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-2.tiff */; };
+		F4C62489109753960069CADD /* GTMIBArrayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C62486109753960069CADD /* GTMIBArrayTest.m */; };
+		F4C6248A109753960069CADD /* GTMIBArrayTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C62487109753960069CADD /* GTMIBArrayTest.xib */; };
+		F4C6248B109753960069CADD /* GTMIBArray.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C62483109753960069CADD /* GTMIBArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4C6248C109753960069CADD /* GTMIBArray.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C62484109753960069CADD /* GTMIBArray.m */; };
 		F4CA854F0DAFAAF600B4AB10 /* GTMObjC2Runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F32060DA34A1B0052CA40 /* GTMObjC2Runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4FC15DD1046AD66000AB7BC /* GTMUILocalizerAndLayoutTweakerTest3.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4FC15DC1046AD66000AB7BC /* GTMUILocalizerAndLayoutTweakerTest3.xib */; };
 		F4FC16031046B581000AB7BC /* GTMUILocalizerAndLayoutTweakerTest3-0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F4FC15FF1046B581000AB7BC /* GTMUILocalizerAndLayoutTweakerTest3-0.tiff */; };
@@ -720,6 +724,11 @@
 		F4C0B9D7108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest5-0.tiff"; sourceTree = "<group>"; };
 		F4C0B9D8108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-1.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest5-1.tiff"; sourceTree = "<group>"; };
 		F4C0B9D9108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest5-2.tiff"; sourceTree = "<group>"; };
+		F4C62483109753960069CADD /* GTMIBArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIBArray.h; sourceTree = "<group>"; };
+		F4C62484109753960069CADD /* GTMIBArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIBArray.m; sourceTree = "<group>"; };
+		F4C62485109753960069CADD /* GTMIBArrayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIBArrayTest.h; sourceTree = "<group>"; };
+		F4C62486109753960069CADD /* GTMIBArrayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIBArrayTest.m; sourceTree = "<group>"; };
+		F4C62487109753960069CADD /* GTMIBArrayTest.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMIBArrayTest.xib; sourceTree = "<group>"; };
 		F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
 		F4CA854E0DAFAAB600B4AB10 /* xcconfigs-readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "xcconfigs-readme.txt"; sourceTree = "<group>"; };
 		F4CA864A0DB3ACB200B4AB10 /* DebugLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugLeopardOrLater.xcconfig; sourceTree = "<group>"; };
@@ -1042,6 +1051,11 @@
 				F4A420EE0EDDF8E000397A11 /* GTMHotKeyTextFieldTest.m */,
 				8BAA9B560F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib */,
 				8B0E653E0FD80D5E00461C4A /* GTMHotKeyTextFieldLocalizations */,
+				F4C62483109753960069CADD /* GTMIBArray.h */,
+				F4C62484109753960069CADD /* GTMIBArray.m */,
+				F4C62485109753960069CADD /* GTMIBArrayTest.h */,
+				F4C62486109753960069CADD /* GTMIBArrayTest.m */,
+				F4C62487109753960069CADD /* GTMIBArrayTest.xib */,
 				8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */,
 				8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */,
 				8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */,
@@ -1390,6 +1404,7 @@
 				7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */,
 				7FF768E41051B17E00D34F4B /* GTMNSImage+SearchCache.h in Headers */,
 				8B307FF91056B773006C4C7A /* GTMNSNumber+64Bit.h in Headers */,
+				F4C6248B109753960069CADD /* GTMIBArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1701,6 +1716,7 @@
 				F4C0B9DA108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-0.tiff in Resources */,
 				F4C0B9DB108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-1.tiff in Resources */,
 				F4C0B9DC108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-2.tiff in Resources */,
+				F4C6248A109753960069CADD /* GTMIBArrayTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1940,6 +1956,7 @@
 				0BFAD4C9104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.m in Sources */,
 				7FF768E51051B17E00D34F4B /* GTMNSImage+SearchCache.m in Sources */,
 				8B307FF81056B773006C4C7A /* GTMNSNumber+64Bit.m in Sources */,
+				F4C6248C109753960069CADD /* GTMIBArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1971,6 +1988,7 @@
 				F42E2C69102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m in Sources */,
 				7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */,
 				7FF768E31051B17900D34F4B /* GTMNSImage+SearchCacheTest.m in Sources */,
+				F4C62489109753960069CADD /* GTMIBArrayTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
