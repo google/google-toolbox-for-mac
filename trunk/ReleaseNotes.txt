@@ -337,11 +337,14 @@ Changes since 1.5.1
 
 - Added GTMNSData+Hex for conversion to and from hex strings.
 
-- Added GTMNSNumber+64Bit for working with CGFloats, NSIntegers and NSUInters
-  using NSNumber on all supported SDKs.
+- Added GTMNSNumber+64Bit for working with CGFloats, NSIntegers and 
+  NSUIntegers using NSNumber on all supported SDKs.
 
 - Added GTMIBArray for building arrays in nib files.
 
+- Added SDEFCompiler.sh for making it easier to error check SDEFs at
+  compile time. See BuildScripts/SDEFCompiler.sh for details on how to set it
+  up. If you work with SDEFs at all, this one is worth checking out.
 
 Release 1.5.1
 Changes since 1.5.0
