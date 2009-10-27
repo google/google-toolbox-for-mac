@@ -69,7 +69,7 @@ do { \
   NSString *failString = nil; \
   BOOL isGood = GTMIsObjectImageEqualToImageNamed(a1Object, a2String, &failString); \
   if (!isGood) { \
-    if (description) { \
+    if (description != nil) { \
       STFail(@"%@: %@", failString, STComposeString(description, ##__VA_ARGS__)); \
     } else { \
       STFail(@"%@", failString); \
@@ -107,7 +107,7 @@ do { \
   NSString *failString = nil; \
   BOOL isGood = GTMIsObjectStateEqualToStateNamed(a1Object, a2String, &failString); \
   if (!isGood) { \
-    if (description) { \
+    if (description != nil) { \
       STFail(@"%@: %@", failString, STComposeString(description, ##__VA_ARGS__)); \
     } else { \
       STFail(@"%@", failString); \
