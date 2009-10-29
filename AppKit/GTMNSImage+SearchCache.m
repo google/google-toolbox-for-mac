@@ -81,7 +81,7 @@
       NSString *path
         = [[NSBundle bundleWithPath:[url path]] pathForImageResource:iconName];
       if (path)
-        image = [[NSImage alloc] initWithContentsOfFile:path];
+        image = [[[NSImage alloc] initWithContentsOfFile:path] autorelease];
     }
   }
   
