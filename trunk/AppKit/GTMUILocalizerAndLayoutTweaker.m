@@ -223,6 +223,7 @@ static BOOL IsRightAnchored(NSView *view);
   NSRect initialFrame = [textField frame];
   NSRect sizeRect = NSMakeRect(0, 0, NSWidth(initialFrame), CGFLOAT_MAX);
   NSSize newSize = [[textField cell] cellSizeForBounds:sizeRect];
+  newSize.width = NSWidth(initialFrame);
   [textField setFrameSize:newSize];
   return newSize.height - NSHeight(initialFrame);
 }
@@ -275,6 +276,25 @@ static BOOL IsRightAnchored(NSView *view);
   // Restore autosizesSubviews.
   if (autoresizesSubviews) {
     [contentView setAutoresizesSubviews:YES];
+  }
+}
+
++ (void)resizeViewWithoutAutoResizingSubViews:(NSView*)view
+                                        delta:(NSSize)delta {
+  // Clear autosizesSubviews (saving the state).
+  BOOL autoresizesSubviews = [view autoresizesSubviews];
+  if (autoresizesSubviews) {
+    [view setAutoresizesSubviews:NO];
+  }
+
+  NSRect rect = [view frame];
+  rect.size.width += delta.width;
+  rect.size.height += delta.height;
+  [view setFrame:rect];
+
+  // Restore autosizesSubviews.
+  if (autoresizesSubviews) {
+    [view setAutoresizesSubviews:YES];
   }
 }
 

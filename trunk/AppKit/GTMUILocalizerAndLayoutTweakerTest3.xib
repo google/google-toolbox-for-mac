@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="2"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -93,7 +93,7 @@
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="847317034">
 								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">272891904</int>
+								<int key="NSCellFlags2">71565312</int>
 								<string key="NSContents">Multiline Label</string>
 								<reference key="NSSupport" ref="554297525"/>
 								<reference key="NSControlView" ref="958773035"/>
