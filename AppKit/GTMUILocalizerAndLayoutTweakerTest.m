@@ -63,7 +63,10 @@ static NSUInteger gTestPass = 0;
   // In the xib, the one field is over sized, the other is undersized, this
   // way we make sure the code handles both condions as there was a bahavior
   // change between the 10.4 and 10.5 SDKs.
+  // The right field is also right aligned to make sure the width of the text
+  // field stays constant.
   NSString *kTestStrings[] = {
+    @"The fox jumps the dog.",
     @"The quick brown fox jumps over the lazy dog.",
     @"The quick brown fox jumps over the lazy dog.  The quick brown fox jumps "
       @"over the lazy dog.  The quick brown fox jumps over the lazy dog.  "

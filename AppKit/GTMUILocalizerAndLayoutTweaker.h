@@ -42,7 +42,7 @@
 
 // This checks to see if |view| implements @selector(sizeToFit) and calls it.
 // It then checks the class of |view| and does some fixup for known issues
-// where sizeToFit doesn't product a view that meets UI guidelines.
+// where sizeToFit doesn't produce a view that meets UI guidelines.
 // Returns the amount the view changed in size.
 + (NSSize)sizeToFitView:(NSView *)view;
 
@@ -60,13 +60,15 @@
 + (void)wrapButtonTitleForWidth:(NSButton *)button;
 + (void)wrapRadioGroupForWidth:(NSMatrix *)radioGroup;
 
-// Resizes |window| by |delta| without letting the subviews of |window| get
+// Resizes |window| or |view| by |delta| without letting the subviews get
 // resized.  Useful when you've done manual tweaking by things like
-// +sizeToFitFixedWidthTextField.  The window's origin is not adjusted.  Passes
-// |NO| to for -setFrame:display:'s |displayViews| flag on the assumptions
-// the caller is doing all the invals/updates needed.
+// +sizeToFitFixedWidthTextField.  The origin is not adjusted.  For windows,
+// passes |NO| to for -setFrame:display:'s |displayViews| flag on the
+// assumptions the caller is doing all the invals/updates needed.
 + (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window
                                           delta:(NSSize)delta;
++ (void)resizeViewWithoutAutoResizingSubViews:(NSView*)view
+                                        delta:(NSSize)delta;
 
 @end
 
