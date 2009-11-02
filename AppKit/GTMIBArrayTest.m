@@ -292,6 +292,33 @@
   STAssertTrue([fieldsSet isSubsetOfSet:everythingSet], nil);
 }
 
+- (void)testIsEqual {
+  GTMIBArray *ibArray1 =
+      [[[IBArrayTestHelper alloc] initWithObj1:@"a"
+                                          obj2:@"b"
+                                          obj3:@"c"
+                                          obj4:@"d"
+                                          obj5:@"e"] autorelease];
+  GTMIBArray *ibArray2 =
+      [[[IBArrayTestHelper alloc] initWithObj1:@"f"
+                                          obj2:@"g"
+                                          obj3:@"h"
+                                          obj4:@"i"
+                                          obj5:@"j"] autorelease];
+
+  STAssertEquals([ibArray1 hash], [ibArray2 hash], nil);
+  STAssertNotEqualObjects(ibArray1, ibArray2, nil);
+
+  NSArray *ibArray1Prime = [[ibArray1 copy] autorelease];
+  NSArray *ibArray2Prime = [[ibArray2 copy] autorelease];
+
+  STAssertTrue(ibArray1 != ibArray1Prime, nil);
+  STAssertTrue(ibArray2 != ibArray2Prime, nil);
+  STAssertNotEqualObjects(ibArray1Prime, ibArray2Prime, nil);
+  STAssertEqualObjects(ibArray1, ibArray1Prime, nil);
+  STAssertEqualObjects(ibArray2, ibArray2Prime, nil);
+}
+  
 @end
 
 @implementation GTMIBArrayTestWindowController
