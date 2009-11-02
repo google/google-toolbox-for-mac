@@ -122,4 +122,45 @@
   return [realArray_ mutableCopyWithZone:zone];
 }
 
+// ----------------------------------------------------------------------------
+// On 10.6, being loaded out of a nib causes the object to get hashed and
+// stored off.  The implementation of -hash in NSArray then calls -count, which
+// causes this object to latch on to an empty array.  So...
+// 1. -hash gets overridden to simply use the class pointer to maintain
+//    the -[NSObject hash] contract that equal objects must have the same hash
+//    value.  This puts the work in isEqual...
+// 2. -isEqual: overide.  Objects can't use the NSArray version until all of
+//    the outlets have been filled in and the object is truly setup. The best
+//    escape for this is to simply do pointer comparison until the outlets are
+//    fully setup.
+// 3. awakeFromNib gets overridden to force the initialize of the real array
+//    when all the outlets have been filled in.
+//
+// NOTE: The first attempt was to just overide hash, but that only makes the
+// first IBArray in a nib work. The fact that isEqual was falling through to
+// the NSArray version (comparing to empty arrays), prevented all of the
+// IBArrays from being fully loaded from the nib correctly.
+
+- (NSUInteger)hash {
+  return (NSUInteger)(void*)[self class];
+}
+
+- (BOOL)isEqual:(id)anObject {
+  if ([anObject isMemberOfClass:[self class]]) {
+    GTMIBArray *ibArray2 = anObject;
+    if (!realArray_ || !(ibArray2->realArray_)) {
+      // If realArray_ or ibArray2 haven't been fully configured yet, the only
+      // way they can be equal is if they are the same pointer.
+      return (self == anObject);
+    }
+  }
+  return [super isEqual:anObject];
+}
+
+- (void)awakeFromNib {
+  [realArray_ autorelease];
+  realArray_ = nil;
+  [self setupRealArray];
+}
+
 @end
