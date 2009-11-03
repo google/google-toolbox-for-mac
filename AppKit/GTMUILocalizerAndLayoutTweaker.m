@@ -458,6 +458,10 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
     // Don't try to sizeToFit because edit fields really don't want to be sized
     // to what is in them as they are for users to enter things so honor their
     // current size.
+  } else if ([view isKindOfClass:[NSPathControl class]]) {
+    // Don't try to sizeToFit because NSPathControls usually need to be able
+    // to display any path, so they shouldn't tight down to whatever they
+    // happen to be listing at the moment.
   } else {
     // Genericaly fire a sizeToFit if it has one.
     if ([view respondsToSelector:@selector(sizeToFit)]) {
