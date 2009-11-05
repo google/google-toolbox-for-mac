@@ -137,9 +137,9 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
 }
 
 - (void)sendChangeNotification {
-  [[NSNotificationCenter defaultCenter]
-   postNotificationName:kGTMThemeDidChangeNotification
-   object:self];
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc postNotificationName:kGTMThemeDidChangeNotification
+                    object:self];
 }
 
 - (id)keyForSelector:(SEL)selector
@@ -191,8 +191,6 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   if (backgroundColor_ != value) {
     [backgroundColor_ release];
     backgroundColor_ = [value retain];
-    [values_ removeAllObjects];
-    [self sendChangeNotification];
   }
 }
 - (NSColor *)backgroundColor {
@@ -206,7 +204,6 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   if (backgroundImage_ != value) {
     [backgroundImage_ release];
     backgroundImage_ = [value retain];
-    [self sendChangeNotification];
   }
 }
 
@@ -484,7 +481,13 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
                          state:(GTMThemeState)state {
   NSColor *color = [self valueForSelector:_cmd style:style state:state];
   if (color) return color;
-
+  
+  if ([self styleIsDark:style state:state]) {
+    color = [NSColor whiteColor];
+  } else {
+    color = [NSColor blackColor];
+  }
+  
   [self cacheValue:color forSelector:_cmd style:style state:state];
   return color;
 }
