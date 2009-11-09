@@ -81,6 +81,8 @@
 		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */; };
 		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */; };
 		8B0E65510FD80D5E00461C4A /* GTMHotKeyTextField.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B0E653F0FD80D5E00461C4A /* GTMHotKeyTextField.strings */; };
+		8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */; };
+		8B158ADE10A8C42000C93125 /* GTMNSAnimation+Duration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B1801A20E2533D500280961 /* GTMLargeTypeWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */; };
 		8B1801A30E2533D500280961 /* GTMLargeTypeWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B1801AE0E25341B00280961 /* GTMLargeTypeWindowImageTest.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8B1801A80E25341B00280961 /* GTMLargeTypeWindowImageTest.gtmUTState */; };
@@ -487,6 +489,8 @@
 		8B0E654E0FD80D5E00461C4A /* sv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/GTMHotKeyTextField.strings; sourceTree = "<group>"; };
 		8B0E654F0FD80D5E00461C4A /* zh_CN */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/GTMHotKeyTextField.strings; sourceTree = "<group>"; };
 		8B0E65500FD80D5E00461C4A /* zh_TW */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/GTMHotKeyTextField.strings; sourceTree = "<group>"; };
+		8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSAnimation+Duration.h"; sourceTree = "<group>"; };
+		8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSAnimation+Duration.m"; sourceTree = "<group>"; };
 		8B1801A00E2533D500280961 /* GTMLargeTypeWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLargeTypeWindow.m; sourceTree = "<group>"; };
 		8B1801A10E2533D500280961 /* GTMLargeTypeWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMLargeTypeWindow.h; sourceTree = "<group>"; };
 		8B1801A40E2533DB00280961 /* GTMLargeTypeWindowTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLargeTypeWindowTest.m; sourceTree = "<group>"; };
@@ -1068,6 +1072,8 @@
 				F43DCDCB0D4796C600959A62 /* GTMLoginItems.h */,
 				F43DCDCC0D4796C600959A62 /* GTMLoginItems.m */,
 				F43DCEC60D47BEA000959A62 /* GTMLoginItemsTest.m */,
+				8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */,
+				8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */,
 				F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */,
 				F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */,
 				F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */,
@@ -1408,6 +1414,7 @@
 				7FF768E41051B17E00D34F4B /* GTMNSImage+SearchCache.h in Headers */,
 				8B307FF91056B773006C4C7A /* GTMNSNumber+64Bit.h in Headers */,
 				F4C6248B109753960069CADD /* GTMIBArray.h in Headers */,
+				8B158ADE10A8C42000C93125 /* GTMNSAnimation+Duration.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1961,6 +1968,7 @@
 				7FF768E51051B17E00D34F4B /* GTMNSImage+SearchCache.m in Sources */,
 				8B307FF81056B773006C4C7A /* GTMNSNumber+64Bit.m in Sources */,
 				F4C6248C109753960069CADD /* GTMIBArray.m in Sources */,
+				8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
