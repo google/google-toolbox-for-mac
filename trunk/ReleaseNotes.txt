@@ -346,6 +346,10 @@ Changes since 1.5.1
   compile time. See BuildScripts/SDEFCompiler.sh for details on how to set it
   up. If you work with SDEFs at all, this one is worth checking out.
 
+- GTMNSAnimation+Duration.m adds support for checking for control and shift
+  keys when trying to decide how to calculate durations for animations.
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
