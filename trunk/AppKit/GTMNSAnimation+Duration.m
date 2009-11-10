@@ -18,10 +18,9 @@
 
 #import "GTMNSAnimation+Duration.h"
 
-static NSTimeInterval GTMCurrentDurationMultiplier(void) {
+NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration) {
   NSEvent *event = [NSApp currentEvent];
   NSUInteger modifiers = [event modifierFlags];
-  NSTimeInterval duration = 1.0;
   if (modifiers & NSShiftKeyMask) {
     duration *= 5.0;
   }
@@ -34,9 +33,14 @@ static NSTimeInterval GTMCurrentDurationMultiplier(void) {
 
 @implementation NSAnimation (GTMNSAnimationDurationAdditions)
 
+- (id)gtm_initWithDuration:(NSTimeInterval)duration 
+            animationCurve:(NSAnimationCurve)animationCurve {
+  return [self initWithDuration:GTMModifyDurationBasedOnCurrentState(duration)
+                 animationCurve:animationCurve];
+}
+
 - (void)gtm_setDuration:(NSTimeInterval)duration {
-  duration = duration * GTMCurrentDurationMultiplier();
-  [self setDuration:duration];
+  [self setDuration:GTMModifyDurationBasedOnCurrentState(duration)];
 }
 
 @end
@@ -46,8 +50,7 @@ static NSTimeInterval GTMCurrentDurationMultiplier(void) {
 @implementation NSAnimationContext (GTMNSAnimationDurationAdditions)
 
 - (void)gtm_setDuration:(NSTimeInterval)duration {
-  duration = duration * GTMCurrentDurationMultiplier();
-  [self setDuration:duration];
+  [self setDuration:GTMModifyDurationBasedOnCurrentState(duration)];
 }
 
 @end
@@ -55,8 +58,7 @@ static NSTimeInterval GTMCurrentDurationMultiplier(void) {
 @implementation CAAnimation (GTMCAAnimationDurationAdditions)
 
 - (void)gtm_setDuration:(CFTimeInterval)duration {
-  duration = duration * GTMCurrentDurationMultiplier();
-  [self setDuration:duration];
+  [self setDuration:GTMModifyDurationBasedOnCurrentState(duration)];
 }
 
 @end
