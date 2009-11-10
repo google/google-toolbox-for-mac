@@ -23,6 +23,8 @@
 // Given a "normal" duration for an animation, return what it should be based
 // on the current system state. For example, holding down the shift and/or
 // control keys modifies the normal duration for an animation making it slower.
+// Currently only modifies the duration if the current event is of type 
+// NSLeftMouseUp and only the control and/or shift modifiers are down.
 NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration);
 
 // Categories for changing the duration of an animation based on the current

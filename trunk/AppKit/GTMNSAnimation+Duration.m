@@ -20,13 +20,19 @@
 
 NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration) {
   NSEvent *event = [NSApp currentEvent];
-  NSUInteger modifiers = [event modifierFlags];
-  if (modifiers & NSShiftKeyMask) {
-    duration *= 5.0;
-  }
-  // These are additive, so shift+control returns 10 * duration.
-  if (modifiers & NSControlKeyMask) {
-    duration *= 2.0;
+  if ([event type] == NSLeftMouseUp) {
+    NSUInteger modifiers = [event modifierFlags];
+    if (!(modifiers & (NSAlternateKeyMask |
+                       NSCommandKeyMask |
+                       NSFunctionKeyMask))) {
+      if (modifiers & NSShiftKeyMask) {
+        duration *= 5.0;
+      }
+      // These are additive, so shift+control returns 10 * duration.
+      if (modifiers & NSControlKeyMask) {
+        duration *= 2.0;
+      }
+    }
   }
   return duration;
 }
