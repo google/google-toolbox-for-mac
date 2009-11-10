@@ -23,11 +23,11 @@ static NSTimeInterval GTMCurrentDurationMultiplier(void) {
   NSUInteger modifiers = [event modifierFlags];
   NSTimeInterval duration = 1.0;
   if (modifiers & NSShiftKeyMask) {
-    duration *= 0.2;
+    duration *= 5.0;
   }
-  // These are additive, so shift+control returns 0.1 * duration.
+  // These are additive, so shift+control returns 10 * duration.
   if (modifiers & NSControlKeyMask) {
-    duration *= 0.5;
+    duration *= 2.0;
   }
   return duration;
 }
@@ -42,6 +42,15 @@ static NSTimeInterval GTMCurrentDurationMultiplier(void) {
 @end
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
+@implementation NSAnimationContext (GTMNSAnimationDurationAdditions)
+
+- (void)gtm_setDuration:(NSTimeInterval)duration {
+  duration = duration * GTMCurrentDurationMultiplier();
+  [self setDuration:duration];
+}
+
+@end
 
 @implementation CAAnimation (GTMCAAnimationDurationAdditions)
 
