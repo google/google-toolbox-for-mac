@@ -16,25 +16,26 @@
 //  the License.
 //
 
+// Categories for changing the duration of an animation based on the current
+// event. Right now they track the state of the shift and control keys to slow
+// down animations similar to how minimize window animations occur.
+
 #import <AppKit/AppKit.h>
 #import "GTMDefines.h"
 
-// A category for changing the duration of an animation based on the current
-// event. Right now it tracks the state of the shift and control keys to slow
-// down animations appropriately similar to how minimize window animations
-// occur.
 @interface NSAnimation (GTMNSAnimationDurationAdditions)
 - (void)gtm_setDuration:(NSTimeInterval)duration;
 @end
+
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 #import <QuartzCore/QuartzCore.h>
 
-// A category for changing the duration of an animation based on the current
-// event. Right now it tracks the state of the shift and control keys to slow
-// down animations appropriately similar to how minimize window animations
-// occur.
+@interface NSAnimationContext (GTMNSAnimationDurationAdditions)
+- (void)gtm_setDuration:(NSTimeInterval)duration;
+@end
+
 @interface CAAnimation (GTMCAAnimationDurationAdditions)
 - (void)gtm_setDuration:(CFTimeInterval)duration;
 @end
