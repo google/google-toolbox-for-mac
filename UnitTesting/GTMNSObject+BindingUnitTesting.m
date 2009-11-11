@@ -376,8 +376,8 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
     //                  class for NSValueBinding
     [array addObject:NSValueBinding];
   }
-  if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
-    // Broken on SnowLeopard WWDC and below
+  if (major <= 10 && minor <= 6) {
+    // Broken on SnowLeopard and below
     // rdar://5849236 - NSScroller exposes binding for NSFontBinding
     [array addObject:NSFontBinding];
   }
@@ -402,7 +402,9 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 - (NSMutableArray *)gtm_unitTestExposedBindingsTestValues:(NSString*)binding {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsTestValues:binding];
   if ([binding isEqualToString:NSAlignmentBinding]) {
-    if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+    SInt32 major, minor, bugFix;
+    [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
+    if (major <= 10 && minor <= 6) {
       // rdar://5851487 - If NSAlignmentBinding for a NSTextField is set to -1 
       //                  and then got it returns 7
       NSNumber *textAlignment = [NSNumber numberWithInt:NSNaturalTextAlignment];
@@ -429,10 +431,10 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
   SInt32 major, minor, bugFix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
-  if (major <= 10 && minor <= 5 && bugFix <= 8) {
+  if (major <= 10 && minor <= 6) {
     // rdar://5851491 - Setting NSAlignmentBinding of search field to 
     //                  NSCenterTextAlignment broken
-    // Broken on 10.5.7 and below.
+    // Broken on 10.6 and below.
     [array addObject:NSAlignmentBinding];
   }
   // Not KVC Compliant
@@ -483,9 +485,11 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
-  if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+  SInt32 major, minor, bugFix;
+  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
+  if (major <= 10 && minor <= 6) {
     // rdar://6288332 - NSTableView does not respond to NSFontBinding
-    // Broken on 10.5, and SnowLeopard WWDC
+    // Broken on 10.5 and SnowLeopard
     [array addObject:NSFontBinding];
   }
   // Not KVC Compliant
@@ -505,7 +509,9 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
-  if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+  SInt32 major, minor, bugFix;
+  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
+  if (major <= 10 && minor <= 6) {
     //rdar://5849335 - NSTextView only partially KVC compliant for key 
     //                 NSAttributedStringBinding
     [array addObject:NSAttributedStringBinding];
@@ -526,7 +532,9 @@ BOOL GTMDoExposedBindingsFunctionCorrectly(NSObject *object,
 
 - (NSMutableArray*)gtm_unitTestExposedBindingsToIgnore {
   NSMutableArray *array = [super gtm_unitTestExposedBindingsToIgnore];
-  if ([GTMSystemVersion isBuildLessThanOrEqualTo:kGTMSystemBuild10_6_0_WWDC]) {
+  SInt32 major, minor, bugFix;
+  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
+  if (major <= 10 && minor <= 6) {
     // rdar://5849248 - NSTabView exposes binding with no value class 
     //                  for NSSelectedIdentifierBinding 
     [array addObject:NSSelectedIdentifierBinding];

@@ -77,10 +77,3 @@ GTM_EXTERN NSString *const kGTMArch_ppc;
 GTM_EXTERN NSString *const kGTMArch_ppc64;
 GTM_EXTERN NSString *const kGTMArch_x86_64;
 GTM_EXTERN NSString *const kGTMArch_i386;
-
-// System Build Number constants
-GTM_EXTERN NSString *const kGTMSystemBuild10_5_5;
-GTM_EXTERN NSString *const kGTMSystemBuild10_6_0_WWDC;
-GTM_EXTERN NSString *const kGTMSystemBuild10_6_0_10A190;
-
-
