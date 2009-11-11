@@ -381,17 +381,22 @@
   STAssertNotNil(fmtr, nil);
   
   NSString * kFormatBasePattern;
+#if GTM_MACOS_SDK
   if ([GTMSystemVersion isSnowLeopardOrGreater]) {
     // E.g. 2009-10-26 22:26:25.086 otest-i386[53200/0xa0438500] [lvl=1] (no func) test
     kFormatBasePattern =
-    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64)|(GTMiPhoneTest))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
   } else {
     // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
     kFormatBasePattern =
-    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest)|(GTMiPhoneTest))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (otest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
   }
-    
-
+#else  // GTM_MACOS_SDK    
+  // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
+  kFormatBasePattern =
+  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (GTMiPhoneTest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+#endif   // GTM_MACOS_SDK
+  
   NSString *msg = nil;
   
   msg = [self stringFromFormatter:fmtr
