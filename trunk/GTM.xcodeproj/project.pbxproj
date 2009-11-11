@@ -78,8 +78,8 @@
 		8207B89B0FEA7A9E008A527B /* GTMWindowSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8207B8970FEA7A98008A527B /* GTMWindowSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8207B89C0FEA7AA1008A527B /* GTMWindowSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8207B8980FEA7A98008A527B /* GTMWindowSheetController.m */; };
 		8207B89D0FEA7AA6008A527B /* GTMWindowSheetControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */; };
-		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */; };
-		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */; };
+		84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.tiff */; };
+		84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.tiff */; };
 		8B0E65510FD80D5E00461C4A /* GTMHotKeyTextField.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B0E653F0FD80D5E00461C4A /* GTMHotKeyTextField.strings */; };
 		8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */; };
 		8B158ADE10A8C42000C93125 /* GTMNSAnimation+Duration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -317,6 +317,7 @@
 		F49FA88B0EEF303D00077669 /* GTMFileSystemKQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F49FA88A0EEF303D00077669 /* GTMFileSystemKQueueTest.m */; };
 		F4A420EF0EDDF8E000397A11 /* GTMHotKeyTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = F4A420EC0EDDF8E000397A11 /* GTMHotKeyTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4A420F00EDDF8E000397A11 /* GTMHotKeyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A420ED0EDDF8E000397A11 /* GTMHotKeyTextField.m */; };
+		F4A486ED1097EA0A00513483 /* GTMUnitTestingView.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F4A486EC1097EA0A00513483 /* GTMUnitTestingView.10.6.tiff */; };
 		F4AA2CB2109B37650025C956 /* GTMUILocalizerAndLayoutTweakerTest3-4.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F4AA2CB1109B37650025C956 /* GTMUILocalizerAndLayoutTweakerTest3-4.tiff */; };
 		F4BC1C880DDDD45D00108B7D /* GTMHTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4BC1C860DDDD45D00108B7D /* GTMHTTPServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4BC1C890DDDD45D00108B7D /* GTMHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BC1C870DDDD45D00108B7D /* GTMHTTPServer.m */; };
@@ -469,8 +470,8 @@
 		8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMWindowSheetControllerTest.m; sourceTree = "<group>"; };
 		848269C80E9FF4BD006E6D9C /* DebugSnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugSnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
 		848269C90E9FF4BD006E6D9C /* ReleaseSnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseSnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
-		84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingImage.10.6.0.tiff; sourceTree = "<group>"; };
-		84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.10.6.0.tiff; sourceTree = "<group>"; };
+		84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingImage.10.6.tiff; sourceTree = "<group>"; };
+		84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.10.6.tiff; sourceTree = "<group>"; };
 		84D99F360EA661C900C007D5 /* BuildAllSDKs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = BuildAllSDKs.sh; sourceTree = "<group>"; };
 		8B0E65400FD80D5E00461C4A /* da */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/GTMHotKeyTextField.strings; sourceTree = "<group>"; };
 		8B0E65410FD80D5E00461C4A /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GTMHotKeyTextField.strings; sourceTree = "<group>"; };
@@ -720,6 +721,7 @@
 		F4A420EC0EDDF8E000397A11 /* GTMHotKeyTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHotKeyTextField.h; sourceTree = "<group>"; };
 		F4A420ED0EDDF8E000397A11 /* GTMHotKeyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHotKeyTextField.m; sourceTree = "<group>"; };
 		F4A420EE0EDDF8E000397A11 /* GTMHotKeyTextFieldTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHotKeyTextFieldTest.m; sourceTree = "<group>"; };
+		F4A486EC1097EA0A00513483 /* GTMUnitTestingView.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingView.10.6.tiff; sourceTree = "<group>"; };
 		F4AA2CB1109B37650025C956 /* GTMUILocalizerAndLayoutTweakerTest3-4.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest3-4.tiff"; sourceTree = "<group>"; };
 		F4BC1C860DDDD45D00108B7D /* GTMHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPServer.h; sourceTree = "<group>"; };
 		F4BC1C870DDDD45D00108B7D /* GTMHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPServer.m; sourceTree = "<group>"; };
@@ -962,13 +964,14 @@
 				8B45A5F50DA5EB9F001148C5 /* GTMUnitTestingWindow.gtmUTState */,
 				8B45A5F60DA5EB9F001148C5 /* GTMUnitTestingTestApp.gtmUTState */,
 				8BEEA90A0DA7446300894774 /* GTMUnitTestingImage.tiff */,
-				84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff */,
+				84B91B890EA3CC2E0087500F /* GTMUnitTestingImage.10.6.tiff */,
 				8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */,
 				8B2789950EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff */,
 				F48D000C0FE994BF00428D0B /* GTMUnitTestingWindow.10.5.7.tiff */,
 				F42F50E81057E91A00BFC735 /* GTMUnitTestingWindow.10.5.8.tiff */,
-				84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff */,
+				84B91B8A0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.tiff */,
 				8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */,
+				F4A486EC1097EA0A00513483 /* GTMUnitTestingView.10.6.tiff */,
 			);
 			path = TestData;
 			sourceTree = "<group>";
@@ -1631,11 +1634,12 @@
 				8BEEA90D0DA7446300894774 /* GTMUnitTestingImage.tiff in Resources */,
 				8BEEA90E0DA7446300894774 /* GTMUnitTestingWindow.tiff in Resources */,
 				8BEEA90F0DA7446300894774 /* GTMUnitTestingView.tiff in Resources */,
-				84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.0.tiff in Resources */,
-				84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.0.tiff in Resources */,
+				84B91B8B0EA3CC2E0087500F /* GTMUnitTestingImage.10.6.tiff in Resources */,
+				84B91B8C0EA3CC2E0087500F /* GTMUnitTestingWindow.10.6.tiff in Resources */,
 				8B2789960EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff in Resources */,
 				F48D000D0FE994C900428D0B /* GTMUnitTestingWindow.10.5.7.tiff in Resources */,
 				F42F50F91057E99200BFC735 /* GTMUnitTestingWindow.10.5.8.tiff in Resources */,
+				F4A486ED1097EA0A00513483 /* GTMUnitTestingView.10.6.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

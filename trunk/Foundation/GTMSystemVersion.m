@@ -35,10 +35,6 @@ NSString *const kGTMArch_i386 = @"i386";
 
 static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/SystemVersion.plist";
 
-NSString *const kGTMSystemBuild10_5_5 = @"9F33";
-NSString *const kGTMSystemBuild10_6_0_WWDC = @"10A96";
-NSString *const kGTMSystemBuild10_6_0_10A190 = @"10A190";
-
 @implementation GTMSystemVersion
 + (void)initialize {
   if (self == [GTMSystemVersion class]) {
