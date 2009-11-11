@@ -344,10 +344,10 @@ AT_REQUIRED
   // We made our Tiger implementation the same as the SnowLeopard 
   // implementation.
   // Logged as radar 5572981.
-  if (![GTMSystemVersion isLeopard]) {
+  if (![GTMSystemVersion isLeopardOrGreater]) {
     STAssertNULL(method_setImplementation(nil, nil), nil);
   }
-  if ([GTMSystemVersion isBuildGreaterThan:kGTMSystemBuild10_6_0_WWDC]) {
+  if ([GTMSystemVersion isSnowLeopardOrGreater]) {
     STAssertNULL(method_setImplementation(nil, newImp), nil);
   }
   
