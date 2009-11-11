@@ -19,6 +19,7 @@
 #import "GTMLogger.h"
 #import "GTMRegex.h"
 #import "GTMSenTestCase.h"
+#import "GTMSystemVersion.h"
 
 
 // A test writer that stores log messages in an array for easy retrieval.
@@ -379,9 +380,18 @@
   id<GTMLogFormatter> fmtr = [[[GTMLogStandardFormatter alloc] init] autorelease];
   STAssertNotNil(fmtr, nil);
   
-  // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
-  NSString * kFormatBasePattern =
-  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest)|(GTMiPhoneTest))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+  NSString * kFormatBasePattern;
+  if ([GTMSystemVersion isSnowLeopardOrGreater]) {
+    // E.g. 2009-10-26 22:26:25.086 otest-i386[53200/0xa0438500] [lvl=1] (no func) test
+    kFormatBasePattern =
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64)|(GTMiPhoneTest))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+  } else {
+    // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
+    kFormatBasePattern =
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest)|(GTMiPhoneTest))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+  }
+    
+
   NSString *msg = nil;
   
   msg = [self stringFromFormatter:fmtr
