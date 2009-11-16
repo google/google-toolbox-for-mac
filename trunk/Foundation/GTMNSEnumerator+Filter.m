@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -77,7 +77,7 @@
   for (id obj = [base_ nextObject]; obj; obj = [base_ nextObject]) {
     id result = nil;
     if ([self filterObject:obj returning:&result]) {
-      return result; 
+      return result;
     }
   }
   return nil;
@@ -100,8 +100,8 @@
 @end
 @implementation GTMEnumeratorTargetTransformer
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
-  *resultp = [target_ performSelector:operation_ 
-                           withObject:obj 
+  *resultp = [target_ performSelector:operation_
+                           withObject:obj
                            withObject:object_];
   return nil != *resultp;
 }
@@ -111,10 +111,10 @@
 @interface GTMEnumeratorFilter : GTMEnumeratorPrivateBase
 @end
 @implementation GTMEnumeratorFilter
-// We must take care here, since Intel leaves junk in high bytes of return register
-// for predicates that return BOOL.
-// For details see: 
-// http://developer.apple.com/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/chapter_5_section_23.html
+// We must take care here, since Intel leaves junk in high bytes of return
+// register for predicates that return BOOL.
+// For details see:
+// http://developer.apple.com/legacy/mac/library/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/universal_binary_tips.html#//apple_ref/doc/uid/TP40002217-CH239-280661
 // and
 // http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
@@ -128,10 +128,10 @@
 @interface GTMEnumeratorTargetFilter : GTMEnumeratorPrivateBase
 @end
 @implementation GTMEnumeratorTargetFilter
-// We must take care here, since Intel leaves junk in high bytes of return register
-// for predicates that return BOOL.
-// For details see: 
-// http://developer.apple.com/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/chapter_5_section_23.html
+// We must take care here, since Intel leaves junk in high bytes of return
+// register for predicates that return BOOL.
+// For details see:
+// http://developer.apple.com/legacy/mac/library/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/universal_binary_tips.html#//apple_ref/doc/uid/TP40002217-CH239-280661
 // and
 // http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187
 - (BOOL)filterObject:(id)obj returning:(id *)resultp {
@@ -166,9 +166,9 @@
                                                               @encode(BOOL),
                                                               @encode(id),
                                                               NULL);
-  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self 
-                                                      sel:predicate 
-                                                   target:target 
+  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self
+                                                      sel:predicate
+                                                   target:target
                                                    object:nil] autorelease];
 }
 
@@ -181,9 +181,9 @@
                                                               @encode(id),
                                                               @encode(id),
                                                               NULL);
-  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self 
-                                                      sel:predicate 
-                                                   target:target 
+  return [[[GTMEnumeratorTargetFilter alloc] initWithBase:self
+                                                      sel:predicate
+                                                   target:target
                                                    object:object] autorelease];
 }
 
@@ -197,12 +197,12 @@
   return [[[GTMEnumeratorTargetTransformer alloc] initWithBase:self
                                                            sel:selector
                                                         target:target
-                                                        object:nil] 
+                                                        object:nil]
           autorelease];
 }
 
 - (NSEnumerator *)gtm_enumeratorByTarget:(id)target
-                   performOnEachSelector:(SEL)selector 
+                   performOnEachSelector:(SEL)selector
                               withObject:(id)object {
   // make sure the object impls this selector taking an object as an arg.
   GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(target, selector,
@@ -213,7 +213,7 @@
   return [[[GTMEnumeratorTargetTransformer alloc] initWithBase:self
                                                            sel:selector
                                                         target:target
-                                                        object:object] 
+                                                        object:object]
           autorelease];
 }
 
