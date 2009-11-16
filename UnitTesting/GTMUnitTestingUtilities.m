@@ -18,6 +18,8 @@
 
 #import "GTMUnitTestingUtilities.h"
 #import <AppKit/AppKit.h>
+#include <signal.h>
+#include <unistd.h>
 #import "GTMDefines.h"
 #import "GTMGarbageCollection.h"
 
@@ -30,6 +32,8 @@ static BOOL GTMAreCMProfilesEqual(CMProfileRef a, CMProfileRef b);
 static void GTMSetColorProfileToGenericRGB();
 // Restores the users profile.
 static void GTMRestoreColorProfile(void);
+// Signal handler to try and restore users profile.
+static void GTMHandleCrashSignal(int signalNumber);
 
 static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
 
@@ -219,6 +223,14 @@ void GTMRestoreColorProfile(void) {
   }
 }
 
+void GTMHandleCrashSignal(int signalNumber) {
+  // Going down in flames, might as well try to restore the color profile
+  // anyways.
+  GTMRestoreColorProfile();
+  // Go ahead and exit with the signal value relayed just incase.
+  _exit(signalNumber + 128);
+}
+
 void GTMSetColorProfileToGenericRGB(void) {
   NSColorSpace *genericSpace = [NSColorSpace genericRGBColorSpace];
   CMProfileRef genericProfile = (CMProfileRef)[genericSpace colorSyncProfile];
@@ -260,6 +272,19 @@ void GTMSetColorProfileToGenericRGB(void) {
   } else {
     gGTMCurrentColorProfile = previousProfile;
     atexit(GTMRestoreColorProfile);
+    // WebKit DRT and Chrome TestShell both use this trick. If the test is
+    // already crashing, might as well try restoring the color profile, and if
+    // it fails, it is no worse than crashing without having tried.
+    signal(SIGILL, GTMHandleCrashSignal);
+    signal(SIGTRAP, GTMHandleCrashSignal);
+    signal(SIGEMT, GTMHandleCrashSignal);
+    signal(SIGFPE, GTMHandleCrashSignal);
+    signal(SIGBUS, GTMHandleCrashSignal);
+    signal(SIGSEGV, GTMHandleCrashSignal);
+    signal(SIGSYS, GTMHandleCrashSignal);
+    signal(SIGPIPE, GTMHandleCrashSignal);
+    signal(SIGXCPU, GTMHandleCrashSignal);
+    signal(SIGXFSZ, GTMHandleCrashSignal);
   }
   CFRelease(previousProfileName);
   CFRelease(genericProfileName);
