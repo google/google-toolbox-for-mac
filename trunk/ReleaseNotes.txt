@@ -349,6 +349,11 @@ Changes since 1.5.1
 - GTMNSAnimation+Duration.m adds support for checking for control and shift
   keys when trying to decide how to calculate durations for animations.
 
+- Added Xcode configs for iPhone 2.2, 2.2.1, 3.0, 3.1, 3.1.2.
+
+- Added configurations GTMiPhone for all the new configs, updated the build
+  scripts to build all iPhone SDKs also.
+
 
 Release 1.5.1
 Changes since 1.5.0
