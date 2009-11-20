@@ -11,9 +11,12 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = F47204340D33BEDF00E9F378 /* Build configuration list for PBXAggregateTarget "All UnitTests" */;
 			buildPhases = (
-				8BAA9A2B0F7AF44A00DF4F12 /* ShellScript */,
 			);
 			dependencies = (
+				F4E4279810B7484B00F28A35 /* PBXTargetDependency */,
+				F4E4279610B7484B00F28A35 /* PBXTargetDependency */,
+				F4E4279210B7484B00F28A35 /* PBXTargetDependency */,
+				F4E4279410B7484B00F28A35 /* PBXTargetDependency */,
 			);
 			name = "All UnitTests";
 			productName = "All UnitTests";
@@ -387,13 +390,6 @@
 			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
 			remoteInfo = UIUnitTestingHarness;
 		};
-		8BFE13BE0FB0F2D8001BE894 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
-			remoteInfo = UIUnitTestingHarness;
-		};
 		8BFE13C00FB0F2D8001BE894 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -414,6 +410,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
 			remoteInfo = GTM;
+		};
+		F4E4279110B7484B00F28A35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BFE13BC0FB0F2D8001BE894 /* UnitTest - AddressBook */;
+			remoteInfo = "UnitTest - AddressBook";
+		};
+		F4E4279310B7484B00F28A35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F48FE2630D198C1E009257D2 /* UnitTest - AppKit */;
+			remoteInfo = "UnitTest - AppKit";
+		};
+		F4E4279510B7484B00F28A35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F42E08110D19987200D5DDE0 /* UnitTest - Foundation */;
+			remoteInfo = "UnitTest - Foundation";
+		};
+		F4E4279710B7484B00F28A35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B45A0270DA4696C001148C5 /* UnitTest - UnitTesting */;
+			remoteInfo = "UnitTest - UnitTesting";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1504,7 +1528,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8BFE13BD0FB0F2D8001BE894 /* PBXTargetDependency */,
 				8BFE13BF0FB0F2D8001BE894 /* PBXTargetDependency */,
 			);
 			name = "UnitTest - AddressBook";
@@ -1540,6 +1563,7 @@
 				F42E08690D199A5B00D5DDE0 /* Resources */,
 				F42E086A0D199A5B00D5DDE0 /* Sources */,
 				F42E086B0D199A5B00D5DDE0 /* Frameworks */,
+				F4E4297B10B753C600F28A35 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1749,20 +1773,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
-		};
-		8BAA9A2B0F7AF44A00DF4F12 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "GTMXcodeNote() {\n  echo ${ThisScript}:${1}: note: GTM ${2}\n}\n\nGTMXcodeNote ${LINENO} \"Removing gcov data files from ${CONFIGURATION_TEMP_DIR}\"\n( cd \"${CONFIGURATION_TEMP_DIR}\" &&  find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - UnitTesting\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - Foundation\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AppKit\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1\nxcodebuild -project \"GTM.xcodeproj\" -target \"UnitTest - AddressBook\" -configuration \"${CONFIGURATION}\" OBJROOT=\"${OBJROOT}\" SYMROOT=\"${SYMROOT}\" CACHE_ROOT=\"${CACHE_ROOT}\" GTM_DO_NOT_REMOVE_GCOV_DATA=1";
+			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_ONE_TEST_AT_A_TIME=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
 		};
 		8BFE13F10FB0F2D8001BE894 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1775,7 +1786,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
 		};
 		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1788,7 +1799,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
+			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
 		};
 		F48FE2620D198C1E009257D2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1801,7 +1812,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_ONE_TEST_AT_A_TIME=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+		};
+		F4E4297B10B753C600F28A35 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Every time we build, clean up the gcda files just incase someone is trying to look at coverage.\nGTM_GCOV_CLEANUP_DIR=\"${OBJECT_FILE_DIR}-${CURRENT_VARIANT}\"\nif [ \"${GTM_GCOV_CLEANUP_DIR}\" != \"-\" ]; then\n  if [ -d \"${GTM_GCOV_CLEANUP_DIR}\" ]; then\n    echo \"note: Removing gcov data files from ${GTM_GCOV_CLEANUP_DIR}\"\n    (cd \"${GTM_GCOV_CLEANUP_DIR}\" && \\\n      find . -type f -name \"*.gcda\" -print0 | xargs -0 rm -f )\n  fi\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2026,11 +2050,6 @@
 			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
 			targetProxy = 8BAA9A340F7AF50600DF4F12 /* PBXContainerItemProxy */;
 		};
-		8BFE13BD0FB0F2D8001BE894 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
-			targetProxy = 8BFE13BE0FB0F2D8001BE894 /* PBXContainerItemProxy */;
-		};
 		8BFE13BF0FB0F2D8001BE894 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
@@ -2045,6 +2064,26 @@
 			isa = PBXTargetDependency;
 			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
 			targetProxy = F42E08780D199AA600D5DDE0 /* PBXContainerItemProxy */;
+		};
+		F4E4279210B7484B00F28A35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BFE13BC0FB0F2D8001BE894 /* UnitTest - AddressBook */;
+			targetProxy = F4E4279110B7484B00F28A35 /* PBXContainerItemProxy */;
+		};
+		F4E4279410B7484B00F28A35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F48FE2630D198C1E009257D2 /* UnitTest - AppKit */;
+			targetProxy = F4E4279310B7484B00F28A35 /* PBXContainerItemProxy */;
+		};
+		F4E4279610B7484B00F28A35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F42E08110D19987200D5DDE0 /* UnitTest - Foundation */;
+			targetProxy = F4E4279510B7484B00F28A35 /* PBXContainerItemProxy */;
+		};
+		F4E4279810B7484B00F28A35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B45A0270DA4696C001148C5 /* UnitTest - UnitTesting */;
+			targetProxy = F4E4279710B7484B00F28A35 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
