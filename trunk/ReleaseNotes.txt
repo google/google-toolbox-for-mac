@@ -354,6 +354,12 @@ Changes since 1.5.1
 - Added configurations GTMiPhone for all the new configs, updated the build
   scripts to build all iPhone SDKs also.
 
+- RunMacOSUnitTests supports GTM_REMOVE_TARGET_GCOV_ONLY to have only gcda
+  removed from the target and not the whole project.
+
+- RunMacOSUnitTests supports GTM_ONE_TEST_AT_A_TIME to have only one test
+  run at a time to support global state (color sync profile, etc.).
+
 
 Release 1.5.1
 Changes since 1.5.0

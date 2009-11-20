@@ -22,7 +22,6 @@
 
 set -o errexit
 set -o nounset 
-set -o verbose
 
 # Controlling environment variables:
 #
@@ -56,12 +55,38 @@ GTM_LEAKS_SYMBOLS_TO_IGNORE=${GTM_LEAKS_SYMBOLS_TO_IGNORE:=""}
 #   non-zero value.
 GTM_DO_NOT_REMOVE_GCOV_DATA=${GTM_DO_NOT_REMOVE_GCOV_DATA:=0}
 
+# GTM_REMOVE_TARGET_GCOV_ONLY
+#   By default all *.gcda files are removed form the project.  Setting this to
+#   1 causes only the *.gcda files for the target to be removed.
+#   If GTM_DO_NOT_REMOVE_GCOV_DATA is set, this has no effect.
+GTM_REMOVE_TARGET_GCOV_ONLY=${GTM_REMOVE_TARGET_GCOV_ONLY:=0}
+
+# GTM_ONE_TEST_AT_A_TIME
+#   By default your tests run how ever parallel your projects/targets are
+#   setup.  Setting this to 1 will cause only one to run at a time, this is
+#   useful if you are doing UI tests with the helper that controls the
+#   colorsync profile, or any other machine wide state.
+GTM_ONE_TEST_AT_A_TIME=${GTM_ONE_TEST_AT_A_TIME:=0}
+
 ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 ScriptName=$(basename "$0")
 ThisScript="${ScriptDir}/${ScriptName}"
 
 GTMXcodeNote() {
   echo ${ThisScript}:${1}: note: GTM ${2}
+}
+
+# Helper that works like the linux flock util, so you can run something, but
+# have only one run at a time.
+MaybeFlock() {
+  if [ $GTM_ONE_TEST_AT_A_TIME ]; then
+    python -c "import fcntl, subprocess, sys
+file = open('$TMPDIR/GTM_one_test_at_a_time', 'a')
+fcntl.flock(file.fileno(), fcntl.LOCK_EX)
+sys.exit(subprocess.call(sys.argv[1:]))" "${@}"
+  else
+    "${@}"
+  fi
 }
 
 # The workaround below is due to
@@ -177,14 +202,14 @@ RunTests() {
   ARCHS="${LEAK_TEST_ARCHS}"
   VALID_ARCHS="${LEAK_TEST_ARCHS}"
   GTMXcodeNote ${LINENO} "Leak checking enabled for $ARCHS. Ignoring leaks from $GTM_LEAKS_SYMBOLS_TO_IGNORE."
-  "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
   
   # Running leaks on architectures that don't support leaks.
   unset MallocStackLogging
   GTM_ENABLE_LEAKS=0
   ARCHS="${NO_LEAK_TEST_ARCHS}"
   VALID_ARCHS="${NO_LEAK_TEST_ARCHS}"
-  "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
 }
 
 # Jack up some memory stress so we can catch more bugs.
@@ -209,10 +234,14 @@ if [ $GTM_DISABLE_ZOMBIES -eq 0 ]; then
 fi
 
 if [ ! $GTM_DO_NOT_REMOVE_GCOV_DATA ]; then
-  if [ "${CONFIGURATION_TEMP_DIR}" != "-" ]; then
-    if [ -d "${CONFIGURATION_TEMP_DIR}" ]; then
-      GTMXcodeNote ${LINENO} "Removing gcov data files from ${CONFIGURATION_TEMP_DIR}"
-      (cd "${CONFIGURATION_TEMP_DIR}" && \
+  GTM_GCOV_CLEANUP_DIR="${CONFIGURATION_TEMP_DIR}"
+  if [ $GTM_REMOVE_TARGET_GCOV_ONLY ]; then
+    GTM_GCOV_CLEANUP_DIR="${OBJECT_FILE_DIR}-${CURRENT_VARIANT}"
+  fi
+  if [ "${GTM_GCOV_CLEANUP_DIR}" != "-" ]; then
+    if [ -d "${GTM_GCOV_CLEANUP_DIR}" ]; then
+      GTMXcodeNote ${LINENO} "Removing gcov data files from ${GTM_GCOV_CLEANUP_DIR}"
+      (cd "${GTM_GCOV_CLEANUP_DIR}" && \
         find . -type f -name "*.gcda" -print0 | xargs -0 rm -f )
     fi
   fi
@@ -224,5 +253,5 @@ if [ $GTM_ENABLE_LEAKS -ne 0 ]; then
   RunTests  
 else
   GTMXcodeNote ${LINENO} "Leak checking disabled."
-  "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
 fi
