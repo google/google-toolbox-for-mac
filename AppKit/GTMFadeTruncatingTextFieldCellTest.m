@@ -31,6 +31,7 @@
                          NSMakeRect(0, 0, 100, 16)] autorelease];
   [field setCell:[[[GTMFadeTruncatingTextFieldCell alloc] initTextCell:@""]
                   autorelease]];
+
   [field setStringValue:@"A very long string that won't fit"];
   GTMAssertObjectImageEqualToImageNamed(field,
                                         @"GTMFadeTruncatingTextFieldCellTest1",
@@ -38,6 +39,22 @@
   [field setStringValue:@"A short string"];
   GTMAssertObjectImageEqualToImageNamed(field,
                                         @"GTMFadeTruncatingTextFieldCellTest2",
+                                        nil);
+
+  // Dark background, light text (force the background to draw (which is odd
+  // for a text cell), but this is to make sure the support for light on dark
+  // is tested.
+  [field setTextColor:[NSColor whiteColor]];
+  [field setDrawsBackground:YES];
+  [field setBackgroundColor:[NSColor blackColor]];
+
+  [field setStringValue:@"A very long string that won't fit"];
+  GTMAssertObjectImageEqualToImageNamed(field,
+                                        @"GTMFadeTruncatingTextFieldCellTest3",
+                                        nil);
+  [field setStringValue:@"A short string"];
+  GTMAssertObjectImageEqualToImageNamed(field,
+                                        @"GTMFadeTruncatingTextFieldCellTest4",
                                         nil);
 }
 
