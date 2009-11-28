@@ -141,7 +141,10 @@
     }
     for (size_t j = 0; j < sizeof(testFiles) / sizeof(NSString*); j++) {
       NSString *testFile = [testDir stringByAppendingPathComponent:testFiles[j]];
-      STAssertTrue([@"test" writeToFile:testFile atomically:YES], nil);
+      STAssertTrue([@"test" writeToFile:testFile
+                             atomically:YES
+                               encoding:NSUTF8StringEncoding
+                                  error:nil], nil);
     }
   }
   
