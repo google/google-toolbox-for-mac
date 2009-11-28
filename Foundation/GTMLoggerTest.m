@@ -295,7 +295,9 @@
   [fh logMessage:@"test 4" level:kGTMLoggerLevelAssert];
   [fh closeFile];
   
-  NSString *contents = [NSString stringWithContentsOfFile:path_];
+  NSString *contents = [NSString stringWithContentsOfFile:path_
+                                                 encoding:NSUTF8StringEncoding
+                                                    error:nil];
   
   STAssertEqualObjects(@"test 0\ntest 1\ntest 2\ntest 3\ntest 4\n", contents, nil);
 }
@@ -458,7 +460,10 @@
   [fh logMessage:@"test 6" level:kGTMLoggerLevelInfo];
   [fh closeFile];
   
-  NSString *contents = [NSString stringWithContentsOfFile:path_];
+  NSString *contents = [NSString stringWithContentsOfFile:path_
+                                                 encoding:NSUTF8StringEncoding
+                                                    error:NULL];
+  
   STAssertNotNil(contents, nil);
   STAssertEqualObjects(@"test 1\ntest 2\ntest 3\ntest 4\ntest 5\ntest 6\n", contents, nil);  
 }
