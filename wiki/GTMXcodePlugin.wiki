@@ -9,7 +9,7 @@ The GTM Xcode plugin adds a couple of nice features to Xcode.
    # Some quick links under the "Help" menu to some useful documentation. 
    # Some menu items for working with [http://code.google.com/p/coverstory/ Coverstory]
 
-
+It is available under [http://code.google.com/p/google-toolbox-for-mac/downloads/list downloads]. 
 = Installation =
 The install path is a little difficult, but the plugin should be extracted from its Zip file and should be put into:
 
