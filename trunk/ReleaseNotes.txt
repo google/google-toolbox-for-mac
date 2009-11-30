@@ -28,12 +28,12 @@ Changes since 1.5.1
 
 - Added GTMHTTPFetcher and GTMHTTPServer to GTMiPhone
 
-- Made sure that build would work with iPhone device attached, and that all 
+- Made sure that build would work with iPhone device attached, and that all
   tests run directly on the phone.
-  
-- Added GTMValidatingContainers which are a set of mutable container classes 
-  that allow you to have a selector on a target that is called to verify that 
-  the objects being put into the container are valid. This can be controlled 
+
+- Added GTMValidatingContainers which are a set of mutable container classes
+  that allow you to have a selector on a target that is called to verify that
+  the objects being put into the container are valid. This can be controlled
   at compile time so that you don't take the performance hit in a release build.
 
 - Added GTMPath, which represents an existing absolute path on the file system.
@@ -47,11 +47,11 @@ Changes since 1.5.1
 
 - Added GTMLargeTypeWindow for doing display windows similar to Address Book
   Large Type display for phone numbers.
-  
+
 - Removed GTMNSWorkspace+ScreenSaver as it has always been a little dodgy due
   to it's dependencies on undocumented frameworks, and the ScreenSaver
   framework doesn't play nicely in GC mode.
-  
+
 - Added property methods to GTMHTTPFetcher.  These are convenient alternatives
   to storing an NSDictionary in the userData.
 
@@ -60,7 +60,7 @@ Changes since 1.5.1
   isn't needed in most cases.
 
 - Fixed a potential GTMHTTPFetcher crash on failed authentication.
-  
+
 - Added a obj-c logging package, GTMLogger, for applications that want an
   application level logging system.  See GTMLogger.h, GTMLogger+ASL.h, and
   GTMLoggerRingBufferWriter.h for what the basic system and two optional
@@ -68,8 +68,8 @@ Changes since 1.5.1
 
 - Added GTMNSMakeUncollectable for forcing objects to survive in a GC world.
 
-- Added GTMCFAutorelease to make the [GTMNSMakeCollectable(cfFoo) autorelease] 
-  simpler and clearer, it's now just GTMCFAutorelease(cfFoo), and works in 
+- Added GTMCFAutorelease to make the [GTMNSMakeCollectable(cfFoo) autorelease]
+  simpler and clearer, it's now just GTMCFAutorelease(cfFoo), and works in
   both GC and non-GC world.
 
 - Added GTMIsGarbageCollectionEnabled to GTMGarbageCollection.h.  See the note
@@ -86,22 +86,22 @@ Changes since 1.5.1
 
 - Fixed up crash in GTMLoggerRingBufferWriter when used with GC on.
 
-- Significant updates to GTMNSAppleScript+Handler allowing you to 
-  list all handlers and properties (including inherited) and cleans up 
+- Significant updates to GTMNSAppleScript+Handler allowing you to
+  list all handlers and properties (including inherited) and cleans up
   several errors in how scripting was being handled.
 
 - Added GTMGetURLHandler class that gives you a very easy way of supporting
   Get URL events just by adding a key to your plists, and adding a single
   method to your class. See GTMGetURLHandler.m for more details.
 
-- Added XcodeProject, AppleScript, and InterfaceBuilder Spotlight Plugins. 
-  Allows you to index .xcodeproj, .scpt, .scptd, .xib, .nib, and 
+- Added XcodeProject, AppleScript, and InterfaceBuilder Spotlight Plugins.
+  Allows you to index .xcodeproj, .scpt, .scptd, .xib, .nib, and
   .aib files. See Readmes beside individual projects in SpotlightPlugins.
 
 - Added GTMExceptionalInlines for dealing with cases where you get
   warning: variable 'r' might be clobbered by 'longjmp' or 'vfork'
   when using certain Apple inlined functions in @synchronized/@try blocks.
-  
+
 - Updated to Xcode 3.1 so the GTM and iPhone project have the same baseline.
   The code should work in other version of xcode, but the projects and
   xcconfig files now use 3.1 features.
@@ -144,21 +144,21 @@ Changes since 1.5.1
   GTMNSObject+BindingUnitTesting.m for details.
 
 - Added support for grabbing the build number for a particular OS in
-  GTMSystemVersion and easily comparing it to known build numbers, and switched 
-  some types from in GTMSystemVersion from "int" to SInt32 to make 64 bit work 
+  GTMSystemVersion and easily comparing it to known build numbers, and switched
+  some types from in GTMSystemVersion from "int" to SInt32 to make 64 bit work
   better.
-   
+
 - Added support for SnowLeopard (10A96). We build cleanly with the 10.6 SDKs and
   all radar checks were updated accordingly. Build All script was also updated
   to build on SnowLeopard if you have the SDK available.
-  
+
 - Turned off building ppc64 GTM because the SnowLeopard SDK currently
   doesn't have ppc64 support, so SenTestCase isn't defined. This makes it
   impossible to build the ppc64 10.5 config on SnowLeopard. We have left the
   setting in the xcconfig for those of you who need it, but have disabled
   it in the GTM project settings.
-  
-- Turned on stack smashing protection on the debug builds for all Leopard 
+
+- Turned on stack smashing protection on the debug builds for all Leopard
   and above.
 
 - Added ability to easily do leak checking by defining the GTM_ENABLE_LEAKS
@@ -173,7 +173,7 @@ Changes since 1.5.1
 
 - GTMStackTrace support for building a trace from the call stack in an
   NSException (for 10.5+ and iPhone).
-  
+
 - GTMStackTrace works on 10.5+ (and iPhone) using NSThread to build the call
   stack.
 
@@ -185,13 +185,13 @@ Changes since 1.5.1
 
 - Added GTMCarbonEvent for dealing with Carbon Events and HotKeys in a ObjC
   like way.
-  
+
 - Backported the Atomic Barrier Swap functions for Objective C back to Tiger.
 
 - Added a variety of new functions to GTMUnitTestingUtilities for checking
-  if the screensaver is in the way, waiting on user events, and generating 
-  keystrokes. 
-  
+  if the screensaver is in the way, waiting on user events, and generating
+  keystrokes.
+
 - If you are using any Carbon routines that log (DebugStr, AssertMacros.h) and
   use GTMUnitTestDevLog, the log routines now go through _GTMDevLog so that
   they can be caught in GTMUnitTestDevLog and verified like any _GTMDevLog calls
@@ -221,8 +221,8 @@ Changes since 1.5.1
 - If you are using GTMUnitTestDevLog, it also tries to capture logs from
   NSAssert.
 
-- Added GTM_FOREACH_OBJECT/GTM_FOREACH_KEY/GTM_FOREACH_ENUMEREE that uses 
-  NSEnumerator and objectEnumerator/keyEnumerator on 10.4, but on 10.5+/iPhone 
+- Added GTM_FOREACH_OBJECT/GTM_FOREACH_KEY/GTM_FOREACH_ENUMEREE that uses
+  NSEnumerator and objectEnumerator/keyEnumerator on 10.4, but on 10.5+/iPhone
   uses FastEnumeration.
 
 - GTMNSWorkspace+Running gives a variety of ways of determining the attributes
@@ -235,15 +235,15 @@ Changes since 1.5.1
   "correctly". Based on some excellent code by Michael Ash.
   http://www.mikeash.com/?page=pyblog/key-value-observing-done-right.html
   This has been added for iPhone and OS X.
-  
+
 - Fixed up GTMSenTestCase on iPhone so that it has a description that matches
   that of OCUnit.
 
-- Added GTMAbstractDOListener, GTMTransientRootProxy, and 
+- Added GTMAbstractDOListener, GTMTransientRootProxy, and
   GTMTransientRootPortProxy.  These classes can be used to simplify the
   use of distributed objects.  GTMAbstractDOListener can be used to handle
   connections from any type of port.  GTMTransientRootProxy is designed for
-  using named connections while GTMTransientRootPortProxy is for connections 
+  using named connections while GTMTransientRootPortProxy is for connections
   with supplied NSPorts.
 
 - Finally dropped GTMHTTPFetcher and GTMProgressMonitorInputStream, GData
@@ -256,22 +256,22 @@ Changes since 1.5.1
 
 - Made some changes to the GTMNSObject+UnitTesting APIs. Specifically renamed
   gtm_createUnitTestImage to gtm_unitTestImage. The value it returns is now
-  autoreleased, so no need to release it. Also change 
+  autoreleased, so no need to release it. Also change
   gtm_createUnitTestBitmapOfSize:withData: to a C function.
-  
+
 - Cleaned up GTM so that it passes the Clang checker without any warnings.
 
 - Added GTMLuminance for working with colors in HSL space easily.
 
 - Added GTMTheme for doing product wide theme modifications.
 
-- The Run*UnitTest.sh script now delete the current projects *.gcda files to 
+- The Run*UnitTest.sh script now delete the current projects *.gcda files to
   avoid coverage data warning when you edit source. If you do not want this to
   occur, you can set GTM_DO_NOT_REMOVE_GCOV_DATA to a non-zero value.
 
-- Added OBJC_DEBUG_UNLOAD=YES, and OBJC_DEBUG_NIL_SYNC=YES to our unittest shell 
+- Added OBJC_DEBUG_UNLOAD=YES, and OBJC_DEBUG_NIL_SYNC=YES to our unittest shell
   scripts to try and flush out some more bugs. We have intentionally NOT turned
-  on OBJC_DEBUG_FINALIZERS beacuse it spits out a lot of unnecessary false 
+  on OBJC_DEBUG_FINALIZERS beacuse it spits out a lot of unnecessary false
   positives.
 
 - Added GTMUILocalizer.m for automatically localizing nib files with strings.
@@ -281,18 +281,18 @@ Changes since 1.5.1
 
 - Adds support for toolTips, accessibilityHelp and accessibilityDescription to
   GTMAppKit+UnitTesting. This will break your UI tests based on the older
-  state information. 
+  state information.
 
 - Added support for duration to GTMLargeTypeWindow mainly to make the unittests
   run at a decent speed.
 
 - All calls to GTMNSAppleScript+Handler execute: calls will now actually
   execute the script on the main thread.
-  
+
 - Added gtm_launchedApplications to GTMNSWorkspace+Running. It is significantly
   faster than calling [NSWorkspace launchedApplications]
-  
-- Moved GTMABAddressBook out of iPhone and into the AddressBook directory, 
+
+- Moved GTMABAddressBook out of iPhone and into the AddressBook directory,
   because it now works on both the Desktop and the iPhone giving you a single
   interface to do AddressBook work on both platforms.
 
@@ -300,7 +300,7 @@ Changes since 1.5.1
   parse JSON as there are several other frameworks out there for doing that.
 
 - Fixed up GTMABAddressBook so that it will compile and run on Tiger as well.
-  This did mean some slight functional differences in terms of the 
+  This did mean some slight functional differences in terms of the
   *WithCompositeNameWithPrefix methods as they can't do diacritic or width
   insensitive search on Tiger, but this shouldn't affect most users.
 
@@ -309,7 +309,7 @@ Changes since 1.5.1
 - Added GTMUIImage+Resize for iPhone to conveniently handle generating resized
   UIImages while preserving aspect ratios.
 
-- Added support for passing in a context object to some of the 
+- Added support for passing in a context object to some of the
   GTMNSEnumerator+Filter routines.
 
 - Fixed up bug in GTMFileSystemKQueue where we were passing the kqueue argument
@@ -321,7 +321,7 @@ Changes since 1.5.1
 
 - Added gtm_dictionaryWithHttpArgumentsString to NSDictionary+URLArguments.
 
-- Added GTMDebugKeyValueObserving category to NSObject. This makes debugging 
+- Added GTMDebugKeyValueObserving category to NSObject. This makes debugging
   KVO a little easier in some cases. To turn it on, set the "GTMDebugKVO"
   environment variable to "1". It will output a lot of data about adding and
   removing KVO observers, and when the values are actually changed.
@@ -337,7 +337,7 @@ Changes since 1.5.1
 
 - Added GTMNSData+Hex for conversion to and from hex strings.
 
-- Added GTMNSNumber+64Bit for working with CGFloats, NSIntegers and 
+- Added GTMNSNumber+64Bit for working with CGFloats, NSIntegers and
   NSUIntegers using NSNumber on all supported SDKs.
 
 - Added GTMIBArray for building arrays in nib files.
@@ -359,6 +359,25 @@ Changes since 1.5.1
 
 - RunMacOSUnitTests supports GTM_ONE_TEST_AT_A_TIME to have only one test
   run at a time to support global state (color sync profile, etc.).
+
+- Added the GTM XcodePlugin. This plugin enhances Xcode with the following
+  features:
+  - Cleanup line ending white space on saves.
+    See Xcode Preferences > Google panel to turn this on.
+  - Create Unit Test Executable.
+    Select a unit test target, and then select "Create Unit Test Executable"
+    from the project menu, and it will create an executable you can debug.
+  - Turn Code Coverage On
+    Turns on code coverage for the current target. Nice when working with
+    CoverStory.
+  - Show Code Coverage/Clean Code Coverage/Clean Project Coverage and Build
+    Utilities for working with CoverStory.
+  - Under the help menu, quick links to the Google Style guides, Radar,
+    and our favorite tech note.
+
+  Note that you can see all the menu items that GTM Xcode Plugin has added by
+  turning on the "Show Icon on Menu Items" option in the Xcode Preferences >
+  Google panel.
 
 
 Release 1.5.1
@@ -447,8 +466,8 @@ Changes since 1.0.0
 
 - Added RunMacOSUnitTests shell script. We run this script for starting up our
   unittests because it turns on a variety of "enhancements" (such as zombies,
-  scribbling etc) to encourage our unittests to fail for us. 
-  
+  scribbling etc) to encourage our unittests to fail for us.
+
   https://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=19915
 
 - Remove NSColor+Theme and NSWorkspace+Theme as they are no longer needed for
@@ -472,7 +491,7 @@ Changes since 1.0.0
 - Added GTMFourCharCode for wrapping FourCharCodes in an ObjC object. Mainly for
   use by the NSAppleEventDescriptor code, and also useful for storing them
   in ObjC collection classes.
-  
+
 - Added GTMStackTrace.
 
 - Added NSString+URLArguments and NSDictionary+URLArguments
@@ -482,7 +501,7 @@ Changes since 1.0.0
 - Added _GTMCompileAssert for doing compile time assertions to GTMDefines.h
 
 - Added GTMUnitTestDevLog and GTMTestCase for logging and tracking logs while
-  running unittests to verify what is being logged is what you expect. All 
+  running unittests to verify what is being logged is what you expect. All
   unittests should now inherit from GTMTestCase instead of SenTestCase to take
   advantage of the new log tracking. See GTMUnitTestDevLog.h for details.
 
