@@ -1,0 +1,26 @@
+#summary Google Toolbox For Mac Xcode Plugin
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+The GTM Xcode plugin adds a couple of nice features to Xcode.
+   # A preference to clean up end of line white space from text files.
+   # A "Create Unit Test Executable" menu item to make it easier to debug unit tests.
+   # Some quick links under the "Help" menu to some useful documentation. 
+   # Some menu items for working with [http://code.google.com/p/coverstory/ Coverstory]
+
+
+= Installation =
+The install path is a little difficult, but the plugin should be extracted from its Zip file and should be put into:
+
+  * "/Library/Application Support/Developer/3.1/Xcode/Plug-ins" for development on Leopard
+
+and
+
+  * "/Library/Application Support/Developer/3.2/Xcode/Plug-ins" for development on Snow Leopard
+
+Once it is in place, restart Xcode, and you should have a "About GTM Xcode Plugin" menu item under the Xcode menu. If you don't have this item, please check the location you installed it and try again.
+
+If you run into any problems, please log them at:
+
+http://code.google.com/p/google-toolbox-for-mac/issues/list
