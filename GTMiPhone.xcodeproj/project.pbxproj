@@ -810,109 +810,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1D6058940D05DD3E006BFB54 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = "GTMiPhone-Info.plist";
-				PRODUCT_NAME = GTMiPhoneTest;
-				SDKROOT = iphonesimulator2.0;
-			};
-			name = Debug;
-		};
-		1D6058950D05DD3E006BFB54 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = "GTMiPhone-Info.plist";
-				PRODUCT_NAME = GTMiPhoneTest;
-				SDKROOT = iphonesimulator2.0;
-			};
-			name = Release;
-		};
-		8BC0497D0DAEC48600C2D1CA /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_WARN_SHADOW = YES;
-				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
-			};
-			name = "Debug-gcov";
-		};
-		8BC0497E0DAEC48600C2D1CA /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */;
-			buildSettings = {
-				INFOPLIST_FILE = "GTMiPhone-Info.plist";
-				PRODUCT_NAME = GTMiPhoneTest;
-				SDKROOT = iphonesimulator2.0;
-			};
-			name = "Debug-gcov";
-		};
-		C01FCF4F08A954540054247B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_WARN_SHADOW = YES;
-				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
-			};
-			name = Debug;
-		};
-		C01FCF5008A954540054247B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BC049890DAEC59100C2D1CA /* ReleaseiPhone20.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_WARN_SHADOW = YES;
-				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
-			};
-			name = Release;
-		};
-		F4B541450E7F022B004738EC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = Debug;
-		};
-		F4B541460E7F022B004738EC /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = "Debug-gcov";
-		};
-		F4B541470E7F022B004738EC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = Release;
-		};
-		F4C7F9C00DC62EC8009BEE5B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests";
-			};
-			name = Debug;
-		};
-		F4C7F9C10DC62EC8009BEE5B /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests";
-			};
-			name = "Debug-gcov";
-		};
-		F4C7F9C20DC62EC8009BEE5B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests";
-			};
-			name = Release;
-		};
 		F4E4263610B70C4F00F28A35 /* iPhone2.0-Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */;
@@ -1640,9 +1537,6 @@
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "GTMiPhoneUnitTesting" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1D6058940D05DD3E006BFB54 /* Debug */,
-				8BC0497E0DAEC48600C2D1CA /* Debug-gcov */,
-				1D6058950D05DD3E006BFB54 /* Release */,
 				F4E4263C10B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4263D10B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4263E10B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -1666,14 +1560,11 @@
 				F4E426A110B70D2D00F28A35 /* iPhone3.1.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "iPhone3.1.2-Debug";
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "GTMiPhone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4F08A954540054247B /* Debug */,
-				8BC0497D0DAEC48600C2D1CA /* Debug-gcov */,
-				C01FCF5008A954540054247B /* Release */,
 				F4E4263610B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4263710B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4263810B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -1697,14 +1588,11 @@
 				F4E4269B10B70D2D00F28A35 /* iPhone3.1.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "iPhone3.1.2-Debug";
 		};
 		F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests all SDKs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F4B541450E7F022B004738EC /* Debug */,
-				F4B541460E7F022B004738EC /* Debug-gcov */,
-				F4B541470E7F022B004738EC /* Release */,
 				F4E4263F10B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4264010B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4264110B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -1728,14 +1616,11 @@
 				F4E426A410B70D2D00F28A35 /* iPhone3.1.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "iPhone3.1.2-Debug";
 		};
 		F4C7F9C50DC62F0C009BEE5B /* Build configuration list for PBXAggregateTarget "All UnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F4C7F9C00DC62EC8009BEE5B /* Debug */,
-				F4C7F9C10DC62EC8009BEE5B /* Debug-gcov */,
-				F4C7F9C20DC62EC8009BEE5B /* Release */,
 				F4E4263910B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4263A10B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4263B10B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -1759,7 +1644,7 @@
 				F4E4269E10B70D2D00F28A35 /* iPhone3.1.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "iPhone3.1.2-Debug";
 		};
 /* End XCConfigurationList section */
 	};
