@@ -30,13 +30,21 @@ static NSString *const GTMNSAppleScriptEventKey = @"GTMNSAppleScriptEvent";
 static NSString *const GTMNSAppleScriptResultKey = @"GTMNSAppleScriptResult";
 static NSString *const GTMNSAppleScriptErrorKey = @"GTMNSAppleScriptError";
 
+// Error keys that we may return in the error dictionary on top of the standard
+// NSAppleScriptError* keys.
+NSString const* GTMNSAppleScriptErrorPartialResult 
+  = @"GTMNSAppleScriptErrorPartialResult";
+NSString const* GTMNSAppleScriptErrorOffendingObject 
+  = @"GTMNSAppleScriptErrorOffendingObject";
+NSString const* GTMNSAppleScriptErrorExpectedType
+  = @"GTMNSAppleScriptErrorExpectedType";
+
 // Some private methods that we need to call
 @interface NSAppleScript (NSPrivate)
 + (ComponentInstance)_defaultScriptingComponent;
 - (OSAID) _compiledScriptID;
 - (id)_initWithData:(NSData*)data error:(NSDictionary**)error;
 - (id)_initWithScriptIDNoCopy:(OSAID)osaID;
-+ (id)_infoForOSAError:(OSAError)error;
 @end
 
 @interface NSMethodSignature (NSPrivate)
@@ -76,6 +84,9 @@ static NSString *const GTMNSAppleScriptErrorKey = @"GTMNSAppleScriptError";
 - (OSAID)gtm_realIDAndComponent:(ComponentInstance*)component;
 
 - (void)gtm_internalExecuteAppleEvent:(NSMutableDictionary *)data;
+
+- (NSDictionary *)gtm_errorDictionaryFromOSStatus:(OSStatus)status
+                                        component:(ComponentInstance)component;
 @end
 
 @implementation NSAppleScript(GTMAppleScriptHandlerAdditions)
@@ -473,16 +484,15 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
                                    kOSAModeNull, &valueID);
     if (err == noErr) {
       // descForScriptID:component: is what sets this apart from the
-      // standard executeAppelEvent:error: in that it handles
+      // standard executeAppleEvent:error: in that it handles
       // taking script results and turning them into AEDescs of typeGTMOSAID 
       // instead of typeScript.
       desc = [self descForScriptID:valueID component:component];
       if (desc) {
         [data setObject:desc forKey:GTMNSAppleScriptResultKey];
       }
-    }
-    if (err) {
-      error = [NSAppleScript _infoForOSAError:err];
+    } else {
+      error = [self gtm_errorDictionaryFromOSStatus:err component:component];
     }
   }
   if (error) {
@@ -490,6 +500,98 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   }
 }
 
+- (NSDictionary *)gtm_errorDictionaryFromOSStatus:(OSStatus)status
+                                        component:(ComponentInstance)component {
+  NSMutableDictionary *error = nil;
+  if (status == errOSAScriptError) {
+    error = [NSMutableDictionary dictionary];
+    struct {
+      OSType selector;
+      DescType desiredType;
+      SEL extractor;
+      id key;
+    } errMap[] = {
+      { 
+        kOSAErrorNumber, 
+        typeSInt16, 
+        @selector(gtm_numberValue), 
+        NSAppleScriptErrorNumber 
+      },
+      {
+        kOSAErrorMessage, 
+        typeText, 
+        @selector(stringValue), 
+        NSAppleScriptErrorMessage
+      },
+      { 
+        kOSAErrorBriefMessage, 
+        typeText, 
+        @selector(stringValue), 
+        NSAppleScriptErrorBriefMessage
+      },
+      { kOSAErrorApp, 
+        typeText, 
+        @selector(stringValue), 
+        NSAppleScriptErrorAppName 
+      },
+      { kOSAErrorRange, 
+        typeOSAErrorRange, 
+        @selector(gtm_OSAErrorRangeValue), 
+        NSAppleScriptErrorRange
+      },
+      { 
+        kOSAErrorPartialResult, 
+        typeBest, 
+        @selector(gtm_objectValue), 
+        GTMNSAppleScriptErrorPartialResult 
+      },
+      { 
+        kOSAErrorOffendingObject, 
+        typeBest, 
+        @selector(gtm_objectValue), 
+        GTMNSAppleScriptErrorOffendingObject 
+      },
+      { 
+        kOSAErrorExpectedType, 
+        typeType, 
+        @selector(gtm_fourCharCodeValue), 
+        GTMNSAppleScriptErrorExpectedType 
+      },
+    };
+    for (size_t i = 0; i < sizeof(errMap) / sizeof(errMap[0]); ++i) {
+      AEDesc errorResult = { typeNull, NULL };
+      OSStatus err = OSAScriptError(component,
+                                    errMap[i].selector,
+                                    errMap[i].desiredType,
+                                    &errorResult); 
+      if (err == noErr) {
+        NSAppleEventDescriptor *desc = [[[NSAppleEventDescriptor alloc] 
+                 initWithAEDescNoCopy:&errorResult] autorelease];
+        id value = [desc performSelector:errMap[i].extractor];
+        if (value) {
+          [error setObject:value forKey:errMap[i].key];
+        }
+      }
+    }
+  } else if (status != noErr) {
+    // Unknown error. Do our best to give the user something good.
+    NSNumber *errNum = [NSNumber numberWithInt:status];
+    error 
+      = [NSMutableDictionary dictionaryWithObject:errNum 
+                                           forKey:NSAppleScriptErrorNumber];
+    NSString *briefMessage 
+      = [NSString stringWithUTF8String:GetMacOSStatusErrorString(status)];
+    if (briefMessage) {
+      [error setValue:briefMessage forKey:NSAppleScriptErrorBriefMessage];
+    }
+    NSString *message
+      = [NSString stringWithUTF8String:GetMacOSStatusCommentString(status)];
+    if (message) {
+      [error setValue:message forKey:NSAppleScriptErrorMessage];
+    }
+  }
+  return error;
+}
 @end
 
 // Private methods for dealing with Scripts/Events and NSAppleEventDescriptors
@@ -543,3 +645,20 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 @end
 
+@implementation NSAppleEventDescriptor (GTMAppleEventDescriptorOSAAdditions)
+
+- (id)gtm_OSAErrorRangeValue {
+  id value = nil;
+  NSAppleEventDescriptor *start = [self descriptorForKeyword:keyOSASourceStart];
+  if (start) {
+    NSAppleEventDescriptor *end = [self descriptorForKeyword:keyOSASourceEnd];
+    if (end) {
+      NSRange range = NSMakeRange([start int32Value], [end int32Value]);
+      value = [NSValue valueWithRange:range];
+    }
+  }
+  return value;
+}
+
+@end
+          

@@ -39,11 +39,11 @@
   // 10.5.8 and below. Radar 6126682.
   SInt32 major, minor, bugfix;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
-  if (!(GTMIsGarbageCollectionEnabled() 
-        && major <= 10 && minor <= 5 && bugfix <= 8)) {
-    [super invokeTest];
-  } else {
+  BOOL gcEnabled = GTMIsGarbageCollectionEnabled();
+  if (gcEnabled && major <= 10 && minor <= 5 && bugfix <= 8) {
     NSLog(@"--- %@ NOT run because of GC incompatibilites ---", [self name]);
+  } else {
+    [super invokeTest];
   }
 }
 
@@ -159,7 +159,14 @@
                                     parameters:[NSArray array] 
                                          error:&error];
   STAssertNil(desc, @"Desc should by nil %@", desc);
-  STAssertNotNil(error, nil);
+  
+  // Verify that our error handling is working correctly.
+  STAssertEquals([[error allKeys] count], (NSUInteger)6, @"%@", error);
+  STAssertNotNil([error objectForKey:GTMNSAppleScriptErrorOffendingObject], 
+                 @"%@", error);
+  STAssertNotNil([error objectForKey:GTMNSAppleScriptErrorPartialResult], 
+                 @"%@", error);
+  
   error = nil;
   
   desc = [script_ gtm_executePositionalHandler:@"testReturnParam" 
