@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -34,13 +34,13 @@ NSString *const kGTMWorkspaceRunningLSBackgroundOnly = @"LSBackgroundOnly";
 NSString *const kGTMWorkspaceRunningLSUIElement = @"LSUIElement";
 NSString *const kGTMWorkspaceRunningIsHidden = @"IsHiddenAttr";
 NSString *const kGTMWorkspaceRunningCheckedIn = @"IsCheckedInAttr";
-NSString *const kGTMWorkspaceRunningLSUIPresentationMode 
+NSString *const kGTMWorkspaceRunningLSUIPresentationMode
   = @"LSUIPresentationMode";
 NSString *const kGTMWorkspaceRunningBundlePath = @"BundlePath";
 NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 
 @interface GTMWorkspaceRunningApplicationList : NSObject {
- @private 
+ @private
   NSArray *launchedApps_;
 }
 + (GTMWorkspaceRunningApplicationList *)sharedApplicationList;
@@ -54,7 +54,7 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 - (BOOL)gtm_isAppWithIdentifierRunning:(NSString *)identifier {
   if ([identifier length] == 0) return NO;
   NSArray *launchedApps = [self gtm_launchedApplications];
-  NSArray *buildIDs 
+  NSArray *buildIDs
     = [launchedApps valueForKey:@"NSApplicationBundleIdentifier"];
   return [buildIDs containsObject:identifier];
 }
@@ -71,8 +71,8 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 - (NSDictionary *)gtm_processInfoDictionaryForPSN:(ProcessSerialNumberPtr const)psn {
   NSDictionary *dict = nil;
   if (psn) {
-    CFDictionaryRef cfDict 
-      = ProcessInformationCopyDictionary(psn, 
+    CFDictionaryRef cfDict
+      = ProcessInformationCopyDictionary(psn,
                                          kProcessDictionaryIncludeAllInformationMask);
     dict = GTMCFAutorelease(cfDict);
   }
@@ -99,7 +99,7 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 }
 
 - (BOOL)gtm_wasLaunchedAsLoginItem {
-  // If the launching process was 'loginwindow', we were launched as a login 
+  // If the launching process was 'loginwindow', we were launched as a login
   // item
   return [self gtm_wasLaunchedByProcess:@"com.apple.loginwindow"];
 }
@@ -108,46 +108,46 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
   BOOL wasLaunchedByProcess = NO;
   NSDictionary *processInfo = [self gtm_processInfoDictionary];
   if (processInfo) {
-    NSNumber *processNumber 
+    NSNumber *processNumber
       = [processInfo objectForKey:kGTMWorkspaceRunningParentPSN];
-    ProcessSerialNumber parentPSN 
+    ProcessSerialNumber parentPSN
       = [self gtm_numberToProcessSerialNumber:processNumber];
-    NSDictionary *parentProcessInfo 
+    NSDictionary *parentProcessInfo
       = [self gtm_processInfoDictionaryForPSN:&parentPSN];
-    NSString *parentBundle 
+    NSString *parentBundle
       = [parentProcessInfo objectForKey:kGTMWorkspaceRunningBundleIdentifier];
-    wasLaunchedByProcess 
+    wasLaunchedByProcess
       = [parentBundle isEqualToString:bundleid];
   }
   return wasLaunchedByProcess;
 }
 
-- (BOOL)gtm_processSerialNumber:(ProcessSerialNumber*)outPSN 
+- (BOOL)gtm_processSerialNumber:(ProcessSerialNumber*)outPSN
                    withBundleID:(NSString*)bundleID {
   if (!outPSN || [bundleID length] == 0) {
     return NO;
   }
-  
+
   NSArray *apps = [self gtm_launchedApplications];
-  
+
   NSEnumerator *enumerator = [apps objectEnumerator];
   NSDictionary *dict;
-  
+
   while ((dict = [enumerator nextObject])) {
     NSString *nextID = [dict objectForKey:@"NSApplicationBundleIdentifier"];
-    
+
     if ([nextID isEqualToString:bundleID]) {
-      NSNumber *psn 
+      NSNumber *psn
         = [dict objectForKey:@"NSApplicationProcessSerialNumberLow"];
       outPSN->lowLongOfPSN = [psn unsignedIntValue];
-      
+
       psn = [dict objectForKey:@"NSApplicationProcessSerialNumberHigh"];
       outPSN->highLongOfPSN = [psn unsignedIntValue];
-      
+
       return YES;
     }
   }
-  
+
   return NO;
 }
 
@@ -182,15 +182,15 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 }
 
 - (NSArray *)gtm_launchedApplications {
-  GTMWorkspaceRunningApplicationList *list 
+  GTMWorkspaceRunningApplicationList *list
     = [GTMWorkspaceRunningApplicationList sharedApplicationList];
   return [list launchedApplications];
 }
 @end
 
 @implementation GTMWorkspaceRunningApplicationList
-  
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList, 
+
+GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
                                 sharedApplicationList)
 - (id)init {
   if ((self = [super init])) {
@@ -211,51 +211,76 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
 
 - (void)didLaunchOrTerminateApp:(NSNotification *)notification {
   @synchronized (self) {
-    [launchedApps_ autorelease];
-    NSNotificationCenter *workSpaceNC 
+    [launchedApps_ release];
+    NSNotificationCenter *workSpaceNC
       = [[NSWorkspace sharedWorkspace] notificationCenter];
     [workSpaceNC removeObserver:self];
     launchedApps_ = nil;
   }
 }
 
-- (void)updateApps {
-  NSWorkspace *ws = [NSWorkspace sharedWorkspace];
-  NSNotificationCenter *workSpaceNC = [ws notificationCenter];
-  [workSpaceNC addObserver:self
-                  selector:@selector(didLaunchOrTerminateApp:)
-                      name:NSWorkspaceDidLaunchApplicationNotification
-                    object:nil];
-  [workSpaceNC addObserver:self
-                  selector:@selector(didLaunchOrTerminateApp:)
-                      name:NSWorkspaceDidTerminateApplicationNotification
-                    object:nil];
-  NSArray *launchedApps = [ws launchedApplications];
-  NSDictionary *ourApp = [ws activeApplication];
-  // Right now launchedApplications from NSWorkspace does not contain 
-  // UIElement apps. We may want to change our implementation. But at
-  // the very least we want to include ourselves in the list of running
-  // apps.
-  // TODO(dmaclach): revisit this and decide on something decent.
-  if (![launchedApps containsObject:ourApp]) {
-    launchedApps = [launchedApps arrayByAddingObject:ourApp];
+- (NSArray *)currentApps {
+  // Not using any NSWorkspace calls because they are not documented as being
+  // threadsafe.
+  ProcessSerialNumber psn = { kNoProcess, kNoProcess };
+  NSMutableArray *launchedApps = [NSMutableArray array];
+  while (GetNextProcess(&psn) == noErr) {
+    CFDictionaryRef cfDict
+      = ProcessInformationCopyDictionary(&psn,
+                                         kProcessDictionaryIncludeAllInformationMask);
+    NSDictionary *carbonDict = GTMCFAutorelease(cfDict);
+    // Check to make sure we actually have a dictionary. The process could
+    // have disappeared between the call to GetNextProcess and
+    // ProcessInformationCopyDictionary.
+    if (carbonDict) {
+      NSMutableDictionary *cocoaDict = [NSMutableDictionary dictionary];
+      NSString *path = [carbonDict objectForKey:@"BundlePath"];
+      if (path) {
+        [cocoaDict setObject:path forKey:@"NSApplicationPath"];
+      }
+      NSString *name = [carbonDict objectForKey:(id)kCFBundleNameKey];
+      if (name) {
+        [cocoaDict setObject:name forKey:@"NSApplicationName"];
+      }
+      NSString *bundleID = [carbonDict objectForKey:(id)kCFBundleIdentifierKey];
+      if (bundleID) {
+        [cocoaDict setObject:bundleID forKey:@"NSApplicationBundleIdentifier"];
+      }
+      NSNumber *pid = [carbonDict objectForKey:@"pid"];
+      if (pid) {
+        [cocoaDict setObject:pid forKey:@"NSApplicationProcessIdentifier"];
+      }
+      [cocoaDict setObject:[NSNumber numberWithUnsignedLong:psn.highLongOfPSN]
+                    forKey:@"NSApplicationProcessSerialNumberHigh"];
+      [cocoaDict setObject:[NSNumber numberWithUnsignedLong:psn.lowLongOfPSN]
+                    forKey:@"NSApplicationProcessSerialNumberLow"];
+      [launchedApps addObject:cocoaDict];
+    }
   }
-  launchedApps_ = [launchedApps retain];
+  return launchedApps;
 }
+
 
 - (NSArray *)launchedApplications {
   NSArray *localReturn = nil;
   @synchronized (self) {
     if (!launchedApps_) {
-      [self performSelectorOnMainThread:@selector(updateApps)
-                             withObject:nil 
-                          waitUntilDone:YES];
+      launchedApps_ = [[self currentApps] retain];
+      NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+      NSNotificationCenter *workSpaceNC = [ws notificationCenter];
+      [workSpaceNC addObserver:self
+                      selector:@selector(didLaunchOrTerminateApp:)
+                          name:NSWorkspaceDidLaunchApplicationNotification
+                        object:nil];
+      [workSpaceNC addObserver:self
+                      selector:@selector(didLaunchOrTerminateApp:)
+                          name:NSWorkspaceDidTerminateApplicationNotification
+                        object:nil];
     }
-    localReturn = launchedApps_;
     // We want to keep launchedApps_ in the autoreleasepool of this thread
-    [[localReturn retain] autorelease];
+    localReturn = [launchedApps_ retain];
   }
-  return localReturn;
+  return [localReturn autorelease];
 }
-  
+
 @end
