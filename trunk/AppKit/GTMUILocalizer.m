@@ -161,32 +161,13 @@
       }
     }
 
-    // Then do accessibility stuff
-    NSArray *supportedAttrs = [view accessibilityAttributeNames];
-    if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
-      NSString *accessibilityHelp
-        = [view accessibilityAttributeValue:NSAccessibilityHelpAttribute];
-      if (accessibilityHelp) {
-        NSString *localizedAccessibilityHelp
-          = [self localizedStringForString:accessibilityHelp];
-        if (localizedAccessibilityHelp) {
-          [view accessibilitySetValue:localizedAccessibilityHelp
-                         forAttribute:NSAccessibilityHelpAttribute];
-        }
-      }
-    }
+    // Then do accessibility both on views directly...
+    [self localizeAccessibility:view];
 
-    if ([supportedAttrs containsObject:NSAccessibilityDescriptionAttribute]) {
-      NSString *accessibilityDesc
-        = [view accessibilityAttributeValue:NSAccessibilityDescriptionAttribute];
-      if (accessibilityDesc) {
-        NSString *localizedAccessibilityDesc
-          = [self localizedStringForString:accessibilityDesc];
-        if (localizedAccessibilityDesc) {
-          [view accessibilitySetValue:localizedAccessibilityDesc
-                         forAttribute:NSAccessibilityDescriptionAttribute];
-        }
-      }
+    // ...and on control cells (which implement accessibility for the controls
+    // that contain them)
+    if ([view isKindOfClass:[NSControl class]]) {
+      [self localizeAccessibility:[(NSControl *)view cell]];
     }
 
     // Must do the menu before the titles, or else this will screw up
@@ -280,6 +261,25 @@
       [self localizeCell:[column headerCell] recursively:recursive];
     }
   }
+}
+
+- (void)localizeAccessibility:(id)object {
+  NSArray *supportedAttrs = [object accessibilityAttributeNames];
+  if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
+    NSString *accessibilityHelp
+      = [object accessibilityAttributeValue:NSAccessibilityHelpAttribute];
+    if (accessibilityHelp) {
+      NSString *localizedAccessibilityHelp
+        = [self localizedStringForString:accessibilityHelp];
+      if (localizedAccessibilityHelp) {
+        [object accessibilitySetValue:localizedAccessibilityHelp
+                         forAttribute:NSAccessibilityHelpAttribute];
+      }
+    }
+  }
+
+  // We cannot do the same thing with NSAccessibilityDescriptionAttribute; see
+  // the links in the header file for more details.
 }
 
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive {

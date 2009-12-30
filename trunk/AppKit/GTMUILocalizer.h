@@ -36,8 +36,11 @@
 //  - stringValue (for labels)
 //  - tooltips
 //  - accessibility help
-//  - accessibility description
 //  - menus
+//
+// Due to technical limitations, accessibility description cannot be localized.
+// See http://lists.apple.com/archives/Accessibility-dev/2009/Dec/msg00004.html
+// and http://openradar.appspot.com/7496255 for more information.
 //
 // As an example if I wanted to localize a button with the word "Print" on
 // it, I would put it in a window controlled by a NSWindowController that was
@@ -82,11 +85,16 @@
 // localizing all non-default toolbar items by hand.
 - (void)localizeToolbar:(NSToolbar *)toolbar;
 
+// Localize an object for accessibility; can be called for both NSViews and
+// NSCells as they are both accessibility objects.
+- (void)localizeAccessibility:(id)object;
+
 // A method for subclasses to override in case you have a different
 // way to go about getting localized strings.
 // If |string| does not start with ^ you should return nil.
 // If |string| is nil, you should return nil
 - (NSString *)localizedStringForString:(NSString *)string;
+
 // Allows subclasses to override how the bundle is picked up
 + (NSBundle *)bundleForOwner:(id)owner;
 @end
