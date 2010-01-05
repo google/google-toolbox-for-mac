@@ -379,6 +379,9 @@ Changes since 1.5.1
   turning on the "Show Icon on Menu Items" option in the Xcode Preferences >
   Google panel.
 
+- iPhone unit tests now print "Test Case '-[TEST SELECTOR]' started." before
+  each test.
+
 
 Release 1.5.1
 Changes since 1.5.0
