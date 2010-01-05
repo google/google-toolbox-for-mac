@@ -91,6 +91,12 @@
             = [[currClass alloc] initWithInvocation:invocation];
           BOOL failed = NO;
           NSDate *caseStartDate = [NSDate date];
+          NSString *selectorName = NSStringFromSelector([invocation selector]);
+          NSString *caseStartString
+            = [NSString stringWithFormat:@"Test Case '-[%@ %@]' started.\n",
+               fixtureName, selectorName];
+          fputs([caseStartString UTF8String], stderr);
+          fflush(stderr);
           @try {
             [testCase performTest];
           } @catch (NSException *exception) {
@@ -103,7 +109,6 @@
           }
           NSTimeInterval caseEndTime
             = [[NSDate date] timeIntervalSinceDate:caseStartDate];
-          NSString *selectorName = NSStringFromSelector([invocation selector]);
           NSString *caseEndString
             = [NSString stringWithFormat:@"Test Case '-[%@ %@]' %@ (%0.3f "
                @"seconds).\n",
