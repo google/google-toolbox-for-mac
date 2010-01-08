@@ -19,6 +19,7 @@
 #import "GTMWindowSheetController.h"
 
 #import "GTMDefines.h"
+#import "GTMTypeCasting.h"
 
 @interface GTMWSCSheetInfo : NSObject {
  @public
@@ -462,7 +463,8 @@ willPositionSheet:(NSWindow*)sheet
 }
 
 - (void)notificationHappened:(NSNotification*)notification {
-  [self viewDidChangeSize:[notification object]];
+  NSView *view = GTM_STATIC_CAST(NSView, [notification object]);
+  [self viewDidChangeSize:view];
 }
 
 - (void)viewDidChangeSize:(NSView*)view {

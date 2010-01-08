@@ -22,7 +22,7 @@
 #import "GTMGeometryUtils.h"
 #import "GTMNSBezierPath+RoundRect.h"
 #import "GTMMethodCheck.h"
-
+#import "GTMTypeCasting.h"
 
 // How far to inset the text from the edge of the window
 static const CGFloat kEdgeInset = 16.0;
@@ -221,7 +221,9 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
   
   // Give the user some feedback that a copy has occurred
   NSTimeInterval dur = [[self class] copyAnimationDuration];
-  [(GTMLargeTypeBackgroundView*)[self contentView] animateCopyWithDuration:dur];
+  GTMLargeTypeBackgroundView *view 
+    = GTM_STATIC_CAST(GTMLargeTypeBackgroundView, [self contentView]);
+  [view animateCopyWithDuration:dur];
 }
 
 - (BOOL)canBecomeKeyWindow { 
