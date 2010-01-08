@@ -19,8 +19,7 @@
 #import "GTMObjC2Runtime.h"
 #import "GTMSenTestCase.h"
 #import "GTMSystemVersion.h"
-
-
+#import "GTMTypeCasting.h"
 
 #import <string.h>
 
@@ -94,7 +93,9 @@ AT_REQUIRED
 
 - (void)startedTest:(NSNotification *)notification {
   // Logs if we are testing on Tiger or Leopard runtime.
-  NSString *testName = [(SenTest*)[[notification object] test] name];
+  SenTestSuiteRun *suiteRun = GTM_STATIC_CAST(SenTestSuiteRun, 
+                                              [notification object]);
+  NSString *testName = [[suiteRun test] name];
   NSString *className = NSStringFromClass([GTMObjC2RuntimeTest class]);
   if ([testName isEqualToString:className]) {
     NSString *runtimeString;

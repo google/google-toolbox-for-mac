@@ -19,6 +19,7 @@
 #import "GTMCarbonEvent.h"
 #import "GTMObjectSingleton.h"
 #import "GTMDebugSelectorValidation.h"
+#import "GTMTypeCasting.h"
 
 // Wrapper for all the info we need about a hotkey that we can store in a
 // Foundation storage class. We expecct selector to have this signature:
@@ -432,8 +433,8 @@ static OSStatus EventHandler(EventHandlerCallRef inHandler,
                              EventRef inEvent,
                              void *inUserData) {
   GTMCarbonEvent *event = [GTMCarbonEvent eventWithEvent:inEvent];
-  GTMCarbonEventHandler *handler= (GTMCarbonEventHandler *)inUserData;
-  check([handler isKindOfClass:[GTMCarbonEventHandler class]]);
+  GTMCarbonEventHandler *handler
+    = GTM_STATIC_CAST(GTMCarbonEventHandler, inUserData);
   
   // First check to see if our delegate cares about this event. If the delegate
   // handles it (i.e responds to it and does not return eventNotHandledErr) we

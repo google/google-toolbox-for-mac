@@ -20,7 +20,7 @@
 #import <unistd.h>
 #import "GTMDefines.h"
 #import "GTMDebugSelectorValidation.h"
-
+#import "GTMTypeCasting.h"
 
 // File descriptor for the kqueue that will hold all of our file system events.
 static int gFileSystemKQueueFileDescriptor = 0;
@@ -118,7 +118,8 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   if (kevent(gFileSystemKQueueFileDescriptor, NULL, 0, &event, 1, NULL) == -1) {
     _GTMDevLog(@"could not pick up kqueue event.  Errno %d", errno);  // COV_NF_LINE
   } else {
-    GTMFileSystemKQueue *fskq = (GTMFileSystemKQueue *)event.udata;
+    GTMFileSystemKQueue *fskq = GTM_STATIC_CAST(GTMFileSystemKQueue, 
+                                                event.udata);
     [fskq notify:event.fflags];
   }
 

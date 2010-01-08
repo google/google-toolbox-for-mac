@@ -18,6 +18,7 @@
 
 #import "GTMSignalHandler.h"
 #import "GTMDefines.h"
+#import "GTMTypeCasting.h"
 
 #import <sys/event.h>  // for kqueue() and kevent
 #import "GTMDebugSelectorValidation.h"
@@ -116,7 +117,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   if (kevent(gSignalKQueueFileDescriptor, NULL, 0, &event, 1, NULL) == -1) {
     _GTMDevLog(@"could not pick up kqueue event.  Errno %d", errno);  // COV_NF_LINE
   } else {
-    GTMSignalHandler *handler = (GTMSignalHandler *)event.udata;
+    GTMSignalHandler *handler = GTM_STATIC_CAST(GTMSignalHandler, event.udata);
     [handler notify];
   }
 

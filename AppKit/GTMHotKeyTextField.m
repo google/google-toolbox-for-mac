@@ -21,6 +21,7 @@
 #import "GTMSystemVersion.h"
 #import "GTMObjectSingleton.h"
 #import "GTMNSObject+KeyValueObserving.h"
+#import "GTMTypeCasting.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 typedef struct __TISInputSource* TISInputSourceRef;
@@ -370,7 +371,8 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 - (void)textDidChange:(NSNotification *)notification {
   // Sanity
-  GTMHotKeyFieldEditor *fieldEditor = [notification object];
+  GTMHotKeyFieldEditor *fieldEditor = GTM_STATIC_CAST(GTMHotKeyFieldEditor, 
+                                                      [notification object]);
   if (![fieldEditor isKindOfClass:[GTMHotKeyFieldEditor class]]) {
     _GTMDevLog(@"Field editor not appropriate for field, check window delegate");
     return;

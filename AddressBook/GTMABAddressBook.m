@@ -18,6 +18,7 @@
 
 #import "GTMABAddressBook.h"
 #import "GTMGarbageCollection.h"
+#import "GTMTypeCasting.h"
 
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>
@@ -811,7 +812,9 @@ typedef struct {
         isEqual = [label isEqual:objLabel];
         if (isEqual) {
           id value = [self valueAtIndex:i];
-          id objValue = [(GTMABMultiValue*)object valueAtIndex:i];
+          GTMABMultiValue *multiValueObject 
+            = GTM_STATIC_CAST(GTMABMultiValue, object);
+          id objValue = [multiValueObject valueAtIndex:i];
           isEqual = [value isEqual:objValue];
         }
       }

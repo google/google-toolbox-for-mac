@@ -28,6 +28,7 @@
 #import "GTMDebugSelectorValidation.h"
 #import "GTMGarbageCollection.h"
 #import "GTMDefines.h"
+#import "GTMTypeCasting.h"
 
 @interface GTMHTTPServer (PrivateMethods)
 - (void)acceptedConnectionNotification:(NSNotification *)notification;
@@ -283,7 +284,8 @@ startFailed:
 }
 
 - (void)dataAvailableNotification:(NSNotification *)notification {
-  NSFileHandle *connectionHandle = [notification object];
+  NSFileHandle *connectionHandle = GTM_STATIC_CAST(NSFileHandle, 
+                                                   [notification object]);
   NSMutableDictionary *connDict = [self lookupConnection:connectionHandle];
   if (connDict == nil) return; // we are no longer tracking this one
 
