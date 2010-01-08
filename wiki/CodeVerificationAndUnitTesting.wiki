@@ -108,6 +108,39 @@ Example of usage:
 
 Classes (or one of their superclasses) being checked must conform to the  NSObject protocol. We will check this, and spit out a warning if a class does not conform to NSObject. `GTM_METHOD_CHECK` is defined in GTMMethodCheck.h and requires you to link in GTMMethodCheck.m as well. None of this code is compiled into release builds. See GTMNSAppleScript+Handler.m for examples of using `GTM_METHOD_CHECK`.
 
+==GTMTypeCasting==
+[http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/DebugUtils/GTMTypeCasting.h GTMTypeCasting.h] contains some macros for making down-casting safer in Objective C. 
+They are loosely based on the same cast types with similar names in C++.
+A typical usage would look like this:
+{{{
+ Bar* b = [[Bar alloc] init];
+ Foo* a = GTM_STATIC_CAST(Foo, b);
+}}}
+
+Note that it's `GTM_STATIC_CAST(Foo, b)` and not `GTM_STATIC_CAST(Foo*, b)`.
+
+`GTM_STATIC_CAST` runs only in debug mode, and will assert if and only if:
+  * object is non nil
+  * `[object isKindOfClass:[cls class]]` returns nil
+
+otherwise it returns object.
+
+`GTM_DYNAMIC_CAST` runs in both debug and release and will return nil if
+  * object is nil
+  * `[object isKindOfClass:[cls class]]` returns nil
+
+otherwise it returns object.
+
+Good places to use `GTM_STATIC_CAST` is anywhere that you may normally use a straight C cast to change one Objective C type to another. Another less visible place is when converting an `id` to a more specific Objective C type. A classic place that this occurs is when getting the `object` from a notification.
+
+{{{
+- (void)myNotificationHandler:(NSNotification *)notification {
+  MyType *foo = GTM_STATIC_CAST(MyType, [notification object]);
+  ...
+}}}
+
+This will help you quickly trap cases where the type of notification object has changed.
+
 ==RunMacOSUnitTests==
 The unit tests in GTM use an enhanced script for running their unit tests that "encourages" unit tests to fail by setting a variety of environment variables such as zombies, !MallocDebug etc. All unit test targets should use RunMacOSUnitTests to run their unit tests as part of their build.  See RunMacOSUnitTests.sh for details.
 
