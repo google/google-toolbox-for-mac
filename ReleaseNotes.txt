@@ -385,6 +385,9 @@ Changes since 1.5.1
 - Added GTMTypeCasting.h which gives you safer objective-c casts based on
   C++ static_cast and dynamic_cast.
 
+- Added GTMStringEncoding which is a generic base 2-128 encoder/decoder with
+  support for custom character maps.
+
 
 Release 1.5.1
 Changes since 1.5.0

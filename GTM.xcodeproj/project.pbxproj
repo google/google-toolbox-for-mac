@@ -37,6 +37,9 @@
 /* End PBXAppleScriptBuildPhase section */
 
 /* Begin PBXBuildFile section */
+		0B1B9B8710FECD870084EE4B /* GTMStringEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B1B9B8410FECD870084EE4B /* GTMStringEncoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0B1B9B8810FECD870084EE4B /* GTMStringEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1B9B8510FECD870084EE4B /* GTMStringEncoding.m */; };
+		0B1B9B8A10FECDA00084EE4B /* GTMStringEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1B9B8610FECD870084EE4B /* GTMStringEncodingTest.m */; };
 		0BFAD4C5104D06EF002BEB27 /* GTMNSData+Hex.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BFAD4BF104D06EF002BEB27 /* GTMNSData+Hex.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0BFAD4C6104D06EF002BEB27 /* GTMNSData+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAD4C0104D06EF002BEB27 /* GTMNSData+Hex.m */; };
 		0BFAD4C8104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BFAD4C2104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -447,6 +450,9 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		0B1B9B8410FECD870084EE4B /* GTMStringEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMStringEncoding.h; path = Foundation/GTMStringEncoding.h; sourceTree = SOURCE_ROOT; };
+		0B1B9B8510FECD870084EE4B /* GTMStringEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMStringEncoding.m; path = Foundation/GTMStringEncoding.m; sourceTree = SOURCE_ROOT; };
+		0B1B9B8610FECD870084EE4B /* GTMStringEncodingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMStringEncodingTest.m; path = Foundation/GTMStringEncodingTest.m; sourceTree = SOURCE_ROOT; };
 		0BFAD4BF104D06EF002BEB27 /* GTMNSData+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+Hex.h"; sourceTree = "<group>"; };
 		0BFAD4C0104D06EF002BEB27 /* GTMNSData+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+Hex.m"; sourceTree = "<group>"; };
 		0BFAD4C1104D06EF002BEB27 /* GTMNSData+HexTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+HexTest.m"; sourceTree = "<group>"; };
@@ -1161,6 +1167,9 @@
 		F48FE2720D198CCE009257D2 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				0B1B9B8410FECD870084EE4B /* GTMStringEncoding.h */,
+				0B1B9B8510FECD870084EE4B /* GTMStringEncoding.m */,
+				0B1B9B8610FECD870084EE4B /* GTMStringEncodingTest.m */,
 				0BFAD4BF104D06EF002BEB27 /* GTMNSData+Hex.h */,
 				0BFAD4C0104D06EF002BEB27 /* GTMNSData+Hex.m */,
 				0BFAD4C1104D06EF002BEB27 /* GTMNSData+HexTest.m */,
@@ -1379,6 +1388,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B1B9B8710FECD870084EE4B /* GTMStringEncoding.h in Headers */,
 				0BFAD4C5104D06EF002BEB27 /* GTMNSData+Hex.h in Headers */,
 				0BFAD4C8104D06EF002BEB27 /* GTMNSDictionary+CaseInsensitive.h in Headers */,
 				F93207DE0F4B82DB005F37EA /* GTMSQLite.h in Headers */,
@@ -1934,6 +1944,7 @@
 				0BFAD4CB104D06FE002BEB27 /* GTMNSData+HexTest.m in Sources */,
 				0BFAD4CC104D06FE002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */,
 				8B3080151056B917006C4C7A /* GTMNSNumber+64BitTest.m in Sources */,
+				0B1B9B8A10FECDA00084EE4B /* GTMStringEncodingTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2009,6 +2020,7 @@
 				8B307FF81056B773006C4C7A /* GTMNSNumber+64Bit.m in Sources */,
 				F4C6248C109753960069CADD /* GTMIBArray.m in Sources */,
 				8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */,
+				0B1B9B8810FECD870084EE4B /* GTMStringEncoding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
