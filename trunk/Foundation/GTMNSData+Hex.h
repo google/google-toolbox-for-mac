@@ -16,6 +16,12 @@
 //  the License.
 //
 
+
+// WARNING: This class provides a subset of the functionality available in
+// GTMStringEncoding and may go away in the future.
+// Please consider using GTMStringEncoding instead.
+
+
 #import <Foundation/Foundation.h>
 
 /// Helpers for dealing w/ hex encoded strings.
