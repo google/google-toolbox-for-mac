@@ -8,7 +8,7 @@ Release ?.?.?
 Changes since 1.5.1
 
 - Added GTMNSImage+SearchCache for fetching images based on a variety of
-  specification methods (path, OSTYpe, etc)
+  specification methods (path, OSType, etc)
 
 - Added GTMFadeTruncatingTextFieldCell, for eliding with a gradient
 
@@ -37,12 +37,12 @@ Changes since 1.5.1
   at compile time so that you don't take the performance hit in a release build.
 
 - Added GTMPath, which represents an existing absolute path on the file system.
-  It also makes it very easy to contruct new paths in the file system as well
+  It also makes it very easy to construct new paths in the file system as well
   as whole directory hierarchies.
 
 - Added GTMNSString+Replace for a common replacement need.
 
-- Added NSString+FindFolder for two commen helpers for building paths to common
+- Added NSString+FindFolder for two comment helpers for building paths to common
   locations.
 
 - Added GTMLargeTypeWindow for doing display windows similar to Address Book
@@ -96,7 +96,7 @@ Changes since 1.5.1
 
 - Added XcodeProject, AppleScript, and InterfaceBuilder Spotlight Plugins.
   Allows you to index .xcodeproj, .scpt, .scptd, .xib, .nib, and
-  .aib files. See Readmes beside individual projects in SpotlightPlugins.
+  .aib files. See ReadMes beside individual projects in SpotlightPlugins.
 
 - Added GTMExceptionalInlines for dealing with cases where you get
   warning: variable 'r' might be clobbered by 'longjmp' or 'vfork'
@@ -114,10 +114,10 @@ Changes since 1.5.1
 
 - Added GTMTestTimer.h for doing high fidelity timings.
 
-- Added ability to control using zombies to iPhone unit test script. It can be
+- Added ability to control using zombies to iPhone unittest script. It can be
   controlled by the GTM_DISABLE_ZOMBIES environment variable
 
-- Added ability to control termination to iPhone unit test script. It can be
+- Added ability to control termination to iPhone unittest script. It can be
   controlled by the GTM_DISABLE_TERMINATION environment variable
 
 - Fixed several leaks found with leak checking enabled.
@@ -248,7 +248,7 @@ Changes since 1.5.1
 
 - Finally dropped GTMHTTPFetcher and GTMProgressMonitorInputStream, GData
   versions now pretty much line up with these, so rather then both projects
-  maintaing them, we've dropped them and point folks at the gdata versions
+  maintaining them, we've dropped them and point folks at the gdata versions
   which can be used independent of the rest of GData.
 
 - Changed gtm_createCGPath to gtm_cgPath in GTMNSBezier+CGPath. The path
@@ -271,7 +271,7 @@ Changes since 1.5.1
 
 - Added OBJC_DEBUG_UNLOAD=YES, and OBJC_DEBUG_NIL_SYNC=YES to our unittest shell
   scripts to try and flush out some more bugs. We have intentionally NOT turned
-  on OBJC_DEBUG_FINALIZERS beacuse it spits out a lot of unnecessary false
+  on OBJC_DEBUG_FINALIZERS because it spits out a lot of unnecessary false
   positives.
 
 - Added GTMUILocalizer.m for automatically localizing nib files with strings.
@@ -365,7 +365,7 @@ Changes since 1.5.1
   - Cleanup line ending white space on saves.
     See Xcode Preferences > Google panel to turn this on.
   - Create Unit Test Executable.
-    Select a unit test target, and then select "Create Unit Test Executable"
+    Select a unittest target, and then select "Create Unit Test Executable"
     from the project menu, and it will create an executable you can debug.
   - Turn Code Coverage On
     Turns on code coverage for the current target. Nice when working with
@@ -379,7 +379,7 @@ Changes since 1.5.1
   turning on the "Show Icon on Menu Items" option in the Xcode Preferences >
   Google panel.
 
-- iPhone unit tests now print "Test Case '-[TEST SELECTOR]' started." before
+- iPhone unittests now print "Test Case '-[TEST SELECTOR]' started." before
   each test.
 
 - Added GTMTypeCasting.h which gives you safer objective-c casts based on
@@ -522,4 +522,4 @@ Release 1.0.0
 14-January-2008
 
 - Initial public release.  Includes some simple utils, xcode configs, and
-  some support for doing unit tests of graphical things.
+  some support for doing unittests of graphical things.
