@@ -109,7 +109,7 @@ GTM_INLINE int lcm(int a, int b) {
     }
 
     memset(reverseCharMap_, kUnknownChar, sizeof(reverseCharMap_));
-    for (NSUInteger i = 0; i < length; i++) {
+    for (unsigned int i = 0; i < length; i++) {
       if (reverseCharMap_[(int)charMap_[i]] != kUnknownChar) {
         _GTMDevLog(@"Duplicate character at pos %d", i);
         [self release];
