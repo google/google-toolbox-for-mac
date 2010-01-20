@@ -47,14 +47,8 @@ extern "C" {
 
 // Support functions for dealing with casting.
 GTM_INLINE id GTMDynamicCastSupport(Class cls, id object) {
-  id value = nil;
-  if (object) {
-    _GTMDevAssert(cls, @"Nil Class");
-    if ([object isKindOfClass:cls]) {
-      value = object;
-    }
-  }
-  return value;
+  _GTMDevAssert(cls, @"Nil Class");
+  return [object isKindOfClass:cls] ? object : nil;
 }
 
 GTM_INLINE id GTMStaticCastSupport(Class cls, id object) {
