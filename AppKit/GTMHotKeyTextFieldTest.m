@@ -32,6 +32,8 @@
   GTMHotKeyTextFieldTestController *controller_;
   NSMutableDictionary *hotkeyValues_;
 }
+- (NSDictionary *)hotkeyValues;
+- (void)setHotkeyValues:(NSDictionary*)values;
 @end
 
 @implementation GTMHotKeyTextFieldTest
@@ -53,6 +55,15 @@
   [controller_ close];
   [controller_ release];
   [hotkeyValues_ release];
+}
+
+- (NSDictionary *)hotkeyValues {
+  return hotkeyValues_;
+}
+
+- (void)setHotkeyValues:(NSDictionary*)values {
+  [hotkeyValues_ autorelease];
+  hotkeyValues_ = [values mutableCopy];
 }
 
 - (void)testStringForModifierFlags {
@@ -346,7 +357,7 @@
   STAssertNotNil(field, nil);
   [field bind:NSValueBinding 
      toObject:controller 
-  withKeyPath:@"selection.hotkeyValues_" 
+  withKeyPath:@"selection.hotkeyValues" 
       options:nil];
   id value = [field objectValue];
   STAssertEqualObjects(value, hotkeyValues_, nil);
@@ -356,10 +367,10 @@
   STAssertEqualObjects([attrStringValue string], stringValue, nil);
   
   // Try changing some values
-  [self willChangeValueForKey:@"hotkeyValues_"];
+  [self willChangeValueForKey:@"hotkeyValues"];
   [hotkeyValues_ setObject:[NSNumber numberWithInt:43] 
                     forKey:kGTMHotKeyKeyCodeKey];
-  [self didChangeValueForKey:@"hotkeyValues_"];
+  [self didChangeValueForKey:@"hotkeyValues"];
   stringValue = [field stringValue];
   STAssertEqualObjects(stringValue, @"⌘,", nil);
   
