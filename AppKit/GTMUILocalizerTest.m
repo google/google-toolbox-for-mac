@@ -26,6 +26,27 @@
 @end
 
 @implementation GTMUILocalizerTest
+// Utility method to verify that all the options for |binding| on |object| have
+// been localized.
+- (void)verifyBinding:(NSString *)binding forObject:(id)object {
+  NSDictionary *bindingInfo 
+    = [object infoForBinding:binding];
+  STAssertNotNil(bindingInfo, 
+                 @"Can't get binding info for %@ from %@.\nExposed bindings: %@",
+                 binding, object, [object exposedBindings]);
+  NSDictionary *bindingOptions = [bindingInfo objectForKey:NSOptionsKey];
+  STAssertNotNil(bindingOptions, nil);
+  NSString *key = nil;
+  GTM_FOREACH_KEY(key, bindingOptions) {
+    id value = [bindingOptions objectForKey:key];
+    if ([value isKindOfClass:[NSString class]]) {
+      STAssertFalse([value hasPrefix:@"^"], 
+                    @"Binding option %@ not localized. Has value %@.", 
+                    key, value);
+    }
+  }  
+}
+
 - (void)testWindowLocalization {
   GTMUILocalizerTestWindowController *controller 
     = [[GTMUILocalizerTestWindowController alloc] init];
@@ -57,6 +78,20 @@
   [localizer localizeObject:menu recursively:YES];
   GTMAssertObjectStateEqualToStateNamed(menu, 
                                         @"GTMUILocalizerMenuState", nil);
+  
+  // Test binding localization.
+  NSTextField *textField = [controller bindingsTextField];
+  STAssertNotNil(textField, nil);
+  [localizer localizeObject:textField recursively:NO];
+  NSString *displayPatternValue1Binding 
+    = [NSString stringWithFormat:@"%@1", NSDisplayPatternValueBinding];
+  
+  [self verifyBinding:displayPatternValue1Binding forObject:textField];
+  NSSearchField *searchField = [controller bindingsSearchField];
+  STAssertNotNil(searchField, nil);
+  [localizer localizeObject:searchField recursively:NO];
+  [self verifyBinding:NSPredicateBinding forObject:searchField];
+  
   [localizer release];
   [controller release];
 }
@@ -101,6 +136,14 @@
 
 - (NSMenu *)otherMenu {
   return otherMenu_;
+}
+
+- (NSTextField *)bindingsTextField {
+  return bindingsTextField_;
+}
+
+- (NSSearchField *)bindingsSearchField {
+  return bindingsSearchField_;
 }
 @end
 

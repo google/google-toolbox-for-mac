@@ -23,10 +23,14 @@
   IBOutlet NSWindow *otherWindow_;
   IBOutlet NSWindow *anotherWindow_;
   IBOutlet NSMenu *otherMenu_;
+  IBOutlet NSTextField *bindingsTextField_;
+  IBOutlet NSSearchField *bindingsSearchField_;
 }
 - (NSWindow *)otherWindow;
 - (NSWindow *)anotherWindow;
 - (NSMenu *)otherMenu;
+- (NSTextField *)bindingsTextField;
+- (NSSearchField *)bindingsSearchField;
 @end
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5

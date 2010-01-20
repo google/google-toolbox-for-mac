@@ -100,6 +100,7 @@
     } else if ([object isKindOfClass:[NSCell class]]) {
       [self localizeCell:(NSCell *)object recursively:recursive];
     }
+    [self localizeBindings:object];
   }
 }
 
@@ -314,6 +315,56 @@
     [self localizeMenu:[cell menu] recursively:recursive];
     id obj = [cell representedObject];
     [self localizeObject:obj recursively:recursive];
+  }
+}
+
+- (void)localizeBindings:(id)object {
+  NSArray *exposedBindings = [object exposedBindings];
+  if (exposedBindings) {
+    NSString *optionsToLocalize[] = {
+      NSDisplayNameBindingOption,
+      NSDisplayPatternBindingOption,
+      NSMultipleValuesPlaceholderBindingOption,
+      NSNoSelectionPlaceholderBindingOption,
+      NSNotApplicablePlaceholderBindingOption,
+      NSNullPlaceholderBindingOption,
+    };
+    Class stringClass = [NSString class];
+    NSString *exposedBinding;
+    GTM_FOREACH_OBJECT(exposedBinding, exposedBindings) {
+      NSDictionary *bindingInfo = [object infoForBinding:exposedBinding];
+      if (bindingInfo) {
+        id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
+        NSString *path = [bindingInfo objectForKey:NSObservedKeyPathKey];
+        NSDictionary *options = [bindingInfo objectForKey:NSOptionsKey];
+        if (observedObject && path && options) {
+          NSMutableDictionary *newOptions 
+            = [NSMutableDictionary dictionaryWithDictionary:options];
+          BOOL valueChanged = NO;
+          for (size_t i = 0; 
+               i < sizeof(optionsToLocalize) / sizeof(optionsToLocalize[0]);
+               ++i) {
+            NSString *key = optionsToLocalize[i];
+            NSString *value = [newOptions objectForKey:key];
+            if ([value isKindOfClass:stringClass]) {
+              NSString *localizedValue = [self localizedStringForString:value];
+              if (localizedValue) {
+                valueChanged = YES;
+                [newOptions setObject:localizedValue forKey:key];
+              }
+            }
+          }
+          if (valueChanged) {
+            // Only unbind and rebind if there is a change.
+            [object unbind:exposedBinding];
+            [object bind:exposedBinding 
+                toObject:observedObject 
+             withKeyPath:path 
+                 options:newOptions];
+          }
+        }
+      }
+    }
   }
 }
 
