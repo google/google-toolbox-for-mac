@@ -29,9 +29,9 @@
 - (void)testEmptyInputs {
   GTMStringEncoding *coder = [GTMStringEncoding stringEncodingWithString:@"01"];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   STAssertEqualStrings([coder encode:[NSData data]], @"", nil);
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   STAssertEqualObjects([coder encodeString:@""], @"", nil);
   STAssertEqualObjects([coder decode:@""], [NSData data], nil);
   STAssertEqualStrings([coder stringByDecoding:@""], @"", nil);
@@ -41,9 +41,9 @@
 - (void)testInvalidInputs {
   GTMStringEncoding *coder = [GTMStringEncoding stringEncodingWithString:@"01"];
 
-  [GTMUnitTestDevLogDebug expectString:@"unable to convert buffer to ASCII"];
+  [GTMUnitTestDevLog expectString:@"unable to convert buffer to ASCII"];
   STAssertNil([coder decode:nil], nil);
-  [GTMUnitTestDevLogDebug expectString:@"Unexpected data in input pos 0"];
+  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 0"];
   STAssertNil([coder decode:@"banana"], nil);
 }
 
@@ -62,7 +62,7 @@
   STAssertEqualObjects([coder decode:@"1010\n1010"], aaData, nil);
 
   // Invalid inputs
-  [GTMUnitTestDevLogDebug expectString:@"Unexpected data in input pos 4"];
+  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 4"];
   STAssertNil([coder decode:@"1010+1010"], nil);
 }
 
@@ -74,7 +74,7 @@
 - (void)testBinary {
   GTMStringEncoding *coder = [GTMStringEncoding binaryStringEncoding];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"01100110");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"0110011001101111");
@@ -130,7 +130,7 @@
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding rfc4648Base64StringEncoding];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"Zg==");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"Zm8=");
@@ -162,7 +162,7 @@
   GTMStringEncoding *coder =
       [GTMStringEncoding rfc4648Base64WebsafeStringEncoding];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"Zg==");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"Zm8=");
@@ -193,7 +193,7 @@
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding rfc4648Base32StringEncoding];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"MY======");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"MZXQ====");
@@ -225,7 +225,7 @@
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding rfc4648Base32HexStringEncoding];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"CO======");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"CPNG====");
@@ -257,7 +257,7 @@
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding hexStringEncoding];
 
-  [GTMUnitTestDevLogDebug expectString:@"Empty input"];
+  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"66");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"666F");
@@ -298,11 +298,11 @@
   STAssertEqualObjects([coder decode:testString], testData, nil);
 
   // Invalid inputs
-  [GTMUnitTestDevLogDebug expectString:@"Incomplete trailing data"];
+  [GTMUnitTestDevLog expectString:@"Incomplete trailing data"];
   STAssertNil([coder decode:@"1c2f003"], nil);
-  [GTMUnitTestDevLogDebug expectString:@"Unexpected data in input pos 7"];
+  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 7"];
   STAssertNil([coder decode:@"1c2f00ft"], nil);
-  [GTMUnitTestDevLogDebug expectString:@"Unexpected data in input pos 4"];
+  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 4"];
   STAssertNil([coder decode:@"abcd<C3><A9>f"], nil);
 }
 
