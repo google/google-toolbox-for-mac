@@ -77,6 +77,7 @@
 - (void)localizeView:(NSView *)view recursively:(BOOL)recursive;
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive;
 - (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive;
+- (void)localizeBindings:(id)object;
 
 // NOTE: NSToolbar localization support is limited to only working on the
 // default items in the toolbar. We cannot localize items that are on of the

@@ -37,3 +37,11 @@
 "Radio 1" = "Localized Radio 1";
 "Radio 2" = "Localized Radio 2";
 "Box" = "Localized Box";
+
+// Binding localization strings.
+"MultipleValuesPlaceholder" = "MultipleValuesPlaceholder";
+"NoSelectionPlaceholder" = "NoSelectionPlaceholder";
+"NotApplicablePlaceholder" = "NotApplicablePlaceholder";
+"NullPlaceholder" = "NullPlaceholder";
+"DisplayName" = "DisplayName";
+"DisplayPattern" = "DisplayPattern";

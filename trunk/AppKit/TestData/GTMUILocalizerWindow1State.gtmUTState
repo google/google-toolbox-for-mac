@@ -332,6 +332,68 @@
 			<key>ViewIsHidden</key>
 			<false/>
 		</dict>
+		<key>ViewSubView 9</key>
+		<dict>
+			<key>BoxBorderType</key>
+			<integer>1</integer>
+			<key>BoxTitle</key>
+			<string>Bindings Tests</string>
+			<key>BoxTitlePosition</key>
+			<integer>2</integer>
+			<key>BoxType</key>
+			<integer>0</integer>
+			<key>ViewIsHidden</key>
+			<false/>
+			<key>ViewSubView 0</key>
+			<dict>
+				<key>ViewIsHidden</key>
+				<false/>
+				<key>ViewSubView 0</key>
+				<dict>
+					<key>ControlIsEnabled</key>
+					<true/>
+					<key>ControlSelectedCell</key>
+					<dict>
+						<key>CellState</key>
+						<integer>1</integer>
+						<key>CellTag</key>
+						<integer>0</integer>
+						<key>CellTitle</key>
+						<string>DisplayPattern</string>
+						<key>CellValue</key>
+						<string>DisplayPattern</string>
+					</dict>
+					<key>ControlTag</key>
+					<integer>0</integer>
+					<key>ControlType</key>
+					<string>NSTextField</string>
+					<key>ControlValue</key>
+					<string>DisplayPattern</string>
+					<key>ViewIsHidden</key>
+					<false/>
+				</dict>
+				<key>ViewSubView 1</key>
+				<dict>
+					<key>ControlIsEnabled</key>
+					<true/>
+					<key>ControlSelectedCell</key>
+					<dict>
+						<key>CellState</key>
+						<integer>0</integer>
+						<key>CellTag</key>
+						<integer>0</integer>
+						<key>CellTitle</key>
+						<string></string>
+					</dict>
+					<key>ControlTag</key>
+					<integer>0</integer>
+					<key>ControlType</key>
+					<string>NSSearchField</string>
+					<key>ViewIsHidden</key>
+					<false/>
+				</dict>
+			</dict>
+		</dict>
 	</dict>
 	<key>WindowIsMain</key>
 	<false/>

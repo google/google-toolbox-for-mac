@@ -388,6 +388,8 @@ Changes since 1.5.1
 - Added GTMStringEncoding which is a generic base 2-128 encoder/decoder with
   support for custom character maps.
 
+- Added support for localizing binding options in GTMUILocalizer.
+
 
 Release 1.5.1
 Changes since 1.5.0
