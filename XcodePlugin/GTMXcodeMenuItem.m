@@ -19,8 +19,12 @@
 #import "GTMXcodeMenuItem.h"
 #import "GTMNSEnumerator+Filter.h"
 #import "PBXAppDelegate.h"
+#import "PBXProject.h"
+#import "PBXTarget.h"
 #import "GTMMethodCheck.h"
 #import "GTMDefines.h"
+
+static NSString *const kGTMSrcRootPath = @"$(SRCROOT)/";
 
 @interface GTMXcodeMenuItem (GTMXcodeMenuItemPrivate)
 // Used to figure out what order to install menu items
@@ -115,6 +119,23 @@ GTM_METHOD_CHECK(NSEnumerator, gtm_enumeratorByMakingEachObjectPerformSelector:w
 
 - (BOOL)allowGDTMenuIcon {
   return YES;
+}
+
+// Expand |path| based on |target| and |configuration|.
+// If newPath is not absolute, expand kSrcRootPath and prepend it to newPath.
+- (NSString *)pathByExpandingString:(NSString *)path 
+              forBuildConfiguration:(NSString *)configuration
+                           ofTarget:(PBXTarget *)target {
+  NSString *newPath = [target stringByExpandingString:path
+                           forBuildConfigurationNamed:configuration];
+  if (![newPath hasPrefix:@"/"]) {
+    NSString *srcRoot = [target stringByExpandingString:kGTMSrcRootPath
+                             forBuildConfigurationNamed:configuration];
+    if (srcRoot) {
+      newPath = [srcRoot stringByAppendingString:newPath];
+    }
+  }
+  return newPath;
 }
 
 @end

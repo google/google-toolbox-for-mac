@@ -18,6 +18,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class PBXTarget;
+
 @protocol GTMXcodeMenuItemProtocol
 // name of the menu item
 - (NSString*)title;
@@ -54,4 +56,10 @@
 // returns the array of currently "selected files" in Xcode. This can be
 // the front most text document, or a selection out of the browser window.
 - (NSArray*)selectedPaths;
+
+// Expand |path| based on |target| and |configuration|.
+// If newPath is not absolute, expand kSrcRootPath and prepend it to newPath.
+- (NSString *)pathByExpandingString:(NSString *)path 
+              forBuildConfiguration:(NSString *)configuration
+                           ofTarget:(PBXTarget *)target;
 @end

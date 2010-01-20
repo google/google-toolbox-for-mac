@@ -49,11 +49,10 @@ typedef enum {
 
 // Some paths that we resolve
 NSString *const kObjectsDirPath
-  = @"$(SRCROOT)/$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)/$(NATIVE_ARCH_32_BIT)";
+  = @"$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)/$(NATIVE_ARCH_32_BIT)";
 NSString *const kObjectsDirNoArchPath
-  = @"$(SRCROOT)/$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)";
-NSString *const kDerivedDirPath = @"$(SRCROOT)/$(DERIVED_FILE_DIR)";
-NSString *const kBuildRootDirPath = @"$(SRCROOT)/$(BUILD_ROOT)";
+  = @"$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)";
+NSString *const kBuildRootDirPath = @"$(BUILD_ROOT)";
 
 // the title for our menu items w/ submenus
 NSString *kShowCodeCoverageForMenuTitle = @"Show Code Coverage For";
@@ -237,21 +236,24 @@ GTM_METHOD_CHECK(NSTask, gtm_runScript:withArguments:);
         NSString *subStr
           = [srcFileName substringToIndex:(fileLength - extensionLength)];
         NSString *gcdaFileName = [NSString stringWithFormat:@"%@gcda", subStr];
-        NSString *objectsDir = [target stringByExpandingString:kObjectsDirPath
-                                    forBuildConfigurationNamed:buildConfig];
+        NSString *objectsDir = [self pathByExpandingString:kObjectsDirPath
+                                     forBuildConfiguration:buildConfig
+                                                  ofTarget:target];
         NSString *gcdaPath
           = [objectsDir stringByAppendingPathComponent:gcdaFileName];
         pathToOpen = gcdaPath;
       }
     }
   } else if (mode_ == kGTMXcodeGCovOpenTarget) {
-    NSString *objectsDirNoArch
-      = [target stringByExpandingString:kObjectsDirNoArchPath
-             forBuildConfigurationNamed:buildConfig];
+    NSString *objectsDirNoArch 
+      = [self pathByExpandingString:kObjectsDirNoArchPath
+              forBuildConfiguration:buildConfig
+                           ofTarget:target];    
     pathToOpen = objectsDirNoArch;
   } else if (mode_ == kGTMXcodeGCovOpenBuildFolder) {
-    NSString *buildRootDir = [target stringByExpandingString:kBuildRootDirPath
-                                  forBuildConfigurationNamed:buildConfig];
+    NSString *buildRootDir = [self pathByExpandingString:kBuildRootDirPath
+                                   forBuildConfiguration:buildConfig
+                                                ofTarget:target];    
     pathToOpen = buildRootDir;
   }
   if (pathToOpen) {
@@ -390,12 +392,14 @@ GTM_METHOD_CHECK(NSTask, gtm_runScript:withArguments:);
   NSString *buildConfig = [project activeBuildConfigurationName];
   if (mode_ == kGTMXcodeGCovCleanDataTarget) {
     NSString *objectsDirNoArch
-      = [target stringByExpandingString:kObjectsDirNoArchPath
-             forBuildConfigurationNamed:buildConfig];
+      = [self pathByExpandingString:kObjectsDirNoArchPath
+              forBuildConfiguration:buildConfig
+                           ofTarget:target];    
     pathToClean = objectsDirNoArch;
   } else if (mode_ == kGTMXcodeGCovCleanDataBuildFolder) {
-    NSString *buildRootDir = [target stringByExpandingString:kBuildRootDirPath
-                                  forBuildConfigurationNamed:buildConfig];
+    NSString *buildRootDir = [self pathByExpandingString:kBuildRootDirPath
+                                         forBuildConfiguration:buildConfig
+                                                      ofTarget:target];   
     pathToClean = buildRootDir;
   }
   if (pathToClean) {
@@ -455,8 +459,9 @@ GTM_METHOD_CHECK(NSTask, gtm_runScript:withArguments:);
   PBXProject *project = [NSApp currentProject];
   PBXTarget *target = [project activeTarget];
   NSString *buildConfig = [project activeBuildConfigurationName];
-  NSString *buildRootDir = [target stringByExpandingString:kBuildRootDirPath
-                                forBuildConfigurationNamed:buildConfig];
+  NSString *buildRootDir = [self pathByExpandingString:kBuildRootDirPath
+                                 forBuildConfiguration:buildConfig
+                                              ofTarget:target];    
   pathToClean = buildRootDir;
   if (pathToClean) {
     [NSTask gtm_runScript:@"CleanCovAndBuild" withArguments:pathToClean, nil];
