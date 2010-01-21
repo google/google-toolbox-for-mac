@@ -19,6 +19,21 @@
 #import "GTMDefines.h"
 #import "GTMUILocalizer.h"
 
+@interface GTMUILocalizer (GTMUILocalizerPrivate)
+- (void)localizeAccessibility:(id)object;
+- (void)localizeBindings:(id)object;
+
+// Never recursively call any of these methods. Always call 
+// -[self localizeObject:recursively:] otherwise bindings will not be
+// localized properly.
+- (void)localizeWindow:(NSWindow *)window recursively:(BOOL)recursive;
+- (void)localizeToolbar:(NSToolbar *)toolbar;
+- (void)localizeView:(NSView *)view recursively:(BOOL)recursive;
+- (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive;
+- (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive;
+
+@end
+
 @implementation GTMUILocalizer
 - (id)initWithBundle:(NSBundle *)bundle {
   if ((self = [super init])) {
@@ -99,6 +114,8 @@
       [self localizeMenu:menu recursively:recursive];
     } else if ([object isKindOfClass:[NSCell class]]) {
       [self localizeCell:(NSCell *)object recursively:recursive];
+    } else if ([object isKindOfClass:[NSToolbar class]]) {
+      [self localizeToolbar:(NSToolbar*)object];
     }
     [self localizeBindings:object];
   }
@@ -111,11 +128,8 @@
     [window setTitle:localizedTitle];
   }
   if (recursive) {
-    NSView *content = [window contentView];
-    [self localizeView:content recursively:recursive];
-    NSToolbar *toolbar = [window toolbar];
-    if (toolbar)
-      [self localizeToolbar:toolbar];
+    [self localizeObject:[window contentView] recursively:recursive];
+    [self localizeObject:[window toolbar] recursively:recursive];
   }
 }
 
@@ -173,12 +187,12 @@
 
     // Must do the menu before the titles, or else this will screw up
     // popup menus on us.
-    [self localizeMenu:[view menu] recursively:recursive];
+    [self localizeObject:[view menu] recursively:recursive];
     if (recursive) {
       NSArray *subviews = [view subviews];
       NSView *subview = nil;
       GTM_FOREACH_OBJECT(subview, subviews) {
-        [self localizeView:subview recursively:recursive];
+        [self localizeObject:subview recursively:recursive];
       }
     }
 
@@ -220,7 +234,7 @@
           [item setLabel:localizedLabel];
         }
         if (recursive) {
-          [self localizeView:[item view] recursively:recursive];
+          [self localizeObject:[item view] recursively:recursive];
         }
       }
     }
@@ -240,10 +254,10 @@
     NSMatrix *matrix = (NSMatrix *)view;
     // Process the prototype
     id cell = [matrix prototype];
-    [self localizeCell:cell recursively:recursive];
+    [self localizeObject:cell recursively:recursive];
     // Process the cells
     GTM_FOREACH_OBJECT(cell, [matrix cells]) {
-      [self localizeCell:cell recursively:recursive];
+      [self localizeObject:cell recursively:recursive];
       // The tooltip isn't on a cell, so we do it via the matrix.
       NSString *toolTip = [matrix toolTipForCell:cell];
       NSString *localizedToolTip = [self localizedStringForString:toolTip];
@@ -259,28 +273,9 @@
     NSArray *columns = [tableView tableColumns];
     NSTableColumn *column = nil;
     GTM_FOREACH_OBJECT(column, columns) {
-      [self localizeCell:[column headerCell] recursively:recursive];
+      [self localizeObject:[column headerCell] recursively:recursive];
     }
   }
-}
-
-- (void)localizeAccessibility:(id)object {
-  NSArray *supportedAttrs = [object accessibilityAttributeNames];
-  if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
-    NSString *accessibilityHelp
-      = [object accessibilityAttributeValue:NSAccessibilityHelpAttribute];
-    if (accessibilityHelp) {
-      NSString *localizedAccessibilityHelp
-        = [self localizedStringForString:accessibilityHelp];
-      if (localizedAccessibilityHelp) {
-        [object accessibilitySetValue:localizedAccessibilityHelp
-                         forAttribute:NSAccessibilityHelpAttribute];
-      }
-    }
-  }
-
-  // We cannot do the same thing with NSAccessibilityDescriptionAttribute; see
-  // the links in the header file for more details.
 }
 
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive {
@@ -299,7 +294,7 @@
         [menuItem setTitle:localizedTitle];
       }
       if (recursive) {
-        [self localizeMenu:[menuItem submenu] recursively:recursive];
+        [self localizeObject:[menuItem submenu] recursively:recursive];
       }
     }
   }
@@ -312,7 +307,7 @@
     if (localizedTitle) {
       [cell setTitle:localizedTitle];
     }
-    [self localizeMenu:[cell menu] recursively:recursive];
+    [self localizeObject:[cell menu] recursively:recursive];
     id obj = [cell representedObject];
     [self localizeObject:obj recursively:recursive];
   }
@@ -366,6 +361,25 @@
       }
     }
   }
+}
+
+- (void)localizeAccessibility:(id)object {
+  NSArray *supportedAttrs = [object accessibilityAttributeNames];
+  if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
+    NSString *accessibilityHelp
+      = [object accessibilityAttributeValue:NSAccessibilityHelpAttribute];
+    if (accessibilityHelp) {
+      NSString *localizedAccessibilityHelp
+        = [self localizedStringForString:accessibilityHelp];
+      if (localizedAccessibilityHelp) {
+        [object accessibilitySetValue:localizedAccessibilityHelp
+                         forAttribute:NSAccessibilityHelpAttribute];
+      }
+    }
+  }
+
+  // We cannot do the same thing with NSAccessibilityDescriptionAttribute; see
+  // the links in the header file for more details.
 }
 
 @end

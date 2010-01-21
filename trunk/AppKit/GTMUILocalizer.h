@@ -64,6 +64,12 @@
 // will localize properly. This keeps the differences between the nibs down
 // to the bare essentials.
 //
+// NOTE: NSToolbar localization support is limited to only working on the
+// default items in the toolbar. We cannot localize items that are on of the
+// customization palette but not in the default items because there is not an
+// API for NSToolbar to get all possible items. You are responsible for
+// localizing all non-default toolbar items by hand.
+//
 @interface GTMUILocalizer : NSObject {
  @private
   IBOutlet id owner_;
@@ -72,23 +78,10 @@
   NSBundle *bundle_;
 }
 - (id)initWithBundle:(NSBundle *)bundle;
+
+// Localize |object|. If |recursive| is true, it will attempt
+// to localize objects owned/referenced by |object|.
 - (void)localizeObject:(id)object recursively:(BOOL)recursive;
-- (void)localizeWindow:(NSWindow *)window recursively:(BOOL)recursive;
-- (void)localizeView:(NSView *)view recursively:(BOOL)recursive;
-- (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive;
-- (void)localizeCell:(NSCell *)cell recursively:(BOOL)recursive;
-- (void)localizeBindings:(id)object;
-
-// NOTE: NSToolbar localization support is limited to only working on the
-// default items in the toolbar. We cannot localize items that are on of the
-// customization palette but not in the default items because there is not an
-// API for NSToolbar to get all possible items. You are responsible for
-// localizing all non-default toolbar items by hand.
-- (void)localizeToolbar:(NSToolbar *)toolbar;
-
-// Localize an object for accessibility; can be called for both NSViews and
-// NSCells as they are both accessibility objects.
-- (void)localizeAccessibility:(id)object;
 
 // A method for subclasses to override in case you have a different
 // way to go about getting localized strings.

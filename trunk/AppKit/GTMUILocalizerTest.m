@@ -82,14 +82,12 @@
   // Test binding localization.
   NSTextField *textField = [controller bindingsTextField];
   STAssertNotNil(textField, nil);
-  [localizer localizeObject:textField recursively:NO];
   NSString *displayPatternValue1Binding 
-    = [NSString stringWithFormat:@"%@1", NSDisplayPatternValueBinding];
-  
+    = [NSString stringWithFormat:@"%@1", NSDisplayPatternValueBinding];  
   [self verifyBinding:displayPatternValue1Binding forObject:textField];
+  
   NSSearchField *searchField = [controller bindingsSearchField];
   STAssertNotNil(searchField, nil);
-  [localizer localizeObject:searchField recursively:NO];
   [self verifyBinding:NSPredicateBinding forObject:searchField];
   
   [localizer release];
