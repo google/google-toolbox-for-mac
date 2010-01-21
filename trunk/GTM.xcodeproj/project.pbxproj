@@ -1808,7 +1808,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_DISABLE_ZOMBIES=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
 		};
 		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
