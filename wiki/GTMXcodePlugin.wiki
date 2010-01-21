@@ -1,6 +1,8 @@
 #summary Google Toolbox For Mac Xcode Plugin
 #labels Featured,Phase-Deploy
 
+<wiki:toc max_depth="1" />
+
 = Introduction =
 
 The GTM Xcode plugin adds a couple of nice features to Xcode.
@@ -24,3 +26,7 @@ Once it is in place, restart Xcode, and you should have a "About GTM Xcode Plugi
 If you run into any problems, please log them at:
 
 http://code.google.com/p/google-toolbox-for-mac/issues/list
+
+= Version History =
+  * 10.0.1 - Initial public release
+  * 10.0.2 - Fixed some problems with custom absolute builds paths
