@@ -250,23 +250,27 @@ enum {
 
 - (void)testAbstractDOListenerMultipleRegistration {
   TestServer *listener =
-    [[TestServer alloc] initWithRegisteredName:@"MyUniqueName"
-                                      protocol:@protocol(TestServerDOProtocol)
-                                          port:[NSMachPort port]];
+    [[[TestServer alloc] initWithRegisteredName:@"MyUniqueName"
+                                       protocol:@protocol(TestServerDOProtocol)
+                                           port:[NSMachPort port]] autorelease];
   [GTMUnitTestDevLog expectPattern:@"listening on.*"];
   [listener runInCurrentThread];
 
   TestServer *copyCat =
-  [[TestServer alloc] initWithRegisteredName:@"copyCat"
-                                    protocol:@protocol(TestServerDOProtocol)
-                                        port:[NSMachPort port]];
+    [[[TestServer alloc] initWithRegisteredName:@"copyCat"
+                                       protocol:@protocol(TestServerDOProtocol)
+                                           port:[NSMachPort port]] autorelease];
   STAssertTrue(([[copyCat registeredName] isEqualToString:@"copyCat"]),
                @"The name we set to register with is not correct.");
 
-  [listener setRegisteredName:@"MyUniqueName"];
+  TestServer *listener2 =
+    [[[TestServer alloc] initWithRegisteredName:@"MyUniqueName"
+                                       protocol:@protocol(TestServerDOProtocol)
+                                           port:[NSMachPort port]] autorelease];
+  
   [GTMUnitTestDevLog expectPattern:@"failed to register.*"];
-  [listener runInCurrentThread];
-  STAssertNil([listener connection], @"We should not have been able to created "
+  [listener2 runInCurrentThread];
+  STAssertNil([listener2 connection], @"We should not have been able to create "
               @"a server with a name that has already been taken.");
 }
 
