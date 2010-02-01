@@ -273,20 +273,6 @@ static const UInt32 kTestParameterValue = 'bam ';
                                      action:nil
                                 whenPressed:YES], 
                  @"Shouldn't have created hotkey");
-#if DEBUG
-    // This tests debug selector validation, so we only can do it in debug.
-    [GTMUnitTestDevLogDebug expectPattern:@"RecordedNSAssert in "
-      @"GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments - "
-      @"\"GTMCarbonEventDispatcherHandlerTest\" selector \"badSelector:\" is "
-      @"unimplemented or misnamed \\(.*/GTMDebugSelectorValidation.h:[0-9]*\\)"];
-    STAssertThrowsSpecificNamed([dispatcher registerHotKey:0x5 
-                                                 modifiers:keyMods
-                                                    target:self 
-                                                    action:@selector(badSelector:) 
-                                               whenPressed:YES],
-                                NSException, NSInternalInconsistencyException,
-                                @"Shouldn't have created hotkey");
-#endif
     hotKey = [dispatcher registerHotKey:0x5 
                               modifiers:keyMods
                                  target:self 
