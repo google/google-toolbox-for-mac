@@ -92,14 +92,23 @@ tell application "Xcode"
 			try
 				tell me
 					set useGC to expandBuildSetting("$(GCC_ENABLE_OBJC_GC)")
+					if useGC is equal to "Unsupported" or useGC is equal to "" then
+						set useGC to yes
+					else
+						set useGC to no
+					end if
 				end tell
 			on error e
 				log "Unable to expand GCC_ENABLE_OBJC_GC " & e
-				set useGC to ""
+				set useGC to no
 			end try
 			try
 				tell me
 					set testhost to expandBuildSetting("$(TEST_HOST)")
+					-- if testhost is a relative path, make it absolute
+					if first character of testhost is not "/" then
+						set testhost to expandBuildSetting("$(SRCROOT)") & "/" & testhost
+					end if
 				end tell
 			on error e
 				log "Unable to expand testHost " & e
@@ -131,7 +140,6 @@ tell application "Xcode"
 				return & "Go to http://developer.apple.com/technotes/tn2004/tn2124.html for more info on settings."}
 		tell exec
 			if useGC is equal to "Unsupported" or useGC is equal to "" then
-				make new environment variable with properties {name:"OBJC_DISABLE_GC", value:"YES", active:yes}
 			end if
 			
 			if wrapperExtension is "octest" then
@@ -161,7 +169,7 @@ tell application "Xcode"
 				make new launch argument with properties {name:"\"" & bundlename & "\"", active:yes}
 			end if
 			
-			make new environment variable with properties {name:"DYLD_IMAGE_SUFFIX", value:"_debug", active:no}
+			make new environment variable with properties {name:"OBJC_DISABLE_GC", value:"YES", active:useGC}
 			
 			make new environment variable with properties {name:"DYLD_LIBRARY_PATH", value:".", active:yes}
 			make new environment variable with properties {name:"DYLD_FRAMEWORK_PATH", value:".:/Developer/Library/Frameworks", active:yes}
@@ -186,6 +194,7 @@ tell application "Xcode"
 			make new environment variable with properties {name:"TSMEventTracing", value:"1", active:no}
 			make new environment variable with properties {name:"OBJC_PRINT_IMAGES", value:"1", active:no}
 			make new environment variable with properties {name:"OBJC_PRINT_LOAD_METHODS", value:"1", active:no}
+			make new environment variable with properties {name:"DYLD_IMAGE_SUFFIX", value:"_debug", active:no}
 			make new environment variable with properties {name:"DYLD_PRINT_LIBRARIES", value:"1", active:no}
 			make new environment variable with properties {name:"DYLD_PRINT_LIBRARIES_POST_LAUNCH", value:"1", active:no}
 			make new environment variable with properties {name:"DYLD_PREBIND_DEBUG", value:"1", active:no}
