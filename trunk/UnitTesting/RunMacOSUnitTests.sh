@@ -195,6 +195,8 @@ RunTests() {
   AppendToSymbolsLeaksShouldIgnore "-[IMServiceAgentImpl allServices]"
   # radar 6264034 +[IKSFEffectDescription initialize] Leaks
   AppendToSymbolsLeaksShouldIgnore "+[IKSFEffectDescription initialize]"
+  # radar 7598715 Leak when creating new NSColor using lab color space.
+  AppendToSymbolsLeaksShouldIgnore "CMSSetLabCLUT"
 
   # Running leaks on architectures that support leaks.
   export MallocStackLogging=YES
@@ -206,9 +208,10 @@ RunTests() {
   
   # Running leaks on architectures that don't support leaks.
   unset MallocStackLogging
-  GTM_ENABLE_LEAKS=0
+  unset GTM_ENABLE_LEAKS
   ARCHS="${NO_LEAK_TEST_ARCHS}"
   VALID_ARCHS="${NO_LEAK_TEST_ARCHS}"
+  GTMXcodeNote ${LINENO} "Leak checking disabled for $ARCHS due to no support for leaks on platform".
   MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
 }
 
