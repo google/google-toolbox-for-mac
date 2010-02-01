@@ -41,6 +41,16 @@
   }
   return self;
 }
+
+- (void)dealloc {
+  [object1_ release];
+  [object2_ release];
+  [object3_ release];
+  [object4_ release];
+  [object5_ release];
+  [super dealloc];
+}
+
 @end
 
 @implementation GTMIBArrayTest
