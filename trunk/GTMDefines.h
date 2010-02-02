@@ -145,6 +145,14 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
     typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
 #endif // _GTMCompileAssert
 
+// Macro to allow you to create NSStrings out of other macros.
+// #define FOO foo
+// NSString *fooString = GTM_NSSTRINGIFY(FOO);
+#if !defined (GTM_NSSTRINGIFY)
+  #define GTM_NSSTRINGIFY_INNER(x) @#x
+  #define GTM_NSSTRINGIFY(x) GTM_NSSTRINGIFY_INNER(x)
+#endif
+
 // Macro to allow fast enumeration when building for 10.5 or later, and
 // reliance on NSEnumerator for 10.4.  Remember, NSDictionary w/ FastEnumeration
 // does keys, so pick the right thing, nothing is done on the FastEnumeration

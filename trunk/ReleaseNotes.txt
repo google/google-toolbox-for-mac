@@ -394,6 +394,8 @@ Changes since 1.5.1
 
 - Added PListCompiler.sh for compiling plists.
 
+- Added GTM_NSSTRINGIFY_MACRO for turning other macros into NSStrings.
+
 
 Release 1.5.1
 Changes since 1.5.0
