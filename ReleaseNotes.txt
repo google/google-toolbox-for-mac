@@ -390,6 +390,10 @@ Changes since 1.5.1
 
 - Added support for localizing binding options in GTMUILocalizer.
 
+- Cleaned up several leaks in tests and elsewhere.
+
+- Added PListCompiler.sh for compiling plists.
+
 
 Release 1.5.1
 Changes since 1.5.0
