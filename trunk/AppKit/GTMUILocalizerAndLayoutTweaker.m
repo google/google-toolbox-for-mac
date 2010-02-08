@@ -123,9 +123,19 @@ static BOOL IsRightAnchored(NSView *view);
 }
 
 - (void)tweakView:(NSView *)view {
-  // If its a alignment box, let it do its thing, otherwise, go find boxes
+  // If it's a alignment box, let it do its thing...
   if ([view isKindOfClass:[GTMWidthBasedTweaker class]]) {
     [(GTMWidthBasedTweaker *)view tweakLayoutWithOffset:NSZeroPoint];
+  // Do our best to support TabViews. If the tabs need to resize, you are
+  // probably better off manually running them through a tweaker and then fixing
+  // up the parent view (and other tabs) to look right.
+  } else if ([view isKindOfClass:[NSTabView class]]) {
+    NSArray *tabViewItems = [(NSTabView *)view tabViewItems];
+    NSTabViewItem *item = nil;
+    GTM_FOREACH_OBJECT(item, tabViewItems) {
+      [self tweakView:[item view]];
+    }
+  // Generically look for subviews...
   } else {
     NSArray *subviews = [view subviews];
     NSView *subview = nil;

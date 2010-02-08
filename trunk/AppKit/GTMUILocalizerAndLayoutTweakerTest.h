@@ -19,7 +19,11 @@
 #import <Cocoa/Cocoa.h>
 #import "GTMUILocalizer.h"
 
-@interface GTMUILocalizerAndLayoutTweakerTestWindowController : NSWindowController
+@interface GTMUILocalizerAndLayoutTweakerTestWindowController : NSWindowController {
+ @private
+  IBOutlet NSTabView *tabView_;
+}
+- (NSTabView *)tabView;
 @end
 
 

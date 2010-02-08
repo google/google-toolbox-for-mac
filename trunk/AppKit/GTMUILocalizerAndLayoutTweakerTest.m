@@ -129,7 +129,7 @@ static NSUInteger gTestPass = 0;
   }
 }
 
-- (void)testWrapStartTitleForWidth {
+- (void)testWrappingForWidth {
   NSString *kTestStrings[] = {
     @"The fox jumps the dog.",
     @"The quick brown fox jumps over the lazy dog.",
@@ -174,9 +174,51 @@ static NSUInteger gTestPass = 0;
   }
 }
 
+- (void)testTabViewLocalization {
+  // Test with nib 6
+  for (gTestPass = 0; gTestPass < 3; ++gTestPass) {
+    GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
+      [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
+        initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest6"];
+    NSWindow *window = [controller window];
+    STAssertNotNil(window, @"Pass %zu", gTestPass);
+    NSTabView *tabView = [controller tabView];
+    for (NSInteger tabIndex = 0; tabIndex < [tabView numberOfTabViewItems];
+         ++tabIndex) {
+      [tabView selectTabViewItemAtIndex:tabIndex];
+      NSString *imageName =
+        [NSString stringWithFormat:
+          @"GTMUILocalizerAndLayoutTweakerTest6-tab%ld-%ld",
+          (long)tabIndex, (long)gTestPass];
+      GTMAssertObjectImageEqualToImageNamed(window, imageName,
+                                            @"Pass %zu", gTestPass);
+    }
+    [controller release];
+  }
+  // Test with nib 2
+  for (gTestPass = 0; gTestPass < 3; ++gTestPass) {
+    GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
+      [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
+        initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest2"];
+    NSWindow *window = [controller window];
+    STAssertNotNil(window, @"Pass %zu", gTestPass);
+    NSString *imageName =
+      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest2-%ld",
+        (long)gTestPass];
+    GTMAssertObjectImageEqualToImageNamed(window, imageName,
+                                          @"Pass %zu", gTestPass);
+    [controller release];
+  }
+}
+
 @end
 
 @implementation GTMUILocalizerAndLayoutTweakerTestWindowController
+
+- (NSTabView *)tabView {
+  return tabView_;
+}
+
 @end
 
 @implementation GTMUILocalizerAndLayoutTweakerTestLocalizer
