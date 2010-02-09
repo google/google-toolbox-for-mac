@@ -129,7 +129,7 @@
 - (NSPoint)gtm_projectLineFrom:(NSPoint)pointA
                             to:(NSPoint)pointB
                             by:(CGFloat)length {
-  NSPoint newPoint = pointB;
+  NSPoint newPoint = NSMakePoint(pointB.x, pointB.y);
   CGFloat x = (pointB.x - pointA.x);
   CGFloat y = (pointB.y - pointA.y);
   if (fpclassify(x) == FP_ZERO) {
