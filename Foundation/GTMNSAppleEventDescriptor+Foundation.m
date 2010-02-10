@@ -264,7 +264,7 @@ static NSMutableDictionary *gTypeMap = nil;
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_arrayValue)
                                      forTypes:types
                                         count:sizeof(types)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
@@ -294,7 +294,7 @@ static NSMutableDictionary *gTypeMap = nil;
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_dictionaryValue)
                                     forTypes:types
                                        count:sizeof(types)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
@@ -354,7 +354,7 @@ static NSMutableDictionary *gTypeMap = nil;
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_nullValue)
                                       forTypes:types
                                          count:sizeof(types)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
@@ -378,7 +378,7 @@ static NSMutableDictionary *gTypeMap = nil;
   [NSAppleEventDescriptor gtm_registerSelector:@selector(stringValue)
                                       forTypes:types
                                          count:sizeof(types)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
@@ -404,7 +404,7 @@ static NSMutableDictionary *gTypeMap = nil;
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_numberValue)
                                      forTypes:types
                                         count:sizeof(types)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {
@@ -492,7 +492,7 @@ static NSMutableDictionary *gTypeMap = nil;
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_fourCharCodeValue)
                                       forTypes:types
                                          count:sizeof(types)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor*)gtm_appleEventDescriptor {

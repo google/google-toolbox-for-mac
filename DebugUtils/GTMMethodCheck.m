@@ -154,7 +154,7 @@ void GTMMethodCheckMethodChecker(void) {
     free(methods);
   }
   free(classes);
-  [pool release];
+  [pool drain];
 }
 
 #endif  // DEBUG

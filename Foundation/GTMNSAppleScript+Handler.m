@@ -119,7 +119,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   [NSAppleEventDescriptor gtm_registerSelector:@selector(gtm_osaIDValue)
                                       forTypes:types3
                                          count:sizeof(types3)/sizeof(DescType)];
-  [pool release];
+  [pool drain];
 }
 
 - (NSAppleEventDescriptor *)gtm_executeAppleEvent:(NSAppleEventDescriptor *)event 

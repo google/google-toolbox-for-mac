@@ -96,7 +96,7 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
   if ([self areWeBeingUnitTested]) {
     [self setUpForUIUnitTests];
   }
-  [pool release];
+  [pool drain];
 }
 
 + (BOOL)isScreenSaverActive {

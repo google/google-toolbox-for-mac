@@ -217,11 +217,8 @@ NSString *const kGTMThemeBackgroundColorKey = @"GTMThemeBackgroundColor";
   if (value) return value;
 
   if (style == GTMThemeStyleWindow) {
-    NSColor *color = nil;
     if (!state) {
       // TODO(alcor): dim images when disabled
-      color = [NSColor colorWithPatternImage:backgroundImage_];
-      // TODO(alcor): |color| is never used!
 
       if ((state & GTMThemeStateActiveWindow) != GTMThemeStateActiveWindow) {
         // TODO(alcor): this recursive call will also return nil since when you
