@@ -108,7 +108,7 @@ GTM_METHOD_CHECK(NSString, gtm_appleEventDescriptor);
            andSelector:@selector(getUrl:withReplyEvent:) 
          forEventClass:kInternetEventClass 
             andEventID:kAEGetURL]; 
-  [pool release];
+  [pool drain];
 }
 
 + (void)getUrl:(NSAppleEventDescriptor *)event 
