@@ -70,8 +70,6 @@
 		7F4C015F1055AD4200F88238 /* GTMUILocalizerWindow1State_10_4.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 7F4C015E1055AD4200F88238 /* GTMUILocalizerWindow1State_10_4.gtmUTState */; };
 		7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */; };
-		7F511DFC0F4B0378009F41B6 /* GTMTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF60F4B0378009F41B6 /* GTMTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7F511DFE0F4B0378009F41B6 /* GTMTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF80F4B0378009F41B6 /* GTMTheme.m */; };
 		7F6840D2105375A70057F4FA /* GTMUILocalizerTestWindow_10_4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6840D1105375A70057F4FA /* GTMUILocalizerTestWindow_10_4.xib */; };
 		7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */; };
 		7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -199,7 +197,6 @@
 		8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
 		8BAA9EFB0F7C2AB500DF4F12 /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
 		8BAA9EFC0F7C2AB500DF4F12 /* GTMNSWorkspace+RunningTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */; };
-		8BAA9EFD0F7C2AB500DF4F12 /* GTMThemeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */; };
 		8BC045C20DAE899100C2D1CA /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */; };
 		8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */; };
 		8BC04CD80DB003D800C2D1CA /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -493,9 +490,6 @@
 		7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSColor+Luminance.h"; sourceTree = "<group>"; };
 		7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+Luminance.m"; sourceTree = "<group>"; };
 		7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+LuminanceTest.m"; sourceTree = "<group>"; };
-		7F511DF60F4B0378009F41B6 /* GTMTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTheme.h; sourceTree = "<group>"; };
-		7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMThemeTest.m; sourceTree = "<group>"; };
-		7F511DF80F4B0378009F41B6 /* GTMTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTheme.m; sourceTree = "<group>"; };
 		7F6840D1105375A70057F4FA /* GTMUILocalizerTestWindow_10_4.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerTestWindow_10_4.xib; sourceTree = "<group>"; };
 		7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFadeTruncatingTextFieldCell.h; sourceTree = "<group>"; };
 		7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingTextFieldCell.m; sourceTree = "<group>"; };
@@ -1156,9 +1150,6 @@
 				8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */,
 				8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */,
 				8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */,
-				7F511DF60F4B0378009F41B6 /* GTMTheme.h */,
-				7F511DF80F4B0378009F41B6 /* GTMTheme.m */,
-				7F511DF70F4B0378009F41B6 /* GTMThemeTest.m */,
 				F47F1C740D490E5C00925B8F /* GTMShading.h */,
 				8B4099490F93C5CC00DF540E /* GTMUILocalizer.h */,
 				8B40994A0F93C5CC00DF540E /* GTMUILocalizer.m */,
@@ -1468,7 +1459,6 @@
 				8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */,
 				1012DF560F4252BD004794DB /* GTMAbstractDOListener.h in Headers */,
 				7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */,
-				7F511DFC0F4B0378009F41B6 /* GTMTheme.h in Headers */,
 				10998E920F4B5952007F179D /* GTMTransientRootProxy.h in Headers */,
 				10998EF50F4B5D1A007F179D /* GTMTransientRootPortProxy.h in Headers */,
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
@@ -2032,7 +2022,6 @@
 				8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
 				1012DF570F4252BD004794DB /* GTMAbstractDOListener.m in Sources */,
 				7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */,
-				7F511DFE0F4B0378009F41B6 /* GTMTheme.m in Sources */,
 				10998E8F0F4B593E007F179D /* GTMTransientRootProxy.m in Sources */,
 				10998EF40F4B5D1A007F179D /* GTMTransientRootPortProxy.m in Sources */,
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
@@ -2074,7 +2063,6 @@
 				8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */,
 				8BAA9EFB0F7C2AB500DF4F12 /* GTMNSImage+ScalingTest.m in Sources */,
 				8BAA9EFC0F7C2AB500DF4F12 /* GTMNSWorkspace+RunningTest.m in Sources */,
-				8BAA9EFD0F7C2AB500DF4F12 /* GTMThemeTest.m in Sources */,
 				8B409BC60F94405A00DF540E /* GTMUILocalizerTest.m in Sources */,
 				8207B89D0FEA7AA6008A527B /* GTMWindowSheetControllerTest.m in Sources */,
 				F42E2C69102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m in Sources */,
