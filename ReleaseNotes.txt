@@ -396,6 +396,9 @@ Changes since 1.5.1
 
 - Added GTM_NSSTRINGIFY_MACRO for turning other macros into NSStrings.
 
+- Removed GTMTheme because it wasn't generic enough for inclusion in GTM, and
+  was never fully implemented
+
 
 Release 1.5.1
 Changes since 1.5.0
