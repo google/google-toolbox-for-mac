@@ -399,6 +399,9 @@ Changes since 1.5.1
 - Removed GTMTheme because it wasn't generic enough for inclusion in GTM, and
   was never fully implemented
 
+- Added GTM_NONNULL, NS_RETURNS_RETAINED, and CF_RETURNS_RETAINED macrs to 
+  support clang analysis.
+
 
 Release 1.5.1
 Changes since 1.5.0

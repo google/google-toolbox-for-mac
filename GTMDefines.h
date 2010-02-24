@@ -259,3 +259,29 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
     #define CGFLOAT_DEFINED 1
   #endif // CGFLOAT_DEFINED
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+
+// Some support for advanced clang static analysis functionality
+// See http://clang-analyzer.llvm.org/annotations.html
+#ifndef __has_feature      // Optional.
+  #define __has_feature(x) 0 // Compatibility with non-clang compilers.
+#endif
+
+#ifndef NS_RETURNS_RETAINED
+  #if __has_feature(attribute_ns_returns_retained)
+    #define NS_RETURNS_RETAINED __attribute__((ns_returns_retained))
+  #else
+    #define NS_RETURNS_RETAINED
+  #endif
+#endif
+
+#ifndef CF_RETURNS_RETAINED
+  #if __has_feature(attribute_cf_returns_retained)
+    #define CF_RETURNS_RETAINED __attribute__((cf_returns_retained))
+  #else
+    #define CF_RETURNS_RETAINED
+  #endif
+#endif
+
+#ifndef GTM_NONNULL
+  #define GTM_NONNULL(x) __attribute__((nonnull(x)))
+#endif
