@@ -158,18 +158,34 @@ static NSString *GTMStackTraceFromAddressDescriptors(struct GTMAddressDescriptor
     if (i) {
       [trace appendString:@"\n"];
     }
+    NSString *fileName = nil;
+    if (descs[i].filename) {
+      fileName = [NSString stringWithCString:descs[i].filename
+                                    encoding:NSUTF8StringEncoding];
+      fileName = [fileName lastPathComponent];
+    } else {
+      fileName = @"??";
+    }
     if (descs[i].class_name) {
-      [trace appendFormat:@"#%-2u %#08lx %s[%s %s]  (%s)",
-       i, descs[i].address, 
+      [trace appendFormat:@"#%-2u %-35s %0*p %s[%s %s]",
+       i,
+       [fileName UTF8String],
+       // sizeof(void*) * 2 is the length of the hex address (32 vs 64) and + 2 
+       // for the 0x prefix
+       sizeof(void *) * 2 + 2, 
+       descs[i].address, 
        (descs[i].is_class_method ? "+" : "-"),
        descs[i].class_name,
-       (descs[i].symbol ? descs[i].symbol : "??"),
-       (descs[i].filename ? descs[i].filename : "??")];
+       (descs[i].symbol ? descs[i].symbol : "??")];
     } else {
-      [trace appendFormat:@"#%-2u %#08lx %s()  (%s)",
-       i, descs[i].address,
-       (descs[i].symbol ? descs[i].symbol : "??"),
-       (descs[i].filename ? descs[i].filename : "??")];
+      [trace appendFormat:@"#%-2u %-35s %0*p %s()",
+       i, 
+       [fileName UTF8String],
+       // sizeof(void*) * 2 is the length of the hex address (32 vs 64) and + 2 
+       // for the 0x prefix
+       sizeof(void *) * 2 + 2,
+       descs[i].address,
+       (descs[i].symbol ? descs[i].symbol : "??")];
     }
   }
   return trace;

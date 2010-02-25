@@ -402,6 +402,13 @@ Changes since 1.5.1
 - Added GTM_NONNULL, NS_RETURNS_RETAINED, and CF_RETURNS_RETAINED macrs to 
   support clang analysis.
 
+- Changed GTMStackTrace to put out a cleaner trace, and to work on 64 bit.
+  NOTE that if you are parsing this format, that it has changed.
+  eg 32 bit
+  #0  UnitTest - Foundation               0x0001c392 -[SenTest run]
+  and 64 bit
+  #0  UnitTest - Foundation               0x10010000001c3921 -[SenTest run]
+
 
 Release 1.5.1
 Changes since 1.5.0
