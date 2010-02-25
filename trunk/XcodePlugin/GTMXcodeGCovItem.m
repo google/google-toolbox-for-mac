@@ -49,7 +49,7 @@ typedef enum {
 
 // Some paths that we resolve
 NSString *const kObjectsDirPath
-  = @"$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)/$(NATIVE_ARCH_32_BIT)";
+  = @"$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)";
 NSString *const kObjectsDirNoArchPath
   = @"$(OBJECT_FILE_DIR)-$(BUILD_VARIANTS)";
 NSString *const kBuildRootDirPath = @"$(BUILD_ROOT)";
@@ -239,8 +239,11 @@ GTM_METHOD_CHECK(NSTask, gtm_runScript:withArguments:);
         NSString *objectsDir = [self pathByExpandingString:kObjectsDirPath
                                      forBuildConfiguration:buildConfig
                                                   ofTarget:target];
+        NSString *activeArchitecture = [project activeArchitecture];
+        NSString *archPath 
+          = [objectsDir stringByAppendingPathComponent:activeArchitecture];
         NSString *gcdaPath
-          = [objectsDir stringByAppendingPathComponent:gcdaFileName];
+          = [archPath stringByAppendingPathComponent:gcdaFileName];
         pathToOpen = gcdaPath;
       }
     }
