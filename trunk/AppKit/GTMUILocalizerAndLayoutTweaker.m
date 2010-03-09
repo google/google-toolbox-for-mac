@@ -337,7 +337,7 @@ static BOOL IsRightAnchored(NSView *view);
   }
 
   // Return how much things changed
-  return NSWidth(initialRect) - finalSize.width;
+  return finalSize.width - NSWidth(initialRect);
 }
 
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
