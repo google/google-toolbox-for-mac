@@ -265,6 +265,83 @@ static BOOL IsRightAnchored(NSView *view);
   }
 }
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
++ (CGFloat)sizeToFitFixedHeightTextField:(NSTextField *)textField {
+  return [self sizeToFitFixedHeightTextField:textField minWidth:(CGFloat)0];
+}
+
++ (CGFloat)sizeToFitFixedHeightTextField:(NSTextField *)textField
+                                minWidth:(NSUInteger)minWidth {
+  NSRect initialRect = [textField frame];
+  NSCell *cell = [textField cell];
+  NSSize titleSize = [cell titleRectForBounds:initialRect].size;
+
+  // Find linebreak point, and keep trying them until we're under the height
+  // requested.
+  NSString *str = [textField stringValue];
+  CFStringTokenizerRef tokenizer =
+      CFStringTokenizerCreate(NULL,
+                              (CFStringRef)str,
+                              CFRangeMake(0, [str length]),
+                              kCFStringTokenizerUnitLineBreak,
+                              NULL);
+  if (!tokenizer) {
+    _GTMDevAssert(tokenizer, @"failed to get a tokenizer");
+    return 0.0;
+  }
+  NSCell *workerCell = [cell copy];
+  NSCharacterSet *whiteSpaceSet = [NSCharacterSet whitespaceCharacterSet];
+
+  // Loop trying line break points until the height fits.
+  while (1) {
+    CFStringTokenizerTokenType tokenType =
+        CFStringTokenizerAdvanceToNextToken(tokenizer);
+    if (tokenType == kCFStringTokenizerTokenNone) {
+      // Reached the end without ever find a good width, how?
+      _GTMDevAssert(0, @"Failed to find a good size?!");
+      [textField sizeToFit];
+      break;
+    }
+    CFRange tokenRange = CFStringTokenizerGetCurrentTokenRange(tokenizer);
+
+    NSRange subStringRange =
+      NSMakeRange(0, tokenRange.location + tokenRange.length);
+    NSString *subString = [str substringWithRange:subStringRange];
+    subString = [subString stringByTrimmingCharactersInSet:whiteSpaceSet];
+
+    // Find how wide the cell would be for this sub string.
+    [workerCell setStringValue:subString];
+    CGFloat testWidth = [workerCell cellSize].width;
+
+    // Find the overall size if wrapped to this width.
+    NSRect sizeRect = NSMakeRect(0, 0, testWidth, CGFLOAT_MAX);
+    NSSize newSize = [cell cellSizeForBounds:sizeRect];
+    if (newSize.height <= titleSize.height) {
+      [textField setFrameSize:newSize];
+      break;
+    }
+  }
+
+  CFRelease(tokenizer);
+
+  NSSize fixedSize = [textField frame].size;
+  NSSize finalSize = NSMakeSize(fixedSize.width, NSHeight(initialRect));
+
+  // Enforce the minWidth
+  if (minWidth > fixedSize.width) {
+    finalSize.width = minWidth;
+  }
+  if (!NSEqualSizes(fixedSize, finalSize)) {
+    [textField setFrameSize:finalSize];
+  }
+
+  // Return how much things changed
+  return NSWidth(initialRect) - finalSize.width;
+}
+
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
 + (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window
                                           delta:(NSSize)delta {
   NSView *contentView = [window contentView];
