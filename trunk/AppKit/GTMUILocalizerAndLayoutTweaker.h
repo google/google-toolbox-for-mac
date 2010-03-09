@@ -56,11 +56,21 @@
 // Returns the amount the field changed height.
 + (CGFloat)sizeToFitFixedWidthTextField:(NSTextField *)textField;
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+// If you call sizeToFit on a NSTextField it will try not to word wrap, so it
+// can get really wide.  This method will keep the height fixed, but figure out
+// how wide the textfield needs to be to fit its text.
+// Returns the amount the field changed width.
++ (CGFloat)sizeToFitFixedHeightTextField:(NSTextField *)textField;
++ (CGFloat)sizeToFitFixedHeightTextField:(NSTextField *)textField
+                                minWidth:(NSUInteger)minWidth;
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
 // Insert newlines into the title of the button (radio or checkbox) or all cells
 // in the radio group (NSMatrix) so they will word wrap to the item's current
-// width.  Then +sizeToFitView can be called to have then resize to the exact
-// width and height needed.  Note: any existing Opt-Return forced wraps are
-// removed from the existing titles.
+// width.  Then +sizeToFitView can be called to then resize to the exact width
+// and height needed.  Note: any existing Opt-Return forced wraps are removed
+// from the existing titles.
 + (void)wrapButtonTitleForWidth:(NSButton *)button;
 + (void)wrapRadioGroupForWidth:(NSMatrix *)radioGroup;
 

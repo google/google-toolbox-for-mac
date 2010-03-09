@@ -211,6 +211,63 @@ static NSUInteger gTestPass = 0;
   }
 }
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+- (void)testSizeToFitFixedHeightTextField {
+  struct {
+    const char *name;
+    NSUInteger minWidth;
+  } kTestModes[] = {
+    { "NoMin", 0 },
+    { "Min", 450 },
+  };
+  NSString *kTestStrings[] = {
+    @"The fox jumps the dog.",
+    @"The quick brown fox jumps over the lazy dog.",
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox jumps "
+    @"over the lazy dog.  The quick brown fox jumps over the lazy dog.  "
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox "
+    @"jumps over the lazy dog.",
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox jumps "
+    @"over the lazy dog. The quick brown fox jumps over the lazy dog.  "
+    @"The quick brown fox jumps over the lazy dog.  The quick brown fox "
+    @"jumps over the lazy dog.  The quick brown fox jumps over the lazy "
+    @"dog.  The quick brown fox jumps over the lazy dog.  The End.",
+  };
+  for (size_t modeLoop = 0;
+       modeLoop < (sizeof(kTestModes) / sizeof(kTestModes[0]));
+       ++modeLoop) {
+      for (size_t lp = 0;
+         lp < (sizeof(kTestStrings) / sizeof(kTestStrings[0]));
+         ++lp) {
+      GTMUILocalizerAndLayoutTweakerTestWindowController *controller =
+          [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
+           initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest7"];
+      NSWindow *window = [controller window];
+      STAssertNotNil(window, @"Pass %zu", lp);
+      NSTextField *field;
+      GTM_FOREACH_OBJECT(field, [[window contentView] subviews]) {
+        STAssertTrue([field isMemberOfClass:[NSTextField class]],
+                     @"Pass %zu", lp);
+        [field setStringValue:kTestStrings[lp]];
+        NSUInteger minWidth = kTestModes[modeLoop].minWidth;
+        if (minWidth) {
+          [GTMUILocalizerAndLayoutTweaker sizeToFitFixedHeightTextField:field
+                                                               minWidth:minWidth];
+        } else {
+          [GTMUILocalizerAndLayoutTweaker sizeToFitFixedHeightTextField:field];
+        }
+      }
+      NSString *imageName =
+        [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest7-%s-%ld",
+         kTestModes[modeLoop].name, (long)lp];
+      GTMAssertObjectImageEqualToImageNamed(window, imageName,
+                                            @"Pass %zu-%zu", modeLoop, lp);
+      [controller release];
+    }
+  }
+}
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
 @end
 
 @implementation GTMUILocalizerAndLayoutTweakerTestWindowController
