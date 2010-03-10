@@ -290,8 +290,7 @@ static BOOL IsRightAnchored(NSView *view);
     _GTMDevAssert(tokenizer, @"failed to get a tokenizer");
     return 0.0;
   }
-  NSCell *workerCell = [cell copy];
-  NSCharacterSet *whiteSpaceSet = [NSCharacterSet whitespaceCharacterSet];
+  NSCell *workerCell = [[cell copy] autorelease];
 
   // Loop trying line break points until the height fits.
   while (1) {
@@ -308,7 +307,7 @@ static BOOL IsRightAnchored(NSView *view);
     NSRange subStringRange =
       NSMakeRange(0, tokenRange.location + tokenRange.length);
     NSString *subString = [str substringWithRange:subStringRange];
-    subString = [subString stringByTrimmingCharactersInSet:whiteSpaceSet];
+    //subString = [subString stringByTrimmingCharactersInSet:whiteSpaceSet];
 
     // Find how wide the cell would be for this sub string.
     [workerCell setStringValue:subString];
