@@ -307,7 +307,6 @@ static BOOL IsRightAnchored(NSView *view);
     NSRange subStringRange =
       NSMakeRange(0, tokenRange.location + tokenRange.length);
     NSString *subString = [str substringWithRange:subStringRange];
-    //subString = [subString stringByTrimmingCharactersInSet:whiteSpaceSet];
 
     // Find how wide the cell would be for this sub string.
     [workerCell setStringValue:subString];
