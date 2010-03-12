@@ -337,6 +337,18 @@ GTM_EXTERN const OSType kGTMCarbonFrameworkSignature;
 + (GTMCarbonEventMonitorHandler *)sharedEventMonitorHandler;
 @end
 
+// An event handler class representing the application event handler.
+//
+// there is only one of these per application. This way you can put
+// event handlers directly on the application if necessary.
+@interface GTMCarbonEventApplicationEventHandler : GTMCarbonEventHandler
+// Accessor to get the GTMCarbonEventApplicationEventHandler singleton.
+//
+// Returns:
+//  pointer to the GTMCarbonEventApplicationEventHandler singleton.
++ (GTMCarbonEventApplicationEventHandler *)sharedApplicationEventHandler;
+@end
+
 // An event handler class representing the toolbox dispatcher event handler
 //
 // there is only one of these per application. This way you can put
