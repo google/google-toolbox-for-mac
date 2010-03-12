@@ -501,6 +501,23 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventMonitorHandler,
 
 @end
 
+#if (MAC_OS_X_VERSION_MAX_ALLOWED == MAC_OS_X_VERSION_10_5)
+// Accidentally marked as !LP64 in the 10.5sdk, it's back in the 10.6 sdk.
+// If you remove this decl, please remove it from GTMCarbonEventTest.m as well.
+extern EventTargetRef GetApplicationEventTarget(void);
+#endif  // (MAC_OS_X_VERSION_MAX_ALLOWED == MAC_OS_X_VERSION_10_5)
+
+@implementation GTMCarbonEventApplicationEventHandler
+
+GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventApplicationEventHandler,
+                                sharedApplicationEventHandler);
+
+- (EventTargetRef)eventTarget {
+  return GetApplicationEventTarget();
+}
+
+@end
+
 @implementation GTMCarbonEventDispatcherHandler
 
 GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventDispatcherHandler, 
