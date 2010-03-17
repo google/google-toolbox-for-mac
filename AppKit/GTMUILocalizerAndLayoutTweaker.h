@@ -79,6 +79,8 @@
 // +sizeToFitFixedWidthTextField.  The origin is not adjusted.  For windows,
 // passes |NO| to for -setFrame:display:'s |displayViews| flag on the
 // assumptions the caller is doing all the invals/updates needed.
+// NOTE: For windows, |delta| is assumed to be in content coordinates, and
+// Resolution Independence transforms on the window's frame are done.
 + (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window
                                           delta:(NSSize)delta;
 + (void)resizeViewWithoutAutoResizingSubViews:(NSView*)view
