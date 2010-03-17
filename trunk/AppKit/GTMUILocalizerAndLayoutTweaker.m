@@ -503,12 +503,15 @@ static BOOL IsRightAnchored(NSView *view);
   if (viewToResize_) {
     if ([viewToResize_ isKindOfClass:[NSWindow class]]) {
       NSWindow *window = (NSWindow *)viewToResize_;
-      NSRect windowFrame = [window frame];
+      NSView *contentView = [window contentView];
+      NSRect windowFrame = [contentView convertRect:[window frame]
+                                           fromView:nil];
       windowFrame.size.width += finalDelta;
+      windowFrame = [contentView convertRect:windowFrame toView:nil];
       [window setFrame:windowFrame display:YES];
       // For some reason the content view is resizing, but not adjusting its
       // origin, so correct it manually.
-      [[window contentView] setFrameOrigin:NSMakePoint(0, 0)];
+      [contentView setFrameOrigin:NSMakePoint(0, 0)];
       // TODO: should we update min size?
     } else {
       NSRect viewFrame = [viewToResize_ frame];
