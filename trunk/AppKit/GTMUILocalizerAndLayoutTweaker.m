@@ -350,9 +350,10 @@ static BOOL IsRightAnchored(NSView *view);
     [contentView setAutoresizesSubviews:NO];
   }
 
-  NSRect rect = [window frame];
+  NSRect rect = [contentView convertRect:[window frame] fromView:nil];
   rect.size.width += delta.width;
   rect.size.height += delta.height;
+  rect = [contentView convertRect:rect toView:nil];
   [window setFrame:rect display:NO];
   // For some reason the content view is resizing, but some times not adjusting
   // its origin, so correct it manually.
