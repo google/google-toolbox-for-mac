@@ -409,6 +409,9 @@ Changes since 1.5.1
   and 64 bit
   #0  UnitTest - Foundation               0x10010000001c3921 -[SenTest run]
 
+- Added GTMNSAnimatablePropertyContainer methods that allow you to stop
+  animations properly in 10.5.
+
 
 Release 1.5.1
 Changes since 1.5.0
