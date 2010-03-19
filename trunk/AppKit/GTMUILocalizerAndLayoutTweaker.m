@@ -578,6 +578,17 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
         if (NSWidth(newFrame) < kMinButtonWidth) {
           newFrame.size.width = kMinButtonWidth;
         }
+      } else {
+        // NSButton likes to lie when the title has forced word wraps (like
+        // wrapButtonTitleForWidth does).  When it actually draws, it comes up
+        // with slightly different metrics which causes unintended wrapping so
+        // pad the size by 0.5 to help cover this (odds are there is a
+        // NSIntegralRect call used along the way that triggers the bug).
+        NSString *title = [button title];
+        NSString * const kForcedWrapString = @"\xA";
+        if ([title rangeOfString:kForcedWrapString].location != NSNotFound) {
+          newFrame.size.width += 0.5;
+        }
       }
     }
   }
