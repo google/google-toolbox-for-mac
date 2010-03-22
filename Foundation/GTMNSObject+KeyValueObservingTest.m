@@ -50,6 +50,7 @@
 }
 
 - (void)testSingleChange {
+  count_ = 0;
   [dict_ gtm_addObserver:self 
              forKeyPath:@"key" 
                selector:@selector(observeValueChange:) 
@@ -64,6 +65,22 @@
   [dict_ setObject:@"foo" forKey:@"key"];
   STAssertEquals(count_, (int32_t)1, nil);
 }
+
+- (void)testStopObservingKeyPaths {
+  count_ = 0;
+  [dict_ gtm_addObserver:self 
+              forKeyPath:@"key" 
+                selector:@selector(observeValueChange:) 
+                userInfo:@"userInfo" 
+                 options:NSKeyValueObservingOptionNew];
+  expectedValue_ = @"bar";
+  [dict_ setObject:expectedValue_ forKey:@"key"];
+  STAssertEquals(count_, (int32_t)1, nil);
+  [self gtm_stopObservingKeyPaths];
+  [dict_ setObject:@"foo" forKey:@"key"];
+  STAssertEquals(count_, (int32_t)1, nil);
+}
+
 
 - (void)testRemoving {
   [GTMUnitTestDevLogDebug expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
@@ -107,3 +124,51 @@
 }
 
 @end
+
+#if GTM_PERFORM_KVO_CHECKS
+@interface GTMNSObject_KeyValueObservingChecksTest: GTMTestCase {
+ @private
+  id value_;
+  id _value2;
+  __weak NSArray *value3_;
+  __weak NSString *value4;
+}
+- (NSString *)value4;
+@end
+
+@implementation GTMNSObject_KeyValueObservingChecksTest
+
+- (void)testAddingObserver {
+  [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
+  [self addObserver:self forKeyPath:@"value_" options:0 context:NULL];
+  [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
+  [self addObserver:self forKeyPath:@"_value2" options:0 context:NULL];
+  value3_ = [NSArray arrayWithObject:@"foo"];
+  NSIndexSet *set = [NSIndexSet indexSetWithIndex:0];
+  [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
+  [value3_ addObserver:self toObjectsAtIndexes:set forKeyPath:@"_fronttest" 
+               options:0 context:NULL];
+  [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
+  [value3_ addObserver:self toObjectsAtIndexes:set forKeyPath:@"backtest_" 
+               options:0 context:NULL];
+#if DEBUG
+  // Should only throw in debug
+  STAssertThrows([self valueForKey:@"value_"], nil);
+#else 
+  STAssertNoThrow([self valueForKey:@"value_"], nil);
+#endif
+  value4 = @"Hello";
+  STAssertEqualObjects([self valueForKey:@"value4"], @"Hello", nil);
+  [self removeObserver:self forKeyPath:@"value_"];
+  [self removeObserver:self forKeyPath:@"_value2"];
+  [value3_ removeObserver:self fromObjectsAtIndexes:set forKeyPath:@"_fronttest"];
+  [value3_ removeObserver:self fromObjectsAtIndexes:set forKeyPath:@"backtest_"];
+}
+
+- (NSString *)value4 {
+  return value4;
+}
+@end
+
+#endif  // GTM_PERFORM_KVO_CHECKS
+
