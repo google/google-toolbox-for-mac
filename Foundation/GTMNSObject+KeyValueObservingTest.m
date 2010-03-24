@@ -66,7 +66,7 @@
   STAssertEquals(count_, (int32_t)1, nil);
 }
 
-- (void)testStopObservingKeyPaths {
+- (void)testStopObservingAllKeyPaths {
   count_ = 0;
   [dict_ gtm_addObserver:self 
               forKeyPath:@"key" 
@@ -76,7 +76,7 @@
   expectedValue_ = @"bar";
   [dict_ setObject:expectedValue_ forKey:@"key"];
   STAssertEquals(count_, (int32_t)1, nil);
-  [self gtm_stopObservingKeyPaths];
+  [self gtm_stopObservingAllKeyPaths];
   [dict_ setObject:@"foo" forKey:@"key"];
   STAssertEquals(count_, (int32_t)1, nil);
 }
