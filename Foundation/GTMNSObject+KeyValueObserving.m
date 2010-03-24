@@ -411,11 +411,16 @@ static void SwizzleMethodsInClass(Class cls, SEL sel1, SEL sel2) {
   method_exchangeImplementations(m1, m2);
 }
 
+#if GTM_PERFORM_KVO_CHECKS
+
+// This is only used when GTM_PERFORM_KVO_CHECKS is on.
 static void SwizzleClassMethodsInClass(Class cls, SEL sel1, SEL sel2) {
   Method m1 = class_getClassMethod(cls, sel1);
   Method m2 = class_getClassMethod(cls, sel2);
   method_exchangeImplementations(m1, m2);
 }
+
+#endif  // GTM_PERFORM_KVO_CHECKS
 
 // This category exists to attempt to help deal with tricky KVO issues.
 // KVO is a wonderful technology in some ways, but is extremely fragile and
@@ -474,12 +479,17 @@ GTM_METHOD_CHECK(NSArray,
     _gtmDebugArrayAddObserver:toObjectsAtIndexes:forKeyPath:options:context:);
 GTM_METHOD_CHECK(NSArray, 
     _gtmDebugArrayRemoveObserver:fromObjectsAtIndexes:forKeyPath:);
+
+#if GTM_PERFORM_KVO_CHECKS
+
 GTM_METHOD_CHECK(NSObject, 
     _gtmCheckAddObserver:forKeyPath:options:context:);
 GTM_METHOD_CHECK(NSArray, 
     _gtmCheckAddObserver:toObjectsAtIndexes:forKeyPath:options:context:);
 GTM_METHOD_CHECK(NSObject, 
     _gtmAccessInstanceVariablesDirectly);
+
+#endif  // GTM_PERFORM_KVO_CHECKS
 
 + (void)load {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
