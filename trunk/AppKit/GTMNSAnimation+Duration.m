@@ -29,7 +29,18 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
     if (!(modifiers & (NSAlternateKeyMask |
                        NSCommandKeyMask))) {
       if (modifiers & NSShiftKeyMask) {
-        duration *= 5.0;
+        // 25 is the ascii code generated for a shift-tab (End-of-message)
+        // The shift modifier is ignored if it is applied to a Tab key down.
+        // Tab and shift-tab are often used for navigating around UI elements,
+        // and in the majority of cases slowing down the animations while
+        // navigating around UI elements is not desired.
+        if ((eventMask & NSKeyDownMask)
+            && ([[event characters] length])
+            && ([[event characters] characterAtIndex:0] == 25)) {
+          duration = duration;
+        } else {
+          duration *= 5.0;
+        }
       }
       // These are additive, so shift+control returns 10 * duration.
       if (modifiers & NSControlKeyMask) {

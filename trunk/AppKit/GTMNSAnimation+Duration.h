@@ -25,6 +25,10 @@
 // control keys modifies the normal duration for an animation making it slower.
 // Currently only modifies the duration if the current event is masked by
 // eventMask and only the control and/or shift modifiers are down.
+// The shift modifier is ignored if it is applied to a Tab key down.
+// Tab and shift-tab are often used for navigating around UI elements,
+// and in the majority of cases slowing down the animations while navigating
+// around UI elements is not desired.
 NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
                                                     NSUInteger eventMask);
 
@@ -42,16 +46,14 @@ extern const NSUInteger kGTMLeftMouseDownAndKeyDownMask;
 // based on the current event when the animation is created. If the animation
 // is to be reused, the duration for the event should be reset with
 // gtm_setDuration each time the animation is started.
-// Currently only modifies the duration if the current event is masked by
-// eventMask and only the control and/or shift modifiers are down.
+// See notes for GTMModifyDurationBasedOnCurrentState for more info.
 - (id)gtm_initWithDuration:(NSTimeInterval)duration
                  eventMask:(NSUInteger)eventMask
             animationCurve:(NSAnimationCurve)animationCurve;
 
 // Sets the duration by taking the duration passed in and calling
 // GTMModifyDurationBasedOnCurrentState to calculate the real duration.
-// Currently only modifies the duration if the current event is masked by
-// eventMask and only the control and/or shift modifiers are down.
+// See notes for GTMModifyDurationBasedOnCurrentState for more info.
 - (void)gtm_setDuration:(NSTimeInterval)duration
               eventMask:(NSUInteger)eventMask;
 @end
@@ -64,8 +66,7 @@ extern const NSUInteger kGTMLeftMouseDownAndKeyDownMask;
 
 // Sets the duration by taking the duration passed in and calling
 // GTMModifyDurationBasedOnCurrentState to calculate the real duration.
-// Currently only modifies the duration if the current event is masked by
-// eventMask and only the control and/or shift modifiers are down.
+// See notes for GTMModifyDurationBasedOnCurrentState for more info.
 - (void)gtm_setDuration:(NSTimeInterval)duration
               eventMask:(NSUInteger)eventMask;
 @end
@@ -74,8 +75,7 @@ extern const NSUInteger kGTMLeftMouseDownAndKeyDownMask;
 
 // Sets the duration by taking the duration passed in and calling
 // GTMModifyDurationBasedOnCurrentState to calculate the real duration.
-// Currently only modifies the duration if the current event is masked by
-// eventMask and only the control and/or shift modifiers are down.
+// See notes for GTMModifyDurationBasedOnCurrentState for more info.
 - (void)gtm_setDuration:(CFTimeInterval)duration
               eventMask:(NSUInteger)events;
 @end
