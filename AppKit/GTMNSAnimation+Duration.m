@@ -35,7 +35,8 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
         // and in the majority of cases slowing down the animations while
         // navigating around UI elements is not desired.
         if ((eventMask & NSKeyDownMask)
-            && ([[event characters] length])
+            && !(modifiers & NSControlKeyMask)
+            && ([[event characters] length] == 1)
             && ([[event characters] characterAtIndex:0] == 25)) {
           duration = duration;
         } else {
