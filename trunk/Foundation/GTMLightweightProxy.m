@@ -27,6 +27,10 @@
   return self;
 }
 
+- (id)init {
+  return [self initWithRepresentedObject:nil];
+}
+
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 #if GTM_SUPPORT_GC
 // -[NSProxy finalize] is only in 10.5 or later

@@ -30,6 +30,15 @@
 
 @implementation GTMLightweightProxyTest
 
+- (void)testInit {
+  id proxy = [[[GTMLightweightProxy alloc] 
+               initWithRepresentedObject:self] autorelease];
+  STAssertNotNil(proxy, nil);
+  
+  proxy = [[[GTMLightweightProxy alloc] init] autorelease];
+  STAssertNotNil(proxy, nil);
+}
+
 - (void)testProxy {
   id proxy
     = [[[GTMLightweightProxy alloc] initWithRepresentedObject:self] autorelease];
