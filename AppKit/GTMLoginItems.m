@@ -139,8 +139,8 @@ static NSString * const kLSSharedFileListLoginItemHidden =
 
   // build our results
   NSMutableArray *result = [NSMutableArray array];
-  for (id item in fileList) {
-    LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)item;
+  for (id fileItem in fileList) {
+    LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)fileItem;
     // name
     NSMutableDictionary *item = [NSMutableDictionary dictionary];
     CFStringRef nameRef = LSSharedFileListItemCopyDisplayName(itemRef);
