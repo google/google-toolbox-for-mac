@@ -44,6 +44,7 @@ NSString * const kForcedWrapString = @"\xA";
 // gets as wide, resulting in a clipped control.  This fudge factor is what is
 // added to try and avoid these by giving the size calls just enough slop to
 // handle the differences.
+// radar://7831901 different wrapping between sizeToFit and drawing
 static const CGFloat kWrapperStringSlop = 0.9;
 
 #if GTM_USE_TYPESETTER
@@ -247,33 +248,6 @@ static const CGFloat kWrapperStringSlop = 0.9;
   return newSize.height - NSHeight(initialFrame);
 }
 
-+ (void)wrapButtonTitleForWidth:(NSButton *)button {
-  NSCell *cell = [button cell];
-  NSRect frame = [button frame];
-
-  NSRect titleFrame = [cell titleRectForBounds:frame];
-
-  NSString* newTitle = [self wrapString:[button title]
-                                  width:NSWidth(titleFrame)
-                                   font:[button font]];
-  [button setTitle:newTitle];
-}
-
-+ (void)wrapRadioGroupForWidth:(NSMatrix *)radioGroup {
-  NSSize cellSize = [radioGroup cellSize];
-  NSRect tmpRect = NSMakeRect(0, 0, cellSize.width, cellSize.height);
-  NSFont *font = [radioGroup font];
-
-  NSCell *cell;
-  GTM_FOREACH_OBJECT(cell, [radioGroup cells]) {
-    NSRect titleFrame = [cell titleRectForBounds:tmpRect];
-    NSString* newTitle = [self wrapString:[cell title]
-                                    width:NSWidth(titleFrame)
-                                     font:font];
-    [cell setTitle:newTitle];
-  }
-}
-
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 + (CGFloat)sizeToFitFixedHeightTextField:(NSTextField *)textField {
@@ -348,6 +322,33 @@ static const CGFloat kWrapperStringSlop = 0.9;
 }
 
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
++ (void)wrapButtonTitleForWidth:(NSButton *)button {
+  NSCell *cell = [button cell];
+  NSRect frame = [button frame];
+
+  NSRect titleFrame = [cell titleRectForBounds:frame];
+
+  NSString* newTitle = [self wrapString:[button title]
+                                  width:NSWidth(titleFrame)
+                                   font:[button font]];
+  [button setTitle:newTitle];
+}
+
++ (void)wrapRadioGroupForWidth:(NSMatrix *)radioGroup {
+  NSSize cellSize = [radioGroup cellSize];
+  NSRect tmpRect = NSMakeRect(0, 0, cellSize.width, cellSize.height);
+  NSFont *font = [radioGroup font];
+
+  NSCell *cell;
+  GTM_FOREACH_OBJECT(cell, [radioGroup cells]) {
+    NSRect titleFrame = [cell titleRectForBounds:tmpRect];
+    NSString* newTitle = [self wrapString:[cell title]
+                                    width:NSWidth(titleFrame)
+                                     font:font];
+    [cell setTitle:newTitle];
+  }
+}
 
 + (void)resizeWindowWithoutAutoResizingSubViews:(NSWindow*)window
                                           delta:(NSSize)delta {
@@ -568,7 +569,7 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
       [view performSelector:@selector(sizeToFit)];
       fitFrame = [view frame];
       newFrame = fitFrame;
-      
+
       if ([view isKindOfClass:[NSMatrix class]]) {
         NSMatrix *matrix = (NSMatrix *)view;
         // See note on kWrapperStringSlop for why this is done.
@@ -581,7 +582,7 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
           }
         }
       }
-        
+
     }
 
     if ([view isKindOfClass:[NSButton class]]) {
