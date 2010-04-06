@@ -34,6 +34,18 @@ static NSInteger CompareFrameX(id view1, id view2, void *context);
 // Check if the view is anchored on the right (fixed right, flexible left).
 static BOOL IsRightAnchored(NSView *view);
 
+// Constant for a forced string wrap in button cells (Opt-Return in IB inserts
+// this into the string).
+NSString * const kForcedWrapString = @"\xA";
+// Radio and Checkboxes (NSButtonCell) appears to use two different layout
+// algorithms for sizeToFit calls and drawing calls when there is a forced word
+// wrap in the title.  The result is a sizeToFit can tell you it all fits N
+// lines in the given rect, but at draw time, it draws as >N lines and never
+// gets as wide, resulting in a clipped control.  This fudge factor is what is
+// added to try and avoid these by giving the size calls just enough slop to
+// handle the differences.
+static const CGFloat kWrapperStringSlop = 0.9;
+
 #if GTM_USE_TYPESETTER
 
 @interface GTMBreakRecordingTypeSetter : NSATSTypesetter {
@@ -148,9 +160,6 @@ static BOOL IsRightAnchored(NSView *view);
 + (NSString*)wrapString:(NSString *)string
                   width:(CGFloat)width
                    font:(NSFont *)font {
-  // This is what opt-return in IB would put in to force a wrap.
-  NSString * const kForcedWrapString = @"\xA";
-
   // Set up the objects needed for the layout work.
   NSRect targetRect = NSMakeRect(0, 0, width, CGFLOAT_MAX);
   NSTextContainer* textContainer =
@@ -559,6 +568,20 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
       [view performSelector:@selector(sizeToFit)];
       fitFrame = [view frame];
       newFrame = fitFrame;
+      
+      if ([view isKindOfClass:[NSMatrix class]]) {
+        NSMatrix *matrix = (NSMatrix *)view;
+        // See note on kWrapperStringSlop for why this is done.
+        NSCell *cell;
+        GTM_FOREACH_OBJECT(cell, [matrix cells]) {
+          if ([[cell title] rangeOfString:kForcedWrapString].location !=
+              NSNotFound) {
+            newFrame.size.width += kWrapperStringSlop;
+            break;
+          }
+        }
+      }
+        
     }
 
     if ([view isKindOfClass:[NSButton class]]) {
@@ -579,15 +602,10 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
           newFrame.size.width = kMinButtonWidth;
         }
       } else {
-        // NSButton likes to lie when the title has forced word wraps (like
-        // wrapButtonTitleForWidth does).  When it actually draws, it comes up
-        // with slightly different metrics which causes unintended wrapping so
-        // pad the size by 0.5 to help cover this (odds are there is a
-        // NSIntegralRect call used along the way that triggers the bug).
+        // See note on kWrapperStringSlop for why this is done.
         NSString *title = [button title];
-        NSString * const kForcedWrapString = @"\xA";
         if ([title rangeOfString:kForcedWrapString].location != NSNotFound) {
-          newFrame.size.width += 0.5;
+          newFrame.size.width += kWrapperStringSlop;
         }
       }
     }
