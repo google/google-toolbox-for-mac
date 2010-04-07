@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # PlistCompiler.sh
 
 # Copyright 2010 Google Inc.
@@ -32,8 +32,8 @@
 set -o errexit
 set -o nounset
 
-PWD=pwd
-GTM_PLIST_COMPILER_INCLUDE_PATHS=${GTM_PLIST_COMPILER_INCLUDE_PATHS:=PWD}
+PWD=$(pwd)
+GTM_PLIST_COMPILER_INCLUDE_PATHS=${GTM_PLIST_COMPILER_INCLUDE_PATHS:=${PWD}}
 
 if [[ $# -ne 2 && $# -ne 0 ]] ; then
   echo "usage: ${0} INPUT OUTPUT" >&2
@@ -51,12 +51,20 @@ fi
 # Split up the passed in include paths
 SaveIFS=$IFS
 IFS=":"
-split_include_paths=""
+
+declare -a SPLIT_INCLUDE_PATHS
 for a in ${GTM_PLIST_COMPILER_INCLUDE_PATHS};
 do
-split_include_paths="$split_include_paths -I '$a'"
+  SPLIT_INCLUDE_PATHS[${#SPLIT_INCLUDE_PATHS[@]}]=-I
+  SPLIT_INCLUDE_PATHS[${#SPLIT_INCLUDE_PATHS[@]}]="${a}"
 done
 IFS=$SaveIFS
 
+NAME=$(basename $0)
+TEMP=$(mktemp -t "${NAME}")
+
 # run gcc and strip out lines starting with # that the preprocessor leaves behind.
-gcc ${split_include_paths} -E -x c "${SCRIPT_INPUT_FILE}" | sed 's/^#.*//g' > "${SCRIPT_OUTPUT_FILE}"
+gcc ${SPLIT_INCLUDE_PATHS[@]} -E -x c "${SCRIPT_INPUT_FILE}" -o "${TEMP}"
+sed 's/^#.*//g' "${TEMP}" > "${SCRIPT_OUTPUT_FILE}"
+rm -f "${TEMP}"
+
