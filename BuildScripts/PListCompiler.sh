@@ -32,7 +32,8 @@
 set -o errexit
 set -o nounset
 
-GTM_PLIST_COMPILER_INCLUDE_PATHS=${GTM_PLIST_COMPILER_INCLUDE_PATHS:="."}
+PWD=pwd
+GTM_PLIST_COMPILER_INCLUDE_PATHS=${GTM_PLIST_COMPILER_INCLUDE_PATHS:=PWD}
 
 if [[ $# -ne 2 && $# -ne 0 ]] ; then
   echo "usage: ${0} INPUT OUTPUT" >&2
@@ -58,4 +59,4 @@ done
 IFS=$SaveIFS
 
 # run gcc and strip out lines starting with # that the preprocessor leaves behind.
-eval gcc ${split_include_paths} -E -x c "${SCRIPT_INPUT_FILE}" | sed 's/^#.*//g' > "${SCRIPT_OUTPUT_FILE}"
+gcc ${split_include_paths} -E -x c "${SCRIPT_INPUT_FILE}" | sed 's/^#.*//g' > "${SCRIPT_OUTPUT_FILE}"
