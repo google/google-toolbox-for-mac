@@ -17,6 +17,7 @@
 //
 
 #import <objc/objc-api.h>
+#import <objc/objc-auto.h>
 #import "GTMDefines.h"
 
 // These functions exist for code that we want to compile on both the < 10.5 
