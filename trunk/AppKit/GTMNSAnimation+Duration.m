@@ -23,21 +23,22 @@ const NSUInteger kGTMLeftMouseDownAndKeyDownMask
 
 NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
                                                     NSUInteger eventMask) {
-  NSEvent *event = [NSApp currentEvent];
-  if (eventMask & NSEventMaskFromType([event type])) {
-    NSUInteger modifiers = [event modifierFlags];
+  NSEvent *currentEvent = [NSApp currentEvent];
+  NSUInteger currentEventMask = NSEventMaskFromType([currentEvent type]);
+  if (eventMask & currentEventMask) {
+    NSUInteger modifiers = [currentEvent modifierFlags];
     if (!(modifiers & (NSAlternateKeyMask |
                        NSCommandKeyMask))) {
       if (modifiers & NSShiftKeyMask) {
         // 25 is the ascii code generated for a shift-tab (End-of-message)
-        // The shift modifier is ignored if it is applied to a Tab key down.
+        // The shift modifier is ignored if it is applied to a Tab key down/up.
         // Tab and shift-tab are often used for navigating around UI elements,
         // and in the majority of cases slowing down the animations while
         // navigating around UI elements is not desired.
-        if ((eventMask & NSKeyDownMask)
+        if ((currentEventMask & (NSKeyDownMask | NSKeyUpMask))
             && !(modifiers & NSControlKeyMask)
-            && ([[event characters] length] == 1)
-            && ([[event characters] characterAtIndex:0] == 25)) {
+            && ([[currentEvent characters] length] == 1)
+            && ([[currentEvent characters] characterAtIndex:0] == 25)) {
           duration = duration;
         } else {
           duration *= 5.0;
