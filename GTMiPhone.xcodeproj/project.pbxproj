@@ -271,6 +271,10 @@
 		8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = GTMABAddressBook.strings; sourceTree = "<group>"; };
 		8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBookTest.m; sourceTree = "<group>"; };
 		8BFE15C50FB0F764001BE894 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
+		CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiPhone32.xcconfig; sourceTree = "<group>"; };
+		CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiPhone313.xcconfig; sourceTree = "<group>"; };
+		CAD23A761174AE7800EA94E5 /* ReleaseiPhone32.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiPhone32.xcconfig; sourceTree = "<group>"; };
+		CAD23A771174AE7800EA94E5 /* ReleaseiPhone313.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiPhone313.xcconfig; sourceTree = "<group>"; };
 		F41711570ECDFF0400B9B276 /* GTMLightweightProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMLightweightProxy.h; sourceTree = "<group>"; };
 		F41711580ECDFF0400B9B276 /* GTMLightweightProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLightweightProxy.m; sourceTree = "<group>"; };
 		F41711590ECDFF0400B9B276 /* GTMLightweightProxyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLightweightProxyTest.m; sourceTree = "<group>"; };
@@ -582,6 +586,8 @@
 				F4E426AE10B70DFB00F28A35 /* DebugiPhone30.xcconfig */,
 				F4E426AF10B70DFB00F28A35 /* DebugiPhone31.xcconfig */,
 				F4E426B110B70DFB00F28A35 /* DebugiPhone312.xcconfig */,
+				CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */,
+				CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */,
 				8BC049890DAEC59100C2D1CA /* ReleaseiPhone20.xcconfig */,
 				F4E426B210B70DFB00F28A35 /* ReleaseiPhone21.xcconfig */,
 				F4E426B310B70DFB00F28A35 /* ReleaseiPhone22.xcconfig */,
@@ -589,6 +595,8 @@
 				F4E426B410B70DFB00F28A35 /* ReleaseiPhone30.xcconfig */,
 				F4E426B510B70DFB00F28A35 /* ReleaseiPhone31.xcconfig */,
 				F4E426B710B70DFB00F28A35 /* ReleaseiPhone312.xcconfig */,
+				CAD23A771174AE7800EA94E5 /* ReleaseiPhone313.xcconfig */,
+				CAD23A761174AE7800EA94E5 /* ReleaseiPhone32.xcconfig */,
 			);
 			path = Project;
 			sourceTree = "<group>";
@@ -822,6 +830,212 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		CAD23A781174AE9F00EA94E5 /* iPhone3.1.3-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone3.1.3-Debug";
+		};
+		CAD23A791174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone3.1.3-Debug-gcov";
+		};
+		CAD23A7A1174AE9F00EA94E5 /* iPhone3.1.3-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAD23A771174AE7800EA94E5 /* ReleaseiPhone313.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone3.1.3-Release";
+		};
+		CAD23A7B1174AE9F00EA94E5 /* iPhone3.1.3-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone3.1.3-Debug";
+		};
+		CAD23A7C1174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone3.1.3-Debug-gcov";
+		};
+		CAD23A7D1174AE9F00EA94E5 /* iPhone3.1.3-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone3.1.3-Release";
+		};
+		CAD23A7E1174AE9F00EA94E5 /* iPhone3.1.3-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.1.3;
+			};
+			name = "iPhone3.1.3-Debug";
+		};
+		CAD23A7F1174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.1.3;
+			};
+			name = "iPhone3.1.3-Debug-gcov";
+		};
+		CAD23A801174AE9F00EA94E5 /* iPhone3.1.3-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.1.3;
+			};
+			name = "iPhone3.1.3-Release";
+		};
+		CAD23A811174AE9F00EA94E5 /* iPhone3.1.3-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.3-Debug";
+		};
+		CAD23A821174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.3-Debug-gcov";
+		};
+		CAD23A831174AE9F00EA94E5 /* iPhone3.1.3-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.3-Release";
+		};
+		CAD23A841174AF2400EA94E5 /* iPhone3.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone3.2-Debug";
+		};
+		CAD23A851174AF2400EA94E5 /* iPhone3.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone3.2-Debug-gcov";
+		};
+		CAD23A861174AF2400EA94E5 /* iPhone3.2-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAD23A761174AE7800EA94E5 /* ReleaseiPhone32.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone3.2-Release";
+		};
+		CAD23A871174AF2400EA94E5 /* iPhone3.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone3.2-Debug";
+		};
+		CAD23A881174AF2400EA94E5 /* iPhone3.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone3.2-Debug-gcov";
+		};
+		CAD23A891174AF2400EA94E5 /* iPhone3.2-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone3.2-Release";
+		};
+		CAD23A8A1174AF2400EA94E5 /* iPhone3.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.2;
+			};
+			name = "iPhone3.2-Debug";
+		};
+		CAD23A8B1174AF2400EA94E5 /* iPhone3.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.2;
+			};
+			name = "iPhone3.2-Debug-gcov";
+		};
+		CAD23A8C1174AF2400EA94E5 /* iPhone3.2-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.2;
+			};
+			name = "iPhone3.2-Release";
+		};
+		CAD23A8D1174AF2400EA94E5 /* iPhone3.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.2-Debug";
+		};
+		CAD23A8E1174AF2400EA94E5 /* iPhone3.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.2-Debug-gcov";
+		};
+		CAD23A8F1174AF2400EA94E5 /* iPhone3.2-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.2-Release";
+		};
 		F4E4263610B70C4F00F28A35 /* iPhone2.0-Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */;
@@ -1570,6 +1784,12 @@
 				F4E4269F10B70D2D00F28A35 /* iPhone3.1.2-Debug */,
 				F4E426A010B70D2D00F28A35 /* iPhone3.1.2-Debug-gcov */,
 				F4E426A110B70D2D00F28A35 /* iPhone3.1.2-Release */,
+				CAD23A7E1174AE9F00EA94E5 /* iPhone3.1.3-Debug */,
+				CAD23A7F1174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */,
+				CAD23A801174AE9F00EA94E5 /* iPhone3.1.3-Release */,
+				CAD23A8A1174AF2400EA94E5 /* iPhone3.2-Debug */,
+				CAD23A8B1174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
+				CAD23A8C1174AF2400EA94E5 /* iPhone3.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
@@ -1598,6 +1818,12 @@
 				F4E4269910B70D2D00F28A35 /* iPhone3.1.2-Debug */,
 				F4E4269A10B70D2D00F28A35 /* iPhone3.1.2-Debug-gcov */,
 				F4E4269B10B70D2D00F28A35 /* iPhone3.1.2-Release */,
+				CAD23A781174AE9F00EA94E5 /* iPhone3.1.3-Debug */,
+				CAD23A791174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */,
+				CAD23A7A1174AE9F00EA94E5 /* iPhone3.1.3-Release */,
+				CAD23A841174AF2400EA94E5 /* iPhone3.2-Debug */,
+				CAD23A851174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
+				CAD23A861174AF2400EA94E5 /* iPhone3.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
@@ -1626,6 +1852,12 @@
 				F4E426A210B70D2D00F28A35 /* iPhone3.1.2-Debug */,
 				F4E426A310B70D2D00F28A35 /* iPhone3.1.2-Debug-gcov */,
 				F4E426A410B70D2D00F28A35 /* iPhone3.1.2-Release */,
+				CAD23A811174AE9F00EA94E5 /* iPhone3.1.3-Debug */,
+				CAD23A821174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */,
+				CAD23A831174AE9F00EA94E5 /* iPhone3.1.3-Release */,
+				CAD23A8D1174AF2400EA94E5 /* iPhone3.2-Debug */,
+				CAD23A8E1174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
+				CAD23A8F1174AF2400EA94E5 /* iPhone3.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
@@ -1654,6 +1886,12 @@
 				F4E4269C10B70D2D00F28A35 /* iPhone3.1.2-Debug */,
 				F4E4269D10B70D2D00F28A35 /* iPhone3.1.2-Debug-gcov */,
 				F4E4269E10B70D2D00F28A35 /* iPhone3.1.2-Release */,
+				CAD23A7B1174AE9F00EA94E5 /* iPhone3.1.3-Debug */,
+				CAD23A7C1174AE9F00EA94E5 /* iPhone3.1.3-Debug-gcov */,
+				CAD23A7D1174AE9F00EA94E5 /* iPhone3.1.3-Release */,
+				CAD23A871174AF2400EA94E5 /* iPhone3.2-Debug */,
+				CAD23A881174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
+				CAD23A891174AF2400EA94E5 /* iPhone3.2-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
