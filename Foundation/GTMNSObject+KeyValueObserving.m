@@ -240,14 +240,12 @@ static char* GTMKeyValueObservingHelperContext
                                forKeyPath:keyPath 
                                  selector:selector];
   @synchronized(self) {
-#if DEBUG
     GTMKeyValueObservingHelper *oldHelper = [observerHelpers_ objectForKey:key];
     if (oldHelper) {
       _GTMDevLog(@"%@ already observing %@ forKeyPath %@", 
                  observer, target, keyPath);
       [oldHelper deregister];
     }
-#endif // DEBUG
     [observerHelpers_ setObject:helper forKey:key];
   }
   [helper release];

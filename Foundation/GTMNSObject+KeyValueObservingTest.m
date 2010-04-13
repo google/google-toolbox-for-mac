@@ -97,7 +97,7 @@
                 selector:@selector(observeValueChange:) 
                 userInfo:@"userInfo" 
                  options:NSKeyValueObservingOptionNew];
-  [GTMUnitTestDevLogDebug expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
+  [GTMUnitTestDevLog expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
    @" testAdding\\] already observing.*"];
   [dict_ gtm_addObserver:self 
               forKeyPath:@"key" 
