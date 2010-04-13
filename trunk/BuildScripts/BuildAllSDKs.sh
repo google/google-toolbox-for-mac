@@ -121,6 +121,22 @@ if [ "${GTMIPHONE_PROJECT_TARGET}" != "" ]; then
               return
             end if
           end if
+          if \"{$AVAILABLE_IPHONE_SDKS}\" contains \"iPhoneSimulator3.1.3.sdk\" then
+            set active target to target \"${GTMIPHONE_PROJECT_TARGET}\"
+            set buildResult to ${PROJECT_ACTION} using build configuration \"iPhone3.1.3-${REQUESTED_BUILD_STYLE}\"
+            set active target to target \"${STARTING_TARGET}\"
+            if buildResult is not equal to \"Build succeeded\" then
+              return
+            end if
+          end if
+          if \"{$AVAILABLE_IPHONE_SDKS}\" contains \"iPhoneSimulator3.2.sdk\" then
+            set active target to target \"${GTMIPHONE_PROJECT_TARGET}\"
+            set buildResult to ${PROJECT_ACTION} using build configuration \"iPhone3.2-${REQUESTED_BUILD_STYLE}\"
+            set active target to target \"${STARTING_TARGET}\"
+            if buildResult is not equal to \"Build succeeded\" then
+              return
+            end if
+          end if
         end timeout
       end tell
     end if"
