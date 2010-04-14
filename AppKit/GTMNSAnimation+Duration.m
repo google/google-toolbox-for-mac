@@ -18,8 +18,8 @@
 
 #import "GTMNSAnimation+Duration.h"
 
-const NSUInteger kGTMLeftMouseDownAndKeyDownMask
-  = NSLeftMouseDownMask | NSKeyDownMask;
+const NSUInteger kGTMLeftMouseUpAndKeyDownMask
+  = NSLeftMouseUpMask | NSKeyDownMask;
 
 NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
                                                     NSUInteger eventMask) {
