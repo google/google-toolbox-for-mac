@@ -34,8 +34,8 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
 
 // The standard eventmask that you want for the methods in this file. Some apps
 // (eg Chrome) may not want to have animations fire on key strokes, so will use
-// just NSLeftMouseDownMask instead.
-extern const NSUInteger kGTMLeftMouseDownAndKeyDownMask;
+// just NSLeftMouseUpMask instead.
+extern const NSUInteger kGTMLeftMouseUpAndKeyDownMask;
 
 // Categories for changing the duration of an animation based on the current
 // event. Right now they track the state of the shift and control keys to slow
