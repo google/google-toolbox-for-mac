@@ -168,25 +168,6 @@ CantWorkWithScreenSaver:
   [self postKeyEvent:NSKeyUp character:keyChar modifiers:cocoaModifiers];
 }
 
-// Runs the event loop in NSDefaultRunLoopMode until date. Can be useful for
-// testing user interface responses in a controlled timed event loop. For most
-// uses using:
-// [[NSRunLoop currentRunLoop] runUntilDate:date]
-// will do. The only reason you would want to use this is if you were 
-// using the postKeyEvent:character:modifiers to send events and wanted to
-// receive user input.
-//  Arguments:
-//    date - end of execution time
-+ (void)runUntilDate:(NSDate*)date {
-  NSEvent *event;
-  while ((event = [NSApp nextEventMatchingMask:NSAnyEventMask 
-                                     untilDate:date 
-                                        inMode:NSDefaultRunLoopMode 
-                                       dequeue:YES])) {
-    [NSApp sendEvent:event];
-  }
-}
-
 @end
 
 BOOL GTMAreCMProfilesEqual(CMProfileRef a, CMProfileRef b) {
@@ -333,3 +314,78 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode) {
   return outCode;
 }
 
+@implementation GTMUnitTestingBooleanRunLoopContext
+
++ (id)context {
+  return [[[GTMUnitTestingBooleanRunLoopContext alloc] init] autorelease];
+}
+
+- (BOOL)shouldStop {
+  return shouldStop_;
+}
+
+- (void)setShouldStop:(BOOL)stop {
+  shouldStop_ = stop;
+}
+
+@end
+
+@implementation NSRunLoop (GTMUnitTestingAdditions)
+
+- (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context {
+  return [self gtm_runUntilDate:[NSDate dateWithTimeIntervalSinceNow:60]
+                        context:context];
+}
+
+- (BOOL)gtm_runUntilDate:(NSDate *)date 
+                 context:(id<GTMUnitTestingRunLoopContext>)context {
+  return [self gtm_runUntilDate:date mode:NSDefaultRunLoopMode context:context];
+}
+
+- (BOOL)gtm_runUntilDate:(NSDate *)date
+                    mode:(NSString *)mode
+                 context:(id<GTMUnitTestingRunLoopContext>)context {
+  BOOL contextShouldStop = NO;
+  NSRunLoop *rl = [NSRunLoop currentRunLoop];
+  while (1) {
+    contextShouldStop = [context shouldStop];
+    if (contextShouldStop) break;
+    NSDate* next = [[NSDate alloc] initWithTimeIntervalSinceNow:0.01];
+    if (!([rl runMode:mode beforeDate:next])) break;
+    if ([next compare:date] == NSOrderedDescending) break;
+    [next release];
+  }
+  return contextShouldStop;
+}
+
+@end
+
+@implementation NSApplication (GTMUnitTestingAdditions)
+
+- (BOOL)gtm_runUntilDate:(NSDate *)date 
+                 context:(id<GTMUnitTestingRunLoopContext>)context {
+  BOOL contextShouldStop = NO;
+  while (1) {
+    contextShouldStop = [context shouldStop];
+    if (contextShouldStop) break;
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSEvent *event = [NSApp nextEventMatchingMask:NSAnyEventMask 
+                                         untilDate:date 
+                                            inMode:NSDefaultRunLoopMode 
+                                           dequeue:YES];
+    if (!event) {
+      [pool drain];
+      break;
+    }
+    [NSApp sendEvent:event];
+    [pool drain];
+  }
+  return contextShouldStop;
+}
+
+- (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context {
+  return [self gtm_runUntilDate:[NSDate dateWithTimeIntervalSinceNow:60]
+                        context:context];
+}
+
+@end

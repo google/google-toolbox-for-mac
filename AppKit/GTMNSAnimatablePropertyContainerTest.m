@@ -19,6 +19,7 @@
 #import "GTMNSAnimatablePropertyContainerTest.h"
 #import "GTMNSAnimatablePropertyContainer.h"
 #import "GTMTypeCasting.h"
+#import "GTMUnitTestingUtilities.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 
@@ -80,23 +81,26 @@
   STAssertNotNil(windowController_, nil);
   NSWindow *window = [windowController_ window];
   STAssertNotNil(window, nil);
+  timerCalled_ = [[GTMUnitTestingBooleanRunLoopContext alloc] init];
 }
 
 - (void)tearDown {
   [windowController_ close];
   windowController_ = nil;
+  [timerCalled_ release];
+  timerCalled_ = nil;
 }
 
 - (void)windowAlphaValueStopper:(NSTimer *)timer {
   NSWindow *window = GTM_DYNAMIC_CAST(NSWindow, [timer userInfo]);
-  timerCalled_ = YES;
+  [timerCalled_ setShouldStop:YES];
   [[window gtm_animatorStopper] setAlphaValue:0.25];
   STAssertEquals([window alphaValue], (CGFloat)0.25, nil);
 }
 
 - (void)windowFrameStopper:(NSTimer *)timer {
   NSWindow *window = GTM_DYNAMIC_CAST(NSWindow, [timer userInfo]);
-  timerCalled_ = YES;
+  [timerCalled_ setShouldStop:YES];
   [[window gtm_animatorStopper] setFrame:NSMakeRect(300, 300, 150, 150) 
                                  display:YES];
   STAssertEquals([window frame], NSMakeRect(300, 300, 150, 150), nil);
@@ -104,14 +108,14 @@
 
 - (void)nonLayerFrameStopper:(NSTimer *)timer {
   NSView *view = GTM_DYNAMIC_CAST(NSView, [timer userInfo]);
-  timerCalled_ = YES;
+  [timerCalled_ setShouldStop:YES];
   [[view gtm_animatorStopper] setFrame:NSMakeRect(200, 200, 200, 200)];
   STAssertEquals([view frame], NSMakeRect(200, 200, 200, 200), nil);
 }
 
 - (void)layerFrameStopper:(NSTimer *)timer {
   NSView *view = GTM_DYNAMIC_CAST(NSView, [timer userInfo]);
-  timerCalled_ = YES;
+  [timerCalled_ setShouldStop:YES];
   [[view gtm_animatorStopper] setFrame:NSMakeRect(200, 200, 200, 200)];
   STAssertEquals([view frame], NSMakeRect(200, 200, 200, 200), nil);
 }
@@ -122,7 +126,7 @@
   // Test Alpha
   NSWindow *window = [windowController_ window];
   [window setAlphaValue:1.0];
-  timerCalled_ = NO;
+  [timerCalled_ setShouldStop:NO];
   [NSAnimationContext beginGrouping];
   NSAnimationContext *currentContext = [NSAnimationContext currentContext];
   [currentContext setDuration:2];
@@ -133,13 +137,12 @@
                                  selector:@selector(windowAlphaValueStopper:) 
                                  userInfo:window 
                                   repeats:NO];
-  [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
-  STAssertTrue(timerCalled_, nil);
+  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([window alphaValue], (CGFloat)0.25, nil);
   
   // Test Frame
   [window setFrame:NSMakeRect(100, 100, 100, 100) display:YES];
-  timerCalled_ = NO;
+  [timerCalled_ setShouldStop:NO];
   [NSAnimationContext beginGrouping];
   currentContext = [NSAnimationContext currentContext];
   [currentContext setDuration:2];
@@ -150,8 +153,7 @@
                                  selector:@selector(windowFrameStopper:) 
                                  userInfo:window 
                                   repeats:NO];
-  [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
-  STAssertTrue(timerCalled_, nil);
+  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([window frame], NSMakeRect(300, 300, 150, 150), nil);
   
   // Test non-animation value
@@ -171,7 +173,7 @@
   
   // Test frame
   [nonLayerBox setFrame:NSMakeRect(50, 50, 50, 50)];
-  timerCalled_ = NO;
+  [timerCalled_ setShouldStop:NO];
   [NSAnimationContext beginGrouping];
   NSAnimationContext *currentContext = [NSAnimationContext currentContext];
   [currentContext setDuration:2];
@@ -182,8 +184,7 @@
                                  selector:@selector(nonLayerFrameStopper:) 
                                  userInfo:nonLayerBox 
                                   repeats:NO];
-  [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
-  STAssertTrue(timerCalled_, nil);
+  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([nonLayerBox frame], NSMakeRect(200, 200, 200, 200), nil);
   
   // Test non-animation value
@@ -204,7 +205,7 @@
   
   // Test frame
   [layerBox setFrame:NSMakeRect(50, 50, 50, 50)];
-  timerCalled_ = NO;
+  [timerCalled_ setShouldStop:NO];
   [NSAnimationContext beginGrouping];
   NSAnimationContext *currentContext = [NSAnimationContext currentContext];
   [currentContext setDuration:2];
@@ -215,8 +216,7 @@
                                  selector:@selector(layerFrameStopper:) 
                                  userInfo:layerBox 
                                   repeats:NO];
-  [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
-  STAssertTrue(timerCalled_, nil);
+  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([layerBox frame], NSMakeRect(200, 200, 200, 200), nil);
   
   // Test non-animation value

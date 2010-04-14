@@ -19,6 +19,33 @@
 #import <Foundation/Foundation.h>
 #import <objc/objc.h>
 
+// Many tests need to spin the runloop and wait for an event to happen. This is
+// often done by calling:
+// NSDate* next = [NSDate dateWithTimeIntervalSinceNow:resolution];
+// [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+//                          beforeDate:next];
+// where |resolution| is a guess at how long it will take for the event to 
+// happen. There are two major problems with this approach:
+// a) By guessing we force the test to take at least |resolution| time.
+// b) It makes for flaky tests in that sometimes this guess isn't good, and the 
+//    test takes slightly longer than |resolution| time causing the test to post
+//    a possibly false-negative failure.
+// To make timing callback tests easier use this class and the 
+// GTMUnitTestingAdditions additions to NSRunLoop and NSApplication.
+// Your call would look something like this:
+// id<GTMUnitTestingRunLoopContext> context = [self getMeAContext];
+// [[NSRunLoop currentRunLoop] gtm_runUpToSixtySecondsWithContext:context];
+// Then in some callback method within your test you would call
+// [context setShouldStop:YES];
+// Internally gtm_runUpToSixtySecondsWithContext will poll the runloop really
+// quickly to keep test times down to a minimum, but will stop after a good time
+// interval (in this case 60 seconds) for failures.
+@protocol GTMUnitTestingRunLoopContext
+// Return YES if the NSRunLoop (or equivalent) that this context applies to
+// should stop as soon as possible.
+- (BOOL)shouldStop;
+@end
+
 // Collection of utilities for unit testing
 @interface GTMUnitTestingUtilities : NSObject
 
@@ -76,16 +103,52 @@
 + (void)postTypeCharacterEvent:(CGCharCode)keyChar 
                      modifiers:(UInt32)cocoaModifiers;
 
-// Runs the event loop in NSDefaultRunLoopMode until date. Can be useful for
-// testing user interface responses in a controlled timed event loop. For most
-// uses using:
-// [[NSRunLoop currentRunLoop] runUntilDate:date]
-// will do. The only reason you would want to use this is if you were 
-// using the postKeyEvent:character:modifiers to send events and wanted to
-// receive user input.
-//  Arguments:
-//    date - end of execution time
-+ (void)runUntilDate:(NSDate*)date;
+@end
+
+// An implementation of the GTMUnitTestingRunLoopContext that is a simple
+// BOOL flag. See GTMUnitTestingRunLoopContext documentation.
+@interface GTMUnitTestingBooleanRunLoopContext : NSObject <GTMUnitTestingRunLoopContext> {
+ @private
+  BOOL shouldStop_;
+}
++ (id)context;
+- (BOOL)shouldStop;
+- (void)setShouldStop:(BOOL)stop;
+@end
+
+// Some category methods to simplify spinning the runloops in such a way as
+// to make tests less flaky, but have them complete as fast as possible.
+@interface NSRunLoop (GTMUnitTestingAdditions)
+// Will spin the runloop in mode until date in mode until the runloop returns
+// because all sources have been removed or the current date is greater than
+// |date| or [context shouldStop] returns YES.
+// Return YES if the runloop was stopped because [context shouldStop] returned
+// YES.
+- (BOOL)gtm_runUntilDate:(NSDate *)date
+                    mode:(NSString *)mode
+                 context:(id<GTMUnitTestingRunLoopContext>)context;
+
+// Calls -gtm_runUntilDate:mode:context: with mode set to NSDefaultRunLoopMode.
+- (BOOL)gtm_runUntilDate:(NSDate *)date 
+                 context:(id<GTMUnitTestingRunLoopContext>)context;
+
+// Calls -gtm_runUntilDate:mode:context: with mode set to NSDefaultRunLoopMode,
+// and the timeout date set to 60 seconds.
+- (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context;
 
 @end
 
+// Some category methods to simplify spinning the runloops in such a way as
+// to make tests less flaky, but have them complete as fast as possible.
+@interface NSApplication (GTMUnitTestingAdditions)
+// Has NSApplication call nextEventMatchingMask repeatedly until 
+// [context shouldStop] returns YES or it returns nil because the current date 
+// is greater than |date|.
+// Return YES if the runloop was stopped because [context shouldStop] returned
+// YES.
+- (BOOL)gtm_runUntilDate:(NSDate *)date 
+                 context:(id<GTMUnitTestingRunLoopContext>)context;
+
+// Calls -gtm_runUntilDate:context: with the timeout date set to 60 seconds.
+- (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context;
+@end

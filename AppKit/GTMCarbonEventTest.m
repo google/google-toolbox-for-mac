@@ -41,7 +41,7 @@
 
 @interface GTMCarbonEventDispatcherHandlerTest : GTMTestCase {
  @private
-  BOOL hotKeyHit_;
+  GTMUnitTestingBooleanRunLoopContext *hotKeyHit_;
 }
 @end
 
@@ -258,6 +258,15 @@ extern EventTargetRef GetApplicationEventTarget(void);
 
 @implementation GTMCarbonEventDispatcherHandlerTest
 
+- (void)setUp {
+  hotKeyHit_ = [[GTMUnitTestingBooleanRunLoopContext alloc] init];
+}
+
+- (void)tearDown {
+  [hotKeyHit_ release];
+  hotKeyHit_ = nil;
+}
+
 - (void)testEventHandler {
   GTMCarbonEventDispatcherHandler *dispatcher 
     = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
@@ -265,11 +274,11 @@ extern EventTargetRef GetApplicationEventTarget(void);
 }
 
 - (void)hitHotKey:(id)sender {
-  hotKeyHit_ = YES;
-  [NSApp stop:self];
+  [hotKeyHit_ setShouldStop:YES];
 }
 
 - (void)hitExceptionalHotKey:(id)sender {
+  [hotKeyHit_ setShouldStop:YES];
   [NSException raise:@"foo" format:@"bar"];
 }
 
@@ -299,16 +308,12 @@ extern EventTargetRef GetApplicationEventTarget(void);
                             whenPressed:YES];
     STAssertNotNULL(hotKey, @"Unable to create hotkey");
     
-    hotKeyHit_ = NO;
-    
     // Post the hotkey combo to the event queue. If everything is working
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
     // happen.
     [GTMUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    NSDate* future = [NSDate dateWithTimeIntervalSinceNow:1.0f];
-    [GTMUnitTestingUtilities runUntilDate:future];
-    STAssertTrue(hotKeyHit_, @"Hot key never got fired.");
+    STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
     [dispatcher unregisterHotKey:hotKey];    
   }
 }
@@ -330,13 +335,13 @@ extern EventTargetRef GetApplicationEventTarget(void);
                                            whenPressed:YES];
     STAssertTrue(hotKey != nil, @"Unable to create hotkey");
         
-    // Post the hotkey combo to the event queue. If everything is working correctly
-    // hitHotKey: should get called, and hotKeyHit_ will be set for us.
-    // We run the event loop for a set amount of time waiting for this to happen.
+    // Post the hotkey combo to the event queue. If everything is working
+    // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
+    // us.  We run the event loop for a set amount of time waiting for this to
+    // happen.
     [GTMUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    NSDate* future = [NSDate dateWithTimeIntervalSinceNow:1.0f];
     [GTMUnitTestDevLog expectString:@"Exception fired in hotkey: foo (bar)"];
-    [GTMUnitTestingUtilities runUntilDate:future];
+    STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
     [dispatcher unregisterHotKey:hotKey];    
   }
 }
