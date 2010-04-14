@@ -21,6 +21,8 @@
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 
+@class GTMUnitTestingBooleanRunLoopContext;
+
 @interface GTMNSAnimatablePropertyContainerWindow : NSWindow
 @end
 
@@ -44,7 +46,7 @@
 @interface GTMNSAnimatablePropertyContainerTest : GTMTestCase {
  @private
   GTMNSAnimatablePropertyContainerWindowController *windowController_;
-  BOOL timerCalled_;
+  GTMUnitTestingBooleanRunLoopContext *timerCalled_;
 }
 @end
 
