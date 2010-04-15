@@ -19,19 +19,22 @@
 #import "GTMSenTestCase.h"
 #import "GTMSignalHandler.h"
 #import "GTMUnitTestDevLog.h"
+#import "GTMFoundationUnitTestingUtilities.h"
 
 @interface GTMSignalHandlerTest : GTMTestCase
 @end
 
-@interface SignalCounter : NSObject {
+@interface SignalCounter : NSObject<GTMUnitTestingRunLoopContext> {
  @public
   int signalCount_;
   int lastSeenSignal_;
+  BOOL shouldStop_;
 }
 - (int)count;
 - (int)lastSeen;
 - (void)countSignal:(int)signo;
 + (id)signalCounter;
+- (void)resetShouldStop;
 @end // SignalCounter
 
 @implementation SignalCounter
@@ -48,16 +51,20 @@
 - (void)countSignal:(int)signo {
   signalCount_++;
   lastSeenSignal_ = signo;
+  shouldStop_ = YES;
 }
+
+- (BOOL)shouldStop {
+  return shouldStop_;
+}
+
+- (void)resetShouldStop {
+  shouldStop_ = NO;
+}
+
 @end
 
 @implementation GTMSignalHandlerTest
-
-// Spin the run loop so that the kqueue event notifications will get delivered.
-- (void)giveSomeLove {
-  NSDate *endTime = [NSDate dateWithTimeIntervalSinceNow:0.5];
-  [[NSRunLoop currentRunLoop] runUntilDate:endTime];
-}
 
 - (void)testNillage {
   GTMSignalHandler *handler;
@@ -81,23 +88,28 @@
   SignalCounter *counter = [SignalCounter signalCounter];
   STAssertNotNil(counter, nil);
   
-  GTMSignalHandler *handler = [[GTMSignalHandler alloc]
-                                initWithSignal:SIGWINCH
-                                        target:counter
-                                        action:@selector(countSignal:)];
+  GTMSignalHandler *handler = [[[GTMSignalHandler alloc]
+                                 initWithSignal:SIGWINCH
+                                         target:counter
+                                         action:@selector(countSignal:)]
+                               autorelease];
   STAssertNotNil(handler, nil);
   raise(SIGWINCH);
-  [self giveSomeLove];
+  
+  NSRunLoop *rl = [NSRunLoop currentRunLoop];
+  [rl gtm_runUpToSixtySecondsWithContext:counter];
 
   STAssertEquals([counter count], 1, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
-
+  [counter resetShouldStop];
+  
   raise(SIGWINCH);
-  [self giveSomeLove];
+  [rl gtm_runUpToSixtySecondsWithContext:counter];
 
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
-
+  [counter resetShouldStop];
+  
   // create a second one to make sure we're seding data where we want
   SignalCounter *counter2 = [SignalCounter signalCounter];
   STAssertNotNil(counter2, nil);
@@ -106,19 +118,20 @@
                                      action:@selector(countSignal:)] autorelease];
   
   raise(SIGUSR1);
-  [self giveSomeLove];
+  [rl gtm_runUpToSixtySecondsWithContext:counter2];
   
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   STAssertEquals([counter2 count], 1, nil);
   STAssertEquals([counter2 lastSeen], SIGUSR1, nil);
 
-  [handler release];
+  [handler invalidate];
 
   // The signal is still ignored (so we shouldn't die), but the
   // the handler method should not get called.
   raise(SIGWINCH);
-
+  [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
+  
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   STAssertEquals([counter2 count], 1, nil);
@@ -135,7 +148,8 @@
                                      action:NULL] autorelease];
 
   raise(SIGUSR1);
-  [self giveSomeLove];
+  NSRunLoop *rl = [NSRunLoop currentRunLoop];
+  [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
   STAssertEquals([counter count], 0, nil);
 
 }

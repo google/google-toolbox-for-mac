@@ -19,9 +19,9 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import "GTMUnitTestingUtilities.h"
+#import "GTMAppKitUnitTestingUtilities.h"
 
 int main(int argc, char *argv[]) {
-  [GTMUnitTestingUtilities setUpForUIUnitTestsIfBeingTested];
+  [GTMAppKitUnitTestingUtilities setUpForUIUnitTestsIfBeingTested];
   return NSApplicationMain(argc,  (const char **) argv);
 }

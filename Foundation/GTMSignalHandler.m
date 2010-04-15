@@ -44,7 +44,6 @@ static CFSocketRef gRunLoopSocket = NULL;
 - (void)notify;
 - (void)addFileDescriptorMonitor:(int)fd;
 - (void)registerWithKQueue;
-- (void)unregisterWithKQueue;
 @end
 
 
@@ -88,19 +87,17 @@ static CFSocketRef gRunLoopSocket = NULL;
 }
 
 #if GTM_SUPPORT_GC
+
 - (void)finalize {
-  [self unregisterWithKQueue];
-  
+  [self invalidate];
   [super finalize];
-  
 }
+
 #endif
 
 - (void)dealloc {
-  [self unregisterWithKQueue];
-  
+  [self invalidate];
   [super dealloc];
-
 }
 
 // Cribbed from Advanced Mac OS X Programming.
@@ -181,7 +178,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   
 }
 
-- (void)unregisterWithKQueue {
+- (void)invalidate {
   // Short-circuit cases where we didn't actually register a kqueue event.
   if (signo_ == 0) return;
   if (action_ == nil) return;
@@ -193,7 +190,10 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   if (kevent(gSignalKQueueFileDescriptor, &filter, 1, NULL, 0, &noWait) != 0) {
     _GTMDevLog(@"could not remove event for signal %d.  Errno %d", signo_, errno);  // COV_NF_LINE
   }
-
+  
+  // Set action_ to nil so that if invalidate is called on us twice,
+  // nothing happens.
+  action_ = nil;
 }
 
 - (void)notify {

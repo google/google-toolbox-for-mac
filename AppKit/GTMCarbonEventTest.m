@@ -18,7 +18,7 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMCarbonEvent.h"
-#import "GTMUnitTestingUtilities.h"
+#import "GTMAppKitUnitTestingUtilities.h"
 #import "GTMUnitTestDevLog.h"
 
 @interface GTMCarbonEventTest : GTMTestCase {
@@ -286,7 +286,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
   
   // This test can't be run if the screen saver is active because the security
   // agent blocks us from sending events via remote operations
-  if (![GTMUnitTestingUtilities isScreenSaverActive]) {
+  if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
     GTMCarbonEventDispatcherHandler *dispatcher 
       = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
     STAssertNotNil(dispatcher, @"Unable to acquire singleton");
@@ -312,7 +312,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
     // happen.
-    [GTMUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
+    [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
     STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
     [dispatcher unregisterHotKey:hotKey];    
   }
@@ -322,7 +322,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
   
   // This test can't be run if the screen saver is active because the security
   // agent blocks us from sending events via remote operations
-  if (![GTMUnitTestingUtilities isScreenSaverActive]) {
+  if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
     GTMCarbonEventDispatcherHandler *dispatcher 
       = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
     STAssertNotNil(dispatcher, @"Unable to acquire singleton");
@@ -339,7 +339,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
     // happen.
-    [GTMUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
+    [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
     [GTMUnitTestDevLog expectString:@"Exception fired in hotkey: foo (bar)"];
     STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
     [dispatcher unregisterHotKey:hotKey];    
