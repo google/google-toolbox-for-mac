@@ -16,7 +16,6 @@
 //
 
 #import "GTMSenTestCase.h"
-#import "GTMUnitTestingUtilities.h"
 #import "GTMUnitTestDevLog.h"
 
 static BOOL sURLHandlerWasHit;

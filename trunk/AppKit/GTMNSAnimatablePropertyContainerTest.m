@@ -19,7 +19,7 @@
 #import "GTMNSAnimatablePropertyContainerTest.h"
 #import "GTMNSAnimatablePropertyContainer.h"
 #import "GTMTypeCasting.h"
-#import "GTMUnitTestingUtilities.h"
+#import "GTMFoundationUnitTestingUtilities.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 

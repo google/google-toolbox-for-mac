@@ -70,4 +70,7 @@
              target:(id)target
              action:(SEL)action;
 
+// Invalidates the handler so that it isn't listening anymore.
+- (void)invalidate;
+
 @end
