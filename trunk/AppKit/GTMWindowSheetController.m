@@ -407,7 +407,7 @@ willPositionSheet:(NSWindow*)sheet
     },
     {
       @"NSPrintOperation",
-      @"ru32perationModalForWindow:delegate:didRunSelector:contextInfo:",
+      @"runOperationModalForWindow:delegate:didRunSelector:contextInfo:",
       0, 1, 2, 3, 8,
     },
     {
