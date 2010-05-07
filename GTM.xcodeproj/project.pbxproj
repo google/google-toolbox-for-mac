@@ -131,6 +131,7 @@
 		8B409F060F95341E00DF540E /* GTMUILocalizerTestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */; };
 		8B409F130F95352500DF540E /* GTMUILocalizerView2State.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F110F95352500DF540E /* GTMUILocalizerView2State.gtmUTState */; };
 		8B409F140F95352500DF540E /* GTMUILocalizerView1State.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F120F95352500DF540E /* GTMUILocalizerView1State.gtmUTState */; };
+		8B455F5E1193870A00ABD707 /* GTMLocalizedStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */; };
 		8B45A03A0DA46A2A001148C5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		8B45A0B80DA46A2F001148C5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */; };
 		8B45A0D50DA46A57001148C5 /* GTMNSObject+UnitTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE29C0D198D36009257D2 /* GTMNSObject+UnitTesting.m */; };
@@ -597,6 +598,7 @@
 		8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerTestView.xib; sourceTree = "<group>"; };
 		8B409F110F95352500DF540E /* GTMUILocalizerView2State.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerView2State.gtmUTState; sourceTree = "<group>"; };
 		8B409F120F95352500DF540E /* GTMUILocalizerView1State.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerView1State.gtmUTState; sourceTree = "<group>"; };
+		8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLocalizedStringTest.m; sourceTree = "<group>"; };
 		8B45A0280DA4696C001148C5 /* UnitTest - UnitTesting.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest - UnitTesting.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B45A1990DA46AAA001148C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMUIUnitTestingHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1280,6 +1282,7 @@
 				F41711330ECDFBD500B9B276 /* GTMLightweightProxy.m */,
 				F41711340ECDFBD500B9B276 /* GTMLightweightProxyTest.m */,
 				8B21DE54117E5CB7000E004F /* GTMLocalizedString.h */,
+				8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */,
 				F98680AF0E2C15C300CEE8BF /* GTMLogger.h */,
 				F98680B00E2C15C300CEE8BF /* GTMLogger.m */,
 				F98680B10E2C15C300CEE8BF /* GTMLoggerTest.m */,
@@ -2026,6 +2029,7 @@
 				8B3080151056B917006C4C7A /* GTMNSNumber+64BitTest.m in Sources */,
 				0B1B9B8A10FECDA00084EE4B /* GTMStringEncodingTest.m in Sources */,
 				8B17FD15117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */,
+				8B455F5E1193870A00ABD707 /* GTMLocalizedStringTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

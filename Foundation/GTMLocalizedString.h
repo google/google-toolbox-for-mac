@@ -40,8 +40,8 @@
       NSLocalizedStringWithDefaultValue
 #endif
 
-GTM_INLINE NSString *GTMLocalizedString(NSString *key, 
-                                        NSString *comment) NS_FORMAT_ARGUMENT(1) {
+GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedString(
+    NSString *key,  NSString *comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key, 
                                                     nil, 
                                                     [NSBundle mainBundle], 
@@ -49,9 +49,8 @@ GTM_INLINE NSString *GTMLocalizedString(NSString *key,
                                                     comment);
 }
 
-GTM_INLINE NSString *GTMLocalizedStringFromTable(NSString *key, 
-                                                 NSString *tableName, 
-                                                 NSString *comment) NS_FORMAT_ARGUMENT(1) {
+GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringFromTable(
+    NSString *key, NSString *tableName, NSString *comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key, 
                                                     tableName, 
                                                     [NSBundle mainBundle], 
@@ -59,10 +58,8 @@ GTM_INLINE NSString *GTMLocalizedStringFromTable(NSString *key,
                                                     comment);
 }
 
-GTM_INLINE NSString *GTMLocalizedStringFromTableInBundle(NSString *key, 
-                                                         NSString *tableName, 
-                                                         NSBundle *bundle, 
-                                                         NSString *comment) NS_FORMAT_ARGUMENT(1) {
+GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringFromTableInBundle(
+    NSString *key,  NSString *tableName, NSBundle *bundle, NSString *comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key, 
                                                     tableName, 
                                                     bundle, 
@@ -70,11 +67,9 @@ GTM_INLINE NSString *GTMLocalizedStringFromTableInBundle(NSString *key,
                                                     comment);
 }
 
-GTM_INLINE NSString *GTMLocalizedStringWithDefaultValue(NSString *key, 
-                                                        NSString *tableName, 
-                                                        NSBundle *bundle, 
-                                                        NSString *value, 
-                                                        NSString *comment) NS_FORMAT_ARGUMENT(1) {
+GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringWithDefaultValue(
+    NSString *key, NSString *tableName, NSBundle *bundle, NSString *value,
+    NSString *comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key, 
                                                     tableName, 
                                                     bundle, 
