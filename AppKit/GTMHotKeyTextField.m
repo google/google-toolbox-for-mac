@@ -897,7 +897,10 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   // Force editing to end. This sends focus off into space slightly, but
   // its better than constantly capturing user events. This is exactly
   // like the Apple editor in their Keyboard pref pane.
-  [[[self delegate] cell] endEditing:self];
+  id delegate = [self delegate];
+  if ([delegate respondsToSelector:@selector(cell)]) {
+    [[delegate cell] endEditing:self];
+  }
 }
 
 - (NSDictionary *)hotKeyDictionary {

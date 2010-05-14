@@ -72,15 +72,24 @@
     return nil;
   
   // |basenames| will contain only the matching file names, not their full paths.
+  NSError *error = nil;
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSArray *basenames = [self contentsOfDirectoryAtPath:directoryPath 
+                                                 error:&error];
+#else
   NSArray *basenames = [self directoryContentsAtPath:directoryPath];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   
   // Check if dir doesn't exist or couldn't be opened.
-  if (basenames == nil)
+  if (basenames == nil) {
+    _GTMDevLog(@"Error: %@", error);
     return nil;
+  }
   
   // Check if dir is empty.
-  if ([basenames count] == 0)
+  if ([basenames count] == 0) {
     return basenames;
+  }
   
   NSMutableArray *paths = [NSMutableArray arrayWithCapacity:[basenames count]];
   NSString *basename;

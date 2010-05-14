@@ -38,7 +38,7 @@ NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
 - (BOOL)hadGoodContext;
 @end
 
-@interface GTMUnitTestingDelegate : NSObject {
+@interface GTMUnitTestingDelegate : NSObject <NSImageDelegate> {
   BOOL didEncode_;
 }
 - (BOOL)didEncode;

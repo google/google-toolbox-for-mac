@@ -48,7 +48,7 @@
   STAssertNotNil([testImage gtm_representationOfSize:NSMakeSize(16, 16)], nil);
   STAssertNotNil([testImage gtm_representationOfSize:NSMakeSize(32, 32)], nil);
   
-  NSImage *duplicate = [testImage gtm_duplicateOfSize: NSMakeSize(48, 48)];
+  NSImage *duplicate = [testImage gtm_duplicateOfSize:NSMakeSize(48, 48)];
   bestRepRect = NSMakeRect(0, 0, 50, 50);
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
   rep = [duplicate bestRepresentationForRect:bestRepRect 
@@ -57,7 +57,8 @@
 #else
   rep = [duplicate gtm_bestRepresentationForSize:bestRepRect.size];
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
-  STAssertTrue(NSEqualSizes([rep size], NSMakeSize(48, 48)), nil);
+  STAssertTrue(NSEqualSizes([rep size], NSMakeSize(48, 48)), 
+               @"Size is %@", NSStringFromSize([rep size]));
   
 }
 

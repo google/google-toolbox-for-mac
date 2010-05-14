@@ -264,7 +264,7 @@ static NSString * const kLSSharedFileListLoginItemHidden =
     if (loginItemsRef) {
       NSDictionary *setProperties =
           [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:hide]
-              forKey:kLSSharedFileListLoginItemHidden];
+              forKey:(id)kLSSharedFileListLoginItemHidden];
       LSSharedFileListItemRef itemRef =
           LSSharedFileListInsertItemURL(loginItemsRef,
                                         kLSSharedFileListItemLast, NULL, NULL,

@@ -94,16 +94,28 @@
 
   // make sure the files aren't in the way of the test
   NSFileManager *fm = [NSFileManager defaultManager];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSError *error = nil;
+  [fm removeItemAtPath:testPath_ error:&error];
+  [fm removeItemAtPath:testPath2_ error:&error];
+#else
   [fm removeFileAtPath:testPath_ handler:nil];
   [fm removeFileAtPath:testPath2_ handler:nil];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 }
 
 - (void)tearDown {
   // make sure we clean up the files from a failed test
   NSFileManager *fm = [NSFileManager defaultManager];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSError *error = nil;
+  [fm removeItemAtPath:testPath_ error:&error];
+  [fm removeItemAtPath:testPath2_ error:&error];
+#else
   [fm removeFileAtPath:testPath_ handler:nil];
   [fm removeFileAtPath:testPath2_ handler:nil];
-
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  
   [testPath_ release];
   testPath_ = nil;
   [testPath2_ release];
@@ -208,7 +220,12 @@
   
   // Close and delete
   [testFH closeFile];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSError *error = nil;
+  STAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
+#else
   STAssertTrue([fm removeFileAtPath:testPath_ handler:nil], nil);
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   
   [self spinForEvents:helper];
   STAssertEquals([helper totals], 2, nil);
@@ -268,7 +285,12 @@
 
   // Close and delete
   [testFH closeFile];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSError *error = nil;
+  STAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
+#else
   STAssertTrue([fm removeFileAtPath:testPath_ handler:nil], nil);
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Recreate
   STAssertTrue([fm createFileAtPath:testPath_ contents:nil attributes:nil], nil);
@@ -291,8 +313,12 @@
   
   // Close and delete
   [testFH closeFile];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  STAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
+#else
   STAssertTrue([fm removeFileAtPath:testPath_ handler:nil], nil);
-
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  
   // Spin the runloop for a second so that the helper callbacks fire
   [self spinForEvents:helper];
   STAssertEquals([helper totals], 4, nil);
@@ -357,7 +383,14 @@
   STAssertEquals([helper2 totals], 1, nil);
   
   // Move it and create the file again
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSError *error = nil;
+  STAssertTrue([fm moveItemAtPath:testPath_ toPath:testPath2_ error:&error], 
+               @"Error: %@", error);
+#else
   STAssertTrue([fm movePath:testPath_ toPath:testPath2_ handler:nil], nil);
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  
   STAssertTrue([fm createFileAtPath:testPath_ contents:nil attributes:nil], nil);
   NSFileHandle *testFHPrime
     = [NSFileHandle fileHandleForWritingAtPath:testPath_];
@@ -387,7 +420,11 @@
   
   // and now close old
   [testFH closeFile];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  STAssertTrue([fm removeItemAtPath:testPath2_ error:&error], @"Err: %@", error);
+#else
   STAssertTrue([fm removeFileAtPath:testPath2_ handler:nil], nil);
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   
   // Spin the runloop for a second so that the helper callbacks fire
   [self spinForEvents:helper];
@@ -396,7 +433,11 @@
   
   // and now close new
   [testFHPrime closeFile];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  STAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
+#else
   STAssertTrue([fm removeFileAtPath:testPath_ handler:nil], nil);
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   
   // Spin the runloop for a second so that the helper callbacks fire
   [self spinForEvents:helper];

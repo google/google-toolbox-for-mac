@@ -36,10 +36,16 @@ static NSTimeInterval gGTMLargeTypeWindowCopyAnimationDuration = 0.5;
 // Amount of time to do fade animations
 static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
 
-@interface GTMLargeTypeCopyAnimation : NSAnimation
+@interface GTMLargeTypeCopyAnimation : NSAnimation {
+ @private
+  NSView *view_;
+}
+- (id)initWithView:(NSView *)view 
+          duration:(NSTimeInterval)duration 
+    animationCurve:(NSAnimationCurve)animationCurve;
 @end
 
-@interface GTMLargeTypeBackgroundView : NSView {
+@interface GTMLargeTypeBackgroundView : NSView <NSAnimationDelegate> {
   CIFilter *transition_;
   GTMLargeTypeCopyAnimation *animation_;
 }
@@ -355,8 +361,9 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   [transition valueForKey:@"outputImage"];
   [image release];
   transition_ = [transition retain];  
-  animation_ = [[GTMLargeTypeCopyAnimation alloc] initWithDuration:duration
-                                                    animationCurve:NSAnimationLinear];
+  animation_ = [[GTMLargeTypeCopyAnimation alloc] initWithView:self
+                                                      duration:duration
+                                                animationCurve:NSAnimationLinear];
   [animation_ setFrameRate:0.0f];
   [animation_ setDelegate:self];
   [animation_ setAnimationBlockingMode:NSAnimationBlocking];
@@ -381,8 +388,23 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
 @end
 
 @implementation GTMLargeTypeCopyAnimation
+- (id)initWithView:(NSView *)view 
+          duration:(NSTimeInterval)duration 
+    animationCurve:(NSAnimationCurve)animationCurve {
+  if ((self = [super initWithDuration:duration 
+                       animationCurve:animationCurve])) {
+    view_ = [view retain];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [view_ release];
+  [super dealloc];
+}
+
 - (void)setCurrentProgress:(NSAnimationProgress)progress {
   [super setCurrentProgress:progress];
-  [[self delegate] display];
+  [view_ display];
 }
 @end
