@@ -62,12 +62,30 @@
       // it already exists
       resultPath = subdirPath;
     } else if (doCreate) {
-      
+      parentFolderPath = [parentFolderPath stringByResolvingSymlinksInPath];
+      NSDictionary* attrs = nil;
+      BOOL createdSubDir = NO;
       // create the subdirectory with the parent folder's attributes
-      NSDictionary* attrs = [fileMgr fileAttributesAtPath:parentFolderPath
-                                             traverseLink:YES];
-      if ([fileMgr createDirectoryAtPath:subdirPath
-                              attributes:attrs]) {
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+      NSError *error = nil;
+      attrs = [fileMgr attributesOfItemAtPath:parentFolderPath error:&error];
+      if (error) {
+        _GTMDevLog(@"Error %@ getting attributes of %@", 
+                   error, parentFolderPath);
+      }
+      createdSubDir = [fileMgr createDirectoryAtPath:subdirPath
+                         withIntermediateDirectories:YES
+                                          attributes:attrs
+                                               error:&error];
+      if (error) {
+        _GTMDevLog(@"Error %@ creating directory at %@", error, subdirPath);
+      }
+#else
+      attrs = [fileMgr fileAttributesAtPath:parentFolderPath traverseLink:YES];
+      createdSubDir = [fileMgr createDirectoryAtPath:subdirPath
+                                          attributes:attrs];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+      if (createdSubDir) {
         resultPath = subdirPath;
       }
     }

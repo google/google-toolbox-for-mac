@@ -290,3 +290,16 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 #ifndef GTM_NONNULL
   #define GTM_NONNULL(x) __attribute__((nonnull(x)))
 #endif
+
+// To simplify support for both Leopard and Snow Leopard we declare 
+// the Snow Leopard protocols that we need here.
+#if !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
+@protocol NSConnectionDelegate
+@end
+@protocol NSAnimationDelegate
+@end
+@protocol NSImageDelegate
+@end
+@protocol NSTabViewDelegate
+@end
+#endif  // !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)

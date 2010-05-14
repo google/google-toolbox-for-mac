@@ -21,7 +21,8 @@
 #import "GTMNSObject+UnitTesting.h"
 
 @interface GTMWindowSheetControllerTest : GTMTestCase
-                                          <GTMWindowSheetControllerDelegate> {
+                                          <GTMWindowSheetControllerDelegate,
+                                           NSTabViewDelegate> {
  @private
   GTMWindowSheetController *sheetController_;
   BOOL didAlertClose_;

@@ -17,7 +17,7 @@
 //
 
 #import "GTMPath.h"
-
+#import "GTMDefines.h"
 
 @implementation GTMPath
 
@@ -31,7 +31,7 @@
 
 - (id)initWithFullPath:(NSString *)fullPath {
   if ((self = [super init])) {
-    fullPath_ = [fullPath copy];
+    fullPath_ = [[fullPath stringByResolvingSymlinksInPath] copy];
     if (![fullPath_ isAbsolutePath] || [self attributes] == nil) {
       [self release];
       return nil;
@@ -72,9 +72,18 @@
 }
 
 - (NSDictionary *)attributes {
-  return [[NSFileManager defaultManager]
-          fileAttributesAtPath:fullPath_
-                  traverseLink:YES];
+  NSFileManager *mgr = [NSFileManager defaultManager];
+  NSDictionary *attributes = nil;
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSError *error = nil;
+  attributes = [mgr attributesOfItemAtPath:fullPath_ error:&error];
+  if (error) {
+    _GTMDevLog(@"Error (%@) getting attributes for path %@", error, fullPath_);
+  }
+#else
+  attributes = [mgr fileAttributesAtPath:fullPath_ traverseLink:NO];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  return attributes;
 }
 
 - (NSString *)fullPath {
@@ -103,14 +112,25 @@
   // exists, we will end up returning a GTMPath for the pre-existing path.
   NSString *newPath = [fullPath_ stringByAppendingPathComponent:name];
   GTMPath *nascentPath = [GTMPath pathWithFullPath:newPath];
-  if (nascentPath != nil && ![nascentPath isDirectory]) {
+  if (nascentPath && ![nascentPath isDirectory]) {
     return nil;  // Return nil because the path exists, but it's not a dir
   }
   
-  if (nascentPath == nil) {
-    BOOL created = [[NSFileManager defaultManager]
-                    createDirectoryAtPath:newPath
-                               attributes:attributes];
+  if (!nascentPath) {
+    BOOL created = NO;
+    NSFileManager *mgr = [NSFileManager defaultManager];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    NSError *error = nil;
+    created = [mgr createDirectoryAtPath:newPath 
+             withIntermediateDirectories:NO 
+                              attributes:attributes 
+                                   error:&error];
+    if (error) {
+      _GTMDevLog(@"Error %@ creating directory at path %@", error, newPath);
+    }
+#else
+    created = [mgr createDirectoryAtPath:newPath attributes:attributes];
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     nascentPath = created ? [GTMPath pathWithFullPath:newPath] : nil;
   }
 

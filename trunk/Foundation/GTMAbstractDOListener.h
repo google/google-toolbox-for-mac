@@ -16,6 +16,7 @@
 //  the License.
 //
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 @class GTMReceivePortDelegate;
@@ -31,7 +32,7 @@
 // GTM_ABSTRACTDOLISTENER_SUBCLASS_THREADMAIN_IMPL macro for easier debugging
 // of stack traces. Please read it's description below.
 //
-@interface GTMAbstractDOListener : NSObject {
+@interface GTMAbstractDOListener : NSObject <NSConnectionDelegate> {
  @protected
   NSString *registeredName_;
   __weak Protocol *protocol_;
