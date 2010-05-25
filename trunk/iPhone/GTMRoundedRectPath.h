@@ -18,5 +18,31 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
+//  Inscribe a round rectangle inside of rectangle |rect| with a corner radius 
+//  of |radius|
+//
+//  Args:
+//    rect: outer rectangle to inscribe into
+//    radius: radius of the corners. |radius| is clamped internally
+//            to be no larger than the smaller of half |rect|'s width or height
+void GTMCGContextAddRoundRect(CGContextRef context, 
+                              CGRect rect, 
+                              CGFloat radius);
+
+//  Adds a path which is a round rectangle inscribed inside of rectangle |rect| 
+//  with a corner radius of |radius|
+//
+//  Args:
+//    path: path to add the rounded rectangle to
+//       m: matrix modifying the round rect
+//    rect: outer rectangle to inscribe into
+//    radius: radius of the corners. |radius| is clamped internally
+//            to be no larger than the smaller of half |rect|'s width or height
+void GTMCGPathAddRoundRect(CGMutablePathRef path, 
+                           const CGAffineTransform *m, 
+                           CGRect rect, 
+                           CGFloat radius);
+
 // Allocates a new rounded corner rectangle path.
+// DEPRECATED. Please use one of the above.
 CGPathRef GTMCreateRoundedRectPath(CGRect rect, CGFloat radius);

@@ -17,34 +17,73 @@
 //
 #include "GTMRoundedRectPath.h"
 
+void GTMCGContextAddRoundRect(CGContextRef context, 
+                              CGRect rect, 
+                              CGFloat radius) {
+  if (!CGRectIsEmpty(rect)) {
+    if (radius > 0.0) {
+      // Clamp radius to be no larger than half the rect's width or height.
+      radius = MIN(radius, 0.5 * MIN(rect.size.width, rect.size.height));
+      
+      CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
+      CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
+      CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), 
+                                        CGRectGetMinY(rect));
+      
+      CGContextMoveToPoint(context, CGRectGetMidX(rect), CGRectGetMaxY(rect));
+      CGContextAddArcToPoint(context, topLeft.x, topLeft.y, rect.origin.x, 
+                             rect.origin.y, radius);
+      CGContextAddArcToPoint(context, rect.origin.x, rect.origin.y, 
+                             bottomRight.x, bottomRight.y, radius);
+      CGContextAddArcToPoint(context, bottomRight.x, bottomRight.y, 
+                             topRight.x, topRight.y, radius);
+      CGContextAddArcToPoint(context, topRight.x, topRight.y, 
+                             topLeft.x, topLeft.y, radius);
+      CGContextAddLineToPoint(context, CGRectGetMidX(rect), CGRectGetMaxY(rect));
+    } else {
+      CGContextAddRect(context, rect);
+    }
+  }
+}
+
+void GTMCGPathAddRoundRect(CGMutablePathRef path, 
+                           const CGAffineTransform *m, 
+                           CGRect rect,
+                           CGFloat radius) {
+  if (!CGRectIsEmpty(rect)) {
+    if (radius > 0.0) {
+      // Clamp radius to be no larger than half the rect's width or height.
+      radius = MIN(radius, 0.5 * MIN(rect.size.width, rect.size.height));
+      
+      CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
+      CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
+      CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), 
+                                        CGRectGetMinY(rect));
+      
+      CGPathMoveToPoint(path, m, CGRectGetMidX(rect), CGRectGetMaxY(rect));
+      CGPathAddArcToPoint(path, m, topLeft.x, topLeft.y, 
+                          rect.origin.x, rect.origin.y, radius);
+      CGPathAddArcToPoint(path, m, rect.origin.x, rect.origin.y, 
+                          bottomRight.x, bottomRight.y, radius);
+      CGPathAddArcToPoint(path, m, bottomRight.x, bottomRight.y, 
+                          topRight.x, topRight.y, radius);
+      CGPathAddArcToPoint(path, m, topRight.x, topRight.y, 
+                          topLeft.x, topLeft.y, radius);
+      CGPathAddLineToPoint(path, m, CGRectGetMidX(rect), CGRectGetMaxY(rect));
+    } else {
+      CGPathAddRect(path, m, rect);
+    }
+  }
+}
+
 CGPathRef GTMCreateRoundedRectPath(CGRect rect, CGFloat radius) {
+  CGPathRef immutablePath = NULL;
   CGMutablePathRef path = CGPathCreateMutable();
-
-  CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect));
-  CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect));
-  CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
-  CGPoint bottomLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
-
-  CGPathMoveToPoint(path, NULL, CGRectGetMidX(rect), CGRectGetMinY(rect));
-  CGPathAddArcToPoint(path, NULL,
-                      topLeft.x, topLeft.y,
-                      bottomLeft.x, bottomLeft.y,
-                      radius);
-  CGPathAddArcToPoint(path, NULL,
-                      bottomLeft.x, bottomLeft.y,
-                      bottomRight.x, bottomRight.y,
-                      radius);
-  CGPathAddArcToPoint(path, NULL,
-                      bottomRight.x, bottomRight.y,
-                      topRight.x, topRight.y,
-                      radius);
-  CGPathAddArcToPoint(path, NULL,
-                      topRight.x, topRight.y,
-                      topLeft.x, topLeft.y,
-                      radius);
-  CGPathCloseSubpath(path);
-
-  CGPathRef immutablePath = CGPathCreateCopy(path);
-  CGPathRelease(path);
+  if (path) {
+    GTMCGPathAddRoundRect(path, NULL, rect, radius);
+    CGPathCloseSubpath(path);
+    immutablePath = CGPathCreateCopy(path);
+    CGPathRelease(path);
+  }
   return immutablePath;
 }
