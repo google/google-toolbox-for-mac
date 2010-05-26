@@ -23,9 +23,11 @@
 #import "GTMUnitTestDevLog.h"
 #import "GTMHTTPServer.h"
 #import "GTMRegex.h"
+#import "GTMGarbageCollection.h"
 
 @interface GTMHTTPServerTest : GTMTestCase {
-  NSData *fetchedData_;
+  CFHTTPMessageRef fetchedMessage_;
+  BOOL complete_;
 }
 @end
 
@@ -36,7 +38,7 @@
 - (NSFileHandle *)fileHandleSendingToPort:(unsigned short)port
                                   payload:(NSString *)payload
                                 chunkSize:(NSUInteger)chunkSize;
-- (void)readFinished:(NSNotification *)notification;
+- (void)readData:(NSNotification *)notification;
 @end
 
 // helper class
@@ -261,12 +263,14 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     [[[NSString alloc] initWithData:responseData
                            encoding:NSUTF8StringEncoding] autorelease];
   STAssertNotNil(responseString, nil);
-  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 200 OK"], nil);
-  STAssertTrue([responseString hasSuffix:@"Success!"], @"should end w/ our data");
+  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 200 OK"], 
+               @"String: %@", responseString);
+  STAssertTrue([responseString hasSuffix:@"Success!"], 
+               @"String: %@ should end w/ our data", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Content-Length: 8"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Content-Type: text/html; charset=UTF-8"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   
   // test the plain code response
   
@@ -283,11 +287,12 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     [[[NSString alloc] initWithData:responseData
                            encoding:NSUTF8StringEncoding] autorelease];
   STAssertNotNil(responseString, nil);
-  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 299 "], nil);
+  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 299 "], 
+               @"String: %@", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Content-Length: 0"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Content-Type: text/html"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
 
   // test the general api w/ extra header add
 
@@ -311,16 +316,17 @@ const NSTimeInterval kSendChunkInterval = 0.05;
     [[[NSString alloc] initWithData:responseData
                            encoding:NSUTF8StringEncoding] autorelease];
   STAssertNotNil(responseString, nil);
-  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 298"], nil);
+  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 298"], 
+               @"String: %@", responseString);
   STAssertTrue([responseString hasSuffix:@"FOO"], @"should end w/ our data");
   STAssertNotEquals([responseString rangeOfString:@"Content-Length: 3"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Content-Type: some/type"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Custom-Header: Custom_Value"].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   STAssertNotEquals([responseString rangeOfString:@"Custom-Header2: "].location,
-                    (NSUInteger)NSNotFound, nil);
+                    (NSUInteger)NSNotFound, @"String: %@", responseString);
   
   [server stop];
 }
@@ -400,8 +406,7 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   NSData *responseData = [self fetchFromPort:[server port]
                                      payload:@"GET /foo HTTP/1.0\r\n\r\n"
                                    chunkSize:kSendChunkSize];
-  STAssertNotNil(responseData, nil);
-  STAssertEquals([responseData length], (NSUInteger)0, nil);
+  STAssertNil(responseData, nil);
   STAssertEquals([delegate requestCount], (NSUInteger)1, nil);
   STAssertEquals([server activeRequestCount], (NSUInteger)0, nil);
 }
@@ -415,34 +420,44 @@ const NSTimeInterval kSendChunkInterval = 0.05;
 - (NSData *)fetchFromPort:(unsigned short)port
                   payload:(NSString *)payload
                 chunkSize:(NSUInteger)chunkSize {
-  fetchedData_ = nil;
-
+  STAssertNULL(fetchedMessage_, nil);
+  fetchedMessage_ = CFHTTPMessageCreateEmpty(NULL, false);
+  complete_ = NO;
+  
   NSFileHandle *handle = [self fileHandleSendingToPort:port
                                                payload:payload
                                              chunkSize:chunkSize];
 
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+  
+  // Do not use NSFileHandleReadToEndOfFileCompletionNotification on Snow
+  // Leopard as we can run into a deadlock when we call close on the
+  // file handle while it is still waiting for data.
   [center addObserver:self
-             selector:@selector(readFinished:)
-                 name:NSFileHandleReadToEndOfFileCompletionNotification
+             selector:@selector(readData:)
+                 name:NSFileHandleReadCompletionNotification
                object:handle];
-  [handle readToEndOfFileInBackgroundAndNotify];
+  [handle readInBackgroundAndNotify];
 
   // wait for our reply
   NSDate* giveUpDate = [NSDate dateWithTimeIntervalSinceNow:kGiveUpInterval];
-  while (!fetchedData_ && [giveUpDate timeIntervalSinceNow] > 0) {
+  while (!complete_ && [giveUpDate timeIntervalSinceNow] > 0) {
     NSDate* loopIntervalDate =
       [NSDate dateWithTimeIntervalSinceNow:kRunLoopInterval];
     [[NSRunLoop currentRunLoop] runUntilDate:loopIntervalDate]; 
   }
 
   [center removeObserver:self
-                 name:NSFileHandleReadToEndOfFileCompletionNotification
+                 name:NSFileHandleReadCompletionNotification
                object:handle];
-  
-  NSData *result = [fetchedData_ autorelease];
-  fetchedData_ = nil;
-  return result;
+  NSData *data = nil;
+  if (complete_) {
+    data = GTMCFAutorelease(CFHTTPMessageCopySerializedMessage(fetchedMessage_));
+  }
+  CFRelease(fetchedMessage_);
+  fetchedMessage_ = NULL;                                
+  complete_ = NO;
+  return data;
 }
 
 - (NSFileHandle *)fileHandleSendingToPort:(unsigned short)port
@@ -495,10 +510,29 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   return handle;
 }
 
-- (void)readFinished:(NSNotification *)notification {
+- (void)readData:(NSNotification *)notification {
   NSDictionary *userInfo = [notification userInfo];
-  fetchedData_ =
-    [[userInfo objectForKey:NSFileHandleNotificationDataItem] retain];
+  NSData *readData = [userInfo objectForKey:NSFileHandleNotificationDataItem];
+  STAssertNotNil(readData, nil);
+  STAssertNotNULL(fetchedMessage_, nil);
+  STAssertTrue(CFHTTPMessageAppendBytes(fetchedMessage_, 
+                                        [readData bytes], 
+                                        [readData length]), @"Data %@",
+               [[[NSString alloc] initWithData:readData 
+                                      encoding:NSUTF8StringEncoding] 
+                autorelease]);
+  if (CFHTTPMessageIsHeaderComplete(fetchedMessage_)) {
+    NSString *lengthString 
+      = GTMCFAutorelease(CFHTTPMessageCopyHeaderFieldValue(fetchedMessage_, 
+                                                           CFSTR("Content-Length")));
+    if (lengthString) {
+      NSUInteger length = [lengthString intValue];
+      NSData *messageData = GTMCFAutorelease(CFHTTPMessageCopyBody(fetchedMessage_));
+      if ([messageData length] >= length) {
+        complete_ = YES;
+      }
+    }
+  }
 }
 
 @end
