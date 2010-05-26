@@ -17,6 +17,16 @@
 //
 
 #import "GTMUIImage+Resize.h"
+#import "GTMDefines.h"
+
+GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
+  CGFloat  tempWidth = size.width;
+
+  size.width  = size.height;
+  size.height = tempWidth;
+
+  return size;
+}
 
 @implementation UIImage (GTMUIImageResizeAdditions)
 
@@ -83,4 +93,94 @@
   UIGraphicsEndImageContext();
   return resizedPhoto;
 }
+
+// Based on code by Trevor Harmon:
+// http://vocaro.com/trevor/blog/wp-content/uploads/2009/10/UIImage+Resize.h
+// http://vocaro.com/trevor/blog/wp-content/uploads/2009/10/UIImage+Resize.m
+- (UIImage *)gtm_imageByRotating:(UIImageOrientation)orientation {
+  CGRect bounds = CGRectZero;
+  CGRect rect = CGRectZero;
+  CGAffineTransform transform = CGAffineTransformIdentity;
+
+  bounds.size = [self size];
+  rect.size = [self size];
+
+  switch (orientation) {
+    case UIImageOrientationUp:
+      return [UIImage imageWithCGImage:[self CGImage]];
+
+    case UIImageOrientationUpMirrored:
+      transform = CGAffineTransformMakeTranslation(rect.size.width, 0.0);
+      transform = CGAffineTransformScale(transform, -1.0, 1.0);
+      break;
+
+    case UIImageOrientationDown:
+      transform = CGAffineTransformMakeTranslation(rect.size.width,
+                                                   rect.size.height);
+      transform = CGAffineTransformRotate(transform, M_PI);
+      break;
+
+    case UIImageOrientationDownMirrored:
+      transform = CGAffineTransformMakeTranslation(0.0, rect.size.height);
+      transform = CGAffineTransformScale(transform, 1.0, -1.0);
+      break;
+
+    case UIImageOrientationLeft:
+      bounds.size = swapWidthAndHeight(bounds.size);
+      transform = CGAffineTransformMakeTranslation(0.0, rect.size.width);
+      transform = CGAffineTransformRotate(transform, -M_PI_2);
+      break;
+
+    case UIImageOrientationLeftMirrored:
+      bounds.size = swapWidthAndHeight(bounds.size);
+      transform = CGAffineTransformMakeTranslation(rect.size.height,
+                                                   rect.size.width);
+      transform = CGAffineTransformScale(transform, -1.0, 1.0);
+      transform = CGAffineTransformRotate(transform, -M_PI_2);
+      break;
+
+    case UIImageOrientationRight:
+      bounds.size = swapWidthAndHeight(bounds.size);
+      transform = CGAffineTransformMakeTranslation(rect.size.height, 0.0);
+      transform = CGAffineTransformRotate(transform, M_PI_2);
+      break;
+
+    case UIImageOrientationRightMirrored:
+      bounds.size = swapWidthAndHeight(bounds.size);
+      transform = CGAffineTransformMakeScale(-1.0, 1.0);
+      transform = CGAffineTransformRotate(transform, M_PI_2);
+      break;
+
+    default:
+      _GTMDevAssert(false, @"Invalid orientation %d", orientation);
+      return nil;
+  }
+
+  UIGraphicsBeginImageContext(bounds.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+
+  switch (orientation) {
+    case UIImageOrientationLeft:
+    case UIImageOrientationLeftMirrored:
+    case UIImageOrientationRight:
+    case UIImageOrientationRightMirrored:
+      CGContextScaleCTM(context, -1.0, 1.0);
+      CGContextTranslateCTM(context, -rect.size.height, 0.0);
+      break;
+
+    default:
+      CGContextScaleCTM(context, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, -rect.size.height);
+      break;
+  }
+
+  CGContextConcatCTM(context, transform);
+  CGContextDrawImage(context, rect, [self CGImage]);
+
+  UIImage *rotatedImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
+  return rotatedImage;
+}
+
 @end

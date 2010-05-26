@@ -253,4 +253,30 @@
   GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_40x60_clip");
 }
 
+- (void)testImageByRotating {
+  UIImage *actual = nil;
+  UIImage *landscapeImage =
+      [UIImage imageNamed:@"GTMUIImage+Resize_100x50.png"];
+  STAssertNotNil(landscapeImage, @"Unable to read image.");
+
+  // Rotate 90 degrees.
+  actual = [landscapeImage gtm_imageByRotating:UIImageOrientationRight];
+  GTMUIImageResizeAssertImageEqual(actual, @"50x100");
+
+  // Rotate 180 degrees.
+  actual = [landscapeImage gtm_imageByRotating:UIImageOrientationDown];
+  GTMUIImageResizeAssertImageEqual(actual,
+                                   @"100x50_flipped");
+
+
+  // Rotate 270 degrees.
+  actual = [landscapeImage gtm_imageByRotating:UIImageOrientationLeft];
+  GTMUIImageResizeAssertImageEqual(actual,
+                                   @"50x100_flipped");
+
+  // Rotate 360 degrees.
+  actual = [landscapeImage gtm_imageByRotating:UIImageOrientationUp];
+  GTMUIImageResizeAssertImageEqual(actual, @"100x50");
+}
+
 @end

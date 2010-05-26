@@ -37,4 +37,15 @@
 - (UIImage *)gtm_imageByResizingToSize:(CGSize)targetSize
                    preserveAspectRatio:(BOOL)preserveAspectRatio
                              trimToFit:(BOOL)trimToFit;
+
+// Returns an image rotated by |orientation| where the current orientation is
+// taken as UIImageOrientationUp. Nil if |orientation| is invalid.
+//
+// For example, UIImageOrientationRight is a 90 degree rotation clockwise,
+// UIImageOrientationDown is a 180 degree rotation closewise.
+//
+// Supplying UIImageOrientationUp to |orientation| will return a copy of the
+// image.
+- (UIImage *)gtm_imageByRotating:(UIImageOrientation)orientation;
+
 @end
