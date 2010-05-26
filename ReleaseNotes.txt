@@ -399,7 +399,7 @@ Changes since 1.5.1
 - Removed GTMTheme because it wasn't generic enough for inclusion in GTM, and
   was never fully implemented
 
-- Added GTM_NONNULL, NS_RETURNS_RETAINED, and CF_RETURNS_RETAINED macrs to 
+- Added GTM_NONNULL, NS_RETURNS_RETAINED, and CF_RETURNS_RETAINED macrs to
   support clang analysis.
 
 - Changed GTMStackTrace to put out a cleaner trace, and to work on 64 bit.
@@ -411,6 +411,11 @@ Changes since 1.5.1
 
 - Added GTMNSAnimatablePropertyContainer methods that allow you to stop
   animations properly in 10.5.
+
+- Added gtm_imageByRotating for rotating a UIImage. Based on code by Trevor
+  Harmon:
+  http://vocaro.com/trevor/blog/wp-content/uploads/2009/10/UIImage+Resize.h
+  http://vocaro.com/trevor/blog/wp-content/uploads/2009/10/UIImage+Resize.m
 
 
 Release 1.5.1
