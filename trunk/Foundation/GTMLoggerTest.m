@@ -388,7 +388,7 @@
   if ([GTMSystemVersion isSnowLeopardOrGreater]) {
     // E.g. 2009-10-26 22:26:25.086 otest-i386[53200/0xa0438500] [lvl=1] (no func) test
     kFormatBasePattern =
-    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64)|(otest-ppc))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
   } else {
     // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
     kFormatBasePattern =
@@ -405,24 +405,28 @@
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"test"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]], nil);
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]], 
+               @"msg: %@", msg);
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelError
                            format:@"test %d", 1];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test 1"]], nil);
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test 1"]], 
+               @"msg: %@", msg);
 
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelInfo
                            format:@"test %@", @"hi"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test hi"]], nil);
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test hi"]], 
+               @"msg: %@", msg);
 
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelUnknown
                            format:@"test"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]], nil);
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]], 
+               @"msg: %@", msg);
 }
 
 - (void)testNoFilter {

@@ -144,6 +144,11 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
       currDesc->class_name = NULL;
     }
     currDesc->filename = info.dli_fname;
+    if (!currDesc->symbol) {
+      currDesc->symbol = "???";
+      currDesc->is_class_method = NO;
+      currDesc->class_name = NULL;
+    }
   }
   GTMFreeClassDescriptions(class_descs, class_desc_count);
   return count;
