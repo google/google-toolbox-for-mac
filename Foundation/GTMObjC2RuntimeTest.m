@@ -348,9 +348,11 @@ AT_REQUIRED
   if (![GTMSystemVersion isLeopardOrGreater]) {
     STAssertNULL(method_setImplementation(nil, nil), nil);
   }
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   if ([GTMSystemVersion isSnowLeopardOrGreater]) {
     STAssertNULL(method_setImplementation(nil, newImp), nil);
   }
+#endif
   
   [test release];
   free(list);
