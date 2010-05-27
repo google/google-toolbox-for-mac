@@ -40,7 +40,7 @@
                                    error:&error], 
                @"Unable to create %@: %@", base, error);
 #else
-  STAssertTrue([fm createDirectoryAtPath:baseDir_ attributes:nil],
+  STAssertTrue([fm createDirectoryAtPath:base attributes:nil],
                @"Unable to create %@", base);
 #endif
   baseDir_ = [base retain];

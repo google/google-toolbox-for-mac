@@ -68,21 +68,20 @@
 
 - (NSArray *)gtm_filePathsWithExtensions:(NSArray *)extensions
                              inDirectory:(NSString *)directoryPath {
-  if (directoryPath == nil)
+  if (!directoryPath) {
     return nil;
+  }
   
   // |basenames| will contain only the matching file names, not their full paths.
-  NSError *error = nil;
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSArray *basenames = [self contentsOfDirectoryAtPath:directoryPath 
-                                                 error:&error];
+                                                 error:nil];
 #else
   NSArray *basenames = [self directoryContentsAtPath:directoryPath];
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   
   // Check if dir doesn't exist or couldn't be opened.
-  if (basenames == nil) {
-    _GTMDevLog(@"Error: %@", error);
+  if (!basenames) {
     return nil;
   }
   
@@ -101,8 +100,9 @@
   }
   
   // Check if caller wants all files, regardless of extension.
-  if (extensions == nil || [extensions count] == 0)
+  if ([extensions count] == 0) {
     return paths;
+  }
   
   return [paths pathsMatchingExtensions:extensions];
 }
