@@ -20,6 +20,9 @@
 #import "GTMPath.h"
 #import "GTMUnitTestDevLog.h"
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+// NSFileManager has improved substantially in Leopard and beyond, so GTMPath
+// is now deprecated.
 
 @interface GTMPathTest : GTMTestCase {
  @private
@@ -36,16 +39,8 @@
   testDirectory_ = [[tmp stringByAppendingPathComponent:@"GTMPathTest"] retain];
   STAssertNotNil(testDirectory_, nil);
  
-  BOOL created = NO;
   NSFileManager *mgr = [NSFileManager defaultManager];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  NSError *error = nil;
-  created = [mgr createDirectoryAtPath:testDirectory_
-           withIntermediateDirectories:YES attributes:nil error:&error];
-  STAssertNil(error, @"Can't create dir at %@ error:%@", testDirectory_, error);
-#else
-  created = [mgr createDirectoryAtPath:testDirectory_ attributes:nil];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  BOOL created = [mgr createDirectoryAtPath:testDirectory_ attributes:nil];
   STAssertTrue(created, nil);
 }
 
@@ -53,11 +48,7 @@
   // Make sure it's safe to remove this directory before nuking it.
   STAssertNotNil(testDirectory_, nil);
   STAssertNotEqualObjects(testDirectory_, @"/", nil);
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  [[NSFileManager defaultManager] removeItemAtPath:testDirectory_ error:NULL];
-#else
   [[NSFileManager defaultManager] removeFileAtPath:testDirectory_ handler:nil];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   [testDirectory_ release];
 }
 
@@ -241,3 +232,5 @@
 }
 
 @end
+
+#endif //  MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5

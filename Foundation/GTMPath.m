@@ -19,6 +19,10 @@
 #import "GTMPath.h"
 #import "GTMDefines.h"
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+// NSFileManager has improved substantially in Leopard and beyond, so GTMPath
+// is now deprecated.
+
 @implementation GTMPath
 
 + (id)pathWithFullPath:(NSString *)fullPath {
@@ -73,16 +77,8 @@
 
 - (NSDictionary *)attributes {
   NSFileManager *mgr = [NSFileManager defaultManager];
-  NSDictionary *attributes = nil;
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  NSError *error = nil;
-  attributes = [mgr attributesOfItemAtPath:fullPath_ error:&error];
-  if (error) {
-    _GTMDevLog(@"Error (%@) getting attributes for path %@", error, fullPath_);
-  }
-#else
-  attributes = [mgr fileAttributesAtPath:fullPath_ traverseLink:NO];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  NSDictionary *attributes = [mgr fileAttributesAtPath:fullPath_ 
+                                              traverseLink:NO];
   return attributes;
 }
 
@@ -117,20 +113,8 @@
   }
   
   if (!nascentPath) {
-    BOOL created = NO;
     NSFileManager *mgr = [NSFileManager defaultManager];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-    NSError *error = nil;
-    created = [mgr createDirectoryAtPath:newPath 
-             withIntermediateDirectories:NO 
-                              attributes:attributes 
-                                   error:&error];
-    if (error) {
-      _GTMDevLog(@"Error %@ creating directory at path %@", error, newPath);
-    }
-#else
-    created = [mgr createDirectoryAtPath:newPath attributes:attributes];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    BOOL created = [mgr createDirectoryAtPath:newPath attributes:attributes];
     nascentPath = created ? [GTMPath pathWithFullPath:newPath] : nil;
   }
 
@@ -174,3 +158,5 @@
 }
 
 @end
+
+#endif //  MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
