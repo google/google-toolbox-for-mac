@@ -63,7 +63,7 @@ enum {
     [NSThread exit];
   }
 
-  NSConnection *conn = [NSConnection defaultConnection];
+  NSConnection *conn = [[[NSConnection alloc] init] autorelease];
   [conn setRootObject:self];
   if (![conn registerName:serverName]) {
     _GTMDevLog(@"Failed to register DO root object with name '%@'",

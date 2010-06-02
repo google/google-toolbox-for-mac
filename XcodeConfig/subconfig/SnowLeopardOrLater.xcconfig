@@ -23,4 +23,8 @@
 // Default SDK and minimum OS version is 10.6
 SDKROOT = ${DEVELOPER_SDK_DIR}/MacOSX10.6.sdk
 MACOSX_DEPLOYMENT_TARGET = 10.6
-GCC_VERSION = 4.0
+GCC_VERSION = 4.2
+
+// Works around issues with the missing format attribute with gcc 4.2
+// on Snow Leopard.
+GTM_PLATFORM_WARNING_CFLAGS=-Wno-missing-format-attribute

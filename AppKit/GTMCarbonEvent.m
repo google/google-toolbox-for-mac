@@ -17,6 +17,7 @@
 //
 
 #import "GTMCarbonEvent.h"
+#import <AppKit/AppKit.h>
 #import "GTMObjectSingleton.h"
 #import "GTMDebugSelectorValidation.h"
 #import "GTMTypeCasting.h"

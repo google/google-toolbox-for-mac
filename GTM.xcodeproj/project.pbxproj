@@ -189,6 +189,9 @@
 		8B8EC8800EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8EC87F0EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m */; };
 		8BA01B5D0F144BD800926923 /* GTMNSWorkspace+Running.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */; };
 		8BA01B5E0F144BD800926923 /* GTMNSWorkspace+Running.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BA7148111B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BA7147E11B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.10.6.tiff */; };
+		8BA7148211B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BA7147F11B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff */; };
+		8BA7148311B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BA7148011B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff */; };
 		8BA9FAF9119CA2E300E264C3 /* GTMUnitTestingTestApp.10.6.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9FAF8119CA2E300E264C3 /* GTMUnitTestingTestApp.10.6.gtmUTState */; };
 		8BA9FB23119CA3F200E264C3 /* GTMUnitTestingWindow.10.6.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9FB22119CA3F200E264C3 /* GTMUnitTestingWindow.10.6.gtmUTState */; };
 		8BA9FB8F119CAE7200E264C3 /* GTMUILocalizerAndLayoutTweakerTest4-1.10.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BA9FB8E119CAE7200E264C3 /* GTMUILocalizerAndLayoutTweakerTest4-1.10.6.tiff */; };
@@ -241,6 +244,9 @@
 		8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
 		8BAA9EFB0F7C2AB500DF4F12 /* GTMNSImage+ScalingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3EB3930E5E0A2100A7A75E /* GTMNSImage+ScalingTest.m */; };
 		8BAA9EFC0F7C2AB500DF4F12 /* GTMNSWorkspace+RunningTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */; };
+		8BB77A0511B5A09900AB31AF /* GTMGoogleSearchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB77A0311B5A09900AB31AF /* GTMGoogleSearchTest.m */; };
+		8BB77A0611B5A0A100AB31AF /* GTMGoogleSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB77A0211B5A09900AB31AF /* GTMGoogleSearch.m */; };
+		8BB7802E11B6C4EA00AB31AF /* GTMGoogleSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BB77A0111B5A09900AB31AF /* GTMGoogleSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BC045C20DAE899100C2D1CA /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */; };
 		8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */; };
 		8BC04CD80DB003D800C2D1CA /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -261,9 +267,6 @@
 		8BEEA90E0DA7446300894774 /* GTMUnitTestingWindow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */; };
 		8BEEA90F0DA7446300894774 /* GTMUnitTestingView.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */; };
 		8BF2555310F65B56000490C8 /* GTMTypeCasting.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF2555110F65B56000490C8 /* GTMTypeCasting.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BF4D2E60FC7073A009ABC3F /* GTMGoogleSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF4D2E30FC7073A009ABC3F /* GTMGoogleSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BF4D2E70FC7073A009ABC3F /* GTMGoogleSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4D2E40FC7073A009ABC3F /* GTMGoogleSearch.m */; };
-		8BF4D2E80FC70751009ABC3F /* GTMGoogleSearchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4D2E20FC7073A009ABC3F /* GTMGoogleSearchTest.m */; };
 		8BFE13B60FB0F2C0001BE894 /* GTMABAddressBook.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFE13B00FB0F2B9001BE894 /* GTMABAddressBook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BFE13B70FB0F2C0001BE894 /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE13B10FB0F2B9001BE894 /* GTMABAddressBook.m */; };
 		8BFE13ED0FB0F2D8001BE894 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
@@ -681,6 +684,9 @@
 		8BA01B5B0F144BD800926923 /* GTMNSWorkspace+Running.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+Running.m"; sourceTree = "<group>"; };
 		8BA01B5C0F144BD800926923 /* GTMNSWorkspace+Running.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSWorkspace+Running.h"; sourceTree = "<group>"; };
 		8BA01B5F0F144BE500926923 /* GTMNSWorkspace+RunningTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSWorkspace+RunningTest.m"; sourceTree = "<group>"; };
+		8BA7147E11B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.10.6.tiff"; sourceTree = "<group>"; };
+		8BA7147F11B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff"; sourceTree = "<group>"; };
+		8BA7148011B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff"; sourceTree = "<group>"; };
 		8BA9FAF8119CA2E300E264C3 /* GTMUnitTestingTestApp.10.6.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUnitTestingTestApp.10.6.gtmUTState; sourceTree = "<group>"; };
 		8BA9FB22119CA3F200E264C3 /* GTMUnitTestingWindow.10.6.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUnitTestingWindow.10.6.gtmUTState; sourceTree = "<group>"; };
 		8BA9FB8E119CAE7200E264C3 /* GTMUILocalizerAndLayoutTweakerTest4-1.10.6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "GTMUILocalizerAndLayoutTweakerTest4-1.10.6.tiff"; sourceTree = "<group>"; };
@@ -723,6 +729,9 @@
 		8BAA9B540F7B4A5000DF4F12 /* GTMHotKeyTextFieldTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHotKeyTextFieldTest.h; sourceTree = "<group>"; };
 		8BAA9B560F7B4C2400DF4F12 /* GTMHotKeyTextFieldTest.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMHotKeyTextFieldTest.xib; sourceTree = "<group>"; };
 		8BAA9E370F7C19D500DF4F12 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = UnitTesting/GTMUIUnitTestingHarness/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		8BB77A0111B5A09900AB31AF /* GTMGoogleSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGoogleSearch.h; sourceTree = "<group>"; };
+		8BB77A0211B5A09900AB31AF /* GTMGoogleSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearch.m; sourceTree = "<group>"; };
+		8BB77A0311B5A09900AB31AF /* GTMGoogleSearchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearchTest.m; sourceTree = "<group>"; };
 		8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		8BC04D140DB0061300C2D1CA /* RunMacOSUnitTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = RunMacOSUnitTests.sh; sourceTree = "<group>"; };
 		8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSScanner+JSON.h"; sourceTree = "<group>"; };
@@ -740,9 +749,6 @@
 		8BEEA90B0DA7446300894774 /* GTMUnitTestingWindow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.tiff; sourceTree = "<group>"; };
 		8BEEA90C0DA7446300894774 /* GTMUnitTestingView.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingView.tiff; sourceTree = "<group>"; };
 		8BF2555110F65B56000490C8 /* GTMTypeCasting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTypeCasting.h; sourceTree = "<group>"; };
-		8BF4D2E20FC7073A009ABC3F /* GTMGoogleSearchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearchTest.m; sourceTree = "<group>"; };
-		8BF4D2E30FC7073A009ABC3F /* GTMGoogleSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGoogleSearch.h; sourceTree = "<group>"; };
-		8BF4D2E40FC7073A009ABC3F /* GTMGoogleSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearch.m; sourceTree = "<group>"; };
 		8BFE13B00FB0F2B9001BE894 /* GTMABAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMABAddressBook.h; sourceTree = "<group>"; };
 		8BFE13B10FB0F2B9001BE894 /* GTMABAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBook.m; sourceTree = "<group>"; };
 		8BFE13B20FB0F2B9001BE894 /* GTMABAddressBook.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = GTMABAddressBook.strings; sourceTree = "<group>"; };
@@ -1191,6 +1197,9 @@
 				F4FC333A104EE94F000AB7BC /* GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.tiff */,
 				F4FC333B104EE94F000AB7BC /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.tiff */,
 				F4FC333C104EE94F000AB7BC /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.tiff */,
+				8BA7147E11B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.10.6.tiff */,
+				8BA7147F11B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff */,
+				8BA7148011B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff */,
 				F4C0B9D7108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-0.tiff */,
 				8BA9FC65119CB3E200E264C3 /* GTMUILocalizerAndLayoutTweakerTest5-0.10.6.tiff */,
 				F4C0B9D8108E3142002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5-1.tiff */,
@@ -1267,6 +1276,9 @@
 				7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */,
 				8B58E9940E547EB000A0E02E /* GTMGetURLHandler.m */,
 				8B8B10FF0EEB8CD000E543D0 /* GTMGetURLHandlerTest.m */,
+				8BB77A0111B5A09900AB31AF /* GTMGoogleSearch.h */,
+				8BB77A0211B5A09900AB31AF /* GTMGoogleSearch.m */,
+				8BB77A0311B5A09900AB31AF /* GTMGoogleSearchTest.m */,
 				F4A420EC0EDDF8E000397A11 /* GTMHotKeyTextField.h */,
 				F4A420ED0EDDF8E000397A11 /* GTMHotKeyTextField.m */,
 				8BAA9B540F7B4A5000DF4F12 /* GTMHotKeyTextFieldTest.h */,
@@ -1385,9 +1397,6 @@
 				F48FE27E0D198D0E009257D2 /* GTMGeometryUtils.h */,
 				F48FE27F0D198D0E009257D2 /* GTMGeometryUtils.m */,
 				F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */,
-				8BF4D2E30FC7073A009ABC3F /* GTMGoogleSearch.h */,
-				8BF4D2E40FC7073A009ABC3F /* GTMGoogleSearch.m */,
-				8BF4D2E20FC7073A009ABC3F /* GTMGoogleSearchTest.m */,
 				F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */,
 				F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */,
 				F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */,
@@ -1634,7 +1643,6 @@
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
 				8BFE13B60FB0F2C0001BE894 /* GTMABAddressBook.h in Headers */,
 				8BD35B910FB22980009058F5 /* GTMNSScanner+JSON.h in Headers */,
-				8BF4D2E60FC7073A009ABC3F /* GTMGoogleSearch.h in Headers */,
 				8207B89B0FEA7A9E008A527B /* GTMWindowSheetController.h in Headers */,
 				F43C7A571021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h in Headers */,
 				7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */,
@@ -1645,6 +1653,7 @@
 				8BF2555310F65B56000490C8 /* GTMTypeCasting.h in Headers */,
 				8BDB8A991152E1B200C411B1 /* GTMNSAnimatablePropertyContainer.h in Headers */,
 				8B21DE56117E5CB7000E004F /* GTMLocalizedString.h in Headers */,
+				8BB7802E11B6C4EA00AB31AF /* GTMGoogleSearch.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2017,6 +2026,9 @@
 				8BA9FC75119CB48F00E264C3 /* GTMUILocalizerAndLayoutTweakerTest6-tab1-0.10.6.tiff in Resources */,
 				8BA9FC78119CB4A100E264C3 /* GTMUILocalizerAndLayoutTweakerTest6-tab1-1.10.6.tiff in Resources */,
 				8BA9FC7B119CB4B300E264C3 /* GTMUILocalizerAndLayoutTweakerTest6-tab1-2.10.6.tiff in Resources */,
+				8BA7148111B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-0.10_4_SDK.10.6.tiff in Resources */,
+				8BA7148211B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff in Resources */,
+				8BA7148311B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2179,7 +2191,6 @@
 				10998F8B0F4B5F1B007F179D /* GTMTransientRootProxyTest.m in Sources */,
 				108930850F4CCB380018D4A0 /* GTMTransientRootPortProxyTest.m in Sources */,
 				8BD35B940FB22986009058F5 /* GTMNSScanner+JSONTest.m in Sources */,
-				8BF4D2E80FC70751009ABC3F /* GTMGoogleSearchTest.m in Sources */,
 				0BFAD4CB104D06FE002BEB27 /* GTMNSData+HexTest.m in Sources */,
 				0BFAD4CC104D06FE002BEB27 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */,
 				8B3080151056B917006C4C7A /* GTMNSNumber+64BitTest.m in Sources */,
@@ -2250,7 +2261,6 @@
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
 				8BFE13B70FB0F2C0001BE894 /* GTMABAddressBook.m in Sources */,
 				8BD35B920FB22980009058F5 /* GTMNSScanner+JSON.m in Sources */,
-				8BF4D2E70FC7073A009ABC3F /* GTMGoogleSearch.m in Sources */,
 				8207B89C0FEA7AA1008A527B /* GTMWindowSheetController.m in Sources */,
 				F43C7A581021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m in Sources */,
 				7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */,
@@ -2262,6 +2272,7 @@
 				8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */,
 				0B1B9B8810FECD870084EE4B /* GTMStringEncoding.m in Sources */,
 				8BDB8A9A1152E1B200C411B1 /* GTMNSAnimatablePropertyContainer.m in Sources */,
+				8BB77A0611B5A0A100AB31AF /* GTMGoogleSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2295,6 +2306,7 @@
 				8BDB8C3A115329EC00C411B1 /* GTMNSAnimatablePropertyContainerTest.m in Sources */,
 				8B17FD16117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */,
 				8B17FD1A117638F400E7A908 /* GTMAppKitUnitTestingUtilities.m in Sources */,
+				8BB77A0511B5A09900AB31AF /* GTMGoogleSearchTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2412,13 +2424,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 			};
 			name = "TigerOrLater-Debug";
 		};
@@ -2428,13 +2436,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 			};
 			name = "TigerOrLater-Release";
 		};
@@ -2444,13 +2448,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 			};
 			name = "SnowLeopardOrLater-Debug";
 		};
@@ -2550,13 +2550,9 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 				OTHER_LDFLAGS = "-lgcov";
 			};
 			name = "SnowLeopardOrLater-Debug-gcov";
@@ -2567,13 +2563,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 			};
 			name = "SnowLeopardOrLater-Release";
 		};
@@ -3102,13 +3094,9 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TigerGcov\"",
@@ -3204,13 +3192,9 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 			};
 			name = "LeopardOrLater-Debug";
 		};
@@ -3301,13 +3285,9 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 				OTHER_LDFLAGS = "-lgcov";
 			};
 			name = "LeopardOrLater-Debug-gcov";
@@ -3397,13 +3377,9 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COMPONENT_SIGNATURE=\"\\'GTM \\'\"",
-					"kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"",
-				);
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
 			};
 			name = "LeopardOrLater-Release";
 		};

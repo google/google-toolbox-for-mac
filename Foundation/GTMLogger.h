@@ -55,12 +55,6 @@
 // Predeclaration of used protocols that are declared later in this file.
 @protocol GTMLogWriter, GTMLogFormatter, GTMLogFilter;
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-#define CHECK_FORMAT_NSSTRING(a, b) __attribute__((format(__NSString__, a, b)))
-#else
-#define CHECK_FORMAT_NSSTRING(a, b)
-#endif
-
 // GTMLogger
 //
 // GTMLogger is the primary user-facing class for an object-oriented logging
@@ -274,13 +268,13 @@
 //
 
 // Logs a message at the debug level (kGTMLoggerLevelDebug).
-- (void)logDebug:(NSString *)fmt, ... CHECK_FORMAT_NSSTRING(1, 2);
+- (void)logDebug:(NSString *)fmt, ... NS_FORMAT_FUNCTION(1, 2);
 // Logs a message at the info level (kGTMLoggerLevelInfo).
-- (void)logInfo:(NSString *)fmt, ... CHECK_FORMAT_NSSTRING(1, 2);
+- (void)logInfo:(NSString *)fmt, ... NS_FORMAT_FUNCTION(1, 2);
 // Logs a message at the error level (kGTMLoggerLevelError).
-- (void)logError:(NSString *)fmt, ... CHECK_FORMAT_NSSTRING(1, 2);
+- (void)logError:(NSString *)fmt, ... NS_FORMAT_FUNCTION(1, 2);
 // Logs a message at the assert level (kGTMLoggerLevelAssert).
-- (void)logAssert:(NSString *)fmt, ... CHECK_FORMAT_NSSTRING(1, 2);
+- (void)logAssert:(NSString *)fmt, ... NS_FORMAT_FUNCTION(1, 2);
 
 
 //
@@ -310,13 +304,13 @@
 // enable the logging of function names.
 @interface GTMLogger (GTMLoggerMacroHelpers)
 - (void)logFuncDebug:(const char *)func msg:(NSString *)fmt, ...
-  CHECK_FORMAT_NSSTRING(2, 3);
+  NS_FORMAT_FUNCTION(2, 3);
 - (void)logFuncInfo:(const char *)func msg:(NSString *)fmt, ...
-  CHECK_FORMAT_NSSTRING(2, 3);
+  NS_FORMAT_FUNCTION(2, 3);
 - (void)logFuncError:(const char *)func msg:(NSString *)fmt, ...
-  CHECK_FORMAT_NSSTRING(2, 3);
+  NS_FORMAT_FUNCTION(2, 3);
 - (void)logFuncAssert:(const char *)func msg:(NSString *)fmt, ...
-  CHECK_FORMAT_NSSTRING(2, 3);
+  NS_FORMAT_FUNCTION(2, 3);
 @end  // GTMLoggerMacroHelpers
 
 
@@ -407,7 +401,7 @@ typedef enum {
 - (NSString *)stringForFunc:(NSString *)func
                  withFormat:(NSString *)fmt
                      valist:(va_list)args
-                      level:(GTMLoggerLevel)level;
+                      level:(GTMLoggerLevel)level NS_FORMAT_FUNCTION(2, 0);
 @end  // GTMLogFormatter
 
 

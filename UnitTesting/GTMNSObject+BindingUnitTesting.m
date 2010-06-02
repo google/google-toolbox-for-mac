@@ -18,6 +18,7 @@
 //  the License.
 //
 
+#import <AppKit/AppKit.h>
 #import "GTMDefines.h"
 #import "GTMNSObject+BindingUnitTesting.h"
 #import "GTMSystemVersion.h"

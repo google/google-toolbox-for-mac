@@ -34,7 +34,7 @@ const NSUInteger kExisitingIndex = 2;
 - (void)setUp {
   range_ = [[GTMCalculatedRange alloc] init];
   for(NSUInteger i = kStringCount; i > 0; --i) {
-    [range_ insertStop:kStrings[kStringCount - i] atPosition: 1.0f / i];
+    [range_ insertStop:kStrings[kStringCount - i] atPosition:(CGFloat)(1.0 / i)];
   }
 }
 

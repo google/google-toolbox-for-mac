@@ -20,5 +20,3 @@
 // Set default SDK.
 SDKROOT = iphoneos2.2
 
-// iPhone currently deploys on 10.5 only
-MACOSX_DEPLOYMENT_TARGET = 10.5

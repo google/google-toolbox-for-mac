@@ -51,7 +51,7 @@ static BOOL sURLHandlerWasHit;
 
 + (BOOL)gtm_openURL:(NSURL*)url {
   sURLHandlerWasHit = !sURLHandlerWasHit;
-  return sURLHandlerWasHit;
+  return YES;
 }
 
 - (void)testURLCall {

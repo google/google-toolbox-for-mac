@@ -199,7 +199,7 @@ static BOOL gTrackingEnabled = NO;
                                              arguments:argList] autorelease];
   va_end(argList);
   NSString *pattern = [GTMRegex escapedPatternForString:string];
-  [self expect:1 casesOfPattern:pattern];
+  [self expect:1 casesOfPattern:@"%@", pattern];
   
 }
 
@@ -217,7 +217,7 @@ static BOOL gTrackingEnabled = NO;
                                              arguments:argList] autorelease];
   va_end(argList);
   NSString *pattern = [GTMRegex escapedPatternForString:string];
-  [self expect:n casesOfPattern:pattern];
+  [self expect:n casesOfPattern:@"%@", pattern];
 }
 
 + (void)expect:(NSUInteger)n casesOfPattern:(NSString*)format, ... {
@@ -240,7 +240,7 @@ casesOfPattern:(NSString*)format
       [patterns addObject:regex];
     }
   }
-}    
+}
 
 + (void)verifyNoMoreLogsExpected {
   @synchronized(self) {

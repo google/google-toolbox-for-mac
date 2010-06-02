@@ -49,7 +49,7 @@
   STAssertNotNil([testImage gtm_representationOfSize:NSMakeSize(32, 32)], nil);
   
   NSImage *duplicate = [testImage gtm_duplicateOfSize:NSMakeSize(48, 48)];
-  bestRepRect = NSMakeRect(0, 0, 50, 50);
+  bestRepRect = NSMakeRect(0, 0, 48, 48);
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
   rep = [duplicate bestRepresentationForRect:bestRepRect 
                                      context:nil 
@@ -59,6 +59,24 @@
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
   STAssertTrue(NSEqualSizes([rep size], NSMakeSize(48, 48)), 
                @"Size is %@", NSStringFromSize([rep size]));
+  
+  // This should IMHO return 48,48 on both 10.6 and 10.5. It makes no sense
+  // at all that it returns 32,32 on 10_6 when the above code works for 48,48.
+  // rdar://8052200 "NSImage bestRepresentationForRect:context:hints: doesn't
+  // return the best rep"
+  // http://openradar.appspot.com/radar?id=394401
+  bestRepRect = NSMakeRect(0, 0, 50, 50);
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+  rep = [duplicate bestRepresentationForRect:bestRepRect 
+                                     context:nil 
+                                       hints:nil]; 
+  STAssertFalse(NSEqualSizes([rep size], NSMakeSize(48, 48)), 
+               @"Size is %@", NSStringFromSize([rep size]));
+#else
+  rep = [duplicate gtm_bestRepresentationForSize:bestRepRect.size];
+  STAssertTrue(NSEqualSizes([rep size], NSMakeSize(48, 48)), 
+               @"Size is %@", NSStringFromSize([rep size]));
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
   
 }
 

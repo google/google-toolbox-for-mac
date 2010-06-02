@@ -382,34 +382,34 @@
   STAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil, *err = nil, *cmd = nil;
   
-  NSString *generator_format_str =
-    @"import sys\n"
-    @"block  = '.' * 512\n"
-    @"for x in [%@]:\n"
-    @"  to_where = x[0]\n"
-    @"  how_many = int(x[1:])\n"
-    @"  for x in xrange(0, how_many):\n"
-    @"    if to_where in [ 'o', 'b' ]:\n"
-    @"      sys.stdout.write(block)\n"
-    @"    if to_where in [ 'e', 'b' ]:\n"
-    @"      sys.stderr.write(block)\n";
+  #define GENERATOR_FORMAT_STR \
+    @"import sys\n" \
+    @"block  = '.' * 512\n" \
+    @"for x in [%@]:\n" \
+    @"  to_where = x[0]\n" \
+    @"  how_many = int(x[1:])\n" \
+    @"  for x in xrange(0, how_many):\n" \
+    @"    if to_where in [ 'o', 'b' ]:\n" \
+    @"      sys.stdout.write(block)\n" \
+    @"    if to_where in [ 'e', 'b' ]:\n" \
+    @"      sys.stderr.write(block)\n"
     
   // Make sure we get both blocks
-  cmd = [NSString stringWithFormat:generator_format_str, @"'b1'"];
+  cmd = [NSString stringWithFormat:GENERATOR_FORMAT_STR, @"'b1'"];
   STAssertNotNil(cmd, nil);
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)512, nil);
   STAssertEquals([err length], (NSUInteger)512, nil);
   
   // Test a large amount of data on only one connections at a time.
-  cmd = [NSString stringWithFormat:generator_format_str, @"'b1', 'o200'"];
+  cmd = [NSString stringWithFormat:GENERATOR_FORMAT_STR, @"'b1', 'o200'"];
   STAssertNotNil(cmd, nil);
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)(512 + 512*200), nil);
   STAssertEquals([err length], (NSUInteger)512, nil);
 #if 0
   // Not fixed yet
-  cmd = [NSString stringWithFormat:generator_format_str, @"'b1', 'e200'"];
+  cmd = [NSString stringWithFormat:GENERATOR_FORMAT_STR, @"'b1', 'e200'"];
   STAssertNotNil(cmd, nil);
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)512, nil);
@@ -419,7 +419,7 @@
   // Now send a large amount down both to make sure we spool it all in.
 #if 0
   // Not fixed yet
-  cmd = [NSString stringWithFormat:generator_format_str, @"'b200'"];
+  cmd = [NSString stringWithFormat:GENERATOR_FORMAT_STR, @"'b200'"];
   STAssertNotNil(cmd, nil);
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)(512*200), nil);

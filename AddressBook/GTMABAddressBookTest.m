@@ -19,6 +19,12 @@
 #import "GTMSenTestCase.h"
 #import "GTMABAddressBook.h"
 
+#if GTM_IPHONE_SDK
+#import "UIKit/UIKit.h"
+#else
+#import <AppKit/AppKit.h>
+#endif  // GTM_IPHONE_SDK
+
 static NSString *const kGTMABTestFirstName = @"GTMABAddressBookTestFirstName";
 static NSString *const kGTMABTestLastName = @"GTMABAddressBookTestLastName";
 static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";

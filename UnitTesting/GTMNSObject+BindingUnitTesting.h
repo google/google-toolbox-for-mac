@@ -48,7 +48,7 @@ do { \
   if (!isGood) { \
     NSString *failString; \
     GTM_FOREACH_OBJECT(failString, errors) { \
-      if (description) { \
+      if (description != nil) { \
         STFail(@"%@: %@", failString, STComposeString(description, ##__VA_ARGS__)); \
       } else { \
         STFail(@"%@", failString); \

@@ -394,7 +394,7 @@ GTM_INLINE BOOL almostEqual(unsigned char a, unsigned char b) {
 }
 
 - (void)encodeBytes:(const uint8_t *)bytesp 
-             length:(unsigned)lenv 
+             length:(NSUInteger)lenv 
              forKey:(NSString *)key {
   [self checkForKey:key];
   [dictionary_ setObject:[NSData dataWithBytes:bytesp 
