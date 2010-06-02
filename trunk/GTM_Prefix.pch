@@ -14,24 +14,12 @@
 //  the License.
 //
 
-// We don't require a prefix to use any GTM code, so this prefix is just to
-// speed up the basic compiles of *all* of the GTM projects/targets.
+// We don't require a prefix to use any GTM code. This prefix is just for unit
+// test logging.
 
-// We don't want to drag GTMDefines into the prefix so we make sure each file
-// that directly needs it includes it, so we just use the iphone test directly
-// instead of our GTM_IPHONE_SDK symbol.
-#ifdef __OBJC__
-  #include <TargetConditionals.h>
-  #if TARGET_OS_IPHONE // iPhone SDK
-    #import <Foundation/Foundation.h>
-    #import <UIKit/UIKit.h>
-  #else
-    #import <Cocoa/Cocoa.h>
-  #endif
-  // This turns on unit test logging so that we can track unittests if we are
-  // doing them. See GTMUnitTestDevLog.h for details.
-  // (_GTMUnitTestDevLog comes from GTMDevLogUnitTestingBridge.m)
-  #define _GTMDevLog _GTMUnitTestDevLog
-#endif
+// This turns on unit test logging so that we can track unittests if we are
+// doing them. See GTMUnitTestDevLog.h for details.
+// (_GTMUnitTestDevLog comes from GTMDevLogUnitTestingBridge.m)
+#define _GTMDevLog _GTMUnitTestDevLog
 
 

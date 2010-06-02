@@ -32,6 +32,8 @@
 // TODO(alcor): this class should have basic MRU cache
 //
 
+#import <AppKit/AppKit.h>
+
 @interface NSImage (GTMNSImageSearchCache)
 + (NSImage *)gtm_imageWithPath:(NSString *)path;
 + (NSImage *)gtm_imageNamed:(NSString *)name;

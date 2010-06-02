@@ -287,6 +287,11 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #define NS_FORMAT_ARGUMENT(A)
 #endif
 
+// Defined on 10.6 and above.
+#ifndef NS_FORMAT_FUNCTION
+  #define NS_FORMAT_FUNCTION(F,A)
+#endif
+
 #ifndef GTM_NONNULL
   #define GTM_NONNULL(x) __attribute__((nonnull(x)))
 #endif

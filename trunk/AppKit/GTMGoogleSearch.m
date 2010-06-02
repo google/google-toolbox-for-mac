@@ -22,6 +22,8 @@
 
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>
+#else
+#import <AppKit/AppKit.h>
 #endif  // GTM_IPHONE_SDK
 
 typedef struct {
@@ -114,7 +116,7 @@ static CFStringRef const kPreferredLanguagePrefKey
 static NSString *const kDefaultDomain = @"com";
 static NSString *const kDefaultLanguage = @"en";
 
-static NSString *const kSearchURLTemplate = @"http://www.google.%@/%@?%@";
+#define SEARCH_URL_TEMPLATE @"http://www.google.%@/%@?%@"
 
 @interface GTMGoogleSearch (PrivateMethods)
 - (void)defaultDomain:(NSString**)preferedDomain 
@@ -370,7 +372,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
     }
   }
   NSString *clientArg = [clientArgs componentsJoinedByString:@"&"];
-  NSString *url = [NSString stringWithFormat:kSearchURLTemplate,
+  NSString *url = [NSString stringWithFormat:SEARCH_URL_TEMPLATE,
                    domain, type, clientArg];
   return url;
 }

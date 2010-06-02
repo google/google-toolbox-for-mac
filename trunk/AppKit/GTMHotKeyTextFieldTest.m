@@ -265,7 +265,7 @@
   GTMHotKeyTextField *field = [controller_ view];
   STAssertNotNil(field, nil);
   NSString *expectedNumberString = @"Hot key fields don't take numbers.";
-  [GTMUnitTestDevLog expect:6 casesOfString:expectedNumberString];
+  [GTMUnitTestDevLog expect:6 casesOfString:@"%@", expectedNumberString];
   [field setDoubleValue:2];
   [field setIntValue:-1];
   [field setFloatValue:0];
@@ -273,7 +273,7 @@
   STAssertEquals([field intValue], 0, nil);
   STAssertEquals([field floatValue], 0.0f, nil);
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  [GTMUnitTestDevLog expect:2 casesOfString:expectedNumberString];
+  [GTMUnitTestDevLog expect:2 casesOfString:@"%@", expectedNumberString];
   [field setIntegerValue:5];
   STAssertEquals([field integerValue], (NSInteger)0, nil);
 #endif
@@ -285,14 +285,14 @@
   };
   for (size_t i = 0; 
        i < sizeof(takeNumberSels) / sizeof(takeNumberSels[0]); ++i) {
-    [GTMUnitTestDevLog expect:2 casesOfString:expectedNumberString];
+    [GTMUnitTestDevLog expect:2 casesOfString:@"%@", expectedNumberString];
     [field performSelector:takeNumberSels[i] withObject:self];
     [field performSelector:takeNumberSels[i] withObject:nil];
   }
 
   NSString *expectedStringString 
     = @"Hot key fields want dictionaries, not strings.";
-  [GTMUnitTestDevLog expect:6 casesOfString:expectedStringString];
+  [GTMUnitTestDevLog expect:6 casesOfString:@"%@", expectedStringString];
   [field takeStringValueFrom:self];
   [field takeStringValueFrom:nil];
   [field setStringValue:nil];

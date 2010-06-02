@@ -102,14 +102,14 @@ NSString *const kGTMKeyThatIsntEqual = @"keyThatIsntEqual";
 
 - (id)valueForKey:(NSString*)binding {
   if ([binding isEqualTo:kGTMKeyWithNoValue]) {
-    [NSException raise:NSUndefinedKeyException format:nil];
+    [NSException raise:NSUndefinedKeyException format:@""];
   }
   return @"foo";
 }
 
 - (void)setValue:(id)value forKey:(NSString*)binding {
   if ([binding isEqualTo:kGTMKeyWeCantSet]) {
-    [NSException raise:NSUndefinedKeyException format:nil];
+    [NSException raise:NSUndefinedKeyException format:@""];
   }
 }
 @end

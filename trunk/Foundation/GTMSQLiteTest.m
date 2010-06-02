@@ -1778,7 +1778,7 @@ static NSArray* LikeGlobTestHelper(GTMSQLiteDatabase *db, NSString *sql) {
       @"-[GTMSQLiteStatement finalizeStatement] must be called "
       @"when statement is no longer needed";
 
-    [GTMUnitTestDevLog expectString:expectedLog];
+    [GTMUnitTestDevLog expectString:@"%@", expectedLog];
     [GTMUnitTestDevLog expectPattern:@"Unable to close .*"];
     [localPool drain];
     

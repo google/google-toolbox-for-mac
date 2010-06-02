@@ -16,6 +16,8 @@
 //  the License.
 //
 
+#import <AppKit/AppKit.h>
+
 #import "GTMFoundationUnitTestingUtilities.h"
 
 // Collection of utilities for unit testing

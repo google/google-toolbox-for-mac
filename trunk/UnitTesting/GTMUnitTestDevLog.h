@@ -33,8 +33,8 @@
 
 @interface GTMUnitTestDevLog : NSObject
 // Log a message
-+ (void)log:(NSString*)format, ...;
-+ (void)log:(NSString*)format args:(va_list)args;
++ (void)log:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
++ (void)log:(NSString*)format args:(va_list)args NS_FORMAT_FUNCTION(1,0);
 
 // Turn tracking on/off
 + (void)enableTracking;
@@ -43,21 +43,24 @@
 
 // Note that you are expecting a string that has an exact match. No need to
 // escape any pattern characters.
-+ (void)expectString:(NSString *)format, ...;
++ (void)expectString:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 // Note that you are expecting a pattern. Pattern characters that you want
 // exact matches on must be escaped. See [GTMRegex escapedPatternForString].
 // Patterns match across newlines (kGTMRegexOptionSupressNewlineSupport) making
 // it easier to match output from the descriptions of NS collection types such
 // as NSArray and NSDictionary.
-+ (void)expectPattern:(NSString *)format, ...;
++ (void)expectPattern:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 // Note that you are expecting exactly 'n' strings
-+ (void)expect:(NSUInteger)n casesOfString:(NSString *)format, ...;
++ (void)expect:(NSUInteger)n 
+    casesOfString:(NSString *)format, ... NS_FORMAT_FUNCTION(2,3);
 
 // Note that you are expecting exactly 'n' patterns
-+ (void)expect:(NSUInteger)n casesOfPattern:(NSString*)format, ...;
-+ (void)expect:(NSUInteger)n casesOfPattern:(NSString*)format args:(va_list)args;
++ (void)expect:(NSUInteger)n 
+    casesOfPattern:(NSString*)format, ... NS_FORMAT_FUNCTION(2,3);
++ (void)expect:(NSUInteger)n 
+    casesOfPattern:(NSString*)format args:(va_list)args NS_FORMAT_FUNCTION(2,0);
 
 // Call when you want to verify that you have matched all the logs you expect
 // to match. If your unittests inherit from GTMTestcase (like they should) you
