@@ -150,6 +150,28 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   [server2 stop];
 }
 
+- (void)testRestart {
+  TestServerDelegate *delegate = [TestServerDelegate testServerDelegate];
+  STAssertNotNil(delegate, nil);
+  GTMHTTPServer *server =
+    [[[GTMHTTPServer alloc] initWithDelegate:delegate] autorelease];
+  STAssertNotNil(server, nil);
+  [server setLocalhostOnly:YES];
+  [server setReusePort:YES];
+  NSError *error = nil;
+  STAssertTrue([server start:&error], @"failed to start (error=%@)", error);
+  STAssertNil(error, @"error: %@", error);
+  uint16_t prevPort = [server port];
+  STAssertGreaterThanOrEqual(prevPort, (uint16_t)1024,
+                             @"how'd we get a reserved port?");
+  // restart and make sure it works
+  [server stop];
+  error = nil;
+  [server setPort:prevPort];
+  STAssertTrue([server start:&error], @"failed to start (error=%@)", error);
+  STAssertNil(error, @"error: %@", error);
+}
+
 - (void)testRequests {
   TestServerDelegate *delegate = [TestServerDelegate testServerDelegate];
   STAssertNotNil(delegate, nil);
@@ -328,6 +350,28 @@ const NSTimeInterval kSendChunkInterval = 0.05;
   STAssertNotEquals([responseString rangeOfString:@"Custom-Header2: "].location,
                     (NSUInteger)NSNotFound, @"String: %@", responseString);
   
+  // test plain text response
+
+  expectedResponse = [GTMHTTPResponseMessage responseWithString:@"BAR"];
+  STAssertNotNil(expectedResponse, nil);
+  STAssertGreaterThan([[expectedResponse description] length],
+                      (NSUInteger)3, nil);
+  [delegate pushResponse:expectedResponse];
+  responseData = [self fetchFromPort:[server port]
+                             payload:@"GET /bar HTTP/1.0\r\n\r\n"
+                           chunkSize:kSendChunkSize];
+  STAssertNotNil(responseData, nil);
+  responseString =
+    [[[NSString alloc] initWithData:responseData
+                           encoding:NSUTF8StringEncoding] autorelease];
+  STAssertNotNil(responseString, nil);
+  STAssertTrue([responseString hasPrefix:@"HTTP/1.0 200 "], nil);
+  STAssertTrue([responseString hasSuffix:@"BAR"], @"should end w/ our data");
+  STAssertNotEquals([responseString rangeOfString:@"Content-Length: 3"].location,
+                    (NSUInteger)NSNotFound, nil);
+  STAssertNotEquals([responseString rangeOfString:@"Content-Type: text/plain"].location,
+                    (NSUInteger)NSNotFound, nil);
+
   [server stop];
 }
 
