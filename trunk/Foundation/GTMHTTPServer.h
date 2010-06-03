@@ -64,13 +64,14 @@ enum {
  @private
   __weak id delegate_;
   uint16_t port_;
+  BOOL reusePort_;
   BOOL localhostOnly_;
   NSFileHandle *listenHandle_;
   NSMutableArray *connections_;
 }
 
 // The delegate must support the httpServer:handleRequest: method in
-// NSObject(GTMHTTPServerDeletateMethods) below.
+// NSObject(GTMHTTPServerDelegateMethods) below.
 - (id)initWithDelegate:(id)delegate;
 
 - (id)delegate;
@@ -78,6 +79,11 @@ enum {
 // Passing port zero will let one get assigned.
 - (uint16_t)port;
 - (void)setPort:(uint16_t)port;
+
+// Controls listening socket behavior: SO_REUSEADDR vs SO_REUSEPORT.
+// The default is NO (SO_REUSEADDR)
+- (BOOL)reusePort;
+- (void)setReusePort:(BOOL)reusePort;
 
 // Receive connections on the localHost loopback address only or on all
 // interfaces for this machine.  The default is to only listen on localhost.
@@ -98,7 +104,7 @@ enum {
 
 @end
 
-@interface NSObject (GTMHTTPServerDeletateMethods)
+@interface NSObject (GTMHTTPServerDelegateMethods)
 - (GTMHTTPResponseMessage *)httpServer:(GTMHTTPServer *)server
                          handleRequest:(GTMHTTPRequestMessage *)request;
 @end
@@ -126,6 +132,7 @@ enum {
  @private
   CFHTTPMessageRef message_;
 }
++ (id)responseWithString:(NSString *)plainText;
 + (id)responseWithHTMLString:(NSString *)htmlString;
 + (id)responseWithBody:(NSData *)body
            contentType:(NSString *)contentType

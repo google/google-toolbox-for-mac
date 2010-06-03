@@ -114,6 +114,14 @@ static NSString *kResponse = @"Response";
   port_ = port;
 }
 
+- (BOOL)reusePort {
+  return reusePort_;
+}
+
+- (void)setReusePort:(BOOL)yesno {
+  reusePort_ = yesno;
+}
+
 - (BOOL)localhostOnly {
   return localhostOnly_;
 }
@@ -139,7 +147,8 @@ static NSString *kResponse = @"Response";
   
   // enable address reuse quicker after we are done w/ our socket
   int yes = 1;
-  if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR,
+  int sock_opt = reusePort_ ? SO_REUSEPORT : SO_REUSEADDR;
+  if (setsockopt(fd, SOL_SOCKET, sock_opt,
                  (void *)&yes, (socklen_t)sizeof(yes)) != 0) {
     _GTMDevLog(@"failed to mark the socket as reusable"); // COV_NF_LINE
   }
@@ -524,6 +533,13 @@ startFailed:
     CFRelease(message_);
   }
   [super dealloc];
+}
+
++ (id)responseWithString:(NSString *)plainText {
+  NSData *body = [plainText dataUsingEncoding:NSUTF8StringEncoding];
+  return [self responseWithBody:body
+                    contentType:@"text/plain; charset=UTF-8"
+                     statusCode:200];
 }
 
 + (id)responseWithHTMLString:(NSString *)htmlString {
