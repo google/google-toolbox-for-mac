@@ -28,6 +28,12 @@
   BOOL didAlertClose_;
   BOOL didSheetClose_;
 }
+- (void)alertDidEnd:(NSAlert *)alert
+         returnCode:(NSInteger)returnCode
+            context:(void *)context;
+- (void)sheetDidEnd:(NSWindow *)sheet
+         returnCode:(NSInteger)returnCode
+            context:(void *)context;
 @end
 
 @implementation GTMWindowSheetControllerTest

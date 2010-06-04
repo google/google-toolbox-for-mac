@@ -19,6 +19,7 @@
 #import "GTMSenTestCase.h"
 #import <unistd.h>
 #import "GTMObjC2Runtime.h"
+#import "GTMUnitTestDevLog.h"
 
 #if !GTM_IPHONE_SDK
 #import "GTMGarbageCollection.h"
@@ -310,7 +311,7 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 
 - (NSString *)description {
   // This matches the description OCUnit would return to you
-  return [NSString stringWithFormat:@"-[%@ %@]", [self class], 
+  return [NSString stringWithFormat:@"-[%@ %@]", [self class],
           NSStringFromSelector([self selector])];
 }
 
@@ -355,7 +356,7 @@ static int MethodSort(const void *a, const void *b) {
           && strcmp(returnType, @encode(void)) == 0
           && method_getNumberOfArguments(currMethod) == 2) {
         NSMethodSignature *sig = [self instanceMethodSignatureForSelector:sel];
-        NSInvocation *invocation 
+        NSInvocation *invocation
           = [NSInvocation invocationWithMethodSignature:sig];
         [invocation setSelector:sel];
         [invocations addObject:invocation];
@@ -407,8 +408,8 @@ static int MethodSort(const void *a, const void *b) {
 // COV_NF_START
 // We don't have leak checking on by default, so this won't be hit.
 static void _GTMRunLeaks(void) {
-  // This is an atexit handler. It runs leaks for us to check if we are 
-  // leaking anything in our tests. 
+  // This is an atexit handler. It runs leaks for us to check if we are
+  // leaking anything in our tests.
   const char* cExclusionsEnv = getenv("GTM_LEAKS_SYMBOLS_TO_IGNORE");
   NSMutableString *exclusions = [NSMutableString string];
   if (cExclusionsEnv) {
@@ -421,13 +422,13 @@ static void _GTMRunLeaks(void) {
       [exclusions appendFormat:@"-exclude \"%@\" ", exclusion];
     }
   }
-  NSString *string 
+  NSString *string
     = [NSString stringWithFormat:@"/usr/bin/leaks %@%d"
-       @"| /usr/bin/sed -e 's/Leak: /Leaks:0: warning: Leak /'", 
+       @"| /usr/bin/sed -e 's/Leak: /Leaks:0: warning: Leak /'",
        exclusions, getpid()];
   int ret = system([string UTF8String]);
   if (ret) {
-    fprintf(stderr, "%s:%d: Error: Unable to run leaks. 'system' returned: %d", 
+    fprintf(stderr, "%s:%d: Error: Unable to run leaks. 'system' returned: %d",
             __FILE__, __LINE__, ret);
     fflush(stderr);
   }
@@ -447,11 +448,11 @@ static __attribute__((constructor)) void _GTMInstallLeaks(void) {
       fprintf(stderr, "Leak Checking Enabled\n");
       fflush(stderr);
       int ret = atexit(&_GTMRunLeaks);
-      _GTMDevAssert(ret == 0, 
-                    @"Unable to install _GTMRunLeaks as an atexit handler (%d)", 
+      _GTMDevAssert(ret == 0,
+                    @"Unable to install _GTMRunLeaks as an atexit handler (%d)",
                     errno);
       // COV_NF_END
-    }  
+    }
   }
 }
 

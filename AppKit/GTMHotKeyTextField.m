@@ -5,9 +5,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -26,7 +26,7 @@
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 typedef struct __TISInputSource* TISInputSourceRef;
 static TISInputSourceRef(*GTM_TISCopyCurrentKeyboardLayoutInputSource)(void) = NULL;
-static void * (*GTM_TISGetInputSourceProperty)(TISInputSourceRef inputSource, 
+static void * (*GTM_TISGetInputSourceProperty)(TISInputSourceRef inputSource,
                                                CFStringRef propertyKey) = NULL;
 static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
@@ -35,6 +35,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 @interface GTMHotKeyTextField (PrivateMethods)
 - (void)setupBinding:(id)bound withPath:(NSString *)path;
 - (void)updateDisplayedPrettyString;
+- (void)hotKeyValueChanged:(GTMKeyValueChangeNotification *)note;
 + (BOOL)isValidHotKey:(NSDictionary *)hotKey;
 + (NSString *)displayStringForHotKey:(NSDictionary *)hotKey;
 + (BOOL)doesKeyCodeRequireModifier:(UInt16)keycode;
@@ -54,8 +55,8 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #if GTM_SUPPORT_GC
 - (void)finalize {
   if (boundObject_ && boundKeyPath_) {
-    [boundObject_ gtm_removeObserver:self 
-                          forKeyPath:boundKeyPath_ 
+    [boundObject_ gtm_removeObserver:self
+                          forKeyPath:boundKeyPath_
                             selector:@selector(hotKeyValueChanged:)];
   }
   [super finalize];
@@ -64,8 +65,8 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 - (void)dealloc {
   if (boundObject_ && boundKeyPath_) {
-    [boundObject_ gtm_removeObserver:self 
-                          forKeyPath:boundKeyPath_ 
+    [boundObject_ gtm_removeObserver:self
+                          forKeyPath:boundKeyPath_
                             selector:@selector(hotKeyValueChanged:)];
   }
   [boundObject_ release];
@@ -77,8 +78,8 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #pragma mark Bindings
 
 
-- (void)bind:(NSString *)binding toObject:(id)observableController 
- withKeyPath:(NSString *)keyPath 
+- (void)bind:(NSString *)binding toObject:(id)observableController
+ withKeyPath:(NSString *)keyPath
      options:(NSDictionary *)options {
   if ([binding isEqualToString:NSValueBinding]) {
     // Update to our new binding
@@ -96,7 +97,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if ([binding isEqualToString:NSValueBinding]) {
     if (boundObject_ && boundKeyPath_) {
       [boundObject_ gtm_removeObserver:self
-                            forKeyPath:boundKeyPath_ 
+                            forKeyPath:boundKeyPath_
                               selector:@selector(hotKeyValueChanged:)];
     }
     [boundObject_ release];
@@ -122,7 +123,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   [hotKeyDict_ autorelease];
   hotKeyDict_ = [changedValue copy];
   [self updateDisplayedPrettyString];
-}  
+}
 
 
 // Private convenience method for attaching to a new binding
@@ -130,7 +131,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   // Release previous
   if (boundObject_ && boundKeyPath_) {
     [boundObject_ gtm_removeObserver:self
-                          forKeyPath:boundKeyPath_ 
+                          forKeyPath:boundKeyPath_
                             selector:@selector(hotKeyValueChanged:)];
   }
   [boundObject_ release];
@@ -139,8 +140,8 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   boundObject_ = [bound retain];
   boundKeyPath_ = [path copy];
   // Make ourself an observer
-  [boundObject_ gtm_addObserver:self 
-                 forKeyPath:boundKeyPath_ 
+  [boundObject_ gtm_addObserver:self
+                 forKeyPath:boundKeyPath_
                        selector:@selector(hotKeyValueChanged:)
                        userInfo:nil
                         options:NSKeyValueObservingOptionNew];
@@ -174,7 +175,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 }
 
 - (float)floatValue {
-  return [self logBadValueAccess];  
+  return [self logBadValueAccess];
 }
 
 - (void)setFloatValue:(float)value {
@@ -182,7 +183,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 }
 
 - (int)intValue {
-  return [self logBadValueAccess]; 
+  return [self logBadValueAccess];
 }
 
 - (void)setIntValue:(int)value {
@@ -192,11 +193,11 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 - (NSInteger)integerValue {
-  return [self logBadValueAccess]; 
+  return [self logBadValueAccess];
 }
 
 - (void)setIntegerValue:(NSInteger)value {
-  [self logBadValueAccess]; 
+  [self logBadValueAccess];
 }
 
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
@@ -221,7 +222,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   NSAttributedString *attrString = nil;
   NSString *prettyString = [self stringValue];
   if (prettyString) {
-    attrString = [[[NSAttributedString alloc] 
+    attrString = [[[NSAttributedString alloc]
                    initWithString:prettyString] autorelease];
   }
   return attrString;
@@ -280,7 +281,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if (hotKey && ![[self class] isValidHotKey:hotKey]) {
     return;
   }
-  
+
   // If we are bound we want to round trip through that interface
   if (boundObject_ && boundKeyPath_) {
     // If the change is accepted this will call us back as an observer
@@ -305,21 +306,21 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     [super setStringValue:@""];
     return;
   }
-  
+
   // Pretty string
   NSString *prettyString = [[self class] displayStringForHotKey:hotKeyDict_];
   if (!prettyString) {
     prettyString = @"";
   }
   [super setStringValue:prettyString];
-  
+
 }
 
 + (NSString *)displayStringForHotKey:(NSDictionary *)hotKeyDict {
   if (!hotKeyDict) return nil;
-  
+
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-  
+
   // Modifiers
   unsigned int flags
     = [[hotKeyDict objectForKey:kGTMHotKeyModifierFlagsKey] unsignedIntValue];
@@ -338,11 +339,11 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
                                               useGlyph:NO
                                         resourceBundle:bundle];
   if (!keystroke || ![keystroke length]) return nil;
-  if ([[self class] doesKeyCodeRequireModifier:keycode] 
+  if ([[self class] doesKeyCodeRequireModifier:keycode]
       && ![mods length]) {
     return nil;
   }
-  
+
   return [NSString stringWithFormat:@"%@%@", mods, keystroke];
 }
 
@@ -355,7 +356,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     _GTMDevLog(@"Field editor not appropriate for field, check window delegate");
     return NO;
   }
-  
+
   // We don't call super from here, because we are defeating default behavior
   // as a result we have to call the delegate ourself.
   id myDelegate = [self delegate];
@@ -363,7 +364,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if ([myDelegate respondsToSelector:selector]) {
     if (![myDelegate control:self textShouldBeginEditing:fieldEditor]) return NO;
   }
-  
+
   // Update the field editor internal hotkey representation
   [fieldEditor setHotKeyDictionary:hotKeyDict_];  // OK if its nil
   return YES;
@@ -371,17 +372,17 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 - (void)textDidChange:(NSNotification *)notification {
   // Sanity
-  GTMHotKeyFieldEditor *fieldEditor = GTM_STATIC_CAST(GTMHotKeyFieldEditor, 
+  GTMHotKeyFieldEditor *fieldEditor = GTM_STATIC_CAST(GTMHotKeyFieldEditor,
                                                       [notification object]);
   if (![fieldEditor isKindOfClass:[GTMHotKeyFieldEditor class]]) {
     _GTMDevLog(@"Field editor not appropriate for field, check window delegate");
     return;
   }
-  
+
   // When the field changes we want to read in the current hotkey value so
   // bindings can validate
   [self setHotKeyValue:[fieldEditor hotKeyDictionary]];
-  
+
   // Let super handle the notifications
   [super textDidChange:notification];
 }
@@ -392,7 +393,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     _GTMDevLog(@"Field editor not appropriate for field, check window delegate");
     return NO;
   }
-  
+
   // Again we are defeating default behavior so we have to do delegate handling
   // ourself. In this case our goal is simply to prevent the superclass from
   // doing its own KVO, but we can also skip [[self cell] isEntryAcceptable:].
@@ -403,10 +404,10 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   if ([myDelegate respondsToSelector:selector]) {
     [myDelegate control:self textShouldEndEditing:fieldEditor];
   }
-  
+
   // The end is always allowed, so set new value
   [self setHotKeyValue:[fieldEditor hotKeyDictionary]];
-  
+
   return YES;
 }
 
@@ -414,33 +415,33 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 + (void)initialize {
-  if (!GTM_TISCopyCurrentKeyboardLayoutInputSource 
+  if (!GTM_TISCopyCurrentKeyboardLayoutInputSource
       && [GTMSystemVersion isLeopardOrGreater]) {
-    CFBundleRef hiToolbox 
+    CFBundleRef hiToolbox
       = CFBundleGetBundleWithIdentifier(CFSTR("com.apple.HIToolbox"));
     if (hiToolbox) {
-      kGTM_TISPropertyUnicodeKeyLayoutData 
-        = *(CFStringRef*)CFBundleGetDataPointerForName(hiToolbox, 
+      kGTM_TISPropertyUnicodeKeyLayoutData
+        = *(CFStringRef*)CFBundleGetDataPointerForName(hiToolbox,
                                     CFSTR("kTISPropertyUnicodeKeyLayoutData"));
-      GTM_TISCopyCurrentKeyboardLayoutInputSource 
-        = CFBundleGetFunctionPointerForName(hiToolbox, 
+      GTM_TISCopyCurrentKeyboardLayoutInputSource
+        = CFBundleGetFunctionPointerForName(hiToolbox,
                              CFSTR("TISCopyCurrentKeyboardLayoutInputSource"));
-      GTM_TISGetInputSourceProperty  
-        = CFBundleGetFunctionPointerForName(hiToolbox, 
+      GTM_TISGetInputSourceProperty
+        = CFBundleGetFunctionPointerForName(hiToolbox,
                                            CFSTR("TISGetInputSourceProperty"));
     }
   }
 }
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4 
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 
 #pragma mark Useful String Class Methods
 
 + (BOOL)doesKeyCodeRequireModifier:(UInt16)keycode {
   BOOL doesRequire = YES;
   switch(keycode) {
-    // These are the keycodes that map to the 
+    // These are the keycodes that map to the
     //unichars in the associated comment.
-    case 122:  //  NSF1FunctionKey 
+    case 122:  //  NSF1FunctionKey
     case 120:  //  NSF2FunctionKey
     case 99:   //  NSF3FunctionKey
     case 118:  //  NSF4FunctionKey
@@ -484,36 +485,36 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   return [NSString stringWithCharacters:modChars length:charCount];
 }
 
-+ (NSString *)stringForKeycode:(UInt16)keycode 
++ (NSString *)stringForKeycode:(UInt16)keycode
                       useGlyph:(BOOL)useGlyph
                 resourceBundle:(NSBundle *)bundle {
   // Some keys never move in any layout (to the best of our knowledge at least)
   // so we can hard map them.
   UniChar key = 0;
   NSString *localizedKey = nil;
-  
+
   switch (keycode) {
-      
+
       // Of the hard mapped keys some can be represented with pretty and obvioous
       // Unicode or simple strings without localization.
-      
+
       // Arrow keys
     case 123: key = NSLeftArrowFunctionKey; break;
     case 124: key = NSRightArrowFunctionKey; break;
     case 125: key = NSDownArrowFunctionKey; break;
     case 126: key = NSUpArrowFunctionKey; break;
-    case 122: key = NSF1FunctionKey; localizedKey = @"F1"; break; 
+    case 122: key = NSF1FunctionKey; localizedKey = @"F1"; break;
     case 120: key = NSF2FunctionKey; localizedKey = @"F2"; break;
-    case 99:  key = NSF3FunctionKey; localizedKey = @"F3"; break; 
+    case 99:  key = NSF3FunctionKey; localizedKey = @"F3"; break;
     case 118: key = NSF4FunctionKey; localizedKey = @"F4"; break;
     case 96:  key = NSF5FunctionKey; localizedKey = @"F5"; break;
     case 97:  key = NSF6FunctionKey; localizedKey = @"F6"; break;
-    case 98:  key = NSF7FunctionKey; localizedKey = @"F7"; break; 
-    case 100: key = NSF8FunctionKey; localizedKey = @"F8"; break; 
+    case 98:  key = NSF7FunctionKey; localizedKey = @"F7"; break;
+    case 100: key = NSF8FunctionKey; localizedKey = @"F8"; break;
     case 101: key = NSF9FunctionKey; localizedKey = @"F9"; break;
     case 109: key = NSF10FunctionKey; localizedKey = @"F10"; break;
     case 103: key = NSF11FunctionKey; localizedKey = @"F11"; break;
-    case 111: key = NSF12FunctionKey; localizedKey = @"F12"; break; 
+    case 111: key = NSF12FunctionKey; localizedKey = @"F12"; break;
     case 105: key = NSF13FunctionKey; localizedKey = @"F13"; break;
     case 107: key = NSF14FunctionKey; localizedKey = @"F14"; break;
     case 113: key = NSF15FunctionKey; localizedKey = @"F15"; break;
@@ -521,7 +522,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
       // Forward delete is a terrible name so we'll use the glyph Apple puts on
       // their current keyboards
     case 117: key = 0x2326; break;
-      
+
       // Now we have keys that can be hard coded but don't have good glyph
       // representations. Sure, the Apple menu manager has glyphs for them, but
       // an informal poll of Google developers shows no one really knows what
@@ -529,7 +530,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
       // this also means localization (*sigh*). We'll use the real English
       // strings here as keys so that even if localization is missed we'll do OK
       // in output.
-      
+
       // Whitespace
     case 36: key = '\r'; localizedKey = @"Return"; break;
     case 76: key = 0x3; localizedKey = @"Enter"; break;
@@ -567,31 +568,31 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     case 89: key = '7'; localizedKey = @"Keypad 7"; break;
     case 91: key = '8'; localizedKey = @"Keypad 8"; break;
     case 92: key = '9'; localizedKey = @"Keypad 9"; break;
-      
+
   }
-  
+
   // If they asked for strings, and we have one return it.  Otherwise, return
   // any key we've picked.
   if (!useGlyph && localizedKey) {
-    return NSLocalizedStringFromTableInBundle(localizedKey, 
-                                              @"GTMHotKeyTextField", 
-                                              bundle, 
+    return NSLocalizedStringFromTableInBundle(localizedKey,
+                                              @"GTMHotKeyTextField",
+                                              bundle,
                                               @"");
   } else if (key != 0) {
     return [NSString stringWithFormat:@"%C", key];
   }
-  
+
   // Everything else should be printable so look it up in the current keyboard
   UCKeyboardLayout *uchrData = NULL;
-  
+
   OSStatus err = noErr;
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
   // layout
-  KeyboardLayoutRef  currentLayout = NULL; 
+  KeyboardLayoutRef  currentLayout = NULL;
   // Get the layout kind
   SInt32 currentLayoutKind = -1;
-  if ([GTMSystemVersion isLeopardOrGreater] 
-      && kGTM_TISPropertyUnicodeKeyLayoutData 
+  if ([GTMSystemVersion isLeopardOrGreater]
+      && kGTM_TISPropertyUnicodeKeyLayoutData
       && GTM_TISGetInputSourceProperty
       && GTM_TISCopyCurrentKeyboardLayoutInputSource) {
     // On Leopard we use the new improved TIS interfaces which work for input
@@ -599,7 +600,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     TISInputSourceRef inputSource
       = GTM_TISCopyCurrentKeyboardLayoutInputSource();
     if (inputSource) {
-      CFDataRef uchrDataRef 
+      CFDataRef uchrDataRef
         = GTM_TISGetInputSourceProperty(inputSource,
                                         kGTM_TISPropertyUnicodeKeyLayoutData);
       if(uchrDataRef) {
@@ -614,19 +615,19 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
       _GTMDevLog(@"failed to fetch the keyboard layout, err=%d", err);
       return nil;
     }  // COV_NF_END
-    
+
     err = KLGetKeyboardLayoutProperty(currentLayout,
-                                      kKLKind, 
+                                      kKLKind,
                                       (const void **)&currentLayoutKind);
     if (err != noErr) { // COV_NF_START
       _GTMDevLog(@"failed to fetch the keyboard layout kind property, err=%d",
                  err);
       return nil;
     }  // COV_NF_END
-    
+
     if (currentLayoutKind != kKLKCHRKind) {
-      err = KLGetKeyboardLayoutProperty(currentLayout, 
-                                        kKLuchrData, 
+      err = KLGetKeyboardLayoutProperty(currentLayout,
+                                        kKLuchrData,
                                         (const void **)&uchrData);
       if (err != noErr) { // COV_NF_START
         _GTMDevLog(@"failed to fetch the keyboard layout uchar data, err=%d",
@@ -638,30 +639,30 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 #else
   TISInputSourceRef inputSource = TISCopyCurrentKeyboardLayoutInputSource();
   if (inputSource) {
-    CFDataRef uchrDataRef 
+    CFDataRef uchrDataRef
       = TISGetInputSourceProperty(inputSource, kTISPropertyUnicodeKeyLayoutData);
     if(uchrDataRef) {
       uchrData = (UCKeyboardLayout*)CFDataGetBytePtr(uchrDataRef);
     }
     CFRelease(inputSource);
-  }	
+  }
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-  
+
   NSString *keystrokeString = nil;
   if (uchrData) {
     // uchr layout data is available, this is our preference
     UniCharCount uchrCharLength = 0;
     UniChar  uchrChars[256] = { 0 };
     UInt32 uchrDeadKeyState = 0;
-    err = UCKeyTranslate(uchrData, 
-                         keycode, 
-                         kUCKeyActionDisplay, 
+    err = UCKeyTranslate(uchrData,
+                         keycode,
+                         kUCKeyActionDisplay,
                          0,  // No modifiers
-                         LMGetKbdType(), 
-                         kUCKeyTranslateNoDeadKeysMask, 
-                         &uchrDeadKeyState, 
+                         LMGetKbdType(),
+                         kUCKeyTranslateNoDeadKeysMask,
+                         &uchrDeadKeyState,
                          sizeof(uchrChars) / sizeof(UniChar),
-                         &uchrCharLength, 
+                         &uchrCharLength,
                          uchrChars);
     if (err != noErr) {
       // COV_NF_START
@@ -670,10 +671,10 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
       // COV_NF_END
     }
     if (uchrCharLength < 1) return nil;
-    keystrokeString = [NSString stringWithCharacters:uchrChars 
+    keystrokeString = [NSString stringWithCharacters:uchrChars
                                               length:uchrCharLength];
-  } 
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4	
+  }
+#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
   else if (currentLayoutKind == kKLKCHRKind) {
     // Only KCHR layout data is available, go old school
     void *KCHRData = NULL;
@@ -712,10 +713,10 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     }
   }
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-  
+
   // Sanity we got a stroke
   if (!keystrokeString || ![keystrokeString length]) return nil;
-  
+
   // Sanity check the keystroke string for unprintable characters
   NSMutableCharacterSet *validChars =
     [[[NSMutableCharacterSet alloc] init] autorelease];
@@ -728,13 +729,13 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
       return nil;
     }
   }
-  
+
   if (!useGlyph) {
     // menus want glyphs in the original lowercase forms, so we only upper this
     // if we aren't using it as a glyph.
     keystrokeString = [keystrokeString uppercaseString];
   }
-  
+
   return keystrokeString;
 }
 
@@ -797,7 +798,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   // Lose our focus
   NSWindow *window = [self window];
   [window makeFirstResponder:window];
-  
+
 }
 
 - (BOOL)shouldDrawInsertionPoint {
@@ -806,7 +807,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   return YES;
 }
 
-- (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange 
+- (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange
                               granularity:(NSSelectionGranularity)granularity {
   // Always select everything
   return NSMakeRange(0, [[self textStorage] length]);
@@ -818,7 +819,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   } else {
     // Try to eat the event
     [self processEventToHotKeyAndString:theEvent];
-  }  
+  }
 }
 
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
@@ -842,14 +843,14 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
     // Ignore all events that the dock cares about
     // Just to be extra clear if the user is trying to use Dock hotkeys beep
     // at them
-    if ((modifierFlags == NSCommandKeyMask) || 
+    if ((modifierFlags == NSCommandKeyMask) ||
         (modifierFlags == (NSCommandKeyMask | NSShiftKeyMask))) {
       NSBeep();
       bypass = YES;
     }
   } else if ((keyCode == 12) && (modifierFlags == NSCommandKeyMask)) {
     // Don't eat Cmd-Q. Users could have it as a hotkey, but its more likely
-    // they're trying to quit  
+    // they're trying to quit
     bypass = YES;
   } else if ((keyCode == 13) && (modifierFlags == NSCommandKeyMask)) {
     // Same for Cmd-W, user is probably trying to close the window
@@ -872,28 +873,28 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
     NSBeep();
     return;
   }
-  
+
   // Replacement range
   NSRange replaceRange = NSMakeRange(0, [[self textStorage] length]);
-  
+
   // Ask for permission to replace
   if (![self shouldChangeTextInRange:replaceRange
                    replacementString:prettyString]) {
     // If replacement was disallowed, change nothing, including hotKeyDict_
     NSBeep();
     return;
-  } 
-  
+  }
+
   // Replacement was allowed, update
   [hotKeyDict_ autorelease];
   hotKeyDict_ = [newHotKey retain];
-  
+
   // Set string on self, allowing super to handle attribute copying
   [self setString:prettyString];
-  
+
   // Finish the change
   [self didChangeText];
-  
+
   // Force editing to end. This sends focus off into space slightly, but
   // its better than constantly capturing user events. This is exactly
   // like the Apple editor in their Keyboard pref pane.
@@ -923,7 +924,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
 
 - (NSDictionary *)hotKeyDictionaryForEvent:(NSEvent *)event {
   if (!event) return nil;
-  
+
   // Check event
   NSUInteger flags = [event modifierFlags];
   UInt16 keycode = [event keyCode];
@@ -931,7 +932,7 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
   NSUInteger allModifiers = (NSCommandKeyMask | NSAlternateKeyMask |
                              NSControlKeyMask | NSShiftKeyMask);
 
-  BOOL requiresModifiers 
+  BOOL requiresModifiers
     = [GTMHotKeyTextField doesKeyCodeRequireModifier:keycode];
   if (requiresModifiers) {
     // If we aren't a function key, and have no modifiers do nothing.
@@ -939,14 +940,14 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
     // If the event has high bits in keycode do nothing
     if (keycode & 0xFF00) return nil;
   }
-  
+
   // Clean the flags to only contain things we care about
   UInt32 cleanFlags = 0;
   if (flags & NSCommandKeyMask) cleanFlags |= NSCommandKeyMask;
   if (flags & NSAlternateKeyMask) cleanFlags |= NSAlternateKeyMask;
   if (flags & NSControlKeyMask) cleanFlags |= NSControlKeyMask;
   if (flags & NSShiftKeyMask) cleanFlags |= NSShiftKeyMask;
-  
+
   return [NSDictionary dictionaryWithObjectsAndKeys:
           [NSNumber numberWithBool:NO],
           kGTMHotKeyDoubledModifierKey,

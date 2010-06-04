@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -65,6 +65,9 @@
 @end
 
 @implementation GTMSignalHandlerTest
+- (void)nomnomnom:(int)blah {
+  STFail(@"Should never be called!");
+}
 
 - (void)testNillage {
   GTMSignalHandler *handler;
@@ -76,7 +79,7 @@
   STAssertNil(handler, nil);
 
   // Zero signal should return nil as well.
-  handler = [[[GTMSignalHandler alloc] 
+  handler = [[[GTMSignalHandler alloc]
               initWithSignal:0
                       target:self
                       action:@selector(nomnomnom:)] autorelease];
@@ -87,7 +90,7 @@
 - (void)testSingleHandler {
   SignalCounter *counter = [SignalCounter signalCounter];
   STAssertNotNil(counter, nil);
-  
+
   GTMSignalHandler *handler = [[[GTMSignalHandler alloc]
                                  initWithSignal:SIGWINCH
                                          target:counter
@@ -95,31 +98,31 @@
                                autorelease];
   STAssertNotNil(handler, nil);
   raise(SIGWINCH);
-  
+
   NSRunLoop *rl = [NSRunLoop currentRunLoop];
   [rl gtm_runUpToSixtySecondsWithContext:counter];
 
   STAssertEquals([counter count], 1, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   [counter resetShouldStop];
-  
+
   raise(SIGWINCH);
   [rl gtm_runUpToSixtySecondsWithContext:counter];
 
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   [counter resetShouldStop];
-  
+
   // create a second one to make sure we're seding data where we want
   SignalCounter *counter2 = [SignalCounter signalCounter];
   STAssertNotNil(counter2, nil);
   [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
                                      target:counter2
                                      action:@selector(countSignal:)] autorelease];
-  
+
   raise(SIGUSR1);
   [rl gtm_runUpToSixtySecondsWithContext:counter2];
-  
+
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   STAssertEquals([counter2 count], 1, nil);
@@ -131,7 +134,7 @@
   // the handler method should not get called.
   raise(SIGWINCH);
   [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
-  
+
   STAssertEquals([counter count], 2, nil);
   STAssertEquals([counter lastSeen], SIGWINCH, nil);
   STAssertEquals([counter2 count], 1, nil);

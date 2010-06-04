@@ -6,13 +6,13 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-//  License for the specific language governing permissions and limitations 
+//  License for the specific language governing permissions and limitations
 //  under the License.
 //
 
@@ -65,7 +65,7 @@
   NSArray *nilArrayB = nil;
   NSArray *mergedArray
     = [emptyArrayA gtm_mergeArray:nilArrayB
-                    mergeSelector:@selector(mergeObject:)];
+                    mergeSelector:@selector(mergeString:)];
   STAssertNil(mergedArray,
               @"merge of empty with nil array with merger should render nil");
 }
@@ -179,7 +179,7 @@
   STAssertNotNil(arrayB, nil);
   STAssertNotNil(expected, nil);
   NSArray *mergedArray;
-  
+
   // no merger
   mergedArray = [arrayA gtm_mergeArray:arrayB
                          mergeSelector:nil];
@@ -197,13 +197,13 @@
                          mergeSelector:nil];
   STAssertNotNil(mergedArray, nil);
   STAssertEqualObjects(mergedArray, expected, nil);
-  
+
   // w/ merger and array args reversed
   mergedArray = [arrayB gtm_mergeArray:arrayA
                          mergeSelector:@selector(mergeString:)];
   STAssertNotNil(mergedArray, nil);
   STAssertEqualObjects(mergedArray, expected, nil);
-  
+
 }
 
 @end

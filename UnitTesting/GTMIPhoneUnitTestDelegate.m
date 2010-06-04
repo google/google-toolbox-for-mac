@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -27,6 +27,13 @@
 #import <UIKit/UIKit.h>
 #import "GTMSenTestCase.h"
 
+@interface UIApplication (GTMIPhoneUnitTestDelegate)
+
+// SPI that we need to exti cleanly with a value.
+- (void)_terminateWithStatus:(int)status;
+
+@end
+
 @implementation GTMIPhoneUnitTestDelegate
 
 // Run through all the registered classes and run test methods on any
@@ -34,7 +41,7 @@
 // test completion.
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
   [self runTests];
-  
+
   if (!getenv("GTM_DISABLE_TERMINATION")) {
     // To help using xcodebuild, make the exit status 0/1 to signal the tests
     // success/failure.
@@ -87,7 +94,7 @@
       if ([invocations count]) {
         NSInvocation *invocation;
         GTM_FOREACH_OBJECT(invocation, invocations) {
-          GTMTestCase *testCase 
+          GTMTestCase *testCase
             = [[currClass alloc] initWithInvocation:invocation];
           BOOL failed = NO;
           NSDate *caseStartDate = [NSDate date];
@@ -128,14 +135,14 @@
                                      @"Executed %d tests, with %d failures (%d "
                                      @"unexpected) in %0.3f (%0.3f) seconds\n\n",
                                      fixtureName, fixtureEndDate,
-                                     fixtureSuccesses + fixtureFailures, 
+                                     fixtureSuccesses + fixtureFailures,
                                      fixtureFailures, fixtureFailures,
                                      fixtureEndTime, fixtureEndTime];
-      
+
       fputs([fixtureEndString UTF8String], stderr);
       fflush(stderr);
       totalSuccesses_ += fixtureSuccesses;
-      totalFailures_ += fixtureFailures;      
+      totalFailures_ += fixtureFailures;
     }
     [pool release];
   }
@@ -147,7 +154,7 @@
                                  @"Executed %d tests, with %d failures (%d "
                                  @"unexpected) in %0.3f (%0.3f) seconds\n\n",
                                  suiteName, suiteEndDate,
-                                 totalSuccesses_ + totalFailures_, 
+                                 totalSuccesses_ + totalFailures_,
                                  totalFailures_, totalFailures_,
                                  suiteEndTime, suiteEndTime];
   fputs([suiteEndString UTF8String], stderr);

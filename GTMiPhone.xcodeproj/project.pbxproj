@@ -72,6 +72,8 @@
 		8B6C18750F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
 		8B7DCEAA0DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */; };
 		8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */; };
+		8BB78FA911B94D9500AB31AF /* GTMGoogleSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB78FA711B94D9500AB31AF /* GTMGoogleSearch.m */; };
+		8BB78FAA11B94D9500AB31AF /* GTMGoogleSearchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB78FA811B94D9500AB31AF /* GTMGoogleSearchTest.m */; };
 		8BC0480F0DAE928A00C2D1CA /* GTMCalculatedRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */; };
 		8BC048100DAE928A00C2D1CA /* GTMCalculatedRangeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047790DAE928A00C2D1CA /* GTMCalculatedRangeTest.m */; };
 		8BC048130DAE928A00C2D1CA /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */; };
@@ -103,8 +105,6 @@
 		8BDA25140E759A6500C9769D /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */; };
 		8BE839890E89C74B00C611B0 /* GTMDebugThreadValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE839870E89C74A00C611B0 /* GTMDebugThreadValidation.m */; };
 		8BE83A660E8B059A00C611B0 /* GTMDebugThreadValidationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE83A650E8B059A00C611B0 /* GTMDebugThreadValidationTest.m */; };
-		8BF4D4180FC74998009ABC3F /* GTMGoogleSearchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4D3E20FC72A46009ABC3F /* GTMGoogleSearchTest.m */; };
-		8BF4D4190FC7499D009ABC3F /* GTMGoogleSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4D3E10FC72A46009ABC3F /* GTMGoogleSearch.m */; };
 		8BFE15C60FB0F764001BE894 /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */; };
 		8BFE15C70FB0F764001BE894 /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */; };
 		8BFE15C80FB0F764001BE894 /* GTMABAddressBookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */; };
@@ -213,6 +213,9 @@
 		8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDevLogUnitTestingBridge.m; sourceTree = "<group>"; };
 		8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUnitTestDevLog.h; sourceTree = "<group>"; };
 		8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestDevLog.m; sourceTree = "<group>"; };
+		8BB78FA611B94D9500AB31AF /* GTMGoogleSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGoogleSearch.h; sourceTree = "<group>"; };
+		8BB78FA711B94D9500AB31AF /* GTMGoogleSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearch.m; sourceTree = "<group>"; };
+		8BB78FA811B94D9500AB31AF /* GTMGoogleSearchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearchTest.m; sourceTree = "<group>"; };
 		8BC047750DAE926E00C2D1CA /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		8BC047770DAE928A00C2D1CA /* GTMCalculatedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMCalculatedRange.h; sourceTree = "<group>"; };
 		8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRange.m; sourceTree = "<group>"; };
@@ -267,9 +270,6 @@
 		8BE839880E89C74A00C611B0 /* GTMDebugThreadValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDebugThreadValidation.h; sourceTree = "<group>"; };
 		8BE83A650E8B059A00C611B0 /* GTMDebugThreadValidationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDebugThreadValidationTest.m; sourceTree = "<group>"; };
 		8BF2568E10F673D1000490C8 /* GTMTypeCasting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTypeCasting.h; sourceTree = "<group>"; };
-		8BF4D3E00FC72A46009ABC3F /* GTMGoogleSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGoogleSearch.h; sourceTree = "<group>"; };
-		8BF4D3E10FC72A46009ABC3F /* GTMGoogleSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearch.m; sourceTree = "<group>"; };
-		8BF4D3E20FC72A46009ABC3F /* GTMGoogleSearchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearchTest.m; sourceTree = "<group>"; };
 		8BFE15C00FB0F764001BE894 /* GTMABAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMABAddressBook.h; sourceTree = "<group>"; };
 		8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBook.m; sourceTree = "<group>"; };
 		8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = GTMABAddressBook.strings; sourceTree = "<group>"; };
@@ -357,9 +357,10 @@
 				8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */,
 				8BC047750DAE926E00C2D1CA /* GTMDefines.h */,
 				8BFE15BF0FB0F764001BE894 /* AddressBook */,
-				8BA5F4060E75669000798036 /* iPhone */,
-				8BC047760DAE928A00C2D1CA /* Foundation */,
+				8BB78FA011B94D6C00AB31AF /* AppKit */,
 				8BC0479A0DAE928A00C2D1CA /* DebugUtils */,
+				8BC047760DAE928A00C2D1CA /* Foundation */,
+				8BA5F4060E75669000798036 /* iPhone */,
 				8BC0479F0DAE928A00C2D1CA /* UnitTesting */,
 				8BC049840DAEC59100C2D1CA /* XcodeConfig */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -428,6 +429,16 @@
 			path = iPhone;
 			sourceTree = "<group>";
 		};
+		8BB78FA011B94D6C00AB31AF /* AppKit */ = {
+			isa = PBXGroup;
+			children = (
+				8BB78FA611B94D9500AB31AF /* GTMGoogleSearch.h */,
+				8BB78FA711B94D9500AB31AF /* GTMGoogleSearch.m */,
+				8BB78FA811B94D9500AB31AF /* GTMGoogleSearchTest.m */,
+			);
+			path = AppKit;
+			sourceTree = "<group>";
+		};
 		8BC047760DAE928A00C2D1CA /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,9 +464,6 @@
 				F439ADED0DBD3C4000BE9B91 /* GTMGeometryUtils.h */,
 				F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */,
 				F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */,
-				8BF4D3E00FC72A46009ABC3F /* GTMGoogleSearch.h */,
-				8BF4D3E10FC72A46009ABC3F /* GTMGoogleSearch.m */,
-				8BF4D3E20FC72A46009ABC3F /* GTMGoogleSearchTest.m */,
 				8B3AA91F0E033624007E31B5 /* GTMHTTPServer.h */,
 				8B3AA9200E033624007E31B5 /* GTMHTTPServer.m */,
 				8B3AA9210E033624007E31B5 /* GTMHTTPServerTest.m */,
@@ -812,8 +820,6 @@
 				8BFE15C80FB0F764001BE894 /* GTMABAddressBookTest.m in Sources */,
 				8BD35C920FB234E1009058F5 /* GTMNSScanner+JSON.m in Sources */,
 				8BD35C930FB234E1009058F5 /* GTMNSScanner+JSONTest.m in Sources */,
-				8BF4D4180FC74998009ABC3F /* GTMGoogleSearchTest.m in Sources */,
-				8BF4D4190FC7499D009ABC3F /* GTMGoogleSearch.m in Sources */,
 				64D0F5C80FD3E65C00506CC7 /* GTMUIImage+ResizeTest.m in Sources */,
 				64D0F5C90FD3E65C00506CC7 /* GTMUIImage+Resize.m in Sources */,
 				13C1ED4F104896C900907CD8 /* GTMUIView+SubtreeDescription.m in Sources */,
@@ -824,6 +830,8 @@
 				0B859DA2104D08160064FE46 /* GTMNSDictionary+CaseInsensitiveTest.m in Sources */,
 				0BBC768B10FEF62C0006FABE /* GTMStringEncoding.m in Sources */,
 				0BBC768C10FEF62C0006FABE /* GTMStringEncodingTest.m in Sources */,
+				8BB78FA911B94D9500AB31AF /* GTMGoogleSearch.m in Sources */,
+				8BB78FAA11B94D9500AB31AF /* GTMGoogleSearchTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -857,6 +865,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone3.1.3-Debug-gcov";
 		};
@@ -960,6 +969,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone3.2-Debug-gcov";
 		};
@@ -1063,6 +1073,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone2.0-Debug-gcov";
 		};
@@ -1166,6 +1177,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone2.1-Debug-gcov";
 		};
@@ -1258,6 +1270,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone2.2-Debug-gcov";
 		};
@@ -1372,6 +1385,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone2.2.1-Debug-gcov";
 		};
@@ -1475,6 +1489,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone3.0-Debug-gcov";
 		};
@@ -1578,6 +1593,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone3.1-Debug-gcov";
 		};
@@ -1681,6 +1697,7 @@
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
 			};
 			name = "iPhone3.1.2-Debug-gcov";
 		};

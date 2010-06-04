@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -23,7 +23,7 @@
 //  Created by Michael Ash on 10/15/08.
 //
 
-// This code is based on code by Michael Ash. 
+// This code is based on code by Michael Ash.
 // See comment in header.
 
 #import "GTMSenTestCase.h"
@@ -36,6 +36,9 @@
   NSMutableDictionary *dict_;
   __weak NSString *expectedValue_;
 }
+
+- (void)observeValueChange:(GTMKeyValueChangeNotification *)notification;
+
 @end
 
 @implementation GTMNSObject_KeyValueObservingTest
@@ -51,16 +54,16 @@
 
 - (void)testSingleChange {
   count_ = 0;
-  [dict_ gtm_addObserver:self 
-             forKeyPath:@"key" 
-               selector:@selector(observeValueChange:) 
-               userInfo:@"userInfo" 
+  [dict_ gtm_addObserver:self
+             forKeyPath:@"key"
+               selector:@selector(observeValueChange:)
+               userInfo:@"userInfo"
                 options:NSKeyValueObservingOptionNew];
   expectedValue_ = @"bar";
   [dict_ setObject:expectedValue_ forKey:@"key"];
   STAssertEquals(count_, (int32_t)1, nil);
-  [dict_ gtm_removeObserver:self 
-                 forKeyPath:@"key" 
+  [dict_ gtm_removeObserver:self
+                 forKeyPath:@"key"
                   selector:@selector(observeValueChange:)];
   [dict_ setObject:@"foo" forKey:@"key"];
   STAssertEquals(count_, (int32_t)1, nil);
@@ -68,10 +71,10 @@
 
 - (void)testStopObservingAllKeyPaths {
   count_ = 0;
-  [dict_ gtm_addObserver:self 
-              forKeyPath:@"key" 
-                selector:@selector(observeValueChange:) 
-                userInfo:@"userInfo" 
+  [dict_ gtm_addObserver:self
+              forKeyPath:@"key"
+                selector:@selector(observeValueChange:)
+                userInfo:@"userInfo"
                  options:NSKeyValueObservingOptionNew];
   expectedValue_ = @"bar";
   [dict_ setObject:expectedValue_ forKey:@"key"];
@@ -85,28 +88,28 @@
 - (void)testRemoving {
   [GTMUnitTestDevLogDebug expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
    @" testRemoving\\] was not observing.*"];
-  
-  [dict_ gtm_removeObserver:self 
-                 forKeyPath:@"key" 
+
+  [dict_ gtm_removeObserver:self
+                 forKeyPath:@"key"
                    selector:@selector(observeValueChange:)];
 }
 
 - (void)testAdding {
-  [dict_ gtm_addObserver:self 
-              forKeyPath:@"key" 
-                selector:@selector(observeValueChange:) 
-                userInfo:@"userInfo" 
+  [dict_ gtm_addObserver:self
+              forKeyPath:@"key"
+                selector:@selector(observeValueChange:)
+                userInfo:@"userInfo"
                  options:NSKeyValueObservingOptionNew];
   [GTMUnitTestDevLog expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
    @" testAdding\\] already observing.*"];
-  [dict_ gtm_addObserver:self 
-              forKeyPath:@"key" 
-                selector:@selector(observeValueChange:) 
-                userInfo:@"userInfo" 
+  [dict_ gtm_addObserver:self
+              forKeyPath:@"key"
+                selector:@selector(observeValueChange:)
+                userInfo:@"userInfo"
                  options:NSKeyValueObservingOptionNew];
-  [dict_ gtm_removeObserver:self 
-                 forKeyPath:@"key" 
-                   selector:@selector(observeValueChange:)];  
+  [dict_ gtm_removeObserver:self
+                 forKeyPath:@"key"
+                   selector:@selector(observeValueChange:)];
 }
 
 - (void)observeValueChange:(GTMKeyValueChangeNotification *)notification {
@@ -117,7 +120,7 @@
   NSString *value = [change objectForKey:NSKeyValueChangeNewKey];
   STAssertEqualObjects(value, expectedValue_, nil);
   ++count_;
-  
+
   GTMKeyValueChangeNotification *copy = [[notification copy] autorelease];
   STAssertEqualObjects(notification, copy, nil);
   STAssertEquals([notification hash], [copy hash], nil);
@@ -146,15 +149,15 @@
   value3_ = [NSArray arrayWithObject:@"foo"];
   NSIndexSet *set = [NSIndexSet indexSetWithIndex:0];
   [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
-  [value3_ addObserver:self toObjectsAtIndexes:set forKeyPath:@"_fronttest" 
+  [value3_ addObserver:self toObjectsAtIndexes:set forKeyPath:@"_fronttest"
                options:0 context:NULL];
   [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
-  [value3_ addObserver:self toObjectsAtIndexes:set forKeyPath:@"backtest_" 
+  [value3_ addObserver:self toObjectsAtIndexes:set forKeyPath:@"backtest_"
                options:0 context:NULL];
 #if DEBUG
   // Should only throw in debug
   STAssertThrows([self valueForKey:@"value_"], nil);
-#else 
+#else
   STAssertNoThrow([self valueForKey:@"value_"], nil);
 #endif
   value4 = @"Hello";

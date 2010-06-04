@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -17,6 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "GTMDefines.h"
 
 // This file exists because when you have full warnings on you can run into
@@ -41,13 +42,13 @@ FOUNDATION_EXPORT CFRange GTMCFRangeMake(NSUInteger loc, NSUInteger len);
 
 FOUNDATION_EXPORT CGPoint GTMCGPointMake(CGFloat x, CGFloat y);
 FOUNDATION_EXPORT CGSize GTMCGSizeMake(CGFloat width, CGFloat height);
-FOUNDATION_EXPORT CGRect GTMCGRectMake(CGFloat x, CGFloat y, 
+FOUNDATION_EXPORT CGRect GTMCGRectMake(CGFloat x, CGFloat y,
                                        CGFloat width, CGFloat height);
 
 #if !GTM_IPHONE_SDK
 // iPhone does not have NSTypes defined, only CGTypes. So no NSRect, NSPoint etc.
 FOUNDATION_EXPORT NSPoint GTMNSMakePoint(CGFloat x, CGFloat y);
 FOUNDATION_EXPORT NSSize GTMNSMakeSize(CGFloat w, CGFloat h);
-FOUNDATION_EXPORT NSRect GTMNSMakeRect(CGFloat x, CGFloat y, 
+FOUNDATION_EXPORT NSRect GTMNSMakeRect(CGFloat x, CGFloat y,
                                        CGFloat w, CGFloat h);
 #endif

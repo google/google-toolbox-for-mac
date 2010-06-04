@@ -1,12 +1,7 @@
 //
-//  SnowLeopardOrLater.xcconfig
+//  GTM_fdopen2003.c
 //
-//  Xcode configuration file for projects targeting 10.6 SnowLeopard or later.
-//  These settings produce a Universal binary compatible with 10.6 for
-//  PPC and Intel.
-//
-//  Copyright 2008 Google Inc.
-//
+//  Copyright 2010 Google Inc.
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
@@ -20,11 +15,14 @@
 //  the License.
 //
 
-// Default SDK and minimum OS version is 10.6
-SDKROOT = ${DEVELOPER_SDK_DIR}/MacOSX10.6.sdk
-MACOSX_DEPLOYMENT_TARGET = 10.6
-GCC_VERSION = 4.2
+// This file exists because when you build with your SDK set to 10.5 and
+// and compiler version set to gcc 4.0 on using Xcode 3.2.2 on Snow Leopard
+// you will receive a link error for missing the _fdopen$UNIX2003 symbol.
+// See http://code.google.com/p/coverstory/wiki/SnowLeopardGCov
+// for more details.
 
-// Works around issues with the missing format attribute with gcc 4.2
-// on Snow Leopard.
-GTM_PLATFORM_WARNING_CFLAGS=-Wno-missing-format-attribute
+#include <stdio.h>
+
+FILE *fdopen$UNIX2003(int fildes, const char *mode) {
+  return fdopen(fildes, mode);
+}

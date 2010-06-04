@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -22,7 +22,7 @@
 
 // A category for dealing with NSAppleEventDescriptors and NSArrays.
 @interface NSAppleEventDescriptor (GTMAppleEventDescriptorArrayAdditions)
-// Used to register the types you know how to convert into 
+// Used to register the types you know how to convert into
 // NSAppleEventDescriptors.
 // See examples in GTMNSAppleEventDescriptor+Foundation.
 // Args:
@@ -30,8 +30,8 @@
 //    -(NSAppleEventDesc *)selector_name;
 //  types - an std c array of types of length |count|
 //  count - number of types in |types|
-+ (void)gtm_registerSelector:(SEL)selector 
-                    forTypes:(DescType*)types 
++ (void)gtm_registerSelector:(SEL)selector
+                    forTypes:(DescType*)types
                        count:(NSUInteger)count;
 
 // Returns an NSObject for any NSAppleEventDescriptor
@@ -73,6 +73,8 @@
 // Attempt to extract a NSNumber. Returns nil on error.
 - (NSNumber*)gtm_numberValue;
 
+// Attempt to return a GTMFourCharCode. Returns nil on error.
+- (GTMFourCharCode*)gtm_fourCharCodeValue;
 @end
 
 @interface NSObject (GTMAppleEventDescriptorObjectAdditions)
@@ -86,10 +88,10 @@
 @interface NSAppleEventDescriptor (GTMAppleEventDescriptorAdditions)
 // Allows you to send events.
 // Returns YES if send was successful.
-- (BOOL)gtm_sendEventWithMode:(AESendMode)mode 
+- (BOOL)gtm_sendEventWithMode:(AESendMode)mode
                       timeOut:(NSTimeInterval)timeout
                         reply:(NSAppleEventDescriptor**)reply;
-@end  
+@end
 
 @interface GTMFourCharCode (GTMAppleEventDescriptorObjectAdditions)
 

@@ -44,4 +44,10 @@
 
 @end
 
+@protocol GTMUIViewSubtreeDescription
+// A UIView can implement this and it can add it's own custom description
+// in gtm_subtreeDescriptionLine.
+- (NSString *)myViewDescriptionLine;
+@end
+
 #endif  // DEBUG

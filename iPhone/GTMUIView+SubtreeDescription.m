@@ -31,7 +31,6 @@ static void AppendLabelFloat(NSMutableString *s, NSString *label, float f) {
   }
 }
 
-
 static NSMutableString *SublayerDescriptionLine(CALayer *layer) {
   NSMutableString *result = [NSMutableString string];
   [result appendFormat:@"%@ %p {", [layer class], layer];
@@ -60,7 +59,7 @@ static NSMutableString *SublayerDescriptionAtLevel(CALayer *layer, int level) {
   [result appendString:SublayerDescriptionLine(layer)];
   // |sublayers| is defined in the QuartzCore framework, which isn't guaranteed
   // to be linked to this program. (So we don't include the header.)
-  NSArray *layers = [layer performSelector:@selector(sublayers)];
+  NSArray *layers = [layer performSelector:NSSelectorFromString(@"sublayers")];
   for (CALayer *l in layers) {
     [result appendString:SublayerDescriptionAtLevel(l, level+1)];
   }
@@ -127,11 +126,12 @@ static NSMutableString *SublayerDescriptionAtLevel(CALayer *layer, int level) {
 // for debugging dump the layer hierarchy, frames and isHidden.
 - (NSString *)sublayersDescription {
   CALayer *layer = [self layer];
-  if (![layer respondsToSelector:@selector(sublayers)]) {
+  SEL sublayers = NSSelectorFromString(@"sublayers");
+  if (![layer respondsToSelector:sublayers]) {
     return @"*** Sorry: This app is not linked with the QuartzCore framework.";
   }
   NSMutableString *result = SublayerDescriptionLine(layer);
-  NSArray *layers = [layer performSelector:@selector(sublayers)];
+  NSArray *layers = [layer performSelector:sublayers];
   for (CALayer *l in layers) {
     [result appendString:SublayerDescriptionAtLevel(l, 1)];
   }
