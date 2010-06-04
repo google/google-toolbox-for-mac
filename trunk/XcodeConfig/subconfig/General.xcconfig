@@ -9,9 +9,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -92,16 +92,16 @@ GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64*] = YES
 // -Wpadded - lots of structures will get padded, so although this warning may
 //            be useful to show us badly padded structures, it causes to many
 //            warnings to be on generally.
-// -Wunreachable-code - several macros use the do {} while (0) which always 
+// -Wunreachable-code - several macros use the do {} while (0) which always
 //                      flags this. e.g. all the ST... macros for unittesting
 // -Wredundant-decls - we sometimes use redundant decls to add an attribute
-//                     to a function/method (i.e. 
+//                     to a function/method (i.e.
 // -Waggregate-return - NSPoint, NSRect etc are often returned as aggregates
 // -Wshorten-64-to-32 - this is defined in the 64 bit build settings
 // -Wcast-qual - Would love to turn this on, but causes issues when converting
 //               CFTypes to NSTypes and also has issues with some external
 //               libraries (notably zlib)
-// -Wundef - we conditionalize on TARGET_OS_IPHONE which is only defined 
+// -Wundef - we conditionalize on TARGET_OS_IPHONE which is only defined
 //           in the iPhoneSDK making us unable to turn this warning on.
 // -Wstrict-prototypes - breaks the GTM_METHOD_CHECK macro
 // -Wcast-align - causes a whole pile of problems buildng with iPhoneSDK
@@ -111,10 +111,8 @@ GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64*] = YES
 // -Wassign-intercept - this really is more informational than a warning.
 // -Wselector - the system headers define lots of methods with the same selector
 //              rendering this mostly useless to us
-// -Wstrict-selector-match - the system headers define lots of methods with the 
+// -Wstrict-selector-match - the system headers define lots of methods with the
 //                           same selector rendering this mostly useless to us
-// Not being used currently because of Radar 5978978
-// GTM_GENERAL_WARNING_OBJC_ONLY_FLAGS=-Wundeclared-selector 
 
 // C Only Warnings
 GTM_GENERAL_OTHER_CFLAGS = -Wdiv-by-zero -Wbad-function-cast  -Wnested-externs -Wold-style-definition
@@ -127,16 +125,16 @@ GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES
 GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES
 
 // General C/C++/ObjC/ObjC++ warnings
-// These are generally ordered in easiest to hardest to support. 
-// If you are transitioning, you can turn on the levels one level at a time 
-// in your project file by editing GTM_GENERAL_WARNING_CFLAGS and only 
-// including the warning levels that you currently are compiling against. 
+// These are generally ordered in easiest to hardest to support.
+// If you are transitioning, you can turn on the levels one level at a time
+// in your project file by editing GTM_GENERAL_WARNING_CFLAGS and only
+// including the warning levels that you currently are compiling against.
 // GTM should always compile with full warnings.
 GTM_GENERAL_WARNING_CFLAGS1 = -Wall -Wendif-labels -Winvalid-pch -Wformat=2 -Wmissing-format-attribute -Wwrite-strings -Wstack-protector -Wstrict-aliasing=2
 GTM_GENERAL_WARNING_CFLAGS2 = -Wpacked -Wmissing-field-initializers
 GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = -Wno-unused-parameter -Wno-sign-compare
 GTM_GENERAL_WARNING_CFLAGS3 = -Wextra $(GTM_EXTRA_WARNING_OVERRIDE_CFLAGS) -Wpointer-arith -Wdisabled-optimization -Wfloat-equal
-GTM_GENERAL_WARNING_CFLAGS = $(GTM_GENERAL_WARNING_CFLAGS1) $(GTM_GENERAL_WARNING_CFLAGS2) $(GTM_GENERAL_WARNING_CFLAGS3) 
+GTM_GENERAL_WARNING_CFLAGS = $(GTM_GENERAL_WARNING_CFLAGS1) $(GTM_GENERAL_WARNING_CFLAGS2) $(GTM_GENERAL_WARNING_CFLAGS3)
 
 // GCC_WARN_UNINITIALIZED_AUTOS is defined in the release/debug xcconfigs.
 GCC_WARN_CHECK_SWITCH_STATEMENTS = YES
@@ -154,6 +152,7 @@ GCC_WARN_UNUSED_FUNCTION = YES
 GCC_WARN_UNUSED_VALUE = YES
 GCC_WARN_UNUSED_VARIABLE = YES
 GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES
+GCC_WARN_UNDECLARED_SELECTOR = YES
 // We don't turn on shadow and sign comparisons because too many 3rd party
 // libaries don't compile with them turned on (sign compare rarely catches
 // errors, but shadow is very useful).
@@ -168,5 +167,4 @@ GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = NO
 GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = NO
 GCC_WARN_UNUSED_PARAMETER = NO
 // Use of Gestalt requires 4 char constants (amongst other things)
-GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO 
-
+GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO

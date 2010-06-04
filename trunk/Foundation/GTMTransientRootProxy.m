@@ -29,7 +29,7 @@
 
 @interface GTMTransientRootProxy (PrivateMethods)
 // Returns an NSConnection for NSMacPorts.  This method is broken out to allow
-// subclasses to override it to generate different types of NSConnections. 
+// subclasses to override it to generate different types of NSConnections.
 - (NSConnection *)makeConnection;
 
 // Returns the "real" proxy (stored in the realProxy_ ivar) associated with this
@@ -42,6 +42,9 @@
 // the NSNotificationCenter.
 //
 - (void)releaseRealProxy;
+
+// Notification that a connection has died.
+- (void)connectionDidDie:(NSNotification *)notification;
 @end
 
 @implementation GTMTransientRootProxy
@@ -124,12 +127,12 @@
 
     // We need to catch NSException* here rather than "id" because we need to
     // treat |ex| as an NSException when using the -name method.  Also, we're
-    // only looking to catch a few types of exception here, all of which are 
+    // only looking to catch a few types of exception here, all of which are
     // NSException types; the rest we just rethrow.
   } @catch (NSException *ex) {
     NSString *exName = [ex name];
     // If we catch an exception who's name matches any of the following types,
-    // it's because the DO connection probably went down.  So, we'll just 
+    // it's because the DO connection probably went down.  So, we'll just
     // release our realProxy_, and attempt to reconnect on the next call.
     if ([exName isEqualToString:NSPortTimeoutException]
         || [exName isEqualToString:NSInvalidSendPortException]
@@ -168,7 +171,7 @@
       // Try to get the root proxy for this connection's vended object.
       realProxy_ = [conn rootProxy];
     } @catch (id ex) {
-      // We may fail here if we can't get the root proxy in the amount of time 
+      // We may fail here if we can't get the root proxy in the amount of time
       // specified by the timeout above.  This may happen, for example, if the
       // server process is stopped (via SIGSTOP).  We'll just ignore this, and
       // try again at the next message.
