@@ -17,8 +17,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreGraphics/CoreGraphics.h>
 #import "GTMDefines.h"
+#if GTM_IPHONE_SDK
+#import <CoreGraphics/CoreGraphics.h>
+#endif //  GTM_IPHONE_SDK
 
 // This file exists because when you have full warnings on you can run into
 // troubles with functions that Apple has inlined that have structures or
