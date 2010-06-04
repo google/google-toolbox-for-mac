@@ -1,0 +1,85 @@
+#summary Using Code Coverage on Snow Leopard
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+Code coverage doesn't work well when building on Snow Leopard using Xcode 3.2.2 with gcc 4.2.1, but you can get it working.
+
+[http://openradar.appspot.com/radar?id=38940 Radar 8049256] "gcov broken on gcc 4.2.1 (Xcode 3.2.2) with inlines in precompiled headers"
+
+
+[http://openradar.appspot.com/radar?id=395401 Radar 8052323] "gcov broken on gcc 4.2.1 (Xcode 3.2.2) with iPhone or 10.5SDK"
+
+Also, trying to use code coverage with the iPhone SDK (tested with 3.1.3) or the Leopard/Tiger SDK and Xcode 3.2.2 with gcc 4.2.1 causes link errors:
+
+{{{ 
+Undefined symbols:
+ "_vproc_transaction_end", referenced from:
+      _gcov_exit in libgcov.a(_gcov.o)
+      _vproc_transaction_end$non_lazy_ptr in libgcov.a(_gcov.o)
+     (maybe you meant: _vproc_transaction_end$non_lazy_ptr)
+  "_vproc_transaction_begin", referenced from:
+      ___gcov_init in libgcov.a(_gcov.o)
+      _vproc_transaction_begin$non_lazy_ptr in libgcov.a(_gcov.o)
+     (maybe you meant: _vproc_transaction_begin$non_lazy_ptr)
+ld: symbol(s) not found
+collect2: ld returned 1 exit status
+}}}
+
+This also can be fixed with a little hackery.
+
+= General Snow Leopard gcov Issue =
+
+There appears to be a bug in gcc 4.2.1 that causes gcov to produce bogus data if you have ANY inlines in your precompiled header file. The "easiest" way to get around this for code coverage builds is to turn off precompiled headers, by setting the "Prefix Header" (GCC_PREFIX_HEADER) setting in your project/target to "blank". This may be quite a pain depending on how much your source depends on your pch to actually compile, and it may result in slower compiles. For Google Toolbox For Mac, we still use precompiled headers, but we have defined GTM_CODE_COVERAGE_ON in our code coverage builds, and #ifdef'd out the chunks of our pch files that include headers that have inlines.
+
+The other fix for this is to use gcc 4.0 instead of 4.2.1. Note that unless you go with gcc 4.0 for all of your configurations that you will end up running different code in your code-coverage builds vs your non-code-coverage builds. Also, you may not be able to use things like blocks. If you choose to use gcc 4.0, you may see a link error:
+
+{{{
+Undefined symbols:
+  "_fdopen$UNIX2003", referenced from:
+      ___gcov_open in libgcov.a(_gcov.o)
+ld: symbol(s) not found
+collect2: ld returned 1 exit status
+}}}
+
+This can be fixed by adding this chunk of code:
+
+{{{
+
+FILE *fdopen$UNIX2003(int fildes, const char *mode) {
+  return fdopen(fildes, mode);
+}
+
+}}}
+
+or you can grab our version [http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/SnowLeopardGcov/GTM_fdopen2003.c GTM_fdopen2003.c] from [http://code.google.com/p/google-toolbox-for-mac/ Google Toolbox for Mac].
+
+= GCC 4.2.1 iPhone/10.5SDK Development gcov Issue =
+
+The problem with building on the iPhone/10.5SDK is even more "interesting". Normally to set up code coverage on Xcode, you turn on the "Instrument Program Flow" (-fprofile-arcs) and "Generate Test Coverage Files" (-ftest-coverage) flags, and add libgcov (-lgcov). When you build on the iPhone/10.5SDK using gcc 4.2.1, the stock libgcov included with gcc 4.2.1 has references to _vproc_transaction_begin_ and _vproc_transaction_end_. These routines are defined in the 10.6 runtime (crt1.10.6.o) but are not defined in the 10.5 runtime (the iPhone SDKs, at least up to iPhone SDK 3.2, depend on the 10.5 runtime) so you receive the link errors.
+
+To get around this we have built our own version of libgcov that doesn't need _vproc_transaction_begin_ and _vproc_transaction_end_. You can get it [http://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/SnowLeopardGcov here]. Should you want to build you own, you can grab the sources for the version of gcc included with Xcode 3.2.2 [http://www.opensource.apple.com/tarballs/gcc/gcc-5659.tar.gz here] and change this [http://www.opensource.apple.com/source/gcc/gcc-5659/gcc/libgcov.c file] so that it doesn't link in the vproc functions. I did this like so:
+
+{{{
+#if defined(__APPLE__) && !defined(__STATIC__) && !defined(__ppc__) && !defined(__ppc64__) && !defined(__arm__)
+#include <vproc.h>
+#undef VPROC_HAS_TRANSACTIONS  /* <---- dmaclach hack to turn off link errors on iPhone */
+#if defined(VPROC_HAS_TRANSACTIONS)
+vproc_transaction_t vproc_transaction_begin(vproc_t virtual_proc) __attribute__((weak));
+void vproc_transaction_end(vproc_t virtual_proc, vproc_transaction_t handle) __attribute__((weak));
+#endif
+}}}
+
+and then build with the following command
+{{{
+sudo gnumake install RC_OS=macos RC_ARCHS='x86_64 i386 ppc' TARGETS='x86_64 i386 ppc' SRCROOT=`pwd` OBJROOT=`pwd`/build/obj DSTROOT=`pwd`/build/dst SYMROOT=`pwd`/build/sym
+lipo -create -arch i386 build/dst/usr/lib/gcc/i686-apple-darwin10/libgcov.a -arch x86_64 build/dst/usr/lib/gcc/i686-apple-darwin10/x86_64/libgcov.a -arch ppc build/dst/usr/lib/gcc/powerpc-apple-darwin10/4.2.1/libgcov.a -output ~/Desktop/libgcov.a
+}}}
+
+which should make a 3 way fat version on your desktop.
+
+If you choose to link in our special version of libgcov, make sure to remove the -lgcov flag from your project/target, or you will run into multiply defined link errors.
+
+Your other option is to build with gcc 4.0 as it has a version of libgcov that works with the 10.5 runtime.
+
+Note that in addition to linking in our special libgcov, you will also need to get rid of any inlines in your precompiled headers as described above in "General Snow Leopard gcov Issue". 
