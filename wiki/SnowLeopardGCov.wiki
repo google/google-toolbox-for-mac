@@ -5,7 +5,7 @@
 
 Code coverage doesn't work well when building on Snow Leopard using Xcode 3.2.2 with gcc 4.2.1, but you can get it working.
 
-[http://openradar.appspot.com/radar?id=38940 Radar 8049256] "gcov broken on gcc 4.2.1 (Xcode 3.2.2) with inlines in precompiled headers"
+[http://openradar.appspot.com/radar?id=389401 Radar 8049256] "gcov broken on gcc 4.2.1 (Xcode 3.2.2) with inlines in precompiled headers"
 
 
 [http://openradar.appspot.com/radar?id=395401 Radar 8052323] "gcov broken on gcc 4.2.1 (Xcode 3.2.2) with iPhone or 10.5SDK"
