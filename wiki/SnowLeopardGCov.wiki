@@ -80,4 +80,4 @@ If you choose to link in our special version of libgcov, make sure to remove the
 
 Your other option is to build with gcc 4.0 as it has a version of libgcov that works with the 10.5 runtime.
 
-Note that in addition to linking in our special libgcov, you will also need to get rid of any inlines in your precompiled headers as described above in "General Snow Leopard gcov Issue". 
+Note that in addition to linking in our special libgcov, you will also need to get rid of any inlines in your prefix headers as described above in "General Snow Leopard gcov Issue". 
