@@ -96,9 +96,12 @@
                                        GTMNSRectOfSize(size),
                                        GTMScaleProportionally,
                                        GTMRectAlignCenter);
-  
-  if ([bestRep respondsToSelector:@selector(CGImage)]) {
-    CGImageRef imageRef = (CGImageRef)[bestRep performSelector:@selector(CGImage)];
+  // Using NSSelectorFromString because CGImage isn't a declared selector
+  // on Tiger, and just using straight @selector(CGImage) will cause compile
+  // errors on a 10.4 SDK.
+  SEL cgImageSel = NSSelectorFromString(@"CGImage");
+  if ([bestRep respondsToSelector:cgImageSel]) {
+    CGImageRef imageRef = (CGImageRef)[bestRep performSelector:cgImageSel];
     
     CGColorSpaceRef cspace = CGColorSpaceCreateDeviceRGB();   
     if (!cspace) return NO;
