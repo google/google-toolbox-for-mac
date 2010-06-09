@@ -250,6 +250,9 @@
 		8BC045C20DAE899100C2D1CA /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */; };
 		8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */; };
 		8BC04CD80DB003D800C2D1CA /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BCB59F011C00ED6009B6C40 /* GTMNSScanner+Unsigned.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BCB59EE11C00ED6009B6C40 /* GTMNSScanner+Unsigned.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BCB59F111C00ED6009B6C40 /* GTMNSScanner+Unsigned.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB59EF11C00ED6009B6C40 /* GTMNSScanner+Unsigned.m */; };
+		8BCB59F311C00EF6009B6C40 /* GTMNSScanner+UnsignedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB59F211C00EF6009B6C40 /* GTMNSScanner+UnsignedTest.m */; };
 		8BD35B910FB22980009058F5 /* GTMNSScanner+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BD35B920FB22980009058F5 /* GTMNSScanner+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */; };
 		8BD35B940FB22986009058F5 /* GTMNSScanner+JSONTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */; };
@@ -734,6 +737,9 @@
 		8BB77A0311B5A09900AB31AF /* GTMGoogleSearchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGoogleSearchTest.m; sourceTree = "<group>"; };
 		8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		8BC04D140DB0061300C2D1CA /* RunMacOSUnitTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = RunMacOSUnitTests.sh; sourceTree = "<group>"; };
+		8BCB59EE11C00ED6009B6C40 /* GTMNSScanner+Unsigned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSScanner+Unsigned.h"; sourceTree = "<group>"; };
+		8BCB59EF11C00ED6009B6C40 /* GTMNSScanner+Unsigned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+Unsigned.m"; sourceTree = "<group>"; };
+		8BCB59F211C00EF6009B6C40 /* GTMNSScanner+UnsignedTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+UnsignedTest.m"; sourceTree = "<group>"; };
 		8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSScanner+JSON.h"; sourceTree = "<group>"; };
 		8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+JSON.m"; sourceTree = "<group>"; };
 		8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+JSONTest.m"; sourceTree = "<group>"; };
@@ -1442,6 +1448,9 @@
 				8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */,
 				8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */,
 				8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */,
+				8BCB59EE11C00ED6009B6C40 /* GTMNSScanner+Unsigned.h */,
+				8BCB59EF11C00ED6009B6C40 /* GTMNSScanner+Unsigned.m */,
+				8BCB59F211C00EF6009B6C40 /* GTMNSScanner+UnsignedTest.m */,
 				F42597760E23FE3A003BEA3E /* GTMNSString+FindFolder.h */,
 				F42597770E23FE3A003BEA3E /* GTMNSString+FindFolder.m */,
 				F42597780E23FE3A003BEA3E /* GTMNSString+FindFolderTest.m */,
@@ -1654,6 +1663,7 @@
 				8BDB8A991152E1B200C411B1 /* GTMNSAnimatablePropertyContainer.h in Headers */,
 				8B21DE56117E5CB7000E004F /* GTMLocalizedString.h in Headers */,
 				8BB7802E11B6C4EA00AB31AF /* GTMGoogleSearch.h in Headers */,
+				8BCB59F011C00ED6009B6C40 /* GTMNSScanner+Unsigned.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2197,6 +2207,7 @@
 				0B1B9B8A10FECDA00084EE4B /* GTMStringEncodingTest.m in Sources */,
 				8B17FD15117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */,
 				8B455F5E1193870A00ABD707 /* GTMLocalizedStringTest.m in Sources */,
+				8BCB59F311C00EF6009B6C40 /* GTMNSScanner+UnsignedTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2273,6 +2284,7 @@
 				0B1B9B8810FECD870084EE4B /* GTMStringEncoding.m in Sources */,
 				8BDB8A9A1152E1B200C411B1 /* GTMNSAnimatablePropertyContainer.m in Sources */,
 				8BB77A0611B5A0A100AB31AF /* GTMGoogleSearch.m in Sources */,
+				8BCB59F111C00ED6009B6C40 /* GTMNSScanner+Unsigned.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
