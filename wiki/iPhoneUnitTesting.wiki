@@ -13,11 +13,11 @@ Hopefully your project already has an application target for building something 
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.h` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your target
+  # Add `google-toolbox-for-mac/UnitTesting/GTMUnitTestDevLog.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMUnitTestDevLog.h` to your target
-  # Add `google-toolbox-for-mac/UnitTesting/GTMUnitTestDevLog.h` to your target
-  # Add `google-toolbox-for-mac/Foundation/GTMObjC2Runtime.h` to your target
   # Add `google-toolbox-for-mac/Foundation/GTMObjC2Runtime.m` to your target
-  # Add `google-toolbox-for-mac/Foundation/GTMRegex.h` to your target
+  # Add `google-toolbox-for-mac/Foundation/GTMObjC2Runtime.h` to your target
+  # Add `google-toolbox-for-mac/Foundation/GTMRegex.m` to your target
   # Add `google-toolbox-for-mac/Foundation/GTMRegex.h` to your target
   # Add `google-toolbox-for-mac/GTMDefines.h` to your target
   # Add a new 'run script' build phase as the last step of your target build via "Project Menu > New Build Phase > New Run Script Build Phase", and dragging it to the end of the build steps if needed.
