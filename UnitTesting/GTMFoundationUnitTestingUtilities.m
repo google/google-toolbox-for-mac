@@ -6,15 +6,17 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
 //
+
+#import <unistd.h>
 
 #import "GTMFoundationUnitTestingUtilities.h"
 
@@ -23,7 +25,7 @@
 // Returns YES if we are currently being unittested.
 + (BOOL)areWeBeingUnitTested {
   BOOL answer = NO;
-  
+
   // Check to see if the SenTestProbe class is linked in before we call it.
   Class SenTestProbeClass = NSClassFromString(@"SenTestProbe");
   if (SenTestProbeClass != Nil) {
@@ -37,6 +39,22 @@
     [invocation getReturnValue:&answer];
   }
   return answer;
+}
+
++ (void)maxRuntimeTimer:(NSTimer*)timer {
+  // Directly use fprintf so the message always shows up.
+  fprintf(stderr, "%s:%d: error: %s : Hit app testing timeout!\n",
+          __FILE__, __LINE__, __func__);
+  fflush(stderr);
+  exit(1);
+}
+
++ (void)installTestingTimeout:(NSTimeInterval)maxRunInterval {
+  [NSTimer scheduledTimerWithTimeInterval:maxRunInterval
+                                   target:self
+                                 selector:@selector(maxRuntimeTimer:)
+                                 userInfo:nil
+                                  repeats:NO];
 }
 
 @end
@@ -64,7 +82,7 @@
                         context:context];
 }
 
-- (BOOL)gtm_runUntilDate:(NSDate *)date 
+- (BOOL)gtm_runUntilDate:(NSDate *)date
                  context:(id<GTMUnitTestingRunLoopContext>)context {
   return [self gtm_runUntilDate:date mode:NSDefaultRunLoopMode context:context];
 }

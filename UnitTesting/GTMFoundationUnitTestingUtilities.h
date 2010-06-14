@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -24,13 +24,13 @@
 // NSDate* next = [NSDate dateWithTimeIntervalSinceNow:resolution];
 // [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
 //                          beforeDate:next];
-// where |resolution| is a guess at how long it will take for the event to 
+// where |resolution| is a guess at how long it will take for the event to
 // happen. There are two major problems with this approach:
 // a) By guessing we force the test to take at least |resolution| time.
-// b) It makes for flaky tests in that sometimes this guess isn't good, and the 
+// b) It makes for flaky tests in that sometimes this guess isn't good, and the
 //    test takes slightly longer than |resolution| time causing the test to post
 //    a possibly false-negative failure.
-// To make timing callback tests easier use this class and the 
+// To make timing callback tests easier use this class and the
 // GTMUnitTestingAdditions additions to NSRunLoop and NSApplication.
 // Your call would look something like this:
 // id<GTMUnitTestingRunLoopContext> context = [self getMeAContext];
@@ -51,6 +51,15 @@
 
 // Returns YES if we are currently being unittested.
 + (BOOL)areWeBeingUnitTested;
+
+
+// Installs a timer to quit the process after the given time, as a catch all for
+// something not working.  There is a problem that of the testing bundle fails
+// to load when is is being hosted in a custom app, the app will remain running
+// until the user quits it.  This provides a way out of that.  When the timer
+// fires, a message is logged, and the process is directly exited, no clean
+// shutdown.  This requires a runloop be running.
++ (void)installTestingTimeout:(NSTimeInterval)maxRunInterval;
 
 @end
 
@@ -78,7 +87,7 @@
                  context:(id<GTMUnitTestingRunLoopContext>)context;
 
 // Calls -gtm_runUntilDate:mode:context: with mode set to NSDefaultRunLoopMode.
-- (BOOL)gtm_runUntilDate:(NSDate *)date 
+- (BOOL)gtm_runUntilDate:(NSDate *)date
                  context:(id<GTMUnitTestingRunLoopContext>)context;
 
 // Calls -gtm_runUntilDate:mode:context: with mode set to NSDefaultRunLoopMode,
