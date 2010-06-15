@@ -69,7 +69,6 @@
 		8B5547CB0DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */; };
 		8B5A9E200E71CB6C005DA441 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */; };
 		8B6C18740F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */; };
-		8B6C18750F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
 		8B7DCEAA0DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */; };
 		8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */; };
 		8BB78FA911B94D9500AB31AF /* GTMGoogleSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB78FA711B94D9500AB31AF /* GTMGoogleSearch.m */; };
@@ -98,7 +97,6 @@
 		8BC04A720DAF144700C2D1CA /* GTMSystemVersionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04A710DAF144700C2D1CA /* GTMSystemVersionTest.m */; };
 		8BC04A750DAF145200C2D1CA /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04A740DAF145200C2D1CA /* GTMSystemVersion.m */; };
 		8BC04D480DB0088500C2D1CA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC04D470DB0088500C2D1CA /* libz.dylib */; };
-		8BC04DE80DB023D400C2D1CA /* ReleaseNotes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */; };
 		8BCB5AB111C02D7D009B6C40 /* GTMNSScanner+Unsigned.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB5AAF11C02D7D009B6C40 /* GTMNSScanner+Unsigned.m */; };
 		8BCB5AB211C02D7D009B6C40 /* GTMNSScanner+UnsignedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BCB5AB011C02D7D009B6C40 /* GTMNSScanner+UnsignedTest.m */; };
 		8BD35C920FB234E1009058F5 /* GTMNSScanner+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35C900FB234E1009058F5 /* GTMNSScanner+JSON.m */; };
@@ -111,6 +109,7 @@
 		8BFE15C70FB0F764001BE894 /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */; };
 		8BFE15C80FB0F764001BE894 /* GTMABAddressBookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */; };
 		8BFE15C90FB0F764001BE894 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C50FB0F764001BE894 /* phone.png */; };
+		8BFFCD7811C1934900E45777 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
 		F417115A0ECDFF0400B9B276 /* GTMLightweightProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711580ECDFF0400B9B276 /* GTMLightweightProxy.m */; };
 		F417115B0ECDFF0400B9B276 /* GTMLightweightProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711590ECDFF0400B9B276 /* GTMLightweightProxyTest.m */; };
 		F418AF990E7558EC004FB565 /* GTMExceptionalInlines.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AF940E7558DC004FB565 /* GTMExceptionalInlines.m */; };
@@ -189,6 +188,8 @@
 		64D0F5DD0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_100x100_to_50x50.png"; path = "TestData/GTMUIImage+Resize_100x100_to_50x50.png"; sourceTree = "<group>"; };
 		67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIPhoneUnitTestDelegate.h; sourceTree = "<group>"; };
 		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
+		8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiPhone40.xcconfig; sourceTree = "<group>"; };
+		8B23010911C180E2001FA319 /* ReleaseiPhone40.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiPhone40.xcconfig; sourceTree = "<group>"; };
 		8B30806F1056BDCE006C4C7A /* GTMNSNumber+64Bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSNumber+64Bit.h"; sourceTree = "<group>"; };
 		8B3080701056BDCE006C4C7A /* GTMNSNumber+64Bit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSNumber+64Bit.m"; sourceTree = "<group>"; };
 		8B3080711056BDCE006C4C7A /* GTMNSNumber+64BitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSNumber+64BitTest.m"; sourceTree = "<group>"; };
@@ -619,6 +620,8 @@
 				F4E426B710B70DFB00F28A35 /* ReleaseiPhone312.xcconfig */,
 				CAD23A771174AE7800EA94E5 /* ReleaseiPhone313.xcconfig */,
 				CAD23A761174AE7800EA94E5 /* ReleaseiPhone32.xcconfig */,
+				8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */,
+				8B23010911C180E2001FA319 /* ReleaseiPhone40.xcconfig */,
 			);
 			path = Project;
 			sourceTree = "<group>";
@@ -654,17 +657,31 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		F4B541440E7F022B004738EC /* All UnitTests all SDKs */ = {
+		8B4514EB11BEC38900A9EE64 /* All UnitTests All SDKs All Platforms */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "\"All UnitTests\" \"All UnitTests\"";
-			buildConfigurationList = F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests all SDKs" */;
+			buildConfigurationList = 8B4514EC11BEC38900A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */;
 			buildPhases = (
 			);
 			buildToolPath = BuildScripts/BuildAllSDKs.sh;
 			buildWorkingDirectory = "$(SRCROOT)";
 			dependencies = (
 			);
-			name = "All UnitTests all SDKs";
+			name = "All UnitTests All SDKs All Platforms";
+			passBuildSettingsInEnvironment = 1;
+			productName = "All UnitTests all SDKs";
+		};
+		F4B541440E7F022B004738EC /* All UnitTests All SDKs */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "\"\" \"All UnitTests\"";
+			buildConfigurationList = F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs" */;
+			buildPhases = (
+			);
+			buildToolPath = BuildScripts/BuildAllSDKs.sh;
+			buildWorkingDirectory = "$(SRCROOT)";
+			dependencies = (
+			);
+			name = "All UnitTests All SDKs";
 			passBuildSettingsInEnvironment = 1;
 			productName = "All UnitTests all SDKs";
 		};
@@ -703,7 +720,8 @@
 			targets = (
 				F4C7F9BF0DC62EC8009BEE5B /* All UnitTests */,
 				1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */,
-				F4B541440E7F022B004738EC /* All UnitTests all SDKs */,
+				F4B541440E7F022B004738EC /* All UnitTests All SDKs */,
+				8B4514EB11BEC38900A9EE64 /* All UnitTests All SDKs All Platforms */,
 			);
 		};
 /* End PBXProject section */
@@ -715,7 +733,6 @@
 			files = (
 				8BC0486B0DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.gtmUTState in Resources */,
 				8BC0486C0DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png in Resources */,
-				8BC04DE80DB023D400C2D1CA /* ReleaseNotes.txt in Resources */,
 				8BFE15C70FB0F764001BE894 /* GTMABAddressBook.strings in Resources */,
 				8BFE15C90FB0F764001BE894 /* phone.png in Resources */,
 				64D0F5DE0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_60x40.png in Resources */,
@@ -823,7 +840,6 @@
 				6294461C0EDE178D009295EA /* GTMNSArray+MergeTest.m in Sources */,
 				6294461D0EDE17A0009295EA /* GTMNSArray+Merge.m in Sources */,
 				8B6C18740F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
-				8B6C18750F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 				8BFE15C60FB0F764001BE894 /* GTMABAddressBook.m in Sources */,
 				8BFE15C80FB0F764001BE894 /* GTMABAddressBookTest.m in Sources */,
 				8BD35C920FB234E1009058F5 /* GTMNSScanner+JSON.m in Sources */,
@@ -842,6 +858,7 @@
 				8BB78FAA11B94D9500AB31AF /* GTMGoogleSearchTest.m in Sources */,
 				8BCB5AB111C02D7D009B6C40 /* GTMNSScanner+Unsigned.m in Sources */,
 				8BCB5AB211C02D7D009B6C40 /* GTMNSScanner+UnsignedTest.m in Sources */,
+				8BFFCD7811C1934900E45777 /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -856,6 +873,320 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		8B23011211C1810E001FA319 /* iPhone4.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone4.0-Debug";
+		};
+		8B23011311C1810E001FA319 /* iPhone4.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
+			};
+			name = "iPhone4.0-Debug-gcov";
+		};
+		8B23011411C1810E001FA319 /* iPhone4.0-Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B23010911C180E2001FA319 /* ReleaseiPhone40.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+			};
+			name = "iPhone4.0-Release";
+		};
+		8B23011511C1810E001FA319 /* iPhone4.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone4.0-Debug";
+		};
+		8B23011611C1810E001FA319 /* iPhone4.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone4.0-Debug-gcov";
+		};
+		8B23011711C1810E001FA319 /* iPhone4.0-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "iPhone4.0-Release";
+		};
+		8B23011811C1810E001FA319 /* iPhone4.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.2;
+			};
+			name = "iPhone4.0-Debug";
+		};
+		8B23011911C1810E001FA319 /* iPhone4.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.2;
+			};
+			name = "iPhone4.0-Debug-gcov";
+		};
+		8B23011A11C1810E001FA319 /* iPhone4.0-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+				SDKROOT = iphonesimulator3.2;
+			};
+			name = "iPhone4.0-Release";
+		};
+		8B23011B11C1810E001FA319 /* iPhone4.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone4.0-Debug";
+		};
+		8B23011C11C1810E001FA319 /* iPhone4.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone4.0-Debug-gcov";
+		};
+		8B23011D11C1810E001FA319 /* iPhone4.0-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone4.0-Release";
+		};
+		8B23011E11C1810E001FA319 /* iPhone4.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone4.0-Debug";
+		};
+		8B23011F11C1810E001FA319 /* iPhone4.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone4.0-Debug-gcov";
+		};
+		8B23012011C1810E001FA319 /* iPhone4.0-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone4.0-Release";
+		};
+		8B4514ED11BEC38900A9EE64 /* iPhone2.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests All SDKs All Platforms";
+			};
+			name = "iPhone2.0-Debug";
+		};
+		8B4514EE11BEC38900A9EE64 /* iPhone2.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.0-Debug-gcov";
+		};
+		8B4514EF11BEC38900A9EE64 /* iPhone2.0-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.0-Release";
+		};
+		8B4514F011BEC38900A9EE64 /* iPhone2.1-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.1-Debug";
+		};
+		8B4514F111BEC38900A9EE64 /* iPhone2.1-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.1-Debug-gcov";
+		};
+		8B4514F211BEC38900A9EE64 /* iPhone2.1-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.1-Release";
+		};
+		8B4514F311BEC38900A9EE64 /* iPhone2.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.2-Debug";
+		};
+		8B4514F411BEC38900A9EE64 /* iPhone2.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.2-Debug-gcov";
+		};
+		8B4514F511BEC38900A9EE64 /* iPhone2.2-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.2-Release";
+		};
+		8B4514F611BEC38900A9EE64 /* iPhone2.2.1-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.2.1-Debug";
+		};
+		8B4514F711BEC38900A9EE64 /* iPhone2.2.1-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.2.1-Debug-gcov";
+		};
+		8B4514F811BEC38900A9EE64 /* iPhone2.2.1-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone2.2.1-Release";
+		};
+		8B4514F911BEC38900A9EE64 /* iPhone3.0-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.0-Debug";
+		};
+		8B4514FA11BEC38900A9EE64 /* iPhone3.0-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.0-Debug-gcov";
+		};
+		8B4514FB11BEC38900A9EE64 /* iPhone3.0-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.0-Release";
+		};
+		8B4514FC11BEC38900A9EE64 /* iPhone3.1-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1-Debug";
+		};
+		8B4514FD11BEC38900A9EE64 /* iPhone3.1-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1-Debug-gcov";
+		};
+		8B4514FE11BEC38900A9EE64 /* iPhone3.1-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1-Release";
+		};
+		8B4514FF11BEC38900A9EE64 /* iPhone3.1.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.2-Debug";
+		};
+		8B45150011BEC38900A9EE64 /* iPhone3.1.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.2-Debug-gcov";
+		};
+		8B45150111BEC38900A9EE64 /* iPhone3.1.2-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.2-Release";
+		};
+		8B45150211BEC38900A9EE64 /* iPhone3.1.3-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.3-Debug";
+		};
+		8B45150311BEC38900A9EE64 /* iPhone3.1.3-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.3-Debug-gcov";
+		};
+		8B45150411BEC38900A9EE64 /* iPhone3.1.3-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.1.3-Release";
+		};
+		8B45150511BEC38900A9EE64 /* iPhone3.2-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.2-Debug";
+		};
+		8B45150611BEC38900A9EE64 /* iPhone3.2-Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.2-Debug-gcov";
+		};
+		8B45150711BEC38900A9EE64 /* iPhone3.2-Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "iPhone3.2-Release";
+		};
 		CAD23A781174AE9F00EA94E5 /* iPhone3.1.3-Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */;
@@ -1150,7 +1481,7 @@
 		F4E4263F10B70C4F00F28A35 /* iPhone2.0-Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
+				PRODUCT_NAME = "All UnitTests All SDKs";
 			};
 			name = "iPhone2.0-Debug";
 		};
@@ -1825,6 +2156,46 @@
 				CAD23A8A1174AF2400EA94E5 /* iPhone3.2-Debug */,
 				CAD23A8B1174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
 				CAD23A8C1174AF2400EA94E5 /* iPhone3.2-Release */,
+				8B23011811C1810E001FA319 /* iPhone4.0-Debug */,
+				8B23011911C1810E001FA319 /* iPhone4.0-Debug-gcov */,
+				8B23011A11C1810E001FA319 /* iPhone4.0-Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "iPhone3.1.2-Debug";
+		};
+		8B4514EC11BEC38900A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B4514ED11BEC38900A9EE64 /* iPhone2.0-Debug */,
+				8B4514EE11BEC38900A9EE64 /* iPhone2.0-Debug-gcov */,
+				8B4514EF11BEC38900A9EE64 /* iPhone2.0-Release */,
+				8B4514F011BEC38900A9EE64 /* iPhone2.1-Debug */,
+				8B4514F111BEC38900A9EE64 /* iPhone2.1-Debug-gcov */,
+				8B4514F211BEC38900A9EE64 /* iPhone2.1-Release */,
+				8B4514F311BEC38900A9EE64 /* iPhone2.2-Debug */,
+				8B4514F411BEC38900A9EE64 /* iPhone2.2-Debug-gcov */,
+				8B4514F511BEC38900A9EE64 /* iPhone2.2-Release */,
+				8B4514F611BEC38900A9EE64 /* iPhone2.2.1-Debug */,
+				8B4514F711BEC38900A9EE64 /* iPhone2.2.1-Debug-gcov */,
+				8B4514F811BEC38900A9EE64 /* iPhone2.2.1-Release */,
+				8B4514F911BEC38900A9EE64 /* iPhone3.0-Debug */,
+				8B4514FA11BEC38900A9EE64 /* iPhone3.0-Debug-gcov */,
+				8B4514FB11BEC38900A9EE64 /* iPhone3.0-Release */,
+				8B4514FC11BEC38900A9EE64 /* iPhone3.1-Debug */,
+				8B4514FD11BEC38900A9EE64 /* iPhone3.1-Debug-gcov */,
+				8B4514FE11BEC38900A9EE64 /* iPhone3.1-Release */,
+				8B4514FF11BEC38900A9EE64 /* iPhone3.1.2-Debug */,
+				8B45150011BEC38900A9EE64 /* iPhone3.1.2-Debug-gcov */,
+				8B45150111BEC38900A9EE64 /* iPhone3.1.2-Release */,
+				8B45150211BEC38900A9EE64 /* iPhone3.1.3-Debug */,
+				8B45150311BEC38900A9EE64 /* iPhone3.1.3-Debug-gcov */,
+				8B45150411BEC38900A9EE64 /* iPhone3.1.3-Release */,
+				8B45150511BEC38900A9EE64 /* iPhone3.2-Debug */,
+				8B45150611BEC38900A9EE64 /* iPhone3.2-Debug-gcov */,
+				8B45150711BEC38900A9EE64 /* iPhone3.2-Release */,
+				8B23011E11C1810E001FA319 /* iPhone4.0-Debug */,
+				8B23011F11C1810E001FA319 /* iPhone4.0-Debug-gcov */,
+				8B23012011C1810E001FA319 /* iPhone4.0-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
@@ -1859,11 +2230,14 @@
 				CAD23A841174AF2400EA94E5 /* iPhone3.2-Debug */,
 				CAD23A851174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
 				CAD23A861174AF2400EA94E5 /* iPhone3.2-Release */,
+				8B23011211C1810E001FA319 /* iPhone4.0-Debug */,
+				8B23011311C1810E001FA319 /* iPhone4.0-Debug-gcov */,
+				8B23011411C1810E001FA319 /* iPhone4.0-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
 		};
-		F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests all SDKs" */ = {
+		F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4E4263F10B70C4F00F28A35 /* iPhone2.0-Debug */,
@@ -1893,6 +2267,9 @@
 				CAD23A8D1174AF2400EA94E5 /* iPhone3.2-Debug */,
 				CAD23A8E1174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
 				CAD23A8F1174AF2400EA94E5 /* iPhone3.2-Release */,
+				8B23011B11C1810E001FA319 /* iPhone4.0-Debug */,
+				8B23011C11C1810E001FA319 /* iPhone4.0-Debug-gcov */,
+				8B23011D11C1810E001FA319 /* iPhone4.0-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";
@@ -1927,6 +2304,9 @@
 				CAD23A871174AF2400EA94E5 /* iPhone3.2-Debug */,
 				CAD23A881174AF2400EA94E5 /* iPhone3.2-Debug-gcov */,
 				CAD23A891174AF2400EA94E5 /* iPhone3.2-Release */,
+				8B23011511C1810E001FA319 /* iPhone4.0-Debug */,
+				8B23011611C1810E001FA319 /* iPhone4.0-Debug-gcov */,
+				8B23011711C1810E001FA319 /* iPhone4.0-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "iPhone3.1.2-Debug";

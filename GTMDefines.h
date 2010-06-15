@@ -1,4 +1,4 @@
-// 
+//
 // GTMDefines.h
 //
 //  Copyright 2008 Google Inc.
@@ -6,20 +6,24 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
 //
- 
+
 // ============================================================================
 
 #include <AvailabilityMacros.h>
 #include <TargetConditionals.h>
+
+#if TARGET_OS_IPHONE
+#include <Availability.h>
+#endif //  TARGET_OS_IPHONE
 
 // Not all MAC_OS_X_VERSION_10_X macros defined in past SDKs
 #ifndef MAC_OS_X_VERSION_10_5
@@ -29,13 +33,33 @@
   #define MAC_OS_X_VERSION_10_6 1060
 #endif
 
+// Not all __IPHONE_X macros defined in past SDKs
+#ifndef __IPHONE_2_1
+  #define __IPHONE_2_1 20100
+#endif
+#ifndef __IPHONE_2_2
+  #define __IPHONE_2_2 20200
+#endif
+#ifndef __IPHONE_3_0
+  #define __IPHONE_3_0 30000
+#endif
+#ifndef __IPHONE_3_1
+  #define __IPHONE_3_1 30100
+#endif
+#ifndef __IPHONE_3_2
+  #define __IPHONE_3_2 30200
+#endif
+#ifndef __IPHONE_4_0
+  #define __IPHONE_4_0 40000
+#endif
+
 // ----------------------------------------------------------------------------
 // CPP symbols that can be overridden in a prefix to control how the toolbox
 // is compiled.
 // ----------------------------------------------------------------------------
 
 
-// By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and 
+// By setting the GTM_CONTAINERS_VALIDATION_FAILED_LOG and
 // GTM_CONTAINERS_VALIDATION_FAILED_ASSERT macros you can control what happens
 // when a validation fails. If you implement your own validators, you may want
 // to control their internals using the same macros for consistency.
@@ -82,12 +106,12 @@
 //    _GTMDevLog           log some error/problem in debug builds
 //    _GTMDevAssert        assert if conditon isn't met w/in a method/function
 //                           in all builds.
-// 
+//
 // To replace this system, just provide different macro definitions in your
 // prefix header.  Remember, any implementation you provide *must* be thread
 // safe since this could be called by anything in what ever situtation it has
 // been placed in.
-// 
+//
 
 // We only define the simple macros if nothing else has defined this.
 #ifndef _GTMDevLog
@@ -203,10 +227,10 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 #if GTM_MACOS_SDK
 #define GTM_AVAILABLE_ONLY_ON_IPHONE UNAVAILABLE_ATTRIBUTE
 #define GTM_AVAILABLE_ONLY_ON_MACOS
-#else 
+#else
 #define GTM_AVAILABLE_ONLY_ON_IPHONE
 #define GTM_AVAILABLE_ONLY_ON_MACOS UNAVAILABLE_ATTRIBUTE
-#endif 
+#endif
 
 // Provide a symbol to include/exclude extra code for GC support.  (This mainly
 // just controls the inclusion of finalize methods).
@@ -296,7 +320,7 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #define GTM_NONNULL(x) __attribute__((nonnull(x)))
 #endif
 
-// To simplify support for both Leopard and Snow Leopard we declare 
+// To simplify support for both Leopard and Snow Leopard we declare
 // the Snow Leopard protocols that we need here.
 #if !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
 @protocol NSConnectionDelegate
