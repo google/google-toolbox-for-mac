@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -22,11 +22,11 @@
 // the APIs that they wrap. These wrappers also protect you from a number
 // of issues in the AddressBook API (as of iPhone SDK 2.0/2.1)
 //
-// Note that there is a strings file that you may want to localize 
+// Note that there is a strings file that you may want to localize
 // (GTMABAddressBook.strings).
 //
 // If things seem strange, it may be due to one of the following radars:
-// 6240394 AddressBook framework constants not initialized until 
+// 6240394 AddressBook framework constants not initialized until
 //         ABCreateAddressBook called
 //         -- CLOSED as designed
 // 6208390 Integer and real values don't work in ABMultiValueRefs
@@ -34,9 +34,9 @@
 //         either)
 // 6207605 RecordIDs for people and groups are not unique in AddressBook
 //         -- CLOSED as designed
-// 6204021 kABGroupNameProperty and kABPersonFirstNameProperty have the same 
+// 6204021 kABGroupNameProperty and kABPersonFirstNameProperty have the same
 //         value
-// 6203982 ABPersonCopyLocalizedPropertyName returns name for 
+// 6203982 ABPersonCopyLocalizedPropertyName returns name for
 //         kABGroupNameProperty
 // 6203961 ABPersonGetTypeOfProperty returns a type for kABGroupNameProperty
 // 6203854 ABMultiValues hash to their address
@@ -48,7 +48,7 @@
 //         -- CLOSED behaves correctly
 // 6202827 Passing nil info ABMultiValueAddValueAndLabel causes crash
 //         -- CLOSED behaves correctly
-// 6202807 ABMultiValueInsertValueAndLabelAtIndex allows you to insert values 
+// 6202807 ABMultiValueInsertValueAndLabelAtIndex allows you to insert values
 //         past end
 // 6201276 Removing a NULL record using ABAddressBookRemoveRecord crashes
 //         -- CLOSED behaves correctly
@@ -58,9 +58,10 @@
 //         value
 // 6201005 ABRecordRemoveValue returns true for value that aren't in the record
 //         -- CLOSED behaves correctly
-// 6200703 ABAddressBookAddRecord doesn't add an item to the people array until 
+// 6200703 ABAddressBookAddRecord doesn't add an item to the people array until
 //         it's saved
 // 6200638 ABAddressBookHasUnsavedChanges doesn't work
+//         -- CLOSED fixed in iOS 3.2
 
 #import "GTMDefines.h"
 #import <Foundation/Foundation.h>
@@ -191,7 +192,7 @@ extern NSString* const kABGroupRecordType;
 // As of iPhone 2.1, this does not work, and will always return NO.
 // Radar 6200638: ABAddressBookHasUnsavedChanges doesn't work
 - (BOOL)hasUnsavedChanges;
-  
+
 // Returns a GTMABPerson matching an ID
 // Returns nil if the record could not be found
 - (GTMABPerson *)personForId:(GTMABRecordID)uniqueId;
@@ -221,12 +222,12 @@ extern NSString* const kABGroupRecordType;
 //                until it's saved
 - (NSArray *)groups;
 
-// Performs a prefix search on the composite names of people in an address book 
+// Performs a prefix search on the composite names of people in an address book
 // and returns an array of persons that match the search criteria.
 // Ignores case.
 - (NSArray *)peopleWithCompositeNameWithPrefix:(NSString *)prefix;
 
-// Performs a prefix search on the composite names of groups in an address book 
+// Performs a prefix search on the composite names of groups in an address book
 // and returns an array of groups that match the search criteria.
 // Ignores case.
 - (NSArray *)groupsWithCompositeNameWithPrefix:(NSString *)prefix;
@@ -244,7 +245,7 @@ extern NSString* const kABGroupRecordType;
   ABRecordRef record_;
 }
 
-// Create a record with a recordRef. 
+// Create a record with a recordRef.
 // Since GTMABRecord is an abstract base class, attempting to create one
 // of these directly will throw an exception. Use with one of the concrete
 // subclasses.
@@ -262,11 +263,11 @@ extern NSString* const kABGroupRecordType;
 // Return the recordID for the record
 - (GTMABRecordID)recordID;
 
-// Returns the value of a given property. 
+// Returns the value of a given property.
 // The type of the value depends on the property type.
 - (id)valueForProperty:(GTMABPropertyID)property;
 
-// Set the value of a given property. 
+// Set the value of a given property.
 // The type of the value must match the property type.
 // Returns YES if value set properly
 - (BOOL)setValue:(id)value forProperty:(GTMABPropertyID)property;
@@ -289,7 +290,7 @@ extern NSString* const kABGroupRecordType;
 @interface GTMABPerson : GTMABRecord
 
 // Creates a person with a first name and a last name.
-+ (GTMABPerson *)personWithFirstName:(NSString *)first 
++ (GTMABPerson *)personWithFirstName:(NSString *)first
                             lastName:(NSString *)last;
 
 // Sets image data for a person. Data must be to a block of data that
@@ -384,7 +385,7 @@ extern NSString* const kABGroupRecordType;
  @private
   // Use unsigned long here instead of NSUInteger because that's what
   // NSFastEnumeration Protocol wants currently (iPhone 2.1)
-  unsigned long mutations_;  
+  unsigned long mutations_;
 }
 
 // Create a new mutable multivalue with a given type
@@ -397,16 +398,16 @@ extern NSString* const kABGroupRecordType;
 - (id)initWithMutableMultiValue:(ABMutableMultiValueRef)multiValue;
 
 // Adds a value with its label
-// Returns the identifier if successful, kABMultiValueInvalidIdentifier 
+// Returns the identifier if successful, kABMultiValueInvalidIdentifier
 // otherwise.
 - (GTMABMultiValueIdentifier)addValue:(id)value withLabel:(CFStringRef)label;
 
 // Insert a value/label pair at a given index
-// Returns the identifier if successful. kABMultiValueInvalidIdentifier 
+// Returns the identifier if successful. kABMultiValueInvalidIdentifier
 // otherwise
 // If index is out of bounds, returns kABMultiValueInvalidIdentifier.
-- (GTMABMultiValueIdentifier)insertValue:(id)value 
-                               withLabel:(CFStringRef)label 
+- (GTMABMultiValueIdentifier)insertValue:(id)value
+                               withLabel:(CFStringRef)label
                                  atIndex:(NSUInteger)index;
 
 // Removes a value/label pair at a given index

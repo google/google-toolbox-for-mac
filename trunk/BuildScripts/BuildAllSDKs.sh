@@ -1,7 +1,7 @@
 #!/bin/sh
 # BuildAllSDKs.sh
 #
-# This script builds the Tiger, Leopard, SnowLeopard and iPhone versions of the 
+# This script builds the Tiger, Leopard, SnowLeopard and iPhone versions of the
 # requested target in the current basic config (debug, release, debug-gcov).
 #
 # Copyright 2006-2009 Google Inc.
@@ -39,15 +39,17 @@ fi
 AVAILABLE_MACOS_SDKS=`eval ls ${DEVELOPER_SDK_DIR}`
 AVAILABLE_PLATFORMS=`eval ls ${DEVELOPER_DIR}/Platforms`
 
-# build up our GTMiPhone parts
 GTMIPHONE_OPEN_EXTRAS=""
 GTMIPHONE_BUILD_EXTRAS=""
+GTM_OPEN_EXTRAS=""
+GTM_BUILD_EXTRAS=""
+
+# build up our GTMiPhone parts
 if [ "${GTMIPHONE_PROJECT_TARGET}" != "" ]; then
   AVAILABLE_IPHONE_SDKS=`eval ls ${DEVELOPER_DIR}/Platforms/iPhoneSimulator.platform/Developer/SDKs`
   GTMIPHONE_OPEN_EXTRAS="
     if \"${AVAILABLE_PLATFORMS}\" contains \"iPhoneSimulator.platform\" then
       -- make sure both project files are open
-      open posix file \"${SRCROOT}/GTM.xcodeproj\"
       open posix file \"${SRCROOT}/GTMiPhone.xcodeproj\"
     end if"
   GTMIPHONE_BUILD_EXTRAS="
@@ -142,11 +144,13 @@ if [ "${GTMIPHONE_PROJECT_TARGET}" != "" ]; then
     end if"
 fi
 
-# build up our GTM AppleScript
-OUR_BUILD_SCRIPT="on run
-  tell application \"Xcode\"
-    activate
-    ${GTMIPHONE_OPEN_EXTRAS}
+# build up our GTMiPhone parts
+if [ "${GTM_PROJECT_TARGET}" != "" ]; then
+  GTM_OPEN_EXTRAS="
+    if \"${AVAILABLE_PLATFORMS}\" contains \"MacOSX.platform\" then
+      open posix file \"${SRCROOT}/GTM.xcodeproj\"
+    end if"
+  GTM_BUILD_EXTRAS="
     if \"${AVAILABLE_PLATFORMS}\" contains \"MacOSX.platform\" then
       tell project \"GTM\"
         -- wait for stub build to finish before kicking off the real builds.
@@ -187,8 +191,17 @@ OUR_BUILD_SCRIPT="on run
           end if
         end timeout
       end tell
-    end if
+    end if"
+fi
+
+# build up our GTM AppleScript
+OUR_BUILD_SCRIPT="on run
+  tell application \"Xcode\"
+    activate
+    ${GTMIPHONE_OPEN_EXTRAS}
+    ${GTM_OPEN_EXTRAS}
     ${GTMIPHONE_BUILD_EXTRAS}
+    ${GTM_BUILD_EXTRAS}
   end tell
 end run"
 
@@ -198,5 +211,5 @@ end run"
 # open to invoke it, there by escaping our little sandbox.
 #   xcode defeats this: ( echo "${OUR_BUILD_SCRIPT}" | osascript - & )
 rm -rf "${SCRIPT_APP}"
-echo "${OUR_BUILD_SCRIPT}" | osacompile -o "${SCRIPT_APP}" -x 
+echo "${OUR_BUILD_SCRIPT}" | osacompile -o "${SCRIPT_APP}" -x
 open "${SCRIPT_APP}"
