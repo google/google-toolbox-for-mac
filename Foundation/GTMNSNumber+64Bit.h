@@ -18,6 +18,9 @@
 
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
+#if GTM_IPHONE_SDK
+#import <CoreGraphics/CoreGraphics.h>
+#endif  // GTM_IPHONE_SDK
 
 // Adds support for working with NSIntegers, 
 // NSUIntegers, CGFloats and NSNumbers (rdar://5812091)

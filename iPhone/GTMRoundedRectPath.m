@@ -17,6 +17,8 @@
 //
 #include "GTMRoundedRectPath.h"
 
+#include <Foundation/Foundation.h>
+
 void GTMCGContextAddRoundRect(CGContextRef context, 
                               CGRect rect, 
                               CGFloat radius) {
