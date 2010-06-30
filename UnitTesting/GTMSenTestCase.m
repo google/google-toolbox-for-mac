@@ -86,7 +86,7 @@
   }
 
   NSString *reason = [NSString stringWithFormat:@"'%@' should be %s. %@",
-                      condition, isTrue ? "TRUE" : "FALSE", testDescription];
+                      condition, isTrue ? "false" : "true", testDescription];
 
   return [self failureInFile:filename atLine:lineNumber reason:reason];
 }
