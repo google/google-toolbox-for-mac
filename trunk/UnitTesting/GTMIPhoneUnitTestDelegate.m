@@ -29,17 +29,57 @@
 
 @interface UIApplication (GTMIPhoneUnitTestDelegate)
 
-// SPI that we need to exti cleanly with a value.
+// SPI that we need to exit cleanly with a value.
 - (void)_terminateWithStatus:(int)status;
 
 @end
 
+@interface GTMIPhoneUnitTestDelegate ()
+// We have cases where we are created in UIApplicationMain, but then the
+// user accidentally/intentionally replaces us as a delegate in their xib file
+// which means that we never get the applicationDidFinishLaunching: message.
+// We can register for the notification, but when the applications delegate
+// is reset, it releases us, and we get dealloced. Therefore we have retainer
+// which is responsible for retaining us until we get the notification.
+// We do it through this slightly roundabout route (instead of just an extra
+// retain in the init) so that clang doesn't complain about a leak.
+// We also check to make sure we aren't called twice with the
+// applicationDidFinishLaunchingCalled flag.
+@property (readwrite, retain, nonatomic) GTMIPhoneUnitTestDelegate *retainer;
+@end
+
 @implementation GTMIPhoneUnitTestDelegate
+
+@synthesize retainer = retainer_;
+
+- (id)init {
+  if ((self = [super init])) {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self
+           selector:@selector(applicationDidFinishLaunching:)
+               name:UIApplicationDidFinishLaunchingNotification
+             object:[UIApplication sharedApplication]];
+    [self setRetainer:self];
+  }
+  return self;
+}
 
 // Run through all the registered classes and run test methods on any
 // that are subclasses of SenTestCase. Terminate the application upon
 // test completion.
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+
+  // We could get called twice once from our notification registration, and
+  // once if we actually still are the delegate of the application after
+  // it has finished launching. So we'll just return if we've been called once.
+  if (applicationDidFinishLaunchingCalled_) return;
+  applicationDidFinishLaunchingCalled_ = YES;
+
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc removeObserver:self
+                name:UIApplicationDidFinishLaunchingNotification
+              object:[UIApplication sharedApplication]];
+
   [self runTests];
 
   if (!getenv("GTM_DISABLE_TERMINATION")) {
@@ -55,6 +95,10 @@
       exit(exitStatus);
     }
   }
+
+  // Release ourself now that we're done. If we really are the application
+  // delegate, it will have retained us, so we'll stick around if necessary.
+  [self setRetainer:nil];
 }
 
 // Run through all the registered classes and run test methods on any

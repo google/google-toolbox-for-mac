@@ -298,11 +298,27 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #endif
 #endif
 
+#ifndef NS_RETURNS_NOT_RETAINED
+  #if __has_feature(attribute_ns_returns_not_retained)
+    #define NS_RETURNS_NOT_RETAINED __attribute__((ns_returns_not_retained))
+  #else
+    #define NS_RETURNS_NOT_RETAINED
+  #endif
+#endif
+
 #ifndef CF_RETURNS_RETAINED
   #if __has_feature(attribute_cf_returns_retained)
     #define CF_RETURNS_RETAINED __attribute__((cf_returns_retained))
   #else
     #define CF_RETURNS_RETAINED
+  #endif
+#endif
+
+#ifndef CF_RETURNS_NOT_RETAINED
+  #if __has_feature(attribute_cf_returns_not_retained)
+    #define CF_RETURNS_NOT_RETAINED __attribute__((cf_returns_not_retained))
+  #else
+    #define CF_RETURNS_NOT_RETAINED
   #endif
 #endif
 
