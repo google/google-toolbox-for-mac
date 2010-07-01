@@ -17,7 +17,10 @@
 //
 
 #import "GTMSenTestCase.h"
+
 #import <unistd.h>
+#import <objc/message.h>
+
 #import "GTMObjC2Runtime.h"
 #import "GTMUnitTestDevLog.h"
 
@@ -287,8 +290,13 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
       [self setUp];
       @try {
         NSInvocation *invocation = [self invocation];
-        [invocation setTarget:self];
-        [invocation invoke];
+        // We don't call [invocation invokeWithTarget:self]; because of
+        // Radar 8081169: NSInvalidArgumentException can't be caught
+        // It turns out that on iOS4 (and 3.2) exceptions thrown inside an
+        // [invocation invoke] call cannot be caught.
+        // http://openradar.appspot.com/8081169
+        // Calling it this way appears to work on both platforms.
+        objc_msgSend(self, [invocation selector]);
       } @catch (NSException *exception) {
         e = [exception retain];
       }
