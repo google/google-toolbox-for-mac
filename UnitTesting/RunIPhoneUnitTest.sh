@@ -1,13 +1,13 @@
 #!/bin/bash
 #  RunIPhoneUnitTest.sh
 #  Copyright 2008 Google Inc.
-#  
+#
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License.  You may obtain a copy
 #  of the License at
-# 
+#
 #  http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -18,11 +18,11 @@
 #  on the device. To run on the device just choose "run".
 
 set -o errexit
-set -o nounset 
+set -o nounset
 set -o verbose
 
 #  Controlling environment variables:
-# GTM_DISABLE_ZOMBIES - 
+# GTM_DISABLE_ZOMBIES -
 #   Set to a non-zero value to turn on zombie checks. You will probably
 #   want to turn this off if you enable leaks.
 GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=1}
@@ -37,10 +37,10 @@ GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=1}
 #   as Instruments.
 
 # GTM_LEAKS_SYMBOLS_TO_IGNORE
-#   List of comma separated symbols that leaks should ignore. Mainly to control 
-#   leaks in frameworks you don't have control over. 
-#   Search this file for GTM_LEAKS_SYMBOLS_TO_IGNORE to see examples. 
-#   Please feel free to add other symbols as you find them but make sure to 
+#   List of comma separated symbols that leaks should ignore. Mainly to control
+#   leaks in frameworks you don't have control over.
+#   Search this file for GTM_LEAKS_SYMBOLS_TO_IGNORE to see examples.
+#   Please feel free to add other symbols as you find them but make sure to
 #   reference Radars or other bug systems so we can track them.
 
 # GTM_REMOVE_GCOV_DATA
@@ -49,6 +49,19 @@ GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=1}
 #   be merged.
 #
 GTM_REMOVE_GCOV_DATA=${GTM_REMOVE_GCOV_DATA:=0}
+
+# GTM_DISABLE_USERDIR_SETUP
+#   Controls whether or not CFFIXED_USER_HOME is erased and set up from scratch
+#   for you each time the script is run. In some cases you may have a wrapper
+#   script calling this one that takes care of that for us so you can set up
+#   a certain user configuration.
+GTM_DISABLE_USERDIR_SETUP=${GTM_DISABLE_USERDIR_SETUP:=0}
+
+# GTM_DISABLE_IPHONE_LAUNCH_DAEMONS
+#   Controls whether or not we launch up the iPhone Launch Daemons before
+#   we start testing. You need Launch Daemons to test anything that interacts
+#   with security.
+GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=${GTM_DISABLE_IPHONE_LAUNCH_DAEMONS:=0}
 
 ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 ScriptName=$(basename "$0")
@@ -60,13 +73,13 @@ GTMXcodeNote() {
 
 if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   # We kill the iPhone simulator because otherwise we run into issues where
-  # the unittests fail becuase the simulator is currently running, and 
+  # the unittests fail becuase the simulator is currently running, and
   # at this time the iPhone SDK won't allow two simulators running at the same
   # time.
   set +e
   /usr/bin/killall "iPhone Simulator"
   set -e
-  
+
   if [ $GTM_REMOVE_GCOV_DATA -ne 0 ]; then
     if [ "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" != "-" ]; then
       if [ -d "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" ]; then
@@ -81,10 +94,10 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   export DYLD_FRAMEWORK_PATH="$CONFIGURATION_BUILD_DIR"
   export IPHONE_SIMULATOR_ROOT="$SDKROOT"
   export CFFIXED_USER_HOME="$TEMP_FILES_DIR/iPhone Simulator User Dir"
-  
-  # See http://developer.apple.com/technotes/tn2004/tn2124.html for an 
+
+  # See http://developer.apple.com/technotes/tn2004/tn2124.html for an
   # explanation of these environment variables.
-  
+
   export MallocScribble=YES
   export MallocPreScribble=YES
   export MallocGuardEdges=YES
@@ -95,7 +108,7 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   export OBJC_DEBUG_FRAGILE_SUPERCLASSES=YES
   export OBJC_DEBUG_UNLOAD=YES
   # Turned off due to the amount of false positives from NS classes.
-  # export OBJC_DEBUG_FINALIZERS=YES  
+  # export OBJC_DEBUG_FINALIZERS=YES
   export OBJC_DEBUG_NIL_SYNC=YES
   export OBJC_PRINT_REPLACED_METHODS=YES
 
@@ -105,19 +118,31 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
     export NSZombieEnabled=YES
   fi
 
-  # Cleanup user home directory
-  if [ -d "$CFFIXED_USER_HOME" ]; then
-    rm -rf "$CFFIXED_USER_HOME"
+  if [ $GTM_DISABLE_USERDIR_SETUP -eq 0 ]; then
+    # Cleanup user home directory
+    if [ -d "$CFFIXED_USER_HOME" ]; then
+      rm -rf "$CFFIXED_USER_HOME"
+    fi
+    mkdir "$CFFIXED_USER_HOME"
+    mkdir "$CFFIXED_USER_HOME/Documents"
+    mkdir -p "$CFFIXED_USER_HOME/Library/Caches"
   fi
-  mkdir "$CFFIXED_USER_HOME"
-  mkdir "$CFFIXED_USER_HOME/Documents"
-  mkdir -p "$CFFIXED_USER_HOME/Library/Caches"
 
-  # 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if 
+  # 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if
   #         CFFIXED_USER_HOME empty
   GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
-  
+
+  if [ $GTM_DISABLE_IPHONE_LAUNCH_DAEMONS -eq 0 ]; then
+    # If we want to test anything that interacts with the keychain, we need
+    # securityd up and running. See RunIPhoneLaunchDaemons.sh for details.
+    launchctl submit -l RunIPhoneLaunchDaemons -- "${ScriptDir}/RunIPhoneLaunchDaemons.sh" $IPHONE_SIMULATOR_ROOT $CFFIXED_USER_HOME
+    # No matter how we exit, we want to shut down our launchctl job.
+    trap "launchctl remove RunIPhoneLaunchDaemons" INT TERM EXIT
+  fi
+
+  # Start our app.
   "$TARGET_BUILD_DIR/$EXECUTABLE_PATH" -RegisterForSystemEvents
+
 else
   GTMXcodeNote ${LINENO} "Skipping running of unittests for device build."
 fi
