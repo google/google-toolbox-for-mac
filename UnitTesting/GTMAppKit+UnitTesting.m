@@ -425,6 +425,26 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
+@implementation NSSegmentedControl (GTMUnitTestingAdditions)
+
+//  Encodes the state of an NSSegmentedControl and all its segments.
+//
+//  Arguments:
+//    inCoder - the coder to encode state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+
+  NSInteger segmentCount = [self segmentCount];
+  ENCODE_NSINTEGER(inCoder, segmentCount, @"SegmentCount");
+
+  for (NSInteger i = 0; i < segmentCount; ++i) {
+    NSString *key = [NSString stringWithFormat:@"Segment %d", i];
+    [inCoder encodeObject:[self labelForSegment:i] forKey:key];
+  }
+}
+
+@end
+
 @implementation NSView (GTMUnitTestingAdditions) 
 
 //  Returns an image containing a representation of the object

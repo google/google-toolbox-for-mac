@@ -276,6 +276,16 @@
       [self localizeObject:[column headerCell] recursively:recursive];
     }
   }
+
+  // Do NSSegmentedControl segments.
+  if ([view isKindOfClass:[NSSegmentedControl class]]) {
+    NSSegmentedControl *segmentedControl = (NSSegmentedControl *)view;
+    for (NSInteger i = 0; i < [segmentedControl segmentCount]; ++i) {
+      NSString *label = [segmentedControl labelForSegment:i];
+      [segmentedControl setLabel:[self localizedStringForString:label]
+                      forSegment:i];
+    }
+  }
 }
 
 - (void)localizeMenu:(NSMenu *)menu recursively:(BOOL)recursive {
