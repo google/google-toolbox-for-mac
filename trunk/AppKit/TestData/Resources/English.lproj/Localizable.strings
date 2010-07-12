@@ -37,6 +37,9 @@
 "Radio 1" = "Localized Radio 1";
 "Radio 2" = "Localized Radio 2";
 "Box" = "Localized Box";
+"Seg1" = "Localized Segment 1";
+"Seg2" = "Localized Segment 2";
+"Seg3" = "Localized Segment 3";
 
 // Binding localization strings.
 "MultipleValuesPlaceholder" = "MultipleValuesPlaceholder";

@@ -293,6 +293,38 @@
 				<false/>
 			</dict>
 		</dict>
+		<key>ViewSubView 3</key>
+		<dict>
+			<key>ControlIsEnabled</key>
+			<true/>
+			<key>ControlSelectedCell</key>
+			<dict>
+				<key>CellState</key>
+				<integer>0</integer>
+				<key>CellTag</key>
+				<integer>0</integer>
+				<key>CellTitle</key>
+				<string></string>
+				<key>CellValue</key>
+				<string>1</string>
+			</dict>
+			<key>ControlTag</key>
+			<integer>0</integer>
+			<key>ControlType</key>
+			<string>NSSegmentedControl</string>
+			<key>ControlValue</key>
+			<string>1</string>
+			<key>Segment 0</key>
+			<string>Localized Segment 1</string>
+			<key>Segment 1</key>
+			<string>Localized Segment 2</string>
+			<key>Segment 2</key>
+			<string>Localized Segment 3</string>
+			<key>SegmentCount</key>
+			<integer>3</integer>
+			<key>ViewIsHidden</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>WindowIsMain</key>
 	<false/>
