@@ -338,7 +338,8 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 
 // To simplify support for both Leopard and Snow Leopard we declare
 // the Snow Leopard protocols that we need here.
-#if !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
+#if !defined(GTM_10_6_PROTOCOLS_DEFINED) && !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
+#define GTM_10_6_PROTOCOLS_DEFINED 1
 @protocol NSConnectionDelegate
 @end
 @protocol NSAnimationDelegate
@@ -347,4 +348,4 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 @end
 @protocol NSTabViewDelegate
 @end
-#endif  // !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
+#endif  // !defined(GTM_10_6_PROTOCOLS_DEFINED) && !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
