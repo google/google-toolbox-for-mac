@@ -92,14 +92,17 @@
                  context:(id<GTMUnitTestingRunLoopContext>)context {
   BOOL contextShouldStop = NO;
   NSRunLoop *rl = [NSRunLoop currentRunLoop];
+  NSDate* next = nil;
   while (1) {
     contextShouldStop = [context shouldStop];
     if (contextShouldStop) break;
-    NSDate* next = [[NSDate alloc] initWithTimeIntervalSinceNow:0.01];
+    next = [[NSDate alloc] initWithTimeIntervalSinceNow:0.01];
     if (!([rl runMode:mode beforeDate:next])) break;
     if ([next compare:date] == NSOrderedDescending) break;
     [next release];
+    next = nil;
   }
+  [next release];
   return contextShouldStop;
 }
 
