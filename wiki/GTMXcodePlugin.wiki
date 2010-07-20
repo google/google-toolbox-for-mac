@@ -33,3 +33,4 @@ http://code.google.com/p/google-toolbox-for-mac/issues/list
   * 10.0.3 - Now does a better job with determining OBJC_DISABLE_GC and working with hosts with relative paths for Custom Unit Test Executables.
   * 10.0.4 - Now picks up the active architecture properly when finding code coverage files.
   * 10.0.5 - Fix up small version numbering problem. No new features.
+  * 10.0.6 - Now works on non-English systems (although with English UI. Feel free to submit localizations.) Works around NSBundle bug by passing full paths to the unit test bundles for Custom Unit Test Executables.
