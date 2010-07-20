@@ -85,6 +85,7 @@ tell application "Xcode"
 		tell build configuration activeBuildConfig of active target
 			tell me
 				set productName to expandBuildSetting("$(PRODUCT_NAME)")
+				set productPath to expandBuildSetting("$(SRCROOT)/$(BUILT_PRODUCTS_DIR)")
 			end tell
 			tell me
 				set wrapperExtension to expandBuildSetting("$(WRAPPER_EXTENSION)")
@@ -154,11 +155,12 @@ tell application "Xcode"
 			end if
 			
 			set bundlename to productName & "." & wrapperExtension
+			set bundlePath to productPath & "/" & bundlename
 			
 			if testhost is not equal to "" then
 				make new environment variable with properties {name:"XCInjectBundleInto", value:testhost, active:yes}
 				make new environment variable with properties {name:"DYLD_INSERT_LIBRARIES", value:"/Developer/Library/PrivateFrameworks/DevToolsBundleInjection.framework/DevToolsBundleInjection", active:yes}
-				make new environment variable with properties {name:"XCInjectBundle", value:bundlename, active:yes}
+				make new environment variable with properties {name:"XCInjectBundle", value:bundlePath, active:yes}
 				if wrapperExtension is "octest" then
 					make new launch argument with properties {name:"-SenTest All", active:yes}
 				end if
@@ -166,7 +168,7 @@ tell application "Xcode"
 				if wrapperExtension is "octest" then
 					make new launch argument with properties {name:"-SenTest Self", active:yes}
 				end if
-				make new launch argument with properties {name:"\"" & bundlename & "\"", active:yes}
+				make new launch argument with properties {name:"\"" & bundlePath & "\"", active:yes}
 			end if
 			
 			make new environment variable with properties {name:"OBJC_DISABLE_GC", value:"YES", active:useGC}

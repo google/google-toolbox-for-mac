@@ -26,11 +26,6 @@
 
 static NSString *const kGTMSrcRootPath = @"$(SRCROOT)/";
 
-@interface GTMXcodeMenuItem (GTMXcodeMenuItemPrivate)
-// Used to figure out what order to install menu items
-- (NSComparisonResult)compareDepth:(id<GTMXcodeMenuItemProtocol>)item;
-@end
-
 @implementation GTMXcodeMenuItem
 
 GTM_METHOD_CHECK(NSEnumerator, gtm_filteredEnumeratorByMakingEachObjectPerformSelector:withObject:);
