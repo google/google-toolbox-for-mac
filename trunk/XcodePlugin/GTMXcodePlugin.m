@@ -28,8 +28,8 @@
 // preference pane.
 - (void)preferencesPanelDidLoadNotification:(NSNotification *)notification;
 
-// Called whenever a menu item is added to the list
-- (void)addedMenuItem:(NSNotification *)notification;
+// Called when we start tracking the menu
+- (void)begunTracking:(NSNotification *)notification;
 
 // Called whenever the pref for showing the menuitem icon changes
 - (void)updateMenuIcons:(NSNotification *)notification;
@@ -84,8 +84,8 @@ static NSMutableArray *gRegisteredClasses = nil;
            object:nil];
 
   [nc addObserver:self
-         selector:@selector(addedMenuItem:)
-             name:NSMenuDidAddItemNotification
+         selector:@selector(begunTracking:)
+             name:NSMenuDidBeginTrackingNotification
            object:[NSApp mainMenu]];
 
   [nc addObserver:self
@@ -125,45 +125,47 @@ static NSMutableArray *gRegisteredClasses = nil;
   return image;
 }
 
-- (void)addedMenuItem:(NSNotification *)notification {
-  NSMenu *menu = [notification object];
-  NSNumber *idx = [[notification userInfo] objectForKey:@"NSMenuItemIndex"];
-  NSMenuItem *menuItem = [menu itemAtIndex:[idx intValue]];
-  if ([[menuItem title] isEqualToString:@"User Scripts"]) {
-    NSImage *image = nil;
-    if ([GTMXcodePreferences showImageOnMenuItems]) {
-      image = [self imageForMenuItems];
+- (void)begunTracking:(NSNotification *)notification {
+  NSImage *image = nil;
+  if ([GTMXcodePreferences showImageOnMenuItems]) {
+    image = [self imageForMenuItems];
+  }
+  NSArray *sortedKeys
+    = [gRegisteredMenuItems keysSortedByValueUsingSelector:@selector(compareDepth:)];
+  NSEnumerator *keyEnum = [sortedKeys objectEnumerator];
+  NSNumber *key;
+  while ((key = [keyEnum nextObject])) {
+    id<GTMXcodeMenuItemProtocol> item = [gRegisteredMenuItems objectForKey:key];
+    NSInteger insertionIndex = [item insertionIndex];
+    NSMenu *insertionMenu = [item insertionMenu];
+    NSInteger itemCount = [insertionMenu numberOfItems];
+    if (insertionIndex > itemCount) {
+      insertionIndex = itemCount;
     }
-    NSArray *sortedKeys
-      = [gRegisteredMenuItems keysSortedByValueUsingSelector:@selector(compareDepth:)];
-    NSEnumerator *keyEnum = [sortedKeys objectEnumerator];
-    NSNumber *key;
-    while ((key = [keyEnum nextObject])) {
-      id<GTMXcodeMenuItemProtocol> item = [gRegisteredMenuItems objectForKey:key];
-      NSInteger insertionIndex = [item insertionIndex];
-      NSMenu *insertionMenu = [item insertionMenu];
-      NSInteger itemCount = [insertionMenu numberOfItems];
-      if (insertionIndex > itemCount) {
-        insertionIndex = itemCount;
+    NSString *itemTitle = [item title];
+    if ([itemTitle isEqualToString:@"-"]) {
+      [insertionMenu insertItem:[NSMenuItem separatorItem]
+                        atIndex:insertionIndex];
+    } else {
+      NSMenuItem *menuItem 
+        = [insertionMenu insertItemWithTitle:[item title]
+                                      action:[item actionSelector]
+                               keyEquivalent:[item keyEquivalent]
+                                     atIndex:insertionIndex];
+      if (image && [item allowGDTMenuIcon]) {
+        [menuItem setImage:image];
       }
-      NSString *itemTitle = [item title];
-      if ([itemTitle isEqualToString:@"-"]) {
-        [insertionMenu insertItem:[NSMenuItem separatorItem]
-                          atIndex:insertionIndex];
-      } else {
-        menuItem = [insertionMenu insertItemWithTitle:[item title]
-                                               action:[item actionSelector]
-                                        keyEquivalent:[item keyEquivalent]
-                                              atIndex:insertionIndex];
-        if (image && [item allowGDTMenuIcon]) {
-          [menuItem setImage:image];
-        }
-        [menuItem setTarget:item];
-        [menuItem setTag:[key intValue]];
-        [item wasInserted:menuItem];
-      }
+      [menuItem setTarget:item];
+      [menuItem setTag:[key intValue]];
+      [item wasInserted:menuItem];
     }
   }
+
+  // Now that we are installed, unregister us from the notification.
+  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+  [center removeObserver:self 
+                    name:NSMenuDidBeginTrackingNotification 
+                  object:[NSApp mainMenu]];
 }
 
 - (void)updateMenuIcons:(NSNotification *)notification {

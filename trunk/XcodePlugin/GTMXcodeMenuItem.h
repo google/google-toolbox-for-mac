@@ -62,4 +62,8 @@
 - (NSString *)pathByExpandingString:(NSString *)path 
               forBuildConfiguration:(NSString *)configuration
                            ofTarget:(PBXTarget *)target;
+
+// Used to figure out what order to install menu items
+- (NSComparisonResult)compareDepth:(id<GTMXcodeMenuItemProtocol>)item;
+
 @end
