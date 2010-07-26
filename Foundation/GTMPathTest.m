@@ -19,6 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMPath.h"
 #import "GTMUnitTestDevLog.h"
+#import "GTMNSFileHandle+UniqueName.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 // NSFileManager has improved substantially in Leopard and beyond, so GTMPath
@@ -33,15 +34,11 @@
 @implementation GTMPathTest
 
 - (void)setUp {
-  NSString *tmp = NSTemporaryDirectory();
-  STAssertNotNil(tmp, nil);
-  
-  testDirectory_ = [[tmp stringByAppendingPathComponent:@"GTMPathTest"] retain];
-  STAssertNotNil(testDirectory_, nil);
- 
   NSFileManager *mgr = [NSFileManager defaultManager];
-  BOOL created = [mgr createDirectoryAtPath:testDirectory_ attributes:nil];
-  STAssertTrue(created, nil);
+  testDirectory_ 
+    = [[mgr gtm_createTemporaryDirectoryBasedOn:@"GTMPathTestXXXXXX"] retain];
+  
+  STAssertNotNil(testDirectory_, nil);
 }
 
 - (void)tearDown {

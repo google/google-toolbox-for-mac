@@ -18,6 +18,7 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMNSFileManager+Path.h"
+#import "GTMNSFileHandle+UniqueName.h"
 
 @interface GTMNSFileManager_PathTest : GTMTestCase {
   NSString *baseDir_;
@@ -28,22 +29,10 @@
 
 - (void)setUp {
   // make a directory to scribble in
-  NSString *base = NSTemporaryDirectory();
-  base = [base stringByAppendingPathComponent:@"GTMNSFileManager_PathTest"];
   NSFileManager *fm = [NSFileManager defaultManager];
-  STAssertFalse([fm fileExistsAtPath:base], @"File exists at %@", base);
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  NSError *error = nil;
-  STAssertTrue([fm createDirectoryAtPath:base
-             withIntermediateDirectories:YES 
-                              attributes:nil 
-                                   error:&error], 
-               @"Unable to create %@: %@", base, error);
-#else
-  STAssertTrue([fm createDirectoryAtPath:base attributes:nil],
-               @"Unable to create %@", base);
-#endif
-  baseDir_ = [base retain];
+  baseDir_ 
+    = [[fm gtm_createTemporaryDirectoryBasedOn:@"GTMNSFileManager_PathTestXXXXXX"]
+       retain];
 }
 
 - (void)tearDown {

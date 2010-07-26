@@ -417,7 +417,10 @@ Changes since 1.5.1
   http://vocaro.com/trevor/blog/wp-content/uploads/2009/10/UIImage+Resize.h
   http://vocaro.com/trevor/blog/wp-content/uploads/2009/10/UIImage+Resize.m
 
-
+- Added support for creating uniquely named files and directories easily with
+  GTMNSFileHandle+UniqueName.
+  
+  
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
