@@ -57,6 +57,8 @@
 		64D0F5EE0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_40x60.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D0F5DC0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_40x60.png */; };
 		64D0F5EF0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D0F5DD0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png */; };
 		67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */; };
+		8B2908B211F8E7070064F50F /* GTMNSFileHandle+UniqueName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */; };
+		8B2908B311F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2908B111F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
 		8B308BCE0DAD0B8400183556 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B308BCD0DAD0B8400183556 /* QuartzCore.framework */; };
 		8B3AA8F30E032FC7007E31B5 /* GTMNSString+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3AA8F10E032FC7007E31B5 /* GTMNSString+URLArguments.m */; };
 		8B3AA8F40E032FC7007E31B5 /* GTMNSString+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3AA8F20E032FC7007E31B5 /* GTMNSString+URLArgumentsTest.m */; };
@@ -190,6 +192,9 @@
 		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
 		8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiPhone40.xcconfig; sourceTree = "<group>"; };
 		8B23010911C180E2001FA319 /* ReleaseiPhone40.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiPhone40.xcconfig; sourceTree = "<group>"; };
+		8B2908AF11F8E7070064F50F /* GTMNSFileHandle+UniqueName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileHandle+UniqueName.h"; sourceTree = "<group>"; };
+		8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueName.m"; sourceTree = "<group>"; };
+		8B2908B111F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueNameTest.m"; sourceTree = "<group>"; };
 		8B30806F1056BDCE006C4C7A /* GTMNSNumber+64Bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSNumber+64Bit.h"; sourceTree = "<group>"; };
 		8B3080701056BDCE006C4C7A /* GTMNSNumber+64Bit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSNumber+64Bit.m"; sourceTree = "<group>"; };
 		8B3080711056BDCE006C4C7A /* GTMNSNumber+64BitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSNumber+64BitTest.m"; sourceTree = "<group>"; };
@@ -497,6 +502,9 @@
 				8BC047840DAE928A00C2D1CA /* GTMNSFileManager+Path.h */,
 				8BC047850DAE928A00C2D1CA /* GTMNSFileManager+Path.m */,
 				8BC047860DAE928A00C2D1CA /* GTMNSFileManager+PathTest.m */,
+				8B2908AF11F8E7070064F50F /* GTMNSFileHandle+UniqueName.h */,
+				8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */,
+				8B2908B111F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m */,
 				8B30806F1056BDCE006C4C7A /* GTMNSNumber+64Bit.h */,
 				8B3080701056BDCE006C4C7A /* GTMNSNumber+64Bit.m */,
 				8B3080711056BDCE006C4C7A /* GTMNSNumber+64BitTest.m */,
@@ -859,6 +867,8 @@
 				8BCB5AB111C02D7D009B6C40 /* GTMNSScanner+Unsigned.m in Sources */,
 				8BCB5AB211C02D7D009B6C40 /* GTMNSScanner+UnsignedTest.m in Sources */,
 				8BFFCD7811C1934900E45777 /* GTMNSObject+KeyValueObservingTest.m in Sources */,
+				8B2908B211F8E7070064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
+				8B2908B311F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
