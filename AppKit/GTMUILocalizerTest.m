@@ -52,14 +52,8 @@
     = [[GTMUILocalizerTestWindowController alloc] init];
   NSWindow *window = [controller window];
   STAssertNotNil(window, nil);
-  
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   GTMAssertObjectStateEqualToStateNamed(window,
                                         @"GTMUILocalizerWindow1State", nil);
-#else
-  GTMAssertObjectStateEqualToStateNamed(window,
-                                       @"GTMUILocalizerWindow1State_10_4", nil);
-#endif
   
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   GTMUILocalizer *localizer = [[GTMUILocalizer alloc] initWithBundle:bundle];
