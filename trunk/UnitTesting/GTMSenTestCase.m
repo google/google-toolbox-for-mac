@@ -435,13 +435,21 @@ static void _GTMRunLeaks(void) {
       [exclusions appendFormat:@"-exclude \"%@\" ", exclusion];
     }
   }
+  // Clearing out DYLD_ROOT_PATH because iPhone Simulator framework libraries
+  // are different from regular OS X libraries and leaks will fail to run
+  // because of missing symbols. Also capturing the output of leaks and then
+  // pipe rather than a direct pipe, because otherwise if leaks failed,
+  // the system() call will still be successful. Bug:
+  // http://code.google.com/p/google-toolbox-for-mac/issues/detail?id=56
   NSString *string
-    = [NSString stringWithFormat:@"/usr/bin/leaks %@%d"
-       @"| /usr/bin/sed -e 's/Leak: /Leaks:0: warning: Leak /'",
+    = [NSString stringWithFormat:
+       @"LeakOut=`DYLD_ROOT_PATH='' /usr/bin/leaks %@%d` &&"
+       @"echo \"$LeakOut\"|/usr/bin/sed -e 's/Leak: /Leaks:0: warning: Leak /'",
        exclusions, getpid()];
   int ret = system([string UTF8String]);
   if (ret) {
-    fprintf(stderr, "%s:%d: Error: Unable to run leaks. 'system' returned: %d",
+    fprintf(stderr,
+            "%s:%d: Error: Unable to run leaks. 'system' returned: %d\n",
             __FILE__, __LINE__, ret);
     fflush(stderr);
   }
