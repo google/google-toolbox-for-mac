@@ -19,7 +19,7 @@ First, a little terminology authored/inspired by dmaclach:
     Developers often want to keep track of what their application is doing, and will be quite application specific. These systems can be called "reporting", "logging" or "tracing" systems.  Exactly what they do/offer can be considered a _religious issue_ similar to exceptions vs error codes.  They may have levels and/or modules, support directing output to different sinks, and have runtime switches to control what is/isn't monitored.  In large applications, they have the ability to generate a lot of information.
 
 
-==Log/Assert Withing GTM==
+==Log/Assert as far as GTM is concerned==
 
 Now, what this means to GTM:
 
