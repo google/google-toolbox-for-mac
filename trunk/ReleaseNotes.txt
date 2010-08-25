@@ -4,8 +4,9 @@ Project site:     http://code.google.com/p/google-toolbox-for-mac/
 Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 
 
-Release ?.?.?
+Release 1.6.0
 Changes since 1.5.1
+18-August-2010
 
 - Added GTMNSImage+SearchCache for fetching images based on a variety of
   specification methods (path, OSType, etc)
@@ -419,8 +420,8 @@ Changes since 1.5.1
 
 - Added support for creating uniquely named files and directories easily with
   GTMNSFileHandle+UniqueName.
-  
-  
+
+
 Release 1.5.1
 Changes since 1.5.0
 16-June-2008
