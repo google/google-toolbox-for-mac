@@ -124,11 +124,6 @@
 
 #endif // _GTMDevLog
 
-// Declared here so that it can easily be used for logging tracking if
-// necessary. See GTMUnitTestDevLog.h for details.
-@class NSString;
-GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
-
 #ifndef _GTMDevAssert
 // we directly invoke the NSAssert handler so we can pass on the varargs
 // (NSAssert doesn't have a macro we can use that takes varargs)
@@ -168,39 +163,6 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #define _GTMCompileAssert(test, msg) \
     typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
 #endif // _GTMCompileAssert
-
-// Macro to allow you to create NSStrings out of other macros.
-// #define FOO foo
-// NSString *fooString = GTM_NSSTRINGIFY(FOO);
-#if !defined (GTM_NSSTRINGIFY)
-  #define GTM_NSSTRINGIFY_INNER(x) @#x
-  #define GTM_NSSTRINGIFY(x) GTM_NSSTRINGIFY_INNER(x)
-#endif
-
-// Macro to allow fast enumeration when building for 10.5 or later, and
-// reliance on NSEnumerator for 10.4.  Remember, NSDictionary w/ FastEnumeration
-// does keys, so pick the right thing, nothing is done on the FastEnumeration
-// side to be sure you're getting what you wanted.
-#ifndef GTM_FOREACH_OBJECT
-  #if TARGET_OS_IPHONE || !(MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-    #define GTM_FOREACH_ENUMEREE(element, enumeration) \
-      for (element in enumeration)
-    #define GTM_FOREACH_OBJECT(element, collection) \
-      for (element in collection)
-    #define GTM_FOREACH_KEY(element, collection) \
-      for (element in collection)
-  #else
-    #define GTM_FOREACH_ENUMEREE(element, enumeration) \
-      for (NSEnumerator *_ ## element ## _enum = enumeration; \
-           (element = [_ ## element ## _enum nextObject]) != nil; )
-    #define GTM_FOREACH_OBJECT(element, collection) \
-      GTM_FOREACH_ENUMEREE(element, [collection objectEnumerator])
-    #define GTM_FOREACH_KEY(element, collection) \
-      GTM_FOREACH_ENUMEREE(element, [collection keyEnumerator])
-  #endif
-#endif
-
-// ============================================================================
 
 // ----------------------------------------------------------------------------
 // CPP symbols defined based on the project settings so the GTM code has
@@ -332,9 +294,59 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #define NS_FORMAT_FUNCTION(F,A)
 #endif
 
+// Defined on 10.6 and above.
+#ifndef CF_FORMAT_ARGUMENT
+  #define CF_FORMAT_ARGUMENT(A)
+#endif
+
+// Defined on 10.6 and above.
+#ifndef CF_FORMAT_FUNCTION
+  #define CF_FORMAT_FUNCTION(F,A)
+#endif
+
 #ifndef GTM_NONNULL
   #define GTM_NONNULL(x) __attribute__((nonnull(x)))
 #endif
+
+#ifdef __OBJC__
+
+// Declared here so that it can easily be used for logging tracking if
+// necessary. See GTMUnitTestDevLog.h for details.
+@class NSString;
+GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
+
+// Macro to allow you to create NSStrings out of other macros.
+// #define FOO foo
+// NSString *fooString = GTM_NSSTRINGIFY(FOO);
+#if !defined (GTM_NSSTRINGIFY)
+  #define GTM_NSSTRINGIFY_INNER(x) @#x
+  #define GTM_NSSTRINGIFY(x) GTM_NSSTRINGIFY_INNER(x)
+#endif
+
+// Macro to allow fast enumeration when building for 10.5 or later, and
+// reliance on NSEnumerator for 10.4.  Remember, NSDictionary w/ FastEnumeration
+// does keys, so pick the right thing, nothing is done on the FastEnumeration
+// side to be sure you're getting what you wanted.
+#ifndef GTM_FOREACH_OBJECT
+  #if TARGET_OS_IPHONE || !(MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
+    #define GTM_FOREACH_ENUMEREE(element, enumeration) \
+      for (element in enumeration)
+    #define GTM_FOREACH_OBJECT(element, collection) \
+      for (element in collection)
+    #define GTM_FOREACH_KEY(element, collection) \
+      for (element in collection)
+  #else
+    #define GTM_FOREACH_ENUMEREE(element, enumeration) \
+      for (NSEnumerator *_ ## element ## _enum = enumeration; \
+           (element = [_ ## element ## _enum nextObject]) != nil; )
+    #define GTM_FOREACH_OBJECT(element, collection) \
+      GTM_FOREACH_ENUMEREE(element, [collection objectEnumerator])
+    #define GTM_FOREACH_KEY(element, collection) \
+      GTM_FOREACH_ENUMEREE(element, [collection keyEnumerator])
+  #endif
+#endif
+
+// ============================================================================
 
 // To simplify support for both Leopard and Snow Leopard we declare
 // the Snow Leopard protocols that we need here.
@@ -349,3 +361,5 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 @protocol NSTabViewDelegate
 @end
 #endif  // !defined(GTM_10_6_PROTOCOLS_DEFINED) && !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
+
+#endif // __OBJC__
