@@ -129,7 +129,8 @@
   STAssertNULL(error, nil);
 
   isGood = GTMSMJobRemove(CFSTR(OUR_JOB_LABEL), &error);
-  STAssertTrue(isGood, @"You may need to run launchctl remove %s", OUR_JOB_LABEL);
+  STAssertTrue(isGood,
+               @"You may need to run launchctl remove %s", OUR_JOB_LABEL);
   STAssertNULL(error, nil);
 
   isGood = GTMSMJobRemove(CFSTR(OUR_JOB_LABEL), &error);
@@ -144,7 +145,7 @@
   //                 launch, which is too complex at this point. Perhaps
   //                 in the future if bugs are found.
   NSDictionary *badTest
-    = GTMCFAutorelease(GTMSMJobCheckIn(CFSTR(BAD_JOB_LABEL), &error));
+    = GTMCFAutorelease(GTMSMJobCheckIn(&error));
   STAssertNil(badTest, nil);
   STAssertNotNULL(error, nil);
   CFRelease(error);
