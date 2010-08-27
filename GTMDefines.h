@@ -83,8 +83,12 @@
 #if !defined (GTM_EXTERN)
   #if defined __cplusplus
     #define GTM_EXTERN extern "C"
+    #define GTM_EXTERN_C_BEGIN extern "C" {
+    #define GTM_EXTERN_C_END }
   #else
     #define GTM_EXTERN extern
+    #define GTM_EXTERN_C_BEGIN
+    #define GTM_EXTERN_C_END
   #endif
 #endif
 
