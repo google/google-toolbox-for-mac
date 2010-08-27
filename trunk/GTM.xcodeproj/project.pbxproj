@@ -135,6 +135,9 @@
 		8B409F060F95341E00DF540E /* GTMUILocalizerTestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */; };
 		8B409F130F95352500DF540E /* GTMUILocalizerView2State.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F110F95352500DF540E /* GTMUILocalizerView2State.gtmUTState */; };
 		8B409F140F95352500DF540E /* GTMUILocalizerView1State.gtmUTState in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F120F95352500DF540E /* GTMUILocalizerView1State.gtmUTState */; };
+		8B414E881226FB1000D0064F /* GTMServiceManagement.c in Sources */ = {isa = PBXBuildFile; fileRef = 8B414E861226FB1000D0064F /* GTMServiceManagement.c */; };
+		8B414E891226FB1000D0064F /* GTMServiceManagement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B414E871226FB1000D0064F /* GTMServiceManagement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B414E8B1226FB1800D0064F /* GTMServiceManagementTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B414E8A1226FB1800D0064F /* GTMServiceManagementTest.m */; };
 		8B455F5E1193870A00ABD707 /* GTMLocalizedStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */; };
 		8B45A03A0DA46A2A001148C5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		8B45A0B80DA46A2F001148C5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E089B0D199B1800D5DDE0 /* SenTestingKit.framework */; };
@@ -651,6 +654,9 @@
 		8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerTestView.xib; sourceTree = "<group>"; };
 		8B409F110F95352500DF540E /* GTMUILocalizerView2State.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerView2State.gtmUTState; sourceTree = "<group>"; };
 		8B409F120F95352500DF540E /* GTMUILocalizerView1State.gtmUTState */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GTMUILocalizerView1State.gtmUTState; sourceTree = "<group>"; };
+		8B414E861226FB1000D0064F /* GTMServiceManagement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GTMServiceManagement.c; sourceTree = "<group>"; };
+		8B414E871226FB1000D0064F /* GTMServiceManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMServiceManagement.h; sourceTree = "<group>"; };
+		8B414E8A1226FB1800D0064F /* GTMServiceManagementTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMServiceManagementTest.m; sourceTree = "<group>"; };
 		8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLocalizedStringTest.m; sourceTree = "<group>"; };
 		8B45A0280DA4696C001148C5 /* UnitTest - UnitTesting.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest - UnitTesting.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B45A1990DA46AAA001148C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
@@ -1495,6 +1501,9 @@
 				F47A79850D746EE9002302AB /* GTMScriptRunner.h */,
 				F47A79860D746EE9002302AB /* GTMScriptRunner.m */,
 				F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */,
+				8B414E871226FB1000D0064F /* GTMServiceManagement.h */,
+				8B414E861226FB1000D0064F /* GTMServiceManagement.c */,
+				8B414E8A1226FB1800D0064F /* GTMServiceManagementTest.m */,
 				F41A6F7F0E02EC3600788A6C /* GTMSignalHandler.h */,
 				F41A6F800E02EC3600788A6C /* GTMSignalHandler.m */,
 				F41A6F810E02EC3600788A6C /* GTMSignalHandlerTest.m */,
@@ -1678,6 +1687,7 @@
 				8BB7802E11B6C4EA00AB31AF /* GTMGoogleSearch.h in Headers */,
 				8BCB59F011C00ED6009B6C40 /* GTMNSScanner+Unsigned.h in Headers */,
 				8B29080A11F8E1670064F50F /* GTMNSFileHandle+UniqueName.h in Headers */,
+				8B414E891226FB1000D0064F /* GTMServiceManagement.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2086,7 +2096,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_ONE_TEST_AT_A_TIME=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
+			shellScript = "# Run the unit tests in this test bundle.\n# Set OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass\" or OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass/NameOfTest\" if you want to only test a limited amount.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_ONE_TEST_AT_A_TIME=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
 		};
 		8BFE13F10FB0F2D8001BE894 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2099,7 +2109,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_DISABLE_ZOMBIES=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\n# Set OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass\" or OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass/NameOfTest\" if you want to only test a limited amount.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_DISABLE_ZOMBIES=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
 		};
 		F42E081D0D19987200D5DDE0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2112,7 +2122,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
+			shellScript = "# Run the unit tests in this test bundle.\n# Set OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass\" or OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass/NameOfTest\" if you want to only test a limited amount.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"";
 		};
 		F48FE2620D198C1E009257D2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2125,7 +2135,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_ONE_TEST_AT_A_TIME=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
+			shellScript = "# Run the unit tests in this test bundle.\n# Set OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass\" or OTHER_TEST_FLAGS=\"-SenTest NameOfTestClass/NameOfTest\" if you want to only test a limited amount.\nGTM_REMOVE_TARGET_GCOV_ONLY=1 GTM_ONE_TEST_AT_A_TIME=1 \"${SRCROOT}/UnitTesting/RunMacOSUnitTests.sh\"\n";
 		};
 		F4E4297B10B753C600F28A35 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2240,6 +2250,7 @@
 				8BCB59F311C00EF6009B6C40 /* GTMNSScanner+UnsignedTest.m in Sources */,
 				8B29078711F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
 				8B29078811F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
+				8B414E8B1226FB1800D0064F /* GTMServiceManagementTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2318,6 +2329,7 @@
 				8BB77A0611B5A0A100AB31AF /* GTMGoogleSearch.m in Sources */,
 				8BCB59F111C00ED6009B6C40 /* GTMNSScanner+Unsigned.m in Sources */,
 				8B29080911F8E1630064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
+				8B414E881226FB1000D0064F /* GTMServiceManagement.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
