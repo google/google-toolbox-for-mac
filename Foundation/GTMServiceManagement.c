@@ -26,6 +26,8 @@
 
 #include "GTMServiceManagement.h"
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
+
 typedef struct {
   CFMutableDictionaryRef dict;
   bool convert_non_standard_objects;
@@ -599,4 +601,4 @@ CFDictionaryRef GTMSMCopyAllJobDictionaries(void) {
   return dict;
 }
 
-
+#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
