@@ -3,6 +3,19 @@ Google Toolbox for Mac Release Notes
 Project site:     http://code.google.com/p/google-toolbox-for-mac/
 Discussion group: http://groups.google.com/group/google-toolbox-for-mac
 
+Release 2.0.??
+Changes since 1.6.0
+??-??-??
+
+- Removed iPhone/GTMABAddressBook in favor of AddressBook/GTMABAddressBook.
+
+- Removed Foundation/GTMHTTPServer and UnitTesting/GTMTestHTTPServer, they
+  are going to go live with the fetcher used by GData (since they were done
+  for that testing).
+
+- Removed Foundation/GTMBase64 and Foundation/GTMNSData+Hex in favor of
+  Foundation/GTMStringEncoding.
+
 
 Release 1.6.0
 Changes since 1.5.1
