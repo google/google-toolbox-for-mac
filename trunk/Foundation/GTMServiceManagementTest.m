@@ -16,8 +16,11 @@
 //  the License.
 //
 
-#import "GTMSenTestCase.h"
 #import "GTMServiceManagement.h"
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
+
+#import "GTMSenTestCase.h"
 #import "GTMGarbageCollection.h"
 
 #define STANDARD_JOB_LABEL "com.apple.launchctl.Background"
@@ -152,3 +155,5 @@
 }
 
 @end
+
+#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4

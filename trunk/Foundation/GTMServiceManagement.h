@@ -16,9 +16,12 @@
 //  the License.
 //
 
+#include "GTMDefines.h"
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
+
 #include <launch.h>
 #include <CoreFoundation/CoreFoundation.h>
-#include "GTMDefines.h"
 
 GTM_EXTERN_C_BEGIN
 
@@ -27,8 +30,7 @@ GTM_EXTERN_C_BEGIN
 
 // For rough documentation on these methods please see
 // <ServiceManagement/ServiceManagement.h> from the 10.6 sdk.
-// This reimplements some of the ServiceManagement framework on 10.4 and 10.5.
-// (not tested on 10.4, but should work YMMV).
+// This reimplements some of the ServiceManagement framework on 10.5.
 // Caller takes ownership of error if necessary.
 
 Boolean GTMSMJobSubmit(CFDictionaryRef job, CFErrorRef *error);
@@ -67,3 +69,5 @@ CFTypeRef GTMCFTypeCreateFromLaunchData(launch_data_t ldata,
                                         CFErrorRef *error);
 
 GTM_EXTERN_C_END
+
+#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
