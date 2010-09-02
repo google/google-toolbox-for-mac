@@ -98,6 +98,12 @@
   #define GTM_EXPORT __attribute__((visibility("default")))
 #endif
 
+// Give ourselves a consistent way of declaring something as unused. This
+// doesn't use __unused because that is only supported in gcc 4.2 and greater.
+#if !defined (GTM_UNUSED)
+#define GTM_UNUSED(x) ((void)(x))
+#endif
+
 // _GTMDevLog & _GTMDevAssert
 //
 // _GTMDevLog & _GTMDevAssert are meant to be a very lightweight shell for
