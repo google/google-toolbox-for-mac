@@ -7,19 +7,19 @@ This is a quick tutorial on doing iPhone unit testing using the facilities in th
 
 = Basic Project Setup =
 Hopefully your project already has an application target for building something for the iPhone.
-  # Create a new iPhone Target of type "Cocoa Touch Application" via "Project Menu > New Target...". Choose a name that makes some sense such as "Unit Test". Be sure to use a "Cocoa Touch Application" target as opposed to a "Cocoa Application" target or a "Cocoa Touch Static Library" target.
+  # Create a new iPhone Target of type "Cocoa Touch Application" via "Project Menu > New Target...". Choose a name that makes some sense such as "Unit Test". Be sure to use a "Cocoa Touch Application" target as opposed to a "Cocoa Application" target or a "Cocoa Touch Static Library" target or "Cocoa Touch Unit Test Bundle".
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestMain.m` to your target
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.m` to your target
-  # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.h` to your target
+  # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestDelegate.h` to your project
   # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.m` to your target
-  # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your target
+  # Add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your project
   # Add `google-toolbox-for-mac/UnitTesting/GTMUnitTestDevLog.m` to your target
-  # Add `google-toolbox-for-mac/UnitTesting/GTMUnitTestDevLog.h` to your target
+  # Add `google-toolbox-for-mac/UnitTesting/GTMUnitTestDevLog.h` to your project
   # Add `google-toolbox-for-mac/Foundation/GTMObjC2Runtime.m` to your target
-  # Add `google-toolbox-for-mac/Foundation/GTMObjC2Runtime.h` to your target
+  # Add `google-toolbox-for-mac/Foundation/GTMObjC2Runtime.h` to your project
   # Add `google-toolbox-for-mac/Foundation/GTMRegex.m` to your target
-  # Add `google-toolbox-for-mac/Foundation/GTMRegex.h` to your target
-  # Add `google-toolbox-for-mac/GTMDefines.h` to your target
+  # Add `google-toolbox-for-mac/Foundation/GTMRegex.h` to your project
+  # Add `google-toolbox-for-mac/GTMDefines.h` to your project
   # Add a new 'run script' build phase as the last step of your target build via "Project Menu > New Build Phase > New Run Script Build Phase", and dragging it to the end of the build steps if needed.
   # Edit your Run Script Build Phase by double clicking it, and set the shell to "/bin/sh" and the script to `"PATH_TO_GTM/UnitTesting/RunIPhoneUnitTest.sh"`, where PATH_TO_GTM is the path to your local version of google-toolbox-for-mac.
   # Build! Note that if you choose build and go you will see your unit tests executed twice, once as part of the build script, and once being run
@@ -27,14 +27,20 @@ Hopefully your project already has an application target for building something 
 Your target should now build cleanly, and if you check the build log you should see something like:
 "Executed 0 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds" at the end.
 
+= Trouble Shooting =
+ * Make sure you are not linked against the `SenTestingKit.framework`.
+
 = Creating a unit test =
   # Add the source you want to test to your target. For example if you want to test class Foo, make sure to add Foo.h and Foo.m to your target.
   # Add a new unit test file to your target via "File > New File" and choose "Objective-C test case class" from the "Mac OS X" Cocoa category. Call it `FooTest.m`, or follow whatever convention your project has for naming test classes.
   # In `FooTest.h`, change `#import <SenTestingKit/SenTestingKit.h>` to `#import "GTMSenTestCase.h"`
-  # Also set up your class so that it inherits from GTMTestCase (_not_ GTMSenTestCase) instead of SenTestCase <br> {{{ @interface MyTestCase : GTMTestCase { ... } }}}
+  # Also set up your class so that it inherits from GTMTestCase (_not_ GTMSenTestCase) instead of `SenTestCase` <br> {{{ @interface MyTestCase : GTMTestCase { ... } }}}
   # Add test cases as you normally would. See [http://developer.apple.com/tools/unittest.html Apple's Documentation] for a good tutorial on how to test in Objective C. The key is that your test case methods are declared `- (void)testBar`. The name must start with "test" and they must return nothing and have no arguments.
  
 Now when you build your target you should now see test cases executing.  You can repeat this process creating additional source files for each class you want to write Unittests for.
+
+= Debugging =
+You can debug your unit test executable the exact same way you would unit test any executable. You shouldn't have to set up anything. Note that you may see cases where the unit test build fails, but it doesn't fail when you are debugging. When the unit test build is running several flags are turned on to encourage failures such as `MallocScribble`, `NSAutoreleaseFreedObjectCheckEnabled` etc. You may want to look in `RunIPhoneUnitTest.sh` and see what is being enabled for you.
 
 = Notes =
   * We find that having a .h for my tests to be mostly useless, and tend to just move my interface for my tests in with my implementation so I only have one file to worry about.
@@ -83,3 +89,6 @@ By default the iPhone unit tests will run leaks after all the tests have complet
 
 == Termination ==
 Some of Apple's tools (such as Instruments) don't want the app to terminate underneath them. By default the iPhone unit test app will terminate when it has finished it's run. Set the `GTM_DISABLE_TERMINATION` environment variable if you want to disable termination and just have the unit test "run" until you are done with it.
+
+== Keychain Testing ==
+If your code uses the keychain, you may need to set `GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=0` before you run your unit tests. See RunIPhoneUnitTest.sh for details on this flag and why it should be set.
