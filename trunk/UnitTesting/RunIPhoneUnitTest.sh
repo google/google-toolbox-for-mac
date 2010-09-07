@@ -60,8 +60,10 @@ GTM_DISABLE_USERDIR_SETUP=${GTM_DISABLE_USERDIR_SETUP:=0}
 # GTM_DISABLE_IPHONE_LAUNCH_DAEMONS
 #   Controls whether or not we launch up the iPhone Launch Daemons before
 #   we start testing. You need Launch Daemons to test anything that interacts
-#   with security.
-GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=${GTM_DISABLE_IPHONE_LAUNCH_DAEMONS:=0}
+#   with security. Note that it is OFF by default. Set
+#   GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=0 before calling this script
+#   to turn it on.
+GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=${GTM_DISABLE_IPHONE_LAUNCH_DAEMONS:=1}
 
 ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 ScriptName=$(basename "$0")
