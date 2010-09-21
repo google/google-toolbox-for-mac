@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -33,7 +33,7 @@
 }
 @end
 
-@interface GTMCarbonEventMonitorHandlerTest : GTMTestCase 
+@interface GTMCarbonEventMonitorHandlerTest : GTMTestCase
 @end
 
 @interface GTMCarbonEventApplicationEventHandlerTest : GTMTestCase
@@ -60,7 +60,7 @@ static const UInt32 kTestParameterValue = 'bam ';
   [event_ release];
 }
 
-- (void)testCopy { 
+- (void)testCopy {
   GTMCarbonEvent *event2 = [[event_ copy] autorelease];
   STAssertNotNil(event2, nil);
 }
@@ -83,7 +83,7 @@ static const UInt32 kTestParameterValue = 'bam ';
 
 - (void)testEventClass {
   [self testEventWithClassAndKind];
-}  
+}
 
 - (void)testEventKind {
   [self testEventWithClassAndKind];
@@ -112,10 +112,10 @@ static const UInt32 kTestParameterValue = 'bam ';
   UInt32 theData = kTestParameterValue;
   [event_ setUInt32ParameterNamed:kTestParameterName data:&theData];
   theData = 0;
-  STAssertEquals([event_ sizeOfParameterNamed:kTestParameterName 
-                                         type:typeUInt32], 
+  STAssertEquals([event_ sizeOfParameterNamed:kTestParameterName
+                                         type:typeUInt32],
                  sizeof(UInt32), nil);
-  STAssertTrue([event_ getUInt32ParameterNamed:kTestParameterName 
+  STAssertTrue([event_ getUInt32ParameterNamed:kTestParameterName
                                           data:&theData], nil);
   STAssertEquals(theData, kTestParameterValue, nil);
 }
@@ -123,11 +123,11 @@ static const UInt32 kTestParameterValue = 'bam ';
 - (void)testGetParameterNamed {
   [self testSetParameterNamed];
   UInt32 theData = kTestParameterValue;
-  STAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName 
+  STAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName
                                            data:&theData], nil);
-  STAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName 
+  STAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName
                                            data:NULL], nil);
-  
+
 }
 
 - (void)testSizeOfParameterNamed {
@@ -138,8 +138,8 @@ static const UInt32 kTestParameterValue = 'bam ';
   [self testSetParameterNamed];
 }
 
-- (OSStatus)gtm_eventHandler:(GTMCarbonEventHandler *)sender 
-               receivedEvent:(GTMCarbonEvent *)event 
+- (OSStatus)gtm_eventHandler:(GTMCarbonEventHandler *)sender
+               receivedEvent:(GTMCarbonEvent *)event
                      handler:(EventHandlerCallRef)handler {
   OSStatus status = eventNotHandledErr;
   if ([event eventClass] == kTestClass && [event eventKind] == kTestKind) {
@@ -150,8 +150,8 @@ static const UInt32 kTestParameterValue = 'bam ';
 
 - (void)testSendToTarget {
   EventTypeSpec types = { kTestClass, kTestKind };
-  GTMCarbonEventDispatcherHandler *handler 
-    = [[GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler] 
+  GTMCarbonEventDispatcherHandler *handler
+    = [[GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler]
        autorelease];
   [handler registerForEvents:&types count:1];
   OSStatus status = [event_ sendToTarget:handler options:0];
@@ -165,13 +165,13 @@ static const UInt32 kTestParameterValue = 'bam ';
 - (void)testPostToQueue {
   EventQueueRef eventQueue = GetMainEventQueue();
   [event_ postToMainQueue];
-  OSStatus status = [event_ postToQueue:eventQueue 
+  OSStatus status = [event_ postToQueue:eventQueue
                                priority:kEventPriorityStandard];
   STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", status);
   EventTypeSpec types = { kTestClass, kTestKind };
   status = FlushEventsMatchingListFromQueue(eventQueue, 1, &types);
   STAssertNoErr(status, @"status: %ld", status);
-  
+
   eventQueue = GetCurrentEventQueue();
   [event_ postToCurrentQueue];
   status = [event_ postToQueue:eventQueue priority:kEventPriorityStandard];
@@ -190,9 +190,9 @@ static const UInt32 kTestParameterValue = 'bam ';
 }
 
 - (void)testDescription {
-  NSString *descString 
+  NSString *descString
     = [NSString stringWithFormat:@"GTMCarbonEvent 'foo ' %d", kTestKind];
-  STAssertEqualObjects([event_ description], descString, nil); 
+  STAssertEqualObjects([event_ description], descString, nil);
 }
 @end
 
@@ -224,7 +224,7 @@ static const UInt32 kTestParameterValue = 'bam ';
 }
 
 
-- (void)testSetDelegate { 
+- (void)testSetDelegate {
   [self testDelegate];
 }
 
@@ -233,7 +233,7 @@ static const UInt32 kTestParameterValue = 'bam ';
 @implementation GTMCarbonEventMonitorHandlerTest
 
 - (void)testEventHandler {
-  GTMCarbonEventMonitorHandler *monitor 
+  GTMCarbonEventMonitorHandler *monitor
     = [GTMCarbonEventMonitorHandler sharedEventMonitorHandler];
   STAssertEquals([monitor eventTarget], GetEventMonitorTarget(), nil);
 }
@@ -268,73 +268,78 @@ extern EventTargetRef GetApplicationEventTarget(void);
 }
 
 - (void)testEventHandler {
-  GTMCarbonEventDispatcherHandler *dispatcher 
+  GTMCarbonEventDispatcherHandler *dispatcher
     = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
   STAssertEquals([dispatcher eventTarget], GetEventDispatcherTarget(), nil);
 }
 
-- (void)hitHotKey:(id)sender {
+- (void)hitHotKey:(GTMCarbonHotKey *)key {
+  STAssertEqualObjects([key userInfo], self, nil);
   [hotKeyHit_ setShouldStop:YES];
 }
 
-- (void)hitExceptionalHotKey:(id)sender {
+- (void)hitExceptionalHotKey:(GTMCarbonHotKey *)key {
+  STAssertEqualObjects([key userInfo], self, nil);
   [hotKeyHit_ setShouldStop:YES];
   [NSException raise:@"foo" format:@"bar"];
 }
 
 - (void)testRegisterHotKeyModifiersTargetActionWhenPressed {
-  
+
   // This test can't be run if the screen saver is active because the security
   // agent blocks us from sending events via remote operations
   if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
-    GTMCarbonEventDispatcherHandler *dispatcher 
+    GTMCarbonEventDispatcherHandler *dispatcher
       = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
     STAssertNotNil(dispatcher, @"Unable to acquire singleton");
-    UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask 
+    UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
                       | NSAlternateKeyMask | NSCommandKeyMask);
-    EventHotKeyRef hotKey;
     [GTMUnitTestDevLogDebug expectPattern:@"DebugAssert: GoogleToolboxForMac: "
      @"newKey CantCreateKey .*"];
-    STAssertNULL([dispatcher registerHotKey:0x5 
-                                  modifiers:keyMods
-                                     target:nil 
-                                     action:nil
-                                whenPressed:YES], 
+    STAssertNil([dispatcher registerHotKey:0x5
+                                 modifiers:keyMods
+                                    target:nil
+                                    action:nil
+                                  userInfo:nil
+                               whenPressed:YES],
                  @"Shouldn't have created hotkey");
-    hotKey = [dispatcher registerHotKey:0x5 
-                              modifiers:keyMods
-                                 target:self 
-                                 action:@selector(hitHotKey:) 
-                            whenPressed:YES];
-    STAssertNotNULL(hotKey, @"Unable to create hotkey");
-    
+    GTMCarbonHotKey *hotKey = [dispatcher registerHotKey:0x5
+                                               modifiers:keyMods
+                                                  target:self
+                                                  action:@selector(hitHotKey:)
+                                                userInfo:self
+                                             whenPressed:YES];
+    STAssertNotNil(hotKey, @"Unable to create hotkey");
+
     // Post the hotkey combo to the event queue. If everything is working
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
     // happen.
     [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
     STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
-    [dispatcher unregisterHotKey:hotKey];    
+    [dispatcher unregisterHotKey:hotKey];
   }
 }
 
 - (void)testRegisterHotKeyModifiersTargetActionWhenPressedException {
-  
+
   // This test can't be run if the screen saver is active because the security
   // agent blocks us from sending events via remote operations
   if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
-    GTMCarbonEventDispatcherHandler *dispatcher 
+    GTMCarbonEventDispatcherHandler *dispatcher
       = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
     STAssertNotNil(dispatcher, @"Unable to acquire singleton");
-    UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask 
+    UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
                       | NSAlternateKeyMask | NSCommandKeyMask);
-    EventHotKeyRef hotKey = [dispatcher registerHotKey:0x5 
-                                             modifiers:keyMods 
-                                                target:self 
-                                                action:@selector(hitExceptionalHotKey:) 
-                                           whenPressed:YES];
-    STAssertTrue(hotKey != nil, @"Unable to create hotkey");
-        
+    GTMCarbonHotKey *hotKey
+      = [dispatcher registerHotKey:0x5
+                         modifiers:keyMods
+                            target:self
+                            action:@selector(hitExceptionalHotKey:)
+                          userInfo:self
+                       whenPressed:YES];
+    STAssertNotNil(hotKey, @"Unable to create hotkey");
+
     // Post the hotkey combo to the event queue. If everything is working
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
@@ -342,7 +347,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
     [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
     [GTMUnitTestDevLog expectString:@"Exception fired in hotkey: foo (bar)"];
     STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
-    [dispatcher unregisterHotKey:hotKey];    
+    [dispatcher unregisterHotKey:hotKey];
   }
 }
 
@@ -371,7 +376,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
     STAssertEquals(GTMCarbonToCocoaKeyModifiers(carbonMods), cocoaMods, nil);
   }
 }
-    
+
 
 @end
 

@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -22,6 +22,7 @@
 #import "GTMDefines.h"
 
 @class GTMCarbonEventHandler;
+@class GTMCarbonHotKey;
 
 // Objective C wrapper for a Carbon Event
 @interface GTMCarbonEvent : NSObject <NSCopying> {
@@ -109,9 +110,9 @@
 //    size - the size of the data that |data| points to.
 //    data - pointer to the data you want to set the parameter to.
 //
-- (void)setParameterNamed:(EventParamName)name 
-                     type:(EventParamType)type 
-                     size:(ByteCount)size 
+- (void)setParameterNamed:(EventParamName)name
+                     type:(EventParamType)type
+                     size:(ByteCount)size
                      data:(const void *)data;
 
 
@@ -127,12 +128,12 @@
 //  Returns:
 //    YES is parameter is retrieved successfully. NO if parameter doesn't exist.
 //
-- (BOOL)getParameterNamed:(EventParamName)name 
-                     type:(EventParamType)type 
-                     size:(ByteCount)size 
+- (BOOL)getParameterNamed:(EventParamName)name
+                     type:(EventParamType)type
+                     size:(ByteCount)size
                      data:(void *)data;
 
-//  Gets a the size of a parameter from an event. 
+//  Gets a the size of a parameter from an event.
 //
 //  Arguments:
 //    name - the parameter name.
@@ -155,7 +156,7 @@
 //  Returns:
 //    OSStatus value.
 //
-- (OSStatus)sendToTarget:(GTMCarbonEventHandler *)target 
+- (OSStatus)sendToTarget:(GTMCarbonEventHandler *)target
                  options:(OptionBits)options;
 
 //  Post event to an event queue.
@@ -211,7 +212,7 @@ GTM_PARAM_TEMPLATE_DECL(EventHotKeyID)
 
 //  Utility function for converting between modifier types
 //  Arguments:
-//    inCocoaModifiers - keyboard modifiers in carbon form 
+//    inCocoaModifiers - keyboard modifiers in carbon form
 //                       (NSCommandKeyMask etc)
 //  Returns:
 //    Carbon modifiers equivalent to |inCocoaModifiers| (cmdKey etc)
@@ -224,20 +225,20 @@ GTM_EXTERN UInt32 GTMCocoaToCarbonKeyModifiers(NSUInteger inCocoaModifiers);
 //    cocoa modifiers equivalent to |inCocoaModifiers| (NSCommandKeyMask etc)
 GTM_EXTERN NSUInteger GTMCarbonToCocoaKeyModifiers(UInt32 inCarbonModifiers);
 
-// An "abstract" superclass for objects that handle events such as 
-// menus, HIObjects, etc. 
+// An "abstract" superclass for objects that handle events such as
+// menus, HIObjects, etc.
 //
 // Subclasses are expected to override the eventTarget and
 // handleEvent:handler: methods to customize them.
 @interface GTMCarbonEventHandler : NSObject {
  @private
-  // handler we are wrapping  
+  // handler we are wrapping
   // lazily created in the eventHandler method
-  EventHandlerRef eventHandler_;  
+  EventHandlerRef eventHandler_;
   __weak id delegate_;  // Our delegate
   // Does our delegate respond to the gtm_eventHandler:receivedEvent:handler:
   // selector? Cached for performance reasons.
-  BOOL delegateRespondsToHandleEvent_;  
+  BOOL delegateRespondsToHandleEvent_;
 }
 
 // Registers the event handler to listen for |events|.
@@ -256,7 +257,7 @@ GTM_EXTERN NSUInteger GTMCarbonToCocoaKeyModifiers(UInt32 inCarbonModifiers);
 //
 - (void)unregisterForEvents:(const EventTypeSpec *)events count:(size_t)count;
 
-// To be overridden by subclasses to respond to events. 
+// To be overridden by subclasses to respond to events.
 //
 // All subclasses should call [super handleEvent:handler:] if they
 // don't handle the event themselves.
@@ -268,7 +269,7 @@ GTM_EXTERN NSUInteger GTMCarbonToCocoaKeyModifiers(UInt32 inCarbonModifiers);
 // Returns:
 //   OSStatus - usually either noErr or eventNotHandledErr
 //
-- (OSStatus)handleEvent:(GTMCarbonEvent *)event 
+- (OSStatus)handleEvent:(GTMCarbonEvent *)event
                 handler:(EventHandlerCallRef)handler;
 
 // To be overridden by subclasses to return the event target for the class.
@@ -300,12 +301,12 @@ GTM_EXTERN NSUInteger GTMCarbonToCocoaKeyModifiers(UInt32 inCarbonModifiers);
 
 @end
 
-// Category for methods that a delegate of GTMCarbonEventHandlerDelegate may 
+// Category for methods that a delegate of GTMCarbonEventHandlerDelegate may
 // want to implement.
-@interface NSObject (GTMCarbonEventHandlerDelegate) 
+@interface NSObject (GTMCarbonEventHandlerDelegate)
 
 // If a delegate implements this method it gets called before every event
-// that the handler gets sent. If it returns anything but eventNotHandledErr, 
+// that the handler gets sent. If it returns anything but eventNotHandledErr,
 // the handlers handlerEvent:handler: method will not be called, and
 // the return value returned by the delegate will be returned back to the
 // carbon event dispatch system. This allows you to override any method
@@ -314,8 +315,8 @@ GTM_EXTERN NSUInteger GTMCarbonToCocoaKeyModifiers(UInt32 inCarbonModifiers);
 // Arguments:
 //  delegate - the delegate to set to
 //
-- (OSStatus)gtm_eventHandler:(GTMCarbonEventHandler *)sender 
-               receivedEvent:(GTMCarbonEvent *)event 
+- (OSStatus)gtm_eventHandler:(GTMCarbonEventHandler *)sender
+               receivedEvent:(GTMCarbonEvent *)event
                      handler:(EventHandlerCallRef)handler;
 
 @end
@@ -355,7 +356,7 @@ GTM_EXTERN const OSType kGTMCarbonFrameworkSignature;
 // event handlers directly on the dispatcher if necessary.
 @interface GTMCarbonEventDispatcherHandler : GTMCarbonEventHandler {
  @private
-  NSMutableDictionary *hotkeys_;  // Collection of registered hotkeys 
+  NSMutableArray *hotkeys_;  // Collection of registered hotkeys
 }
 
 // Accessor to get the GTMCarbonEventDispatcherHandler singleton.
@@ -372,21 +373,40 @@ GTM_EXTERN const OSType kGTMCarbonFrameworkSignature;
 //                     that these are cocoa modifiers, so NSCommandKeyMask etc.
 //    target - instance that will get |action| called when the hotkey fires
 //    action - the method to call on |target| when the hotkey fires
+//    userInfo - storage for callers use
 //    onPress - is YES, the hotkey fires on the keydown (usual) otherwise
 //              it fires on the key up.
 //  Returns:
-//    a EventHotKeyRef that you can use with other Carbon functions, or for
-//    unregistering the hotkey. Note that all hotkeys are unregistered
-//    automatically when an app quits. Will be NULL on failure.
-- (EventHotKeyRef)registerHotKey:(NSUInteger)keyCode 
-                       modifiers:(NSUInteger)cocoaModifiers 
-                          target:(id)target 
-                          action:(SEL)action 
-                     whenPressed:(BOOL)onPress;
+//    a GTMCarbonHotKey. Note that all hotkeys are unregistered
+//    automatically when an app quits. Will be nil on failure.
+- (GTMCarbonHotKey *)registerHotKey:(NSUInteger)keyCode
+                          modifiers:(NSUInteger)cocoaModifiers
+                             target:(id)target
+                             action:(SEL)action
+                           userInfo:(id)userInfo
+                        whenPressed:(BOOL)onPress;
 
 // Unregisters a hotkey previously registered with registerHotKey.
 //  Arguments:
 //    keyRef - the EventHotKeyRef to unregister
-- (void)unregisterHotKey:(EventHotKeyRef)keyRef;
+- (void)unregisterHotKey:(GTMCarbonHotKey *)keyRef;
 
+@end
+
+// Wrapper for all the info we need about a hotkey that we can store in a
+// Foundation storage class. We expecct selector to have this signature:
+// - (void)hitHotKey:(GTMCarbonHotKey *)key;
+@interface GTMCarbonHotKey : NSObject {
+ @private
+  EventHotKeyID id_; // EventHotKeyID for this hotkey.
+  EventHotKeyRef hotKeyRef_;
+  id target_;  // Object we are going to call when the hotkey is hit
+  SEL selector_;  // Selector we are going to call on target_
+  BOOL onKeyDown_;  // Do we do it on key down or on key up?
+  id userInfo_;
+}
+
+- (id)userInfo;
+- (EventHotKeyRef)hotKeyRef;
+- (BOOL)onKeyDown;
 @end
