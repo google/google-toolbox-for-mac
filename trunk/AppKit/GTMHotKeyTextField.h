@@ -1,14 +1,14 @@
 //
 //  GTMHotKeyTextField.h
 //
-//  Copyright 2006-2008 Google Inc.
+//  Copyright 2006-2010 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -26,72 +26,62 @@
 #import <Cocoa/Cocoa.h>
 #import "GTMDefines.h"
 
-// Dictionary key for hot key configuration information modifier flags.
-// NSNumber of a unsigned int. Modifier flags are stored using Cocoa constants
-// (same as NSEvent) you will need to translate them to Carbon modifier flags
-// for use with RegisterEventHotKey()
-#define kGTMHotKeyModifierFlagsKey     @"Modifiers"
+@interface GTMHotKey : NSObject <NSCopying> {
+ @private
+  NSUInteger modifiers_;
+  NSUInteger keyCode_;
+  BOOL doubledModifier_;
+}
 
-// Dictionary key for hot key configuration of virtual key code.  NSNumber of
-// unsigned int. For double-modifier hotkeys (see below) this value is ignored.
-#define kGTMHotKeyKeyCodeKey           @"KeyCode"
+// Modifier flags are stored using Cocoa constants (same as NSEvent) you will
+// need to translate them to Carbon modifier flags for use with
+// RegisterEventHotKey()
+@property (readonly) NSUInteger modifiers;
+// Virtual keycode. For double-modifier hotkeys this value is ignored.
+@property (readonly) NSUInteger keyCode;
+//Double-tap modifier keys cannot be used with RegisterEventHotKey(), you must
+// implement your own Carbon event handler.
+@property (readonly) BOOL doubledModifier;
 
-// Dictionary key for hot key configuration of double-modifier tap. NSNumber
-// BOOL value. Double-tap modifier keys cannot be used with
-// RegisterEventHotKey(), you must implement your own Carbon event handler.
-#define kGTMHotKeyDoubledModifierKey   @"DoubleModifier"
++ (id)hotKeyWithKeyCode:(NSUInteger)keyCode
+              modifiers:(NSUInteger)modifiers
+        useDoubledModifier:(BOOL)doubledModifier;
 
-// Custom text field class used for hot key entry. In order to use this class
-// you will need to configure your window's delegate, to return the related
-// field editor.
-//
-//  Sample window delegate method:
-//
-//    -(id)windowWillReturnFieldEditor:(NSWindow *)sender toObject:(id)anObject {
-//      
-//      if ([anObject isKindOfClass:[GTMHotKeyTextField class]]) {
-//        return [GTMHotKeyFieldEditor sharedHotKeyFieldEditor];
-//      } else {
-//        return nil;  // Window will use the AppKit shared editor
-//      }
-//      
-//    }
-//
-//
-//  Other notes:
+- (id)initWithKeyCode:(NSUInteger)keyCode
+            modifiers:(NSUInteger)modifiers
+   useDoubledModifier:(BOOL)doubledModifier;
+@end
+
+//  Notes:
 //  - Though you are free to implement control:textShouldEndEditing: in your
 //    delegate its return is always ignored. The field always accepts only
 //    one hotkey keystroke before editing ends.
 //  - The "value" binding of this control is to the dictionary describing the
-//    hotkey. At this time binding options are not supported.
+//    hotkey.
 //  - The field does not attempt to consume all hotkeys. Hotkeys which are
 //    already bound in Apple prefs or other applications will have their
 //    normal effect.
 //
 
-@interface GTMHotKeyTextField : NSTextField {
- @private
-  NSDictionary    *hotKeyDict_;
-  // Bindings
-  NSObject        *boundObject_;
-  NSString        *boundKeyPath_;
-}
+@interface GTMHotKeyTextField : NSTextField
+@end
 
-// Set/Get the hot key dictionary for the field. See above for key names.
-- (void)setHotKeyValue:(NSDictionary *)hotKey;
-- (NSDictionary *)hotKeyValue;
+@interface GTMHotKeyTextFieldCell : NSTextFieldCell {
+ @private
+  GTMHotKey *hotKey_;
+}
 
 // Convert Cocoa modifier flags (-[NSEvent modifierFlags]) into a string for
 // display. Modifiers are represented in the string in the same order they would
 // appear in the Menu Manager.
 //
-//  Args: 
+//  Args:
 //    flags: -[NSEvent modifierFlags]
 //
 //  Returns:
 //    Autoreleased NSString
 //
-+ (NSString *)stringForModifierFlags:(unsigned int)flags;
++ (NSString *)stringForModifierFlags:(NSUInteger)flags;
 
 // Convert a keycode into a string that would result from typing the keycode in
 // the current keyboard layout. This may be one or more characters.
@@ -107,7 +97,7 @@
 // Returns:
 //   Autoreleased NSString
 //
-+ (NSString *)stringForKeycode:(UInt16)keycode 
++ (NSString *)stringForKeycode:(UInt16)keycode
                           useGlyph:(BOOL)useGlyph
                     resourceBundle:(NSBundle *)bundle;
 
@@ -118,8 +108,10 @@
 // delegate.
 @interface GTMHotKeyFieldEditor : NSTextView {
  @private
-  NSDictionary    *hotKeyDict_;  // strong
+  GTMHotKeyTextFieldCell *cell_;
 }
+
+@property (retain) GTMHotKeyTextFieldCell *cell;
 
 // Get the shared field editor for all hot key fields
 + (GTMHotKeyFieldEditor *)sharedHotKeyFieldEditor;
