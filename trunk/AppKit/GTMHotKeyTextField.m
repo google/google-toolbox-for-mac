@@ -48,10 +48,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 @implementation GTMHotKey
 
-@synthesize modifiers = modifiers_;
-@synthesize keyCode = keyCode_;
-@synthesize doubledModifier = doubledModifier_;
-
 + (id)hotKeyWithKeyCode:(NSUInteger)keyCode
               modifiers:(NSUInteger)modifiers
      useDoubledModifier:(BOOL)doubledModifier {
@@ -69,6 +65,18 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
     doubledModifier_ = doubledModifier;
   }
   return self;
+}
+
+- (NSUInteger)modifiers {
+  return modifiers_;
+}
+
+- (NSUInteger)keyCode {
+  return keyCode_;
+}
+
+- (BOOL)doubledModifier {
+  return doubledModifier_;
 }
 
 - (BOOL)isEqual:(id)object {
@@ -554,8 +562,6 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
 
-@synthesize cell = cell_;
-
 - (id)init {
   if ((self = [super init])) {
     [self setFieldEditor:YES];  // We are a field editor
@@ -571,6 +577,14 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
 }
 // COV_NF_END
 
+- (GTMHotKeyTextFieldCell *)cell {
+  return cell_;
+}
+
+- (void)setCell:(GTMHotKeyTextFieldCell *)cell {
+  [cell_ autorelease];
+  cell_ = [cell retain];
+}
 
 - (NSArray *)acceptableDragTypes {
   // Don't take drags

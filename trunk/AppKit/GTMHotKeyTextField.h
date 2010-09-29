@@ -33,16 +33,6 @@
   BOOL doubledModifier_;
 }
 
-// Modifier flags are stored using Cocoa constants (same as NSEvent) you will
-// need to translate them to Carbon modifier flags for use with
-// RegisterEventHotKey()
-@property (readonly) NSUInteger modifiers;
-// Virtual keycode. For double-modifier hotkeys this value is ignored.
-@property (readonly) NSUInteger keyCode;
-//Double-tap modifier keys cannot be used with RegisterEventHotKey(), you must
-// implement your own Carbon event handler.
-@property (readonly) BOOL doubledModifier;
-
 + (id)hotKeyWithKeyCode:(NSUInteger)keyCode
               modifiers:(NSUInteger)modifiers
         useDoubledModifier:(BOOL)doubledModifier;
@@ -50,6 +40,12 @@
 - (id)initWithKeyCode:(NSUInteger)keyCode
             modifiers:(NSUInteger)modifiers
    useDoubledModifier:(BOOL)doubledModifier;
+
+// Custom accessors (readonly, nonatomic)
+- (NSUInteger)modifiers;
+- (NSUInteger)keyCode;
+- (BOOL)doubledModifier;
+
 @end
 
 //  Notes:
@@ -111,9 +107,10 @@
   GTMHotKeyTextFieldCell *cell_;
 }
 
-@property (retain) GTMHotKeyTextFieldCell *cell;
-
 // Get the shared field editor for all hot key fields
 + (GTMHotKeyFieldEditor *)sharedHotKeyFieldEditor;
+
+// Custom accessors (retain, nonatomic)
+- (GTMHotKeyTextFieldCell *)cell;
 
 @end
