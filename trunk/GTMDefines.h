@@ -372,4 +372,17 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
 @end
 #endif  // !defined(GTM_10_6_PROTOCOLS_DEFINED) && !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
 
+// GTM_SEL_STRING is for specifying selector (usually property) names to KVC
+// or KVO methods.
+// In debug it will generate warnings for undeclared selectors if
+// -Wunknown-selector is turned on.
+// In release it will have no runtime overhead.
+#ifndef GTM_SEL_STRING
+  #ifdef DEBUG
+    #define GTM_SEL_STRING(selName) NSStringFromSelector(@selector(selName))
+  #else
+    #define GTM_SEL_STRING(selName) @#selName
+  #endif  // DEBUG
+#endif  // GTM_PROPERTY
+
 #endif // __OBJC__
