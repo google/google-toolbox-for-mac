@@ -383,6 +383,6 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
   #else
     #define GTM_SEL_STRING(selName) @#selName
   #endif  // DEBUG
-#endif  // GTM_PROPERTY
+#endif  // GTM_SEL_STRING
 
 #endif // __OBJC__
