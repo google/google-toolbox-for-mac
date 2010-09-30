@@ -578,17 +578,17 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventDispatcherHandler,
                                            userInfo:userInfo
                                         whenPressed:onKeyDown] autorelease];
   require(newKey, CantCreateKey);
-  if (RegisterEventHotKey((UInt32)keyCode,
-                          GTMCocoaToCarbonKeyModifiers(cocoaModifiers),
-                          keyID,
-                          [self eventTarget],
-                          0,
-                          &theRef) == noErr) {
-    [newKey setHotKeyRef:theRef];
-    [hotkeys_ addObject:newKey];
-  } else {
-    newKey = nil;
-  }
+  require_noerr_action(RegisterEventHotKey((UInt32)keyCode,
+                                           GTMCocoaToCarbonKeyModifiers(cocoaModifiers),
+                                           keyID,
+                                           [self eventTarget],
+                                           0,
+                                           &theRef),
+                       CantRegisterHotKey, newKey = nil);
+  [newKey setHotKeyRef:theRef];
+  [hotkeys_ addObject:newKey];
+
+CantRegisterHotKey:
 CantCreateKey:
   return newKey;
 }
@@ -704,7 +704,7 @@ CantCreateKey:
 
 - (BOOL)isEqual:(id)object {
   return [object isMemberOfClass:[self class]]
-    && (hotKeyRef_ = [object hotKeyRef]);
+    && (hotKeyRef_ == [object hotKeyRef]);
 }
 
 // Does this record match key |keyID|
@@ -744,6 +744,12 @@ CantCreateKey:
 - (void)setHotKeyRef:(EventHotKeyRef)ref {
   hotKeyRef_ = ref;
 }
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@ %p> - ref %p signature %d id %d",
+          [self class], self, hotKeyRef_, id_.signature, id_.id];
+}
+
 @end
 
 
