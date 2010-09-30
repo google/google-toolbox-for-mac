@@ -94,6 +94,12 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
   return NSCopyObject(self, 0, zone);
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@ %p> - %@",
+          [self class], self,
+          [GTMHotKeyTextFieldCell displayStringForHotKey:self]];
+}
+
 @end
 
 @implementation GTMHotKeyTextField
@@ -672,7 +678,11 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
         (modifierFlags == (NSCommandKeyMask | NSShiftKeyMask))) {
       NSBeep();
       bypass = YES;
+    } else if (modifierFlags == 0 || modifierFlags == NSShiftKeyMask) {
+      // Probably attempting to tab around the dialog.
+      bypass = YES;
     }
+
   } else if ((keyCode == 12) && (modifierFlags == NSCommandKeyMask)) {
     // Don't eat Cmd-Q. Users could have it as a hotkey, but its more likely
     // they're trying to quit
