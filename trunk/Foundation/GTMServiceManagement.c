@@ -40,7 +40,10 @@ typedef struct {
 } GTMCFToLDictContext;
 
 static CFErrorRef GTMCFLaunchCreateUnlocalizedError(CFIndex code,
-                                                    CFStringRef format, ...) CF_FORMAT_FUNCTION(2, 3) {
+                                                    CFStringRef format, ...) CF_FORMAT_FUNCTION(2, 3);
+
+static CFErrorRef GTMCFLaunchCreateUnlocalizedError(CFIndex code,
+                                                    CFStringRef format, ...) {
   CFDictionaryRef user_info = NULL;
   if (format) {
     va_list args;
@@ -137,7 +140,7 @@ static launch_data_t GTMPerformOnLabel(const char *verb,
     resp = launch_msg(msg);
     launch_data_free(msg);
     if (!resp) {
-      *error = GTMCFLaunchCreateUnlocalizedError(errno, NULL);
+      *error = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
     }
   }
   return resp;
@@ -421,21 +424,26 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
             if (LAUNCH_DATA_ERRNO == launch_data_get_type(job_response)) {
               int job_err = launch_data_get_errno(job_response);
               if (job_err != 0) {
-                CFStringRef format_string = NULL;
                 switch (job_err) {
                   case EEXIST:
-                    format_string = CFSTR("%s already loaded");
+                    local_error
+                      = GTMCFLaunchCreateUnlocalizedError(job_err,
+                                                          CFSTR("%s already loaded"),
+                                                          job_string);
                     break;
                   case ESRCH:
-                    format_string = CFSTR("%s not loaded");
+                    local_error
+                      = GTMCFLaunchCreateUnlocalizedError(job_err,
+                                                          CFSTR("%s not loaded"),
+                                                          job_string);
                     break;
                   default:
-                    format_string = CFSTR("%s failed to load");
+                    local_error
+                      = GTMCFLaunchCreateUnlocalizedError(job_err,
+                                                          CFSTR("%s failed to load"),
+                                                          job_string);
                     break;
                 }
-                local_error = GTMCFLaunchCreateUnlocalizedError(job_err,
-                                                                format_string,
-                                                                job_string);
               }
             }
           }
@@ -444,7 +452,7 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
         case LAUNCH_DATA_ERRNO: {
           int e = launch_data_get_errno(resp);
           if (e) {
-            local_error = GTMCFLaunchCreateUnlocalizedError(e, NULL);
+            local_error = GTMCFLaunchCreateUnlocalizedError(e, CFSTR(""));
           }
           break;
         }
@@ -459,7 +467,7 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
       launch_data_free(resp);
       launch_data_free(msg);
     } else {
-      local_error = GTMCFLaunchCreateUnlocalizedError(errno, NULL);
+      local_error = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
     }
 
   }
@@ -488,7 +496,7 @@ CFDictionaryRef GTMSMJobCheckIn(CFErrorRef *error) {
       case LAUNCH_DATA_ERRNO: {
         int e = launch_data_get_errno(resp);
         if (e) {
-          local_error = GTMCFLaunchCreateUnlocalizedError(e, NULL);
+          local_error = GTMCFLaunchCreateUnlocalizedError(e, CFSTR(""));
         }
         break;
       }
@@ -502,7 +510,7 @@ CFDictionaryRef GTMSMJobCheckIn(CFErrorRef *error) {
     }
     launch_data_free(resp);
   } else {
-    local_error = GTMCFLaunchCreateUnlocalizedError(errno, NULL);
+    local_error = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
   }
   if (error) {
     *error = local_error;
@@ -524,7 +532,7 @@ Boolean GTMSMJobRemove(CFStringRef jobLabel, CFErrorRef *error) {
       case LAUNCH_DATA_ERRNO: {
         int e = launch_data_get_errno(resp);
         if (e) {
-          local_error = GTMCFLaunchCreateUnlocalizedError(e, NULL);
+          local_error = GTMCFLaunchCreateUnlocalizedError(e, CFSTR(""));
         }
         break;
       }
@@ -538,7 +546,7 @@ Boolean GTMSMJobRemove(CFStringRef jobLabel, CFErrorRef *error) {
     }
     launch_data_free(resp);
   } else {
-    local_error = GTMCFLaunchCreateUnlocalizedError(errno, NULL);
+    local_error = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
   }
   if (error) {
     *error = local_error;
@@ -592,7 +600,7 @@ CFDictionaryRef GTMSMCopyAllJobDictionaries(void) {
     launch_data_free(resp);
   } else {
     error
-      = GTMCFLaunchCreateUnlocalizedError(errno, NULL);
+      = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
   }
   if (error) {
     CFShow(error);
