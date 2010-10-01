@@ -424,6 +424,11 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
             if (LAUNCH_DATA_ERRNO == launch_data_get_type(job_response)) {
               int job_err = launch_data_get_errno(job_response);
               if (job_err != 0) {
+                // We only keep the last error
+                if (local_error) {
+                  CFRelease(local_error);
+                  local_error = NULL;
+                }
                 switch (job_err) {
                   case EEXIST:
                     local_error
