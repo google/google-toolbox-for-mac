@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -40,8 +40,8 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
  @private
   NSView *view_;
 }
-- (id)initWithView:(NSView *)view 
-          duration:(NSTimeInterval)duration 
+- (id)initWithView:(NSView *)view
+          duration:(NSTimeInterval)duration
     animationCurve:(NSAnimationCurve)animationCurve;
 @end
 
@@ -68,28 +68,28 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
   CGSize displaySize = [[self class] displaySize];
   NSMutableAttributedString *attrString
     = [[[NSMutableAttributedString alloc] initWithString:string] autorelease];
-  
+
   NSRange fullRange = NSMakeRange(0, [string length]);
-  [attrString addAttribute:NSForegroundColorAttributeName 
-                     value:[NSColor whiteColor] 
+  [attrString addAttribute:NSForegroundColorAttributeName
+                     value:[NSColor whiteColor]
                      range:fullRange];
-  
-  NSMutableParagraphStyle *style 
+
+  NSMutableParagraphStyle *style
     = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
   [style setAlignment:NSCenterTextAlignment];
-  [attrString addAttribute:NSParagraphStyleAttributeName 
-                     value:style 
+  [attrString addAttribute:NSParagraphStyleAttributeName
+                     value:style
                      range:fullRange];
-  
+
   NSShadow *textShadow = [[[NSShadow alloc] init] autorelease];
   [textShadow setShadowOffset:NSMakeSize( 5, -5 )];
   [textShadow setShadowBlurRadius:10];
-  [textShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 
+  [textShadow setShadowColor:[NSColor colorWithCalibratedWhite:0
                                                          alpha:kTwoThirdsAlpha]];
-  [attrString addAttribute:NSShadowAttributeName 
-                     value:textShadow 
+  [attrString addAttribute:NSShadowAttributeName
+                     value:textShadow
                      range:fullRange];
-  
+
   // Try and find a size that fits without iterating too many times.
   // We start going 50 pixels at a time, then 10, then 1
   int size = -26;  // start at 24 (-26 + 50)
@@ -97,27 +97,27 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
   for (size_t i = 0; i < sizeof(offsets) / sizeof(int); ++i) {
     for(size = size + offsets[i]; size >= 24 && size < 300; size += offsets[i]) {
       NSFont *font = [NSFont boldSystemFontOfSize:size] ;
-      [attrString addAttribute:NSFontAttributeName 
+      [attrString addAttribute:NSFontAttributeName
                          value:font
                          range:fullRange];
       NSSize textSize = [attrString size];
       NSSize maxAdvanceSize = [font maximumAdvancement];
-      if (textSize.width + maxAdvanceSize.width > displaySize.width || 
+      if (textSize.width + maxAdvanceSize.width > displaySize.width ||
         textSize.height > displaySize.height) {
         size = size - offsets[i];
         break;
       }
     }
   }
-  
+
   // Bounds check our values
   if (size > 300) {
     size = 300;
   } else if (size < 24) {
     size = 24;
   }
-  [attrString addAttribute:NSFontAttributeName 
-                     value:[NSFont boldSystemFontOfSize:size] 
+  [attrString addAttribute:NSFontAttributeName
+                     value:[NSFont boldSystemFontOfSize:size]
                      range:fullRange];
   return [self initWithAttributedString:attrString];
 }
@@ -136,7 +136,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
   [textView setDrawsBackground:NO];
   [[textView textStorage] setAttributedString:attrString];
   [textView sizeToFit];
-  
+
   return [self initWithContentView:textView];
 }
 
@@ -147,7 +147,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
     return nil;
   }
   NSRect rect = GTMNSRectOfSize([image size]);
-  NSImageView *imageView 
+  NSImageView *imageView
     = [[[NSImageView alloc] initWithFrame:rect] autorelease];
   [imageView setImage:image];
   return [self initWithContentView:imageView];
@@ -164,7 +164,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
     return nil;
   }
   NSRect screenRect = [[NSScreen mainScreen] frame];
-  NSRect windowRect = GTMNSAlignRectangles([view frame], 
+  NSRect windowRect = GTMNSAlignRectangles([view frame],
                                            screenRect,
                                            GTMRectAlignCenter);
   windowRect = NSInsetRect(windowRect, -kEdgeInset, -kEdgeInset);
@@ -175,7 +175,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
                             backing:NSBackingStoreBuffered
                               defer:NO];
   if (self) {
-    [self setFrame:GTMNSAlignRectangles(windowRect, 
+    [self setFrame:GTMNSAlignRectangles(windowRect,
                                         screenRect,
                                         GTMRectAlignCenter)
            display:YES];
@@ -184,17 +184,18 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
     [self setLevel:NSFloatingWindowLevel];
     [self setHidesOnDeactivate:NO];
 
-    GTMLargeTypeBackgroundView *content 
-      = [[[GTMLargeTypeBackgroundView alloc] initWithFrame:NSZeroRect] 
+    GTMLargeTypeBackgroundView *content
+      = [[[GTMLargeTypeBackgroundView alloc] initWithFrame:NSZeroRect]
          autorelease];
     [self setHasShadow:YES];
     [self setContentView:content];
     [self setAlphaValue:0];
     [self setIgnoresMouseEvents:YES];
-    [view setFrame:GTMNSAlignRectangles([view frame], 
+    [view setFrame:GTMNSAlignRectangles([view frame],
                                         [content frame],
                                         GTMRectAlignCenter)];
     [content addSubview:view];
+    [content setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [self setInitialFirstResponder:view];
   }
   return self;
@@ -224,21 +225,21 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
     [pb setString:[[firstResponder textStorage] string]
         forType:NSStringPboardType];
   }
-  
+
   // Give the user some feedback that a copy has occurred
   NSTimeInterval dur = [[self class] copyAnimationDuration];
-  GTMLargeTypeBackgroundView *view 
+  GTMLargeTypeBackgroundView *view
     = GTM_STATIC_CAST(GTMLargeTypeBackgroundView, [self contentView]);
   [view animateCopyWithDuration:dur];
 }
 
-- (BOOL)canBecomeKeyWindow { 
+- (BOOL)canBecomeKeyWindow {
   return YES;
 }
 
 - (BOOL)performKeyEquivalent:(NSEvent *)theEvent {
   NSString *chars = [theEvent charactersIgnoringModifiers];
-  NSUInteger flags = ([theEvent modifierFlags] & 
+  NSUInteger flags = ([theEvent modifierFlags] &
                       NSDeviceIndependentModifierFlagsMask);
   BOOL isValid = (flags == NSCommandKeyMask) && [chars isEqualToString:@"c"];
   if (isValid) {
@@ -271,7 +272,7 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
 - (void)orderOut:(id)sender {
   [self animateWithEffect:NSViewAnimationFadeOutEffect];
   [super orderOut:sender];
-}  
+}
 
 + (CGSize)displaySize {
   NSRect screenRect = [[NSScreen mainScreen] frame];
@@ -288,12 +289,13 @@ static NSTimeInterval gGTMLargeTypeWindowFadeAnimationDuration = 0.333;
                           effect, NSViewAnimationEffectKey,
                           nil];
   NSArray *animation = [NSArray arrayWithObject:fadeIn];
-  NSViewAnimation *viewAnim 
+  NSViewAnimation *viewAnim
     = [[[NSViewAnimation alloc] initWithViewAnimations:animation] autorelease];
   [viewAnim setDuration:[[self class] fadeAnimationDuration]];
   [viewAnim setAnimationBlockingMode:NSAnimationBlocking];
   [viewAnim startAnimation];
 }
+
 @end
 
 @implementation GTMLargeTypeBackgroundView
@@ -315,21 +317,21 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   rect = [self bounds];
   NSBezierPath *roundRect = [NSBezierPath bezierPath];
   CGFloat minRadius = MIN(NSWidth(rect), NSHeight(rect)) * 0.5f;
-  
-  [roundRect gtm_appendBezierPathWithRoundRect:rect 
+
+  [roundRect gtm_appendBezierPathWithRoundRect:rect
                                   cornerRadius:MIN(minRadius, 32)];
-  [roundRect addClip];  
+  [roundRect addClip];
   if (transition_) {
     NSNumber *val = [NSNumber numberWithFloat:[animation_ currentValue]];
     [transition_ setValue:val forKey:@"inputTime"];
     CIImage *outputCIImage = [transition_ valueForKey:@"outputImage"];
-    [outputCIImage drawInRect:rect 
-                     fromRect:rect 
-                    operation:NSCompositeSourceOver 
+    [outputCIImage drawInRect:rect
+                     fromRect:rect
+                    operation:NSCompositeSourceOver
                      fraction:1.0];
   } else {
     [[NSColor colorWithDeviceWhite:0 alpha:kTwoThirdsAlpha] set];
-  
+
     NSRectFill(rect);
   }
 }
@@ -346,7 +348,7 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   [NSGraphicsContext restoreGraphicsState];
   CIVector *extent = [CIVector vectorWithX:bounds.origin.x
                                          Y:bounds.origin.y
-                                         Z:bounds.size.width 
+                                         Z:bounds.size.width
                                          W:bounds.size.height];
   CIFilter *transition = [CIFilter filterWithName:@"CICopyMachineTransition"];
   [transition setDefaults];
@@ -360,7 +362,7 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
                  forKey:@"inputTime"];
   [transition valueForKey:@"outputImage"];
   [image release];
-  transition_ = [transition retain];  
+  transition_ = [transition retain];
   animation_ = [[GTMLargeTypeCopyAnimation alloc] initWithView:self
                                                       duration:duration
                                                 animationCurve:NSAnimationLinear];
@@ -369,7 +371,7 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   [animation_ setAnimationBlockingMode:NSAnimationBlocking];
   [animation_ startAnimation];
 }
-  
+
 - (void)animationDidEnd:(NSAnimation*)animation {
   [animation_ release];
   animation_ = nil;
@@ -378,7 +380,7 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
   [self display];
 }
 
-- (float)animation:(NSAnimation*)animation 
+- (float)animation:(NSAnimation*)animation
   valueForProgress:(NSAnimationProgress)progress {
   // This gives us half the copy animation, so we don't swing back
   // Don't want too much gratuitous effect
@@ -388,10 +390,10 @@ GTM_METHOD_CHECK(NSBezierPath, gtm_appendBezierPathWithRoundRect:cornerRadius:);
 @end
 
 @implementation GTMLargeTypeCopyAnimation
-- (id)initWithView:(NSView *)view 
-          duration:(NSTimeInterval)duration 
+- (id)initWithView:(NSView *)view
+          duration:(NSTimeInterval)duration
     animationCurve:(NSAnimationCurve)animationCurve {
-  if ((self = [super initWithDuration:duration 
+  if ((self = [super initWithDuration:duration
                        animationCurve:animationCurve])) {
     view_ = [view retain];
   }
