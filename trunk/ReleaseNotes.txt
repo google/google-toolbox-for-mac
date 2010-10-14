@@ -16,6 +16,8 @@ Changes since 1.6.0
 - Removed Foundation/GTMBase64 and Foundation/GTMNSData+Hex in favor of
   Foundation/GTMStringEncoding.
 
+- Added Foundation/GTMURITemplate to support the pending standard.
+
 
 Release 1.6.0
 Changes since 1.5.1

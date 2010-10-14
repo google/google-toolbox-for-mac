@@ -99,7 +99,7 @@
 		8B1B49190E5F8E2100A08972 /* GTMExceptionalInlines.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1B49170E5F8E2100A08972 /* GTMExceptionalInlines.m */; };
 		8B1B49260E5F97C800A08972 /* GTMExceptionalInlinesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1B491B0E5F904C00A08972 /* GTMExceptionalInlinesTest.m */; };
 		8B21BE9211532CDC00DD2686 /* GTMNSAnimatablePropertyContainerTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B21BE9111532CDC00DD2686 /* GTMNSAnimatablePropertyContainerTest.xib */; };
-		8B21DE56117E5CB7000E004F /* GTMLocalizedString.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B21DE54117E5CB7000E004F /* GTMLocalizedString.h */; };
+		8B21DE56117E5CB7000E004F /* GTMLocalizedString.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B21DE54117E5CB7000E004F /* GTMLocalizedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B2789960EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 8B2789950EF855FB00D68C01 /* GTMUnitTestingWindow.10.5.6.tiff */; };
 		8B29078711F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078511F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m */; };
 		8B29078811F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
@@ -303,6 +303,11 @@
 		F42597790E23FE3A003BEA3E /* GTMNSString+FindFolder.h in Headers */ = {isa = PBXBuildFile; fileRef = F42597760E23FE3A003BEA3E /* GTMNSString+FindFolder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F425977A0E23FE3A003BEA3E /* GTMNSString+FindFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = F42597770E23FE3A003BEA3E /* GTMNSString+FindFolder.m */; };
 		F425977F0E23FE43003BEA3E /* GTMNSString+FindFolderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42597780E23FE3A003BEA3E /* GTMNSString+FindFolderTest.m */; };
+		F42866B81267340A0090FE0F /* GTMURITemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = F42866B51267340A0090FE0F /* GTMURITemplate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F42866B91267340A0090FE0F /* GTMURITemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = F42866B61267340A0090FE0F /* GTMURITemplate.m */; };
+		F42866BC1267340A0090FE0F /* GTMURITemplateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42866B71267340A0090FE0F /* GTMURITemplateTest.m */; };
+		F428670312673C490090FE0F /* GTMURITemplateExtraTests.json in Resources */ = {isa = PBXBuildFile; fileRef = F428670112673C490090FE0F /* GTMURITemplateExtraTests.json */; };
+		F428670412673C490090FE0F /* GTMURITemplateRFCTests.json in Resources */ = {isa = PBXBuildFile; fileRef = F428670212673C490090FE0F /* GTMURITemplateRFCTests.json */; };
 		F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F428FF040D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */; };
 		F42E08330D19992100D5DDE0 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
@@ -779,6 +784,11 @@
 		F42597760E23FE3A003BEA3E /* GTMNSString+FindFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+FindFolder.h"; sourceTree = "<group>"; };
 		F42597770E23FE3A003BEA3E /* GTMNSString+FindFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+FindFolder.m"; sourceTree = "<group>"; };
 		F42597780E23FE3A003BEA3E /* GTMNSString+FindFolderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+FindFolderTest.m"; sourceTree = "<group>"; };
+		F42866B51267340A0090FE0F /* GTMURITemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMURITemplate.h; sourceTree = "<group>"; };
+		F42866B61267340A0090FE0F /* GTMURITemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMURITemplate.m; sourceTree = "<group>"; };
+		F42866B71267340A0090FE0F /* GTMURITemplateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMURITemplateTest.m; sourceTree = "<group>"; };
+		F428670112673C490090FE0F /* GTMURITemplateExtraTests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GTMURITemplateExtraTests.json; sourceTree = "<group>"; };
+		F428670212673C490090FE0F /* GTMURITemplateRFCTests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GTMURITemplateRFCTests.json; sourceTree = "<group>"; };
 		F428FEFF0D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSBezierPath+CGPath.h"; sourceTree = "<group>"; };
 		F428FF000D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+CGPath.m"; sourceTree = "<group>"; };
 		F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+CGPathTest.m"; sourceTree = "<group>"; };
@@ -1119,6 +1129,15 @@
 			path = TestData;
 			sourceTree = "<group>";
 		};
+		F428670012673C1D0090FE0F /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				F428670112673C490090FE0F /* GTMURITemplateExtraTests.json */,
+				F428670212673C490090FE0F /* GTMURITemplateRFCTests.json */,
+			);
+			path = TestData;
+			sourceTree = "<group>";
+		};
 		F435E46C0DC8F23A0069CDE8 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
@@ -1358,6 +1377,9 @@
 		F48FE2720D198CCE009257D2 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				F42866B51267340A0090FE0F /* GTMURITemplate.h */,
+				F42866B61267340A0090FE0F /* GTMURITemplate.m */,
+				F42866B71267340A0090FE0F /* GTMURITemplateTest.m */,
 				0B1B9B8410FECD870084EE4B /* GTMStringEncoding.h */,
 				0B1B9B8510FECD870084EE4B /* GTMStringEncoding.m */,
 				0B1B9B8610FECD870084EE4B /* GTMStringEncodingTest.m */,
@@ -1492,6 +1514,7 @@
 				8B3AA9EF0E033E23007E31B5 /* GTMValidatingContainers.h */,
 				8B3AA9F00E033E23007E31B5 /* GTMValidatingContainers.m */,
 				8B3AA9F70E033E5F007E31B5 /* GTMValidatingContainersTest.m */,
+				F428670012673C1D0090FE0F /* TestData */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -1653,6 +1676,7 @@
 				8BCB59F011C00ED6009B6C40 /* GTMNSScanner+Unsigned.h in Headers */,
 				8B29080A11F8E1670064F50F /* GTMNSFileHandle+UniqueName.h in Headers */,
 				8B414E891226FB1000D0064F /* GTMServiceManagement.h in Headers */,
+				F42866B81267340A0090FE0F /* GTMURITemplate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1917,6 +1941,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F428670312673C490090FE0F /* GTMURITemplateExtraTests.json in Resources */,
+				F428670412673C490090FE0F /* GTMURITemplateRFCTests.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2212,6 +2238,7 @@
 				8B29078711F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
 				8B29078811F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
 				8B414E8B1226FB1800D0064F /* GTMServiceManagementTest.m in Sources */,
+				F42866BC1267340A0090FE0F /* GTMURITemplateTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2288,6 +2315,7 @@
 				8BCB59F111C00ED6009B6C40 /* GTMNSScanner+Unsigned.m in Sources */,
 				8B29080911F8E1630064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
 				8B414E881226FB1000D0064F /* GTMServiceManagement.c in Sources */,
+				F42866B91267340A0090FE0F /* GTMURITemplate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
