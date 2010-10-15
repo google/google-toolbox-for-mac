@@ -44,9 +44,17 @@ This can be fixed by adding this chunk of code:
 
 {{{
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 FILE *fdopen$UNIX2003(int fildes, const char *mode) {
   return fdopen(fildes, mode);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 }}}
 
