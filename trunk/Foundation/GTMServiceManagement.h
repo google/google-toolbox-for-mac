@@ -68,6 +68,10 @@ CFTypeRef GTMCFTypeCreateFromLaunchData(launch_data_t ldata,
                                         bool convert_non_standard_objects,
                                         CFErrorRef *error);
 
+// Returns the list of exports defined by launchd.
+// Caller is takes ownership of the returned type.
+CFDictionaryRef GTMCopyLaunchdExports();
+
 GTM_EXTERN_C_END
 
 #endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4

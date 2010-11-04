@@ -22,10 +22,18 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMGarbageCollection.h"
+#import <servers/bootstrap.h>
 
 #define STANDARD_JOB_LABEL "com.apple.launchctl.Background"
 #define OUR_JOB_LABEL "com.google.gtm.GTMServiceManagementTest.job"
 #define BAD_JOB_LABEL "com.google.gtm.GTMServiceManagementTest.badjob"
+#define TEST_HARNESS_LABEL "com.google.gtm.GTMServiceManagementTestHarness"
+#define GTM_MACH_PORT_NAME "GTMServiceManagementTestingHarnessMachPort"
+
+static NSString const *kGTMSocketKey
+  = @"COM_GOOGLE_GTM_GTMSERVICEMANAGEMENT_TEST_SOCKET";
+static NSString const *kGTMSocketName
+  = @"GTMServiceManagementTesting";
 
 @interface GTMServiceManagementTest : GTMTestCase
 @end
@@ -114,14 +122,6 @@
   STAssertEquals([(NSError *)error code], (NSInteger)EEXIST, nil);
   CFRelease(error);
 
-  NSDictionary *emptyJob
-    = [NSDictionary dictionaryWithObject:@"Empty Job"
-                                  forKey:@LAUNCH_JOBKEY_LABEL];
-  isGood = GTMSMJobSubmit((CFDictionaryRef)emptyJob, &error);
-  STAssertFalse(isGood, nil);
-  STAssertEquals([(NSError *)error code], (NSInteger)EINVAL, nil);
-  CFRelease(error);
-
   NSDictionary *goodJob
     = [NSDictionary dictionaryWithObjectsAndKeys:
        @OUR_JOB_LABEL, @LAUNCH_JOBKEY_LABEL,
@@ -142,16 +142,76 @@
   CFRelease(error);
 }
 
+- (void)testCopyExports {
+  CFDictionaryRef exports = GTMCopyLaunchdExports();
+  STAssertNotNULL(exports, nil);
+  NSString *user = [(NSDictionary *)exports objectForKey:@"USER"];
+  STAssertEqualObjects(user, NSUserName(), nil);
+  CFRelease(exports);
+}
+
 - (void)testCheckin {
   CFErrorRef error = NULL;
-  // TODO(dmaclach): to actually test checkin we would need a subprocess to
-  //                 launch, which is too complex at this point. Perhaps
-  //                 in the future if bugs are found.
+  // Can't check ourselves in
   NSDictionary *badTest
     = GTMCFAutorelease(GTMSMJobCheckIn(&error));
   STAssertNil(badTest, nil);
   STAssertNotNULL(error, nil);
   CFRelease(error);
+
+  NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
+  STAssertNotNil(testBundle, nil);
+  NSString *testHarnessPath
+    = [testBundle pathForResource:@"GTMServiceManagementTestingHarness"
+                           ofType:nil];
+  STAssertNotNil(testHarnessPath, nil);
+  NSDictionary *machServices
+    = [NSDictionary dictionaryWithObjectsAndKeys:
+        [NSNumber numberWithBool:YES], @GTM_MACH_PORT_NAME,
+        nil];
+
+  NSDictionary *socket
+    = [NSDictionary dictionaryWithObjectsAndKeys:
+       kGTMSocketKey,@LAUNCH_JOBSOCKETKEY_SECUREWITHKEY,
+       nil];
+
+  NSDictionary *sockets
+    = [NSDictionary dictionaryWithObjectsAndKeys:
+       socket, kGTMSocketName,
+       nil];
+
+  // LAUNCH_JOBKEY_WAITFORDEBUGGER left commented out
+  // so that it can easily be reenabled for debugging.
+  NSDictionary *job = [NSDictionary dictionaryWithObjectsAndKeys:
+    @TEST_HARNESS_LABEL, @LAUNCH_JOBKEY_LABEL,
+    testHarnessPath, @LAUNCH_JOBKEY_PROGRAM,
+    [NSNumber numberWithBool:YES], @LAUNCH_JOBKEY_RUNATLOAD,
+    [NSNumber numberWithBool:YES], @LAUNCH_JOBKEY_DEBUG,
+    //[NSNumber numberWithBool:YES], @LAUNCH_JOBKEY_WAITFORDEBUGGER,
+    machServices, @LAUNCH_JOBKEY_MACHSERVICES,
+    sockets, @LAUNCH_JOBKEY_SOCKETS,
+    nil];
+
+  // This is allowed to fail.
+  GTMSMJobRemove(CFSTR(TEST_HARNESS_LABEL), NULL);
+
+  BOOL isGood = GTMSMJobSubmit((CFDictionaryRef)job, &error);
+  STAssertTrue(isGood, @"Error %@", error);
+
+  NSDictionary* exports = GTMCFAutorelease(GTMCopyLaunchdExports());
+  STAssertNotNULL(exports, nil);
+  NSString *socketPath = [exports objectForKey:kGTMSocketKey];
+  STAssertNotNULL(socketPath, nil);
+  STAssertEqualObjects([socketPath lastPathComponent], kGTMSocketName, nil);
+
+  mach_port_t sp = 0;
+  kern_return_t rt = bootstrap_look_up(bootstrap_port,
+                                       GTM_MACH_PORT_NAME,
+                                       &sp);
+  STAssertNotEquals(sp, (mach_port_t)0, nil);
+  STAssertEquals(rt, KERN_SUCCESS, nil);
+  isGood = GTMSMJobRemove(CFSTR(TEST_HARNESS_LABEL), &error);
+  STAssertTrue(isGood, @"Error %@", error);
 }
 
 @end

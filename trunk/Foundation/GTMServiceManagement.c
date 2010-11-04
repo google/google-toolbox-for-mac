@@ -16,6 +16,15 @@
 //  the License.
 //
 
+// As per http://openp2p.com/pub/a/oreilly/ask_tim/2001/codepolicy.html
+// The following functions
+// open_devnull
+// spc_sanitize_files
+// spc_drop_privileges
+// are derived from Chapter 1 of "Secure Programming Cookbook for C and C++" by
+// John Viega and Matt Messier. Copyright 2003 O'Reilly & Associates.
+// ISBN 0-596-00394-3
+
 // Note: launch_data_t have different ownership semantics than CFType/NSObjects.
 //       In general if you create one, you are responsible for releasing it.
 //       However, if you add it to a collection (LAUNCH_DATA_DICTIONARY,
@@ -25,6 +34,10 @@
 //       launch_data_t can only be in one collection at any given time.
 
 #include "GTMServiceManagement.h"
+#include <paths.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <vproc.h>
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
 
@@ -271,7 +284,9 @@ exit:
   if (error) {
     *error = local_error;
   } else if (local_error) {
+#ifdef DEBUG
     CFShow(local_error);
+#endif //  DEBUG
     CFRelease(local_error);
   }
   return result;
@@ -394,92 +409,182 @@ exit:
   if (error) {
     *error = local_error;
   } else if (local_error) {
+#ifdef DEBUG
     CFShow(local_error);
+#endif //  DEBUG
     CFRelease(local_error);
   }
   return cf_type_ref;
 }
 
-Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
-  CFErrorRef local_error = NULL;
-  launch_data_t launch_job = GTMLaunchDataCreateFromCFType(cf_job,
-                                                           &local_error);
-  if (!local_error) {
-    launch_data_t jobs = launch_data_alloc(LAUNCH_DATA_ARRAY);
-    launch_data_array_set_index(jobs, launch_job, 0);
-    launch_data_t msg = launch_data_alloc(LAUNCH_DATA_DICTIONARY);
-    launch_data_dict_insert(msg, jobs, LAUNCH_KEY_SUBMITJOB);
-    launch_data_t resp = launch_msg(msg);
-    if (resp) {
-      launch_data_type_t resp_type = launch_data_get_type(resp);
-      switch (resp_type) {
-        case LAUNCH_DATA_ARRAY:
-          for (size_t i = 0; i < launch_data_array_get_count(jobs); i++) {
-            launch_data_t job_response = launch_data_array_get_index(resp, i);
-            launch_data_t job = launch_data_array_get_index(jobs, i);
-            launch_data_t job_label
-              = launch_data_dict_lookup(job, LAUNCH_JOBKEY_LABEL);
-            const char *job_string
-              = job_label ? launch_data_get_string(job_label) : "Unlabeled job";
-            if (LAUNCH_DATA_ERRNO == launch_data_get_type(job_response)) {
-              int job_err = launch_data_get_errno(job_response);
-              if (job_err != 0) {
-                // We only keep the last error
-                if (local_error) {
-                  CFRelease(local_error);
-                  local_error = NULL;
-                }
-                switch (job_err) {
-                  case EEXIST:
-                    local_error
-                      = GTMCFLaunchCreateUnlocalizedError(job_err,
-                                                          CFSTR("%s already loaded"),
-                                                          job_string);
-                    break;
-                  case ESRCH:
-                    local_error
-                      = GTMCFLaunchCreateUnlocalizedError(job_err,
-                                                          CFSTR("%s not loaded"),
-                                                          job_string);
-                    break;
-                  default:
-                    local_error
-                      = GTMCFLaunchCreateUnlocalizedError(job_err,
-                                                          CFSTR("%s failed to load"),
-                                                          job_string);
-                    break;
-                }
-              }
-            }
-          }
-          break;
+// open the standard file descs to devnull.
+static int open_devnull(int fd) {
+  FILE *f = NULL;
 
-        case LAUNCH_DATA_ERRNO: {
-          int e = launch_data_get_errno(resp);
-          if (e) {
-            local_error = GTMCFLaunchCreateUnlocalizedError(e, CFSTR(""));
-          }
-          break;
-        }
+  if (fd == STDIN_FILENO) {
+    f = freopen(_PATH_DEVNULL, "rb", stdin);
+  }
+  else if (fd == STDOUT_FILENO) {
+    f = freopen(_PATH_DEVNULL, "wb", stdout);
+  }
+  else if (fd == STDERR_FILENO) {
+    f = freopen(_PATH_DEVNULL, "wb", stderr);
+  }
+  return (f && fileno(f) == fd);
+}
 
-        default:
-          local_error
-            = GTMCFLaunchCreateUnlocalizedError(EINVAL,
-                                                CFSTR("unknown response from launchd %d"),
-                                                resp_type);
-          break;
-      }
-      launch_data_free(resp);
-      launch_data_free(msg);
-    } else {
-      local_error = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
+void spc_sanitize_files(void) {
+  int standard_fds[] = { STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO };
+  int standard_fds_count = sizeof(standard_fds) / sizeof(standard_fds[0]);
+
+  // Make sure all open descriptors other than the standard ones are closed
+  int fds = getdtablesize();
+  for (int fd = standard_fds_count; fd < fds; fd++) close(fd);
+
+  // Verify that the standard descriptors are open.  If they're not, attempt to
+  // open them using /dev/null.  If any are unsuccessful, abort.
+  for (int fd = 0; fd < standard_fds_count; fd++) {
+    struct stat st;
+    if (fstat(fd, &st) == -1 && (errno != EBADF || !open_devnull(fd))) {
+      abort();
     }
+  }
+}
 
+void spc_drop_privileges(void) {
+  gid_t newgid = getgid(), oldgid = getegid();
+  uid_t newuid = getuid(), olduid = geteuid();
+
+  // If root privileges are to be dropped, be sure to pare down the ancillary
+  // groups for the process before doing anything else because the setgroups()
+  // system call requires root privileges.  Drop ancillary groups regardless of
+  // whether privileges are being dropped temporarily or permanently.
+  if (!olduid) setgroups(1, &newgid);
+
+  if (newgid != oldgid) {
+    if (setregid(-1, newgid) == -1) {
+      abort();
+    }
+  }
+
+  if (newuid != olduid) {
+    if (setregid(-1, newuid) == -1) {
+      abort();
+    }
+  }
+
+  // verify that the changes were successful
+  if (newgid != oldgid && (setegid(oldgid) != -1 || getegid() != newgid)) {
+    abort();
+  }
+  if (newuid != olduid && (seteuid(olduid) != -1 || geteuid() != newuid)) {
+    abort();
+  }
+}
+
+Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
+  // We launch our jobs using launchctl instead of doing it by hand
+  // because launchctl does a whole pile of parsing of the job internally
+  // to handle the sockets cases that we don't want to duplicate here.
+  int fd = -1;
+  CFDataRef xmlData = NULL;
+  char fileName[] = _PATH_TMP "GTMServiceManagement.XXXXXX";
+  CFErrorRef local_error = NULL;
+
+  if (!cf_job) {
+    local_error
+      = GTMCFLaunchCreateUnlocalizedError(EINVAL,
+                                          CFSTR("NULL Job."),
+                                          NULL);
+    goto exit;
+  }
+
+  CFStringRef jobLabel = CFDictionaryGetValue(cf_job,
+                                              CFSTR(LAUNCH_JOBKEY_LABEL));
+  if (!jobLabel) {
+    local_error
+      = GTMCFLaunchCreateUnlocalizedError(EINVAL,
+                                          CFSTR("Job missing label."),
+                                          NULL);
+    goto exit;
+  }
+
+  CFDictionaryRef jobDict = GTMSMJobCopyDictionary(jobLabel);
+  if (jobDict) {
+    CFRelease(jobDict);
+    local_error
+      = GTMCFLaunchCreateUnlocalizedError(EEXIST,
+                                          CFSTR("Job already exists %@."),
+                                          jobLabel);
+    goto exit;
+  }
+
+  xmlData = CFPropertyListCreateXMLData(NULL, cf_job);
+  if (!xmlData) {
+    local_error
+      = GTMCFLaunchCreateUnlocalizedError(EINVAL,
+                                          CFSTR("Invalid Job %@."),
+                                          jobLabel);
+    goto exit;
+  }
+
+  fd = mkstemp(fileName);
+  if (fd == -1) {
+    local_error
+      = GTMCFLaunchCreateUnlocalizedError(errno,
+                                          CFSTR("Unable to create %s."),
+                                          fileName);
+    goto exit;
+  }
+  write(fd, CFDataGetBytePtr(xmlData), CFDataGetLength(xmlData));
+  close(fd);
+
+  pid_t childpid = fork();
+  if (childpid == -1) {
+    local_error
+      = GTMCFLaunchCreateUnlocalizedError(errno,
+                                          CFSTR("Unable to fork."),
+                                          NULL);
+    goto exit;
+  }
+  if (childpid != 0) {
+    // Parent process
+    int status = 0;
+    pid_t pid = -1;
+    do {
+      pid = waitpid(childpid, &status, 0);
+    } while (pid == -1 && errno == EINTR);
+    if (pid == -1 || WEXITSTATUS(status)) {
+      local_error
+        = GTMCFLaunchCreateUnlocalizedError(errno,
+                                            CFSTR("Child Process Error.\n"
+                                                  "Cmd: /bin/launchctl\n"
+                                                  "pid: %d\n"
+                                                  "ExitStatus: %d\n"),
+                                            childpid, WEXITSTATUS(status));
+      goto exit;
+    }
+  } else {
+    // Child Process
+    spc_sanitize_files();
+    spc_drop_privileges();
+    const char *args[] = { "launchctl", "load", fileName, NULL };
+    execve("/bin/launchctl", (char* const*)args, NULL);
+    abort();
+  }
+exit:
+  if (xmlData) {
+    CFRelease(xmlData);
+  }
+  if (fd != -1) {
+    unlink(fileName);
   }
   if (error) {
     *error = local_error;
   } else if (local_error) {
+#ifdef DEBUG
     CFShow(local_error);
+#endif //  DEBUG
     CFRelease(local_error);
   }
   return local_error == NULL;
@@ -520,7 +625,9 @@ CFDictionaryRef GTMSMJobCheckIn(CFErrorRef *error) {
   if (error) {
     *error = local_error;
   } else if (local_error) {
+#ifdef DEBUG
     CFShow(local_error);
+#endif //  DEBUG
     CFRelease(local_error);
   }
   return check_in_dict;
@@ -556,7 +663,9 @@ Boolean GTMSMJobRemove(CFStringRef jobLabel, CFErrorRef *error) {
   if (error) {
     *error = local_error;
   } else if (local_error) {
+#ifdef DEBUG
     CFShow(local_error);
+#endif //  DEBUG
     CFRelease(local_error);
   }
   return local_error == NULL;
@@ -580,7 +689,9 @@ CFDictionaryRef GTMSMJobCopyDictionary(CFStringRef jobLabel) {
     launch_data_free(resp);
   }
   if (error) {
+#ifdef DEBUG
     CFShow(error);
+#endif //  DEBUG
     CFRelease(error);
   }
   return dict;
@@ -608,8 +719,52 @@ CFDictionaryRef GTMSMCopyAllJobDictionaries(void) {
       = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
   }
   if (error) {
+#ifdef DEBUG
     CFShow(error);
+#endif //  DEBUG
     CFRelease(error);
+  }
+  return dict;
+}
+
+// Some private SPIs defined by apple in the launchd sources
+// http://opensource.apple.com/source/launchd/launchd-258.25/launchd/src/
+// and
+// http://opensource.apple.com/source/launchd/launchd-329.3/launchd/src/
+// It turns out that they renamed the enum that I need to use between 10.5 and
+// 10.6. Luckily if we request the 10_5 value on 10_6 we get an error
+// so we just ask for the 10_5 value first, and then the 10_6 value second.
+
+typedef enum {
+  VPROC_GSK_ENVIRONMENT_10_5 = 10,
+  VPROC_GSK_ENVIRONMENT_10_6 = 11
+} vproc_gsk_t;
+
+extern vproc_err_t vproc_swap_complex(vproc_t vp,
+                                      vproc_gsk_t key,
+                                      launch_data_t inval,
+                                      launch_data_t *outval);
+
+CFDictionaryRef GTMCopyLaunchdExports(void) {
+  launch_data_t resp;
+  CFDictionaryRef dict = NULL;
+  vproc_err_t err = vproc_swap_complex(NULL,
+                                       VPROC_GSK_ENVIRONMENT_10_5,
+                                       NULL,
+                                       &resp);
+  if (err) {
+    err = vproc_swap_complex(NULL, VPROC_GSK_ENVIRONMENT_10_6, NULL, &resp);
+  }
+  if (err == NULL) {
+    CFErrorRef error = NULL;
+    dict = GTMCFTypeCreateFromLaunchData(resp, false, &error);
+    if (error) {
+#ifdef DEBUG
+      CFShow(error);
+#endif //  DEBUG
+      CFRelease(error);
+    }
+    launch_data_free(resp);
   }
   return dict;
 }
