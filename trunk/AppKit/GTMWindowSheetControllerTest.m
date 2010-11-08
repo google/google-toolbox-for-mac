@@ -25,12 +25,16 @@
                                            NSTabViewDelegate> {
  @private
   GTMWindowSheetController *sheetController_;
+  NSWindow* window_;
   BOOL didAlertClose_;
   BOOL didSheetClose_;
 }
 - (void)alertDidEnd:(NSAlert *)alert
          returnCode:(NSInteger)returnCode
             context:(void *)context;
+- (void)openSecondSheet:(NSAlert *)alert
+             returnCode:(NSInteger)returnCode
+                context:(void *)context;
 - (void)sheetDidEnd:(NSWindow *)sheet
          returnCode:(NSInteger)returnCode
             context:(void *)context;
@@ -172,10 +176,103 @@
   STAssertTrue(didSheetClose_, @"Sheet should have closed");
 }
 
+- (void)testOpenSheetAfterFirst {
+  // Set up window
+  window_ =
+    [[[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 600, 600)
+                                 styleMask:NSTitledWindowMask
+                                   backing:NSBackingStoreBuffered
+                                     defer:NO] autorelease];
+  STAssertNotNil(window_, @"Could not allocate window");
+
+  sheetController_ =
+      [[[GTMWindowSheetController alloc] initWithWindow:window_
+                                               delegate:self] autorelease];
+
+  STAssertFalse([sheetController_ isSheetAttachedToView:
+                 [window_ contentView]],
+                @"Sheet should not be attached to current view");
+  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+                 (NSUInteger)0,
+                 @"Should have no views with sheets");
+
+  // Pop alert on first tab
+  NSAlert* alert = [[NSAlert alloc] init];
+
+  [alert setMessageText:@"Hell Has Broken Loose."];
+  [alert setInformativeText:@"All hell has broken loose. You may want to run "
+                            @"outside screaming and waving your arms around "
+                            @"wildly."];
+
+  NSButton *alertButton = [alert addButtonWithTitle:@"OK"];
+
+  // Allocate a second sheet to be launched by the alert
+  NSPanel *sheet =
+      [[[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 300, 200)
+                                  styleMask:NSTitledWindowMask
+                                    backing:NSBackingStoreBuffered
+                                      defer:NO] autorelease];
+
+  [sheetController_ beginSystemSheet:alert
+                        modalForView:[window_ contentView]
+                      withParameters:[NSArray arrayWithObjects:
+                                      [NSNull null],
+                                      self,
+                                      [NSValue valueWithPointer:
+                                        @selector(openSecondSheet:returnCode:context:)],
+                                      [NSValue valueWithPointer:sheet],
+                                      nil]];
+  didAlertClose_ = NO;
+  didSheetClose_ = NO;
+
+  STAssertTrue([sheetController_ isSheetAttachedToView:
+                [window_ contentView]],
+                @"Sheet should be attached to view");
+  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+                 (NSUInteger)1,
+                 @"Should have one view with sheets");
+
+  // Close alert
+  [alertButton performClick:self];
+
+  STAssertTrue([sheetController_ isSheetAttachedToView:
+                [window_ contentView]],
+                @"Second sheet should be attached to view");
+  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+                 (NSUInteger)1,
+                 @"Should have one view with sheets");
+  STAssertTrue(didAlertClose_, @"Alert should have closed");
+
+  // Close sheet
+  [[NSApplication sharedApplication] endSheet:sheet returnCode:NSOKButton];
+
+  STAssertFalse([sheetController_ isSheetAttachedToView:
+                 [window_ contentView]],
+                @"Sheet should not be attached to current view");
+  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+                 (NSUInteger)0,
+                 @"Should have no views with sheets");
+  STAssertTrue(didSheetClose_, @"Sheet should have closed");
+}
+
 - (void)alertDidEnd:(NSAlert *)alert
          returnCode:(NSInteger)returnCode
             context:(void *)context {
   didAlertClose_ = YES;
+}
+
+- (void)openSecondSheet:(NSAlert *)alert
+             returnCode:(NSInteger)returnCode
+                context:(void *)context {
+  didAlertClose_ = YES;
+
+  NSPanel* sheet = context;
+  // Pop a second sheet
+  [sheetController_ beginSheet:sheet
+                  modalForView:[window_ contentView]
+                 modalDelegate:self
+                didEndSelector:@selector(sheetDidEnd:returnCode:context:)
+                   contextInfo:nil];
 }
 
 - (void)sheetDidEnd:(NSWindow *)sheet
