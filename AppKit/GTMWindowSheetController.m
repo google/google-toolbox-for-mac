@@ -523,7 +523,10 @@ willPositionSheet:(NSWindow*)sheet
         contextInfo:(void*)contextInfo
            arg1Size:(int)size {
   NSValue* viewKey = [NSValue valueWithNonretainedObject:(NSView*)contextInfo];
-  GTMWSCSheetInfo* sheetInfo = [sheets_ objectForKey:viewKey];
+  // Retain a reference to sheetInfo so we can use it after it is
+  // removed from sheets_.
+  GTMWSCSheetInfo* sheetInfo =
+      [[[sheets_ objectForKey:viewKey] retain] autorelease];
   _GTMDevAssert(sheetInfo, @"Could not find information about the sheet that "
                            @"just ended");
   _GTMDevAssert(size == 8 || size == 32 || size == 64,
@@ -536,6 +539,12 @@ willPositionSheet:(NSWindow*)sheet
       removeObserver:self
                 name:NSViewFrameDidChangeNotification
               object:contextInfo];
+
+  // We clean up the sheet before calling the callback so that the
+  // callback is free to fire another sheet if it so desires.
+  [window_ removeChildWindow:sheetInfo->overlayWindow_];
+  [sheetInfo->overlayWindow_ release];
+  [sheets_ removeObjectForKey:viewKey];
 
   NSInvocation* invocation =
       [NSInvocation invocationWithMethodSignature:
@@ -555,11 +564,6 @@ willPositionSheet:(NSWindow*)sheet
   }
   [invocation setArgument:&sheetInfo->contextInfo_ atIndex:4];
   [invocation invokeWithTarget:sheetInfo->modalDelegate_];
-
-  [window_ removeChildWindow:sheetInfo->overlayWindow_];
-  [sheetInfo->overlayWindow_ release];
-
-  [sheets_ removeObjectForKey:viewKey];
 }
 
 - (void)systemRequestsVisibilityForWindow:(NSWindow*)window {
