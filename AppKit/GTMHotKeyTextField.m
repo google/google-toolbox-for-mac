@@ -148,7 +148,11 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 }
 
 - (NSString *)stringValue {
-  return [[self class] displayStringForHotKey:hotKey_];
+  NSString *value = [[self class] displayStringForHotKey:hotKey_];
+  if (!value) {
+    value = @"";
+  }
+  return value;
 }
 
 - (void)setStringValue:(NSString *)string {

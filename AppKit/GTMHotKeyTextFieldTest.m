@@ -182,7 +182,7 @@
   STAssertEquals([field intValue], 0, nil);
   STAssertEquals([field floatValue], 0.0f, nil);
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  [GTMUnitTestDevLog expectString:expectedString];
+  [GTMUnitTestDevLog expectString:@"%@", expectedString];
   [field setIntegerValue:5];
   STAssertEquals([field integerValue], (NSInteger)0, nil);
 #endif
@@ -216,7 +216,7 @@
   [GTMUnitTestDevLog expectString:@"Hot key fields don't accept formatters."];
   [field setFormatter:testFormatter];
 
-  [GTMUnitTestDevLog expectString:expectedString];
+  [GTMUnitTestDevLog expectString:@"%@", expectedString];
   [field takeObjectValueFrom:self];
 
   // Setting to nil is valid.
