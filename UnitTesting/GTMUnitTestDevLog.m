@@ -73,6 +73,8 @@ static inline void GTMUninstallDebugAssertOutputHandler(void) {};
                                  NSStringFromSelector(selector),
                                  descStr,
                                  fileName, (long)line];
+  // To avoid unused variable warning when _GTMDevLog is stripped.
+  (void)outLog;
   _GTMDevLog(@"%@", outLog); // Don't want any percents in outLog honored
   [NSException raise:NSInternalInconsistencyException
               format:@"NSAssert raised"];
@@ -95,6 +97,8 @@ static inline void GTMUninstallDebugAssertOutputHandler(void) {};
                                  functionName,
                                  descStr,
                                  fileName, (long)line];
+  // To avoid unused variable warning when _GTMDevLog is stripped.
+  (void)outLog;
   _GTMDevLog(@"%@", outLog); // Don't want any percents in outLog honored
   [NSException raise:NSInternalInconsistencyException
               format:@"NSAssert raised"];
