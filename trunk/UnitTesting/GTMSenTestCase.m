@@ -469,6 +469,8 @@ static __attribute__((constructor)) void _GTMInstallLeaks(void) {
       fprintf(stderr, "Leak Checking Enabled\n");
       fflush(stderr);
       int ret = atexit(&_GTMRunLeaks);
+      // To avoid unused variable warning when _GTMDevAssert is stripped.
+      (void)ret;
       _GTMDevAssert(ret == 0,
                     @"Unable to install _GTMRunLeaks as an atexit handler (%d)",
                     errno);
