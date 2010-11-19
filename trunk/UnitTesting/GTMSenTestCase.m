@@ -329,53 +329,69 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 }
 
 // Used for sorting methods below
-static int MethodSort(const void *a, const void *b) {
-  const char *nameA = sel_getName(method_getName(*(Method*)a));
-  const char *nameB = sel_getName(method_getName(*(Method*)b));
+static int MethodSort(id a, id b, void *context) {
+  NSInvocation *invocationA = a;
+  NSInvocation *invocationB = b;
+  const char *nameA = sel_getName([invocationA selector]);
+  const char *nameB = sel_getName([invocationB selector]);
   return strcmp(nameA, nameB);
 }
 
+
 + (NSArray *)testInvocations {
   NSMutableArray *invocations = nil;
-  unsigned int methodCount;
-  Method *methods = class_copyMethodList(self, &methodCount);
-  if (methods) {
-    // This handles disposing of methods for us even if an exception should fly.
-    [NSData dataWithBytesNoCopy:methods
-                         length:sizeof(Method) * methodCount];
-    // Sort our methods so they are called in Alphabetical order just
-    // because we can.
-    qsort(methods, methodCount, sizeof(Method), MethodSort);
-    invocations = [NSMutableArray arrayWithCapacity:methodCount];
-    for (size_t i = 0; i < methodCount; ++i) {
-      Method currMethod = methods[i];
-      SEL sel = method_getName(currMethod);
-      char *returnType = NULL;
-      const char *name = sel_getName(sel);
-      // If it starts with test, takes 2 args (target and sel) and returns
-      // void run it.
-      if (strstr(name, "test") == name) {
-        returnType = method_copyReturnType(currMethod);
-        if (returnType) {
-          // This handles disposing of returnType for us even if an
-          // exception should fly. Length +1 for the terminator, not that
-          // the length really matters here, as we never reference inside
-          // the data block.
-          [NSData dataWithBytesNoCopy:returnType
-                               length:strlen(returnType) + 1];
-        }
+  // Need to walk all the way up the parent classes collecting methods (in case
+  // a test is a subclass of another test).
+  Class senTestCaseClass = [SenTestCase class];
+  for (Class currentClass = self;
+       currentClass && (currentClass != senTestCaseClass);
+       currentClass = class_getSuperclass(currentClass)) {
+    unsigned int methodCount;
+    Method *methods = class_copyMethodList(currentClass, &methodCount);
+    if (methods) {
+      // This handles disposing of methods for us even if an exception should fly.
+      [NSData dataWithBytesNoCopy:methods
+                           length:sizeof(Method) * methodCount];
+      if (!invocations) {
+        invocations = [NSMutableArray arrayWithCapacity:methodCount];
       }
-      if (returnType  // True if name starts with "test"
-          && strcmp(returnType, @encode(void)) == 0
-          && method_getNumberOfArguments(currMethod) == 2) {
-        NSMethodSignature *sig = [self instanceMethodSignatureForSelector:sel];
-        NSInvocation *invocation
-          = [NSInvocation invocationWithMethodSignature:sig];
-        [invocation setSelector:sel];
-        [invocations addObject:invocation];
+      for (size_t i = 0; i < methodCount; ++i) {
+        Method currMethod = methods[i];
+        SEL sel = method_getName(currMethod);
+        char *returnType = NULL;
+        const char *name = sel_getName(sel);
+        // If it starts with test, takes 2 args (target and sel) and returns
+        // void run it.
+        if (strstr(name, "test") == name) {
+          returnType = method_copyReturnType(currMethod);
+          if (returnType) {
+            // This handles disposing of returnType for us even if an
+            // exception should fly. Length +1 for the terminator, not that
+            // the length really matters here, as we never reference inside
+            // the data block.
+            [NSData dataWithBytesNoCopy:returnType
+                                 length:strlen(returnType) + 1];
+          }
+        }
+        // TODO: If a test class is a subclass of another, and they reuse the
+        // same selector name (ie-subclass overrides it), this current loop
+        // and test here will cause cause it to get invoked twice.  To fix this
+        // the selector would have to be checked against all the ones already
+        // added, so it only gets done once.
+        if (returnType  // True if name starts with "test"
+            && strcmp(returnType, @encode(void)) == 0
+            && method_getNumberOfArguments(currMethod) == 2) {
+          NSMethodSignature *sig = [self instanceMethodSignatureForSelector:sel];
+          NSInvocation *invocation
+            = [NSInvocation invocationWithMethodSignature:sig];
+          [invocation setSelector:sel];
+          [invocations addObject:invocation];
+        }
       }
     }
   }
+  // Match SenTestKit and run everything in alphbetical order.
+  [invocations sortUsingFunction:MethodSort context:nil];
   return invocations;
 }
 
