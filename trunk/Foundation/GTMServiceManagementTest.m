@@ -206,7 +206,7 @@ static NSString const *kGTMSocketName
 
   mach_port_t sp = 0;
   kern_return_t rt = bootstrap_look_up(bootstrap_port,
-                                       GTM_MACH_PORT_NAME,
+                                       (char*)GTM_MACH_PORT_NAME,
                                        &sp);
   STAssertNotEquals(sp, (mach_port_t)0, nil);
   STAssertEquals(rt, KERN_SUCCESS, nil);
