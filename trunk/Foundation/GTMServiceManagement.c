@@ -34,12 +34,13 @@
 //       launch_data_t can only be in one collection at any given time.
 
 #include "GTMServiceManagement.h"
+
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
+
 #include <paths.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <vproc.h>
-
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
 
 typedef struct {
   CFMutableDictionaryRef dict;
