@@ -18,14 +18,13 @@
 
 #include "GTMServiceManagement.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
-
 int main(int argc, const char** argv) {
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   CFErrorRef error = NULL;
   CFDictionaryRef dict = GTMSMJobCheckIn(&error);
   if (!dict) {
     CFShow(error);
   }
+#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   return 0;
 }
-#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
