@@ -19,12 +19,41 @@
 #import "GTMSenTestCase.h"
 #import "GTMFourCharCode.h"
 
-@interface GTMFourCharCodeTest : GTMTestCase
+@interface GTMFourCharCodeTest : GTMTestCase {
+ @private
+  NSString *lowAsciiString_;
+  NSString *highMacOSRomanString_;
+}
+
 @end
 
 @implementation GTMFourCharCodeTest
 
-const FourCharCode kGTMHighMacOSRomanCode = 0xA5A8A9AA; // '•®©™'
+static const FourCharCode kGTMHighMacOSRomanCode = 0xA5A8A9AA; // '•®©™'
+
+- (void)setUp {
+  // There appears to be a bug in the gcc 4.0 that is included with Xcode
+  // 3.2.5 where in release mode it doesn't like some string constants
+  // that include high or low ascii using the @"blah" string style.
+  // So we build them by hand.
+  char string[] = { 0, 0, 0, 1 };
+  lowAsciiString_ = [[NSString alloc] initWithBytes:string 
+                                             length:sizeof(string) 
+                                           encoding:NSASCIIStringEncoding];
+  
+  // Must make sure our bytes are in the right order for building strings with,
+  // otherwise the string comes out in the wrong order on low-endian systems.
+  FourCharCode orderedString = htonl(kGTMHighMacOSRomanCode);
+  highMacOSRomanString_ 
+    = [[NSString alloc] initWithBytes:&orderedString
+                               length:sizeof(orderedString) 
+                             encoding:NSMacOSRomanStringEncoding];
+}
+
+- (void)tearDown {
+  [lowAsciiString_ release];
+  [highMacOSRomanString_ release];
+}
 
 - (void)testFourCharCode {
   GTMFourCharCode *fcc = [GTMFourCharCode fourCharCodeWithString:@"APPL"];
@@ -61,7 +90,7 @@ const FourCharCode kGTMHighMacOSRomanCode = 0xA5A8A9AA; // '•®©™'
 
   fcc = [GTMFourCharCode fourCharCodeWithFourCharCode:1];
   STAssertNotNil(fcc, nil);
-  STAssertEqualObjects([fcc stringValue], @"\0\0\0\1", nil);
+  STAssertTrue([[fcc stringValue] isEqualToString:lowAsciiString_], nil);
   STAssertEqualObjects([fcc numberValue],
                        [NSNumber numberWithUnsignedInt:1], nil);
   STAssertEquals([fcc fourCharCode], (FourCharCode)1, nil);
@@ -71,7 +100,7 @@ const FourCharCode kGTMHighMacOSRomanCode = 0xA5A8A9AA; // '•®©™'
 
   fcc2 = [GTMFourCharCode fourCharCodeWithFourCharCode:kGTMHighMacOSRomanCode];
   STAssertNotNil(fcc2, nil);
-  STAssertEqualObjects([fcc2 stringValue], @"•®©™", nil);
+  STAssertEqualObjects([fcc2 stringValue], highMacOSRomanString_, nil);
   STAssertEqualObjects([fcc2 numberValue],
                        [NSNumber numberWithUnsignedInt:kGTMHighMacOSRomanCode],
                        nil);
@@ -83,9 +112,9 @@ const FourCharCode kGTMHighMacOSRomanCode = 0xA5A8A9AA; // '•®©™'
   STAssertEqualObjects([GTMFourCharCode stringWithFourCharCode:'APPL'],
                        @"APPL", nil);
   STAssertEqualObjects([GTMFourCharCode stringWithFourCharCode:1],
-                       @"\0\0\0\1", nil);
+                       lowAsciiString_, nil);
   STAssertEqualObjects([GTMFourCharCode stringWithFourCharCode:kGTMHighMacOSRomanCode],
-                       @"•®©™", nil);
+                       highMacOSRomanString_, nil);
 }
 
 @end
