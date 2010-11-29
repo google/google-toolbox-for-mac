@@ -42,6 +42,7 @@
 //
 // The |Object| class was removed in the iPhone2.0 SDK too.
 #if GTM_IPHONE_SDK
+#import <objc/message.h>
 #import <objc/runtime.h>
 #else
 #import <objc/objc-runtime.h>
