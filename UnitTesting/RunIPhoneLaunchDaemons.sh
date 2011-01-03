@@ -29,7 +29,8 @@
 
 set -o errexit
 set -o nounset
-set -o verbose
+# Uncomment the next line to trace execution.
+#set -o verbose
 
 # These both need to be set to the root of the iPhone SDK for iPhone
 # apps to be able to find their frameworks.

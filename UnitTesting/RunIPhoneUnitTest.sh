@@ -19,7 +19,8 @@
 
 set -o errexit
 set -o nounset
-set -o verbose
+# Uncomment the next line to trace execution.
+#set -o verbose
 
 #  Controlling environment variables:
 # GTM_DISABLE_ZOMBIES -
@@ -100,6 +101,34 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   # See http://developer.apple.com/technotes/tn2004/tn2124.html for an
   # explanation of these environment variables.
 
+  # NOTE: any setup work is done before turning on the environment variables
+  # to avoid having the setup work also get checked by what the variables
+  # enabled.
+
+  if [ $GTM_DISABLE_USERDIR_SETUP -eq 0 ]; then
+    # Cleanup user home directory
+    if [ -d "$CFFIXED_USER_HOME" ]; then
+      rm -rf "$CFFIXED_USER_HOME"
+    fi
+    mkdir "$CFFIXED_USER_HOME"
+    mkdir "$CFFIXED_USER_HOME/Documents"
+    mkdir -p "$CFFIXED_USER_HOME/Library/Caches"
+  fi
+
+  if [ $GTM_DISABLE_IPHONE_LAUNCH_DAEMONS -eq 0 ]; then
+    # If we want to test anything that interacts with the keychain, we need
+    # securityd up and running. See RunIPhoneLaunchDaemons.sh for details.
+    launchctl submit -l RunIPhoneLaunchDaemons -- "${ScriptDir}/RunIPhoneLaunchDaemons.sh" $IPHONE_SIMULATOR_ROOT $CFFIXED_USER_HOME
+    # No matter how we exit, we want to shut down our launchctl job.
+    trap "launchctl remove RunIPhoneLaunchDaemons" INT TERM EXIT
+  fi
+
+  if [ $GTM_DISABLE_ZOMBIES -eq 0 ]; then
+    GTMXcodeNote ${LINENO} "Enabling zombies"
+    export CFZombieLevel=3
+    export NSZombieEnabled=YES
+  fi
+
   export MallocScribble=YES
   export MallocPreScribble=YES
   export MallocGuardEdges=YES
@@ -114,33 +143,9 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   export OBJC_DEBUG_NIL_SYNC=YES
   export OBJC_PRINT_REPLACED_METHODS=YES
 
-  if [ $GTM_DISABLE_ZOMBIES -eq 0 ]; then
-    GTMXcodeNote ${LINENO} "Enabling zombies"
-    export CFZombieLevel=3
-    export NSZombieEnabled=YES
-  fi
-
-  if [ $GTM_DISABLE_USERDIR_SETUP -eq 0 ]; then
-    # Cleanup user home directory
-    if [ -d "$CFFIXED_USER_HOME" ]; then
-      rm -rf "$CFFIXED_USER_HOME"
-    fi
-    mkdir "$CFFIXED_USER_HOME"
-    mkdir "$CFFIXED_USER_HOME/Documents"
-    mkdir -p "$CFFIXED_USER_HOME/Library/Caches"
-  fi
-
   # 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if
   #         CFFIXED_USER_HOME empty
   GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
-
-  if [ $GTM_DISABLE_IPHONE_LAUNCH_DAEMONS -eq 0 ]; then
-    # If we want to test anything that interacts with the keychain, we need
-    # securityd up and running. See RunIPhoneLaunchDaemons.sh for details.
-    launchctl submit -l RunIPhoneLaunchDaemons -- "${ScriptDir}/RunIPhoneLaunchDaemons.sh" $IPHONE_SIMULATOR_ROOT $CFFIXED_USER_HOME
-    # No matter how we exit, we want to shut down our launchctl job.
-    trap "launchctl remove RunIPhoneLaunchDaemons" INT TERM EXIT
-  fi
 
   # Start our app.
   "$TARGET_BUILD_DIR/$EXECUTABLE_PATH" -RegisterForSystemEvents
