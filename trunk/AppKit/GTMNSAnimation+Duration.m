@@ -35,12 +35,11 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
         // Tab and shift-tab are often used for navigating around UI elements,
         // and in the majority of cases slowing down the animations while
         // navigating around UI elements is not desired.
-        if ((currentEventMask & (NSKeyDownMask | NSKeyUpMask))
-            && !(modifiers & NSControlKeyMask)
-            && ([[currentEvent characters] length] == 1)
-            && ([[currentEvent characters] characterAtIndex:0] == 25)) {
-          duration = duration;
-        } else {
+        BOOL isShiftTab = (currentEventMask & (NSKeyDownMask | NSKeyUpMask))
+          && !(modifiers & NSControlKeyMask)
+          && ([[currentEvent characters] length] == 1)
+          && ([[currentEvent characters] characterAtIndex:0] == 25);
+        if (!isShiftTab) {
           duration *= 5.0;
         }
       }
