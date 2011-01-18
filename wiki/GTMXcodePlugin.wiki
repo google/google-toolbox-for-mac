@@ -19,7 +19,7 @@ The install path is a little difficult, but the plugin should be extracted from 
 
 and
 
-  * "/Library/Application Support/Developer/3.2/Xcode/Plug-ins" for development on Snow Leopard
+  * "/Developer/Library/Xcode/Plug-ins" for development on Snow Leopard
 
 Once it is in place, restart Xcode, and you should have a "About GTM Xcode Plugin" menu item under the Xcode menu. If you don't have this item, please check the location you installed it and try again.
 
