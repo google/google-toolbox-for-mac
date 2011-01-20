@@ -23,7 +23,7 @@
 
 @interface GTMWSCSheetInfo : NSObject {
  @public
-  __weak NSWindow* overlayWindow_;
+  NSWindow* overlayWindow_;
 
   // delegate data
   __weak id modalDelegate_;
