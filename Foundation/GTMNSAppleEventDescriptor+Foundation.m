@@ -160,21 +160,21 @@ static NSMutableDictionary *gTypeMap = nil;
 }
 
 - (double)gtm_doubleValue {
-  double value = NAN;
+  // Be careful modifying this code as Xcode 3.2.5 gcc 4.2.1 (5664) was
+  // generating bad code with a previous incarnation.
   NSNumber *number = [self gtm_numberValue];
   if (number) {
-    value = [number doubleValue];
+    return [number doubleValue];
   }
-  return value;
+  return NAN;
 }
 
 - (float)gtm_floatValue {
-  float value = NAN;
   NSNumber *number = [self gtm_numberValue];
   if (number) {
-    value = [number floatValue];
+    return [number floatValue];
   }
-  return value;
+  return NAN;
 }
 
 - (CGFloat)gtm_cgFloatValue {
