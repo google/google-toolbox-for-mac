@@ -36,17 +36,19 @@ static const FourCharCode kGTMHighMacOSRomanCode = 0xA5A8A9AA; // '•®©™'
   // 3.2.5 where in release mode it doesn't like some string constants
   // that include high or low ascii using the @"blah" string style.
   // So we build them by hand.
-  char string[] = { 0, 0, 0, 1 };
-  lowAsciiString_ = [[NSString alloc] initWithBytes:string 
-                                             length:sizeof(string) 
+  // Use 8 bytes instead of 4, because stack protection gives us a warning
+  // if we have a buffer smaller than 8 bytes.
+  char string[8] = { 0, 0, 0, 1, 0, 0, 0, 0 };
+  lowAsciiString_ = [[NSString alloc] initWithBytes:string
+                                             length:4
                                            encoding:NSASCIIStringEncoding];
-  
+
   // Must make sure our bytes are in the right order for building strings with,
   // otherwise the string comes out in the wrong order on low-endian systems.
   FourCharCode orderedString = htonl(kGTMHighMacOSRomanCode);
-  highMacOSRomanString_ 
+  highMacOSRomanString_
     = [[NSString alloc] initWithBytes:&orderedString
-                               length:sizeof(orderedString) 
+                               length:sizeof(orderedString)
                              encoding:NSMacOSRomanStringEncoding];
 }
 
