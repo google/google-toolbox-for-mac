@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -68,14 +68,14 @@ static CFSocketRef gRunLoopSocket = NULL;
       [self release];
       return nil;
     }
-    
+
     // Make sure it imples what we expect
     GTMAssertSelectorNilOrImplementedWithArguments(target_,
                                                    action_,
                                                    @encode(GTMFileSystemKQueue*),
                                                    @encode(GTMFileSystemKQueueEvents),
                                                    NULL);
-    
+
     fd_ = [self registerWithKQueue];
     if (fd_ < 0) {
       [self release];
@@ -88,7 +88,7 @@ static CFSocketRef gRunLoopSocket = NULL;
 #if GTM_SUPPORT_GC
 - (void)finalize {
   [self unregisterWithKQueue];
-  
+
   [super finalize];
 }
 #endif
@@ -96,7 +96,7 @@ static CFSocketRef gRunLoopSocket = NULL;
 - (void)dealloc {
   [self unregisterWithKQueue];
   [path_ release];
-  
+
   [super dealloc];
 }
 
@@ -113,15 +113,33 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   // autoreleased objects would never go away, so we provide our own pool here.
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-  struct kevent event;
-  
-  if (kevent(gFileSystemKQueueFileDescriptor, NULL, 0, &event, 1, NULL) == -1) {
-    _GTMDevLog(@"could not pick up kqueue event.  Errno %d", errno);  // COV_NF_LINE
-  } else {
-    GTMFileSystemKQueue *fskq = GTM_STATIC_CAST(GTMFileSystemKQueue, 
-                                                event.udata);
-    [fskq notify:event.fflags];
-  }
+  // We want to read as many events as possible so loop on the kevent call
+  // till the kqueue is empty.
+  int events = -1;
+  do {
+    // We wouldn't be here if CFSocket didn't think there was data on
+    // |gFileSystemKQueueFileDescriptor|. However, since this callback is tied
+    // to the runloop, if [... unregisterWithKQueue] was called before a runloop
+    // spin we may now be looking at an empty queue (remember,
+    // |gFileSystemKQueueFileDescriptor| isn't a normal descriptor).
+
+    // Try to consume one event with an immediate timeout.
+    struct kevent event;
+    const struct timespec noWait = { 0, 0 };
+    events = kevent(gFileSystemKQueueFileDescriptor, NULL, 0, &event, 1, &noWait);
+
+    if (events == 1) {
+      GTMFileSystemKQueue *fskq = GTM_STATIC_CAST(GTMFileSystemKQueue,
+                                                  event.udata);
+      [fskq notify:event.fflags];
+    } else if (events == -1) {
+      _GTMDevLog(@"could not pick up kqueue event.  Errno %d", errno);  // COV_NF_LINE
+    } else {
+      // |events| is zero, either we've drained the kqueue or CFSocket was
+      // notified and then the events went away before we had a chance to see
+      // them.
+    }
+  } while (events > 0);
 
   [pool drain];
 }
@@ -129,7 +147,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
 // Cribbed from Advanced Mac OS X Programming
 - (void)addFileDescriptorMonitor:(int)fd {
   _GTMDevAssert(gRunLoopSocket == NULL, @"socket should be NULL at this point");
-  
+
   CFSocketContext context = { 0, NULL, NULL, NULL, NULL };
   gRunLoopSocket = CFSocketCreateWithNative(kCFAllocatorDefault,
                                             fd,
@@ -140,26 +158,26 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
     _GTMDevLog(@"could not CFSocketCreateWithNative");  // COV_NF_LINE
     goto bailout;   // COV_NF_LINE
   }
-  
+
   CFRunLoopSourceRef rls;
   rls = CFSocketCreateRunLoopSource(NULL, gRunLoopSocket, 0);
   if (rls == NULL) {
     _GTMDevLog(@"could not create a run loop source");  // COV_NF_LINE
     goto bailout;  // COV_NF_LINE
   }
-  
+
   CFRunLoopAddSource(CFRunLoopGetCurrent(), rls,
                      kCFRunLoopDefaultMode);
   CFRelease(rls);
-  
+
  bailout:
   return;
-  
+
 }
 
 // Returns the FD we got in registering
 - (int)registerWithKQueue {
-  
+
   // Make sure we have our kqueue.
   if (gFileSystemKQueueFileDescriptor == 0) {
     gFileSystemKQueueFileDescriptor = kqueue();
@@ -174,15 +192,15 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
     // Add the kqueue file descriptor to the runloop.
     [self addFileDescriptorMonitor:gFileSystemKQueueFileDescriptor];
   }
-  
+
   int newFD = open([path_ fileSystemRepresentation], O_EVTONLY, 0);
   if (newFD >= 0) {
 
     // Add a new event for the file.
     struct kevent filter;
-    EV_SET(&filter, newFD, EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_CLEAR, 
+    EV_SET(&filter, newFD, EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_CLEAR,
            events_, 0, self);
-    
+
     const struct timespec noWait = { 0, 0 };
     if (kevent(gFileSystemKQueueFileDescriptor, &filter, 1, NULL, 0, &noWait) == -1) {
       // COV_NF_START
@@ -192,7 +210,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
       // COV_NF_END
     }
   }
-  
+
   return newFD;
 }
 
@@ -217,14 +235,14 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
 - (void)notify:(GTMFileSystemKQueueEvents)eventFFlags {
 
   // Some notifications get a little bit of overhead first
-  
+
   if (eventFFlags & NOTE_REVOKE) {
     // COV_NF_START - no good way to do this in a unittest
     // Assume revoke means unmount and give up
     [self unregisterWithKQueue];
     // COV_NF_END
   }
-  
+
   if (eventFFlags & NOTE_DELETE) {
     [self unregisterWithKQueue];
     if (acrossReplace_) {
