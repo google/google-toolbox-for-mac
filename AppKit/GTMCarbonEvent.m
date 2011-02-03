@@ -157,7 +157,9 @@
 // description utliity for debugging
 //
 - (NSString *)description {
-  char cls[5];
+  // Use 8 bytes because stack protection gives us a warning if we use a
+  // smaller buffer.
+  char cls[8];
   UInt32 kind;
 
   // Need everything bigendian if we are printing out the class as a "string"
