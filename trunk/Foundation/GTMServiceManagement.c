@@ -436,15 +436,16 @@ static int open_devnull(int fd) {
 
 void spc_sanitize_files(void) {
   int standard_fds[] = { STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO };
-  size_t standard_fds_count = sizeof(standard_fds) / sizeof(standard_fds[0]);
+  int standard_fds_count 
+    = (int)(sizeof(standard_fds) / sizeof(standard_fds[0]));
 
   // Make sure all open descriptors other than the standard ones are closed
-  size_t fds = getdtablesize();
-  for (size_t i = standard_fds_count; i < fds; ++i) close(standard_fds[i]);
+  int fds = getdtablesize();
+  for (int i = standard_fds_count; i < fds; ++i) close(i);
 
   // Verify that the standard descriptors are open.  If they're not, attempt to
   // open them using /dev/null.  If any are unsuccessful, abort.
-  for (size_t i = 0; i < standard_fds_count; ++i) {
+  for (int i = 0; i < standard_fds_count; ++i) {
     struct stat st;
     int fd = standard_fds[i];
     if (fstat(fd, &st) == -1 && (errno != EBADF || !open_devnull(fd))) {
