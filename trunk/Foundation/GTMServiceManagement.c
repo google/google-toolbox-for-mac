@@ -436,7 +436,7 @@ static int open_devnull(int fd) {
 
 void spc_sanitize_files(void) {
   int standard_fds[] = { STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO };
-  int standard_fds_count 
+  int standard_fds_count
     = (int)(sizeof(standard_fds) / sizeof(standard_fds[0]));
 
   // Make sure all open descriptors other than the standard ones are closed
@@ -557,14 +557,17 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
     do {
       pid = waitpid(childpid, &status, 0);
     } while (pid == -1 && errno == EINTR);
-    if (pid == -1 || WEXITSTATUS(status)) {
+    if (pid == -1) {
       local_error
         = GTMCFLaunchCreateUnlocalizedError(errno,
-                                            CFSTR("Child Process Error.\n"
-                                                  "Cmd: /bin/launchctl\n"
-                                                  "pid: %d\n"
-                                                  "ExitStatus: %d\n"),
-                                            childpid, WEXITSTATUS(status));
+                                            CFSTR("waitpid failed."));
+        goto exit;
+    } else if (WEXITSTATUS(status)) {
+      local_error
+        = GTMCFLaunchCreateUnlocalizedError(ECHILD,
+                                            CFSTR("Child exit status: %d "
+                                                  "pid: %d"),
+                                            WEXITSTATUS(status), childpid);
       goto exit;
     }
   } else {
