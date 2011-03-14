@@ -13,7 +13,13 @@ The GTM Xcode plugin adds a couple of nice features to Xcode.
    # Some menu items for working with [http://code.google.com/p/coverstory/ Coverstory]
 
 It is available under [http://code.google.com/p/google-toolbox-for-mac/downloads/list downloads]. 
+
+== Xcode 4 Support ==
+
+*NOTE:* The plugin currently does *NOT* support Xcode 4.  Xcode 4 was a rewrite by Apple, so the plugin will probably have to be rewritten, that has not been done.
+
 = Installation =
+
 The install path is a little difficult, but the plugin should be extracted from its Zip file and should be put into:
 
   * "/Library/Application Support/Developer/3.1/Xcode/Plug-ins" for development on Leopard
@@ -27,10 +33,6 @@ Once it is in place, restart Xcode, and you should have a "About GTM Xcode Plugi
 If you run into any problems, please log them at:
 
 http://code.google.com/p/google-toolbox-for-mac/issues/list
-
-== Xcode 4 Support ==
-
-*NOTE:* The plugin currently does *NOT* support Xcode 4.  Xcode 4 was a rewrite by Apple, so the plugin will probably have to be rewritten, that has not been done.
 
 = Version History =
   * 10.0.1 - Initial public release.
