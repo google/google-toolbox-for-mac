@@ -311,6 +311,9 @@
 		8BFE6EA31282371200B5C894 /* GTMTransientRootProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 10A4028D0F44DB2B003B511C /* GTMTransientRootProxyTest.m */; };
 		8BFE6EA41282371200B5C894 /* GTMURITemplateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42866B71267340A0090FE0F /* GTMURITemplateTest.m */; };
 		8BFE6EA51282371200B5C894 /* GTMValidatingContainersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3AA9F70E033E5F007E31B5 /* GTMValidatingContainersTest.m */; };
+		B71B91E21332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest5.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B71B91E01332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest5.tiff */; };
+		B71B91E31332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B71B91E11332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff */; };
+		B71B92371332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B71B92361332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff */; };
 		F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */ = {isa = PBXBuildFile; fileRef = F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */; };
 		F41711350ECDFBD500B9B276 /* GTMLightweightProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F41711320ECDFBD500B9B276 /* GTMLightweightProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -784,6 +787,9 @@
 		8BFE13B50FB0F2B9001BE894 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
 		8BFE13FC0FB0F2D8001BE894 /* UnitTest - AddressBook.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest - AddressBook.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFE158C0FB0F34C001BE894 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = /System/Library/Frameworks/AddressBook.framework; sourceTree = "<absolute>"; };
+		B71B91E01332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest5.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMFadeTruncatingTextFieldCellTest5.tiff; sourceTree = "<group>"; };
+		B71B91E11332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMFadeTruncatingTextFieldCellTest6.tiff; sourceTree = "<group>"; };
+		B71B92361332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMFadeTruncatingTextFieldCellTest7.tiff; sourceTree = "<group>"; };
 		F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileManager+Path.h"; sourceTree = "<group>"; };
 		F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+Path.m"; sourceTree = "<group>"; };
 		F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+PathTest.m"; sourceTree = "<group>"; };
@@ -1194,6 +1200,9 @@
 				7F97DBA3104ED861004DDDEE /* GTMFadeTruncatingTextFieldCellTest2.tiff */,
 				F4C58CC110BAD75200651068 /* GTMFadeTruncatingTextFieldCellTest3.tiff */,
 				F4C58CC210BAD75200651068 /* GTMFadeTruncatingTextFieldCellTest4.tiff */,
+				B71B91E01332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest5.tiff */,
+				B71B91E11332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff */,
+				B71B92361332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff */,
 				8B1802410E25592200280961 /* GTMLargeTypeWindowMediumTextTest.gtmUTState */,
 				8BA9FBAC119CB08200E264C3 /* GTMLargeTypeWindowMediumTextTest.10.6.gtmUTState */,
 				8B1801A80E25341B00280961 /* GTMLargeTypeWindowImageTest.gtmUTState */,
@@ -2118,6 +2127,9 @@
 				8BA7148211B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-1.10_4_SDK.10.6.tiff in Resources */,
 				8BA7148311B57EC700EB4781 /* GTMUILocalizerAndLayoutTweakerTest4-2.10_4_SDK.10.6.tiff in Resources */,
 				8B4BD7E71200E5EA009C7060 /* GTMUILocalizerWindow3State.10_4_SDK.gtmUTState in Resources */,
+				B71B91E21332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest5.tiff in Resources */,
+				B71B91E31332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff in Resources */,
+				B71B92371332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

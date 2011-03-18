@@ -21,8 +21,26 @@
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
-// A simple text field cell that truncates the right hand edge using a gradient
-@interface GTMFadeTruncatingTextFieldCell : NSTextFieldCell
+typedef enum {
+  GTMFadeTruncatingTail,
+  GTMFadeTruncatingHead,
+  GTMFadeTruncatingHeadAndTail,
+} GTMFadeTruncateMode;
+
+// A simple text field cell that can truncate at the beginning or the end
+// using a gradient. By default it truncates the end.
+@interface GTMFadeTruncatingTextFieldCell : NSTextFieldCell {
+ @private
+  NSUInteger desiredCharactersToTruncateFromHead_;
+  GTMFadeTruncateMode truncateMode_;
+}
+
+@property (nonatomic) GTMFadeTruncateMode truncateMode;
+
+// When truncating the head this specifies the maximum number of characters
+// that can be truncated. Setting this to 0 means that there is no maximum.
+@property (nonatomic) NSUInteger desiredCharactersToTruncateFromHead;
+
 @end
 
 #endif
