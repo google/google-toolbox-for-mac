@@ -43,26 +43,30 @@
   // Draw the gradient part with a transparency layer. This makes the text look
   // suboptimal, but since it fades out, that's ok.
   [[NSGraphicsContext currentContext] saveGraphicsState];
-  [NSBezierPath clipRect:clipRect];
+  [NSBezierPath clipRect:backgroundRect];
   CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
   CGContextBeginTransparencyLayerWithRect(context,
-                                          NSRectToCGRect(clipRect), 0);
+                                          NSRectToCGRect(backgroundRect), 0);
 
   if ([self drawsBackground]) {
     [[self backgroundColor] set];
-    NSRectFillUsingOperation([self titleRectForBounds:backgroundRect],
+    NSRectFillUsingOperation(backgroundRect,
                              NSCompositeSourceOver);
   }
+
+  [[NSGraphicsContext currentContext] saveGraphicsState];
+  [NSBezierPath clipRect:clipRect];
   [attributedString drawInRect:titleRect];
+  [[NSGraphicsContext currentContext] restoreGraphicsState];
 
   NSPoint startPoint;
   NSPoint endPoint;
   if (fadeToRight) {
-    startPoint = clipRect.origin;
-    endPoint = NSMakePoint(NSMaxX(clipRect), NSMinY(clipRect));
+    startPoint = backgroundRect.origin;
+    endPoint = NSMakePoint(NSMaxX(backgroundRect), NSMinY(backgroundRect));
   } else {
-    startPoint = NSMakePoint(NSMaxX(clipRect), NSMinY(clipRect));
-    endPoint = clipRect.origin;
+    startPoint = NSMakePoint(NSMaxX(backgroundRect), NSMinY(backgroundRect));
+    endPoint = backgroundRect.origin;
   }
 
   // Draw the gradient mask
@@ -83,10 +87,10 @@
   titleRect.size.width -= 2;
 
   NSAttributedString *attributedString = [self attributedStringValue];
-  NSSize size = [attributedString size];
+  NSSize stringSize = [attributedString size];
 
   // Don't complicate drawing unless we need to clip
-  if (size.width <= NSWidth(titleRect)) {
+  if (stringSize.width <= NSWidth(titleRect)) {
     [super drawInteriorWithFrame:cellFrame inView:controlView];
     return;
   }
@@ -97,7 +101,7 @@
     case GTMFadeTruncatingTail:
       break;
     case GTMFadeTruncatingHead:
-      offsetX = size.width - titleRect.size.width;
+      offsetX = stringSize.width - titleRect.size.width;
       break;
     case GTMFadeTruncatingHeadAndTail: {
       if (desiredCharactersToTruncateFromHead_ > 0) {
@@ -106,15 +110,24 @@
                 NSMakeRange(0, desiredCharactersToTruncateFromHead_)];
         NSSize clippedHeadSize = [clippedHeadString size];
 
-        // Clip the desired portion from the beginning of the string.
+        // This is the offset at which we start drawing. This causes the
+        // beginning of the string to get clipped.
         offsetX = clippedHeadSize.width;
 
-        CGFloat delta = size.width - titleRect.size.width;
+        // Due to the fade effect the first character is hard to see.
+        // We want to make sure the first character starting at
+        // |desiredCharactersToTruncateFromHead_| is readable so we reduce
+        // the offset by a little bit.
+        offsetX = MAX(0, offsetX - stringSize.height);
+
+        // If the offset is so large that there's empty space at the tail
+        // then reduce the offset so we can use up the empty space.
+        CGFloat delta = stringSize.width - titleRect.size.width;
         if (offsetX > delta)
           offsetX = delta;
       } else {
         // Center the string and clip equal portions of the head and tail.
-        offsetX = round((size.width - titleRect.size.width) / 2.0);
+        offsetX = round((stringSize.width - titleRect.size.width) / 2.0);
       }
       break;
     }
@@ -124,31 +137,48 @@
   offsetTitleRect.origin.x -= offsetX;
   offsetTitleRect.size.width += offsetX;
   BOOL isTruncatingHead = offsetX > 0;
-  BOOL isTruncatingTail = (size.width - titleRect.size.width) > offsetX;
+  BOOL isTruncatingTail = (stringSize.width - titleRect.size.width) > offsetX;
 
   // Gradient is about twice our line height long
-  CGFloat gradientWidth = MIN(size.height * 2, round(NSWidth(cellFrame) / 4));
-  NSRect solidPart = cellFrame;
-  NSRect headGradientPart = NSZeroRect;
-  NSRect tailGradientPart = NSZeroRect;
+  CGFloat gradientWidth = MIN(stringSize.height * 2, round(NSWidth(cellFrame) / 4));
+
+  // Head, solid, and tail rects for drawing the background.
+  NSRect solidBackgroundPart = [self drawingRectForBounds:cellFrame];
+  NSRect headBackgroundPart = NSZeroRect;
+  NSRect tailBackgroundPart = NSZeroRect;
   if (isTruncatingHead)
-    NSDivideRect(solidPart, &headGradientPart, &solidPart,
+    NSDivideRect(solidBackgroundPart, &headBackgroundPart, &solidBackgroundPart,
                  gradientWidth, NSMinXEdge);
   if (isTruncatingTail)
-    NSDivideRect(solidPart, &tailGradientPart, &solidPart,
+    NSDivideRect(solidBackgroundPart, &tailBackgroundPart, &solidBackgroundPart,
                  gradientWidth, NSMaxXEdge);
+
+  // Head, solid and tail rects for clipping the title. This is slightly
+  // smaller than the background rects.
+  NSRect solidTitleClipPart = titleRect;
+  NSRect headTitleClipPart = NSZeroRect;
+  NSRect tailTitleClipPart = NSZeroRect;
+  if (isTruncatingHead) {
+    CGFloat width = NSMinX(solidBackgroundPart) - NSMinX(solidTitleClipPart);
+    NSDivideRect(solidTitleClipPart, &headTitleClipPart, &solidTitleClipPart,
+                 width, NSMinXEdge);
+  }
+  if (isTruncatingTail) {
+    CGFloat width = NSMaxX(solidTitleClipPart) - NSMaxX(solidBackgroundPart);
+    NSDivideRect(solidTitleClipPart, &tailTitleClipPart, &solidTitleClipPart,
+                 width, NSMaxXEdge);
+  }
 
   // Draw non-gradient part without transparency layer, as light text on a dark 
   // background looks bad with a gradient layer.
-  NSRect backgroundRect = [self drawingRectForBounds:cellFrame];
   [[NSGraphicsContext currentContext] saveGraphicsState];
-  [NSBezierPath clipRect:solidPart];
   if ([self drawsBackground]) {
     [[self backgroundColor] set];
-    NSRectFillUsingOperation(backgroundRect, NSCompositeSourceOver);
+    NSRectFillUsingOperation(solidBackgroundPart, NSCompositeSourceOver);
   }
   // We draw the text ourselves because [super drawInteriorWithFrame:inView:]
   // doesn't draw correctly if the cell draws its own background.
+  [NSBezierPath clipRect:solidTitleClipPart];
   [attributedString drawInRect:offsetTitleRect];
   [[NSGraphicsContext currentContext] restoreGraphicsState];
 
@@ -160,15 +190,15 @@
   if (isTruncatingHead)
     [self drawTextGradientPart:attributedString
                      titleRect:offsetTitleRect
-                backgroundRect:backgroundRect
-                      clipRect:headGradientPart
+                backgroundRect:headBackgroundPart
+                      clipRect:headTitleClipPart
                           mask:mask
                    fadeToRight:NO];
   if (isTruncatingTail)
     [self drawTextGradientPart:attributedString
                      titleRect:offsetTitleRect
-                backgroundRect:backgroundRect
-                      clipRect:tailGradientPart
+                backgroundRect:tailBackgroundPart
+                      clipRect:tailTitleClipPart
                           mask:mask
                    fadeToRight:YES];
 
@@ -195,6 +225,11 @@
 
 - (NSUInteger)desiredCharactersToTruncateFromHead {
   return desiredCharactersToTruncateFromHead_;
+}
+
+// The faded ends of the cell are not opaque.
+- (BOOL)isOpaque {
+  return NO;
 }
 
 @end
