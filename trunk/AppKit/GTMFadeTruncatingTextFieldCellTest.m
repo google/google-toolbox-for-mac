@@ -75,7 +75,7 @@
                                         @"GTMFadeTruncatingTextFieldCellTest5",
                                         nil);
 
-  [field setStringValue:@"Fade on left only AA"];
+  [field setStringValue:@"Fade on left only A"];
   GTMAssertObjectImageEqualToImageNamed(field,
                                         @"GTMFadeTruncatingTextFieldCellTest6",
                                         nil);
@@ -91,6 +91,15 @@
   [field setStringValue:@"Fade on both left and right AAAA"];
   GTMAssertObjectImageEqualToImageNamed(field,
                                         @"GTMFadeTruncatingTextFieldCellTest7",
+                                        nil);
+
+  // Border with a solid background color.
+  [field setTextColor:[NSColor whiteColor]];
+  [field setDrawsBackground:YES];
+  [field setBackgroundColor:[NSColor blackColor]];
+  [field setBordered:YES];
+  GTMAssertObjectImageEqualToImageNamed(field,
+                                        @"GTMFadeTruncatingTextFieldCellTest8",
                                         nil);
 }
 
