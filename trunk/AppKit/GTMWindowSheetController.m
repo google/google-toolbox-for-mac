@@ -339,6 +339,9 @@ willPositionSheet:(NSWindow*)sheet
   }
   [invocation invokeWithTarget:systemSheet];
 
+  _GTMDevAssert(!activeView_ || activeView_ == view,
+                @"You have to call setActiveView:view before "
+                 "calling beginSheet:modalForView:view");
   activeView_ = view;
 }
 

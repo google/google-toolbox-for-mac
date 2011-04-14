@@ -74,8 +74,11 @@
             delegate:(id <GTMWindowSheetControllerDelegate>)delegate;
 
 // Starts a view modal session for a sheet. Intentionally similar to
-// -[NSApplication beginSheet:modalForWindow:modalDelegate:didEndSelector:
-//                contextInfo:].
+// -[NSApplication
+//    beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:].
+// You must only call this method if the currently active view is |view| or
+// |nil|; this means you can call this method only after creating the
+// GTMWindowSheetController or after calling -setActiveView:view.
 //
 // Args:
 //            sheet: The window object representing the sheet you want to
