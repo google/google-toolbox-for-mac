@@ -44,7 +44,7 @@ Now when you build your target you should now see test cases executing.  You can
 You can debug your unit test executable the exact same way you would unit test any executable. You shouldn't have to set up anything. Note that you may see cases where the unit test build fails, but it doesn't fail when you are debugging. When the unit test build is running several flags are turned on to encourage failures such as `MallocScribble`, `NSAutoreleaseFreedObjectCheckEnabled` etc. You may want to look in `RunIPhoneUnitTest.sh` and see what is being enabled for you.
 
 = Notes =
-  * We find that having a .h for my tests to be mostly useless, and tend to just move my interface for my tests in with my implementation so I only have one file to worry about.
+  * We find that having a .h for tests to be mostly useless, and tend to just the interfaces for the tests in with the implementation so I only have one file to worry about.
   * Make sure to check out the extra ST macros that we have added in `GTMSenTestCase.h` that go above and beyond the set included with the default OCUnit.
     * STAssertNoErr(a1, description, ...), STAssertErr(a1, a2, description, ...)
     * STAssertNotNULL(a1, description, ...), STAssertNULL(a1, description, ...) 
