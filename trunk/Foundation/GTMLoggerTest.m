@@ -348,6 +348,38 @@
   return msg;
 }
 
+- (void)testFunctionPrettifier {
+  GTMLogBasicFormatter *fmtr = [[[GTMLogBasicFormatter alloc] init]
+                                 autorelease];
+  STAssertNotNil(fmtr, nil);
+
+  // Nil, empty and whitespace
+  STAssertEqualObjects([fmtr prettyNameForFunc:nil], @"(unknown)", nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@""], @"(unknown)", nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@"   \n\t"], @"(unknown)", nil);
+
+  // C99 __func__
+  STAssertEqualObjects([fmtr prettyNameForFunc:@"main"], @"main()", nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@"main"], @"main()", nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@" main "], @"main()", nil);
+
+  // GCC Obj-C __func__ and __PRETTY_FUNCTION__
+  STAssertEqualObjects([fmtr prettyNameForFunc:@"+[Foo bar]"], @"+[Foo bar]",
+                        nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@" +[Foo bar] "], @"+[Foo bar]",
+                        nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@"-[Foo baz]"], @"-[Foo baz]",
+                        nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@" -[Foo baz] "], @"-[Foo baz]",
+                        nil);
+
+  // GCC C++ __PRETTY_FUNCTION__
+  STAssertEqualObjects([fmtr prettyNameForFunc:@"void a::sub(int)"],
+                        @"void a::sub(int)", nil);
+  STAssertEqualObjects([fmtr prettyNameForFunc:@" void a::sub(int) "],
+                        @"void a::sub(int)", nil);
+}
+
 - (void)testBasicFormatter {
   id<GTMLogFormatter> fmtr = [[[GTMLogBasicFormatter alloc] init] autorelease];
   STAssertNotNil(fmtr, nil);
@@ -388,16 +420,16 @@
   if ([GTMSystemVersion isSnowLeopardOrGreater]) {
     // E.g. 2009-10-26 22:26:25.086 otest-i386[53200/0xa0438500] [lvl=1] (no func) test
     kFormatBasePattern =
-    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64)|(otest-ppc))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest-i386)|(otest-x86_64)|(otest-ppc))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
   } else {
     // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
     kFormatBasePattern =
-    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (otest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+    @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (otest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
   }
 #else  // GTM_MACOS_SDK
   // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
   kFormatBasePattern =
-  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (GTMiPhoneTest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(no func\\) ";
+  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (GTMiPhoneTest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
 #endif   // GTM_MACOS_SDK
 
   NSString *msg = nil;
@@ -405,27 +437,27 @@
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"test"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]], 
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]],
                @"msg: %@", msg);
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelError
                            format:@"test %d", 1];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test 1"]], 
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test 1"]],
                @"msg: %@", msg);
 
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelInfo
                            format:@"test %@", @"hi"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test hi"]], 
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test hi"]],
                @"msg: %@", msg);
 
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelUnknown
                            format:@"test"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]], 
+  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]],
                @"msg: %@", msg);
 }
 
