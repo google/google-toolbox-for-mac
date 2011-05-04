@@ -213,7 +213,7 @@ GTM_INLINE int lcm(int a, int b) {
     while (outPos < outLen)
       outBuf[outPos++] = paddingChar_;
   }
-  
+
   _GTMDevAssert(outPos == outLen, @"Underflowed output buffer");
   [outData setLength:outPos];
 
@@ -250,7 +250,7 @@ GTM_INLINE int lcm(int a, int b) {
         expectPad = YES;
         break;
       case kUnknownChar:
-        _GTMDevLog(@"Unexpected data in input pos %d", i);
+        _GTMDevLog(@"Unexpected data in input pos %lu", (unsigned long)i);
         return nil;
       default:
         if (expectPad) {
