@@ -88,7 +88,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
   [self reset];
 
   [writer_ release];
-  free(buffer_);
+  if (buffer_) free(buffer_);
 
   [super dealloc];
   

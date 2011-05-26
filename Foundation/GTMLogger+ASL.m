@@ -112,6 +112,7 @@
                       level:(GTMLoggerLevel)level {
   return [NSString stringWithFormat:@"%@ %@",
            [self prettyNameForFunc:func],
+           // |super| has guard for nil |fmt| and |args|
            [super stringForFunc:func withFormat:fmt valist:args level:level]];
 }
 
@@ -127,7 +128,7 @@
 - (id)initWithFacility:(NSString *)facility {
   if ((self = [super init])) {
     client_ = asl_open(NULL, [facility UTF8String], 0);
-    if (client_ == nil) {
+    if (client_ == NULL) {
       // COV_NF_START - no real way to test this
       [self release];
       return nil;
@@ -138,13 +139,13 @@
 }
 
 - (void)dealloc {
-  if (client_) asl_close(client_);
+  if (client_ != NULL) asl_close(client_);
   [super dealloc];
 }
 
 #if GTM_SUPPORT_GC
 - (void)finalize {
-  if (client_) asl_close(client_);
+  if (client_ != NULL) asl_close(client_);
   [super finalize];
 }
 #endif
