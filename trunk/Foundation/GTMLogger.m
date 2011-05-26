@@ -24,14 +24,6 @@
 #import <pthread.h>
 
 
-// Define a trivial assertion macro to avoid dependencies
-#ifdef DEBUG
-  #define GTMLOGGER_ASSERT(expr) assert(expr)
-#else
-  #define GTMLOGGER_ASSERT(expr)
-#endif
-
-
 @interface GTMLogger (PrivateMethods)
 
 - (void)logInternalFunc:(const char *)func
@@ -56,7 +48,6 @@ static GTMLogger *gSharedLogger = nil;
     if (gSharedLogger == nil) {
       gSharedLogger = [[self standardLogger] retain];
     }
-    GTMLOGGER_ASSERT(gSharedLogger != nil);
   }
   return [[gSharedLogger retain] autorelease];
 }
@@ -69,24 +60,47 @@ static GTMLogger *gSharedLogger = nil;
 }
 
 + (id)standardLogger {
-  id<GTMLogWriter> writer = [NSFileHandle fileHandleWithStandardOutput];
-  id<GTMLogFormatter> fr = [[[GTMLogStandardFormatter alloc] init] autorelease];
-  id<GTMLogFilter> filter = [[[GTMLogLevelFilter alloc] init] autorelease];
-  return [self loggerWithWriter:writer formatter:fr filter:filter];
+  // Don't trust NSFileHandle not to throw
+  @try {
+    id<GTMLogWriter> writer = [NSFileHandle fileHandleWithStandardOutput];
+    id<GTMLogFormatter> fr = [[[GTMLogStandardFormatter alloc] init]
+                                 autorelease];
+    id<GTMLogFilter> filter = [[[GTMLogLevelFilter alloc] init] autorelease];
+    return [[[self alloc] initWithWriter:writer
+                               formatter:fr
+                                  filter:filter] autorelease];
+  }
+  @catch (NSException *e) {
+    // Ignored
+  }
+  return nil;
 }
 
 + (id)standardLoggerWithStderr {
-  id me = [self standardLogger];
-  [me setWriter:[NSFileHandle fileHandleWithStandardError]];
-  return me;
+  // Don't trust NSFileHandle not to throw
+  @try {
+    id me = [self standardLogger];
+    [me setWriter:[NSFileHandle fileHandleWithStandardError]];
+    return me;
+  }
+  @catch (NSException *e) {
+    // Ignored
+  }
+  return nil;
 }
 
 + (id)standardLoggerWithPath:(NSString *)path {
-  NSFileHandle *fh = [NSFileHandle fileHandleForLoggingAtPath:path mode:0644];
-  if (fh == nil) return nil;
-  id me = [self standardLogger];
-  [me setWriter:fh];
-  return me;
+  @try {
+    NSFileHandle *fh = [NSFileHandle fileHandleForLoggingAtPath:path mode:0644];
+    if (fh == nil) return nil;
+    id me = [self standardLogger];
+    [me setWriter:fh];
+    return me;
+  }
+  @catch (NSException *e) {
+    // Ignored
+  }
+  return nil;
 }
 
 + (id)loggerWithWriter:(id<GTMLogWriter>)writer
@@ -112,69 +126,85 @@ static GTMLogger *gSharedLogger = nil;
     [self setWriter:writer];
     [self setFormatter:formatter];
     [self setFilter:filter];
-    GTMLOGGER_ASSERT(formatter_ != nil);
-    GTMLOGGER_ASSERT(filter_ != nil);
-    GTMLOGGER_ASSERT(writer_ != nil);
   }
   return self;
 }
 
 - (void)dealloc {
-  GTMLOGGER_ASSERT(writer_ != nil);
-  GTMLOGGER_ASSERT(formatter_ != nil);
-  GTMLOGGER_ASSERT(filter_ != nil);
-  [writer_ release];
-  [formatter_ release];
-  [filter_ release];
+  // Unlikely, but |writer_| may be an NSFileHandle, which can throw
+  @try {
+    [formatter_ release];
+    [filter_ release];
+    [writer_ release];
+  }
+  @catch (NSException *e) {
+    // Ignored
+  }
   [super dealloc];
 }
 
 - (id<GTMLogWriter>)writer {
-  GTMLOGGER_ASSERT(writer_ != nil);
   return [[writer_ retain] autorelease];
 }
 
 - (void)setWriter:(id<GTMLogWriter>)writer {
   @synchronized(self) {
     [writer_ autorelease];
-    if (writer == nil)
-      writer_ = [[NSFileHandle fileHandleWithStandardOutput] retain];
-    else
+    writer_ = nil;
+    if (writer == nil) {
+      // Try to use stdout, but don't trust NSFileHandle
+      @try {
+        writer_ = [[NSFileHandle fileHandleWithStandardOutput] retain];
+      }
+      @catch (NSException *e) {
+        // Leave |writer_| nil
+      }
+    } else {
       writer_ = [writer retain];
+    }
   }
-  GTMLOGGER_ASSERT(writer_ != nil);
 }
 
 - (id<GTMLogFormatter>)formatter {
-  GTMLOGGER_ASSERT(formatter_ != nil);
   return [[formatter_ retain] autorelease];
 }
 
 - (void)setFormatter:(id<GTMLogFormatter>)formatter {
   @synchronized(self) {
     [formatter_ autorelease];
-    if (formatter == nil)
-      formatter_ = [[GTMLogBasicFormatter alloc] init];
-    else
+    formatter_ = nil;
+    if (formatter == nil) {
+      @try {
+        formatter_ = [[GTMLogBasicFormatter alloc] init];
+      }
+      @catch (NSException *e) {
+        // Leave |formatter_| nil
+      }
+    } else {
       formatter_ = [formatter retain];
+    }
   }
-  GTMLOGGER_ASSERT(formatter_ != nil);
 }
 
 - (id<GTMLogFilter>)filter {
-  GTMLOGGER_ASSERT(filter_ != nil);
   return [[filter_ retain] autorelease];
 }
 
 - (void)setFilter:(id<GTMLogFilter>)filter {
   @synchronized(self) {
     [filter_ autorelease];
-    if (filter == nil)
-      filter_ = [[GTMLogNoFilter alloc] init];
-    else
+    filter_ = nil;
+    if (filter == nil) {
+      @try {
+        filter_ = [[GTMLogNoFilter alloc] init];
+      }
+      @catch (NSException *e) {
+        // Leave |filter_| nil
+      }
+    } else {
       filter_ = [filter retain];
+    }
   }
-  GTMLOGGER_ASSERT(filter_ != nil);
 }
 
 - (void)logDebug:(NSString *)fmt, ... {
@@ -247,17 +277,20 @@ static GTMLogger *gSharedLogger = nil;
                  format:(NSString *)fmt
                  valist:(va_list)args
                   level:(GTMLoggerLevel)level {
-  GTMLOGGER_ASSERT(formatter_ != nil);
-  GTMLOGGER_ASSERT(filter_ != nil);
-  GTMLOGGER_ASSERT(writer_ != nil);
-
-  NSString *fname = func ? [NSString stringWithUTF8String:func] : nil;
-  NSString *msg = [formatter_ stringForFunc:fname
-                                 withFormat:fmt
-                                     valist:args
-                                      level:level];
-  if (msg && [filter_ filterAllowsMessage:msg level:level])
-    [writer_ logMessage:msg level:level];
+  // Primary point where logging happens, logging should never throw, catch
+  // everything.
+  @try {
+    NSString *fname = func ? [NSString stringWithUTF8String:func] : nil;
+    NSString *msg = [formatter_ stringForFunc:fname
+                                   withFormat:fmt
+                                       valist:args
+                                        level:level];
+    if (msg && [filter_ filterAllowsMessage:msg level:level])
+      [writer_ logMessage:msg level:level];
+  }
+  @catch (NSException *e) {
+    // Ignored
+  }
 }
 
 @end  // PrivateMethods
@@ -278,9 +311,11 @@ static GTMLogger *gSharedLogger = nil;
 
 - (void)logMessage:(NSString *)msg level:(GTMLoggerLevel)level {
   @synchronized(self) {
-    NSString *line = [NSString stringWithFormat:@"%@\n", msg];
-    // Closed pipes should not generate exceptions in our caller
+    // Closed pipes should not generate exceptions in our caller. Catch here
+    // as well [GTMLogger logInternalFunc:...] so that an exception in this
+    // writer does not prevent other writers from having a chance.
     @try {
+      NSString *line = [NSString stringWithFormat:@"%@\n", msg];
       [self writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
     }
     @catch (NSException *e) {
@@ -358,6 +393,7 @@ static GTMLogger *gSharedLogger = nil;
                       level:(GTMLoggerLevel)level {
   // Performance note: We may want to do a quick check here to see if |fmt|
   // contains a '%', and if not, simply return 'fmt'.
+  if (!(fmt && args)) return nil;
   return [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
 }
 
@@ -373,6 +409,10 @@ static GTMLogger *gSharedLogger = nil;
     [dateFormatter_ setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     pname_ = [[[NSProcessInfo processInfo] processName] copy];
     pid_ = [[NSProcessInfo processInfo] processIdentifier];
+    if (!(dateFormatter_ && pname_)) {
+      [self release];
+      return nil;
+    }
   }
   return self;
 }
@@ -387,15 +427,15 @@ static GTMLogger *gSharedLogger = nil;
                  withFormat:(NSString *)fmt
                      valist:(va_list)args
                       level:(GTMLoggerLevel)level {
-  GTMLOGGER_ASSERT(dateFormatter_ != nil);
   NSString *tstamp = nil;
   @synchronized (dateFormatter_) {
     tstamp = [dateFormatter_ stringFromDate:[NSDate date]];
   }
   return [NSString stringWithFormat:@"%@ %@[%d/%p] [lvl=%d] %@ %@",
-          tstamp, pname_, pid_, pthread_self(),
-          level, [self prettyNameForFunc:func],
-          [super stringForFunc:func withFormat:fmt valist:args level:level]];
+           tstamp, pname_, pid_, pthread_self(),
+           level, [self prettyNameForFunc:func],
+           // |super| has guard for nil |fmt| and |args|
+           [super stringForFunc:func withFormat:fmt valist:args level:level]];
 }
 
 @end  // GTMLogStandardFormatter
@@ -409,14 +449,20 @@ static GTMLogger *gSharedLogger = nil;
 // COV_NF_START
 static BOOL IsVerboseLoggingEnabled(void) {
   static NSString *const kVerboseLoggingKey = @"GTMVerboseLogging";
-  static char *env = NULL;
-  if (env == NULL)
-    env = getenv([kVerboseLoggingKey UTF8String]);
-
-  if (env && env[0]) {
-    return (strtol(env, NULL, 10) != 0);
+  NSString *value = [[[NSProcessInfo processInfo] environment]
+                        objectForKey:kVerboseLoggingKey];
+  if (value) {
+    // Emulate [NSString boolValue] for pre-10.5
+    value = [value stringByTrimmingCharactersInSet:
+                [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([[value uppercaseString] hasPrefix:@"Y"] ||
+        [[value uppercaseString] hasPrefix:@"T"] ||
+        [value intValue]) {
+      return YES;
+    } else {
+      return NO;
+    }
   }
-
   return [[NSUserDefaults standardUserDefaults] boolForKey:kVerboseLoggingKey];
 }
 // COV_NF_END
@@ -435,7 +481,7 @@ static BOOL IsVerboseLoggingEnabled(void) {
       allow = NO;
       break;
     case kGTMLoggerLevelInfo:
-      allow = (IsVerboseLoggingEnabled() == YES);
+      allow = IsVerboseLoggingEnabled();
       break;
     case kGTMLoggerLevelError:
       allow = YES;
