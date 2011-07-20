@@ -20,7 +20,7 @@
 #import "GTMKeyValueAnimation.h"
 #import "GTMFoundationUnitTestingUtilities.h"
 
-@interface GTMKeyValueAnimationTest : GTMTestCase {
+@interface GTMKeyValueAnimationTest : GTMTestCase<NSAnimationDelegate> {
  @private
   GTMUnitTestingBooleanRunLoopContext *context_;
   BOOL shouldStartHit_;
