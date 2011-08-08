@@ -42,7 +42,7 @@
                  fadeToRight:(BOOL)fadeToRight {
   // Draw the gradient part with a transparency layer. This makes the text look
   // suboptimal, but since it fades out, that's ok.
-  [[NSGraphicsContext currentContext] saveGraphicsState];
+  [NSGraphicsContext saveGraphicsState];
   [NSBezierPath clipRect:backgroundRect];
   CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
   CGContextBeginTransparencyLayerWithRect(context,
@@ -54,10 +54,10 @@
                              NSCompositeSourceOver);
   }
 
-  [[NSGraphicsContext currentContext] saveGraphicsState];
+  [NSGraphicsContext saveGraphicsState];
   [NSBezierPath clipRect:clipRect];
   [attributedString drawInRect:titleRect];
-  [[NSGraphicsContext currentContext] restoreGraphicsState];
+  [NSGraphicsContext restoreGraphicsState];
 
   NSPoint startPoint;
   NSPoint endPoint;
@@ -77,7 +77,7 @@
                                     NSGradientDrawsAfterEndingLocation];
 
   CGContextEndTransparencyLayer(context);
-  [[NSGraphicsContext currentContext] restoreGraphicsState];
+  [NSGraphicsContext restoreGraphicsState];
 }
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
@@ -171,7 +171,7 @@
 
   // Draw non-gradient part without transparency layer, as light text on a dark 
   // background looks bad with a gradient layer.
-  [[NSGraphicsContext currentContext] saveGraphicsState];
+  [NSGraphicsContext saveGraphicsState];
   if ([self drawsBackground]) {
     [[self backgroundColor] set];
     NSRectFillUsingOperation(solidBackgroundPart, NSCompositeSourceOver);
@@ -180,7 +180,7 @@
   // doesn't draw correctly if the cell draws its own background.
   [NSBezierPath clipRect:solidTitleClipPart];
   [attributedString drawInRect:offsetTitleRect];
-  [[NSGraphicsContext currentContext] restoreGraphicsState];
+  [NSGraphicsContext restoreGraphicsState];
 
   NSColor *startColor = [self textColor];;
   NSColor *endColor = [startColor colorWithAlphaComponent:0.0];
