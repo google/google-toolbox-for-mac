@@ -602,6 +602,12 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
         if (NSWidth(newFrame) < kMinButtonWidth) {
           newFrame.size.width = kMinButtonWidth;
         }
+      } else if ([button bezelStyle] == NSTexturedRoundedBezelStyle &&
+                 [[button cell] controlSize] == NSRegularControlSize) {
+        // The round textured style needs to have a little extra padding,
+        // otherwise the baseline of the text sinks by a few pixels.
+        const CGFloat kExtraPaddingAmount = 4.0;
+        newFrame.size.width += kExtraPaddingAmount;
       } else {
         // See note on kWrapperStringSlop for why this is done.
         NSString *title = [button title];
