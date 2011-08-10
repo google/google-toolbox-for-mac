@@ -46,6 +46,9 @@
 // We also check to make sure we aren't called twice with the
 // applicationDidFinishLaunchingCalled flag.
 @property (readwrite, retain, nonatomic) GTMIPhoneUnitTestDelegate *retainer;
+
+- (void)runTestsAndExit:(UIApplication *)application;
+
 @end
 
 @implementation GTMIPhoneUnitTestDelegate
@@ -80,6 +83,15 @@
                 name:UIApplicationDidFinishLaunchingNotification
               object:[UIApplication sharedApplication]];
 
+  // To permit UI-based tests, run the tests and exit app in a delayed selector
+  // call. This ensures tests are run outside of applicationDidFinishLaunching:.
+  [self performSelector:@selector(runTestsAndExit:)
+             withObject:application
+             afterDelay:0];
+}
+
+// Run through all tests and then exit application if required.
+- (void)runTestsAndExit:(UIApplication *)application {
   [self runTests];
 
   if (!getenv("GTM_DISABLE_TERMINATION")) {
