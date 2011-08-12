@@ -505,21 +505,6 @@
   STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
                nil);
 
-  // Custom level is possible
-  filter = [[[GTMLogCustomLevelFilter alloc]
-               initWithFilterLevel:kGTMLoggerLevelInfo] autorelease];
-  STAssertNotNil(filter, nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
-                nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
-               nil);
-
   filter = [[[GTMLogCustomLevelFilter alloc]
                initWithFilterLevel:kGTMLoggerLevelDebug] autorelease];
   STAssertNotNil(filter, nil);
