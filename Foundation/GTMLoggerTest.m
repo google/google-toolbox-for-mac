@@ -474,6 +474,72 @@
   STAssertTrue([filter filterAllowsMessage:nil level:kGTMLoggerLevelDebug], nil);
 }
 
+- (void)testCustomFilter {
+  // Default level is kGTMLoggerLevelError
+  id<GTMLogFilter> filter = [[[GTMLogCustomLevelFilter alloc] init]
+                                autorelease];
+  STAssertNotNil(filter, nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
+                nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
+                nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
+               nil);
+
+  // Custom level is possible
+  filter = [[[GTMLogCustomLevelFilter alloc]
+               initWithFilterLevel:kGTMLoggerLevelInfo] autorelease];
+  STAssertNotNil(filter, nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
+                nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
+               nil);
+
+  // Custom level is possible
+  filter = [[[GTMLogCustomLevelFilter alloc]
+               initWithFilterLevel:kGTMLoggerLevelInfo] autorelease];
+  STAssertNotNil(filter, nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
+                nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
+               nil);
+
+  filter = [[[GTMLogCustomLevelFilter alloc]
+               initWithFilterLevel:kGTMLoggerLevelDebug] autorelease];
+  STAssertNotNil(filter, nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
+               nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
+               nil);
+
+  // Cannot exceed assert level filter
+  filter = [[[GTMLogCustomLevelFilter alloc]
+               initWithFilterLevel:kGTMLoggerLevelAssert + 1] autorelease];
+  STAssertNil(filter, nil);
+}
+
 - (void)testFileHandleCreation {
   NSFileHandle *fh = nil;
 

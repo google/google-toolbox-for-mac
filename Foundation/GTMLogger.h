@@ -448,10 +448,26 @@ typedef enum {
 @interface GTMLogLevelFilter : NSObject <GTMLogFilter>
 @end  // GTMLogLevelFilter
 
-
 // A simple log filter that does NOT filter anything out;
 // -filterAllowsMessage:level will always return YES. This can be a convenient
 // way to enable debug-level logging in release builds (if you so desire).
 @interface GTMLogNoFilter : NSObject <GTMLogFilter>
 @end  // GTMLogNoFilter
+
+// A log filter that filters messages below a specified level. Intended for
+// use where finer control than all (GTMLogNoFilter) or heavy filter
+// (GTMLogLevelFilter) isn't appropriate.
+@interface GTMLogCustomLevelFilter : NSObject <GTMLogFilter> {
+ @private
+  GTMLoggerLevel filterLevel_;
+}
+
+// Designated initializer, logs at levels < |level| will be filtered.
+// |level| cannot exceed kGTMLoggerLevelAssert
+- (id)initWithFilterLevel:(GTMLoggerLevel)level;
+
+@end  // GTMLogLevelFilter
+
+
+
 

@@ -507,3 +507,30 @@ static BOOL IsVerboseLoggingEnabled(void) {
 }
 
 @end  // GTMLogNoFilter
+
+
+@implementation GTMLogCustomLevelFilter
+
+- (id)init {
+  // Use error level for default init.
+  return [self initWithFilterLevel:kGTMLoggerLevelError];
+}
+
+- (id)initWithFilterLevel:(GTMLoggerLevel)level {
+  self = [super init];
+  if (self != nil) {
+    filterLevel_ = level;
+    // Cap max level
+    if (filterLevel_ > kGTMLoggerLevelAssert) {
+      [self release];
+      return nil;
+    }
+  }
+  return self;
+}
+
+- (BOOL)filterAllowsMessage:(NSString *)msg level:(GTMLoggerLevel)level {
+  return (level >= filterLevel_) ? YES : NO;
+}
+
+@end
