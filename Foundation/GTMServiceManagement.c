@@ -491,7 +491,6 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
   // to handle the sockets cases that we don't want to duplicate here.
   int fd = -1;
   CFDataRef xmlData = NULL;
-  char fileName[] = _PATH_TMP "GTMServiceManagement.XXXXXX";
   CFErrorRef local_error = NULL;
 
   if (!cf_job) {
@@ -531,7 +530,8 @@ Boolean GTMSMJobSubmit(CFDictionaryRef cf_job, CFErrorRef *error) {
     goto exit;
   }
 
-  fd = mkstemp(fileName);
+  char fileName[] = _PATH_TMP "GTMServiceManagement.XXXXXX.plist";
+  fd = mkstemps(fileName, 6);
   if (fd == -1) {
     local_error
       = GTMCFLaunchCreateUnlocalizedError(errno,
