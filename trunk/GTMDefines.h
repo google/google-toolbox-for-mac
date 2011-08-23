@@ -71,7 +71,7 @@
 // a few different actual definitions, so we're based off of the foundation
 // one.
 #if !defined(GTM_INLINE)
-  #if defined (__GNUC__) && (__GNUC__ == 4)
+  #if (defined (__GNUC__) && (__GNUC__ == 4)) || defined (__clang__)
     #define GTM_INLINE static __inline__ __attribute__((always_inline))
   #else
     #define GTM_INLINE static __inline__

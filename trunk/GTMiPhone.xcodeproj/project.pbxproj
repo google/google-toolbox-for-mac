@@ -111,8 +111,8 @@
 		F417115B0ECDFF0400B9B276 /* GTMLightweightProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711590ECDFF0400B9B276 /* GTMLightweightProxyTest.m */; };
 		F418AF990E7558EC004FB565 /* GTMExceptionalInlines.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AF940E7558DC004FB565 /* GTMExceptionalInlines.m */; };
 		F418AF9A0E7558EC004FB565 /* GTMExceptionalInlinesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AF950E7558DC004FB565 /* GTMExceptionalInlinesTest.m */; };
-		F418AFA50E7559C7004FB565 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA30E7559C7004FB565 /* GTMLogger.m */; };
-		F418AFA60E7559C7004FB565 /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA40E7559C7004FB565 /* GTMLoggerTest.m */; };
+		F418AFA50E7559C7004FB565 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA30E7559C7004FB565 /* GTMLogger.m */; settings = {COMPILER_FLAGS = "-Wno-missing-format-attribute"; }; };
+		F418AFA60E7559C7004FB565 /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA40E7559C7004FB565 /* GTMLoggerTest.m */; settings = {COMPILER_FLAGS = "-Wno-missing-format-attribute"; }; };
 		F418AFB40E755B4D004FB565 /* GTMLoggerRingBufferWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFB20E755B4D004FB565 /* GTMLoggerRingBufferWriter.m */; };
 		F418AFB50E755B4D004FB565 /* GTMLoggerRingBufferWriterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFB30E755B4D004FB565 /* GTMLoggerRingBufferWriterTest.m */; };
 		F418AFCD0E755C94004FB565 /* GTMNSDictionary+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFCB0E755C94004FB565 /* GTMNSDictionary+URLArguments.m */; };
@@ -302,6 +302,8 @@
 		F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtils.m; sourceTree = "<group>"; };
 		F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtilsTest.m; sourceTree = "<group>"; };
 		F4746720129703600022C1FB /* GTMSenTestCaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSenTestCaseTest.m; sourceTree = "<group>"; };
+		F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiOS.xcconfig; sourceTree = "<group>"; };
+		F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiOS.xcconfig; sourceTree = "<group>"; };
 		F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIFont+LineHeight.h"; sourceTree = "<group>"; };
 		F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIFont+LineHeight.m"; sourceTree = "<group>"; };
 		F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIFont+LineHeightTest.m"; sourceTree = "<group>"; };
@@ -586,6 +588,7 @@
 		8BC04F020DB15A5300C2D1CA /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */,
 				8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */,
 				F4E426AC10B70DFB00F28A35 /* DebugiPhone21.xcconfig */,
 				F4E426AD10B70DFB00F28A35 /* DebugiPhone22.xcconfig */,
@@ -595,6 +598,7 @@
 				F4E426B110B70DFB00F28A35 /* DebugiPhone312.xcconfig */,
 				CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */,
 				CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */,
+				F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */,
 				8BC049890DAEC59100C2D1CA /* ReleaseiPhone20.xcconfig */,
 				F4E426B210B70DFB00F28A35 /* ReleaseiPhone21.xcconfig */,
 				F4E426B310B70DFB00F28A35 /* ReleaseiPhone22.xcconfig */,
@@ -866,6 +870,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5729E6D512A3F99300BF1B8A /* DebugiPhone41.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -907,6 +912,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5729E6D512A3F99300BF1B8A /* DebugiPhone41.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -950,6 +956,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5729E6D612A3F99300BF1B8A /* ReleaseiPhone41.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -991,6 +998,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1002,6 +1010,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B23010811C180E2001FA319 /* DebugiPhone40.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1014,6 +1023,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B23010911C180E2001FA319 /* ReleaseiPhone40.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1305,6 +1315,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1316,6 +1327,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1328,6 +1340,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A771174AE7800EA94E5 /* ReleaseiPhone313.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1409,6 +1422,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1420,6 +1434,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1432,6 +1447,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD23A761174AE7800EA94E5 /* ReleaseiPhone32.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1509,10 +1525,139 @@
 			};
 			name = "iPhone3.2-Release";
 		};
+		F4A0A962140438D50010B64B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Debug;
+		};
+		F4A0A963140438D50010B64B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = Debug;
+		};
+		F4A0A964140438D50010B64B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+			};
+			name = Debug;
+		};
+		F4A0A965140438D50010B64B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = Debug;
+		};
+		F4A0A966140438D50010B64B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = Debug;
+		};
+		F4A0A967140438E40010B64B /* Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
+			};
+			name = "Debug-gcov";
+		};
+		F4A0A968140438E40010B64B /* Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = "Debug-gcov";
+		};
+		F4A0A969140438E40010B64B /* Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+			};
+			name = "Debug-gcov";
+		};
+		F4A0A96A140438E40010B64B /* Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "Debug-gcov";
+		};
+		F4A0A96B140438E40010B64B /* Debug-gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = "Debug-gcov";
+		};
+		F4A0A96C140438ED0010B64B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = GTM_Prefix.pch;
+				GCC_WARN_SHADOW = YES;
+				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Release;
+		};
+		F4A0A96D140438ED0010B64B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests";
+			};
+			name = Release;
+		};
+		F4A0A96E140438ED0010B64B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "GTMiPhone-Info.plist";
+				PRODUCT_NAME = GTMiPhoneTest;
+			};
+			name = Release;
+		};
+		F4A0A96F140438ED0010B64B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = Release;
+		};
+		F4A0A970140438ED0010B64B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "All UnitTests all SDKs";
+			};
+			name = Release;
+		};
 		F4E4263610B70C4F00F28A35 /* iPhone2.0-Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1524,6 +1669,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049850DAEC59100C2D1CA /* DebugiPhone20.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1536,6 +1682,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BC049890DAEC59100C2D1CA /* ReleaseiPhone20.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1617,6 +1764,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426AC10B70DFB00F28A35 /* DebugiPhone21.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1628,6 +1776,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426AC10B70DFB00F28A35 /* DebugiPhone21.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1640,6 +1789,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B210B70DFB00F28A35 /* ReleaseiPhone21.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1721,6 +1871,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426AD10B70DFB00F28A35 /* DebugiPhone22.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1733,6 +1884,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426AD10B70DFB00F28A35 /* DebugiPhone22.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1744,6 +1896,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B310B70DFB00F28A35 /* ReleaseiPhone22.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1825,6 +1978,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B010B70DFB00F28A35 /* DebugiPhone221.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1836,6 +1990,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B010B70DFB00F28A35 /* DebugiPhone221.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1848,6 +2003,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B610B70DFB00F28A35 /* ReleaseiPhone221.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1929,6 +2085,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426AE10B70DFB00F28A35 /* DebugiPhone30.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1940,6 +2097,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B410B70DFB00F28A35 /* ReleaseiPhone30.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -1952,6 +2110,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B410B70DFB00F28A35 /* ReleaseiPhone30.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2033,6 +2192,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B510B70DFB00F28A35 /* ReleaseiPhone31.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2044,6 +2204,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B510B70DFB00F28A35 /* ReleaseiPhone31.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2056,6 +2217,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B510B70DFB00F28A35 /* ReleaseiPhone31.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2137,6 +2299,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B110B70DFB00F28A35 /* DebugiPhone312.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2148,6 +2311,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B110B70DFB00F28A35 /* DebugiPhone312.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2160,6 +2324,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4E426B710B70DFB00F28A35 /* ReleaseiPhone312.xcconfig */;
 			buildSettings = {
+				CODE_SIGNING_REQUIRED = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = GTM_Prefix.pch;
 				GCC_WARN_SHADOW = YES;
@@ -2243,6 +2408,9 @@
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "GTMiPhoneUnitTesting" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F4A0A964140438D50010B64B /* Debug */,
+				F4A0A969140438E40010B64B /* Debug-gcov */,
+				F4A0A96E140438ED0010B64B /* Release */,
 				F4E4263C10B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4263D10B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4263E10B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -2278,11 +2446,14 @@
 				5729E6E312A3FA7400BF1B8A /* iPhone4.1-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "iPhone3.1.2-Debug";
+			defaultConfigurationName = Debug;
 		};
 		8B4514EC11BEC38900A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F4A0A966140438D50010B64B /* Debug */,
+				F4A0A96B140438E40010B64B /* Debug-gcov */,
+				F4A0A970140438ED0010B64B /* Release */,
 				8B4514ED11BEC38900A9EE64 /* iPhone2.0-Debug */,
 				8B4514EE11BEC38900A9EE64 /* iPhone2.0-Debug-gcov */,
 				8B4514EF11BEC38900A9EE64 /* iPhone2.0-Release */,
@@ -2318,11 +2489,14 @@
 				5729E6E512A3FA7400BF1B8A /* iPhone4.1-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "iPhone3.1.2-Debug";
+			defaultConfigurationName = Debug;
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "GTMiPhone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F4A0A962140438D50010B64B /* Debug */,
+				F4A0A967140438E40010B64B /* Debug-gcov */,
+				F4A0A96C140438ED0010B64B /* Release */,
 				F4E4263610B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4263710B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4263810B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -2358,11 +2532,14 @@
 				5729E6E112A3FA7400BF1B8A /* iPhone4.1-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "iPhone3.1.2-Debug";
+			defaultConfigurationName = Debug;
 		};
 		F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F4A0A965140438D50010B64B /* Debug */,
+				F4A0A96A140438E40010B64B /* Debug-gcov */,
+				F4A0A96F140438ED0010B64B /* Release */,
 				F4E4263F10B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4264010B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4264110B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -2398,11 +2575,14 @@
 				5729E6E412A3FA7400BF1B8A /* iPhone4.1-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "iPhone3.1.2-Debug";
+			defaultConfigurationName = Debug;
 		};
 		F4C7F9C50DC62F0C009BEE5B /* Build configuration list for PBXAggregateTarget "All UnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F4A0A963140438D50010B64B /* Debug */,
+				F4A0A968140438E40010B64B /* Debug-gcov */,
+				F4A0A96D140438ED0010B64B /* Release */,
 				F4E4263910B70C4F00F28A35 /* iPhone2.0-Debug */,
 				F4E4263A10B70C4F00F28A35 /* iPhone2.0-Debug-gcov */,
 				F4E4263B10B70C4F00F28A35 /* iPhone2.0-Release */,
@@ -2438,7 +2618,7 @@
 				5729E6E212A3FA7400BF1B8A /* iPhone4.1-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "iPhone3.1.2-Debug";
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
