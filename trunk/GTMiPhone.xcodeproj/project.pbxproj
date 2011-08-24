@@ -107,6 +107,13 @@
 		8BFE15C80FB0F764001BE894 /* GTMABAddressBookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */; };
 		8BFE15C90FB0F764001BE894 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C50FB0F764001BE894 /* phone.png */; };
 		8BFFCD7811C1934900E45777 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
+		9340CF9F140550CE0026DDC9 /* GTMFadeTruncatingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9340CF9D140550CE0026DDC9 /* GTMFadeTruncatingLabel.m */; };
+		9340CFA0140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */; };
+		9340CFA6140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9340CFA1140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png */; };
+		9340CFA7140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9340CFA2140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png */; };
+		9340CFA8140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png in Resources */ = {isa = PBXBuildFile; fileRef = 9340CFA3140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png */; };
+		9340CFA9140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png in Resources */ = {isa = PBXBuildFile; fileRef = 9340CFA4140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png */; };
+		9340CFAA140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png in Resources */ = {isa = PBXBuildFile; fileRef = 9340CFA5140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png */; };
 		F417115A0ECDFF0400B9B276 /* GTMLightweightProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711580ECDFF0400B9B276 /* GTMLightweightProxy.m */; };
 		F417115B0ECDFF0400B9B276 /* GTMLightweightProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711590ECDFF0400B9B276 /* GTMLightweightProxyTest.m */; };
 		F418AF990E7558EC004FB565 /* GTMExceptionalInlines.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AF940E7558DC004FB565 /* GTMExceptionalInlines.m */; };
@@ -274,6 +281,14 @@
 		8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = GTMABAddressBook.strings; sourceTree = "<group>"; };
 		8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBookTest.m; sourceTree = "<group>"; };
 		8BFE15C50FB0F764001BE894 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
+		9340CF9C140550CE0026DDC9 /* GTMFadeTruncatingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFadeTruncatingLabel.h; sourceTree = "<group>"; };
+		9340CF9D140550CE0026DDC9 /* GTMFadeTruncatingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingLabel.m; sourceTree = "<group>"; };
+		9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingLabelTest.m; sourceTree = "<group>"; };
+		9340CFA1140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest1.png; path = TestData/GTMFadeTruncatingLabelTest1.png; sourceTree = "<group>"; };
+		9340CFA2140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest2.png; path = TestData/GTMFadeTruncatingLabelTest2.png; sourceTree = "<group>"; };
+		9340CFA3140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest3.png; path = TestData/GTMFadeTruncatingLabelTest3.png; sourceTree = "<group>"; };
+		9340CFA4140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest4.png; path = TestData/GTMFadeTruncatingLabelTest4.png; sourceTree = "<group>"; };
+		9340CFA5140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest5.png; path = TestData/GTMFadeTruncatingLabelTest5.png; sourceTree = "<group>"; };
 		CAD23A741174AE7800EA94E5 /* DebugiPhone32.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiPhone32.xcconfig; sourceTree = "<group>"; };
 		CAD23A751174AE7800EA94E5 /* DebugiPhone313.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiPhone313.xcconfig; sourceTree = "<group>"; };
 		CAD23A761174AE7800EA94E5 /* ReleaseiPhone32.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiPhone32.xcconfig; sourceTree = "<group>"; };
@@ -387,6 +402,11 @@
 		64D0F5CB0FD3E66A00506CC7 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				9340CFA1140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png */,
+				9340CFA2140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png */,
+				9340CFA3140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png */,
+				9340CFA4140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png */,
+				9340CFA5140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png */,
 				64D0F5CC0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_60x40.png */,
 				64D0F5CD0FD3E68400506CC7 /* GTMUIImage+Resize_50x100.png */,
 				448D61B011AC1AAD0097ACBC /* GTMUIImage+Resize_50x100_flipped.png */,
@@ -414,6 +434,9 @@
 		8BA5F4060E75669000798036 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				9340CF9C140550CE0026DDC9 /* GTMFadeTruncatingLabel.h */,
+				9340CF9D140550CE0026DDC9 /* GTMFadeTruncatingLabel.m */,
+				9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */,
 				F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */,
 				F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */,
 				F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */,
@@ -752,6 +775,11 @@
 				64D0F5ED0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png in Resources */,
 				64D0F5EE0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_40x60.png in Resources */,
 				64D0F5EF0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png in Resources */,
+				9340CFA6140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png in Resources */,
+				9340CFA7140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png in Resources */,
+				9340CFA8140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png in Resources */,
+				9340CFA9140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png in Resources */,
+				9340CFAA140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -852,6 +880,8 @@
 				8B2908B211F8E7070064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
 				8B2908B311F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
 				F4746721129703600022C1FB /* GTMSenTestCaseTest.m in Sources */,
+				9340CF9F140550CE0026DDC9 /* GTMFadeTruncatingLabel.m in Sources */,
+				9340CFA0140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
