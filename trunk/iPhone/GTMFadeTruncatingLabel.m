@@ -54,6 +54,16 @@
     CGContextClipToMask(context, self.bounds, image.CGImage);
   }
 
+  if (self.shadowColor) {
+    CGContextSetFillColorWithColor(context, self.shadowColor.CGColor);
+    CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
+                                     self.shadowOffset.height);
+    [self.text drawInRect:shadowRect
+                 withFont:self.font
+            lineBreakMode:UILineBreakModeClip
+                alignment:self.textAlignment];
+  }
+
   CGContextSetFillColorWithColor(context, self.textColor.CGColor);
   [self.text drawInRect:requestedRect
                withFont:self.font
