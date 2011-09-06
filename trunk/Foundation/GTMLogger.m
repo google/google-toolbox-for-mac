@@ -70,7 +70,7 @@ static GTMLogger *gSharedLogger = nil;
                                formatter:fr
                                   filter:filter] autorelease];
   }
-  @catch (NSException *e) {
+  @catch (id e) {
     // Ignored
   }
   return nil;
@@ -83,7 +83,7 @@ static GTMLogger *gSharedLogger = nil;
     [me setWriter:[NSFileHandle fileHandleWithStandardError]];
     return me;
   }
-  @catch (NSException *e) {
+  @catch (id e) {
     // Ignored
   }
   return nil;
@@ -97,7 +97,7 @@ static GTMLogger *gSharedLogger = nil;
     [me setWriter:fh];
     return me;
   }
-  @catch (NSException *e) {
+  @catch (id e) {
     // Ignored
   }
   return nil;
@@ -137,7 +137,7 @@ static GTMLogger *gSharedLogger = nil;
     [filter_ release];
     [writer_ release];
   }
-  @catch (NSException *e) {
+  @catch (id e) {
     // Ignored
   }
   [super dealloc];
@@ -156,7 +156,7 @@ static GTMLogger *gSharedLogger = nil;
       @try {
         writer_ = [[NSFileHandle fileHandleWithStandardOutput] retain];
       }
-      @catch (NSException *e) {
+      @catch (id e) {
         // Leave |writer_| nil
       }
     } else {
@@ -177,7 +177,7 @@ static GTMLogger *gSharedLogger = nil;
       @try {
         formatter_ = [[GTMLogBasicFormatter alloc] init];
       }
-      @catch (NSException *e) {
+      @catch (id e) {
         // Leave |formatter_| nil
       }
     } else {
@@ -198,7 +198,7 @@ static GTMLogger *gSharedLogger = nil;
       @try {
         filter_ = [[GTMLogNoFilter alloc] init];
       }
-      @catch (NSException *e) {
+      @catch (id e) {
         // Leave |filter_| nil
       }
     } else {
@@ -288,7 +288,7 @@ static GTMLogger *gSharedLogger = nil;
     if (msg && [filter_ filterAllowsMessage:msg level:level])
       [writer_ logMessage:msg level:level];
   }
-  @catch (NSException *e) {
+  @catch (id e) {
     // Ignored
   }
 }
@@ -318,7 +318,7 @@ static GTMLogger *gSharedLogger = nil;
       NSString *line = [NSString stringWithFormat:@"%@\n", msg];
       [self writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
     }
-    @catch (NSException *e) {
+    @catch (id e) {
       // Ignored
     }
   }
