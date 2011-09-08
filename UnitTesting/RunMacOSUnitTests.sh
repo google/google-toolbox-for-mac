@@ -81,12 +81,14 @@ GTMXcodeNote() {
 # Helper that works like the linux flock util, so you can run something, but
 # have only one run at a time.
 MaybeFlock() {
-  if [ $GTM_ONE_TEST_AT_A_TIME ]; then
+  if [ $GTM_ONE_TEST_AT_A_TIME -ne 0 ]; then
+    GTMXcodeNote ${LINENO} "Serializing test execution."
     python -c "import fcntl, subprocess, sys
 file = open('$TMPDIR/GTM_one_test_at_a_time', 'a')
 fcntl.flock(file.fileno(), fcntl.LOCK_EX)
 sys.exit(subprocess.call(sys.argv[1:]))" "${@}"
   else
+    GTMXcodeNote ${LINENO} "Allowing parallel test execution."
     "${@}"
   fi
 }
