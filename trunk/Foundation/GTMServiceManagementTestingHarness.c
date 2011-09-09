@@ -21,9 +21,11 @@
 int main(int argc, const char** argv) {
 #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   CFErrorRef error = NULL;
-  CFDictionaryRef dict = GTMSMJobCheckIn(&error);
+  CFDictionaryRef dict = GTMSMCopyJobCheckInDictionary(&error);
   if (!dict) {
     CFShow(error);
+  } else {
+    CFRelease(dict);
   }
 #endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   return 0;

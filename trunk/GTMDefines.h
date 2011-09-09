@@ -294,6 +294,30 @@
   #endif
 #endif
 
+#ifndef NS_CONSUMED
+  #if __has_feature(attribute_ns_consumed)
+    #define NS_CONSUMED __attribute__((ns_consumed))
+  #else
+    #define NS_CONSUMED
+  #endif
+#endif
+
+#ifndef CF_CONSUMED
+  #if __has_feature(attribute_cf_consumed)
+    #define CF_CONSUMED __attribute__((cf_consumed))
+  #else
+    #define CF_CONSUMED
+  #endif
+#endif
+
+#ifndef NS_CONSUMES_SELF
+  #if __has_feature(attribute_ns_consumes_self)
+    #define NS_CONSUMES_SELF __attribute__((ns_consumes_self))
+  #else
+    #define NS_CONSUMES_SELF
+  #endif
+#endif
+
 // Defined on 10.6 and above.
 #ifndef NS_FORMAT_ARGUMENT
   #define NS_FORMAT_ARGUMENT(A)

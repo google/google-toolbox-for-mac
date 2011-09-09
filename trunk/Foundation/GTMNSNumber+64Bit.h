@@ -30,9 +30,9 @@
 + (NSNumber *)gtm_numberWithInteger:(NSInteger)value;
 + (NSNumber *)gtm_numberWithUnsignedInteger:(NSUInteger)value;
 
-- (id)gtm_initWithCGFloat:(CGFloat)value;
-- (id)gtm_initWithInteger:(NSInteger)value;
-- (id)gtm_initWithUnsignedInteger:(NSUInteger)value;
+- (id)gtm_initWithCGFloat:(CGFloat)value NS_RETURNS_RETAINED NS_CONSUMES_SELF;
+- (id)gtm_initWithInteger:(NSInteger)value NS_RETURNS_RETAINED NS_CONSUMES_SELF;
+- (id)gtm_initWithUnsignedInteger:(NSUInteger)value NS_RETURNS_RETAINED NS_CONSUMES_SELF;
 
 - (CGFloat)gtm_cgFloatValue;
 - (NSInteger)gtm_integerValue;

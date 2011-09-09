@@ -19,6 +19,10 @@
 #import "GTMSenTestCase.h"
 #import "GTMLightweightProxy.h"
 
+@interface GTMLightweightProxy (GTMLightweightProxyTest)
+- (id)init;
+@end
+
 @interface GTMLightweightProxyTest : GTMTestCase
 - (BOOL)returnYes;
 @end

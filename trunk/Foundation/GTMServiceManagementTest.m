@@ -154,7 +154,7 @@ static NSString const *kGTMSocketName
   CFErrorRef error = NULL;
   // Can't check ourselves in
   NSDictionary *badTest
-    = GTMCFAutorelease(GTMSMJobCheckIn(&error));
+    = GTMCFAutorelease(GTMSMCopyJobCheckInDictionary(&error));
   STAssertNil(badTest, nil);
   STAssertNotNULL(error, nil);
   CFRelease(error);

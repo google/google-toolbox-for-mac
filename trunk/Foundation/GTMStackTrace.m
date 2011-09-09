@@ -102,8 +102,8 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
     for (NSUInteger j = 0; j < class_desc_count; ++j) {
       // First check the class methods.
       for (NSUInteger k = 0; k < class_descs[j].class_method_count; ++k) {
-        IMP imp = method_getImplementation(class_descs[j].class_methods[k]);
-        if (imp <= (IMP)currDesc->address) {
+        void *imp = (void *)method_getImplementation(class_descs[j].class_methods[k]);
+        if (imp <= currDesc->address) {
           size_t diff = (size_t)currDesc->address - (size_t)imp;
           if (diff < smallest_diff) {
             best_method = class_descs[j].class_methods[k];
@@ -115,8 +115,8 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
       }
       // Then check the instance methods.
       for (NSUInteger k = 0; k < class_descs[j].instance_method_count; ++k) {
-        IMP imp = method_getImplementation(class_descs[j].instance_methods[k]);
-        if (imp <= (IMP)currDesc->address) {
+        void *imp = (void *)method_getImplementation(class_descs[j].instance_methods[k]);
+        if (imp <= currDesc->address) {
           size_t diff = (size_t)currDesc->address - (size_t)imp;
           if (diff < smallest_diff) {
             best_method = class_descs[j].instance_methods[k];

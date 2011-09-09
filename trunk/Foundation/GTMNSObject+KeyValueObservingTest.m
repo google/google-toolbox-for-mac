@@ -141,6 +141,11 @@
 
 @implementation GTMNSObject_KeyValueObservingChecksTest
 
+- (void)setUp {
+  value_ = nil;
+  _value2 = nil;
+}
+
 - (void)testAddingObserver {
   [GTMUnitTestDevLogDebug expectPattern:@"warning:.*"];
   [self addObserver:self forKeyPath:@"value_" options:0 context:NULL];

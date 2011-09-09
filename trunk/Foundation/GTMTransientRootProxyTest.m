@@ -44,8 +44,7 @@ enum {
 // The "server" we'll use to test the DO connection.  This server will implement
 // our test protocol, and it will run in a separate thread from the main
 // unit testing thread, so the DO requests can be serviced.
-@interface DOTestServer : NSObject <DOTestProtocol> {
-}
+@interface DOTestServer : NSObject <DOTestProtocol>
 - (void)runThread:(NSDictionary *)args;
 @end
 
@@ -97,6 +96,10 @@ enum {
 
 // === Done with auxillary data structures, now for the main test class ===
 
+@interface GTMTransientRootProxy (GTMTransientRootProxyTest)
+- (id)init;
+@end
+
 @interface GTMTransientRootProxyTest : GTMTestCase {
  @private
   DOTestServer *server_;
@@ -128,7 +131,7 @@ enum {
                @"Unable to start thread");
   [syncLock_ unlockWithCondition:kGTMTransientThreadConditionStarted];
 
-  GTMTransientRootProxy<DOTestProtocol> *failProxy =
+  GTMTransientRootProxy *failProxy =
     [GTMTransientRootProxy rootProxyWithRegisteredName:nil
                                                   host:nil
                                               protocol:@protocol(DOTestProtocol)

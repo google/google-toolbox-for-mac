@@ -17,6 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 /// Utility for building case-insensitive NSDictionary objects.
 @interface NSDictionary (GTMNSDictionaryCaseInsensitiveAdditions)
@@ -34,7 +35,8 @@
 ///     [NSDictionary gtm_dictionaryWithDictionaryCaseInsensitive:
 ///      [response allHeaderFields]];
 /// NSString *contentType = [headers objectForKey:@"Content-Type"];
-- (id)gtm_initWithDictionaryCaseInsensitive:(NSDictionary *)dictionary;
+- (id)gtm_initWithDictionaryCaseInsensitive:(NSDictionary *)dictionary 
+    NS_RETURNS_RETAINED NS_CONSUMES_SELF;
 
 /// Returns a newly created and autoreleased NSDictionary object as above.
 + (id)gtm_dictionaryWithDictionaryCaseInsensitive:(NSDictionary *)dictionary;

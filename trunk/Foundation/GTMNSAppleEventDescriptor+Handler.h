@@ -30,11 +30,16 @@
                                  count:(NSUInteger)count;
 
 - (id)gtm_initWithPositionalHandler:(NSString*)handler 
-                    parametersArray:(NSArray*)params;
+                    parametersArray:(NSArray*)params 
+    NS_RETURNS_RETAINED NS_CONSUMES_SELF;
+
 - (id)gtm_initWithPositionalHandler:(NSString*)handler 
-               parametersDescriptor:(NSAppleEventDescriptor*)params;
+               parametersDescriptor:(NSAppleEventDescriptor*)params
+    NS_RETURNS_RETAINED NS_CONSUMES_SELF;
+
 - (id)gtm_initWithLabeledHandler:(NSString*)handler 
                           labels:(AEKeyword*)labels
                       parameters:(id*)params
-                           count:(NSUInteger)count;
+                           count:(NSUInteger)count
+    NS_RETURNS_RETAINED NS_CONSUMES_SELF;
 @end
