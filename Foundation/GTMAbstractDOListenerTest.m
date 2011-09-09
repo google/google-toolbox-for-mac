@@ -98,10 +98,13 @@ enum {
 
 @implementation TestClient
 - (id)initWithName:(NSString *)name {
-  serverName_ = [[NSString alloc] initWithString:name];
-  if (!serverName_) {
-    [self release];
-    self = nil;
+  self = [super init];
+  if (self) {
+    serverName_ = [[NSString alloc] initWithString:name];
+    if (!serverName_) {
+      [self release];
+      self = nil;
+    }
   }
   return self;
 }

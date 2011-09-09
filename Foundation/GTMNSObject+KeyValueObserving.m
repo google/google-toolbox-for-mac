@@ -568,7 +568,7 @@ GTM_METHOD_CHECK(NSObject,
       @selector(_gtmCheckAddObserver:toObjectsAtIndexes:forKeyPath:options:context:));
 
 #endif  // GTM_PERFORM_KVO_CHECKS
-  [pool release];
+  [pool drain];
 }
 
 - (void)_gtmDebugAddObserver:(NSObject *)observer

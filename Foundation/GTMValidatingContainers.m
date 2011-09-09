@@ -210,7 +210,7 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   if ((self = [super init])) {
     [self release];
   }
-  return [[NSMutableArray alloc] initWithCapacity:capacity];
+  return (GTMValidatingArray*)[[NSMutableArray alloc] initWithCapacity:capacity];
 }
 #endif  // GTM_CONTAINERS_VALIDATE
 @end
@@ -287,7 +287,8 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   if ((self = [super init])) {
     [self release];
   }
-  return [[NSMutableDictionary alloc] initWithCapacity:capacity];
+  return (GTMValidatingDictionary*)[[NSMutableDictionary alloc] 
+                                    initWithCapacity:capacity];
 
 }
 #endif  // GTM_CONTAINERS_VALIDATE
@@ -366,7 +367,7 @@ void _GTMValidateContainer(id container, id target, SEL selector) {
   if ((self = [super init])) {
     [self release];
   }
-  return [[NSMutableSet alloc] initWithCapacity:capacity];
+  return (GTMValidatingSet*)[[NSMutableSet alloc] initWithCapacity:capacity];
 }
 #endif  // GTM_CONTAINERS_VALIDATE
 @end

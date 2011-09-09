@@ -523,10 +523,10 @@ typedef struct {
 #else  // GTM_IPHONE_SDK
   bool wasGood = YES;
   if (data) {
-    wasGood = [[[NSImage alloc] initWithData:data] autorelease] != nil;
+    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+    wasGood = image != nil;
   }
-  wasGood = wasGood && ABPersonSetImageData([self recordRef], 
-                                            (CFDataRef)data);
+  wasGood = wasGood && ABPersonSetImageData([self recordRef], (CFDataRef)data);
 #endif  // GTM_IPHONE_SDK
   return wasGood ? YES : NO;
 }
@@ -862,7 +862,9 @@ typedef struct {
       // GTMABAddressBookTest.m
       // Also, search for 6208390 below and fix the fast enumerator to actually
       // be somewhat performant when this is fixed.
+#ifndef __clang_analyzer__
       [value retain];
+#endif  // __clang_analyzer__
     }
   }
   return value;

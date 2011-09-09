@@ -45,7 +45,7 @@ CFDictionaryRef GTMSMJobCopyDictionary(CFStringRef jobLabel);
 // Performs a check-in for the running process and returns its dictionary with
 // the appropriate sockets and machports filled in.
 // Caller  takes ownership of the returned type.
-CFDictionaryRef GTMSMJobCheckIn(CFErrorRef *error);
+CFDictionaryRef GTMSMCopyJobCheckInDictionary(CFErrorRef *error);
 
 // The official ServiceManagement version returns an array of job dictionaries.
 // This returns a dictionary of job dictionaries where the key is the label

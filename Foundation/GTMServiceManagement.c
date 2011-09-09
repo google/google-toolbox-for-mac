@@ -596,7 +596,7 @@ exit:
   return local_error == NULL;
 }
 
-CFDictionaryRef GTMSMJobCheckIn(CFErrorRef *error) {
+CFDictionaryRef GTMSMCopyJobCheckInDictionary(CFErrorRef *error) {
   CFErrorRef local_error = NULL;
   CFDictionaryRef check_in_dict = NULL;
   launch_data_t msg = launch_data_new_string(LAUNCH_KEY_CHECKIN);

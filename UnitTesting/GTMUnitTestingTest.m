@@ -42,6 +42,7 @@ NSString *const kGTMWindowSaveFileName = @"GTMUnitTestingWindow";
 @end
 
 @interface GTMUnitTestingProxyTest : NSProxy
+- (id)init;
 @end
 
 @implementation GTMUnitTestingTest
