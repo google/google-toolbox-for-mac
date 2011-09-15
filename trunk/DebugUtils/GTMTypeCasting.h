@@ -19,10 +19,6 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // These are some basic macros for making down-casting safer in Objective C.
 // They are loosely based on the same cast types with similar names in C++.
 // A typical usage would look like this:
