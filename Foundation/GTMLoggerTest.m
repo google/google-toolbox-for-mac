@@ -469,25 +469,10 @@
   STAssertTrue([filter filterAllowsMessage:nil level:kGTMLoggerLevelDebug], nil);
 }
 
-- (void)testCustomFilter {
-  // Default level is kGTMLoggerLevelError
-  id<GTMLogFilter> filter = [[[GTMLogCustomLevelFilter alloc] init]
-                                autorelease];
-  STAssertNotNil(filter, nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
-                nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
-                nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
-               nil);
-
-  // Custom level is possible
-  filter = [[[GTMLogCustomLevelFilter alloc]
-               initWithFilterLevel:kGTMLoggerLevelInfo] autorelease];
+- (void)testMinimumFilter {
+  id<GTMLogFilter> filter = [[[GTMLogMininumLevelFilter alloc]
+                                initWithMinimumLevel:kGTMLoggerLevelInfo]
+                                    autorelease];
   STAssertNotNil(filter, nil);
   STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
                 nil);
@@ -500,8 +485,8 @@
   STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
                nil);
 
-  filter = [[[GTMLogCustomLevelFilter alloc]
-               initWithFilterLevel:kGTMLoggerLevelDebug] autorelease];
+  filter = [[[GTMLogMininumLevelFilter alloc]
+               initWithMinimumLevel:kGTMLoggerLevelDebug] autorelease];
   STAssertNotNil(filter, nil);
   STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
                 nil);
@@ -514,9 +499,51 @@
   STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
                nil);
 
-  // Cannot exceed assert level filter
-  filter = [[[GTMLogCustomLevelFilter alloc]
-               initWithFilterLevel:kGTMLoggerLevelAssert + 1] autorelease];
+  // Cannot exceed min/max levels filter
+  filter = [[[GTMLogMininumLevelFilter alloc]
+               initWithMinimumLevel:kGTMLoggerLevelAssert + 1] autorelease];
+  STAssertNil(filter, nil);
+  filter = [[[GTMLogMininumLevelFilter alloc]
+               initWithMinimumLevel:kGTMLoggerLevelUnknown - 1] autorelease];
+  STAssertNil(filter, nil);
+}
+
+- (void)testMaximumFilter {
+  id<GTMLogFilter> filter = [[[GTMLogMaximumLevelFilter alloc]
+                                initWithMaximumLevel:kGTMLoggerLevelInfo]
+                                    autorelease];
+  STAssertNotNil(filter, nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
+               nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
+               nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
+               nil);
+
+  filter = [[[GTMLogMaximumLevelFilter alloc]
+               initWithMaximumLevel:kGTMLoggerLevelDebug] autorelease];
+  STAssertNotNil(filter, nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
+                nil);
+  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
+               nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
+               nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
+               nil);
+  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
+               nil);
+
+  // Cannot exceed min/max levels filter
+  filter = [[[GTMLogMaximumLevelFilter alloc]
+               initWithMaximumLevel:kGTMLoggerLevelAssert + 1] autorelease];
+  STAssertNil(filter, nil);
+  filter = [[[GTMLogMaximumLevelFilter alloc]
+               initWithMaximumLevel:kGTMLoggerLevelUnknown - 1] autorelease];
   STAssertNil(filter, nil);
 }
 
