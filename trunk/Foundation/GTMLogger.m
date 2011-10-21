@@ -89,6 +89,44 @@ static GTMLogger *gSharedLogger = nil;
   return nil;
 }
 
++ (id)standardLoggerWithStdoutAndStderr {
+  // We're going to take advantage of the GTMLogger to GTMLogWriter adaptor
+  // and create a composite logger that an outer "standard" logger can use
+  // as a writer. Our inner loggers should apply no formatting since the main
+  // logger does that and we want the caller to be able to change formatters
+  // or add writers without knowing the inner structure of our composite.
+
+  // Don't trust NSFileHandle not to throw
+  @try {
+    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init] 
+                                          autorelease];
+    GTMLogger *stdoutLogger =
+        [self loggerWithWriter:[NSFileHandle fileHandleWithStandardOutput]
+                     formatter:formatter
+                        filter:[[[GTMLogMaximumLevelFilter alloc]
+                                  initWithMaximumLevel:kGTMLoggerLevelInfo]
+                                      autorelease]];
+    GTMLogger *stderrLogger =
+        [self loggerWithWriter:[NSFileHandle fileHandleWithStandardError]
+                     formatter:formatter
+                        filter:[[[GTMLogMininumLevelFilter alloc]
+                                  initWithMinimumLevel:kGTMLoggerLevelError]
+                                      autorelease]];
+    GTMLogger *compositeWriter =
+        [self loggerWithWriter:[NSArray arrayWithObjects:
+                                   stdoutLogger, stderrLogger, nil]
+                     formatter:formatter
+                        filter:[[[GTMLogNoFilter alloc] init] autorelease]];
+    GTMLogger *outerLogger = [self standardLogger];
+    [outerLogger setWriter:compositeWriter];
+    return outerLogger;
+  }
+  @catch (id e) {
+    // Ignored
+  }
+  return nil;
+}
+
 + (id)standardLoggerWithPath:(NSString *)path {
   @try {
     NSFileHandle *fh = [NSFileHandle fileHandleForLoggingAtPath:path mode:0644];
@@ -509,19 +547,20 @@ static BOOL IsVerboseLoggingEnabled(void) {
 @end  // GTMLogNoFilter
 
 
-@implementation GTMLogCustomLevelFilter
+@implementation GTMLogAllowedLevelFilter
 
-- (id)init {
-  // Use error level for default init.
-  return [self initWithFilterLevel:kGTMLoggerLevelError];
-}
-
-- (id)initWithFilterLevel:(GTMLoggerLevel)level {
+// Private designated initializer
+- (id)initWithAllowedLevels:(NSIndexSet *)levels {
   self = [super init];
   if (self != nil) {
-    filterLevel_ = level;
-    // Cap max level
-    if (filterLevel_ > kGTMLoggerLevelAssert) {
+    allowedLevels_ = [levels retain];
+    // Cap min/max level
+    if (!allowedLevels_ ||
+        // NSIndexSet is unsigned so only check the high bound, but need to
+        // check both first and last index because NSIndexSet appears to allow
+        // wraparound.
+        ([allowedLevels_ firstIndex] > kGTMLoggerLevelAssert) ||
+        ([allowedLevels_ lastIndex] > kGTMLoggerLevelAssert)) {
       [self release];
       return nil;
     }
@@ -529,8 +568,41 @@ static BOOL IsVerboseLoggingEnabled(void) {
   return self;
 }
 
-- (BOOL)filterAllowsMessage:(NSString *)msg level:(GTMLoggerLevel)level {
-  return (level >= filterLevel_) ? YES : NO;
+- (id)init {
+  // Allow all levels in default init
+  return [self initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
+             NSMakeRange(kGTMLoggerLevelUnknown,
+                 (kGTMLoggerLevelAssert - kGTMLoggerLevelUnknown + 1))]];
 }
 
-@end
+- (void)dealloc {
+  [allowedLevels_ release];
+  [super dealloc];
+}
+
+- (BOOL)filterAllowsMessage:(NSString *)msg level:(GTMLoggerLevel)level {
+  return [allowedLevels_ containsIndex:level];
+}
+
+@end  // GTMLogAllowedLevelFilter
+
+
+@implementation GTMLogMininumLevelFilter
+
+- (id)initWithMinimumLevel:(GTMLoggerLevel)level {
+  return [super initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
+             NSMakeRange(level,
+                         (kGTMLoggerLevelAssert - level + 1))]];
+}
+
+@end  // GTMLogMininumLevelFilter
+
+
+@implementation GTMLogMaximumLevelFilter
+
+- (id)initWithMaximumLevel:(GTMLoggerLevel)level {
+  return [super initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
+             NSMakeRange(kGTMLoggerLevelUnknown, level + 1)]];
+}
+
+@end  // GTMLogMaximumLevelFilter

@@ -238,6 +238,10 @@
 // Same as +standardLogger, but logs to stderr.
 + (id)standardLoggerWithStderr;
 
+// Same as +standardLogger but levels >= kGTMLoggerLevelError are routed to
+// stderr, everything else goes to stdout.
++ (id)standardLoggerWithStdoutAndStderr;
+
 // Returns a new standard GTMLogger instance with a log writer that will
 // write to the file at |path|, and will use the GTMLogStandardFormatter and
 // GTMLogLevelFilter classes. If |path| does not exist, it will be created.
@@ -454,20 +458,33 @@ typedef enum {
 @interface GTMLogNoFilter : NSObject <GTMLogFilter>
 @end  // GTMLogNoFilter
 
-// A log filter that filters messages below a specified level. Intended for
-// use where finer control than all (GTMLogNoFilter) or heavy filter
-// (GTMLogLevelFilter) isn't appropriate.
-@interface GTMLogCustomLevelFilter : NSObject <GTMLogFilter> {
+
+// Base class for custom level filters. Not for direct use, use the minimum
+// or maximum level subclasses below.
+@interface GTMLogAllowedLevelFilter : NSObject <GTMLogFilter> {
  @private
-  GTMLoggerLevel filterLevel_;
+  NSIndexSet *allowedLevels_;
 }
+@end
+
+// A log filter that allows you to set a minimum log level. Messages below this
+// level will be filtered.
+@interface GTMLogMininumLevelFilter : GTMLogAllowedLevelFilter
 
 // Designated initializer, logs at levels < |level| will be filtered.
-// |level| cannot exceed kGTMLoggerLevelAssert
-- (id)initWithFilterLevel:(GTMLoggerLevel)level;
+- (id)initWithMinimumLevel:(GTMLoggerLevel)level;
 
-@end  // GTMLogLevelFilter
+@end
 
+// A log filter that allows you to set a maximum log level. Messages whose level
+// exceeds this level will be filtered. This is really only useful if you have
+// a composite GTMLogger that is sending the other messages elsewhere.
+@interface GTMLogMaximumLevelFilter : GTMLogAllowedLevelFilter
+
+// Designated initializer, logs at levels > |level| will be filtered.
+- (id)initWithMaximumLevel:(GTMLoggerLevel)level;
+
+@end
 
 
 
