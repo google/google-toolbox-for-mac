@@ -24,6 +24,6 @@
   UILabel *label_;
 }
 
-@property(nonatomic, retain)IBOutlet UILabel *label;
+@property(nonatomic, retain) IBOutlet UILabel *label;
 
 @end

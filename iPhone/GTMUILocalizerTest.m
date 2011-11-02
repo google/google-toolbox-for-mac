@@ -23,7 +23,7 @@
 @end
 
 @implementation TestUILocalizer
-- (NSString *)localizedStringForString:(NSString *)string{
+- (NSString *)localizedStringForString:(NSString *)string {
   return [string substringFromIndex:5];
 }
 
@@ -43,7 +43,7 @@
 }
 @end
 
-@interface GTMUILocalizerTest : GTMTestCase 
+@interface GTMUILocalizerTest : GTMTestCase
 @end
 
 @implementation GTMUILocalizerTest

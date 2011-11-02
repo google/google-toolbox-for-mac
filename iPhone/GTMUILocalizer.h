@@ -20,32 +20,26 @@
 
 // A class for localizing nibs by doing simple string replacement.
 // To use this, make an instance of GTMUILocalizer in your nib. Connect the
-// owner_ outlet of the your instance to the File Owner of the nib. It expects
-// the owner_ outlet to be an instance or subclass of NSWindowController,
-// NSViewController or NSApplication. Using the bundle of the nib it will then
-// localize any items in the NSWindowController's window and subviews, or the
-// NSViewController's view and subviews or the NSApplication's main menu
-// and dockmenu at when awakeFromNib is called on the GTMUILocalizer instance.
-// You can optionally hook up otherObjectToLocalize_ and
-// yetAnotherObjectToLocalize_ and those will also be localized. Strings in the
+// owner outlet of the your instance to the File Owner of the nib. It expects
+// the owner outlet to be an instance or subclass of UIViewController.  Using
+// the bundle of the nib it will then localize any items in the
+// UIViewController's view and subviews when awakeFromNib is called on the
+// GTMUILocalizer instance.
+// You can optionally hook up otherObjectToLocalize and
+// yetAnotherObjectToLocalize and those will also be localized. Strings in the
 // nib that you want localized must start with ^ (shift-6). The strings will
 // be looked up in the Localizable.strings table without the caret as the
 // key.
-// Things that will be localized are:
-//  - Titles and altTitles (for menus, buttons, windows, menuitems, tabViewItem)
-//  - stringValue (for labels)
-//  - tooltips
-//  - accessibility help
-//  - menus
 //
+// TODO(tvl): this correct for iOS?
 // Due to technical limitations, accessibility description cannot be localized.
 // See http://lists.apple.com/archives/Accessibility-dev/2009/Dec/msg00004.html
 // and http://openradar.appspot.com/7496255 for more information.
 //
 // As an example if I wanted to localize a button with the word "Print" on
-// it, I would put it in a window controlled by a NSWindowController that was
+// it, I would put it in a view controlled by a UIViewController that was
 // the owner of the nib. I would set it's title to be "^Print". I would then
-// create an instance of GTMUILocalizer and set it's owner_ to be the owner
+// create an instance of GTMUILocalizer and set it's owner to be the owner
 // of the nib.
 // In my Localizable.strings file in my fr.lproj directory for the bundle
 // I would put "Print" = "Imprimer";
@@ -64,19 +58,17 @@
 // will localize properly. This keeps the differences between the nibs down
 // to the bare essentials.
 //
-// NOTE: NSToolbar localization support is limited to only working on the
-// default items in the toolbar. We cannot localize items that are on of the
-// customization palette but not in the default items because there is not an
-// API for NSToolbar to get all possible items. You are responsible for
-// localizing all non-default toolbar items by hand.
-//
 @interface GTMUILocalizer : NSObject {
  @private
-  IBOutlet id owner_;
-  IBOutlet id otherObjectToLocalize_;
-  IBOutlet id yetAnotherObjectToLocalize_;
+  id owner_;
+  id otherObjectToLocalize_;
+  id yetAnotherObjectToLocalize_;
   NSBundle *bundle_;
 }
+@property(retain) IBOutlet id owner;
+@property(retain) IBOutlet id otherObjectToLocalize;
+@property(retain) IBOutlet id yetAnotherObjectToLocalize;
+
 - (id)initWithBundle:(NSBundle *)bundle;
 
 // Localize |object|. If |recursive| is true, it will attempt
