@@ -1,16 +1,16 @@
 //
 //  GTMAppKit+UnitTesting.m
-//  
+//
 //  Categories for making unit testing of graphics/UI easier.
-//  
+//
 //  Copyright 2006-2008 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -30,13 +30,13 @@
  #define ENCODE_NSINTEGER(coder, i, key) [(coder) encodeInteger:(i) forKey:(key)]
 #endif
 
-@implementation NSApplication (GMUnitTestingAdditions) 
+@implementation NSApplication (GTMUnitTestingAdditions)
 GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
   [super gtm_unitTestEncodeState:inCoder];
   ENCODE_NSINTEGER(inCoder, [[self mainWindow] windowNumber], @"ApplicationMainWindow");
-   
+
   // Descend down into the windows allowing them to store their state
   NSWindow *window = nil;
   int i = 0;
@@ -44,15 +44,15 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
     if ([window isVisible]) {
       // Only record visible windows because invisible windows may be closing on us
       // This appears to happen differently in 64 bit vs 32 bit, and items
-      // in the window may hold an extra retain count for a while until the 
+      // in the window may hold an extra retain count for a while until the
       // event loop is spun. To avoid all this, we just don't record non
       // visible windows.
-      // See rdar://5851458 for details.      
+      // See rdar://5851458 for details.
       [inCoder encodeObject:window forKey:[NSString stringWithFormat:@"Window %d", i]];
       i = i + 1;
     }
   }
-  
+
   // and encode the menu bar
   NSMenu *mainMenu = [self mainMenu];
   if (mainMenu) {
@@ -61,9 +61,9 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 }
 @end
 
-@implementation NSWindow (GMUnitTestingAdditions) 
+@implementation NSWindow (GTMUnitTestingAdditions)
 
-- (CGImageRef)gtm_unitTestImage {  
+- (CGImageRef)gtm_unitTestImage {
   return [[[self contentView] superview] gtm_unitTestImage];
 }
 
@@ -71,8 +71,8 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [super gtm_unitTestEncodeState:inCoder];
   [inCoder encodeObject:[self title] forKey:@"WindowTitle"];
   [inCoder encodeBool:[self isVisible] forKey:@"WindowIsVisible"];
-  // Do not record if window is key, because users running unit tests 
-  // and clicking around to other apps, could change this mid test causing 
+  // Do not record if window is key, because users running unit tests
+  // and clicking around to other apps, could change this mid test causing
   // issues.
   // [inCoder encodeBool:[self isKeyWindow] forKey:@"WindowIsKey"];
   [inCoder encodeBool:[self isMainWindow] forKey:@"WindowIsMain"];
@@ -84,7 +84,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSControl (GTMUnitTestingAdditions) 
+@implementation NSControl (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -103,7 +103,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSButton (GTMUnitTestingAdditions) 
+@implementation NSButton (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -127,9 +127,25 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   return NO;
 }
 
+//  Encodes the state of an object in a manner suitable for comparing
+//  against a master state file so we can determine whether the
+//  object is in a suitable state.
+//
+//  Arguments:
+//    inCoder - the coder to encode our state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+  id controlCell = [self cell];
+  if ([controlCell isKindOfClass:[NSTextFieldCell class]]) {
+    NSTextFieldCell *textFieldCell = controlCell;
+    [inCoder encodeObject:[textFieldCell placeholderString]
+                   forKey:@"PlaceHolderString"];
+  }
+}
+
 @end
 
-@implementation NSCell (GTMUnitTestingAdditions) 
+@implementation NSCell (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -157,7 +173,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSImage (GTMUnitTestingAdditions) 
+@implementation NSImage (GTMUnitTestingAdditions)
 
 - (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
   [super gtm_unitTestEncodeState:inCoder];
@@ -172,14 +188,14 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   CGSize cgSize = GTMNSSizeToCGSize(size);
   CGContextRef contextRef = GTMCreateUnitTestBitmapContextOfSizeWithData(cgSize,
                                                                          NULL);
-  NSGraphicsContext *bitmapContext 
+  NSGraphicsContext *bitmapContext
     = [NSGraphicsContext graphicsContextWithGraphicsPort:contextRef flipped:NO];
   _GTMDevAssert(bitmapContext, @"Couldn't create ns bitmap context");
-  
+
   [NSGraphicsContext saveGraphicsState];
   [NSGraphicsContext setCurrentContext:bitmapContext];
   [self drawInRect:rect fromRect:rect operation:NSCompositeCopy fraction:1.0];
-  
+
   CGImageRef image = CGBitmapContextCreateImage(contextRef);
   CFRelease(contextRef);
   [NSGraphicsContext restoreGraphicsState];
@@ -201,7 +217,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   // Hack here to work around
   // rdar://5881796 Application menu item title wrong when accessed programatically
   // which causes us to have different results on x86_64 vs x386.
-  // Hack is braced intentionally. We don't record the title of the 
+  // Hack is braced intentionally. We don't record the title of the
   // "application" menu or it's menu title because they are wrong on 32 bit.
   // They appear to work right on 64bit.
   {
@@ -246,7 +262,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [inCoder encodeObject:[self toolTip] forKey:@"MenuItemTooltip"];
   ENCODE_NSINTEGER(inCoder, [self tag], @"MenuItemTag");
   ENCODE_NSINTEGER(inCoder, [self indentationLevel], @"MenuItemIndentationLevel");
-  
+
   // Do our submenu if neccessary
   if ([self hasSubmenu]) {
     [inCoder encodeObject:[self submenu] forKey:@"MenuItemSubmenu"];
@@ -255,7 +271,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSTabView (GTMUnitTestingAdditions) 
+@implementation NSTabView (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -276,7 +292,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSTabViewItem (GTMUnitTestingAdditions) 
+@implementation NSTabViewItem (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -292,7 +308,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSToolbar (GTMUnitTestingAdditions) 
+@implementation NSToolbar (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -313,7 +329,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSToolbarItem (GTMUnitTestingAdditions) 
+@implementation NSToolbarItem (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -334,7 +350,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSMatrix (GTMUnitTestingAdditions) 
+@implementation NSMatrix (GTMUnitTestingAdditions)
 
 //  Encodes the state of an object in a manner suitable for comparing
 //  against a master state file so we can determine whether the
@@ -355,7 +371,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [inCoder encodeSize:[self intercellSpacing] forKey:@"MatrixIntercellSpacing"];
 
   [inCoder encodeObject:[self prototype] forKey:@"MatrixCellPrototype"];
-  
+
   // Dump the list of cells
   NSCell *cell;
   long i = 0;
@@ -365,43 +381,6 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
     ++i;
   }
 }
-
-@end
-
-//  A view that allows you to delegate out drawing using the formal
-//  GTMUnitTestViewDelegate protocol above. This is useful when writing up unit
-//  tests for visual elements.
-//  Your test will often end up looking like this:
-//  - (void)testFoo {
-//   GTMAssertDrawingEqualToFile(self, NSMakeSize(200, 200), @"Foo", nil, nil);
-//  }
-//  and your testSuite will also implement the unitTestViewDrawRect method to do
-//  it's actual drawing. The above creates a view of size 200x200 that draws
-//  it's content using |self|'s unitTestViewDrawRect method and compares it to
-//  the contents of the file Foo.tif to make sure it's valid
-@implementation GTMUnitTestView
-
-- (id)initWithFrame:(NSRect)frame 
-             drawer:(id<GTMUnitTestViewDrawer>)drawer 
-        contextInfo:(void*)contextInfo {
-  self = [super initWithFrame:frame];
-  if (self != nil) {
-    drawer_ = [drawer retain];
-    contextInfo_ = contextInfo;
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [drawer_ release];
-  [super dealloc];
-}
-
-
-- (void)drawRect:(NSRect)rect {
-  [drawer_ gtm_unitTestViewDrawRect:rect contextInfo:contextInfo_];
-}
-
 
 @end
 
@@ -445,7 +424,79 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 
 @end
 
-@implementation NSView (GTMUnitTestingAdditions) 
+@implementation NSComboBox (GTMUnitTestingAdditions)
+
+- (BOOL)gtm_shouldEncodeStateForSubviews {
+  // Subclass of NSTextView, don't want subviews for the same reason.
+  return NO;
+}
+
+//  Encodes the state of an NSSegmentedControl and all its segments.
+//
+//  Arguments:
+//    inCoder - the coder to encode state into
+- (void)gtm_unitTestEncodeState:(NSCoder*)inCoder {
+  [super gtm_unitTestEncodeState:inCoder];
+
+  NSInteger aCount = [self numberOfItems];
+  ENCODE_NSINTEGER(inCoder, aCount, @"ComboBoxNumberOfItems");
+  aCount = [self numberOfVisibleItems];
+  ENCODE_NSINTEGER(inCoder, aCount, @"ComboBoxNumberOfVisibleItems");
+
+  // Include the objectValues if it doesn't use a data source.
+  if (![self usesDataSource]) {
+    NSArray *objectValues = [self objectValues];
+    for (NSUInteger i = 0; i < [objectValues count]; ++i) {
+      id value = [objectValues objectAtIndex:i];
+      if ([value isKindOfClass:[NSString class]]) {
+        NSString *key = [NSString stringWithFormat:@"ComboBoxObjectValue %u", i];
+        [inCoder encodeObject:value forKey:key];
+      }
+    }
+  }
+}
+
+@end
+
+
+//  A view that allows you to delegate out drawing using the formal
+//  GTMUnitTestViewDelegate protocol above. This is useful when writing up unit
+//  tests for visual elements.
+//  Your test will often end up looking like this:
+//  - (void)testFoo {
+//   GTMAssertDrawingEqualToFile(self, NSMakeSize(200, 200), @"Foo", nil, nil);
+//  }
+//  and your testSuite will also implement the unitTestViewDrawRect method to do
+//  it's actual drawing. The above creates a view of size 200x200 that draws
+//  it's content using |self|'s unitTestViewDrawRect method and compares it to
+//  the contents of the file Foo.tif to make sure it's valid
+@implementation GTMUnitTestView
+
+- (id)initWithFrame:(NSRect)frame
+             drawer:(id<GTMUnitTestViewDrawer>)drawer
+        contextInfo:(void*)contextInfo {
+  self = [super initWithFrame:frame];
+  if (self != nil) {
+    drawer_ = [drawer retain];
+    contextInfo_ = contextInfo;
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [drawer_ release];
+  [super dealloc];
+}
+
+
+- (void)drawRect:(NSRect)rect {
+  [drawer_ gtm_unitTestViewDrawRect:rect contextInfo:contextInfo_];
+}
+
+
+@end
+
+@implementation NSView (GTMUnitTestingAdditions)
 
 //  Returns an image containing a representation of the object
 //  suitable for use in comparing against a master image.
@@ -461,10 +512,10 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   CGSize cgSize = GTMNSSizeToCGSize(bounds.size);
   CGContextRef contextRef = GTMCreateUnitTestBitmapContextOfSizeWithData(cgSize,
                                                                          NULL);
-  NSGraphicsContext *bitmapContext 
+  NSGraphicsContext *bitmapContext
     = [NSGraphicsContext graphicsContextWithGraphicsPort:contextRef flipped:NO];
   _GTMDevAssert(bitmapContext, @"Couldn't create ns bitmap context");
-  
+
   // Save our state and turn off font smoothing and antialias.
   CGContextSaveGState(contextRef);
   CGContextSetShouldSmoothFonts(contextRef, false);
@@ -479,9 +530,9 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
 //  Returns whether gtm_unitTestEncodeState should recurse into subviews
 //  of a particular view.
 //  If you have "Full keyboard access" in the
-//  Keyboard & Mouse > Keyboard Shortcuts preferences pane set to "Text boxes 
-//  and Lists only" that Apple adds a set of subviews to NSTextFields. So in the 
-//  case of NSTextFields we don't want to recurse into their subviews. There may 
+//  Keyboard & Mouse > Keyboard Shortcuts preferences pane set to "Text boxes
+//  and Lists only" that Apple adds a set of subviews to NSTextFields. So in the
+//  case of NSTextFields we don't want to recurse into their subviews. There may
 //  be other cases like this, so instead of specializing gtm_unitTestEncodeState: to
 //  look for NSTextFields, NSTextFields will just not allow us to recurse into
 //  their subviews.
@@ -504,12 +555,12 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   [inCoder encodeObject:[self toolTip] forKey:@"ViewToolTip"];
   NSArray *supportedAttrs = [self accessibilityAttributeNames];
   if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
-    NSString *help 
+    NSString *help
       = [self accessibilityAttributeValue:NSAccessibilityHelpAttribute];
     [inCoder encodeObject:help forKey:@"ViewAccessibilityHelp"];
   }
   if ([supportedAttrs containsObject:NSAccessibilityDescriptionAttribute]) {
-    NSString *description 
+    NSString *description
       = [self accessibilityAttributeValue:NSAccessibilityDescriptionAttribute];
     [inCoder encodeObject:description forKey:@"ViewAccessibilityDescription"];
   }
