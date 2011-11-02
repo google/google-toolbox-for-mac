@@ -23,7 +23,7 @@
 - (void)localizeAccessibility:(id)object;
 - (void)localizeBindings:(id)object;
 
-// Never recursively call any of these methods. Always call 
+// Never recursively call any of these methods. Always call
 // -[self localizeObject:recursively:] otherwise bindings will not be
 // localized properly.
 - (void)localizeWindow:(NSWindow *)window recursively:(BOOL)recursive;
@@ -240,12 +240,12 @@
     }
   }
 
-  // Do NSSearchField placeholders
-  if ([view isKindOfClass:[NSSearchField class]]) {
-    NSString *placeholder = [[(NSSearchField *)view cell] placeholderString];
+  // Do NSTextField placeholders
+  if ([view isKindOfClass:[NSTextField class]]) {
+    NSString *placeholder = [[(NSTextField *)view cell] placeholderString];
     NSString *localizedPlaceholer = [self localizedStringForString:placeholder];
     if (localizedPlaceholer) {
-      [[(NSSearchField *)view cell] setPlaceholderString:localizedPlaceholer];
+      [[(NSTextField *)view cell] setPlaceholderString:localizedPlaceholer];
     }
   }
 
@@ -282,8 +282,37 @@
     NSSegmentedControl *segmentedControl = (NSSegmentedControl *)view;
     for (NSInteger i = 0; i < [segmentedControl segmentCount]; ++i) {
       NSString *label = [segmentedControl labelForSegment:i];
-      [segmentedControl setLabel:[self localizedStringForString:label]
-                      forSegment:i];
+      NSString *localizedLabel = [self localizedStringForString:label];
+      if (localizedLabel) {
+        [segmentedControl setLabel:localizedLabel forSegment:i];
+      }
+    }
+  }
+
+  // Do NSComboBox items.
+  if ([view isKindOfClass:[NSComboBox class]]) {
+    NSComboBox *combobox = (NSComboBox*)view;
+    // Make sure it doesn't use a DataSource.
+    if (![combobox usesDataSource]) {
+      NSMutableArray *localizedValues = [NSMutableArray array];
+      BOOL replaceValues = NO;
+      NSString *value;
+      GTM_FOREACH_OBJECT(value, [combobox objectValues]) {
+        NSString *localizedValue = nil;
+        if ([value isKindOfClass:[NSString class]]) {
+          localizedValue = [self localizedStringForString:value];
+        }
+        if (localizedValue) {
+          replaceValues = YES;
+          [localizedValues addObject:localizedValue];
+        } else {
+          [localizedValues addObject:value];
+        }
+      }
+      if (replaceValues) {
+        [combobox removeAllItems];
+        [combobox addItemsWithObjectValues:localizedValues];
+      }
     }
   }
 }
@@ -343,10 +372,10 @@
         NSString *path = [bindingInfo objectForKey:NSObservedKeyPathKey];
         NSDictionary *options = [bindingInfo objectForKey:NSOptionsKey];
         if (observedObject && path && options) {
-          NSMutableDictionary *newOptions 
+          NSMutableDictionary *newOptions
             = [NSMutableDictionary dictionaryWithDictionary:options];
           BOOL valueChanged = NO;
-          for (size_t i = 0; 
+          for (size_t i = 0;
                i < sizeof(optionsToLocalize) / sizeof(optionsToLocalize[0]);
                ++i) {
             NSString *key = optionsToLocalize[i];
@@ -362,9 +391,9 @@
           if (valueChanged) {
             // Only unbind and rebind if there is a change.
             [object unbind:exposedBinding];
-            [object bind:exposedBinding 
-                toObject:observedObject 
-             withKeyPath:path 
+            [object bind:exposedBinding
+                toObject:observedObject
+             withKeyPath:path
                  options:newOptions];
           }
         }

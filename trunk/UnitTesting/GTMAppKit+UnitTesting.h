@@ -1,16 +1,16 @@
 //
 //  GTMAppKit+UnitTesting.m
-//  
+//
 //  Categories for making unit testing of graphics/UI easier.
-//  
+//
 //  Copyright 2006-2008 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -31,13 +31,13 @@
 @interface NSWindow (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
 @end
 
-@interface NSControl (GTMUnitTestingAdditions) 
+@interface NSControl (GTMUnitTestingAdditions)
+@end
+
+@interface NSButton (GTMUnitTestingAdditions)
 @end
 
 @interface NSTextField (GTMUnitTestingAdditions)
-@end
-
-@interface NSButton (GTMUnitTestingAdditions) 
 @end
 
 @interface NSCell (GTMUnitTestingAdditions)
@@ -46,7 +46,7 @@
 @interface NSImage (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
 @end
 
-@interface NSMenu (GTMUnitTestingAdditions) 
+@interface NSMenu (GTMUnitTestingAdditions)
 @end
 
 @interface NSMenuItem (GTMUnitTestingAdditions)
@@ -58,7 +58,22 @@
 @interface NSTabViewItem (GTMUnitTestingAdditions)
 @end
 
+@interface NSToolbar (GTMUnitTestingAdditions)
+@end
+
+@interface NSToolbarItem (GTMUnitTestingAdditions)
+@end
+
 @interface NSMatrix (GTMUnitTestingAdditions)
+@end
+
+@interface NSBox (GTMUnitTestingAdditions)
+@end
+
+@interface NSSegmentedControl (GTMUnitTestingAdditions)
+@end
+
+@interface NSComboBox (GTMUnitTestingAdditions)
 @end
 
 @protocol GTMUnitTestViewDrawer;
@@ -77,8 +92,8 @@
 //    a3: The name of the image file to check against.
 //        Do not include the extension
 //    a4: contextInfo to pass to drawer
-//    description: A format string as in the printf() function. 
-//        Can be nil or an empty string but must be present. 
+//    description: A format string as in the printf() function.
+//        Can be nil or an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 //
 
@@ -99,11 +114,11 @@
 //  See NSObject+UnitTesting.h for details.
 @interface NSView (GTMUnitTestingAdditions) <GTMUnitTestingImaging>
 //  Returns whether unitTestEncodeState should recurse into subviews
-// 
-//  If you have "Full keyboard access" in the 
-//  Keyboard & Mouse > Keyboard Shortcuts preferences pane set to "Text boxes 
-//  and Lists only" that Apple adds a set of subviews to NSTextFields. So in the 
-//  case of NSTextFields we don't want to recurse into their subviews. There may 
+//
+//  If you have "Full keyboard access" in the
+//  Keyboard & Mouse > Keyboard Shortcuts preferences pane set to "Text boxes
+//  and Lists only" that Apple adds a set of subviews to NSTextFields. So in the
+//  case of NSTextFields we don't want to recurse into their subviews. There may
 //  be other cases like this, so instead of specializing unitTestEncodeState: to
 //  look for NSTextFields, NSTextFields will just not allow us to recurse into
 //  their subviews.
@@ -114,7 +129,7 @@
 
 @end
 
-//  A view that allows you to delegate out drawing using the formal 
+//  A view that allows you to delegate out drawing using the formal
 //  GTMUnitTestViewDelegate protocol
 //  This is useful when writing up unit tests for visual elements.
 //  Your test will often end up looking like this:
@@ -127,7 +142,7 @@
 //  the contents of the file Foo.tif to make sure it's valid
 @interface GTMUnitTestView : NSView {
  @private
-  id<GTMUnitTestViewDrawer> drawer_; // delegate for doing drawing (STRONG) 
+  id<GTMUnitTestViewDrawer> drawer_; // delegate for doing drawing (STRONG)
   void* contextInfo_; // info passed in by user for them to use when drawing
 }
 
@@ -137,7 +152,7 @@
 //    rect: the area to draw.
 //    drawer: the object that will do the drawing via the GTMUnitTestViewDrawer
 //            protocol
-//    contextInfo: 
+//    contextInfo:
 - (id)initWithFrame:(NSRect)frame drawer:(id<GTMUnitTestViewDrawer>)drawer contextInfo:(void*)contextInfo;
 @end
 

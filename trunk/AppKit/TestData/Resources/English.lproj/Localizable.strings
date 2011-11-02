@@ -16,6 +16,9 @@
 //  the License.
 //
 
+// NOTE: Some things in the UI aren't here to confirm that they get left
+// along instead of replaced with an empty string.
+
 // GTMUILocalizerTest strings
 "Button1" = "Localized Button";
 "Label1" = "Localized Label";
@@ -39,7 +42,10 @@
 "Box" = "Localized Box";
 "Seg1" = "Localized Segment 1";
 "Seg2" = "Localized Segment 2";
-"Seg3" = "Localized Segment 3";
+"Choice1" = "Localized Choice 1";
+"Choice2" = "Localized Choice 2";
+"Choice3" = "Localized Choice 3";
+"Placeholder1" = "Localized Placeholder";
 
 // Binding localization strings.
 "MultipleValuesPlaceholder" = "MultipleValuesPlaceholder";
