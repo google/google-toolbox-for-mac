@@ -22,15 +22,18 @@
 @interface GTMUILocalizer (GTMUILocalizerPrivate)
 - (void)localizeAccessibility:(id)object;
 
-// Never recursively call any of these methods. Always call 
-// -[self localizeObject:recursively:] otherwise bindings will not be
-// localized properly.
+// Never recursively call any of these methods. Always call
+// -[self localizeObject:recursively:].
 - (void)localizeToolbar:(UIToolbar *)toolbar;
 - (void)localizeView:(UIView *)view recursively:(BOOL)recursive;
 
 @end
 
 @implementation GTMUILocalizer
+@synthesize owner = owner_;
+@synthesize otherObjectToLocalize = otherObjectToLocalize_;
+@synthesize yetAnotherObjectToLocalize = yetAnotherObjectToLocalize_;
+
 - (id)initWithBundle:(NSBundle *)bundle {
   if ((self = [super init])) {
     bundle_ = [bundle retain];
