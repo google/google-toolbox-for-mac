@@ -65,9 +65,9 @@
   id yetAnotherObjectToLocalize_;
   NSBundle *bundle_;
 }
-@property(retain) IBOutlet id owner;
-@property(retain) IBOutlet id otherObjectToLocalize;
-@property(retain) IBOutlet id yetAnotherObjectToLocalize;
+@property(nonatomic, assign) IBOutlet id owner;
+@property(nonatomic, assign) IBOutlet id otherObjectToLocalize;
+@property(nonatomic, assign) IBOutlet id yetAnotherObjectToLocalize;
 
 - (id)initWithBundle:(NSBundle *)bundle;
 
