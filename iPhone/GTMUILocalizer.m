@@ -47,15 +47,20 @@
 }
 
 - (void)awakeFromNib {
-  if (owner_) {
-    NSBundle *newBundle = [[self class] bundleForOwner:owner_];
+  id owner = self.owner;
+  if (owner) {
+    NSBundle *newBundle = [[self class] bundleForOwner:owner];
     bundle_ = [newBundle retain];
-    [self localizeObject:owner_ recursively:YES];
-    [self localizeObject:otherObjectToLocalize_ recursively:YES];
-    [self localizeObject:yetAnotherObjectToLocalize_ recursively:YES];
+    [self localizeObject:self.owner recursively:YES];
+    [self localizeObject:self.otherObjectToLocalize recursively:YES];
+    [self localizeObject:self.yetAnotherObjectToLocalize recursively:YES];
   } else {
-    _GTMDevLog(@"Expected an owner_ set for %@", self);
+    _GTMDevLog(@"Expected an owner set for %@", self);
   }
+  // Clear the outlets.
+  self.owner = nil;
+  self.otherObjectToLocalize = nil;
+  self.yetAnotherObjectToLocalize = nil;
 }
 
 + (NSBundle *)bundleForOwner:(id)owner {

@@ -57,6 +57,10 @@
   } else {
     _GTMDevLog(@"Expected an owner_ set for %@", self);
   }
+  // Won't need these again, clear them.
+  owner_ = nil;
+  otherObjectToLocalize_ = nil;
+  yetAnotherObjectToLocalize_ = nil;
 }
 
 + (NSBundle *)bundleForOwner:(id)owner {
