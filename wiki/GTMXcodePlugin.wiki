@@ -5,36 +5,35 @@
 
 
 = Introduction =
+There are two different GTM Xcode plugins. Please make sure to choose the right version.
+They are both available [http://code.google.com/p/google-toolbox-for-mac/downloads/list downloads]. 
 
-The GTM Xcode plugin adds a couple of nice features to Xcode.
+== Installation ==
+Both plugins should be installed in:
+
+"~/Library/Application Support/Developer/Shared/Xcode/Plug-ins"
+
+After installation, restart Xcode, and you should have a "About GTM Xcode Plugin" menu item under the Xcode menu. If you don't have this item, please check the location you installed it and try again. You may also want to check the console to see if anything interesting was spit out there.
+
+== Bugs ==
+If you run into any problems, please log them at:
+
+http://code.google.com/p/google-toolbox-for-mac/issues/list
+
+= Xcode 4 Version =
+The GTM Xcode 4 plugin currently only adds a "Clean Up Whitespace" menu item to the end of the "Edit" menu to remove unnecessary end of line white space from text files. Hopefully we will add more features soon. It has only been tested against Xcode 4.2.
+
+== Version History ==
+  * 4.0.0 - Initial public release.
+
+= Xcode 3 Version =
+The GTM Xcode 3 plugin adds a couple of nice features to Xcode.
    # A preference to clean up end of line white space from text files.
    # A "Create Unit Test Executable" menu item to make it easier to debug unit tests.
    # Some quick links under the "Help" menu to some useful documentation. 
    # Some menu items for working with [http://code.google.com/p/coverstory/ Coverstory]
 
-It is available under [http://code.google.com/p/google-toolbox-for-mac/downloads/list downloads]. 
-
-== Xcode 4 Support ==
-
-*NOTE:* The plugin currently does *NOT* support Xcode 4.  Xcode 4 was a rewrite by Apple, so the plugin will probably have to be rewritten, that has not been done.
-
-= Installation =
-
-The install path is a little difficult, but the plugin should be extracted from its Zip file and should be put into:
-
-  * "/Library/Application Support/Developer/3.1/Xcode/Plug-ins" for development on Leopard
-
-and
-
-  * "/Developer/Library/Xcode/Plug-ins" for development on Snow Leopard
-
-Once it is in place, restart Xcode, and you should have a "About GTM Xcode Plugin" menu item under the Xcode menu. If you don't have this item, please check the location you installed it and try again.
-
-If you run into any problems, please log them at:
-
-http://code.google.com/p/google-toolbox-for-mac/issues/list
-
-= Version History =
+== Version History ==
   * 10.0.1 - Initial public release.
   * 10.0.2 - Fixed some problems with custom absolute builds paths.
   * 10.0.3 - Now does a better job with determining OBJC_DISABLE_GC and working with hosts with relative paths for Custom Unit Test Executables.
