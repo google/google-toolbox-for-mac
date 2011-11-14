@@ -17,5 +17,8 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 
+// This file will be going away, please migrate off it.  Instead Apple wants
+// you to use the "current" SDK, and set your min supported iOS version.
+
 // Set default SDK.
 SDKROOT = iphoneos4.1

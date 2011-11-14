@@ -24,6 +24,10 @@
 //  and individual Xcode target, there are other configuration files for that
 //  purpose.
 
+// This file will be going away, please migrate off it.  Instead Apple wants
+// you to use the "current" SDK, use DebugiOS.xcconfig and set your min
+// supported iOS version in your project file.
+
 // Pull in the general settings
 #include "../subconfig/General.xcconfig"
 
