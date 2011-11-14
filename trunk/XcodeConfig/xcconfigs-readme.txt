@@ -5,8 +5,12 @@ The main goal of using these is as follow:
 
 Edit your Project level build settings by removing as much as possible, and
 then set the per Configuration settings to one of the project xcode config
-files w/in the Project subfolder here.  This will batch setup the project to
-build Debug/Release with a specific SDK.
+files w/in the Project subfolder here.  Apple now recommends always building
+with the "current" SDK and started being more aggressive at removing older
+SDKs with each Xcode releases.  So set you SDK version and min supported OS
+version in your project.  The configs will then set everything based off
+those choices.
+
 
 If you are building a Shared Library, Loadable Bundle (Framework) or UnitTest
 you will need to apply a further Xcode Config file at the target level.  You do
@@ -35,7 +39,7 @@ Many of the build settings are more than just yes/no flags and take
 a list of values that you may want to change at different levels.
 Xcode doesn't allow you to "inherit" settings with includes so you always
 end up overriding settings accidentally. To avoid this, we instead
-allow you to define settings at different levels 
+allow you to define settings at different levels
 (GENERAL, PLATFORM (iPhone/Mac), CONFIGURATION (Release/Debug).
 We do this by setting a GTM version of the setting (so for OTHER_CFLAGS it's
 GTM_XXX_OTHER_CFLAGS where xxx is GENERAL, PLATFORM or CONFIGURATION depending
@@ -49,5 +53,5 @@ xcconfig files, we have split the warnings up into three categories, which in
 general you can think of as easy, moderate and extreme. If you run into a lot
 of warnings when you compile, look at changing the GTM_GENERAL_WARNING_CFLAGS
 setting to only include lower levels (eg GTM_GENERAL_WARNING_CFLAGS1) and see
-if that makes it easier on you. Look inside General.xcconfig and search for 
+if that makes it easier on you. Look inside General.xcconfig and search for
 GTM_GENERAL_WARNING_CFLAGS1 for more info.
