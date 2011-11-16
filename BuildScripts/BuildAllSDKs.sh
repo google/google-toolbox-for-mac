@@ -41,7 +41,7 @@ AVAILABLE_PLATFORMS=`eval ls ${DEVELOPER_DIR}/Platforms`
 GTM_OPEN_EXTRAS=""
 GTM_BUILD_EXTRAS=""
 
-# build up our GTMi parts
+# build up our GTM parts
 if [ "${GTM_PROJECT_TARGET}" != "" ]; then
   GTM_OPEN_EXTRAS="
     if \"${AVAILABLE_PLATFORMS}\" contains \"MacOSX.platform\" then
