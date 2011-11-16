@@ -24,7 +24,10 @@
 
 @implementation TestUILocalizer
 - (NSString *)localizedStringForString:(NSString *)string {
-  return [string substringFromIndex:5];
+  if ([string length] >= 5)
+    return [string substringFromIndex:5];
+  else
+    return string;
 }
 
 - (void)localize:(id)object {
@@ -36,6 +39,9 @@
 @implementation GTMUILocalizerTestViewController
 
 @synthesize label = label_;
+@synthesize button = button_;
+@synthesize segmentedControl = segmentedControl_;
+@synthesize searchBar = searchBar_;
 
 - (id)init {
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -44,44 +50,64 @@
 @end
 
 @interface GTMUILocalizerTest : GTMTestCase
+- (void)checkValues:(NSString *)value
+       onController:(GTMUILocalizerTestViewController *)controller;
 @end
 
 @implementation GTMUILocalizerTest
+- (void)checkValues:(NSString *)value
+       onController:(GTMUILocalizerTestViewController *)controller {
+  // Label
+  STAssertEqualStrings(value, [[controller label] text], nil);
+  // Button
+  UIControlState allStates[] = { UIControlStateNormal,
+                                 UIControlStateHighlighted,
+                                 UIControlStateDisabled,
+                                 UIControlStateSelected };
+  for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])) ; ++idx) {
+    UIControlState state = allStates[idx];
+    STAssertEqualStrings(value, [[controller button] titleForState:state], nil);
+  }
+  // SegementedControl
+  for (NSUInteger i = 0;
+       i < [[controller segmentedControl] numberOfSegments];
+       ++i) {
+    STAssertEqualStrings(value,
+        [[controller segmentedControl] titleForSegmentAtIndex:i], nil);
+  }
+  // SearchBar
+  STAssertEqualStrings(value, [[controller searchBar] text], nil);
+  STAssertEqualStrings(value, [[controller searchBar] placeholder], nil);
+  STAssertEqualStrings(value, [[controller searchBar] prompt], nil);
+
+// Accessibility label seems to not be working at all. They always are nil.
+// Even when setting those explicitly there, the getter always returns nil.
+// This might cause because the gobal accessibility switch is not on during the
+// tests.
+#if 0
+  STAssertEqualStrings(value, [[controller view] accessibilityLabel],
+      nil);
+  STAssertEqualStrings(value, [[controller view] accessibilityHint],
+      nil);
+  STAssertEqualStrings(value, [[controller label] accessibilityLabel],
+      nil);
+  STAssertEqualStrings(value, [[controller label] accessibilityHint],
+      nil);
+#endif
+}
+
 - (void)testLocalization {
-  GTMUILocalizerTestViewController* controller =
+  GTMUILocalizerTestViewController *controller =
     [[GTMUILocalizerTestViewController alloc] init];
 
   // Load the view.
   [controller view];
 
-  STAssertEqualStrings(@"^IDS_FOO", [[controller label] text], nil);
-
-// Accessibility label seems to not be working at all. They always are nil.
-// Even when setting those explicitely there, the getter always returns nil.
-// This might cause because the gobal accessibility switch is not on during the
-// tests.
-#if 0
-  STAssertEqualStrings(@"^IDS_FOO", [[controller view] accessibilityLabel],
-      nil);
-  STAssertEqualStrings(@"^IDS_FOO", [[controller view] accessibilityHint],
-      nil);
-  STAssertEqualStrings(@"^IDS_FOO", [[controller label] accessibilityLabel],
-      nil);
-  STAssertEqualStrings(@"^IDS_FOO", [[controller label] accessibilityHint],
-      nil);
-#endif
+  [self checkValues:@"^IDS_FOO" onController:controller];
 
   TestUILocalizer *localizer = [[TestUILocalizer alloc] init];
   [localizer localize:[controller view]];
 
-  STAssertEqualStrings(@"FOO", [[controller label] text], nil);
-
-// Accessibility label seems to not be working at all. They always are nil.
-#if 0
-  STAssertEqualStrings(@"FOO", [[controller view] accessibilityLabel], nil);
-  STAssertEqualStrings(@"FOO", [[controller view] accessibilityHint], nil);
-  STAssertEqualStrings(@"FOO", [[controller label] accessibilityLabel], nil);
-  STAssertEqualStrings(@"FOO", [[controller label] accessibilityHint], nil);
-#endif
+  [self checkValues:@"FOO" onController:controller];
 }
 @end

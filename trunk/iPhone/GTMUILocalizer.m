@@ -26,7 +26,7 @@
 // -[self localizeObject:recursively:].
 - (void)localizeToolbar:(UIToolbar *)toolbar;
 - (void)localizeView:(UIView *)view recursively:(BOOL)recursive;
-
+- (void)localizeButton:(UIButton *)button;
 @end
 
 @implementation GTMUILocalizer
@@ -130,6 +130,11 @@
       }
     }
 
+    // Specific types
+    if ([view isKindOfClass:[UIButton class]]) {
+      [self localizeButton:(UIButton *)view];
+    }
+
     // Then do all possible strings.
     if ([view respondsToSelector:@selector(title)]
         && [view respondsToSelector:@selector(setTitle:)]) {
@@ -208,6 +213,22 @@
         [object performSelector:@selector(setAccessibilityValue:)
                    withObject:localizedAccessibilityValue];
       }
+    }
+  }
+}
+
+- (void)localizeButton:(UIButton *)button {
+  UIControlState allStates[] = { UIControlStateNormal,
+                                 UIControlStateHighlighted,
+                                 UIControlStateDisabled,
+                                 UIControlStateSelected };
+  for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])) ; ++idx) {
+    UIControlState state = allStates[idx];
+    NSString *value = [button titleForState:state];
+    if (value) {
+      NSString* localizedValue = [self localizedStringForString:value];
+      if (localizedValue)
+        [button setTitle:localizedValue forState:state];
     }
   }
 }
