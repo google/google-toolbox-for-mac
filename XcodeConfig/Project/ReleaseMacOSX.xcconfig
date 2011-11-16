@@ -1,15 +1,15 @@
 //
-//  ReleaseLeopardOrLater.xcconfig
+//  ReleaseMacOSX.xcconfig
 //
 //  Xcode configuration file for building a Release configuration of a project
-//  on Leopard or later.
+//  on Mac OS X.
 //
 //  This is a _Configuration_ Xcode config file for use in the "Based on" popup
 //  of the project configuration editor. Do _not_ use this as the config base
 //  and individual Xcode target, there are other configuration files for that
 //  purpose.
 //
-//  Copyright 2006-2008 Google Inc.
+//  Copyright 2011 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -24,15 +24,11 @@
 //  the License.
 //
 
-// This file will be going away, please migrate off it.  Instead Apple wants
-// you to use the "current" SDK, use ReleaseMacOSX.xcconfig and set your min
-// supported OS version in your project file.
-
 // Pull in the general settings
 #include "../subconfig/General.xcconfig"
 
-// Leopard or later
-#include "../subconfig/LeopardOrLater.xcconfig"
+// MacOSX settings
+#include "../subconfig/MacOSX.xcconfig"
 
 // Release settings
 #include "../subconfig/Release.xcconfig"
