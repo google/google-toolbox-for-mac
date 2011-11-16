@@ -1769,20 +1769,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
-		8B4514A011BEC29100A9EE64 /* All UnitTests All SDKs All Platforms */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"All UnitTests\" \"All UnitTests\"";
-			buildConfigurationList = 8B4514A111BEC29100A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */;
-			buildPhases = (
-			);
-			buildToolPath = BuildScripts/BuildAllSDKs.sh;
-			buildWorkingDirectory = "$(SRCROOT)";
-			dependencies = (
-			);
-			name = "All UnitTests All SDKs All Platforms";
-			passBuildSettingsInEnvironment = 1;
-			productName = "All UnitTests All SDKs";
-		};
 		F41A6EE00E02DB4F00788A6C /* Build GTM All SDKs */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = GTM;
@@ -1996,7 +1982,6 @@
 				8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */,
 				F41A6EE00E02DB4F00788A6C /* Build GTM All SDKs */,
 				F41A6EF80E02DCFC00788A6C /* All UnitTests All SDKs */,
-				8B4514A011BEC29100A9EE64 /* All UnitTests All SDKs All Platforms */,
 			);
 		};
 /* End PBXProject section */
@@ -2927,69 +2912,6 @@
 			};
 			name = "SnowLeopardOrLater-Release";
 		};
-		8B4514A211BEC29100A9EE64 /* TigerOrLater-Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "TigerOrLater-Debug";
-		};
-		8B4514A311BEC29100A9EE64 /* TigerOrLater-Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "TigerOrLater-Debug-gcov";
-		};
-		8B4514A411BEC29100A9EE64 /* TigerOrLater-Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "TigerOrLater-Release";
-		};
-		8B4514A511BEC29100A9EE64 /* LeopardOrLater-Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "LeopardOrLater-Debug";
-		};
-		8B4514A611BEC29100A9EE64 /* LeopardOrLater-Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "LeopardOrLater-Debug-gcov";
-		};
-		8B4514A711BEC29100A9EE64 /* LeopardOrLater-Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "LeopardOrLater-Release";
-		};
-		8B4514A811BEC29100A9EE64 /* SnowLeopardOrLater-Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs All Platforms";
-			};
-			name = "SnowLeopardOrLater-Debug";
-		};
-		8B4514A911BEC29100A9EE64 /* SnowLeopardOrLater-Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "SnowLeopardOrLater-Debug-gcov";
-		};
-		8B4514AA11BEC29100A9EE64 /* SnowLeopardOrLater-Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests All SDKs";
-			};
-			name = "SnowLeopardOrLater-Release";
-		};
 		8B45A02A0DA4696D001148C5 /* TigerOrLater-Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */;
@@ -3780,22 +3702,6 @@
 				842575E60E9FCFA5003E4511 /* SnowLeopardOrLater-Debug */,
 				842575EF0E9FCFB8003E4511 /* SnowLeopardOrLater-Debug-gcov */,
 				842575F00E9FCFB8003E4511 /* SnowLeopardOrLater-Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "TigerOrLater-Release";
-		};
-		8B4514A111BEC29100A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8B4514A211BEC29100A9EE64 /* TigerOrLater-Debug */,
-				8B4514A311BEC29100A9EE64 /* TigerOrLater-Debug-gcov */,
-				8B4514A411BEC29100A9EE64 /* TigerOrLater-Release */,
-				8B4514A511BEC29100A9EE64 /* LeopardOrLater-Debug */,
-				8B4514A611BEC29100A9EE64 /* LeopardOrLater-Debug-gcov */,
-				8B4514A711BEC29100A9EE64 /* LeopardOrLater-Release */,
-				8B4514A811BEC29100A9EE64 /* SnowLeopardOrLater-Debug */,
-				8B4514A911BEC29100A9EE64 /* SnowLeopardOrLater-Debug-gcov */,
-				8B4514AA11BEC29100A9EE64 /* SnowLeopardOrLater-Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "TigerOrLater-Release";
