@@ -1,7 +1,7 @@
 //
-//  iOS.xcconfig
+//  MacOSX.xcconfig
 //
-//  Xcode configuration file for building on iOS.
+//  Xcode configuration file for building on Mac OS X.
 //
 //  Copyright 2011 Google Inc.
 //
@@ -16,8 +16,9 @@
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 //  License for the specific language governing permissions and limitations under
 //  the License.
+//
 
 // Set default SDK.
-SDKROOT = iphoneos
+SDKROOT = macosx
 
-// Use IPHONEOS_DEPLOYMENT_TARGET to set the min iOS version you will require.
+// Use MACOSX_DEPLOYMENT_TARGET to set the min OS version you will require.

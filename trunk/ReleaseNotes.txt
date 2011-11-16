@@ -18,6 +18,11 @@ Changes since 1.6.0
 
 - Added Foundation/GTMURITemplate to support the pending standard.
 
+- Moved the xcconfig files in a direction where they use they don't set the
+  SDKs and instead it (along with the min supported OS version) goes in the
+  project file.  This is the model Apple is pushing for and they are removing
+  older SDKs with each tool chain release somewhat forcing this model.
+
 
 Release 1.6.0
 Changes since 1.5.1
