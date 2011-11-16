@@ -638,37 +638,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXLegacyTarget section */
-		8B4514EB11BEC38900A9EE64 /* All UnitTests All SDKs All Platforms */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"All UnitTests\" \"All UnitTests\"";
-			buildConfigurationList = 8B4514EC11BEC38900A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */;
-			buildPhases = (
-			);
-			buildToolPath = BuildScripts/BuildAllSDKs.sh;
-			buildWorkingDirectory = "$(SRCROOT)";
-			dependencies = (
-			);
-			name = "All UnitTests All SDKs All Platforms";
-			passBuildSettingsInEnvironment = 1;
-			productName = "All UnitTests all SDKs";
-		};
-		F4B541440E7F022B004738EC /* All UnitTests All SDKs */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "\"\" \"All UnitTests\"";
-			buildConfigurationList = F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs" */;
-			buildPhases = (
-			);
-			buildToolPath = BuildScripts/BuildAllSDKs.sh;
-			buildWorkingDirectory = "$(SRCROOT)";
-			dependencies = (
-			);
-			name = "All UnitTests All SDKs";
-			passBuildSettingsInEnvironment = 1;
-			productName = "All UnitTests all SDKs";
-		};
-/* End PBXLegacyTarget section */
-
 /* Begin PBXNativeTarget section */
 		1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */ = {
 			isa = PBXNativeTarget;
@@ -709,8 +678,6 @@
 			targets = (
 				F4C7F9BF0DC62EC8009BEE5B /* All UnitTests */,
 				1D6058900D05DD3D006BFB54 /* GTMiPhoneUnitTesting */,
-				F4B541440E7F022B004738EC /* All UnitTests All SDKs */,
-				8B4514EB11BEC38900A9EE64 /* All UnitTests All SDKs All Platforms */,
 			);
 		};
 /* End PBXProject section */
@@ -896,20 +863,6 @@
 			};
 			name = Debug;
 		};
-		F4A0A965140438D50010B64B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = Debug;
-		};
-		F4A0A966140438D50010B64B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = Debug;
-		};
 		F4A0A967140438E40010B64B /* Debug-gcov */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */;
@@ -937,20 +890,6 @@
 			buildSettings = {
 				INFOPLIST_FILE = "GTMiPhone-Info.plist";
 				PRODUCT_NAME = GTMiPhoneTest;
-			};
-			name = "Debug-gcov";
-		};
-		F4A0A96A140438E40010B64B /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = "Debug-gcov";
-		};
-		F4A0A96B140438E40010B64B /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
 			};
 			name = "Debug-gcov";
 		};
@@ -982,20 +921,6 @@
 			};
 			name = Release;
 		};
-		F4A0A96F140438ED0010B64B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = Release;
-		};
-		F4A0A970140438ED0010B64B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests all SDKs";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1009,32 +934,12 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		8B4514EC11BEC38900A9EE64 /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs All Platforms" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F4A0A966140438D50010B64B /* Debug */,
-				F4A0A96B140438E40010B64B /* Debug-gcov */,
-				F4A0A970140438ED0010B64B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "GTMiPhone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4A0A962140438D50010B64B /* Debug */,
 				F4A0A967140438E40010B64B /* Debug-gcov */,
 				F4A0A96C140438ED0010B64B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		F4B5414A0E7F025F004738EC /* Build configuration list for PBXLegacyTarget "All UnitTests All SDKs" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F4A0A965140438D50010B64B /* Debug */,
-				F4A0A96A140438E40010B64B /* Debug-gcov */,
-				F4A0A96F140438ED0010B64B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
