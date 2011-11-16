@@ -31,11 +31,6 @@
 // be looked up in the Localizable.strings table without the caret as the
 // key.
 //
-// TODO(tvl): this correct for iOS?
-// Due to technical limitations, accessibility description cannot be localized.
-// See http://lists.apple.com/archives/Accessibility-dev/2009/Dec/msg00004.html
-// and http://openradar.appspot.com/7496255 for more information.
-//
 // As an example if I wanted to localize a button with the word "Print" on
 // it, I would put it in a view controlled by a UIViewController that was
 // the owner of the nib. I would set it's title to be "^Print". I would then

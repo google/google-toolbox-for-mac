@@ -22,8 +22,14 @@
 @interface GTMUILocalizerTestViewController : UIViewController {
  @private
   UILabel *label_;
+  UIButton *button_;
+  UISegmentedControl *segmentedControl_;
+  UISearchBar *searchBar_;
 }
 
 @property(nonatomic, retain) IBOutlet UILabel *label;
+@property(nonatomic, retain) IBOutlet UIButton *button;
+@property(nonatomic, retain) IBOutlet UISegmentedControl *segmentedControl;
+@property(nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
 @end
