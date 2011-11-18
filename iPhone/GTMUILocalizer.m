@@ -222,13 +222,14 @@
                                  UIControlStateHighlighted,
                                  UIControlStateDisabled,
                                  UIControlStateSelected };
-  for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])) ; ++idx) {
+  for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])); ++idx) {
     UIControlState state = allStates[idx];
     NSString *value = [button titleForState:state];
     if (value) {
       NSString* localizedValue = [self localizedStringForString:value];
-      if (localizedValue)
+      if (localizedValue) {
         [button setTitle:localizedValue forState:state];
+      }
     }
   }
 }

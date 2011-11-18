@@ -64,7 +64,7 @@
                                  UIControlStateHighlighted,
                                  UIControlStateDisabled,
                                  UIControlStateSelected };
-  for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])) ; ++idx) {
+  for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])); ++idx) {
     UIControlState state = allStates[idx];
     STAssertEqualStrings(value, [[controller button] titleForState:state], nil);
   }
@@ -82,7 +82,7 @@
 
 // Accessibility label seems to not be working at all. They always are nil.
 // Even when setting those explicitly there, the getter always returns nil.
-// This might cause because the gobal accessibility switch is not on during the
+// This might be because the gobal accessibility switch is not on during the
 // tests.
 #if 0
   STAssertEqualStrings(value, [[controller view] accessibilityLabel],
@@ -98,7 +98,7 @@
 
 - (void)testLocalization {
   GTMUILocalizerTestViewController *controller =
-    [[GTMUILocalizerTestViewController alloc] init];
+    [[[GTMUILocalizerTestViewController alloc] init] autorelease];
 
   // Load the view.
   [controller view];
