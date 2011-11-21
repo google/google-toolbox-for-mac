@@ -1,4 +1,4 @@
-#summary Using Code Coverage on Snow Leopard
+#summary Using gcov on Snow Leopard
 
 This page is out of date. This information has been consolidated into the CoverStory Wiki.
 
