@@ -863,36 +863,6 @@
 			};
 			name = Debug;
 		};
-		F4A0A967140438E40010B64B /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */;
-			buildSettings = {
-				CODE_SIGNING_REQUIRED = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = GTM_Prefix.pch;
-				GCC_WARN_SHADOW = YES;
-				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = SnowLeopardGcov;
-			};
-			name = "Debug-gcov";
-		};
-		F4A0A968140438E40010B64B /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "All UnitTests";
-			};
-			name = "Debug-gcov";
-		};
-		F4A0A969140438E40010B64B /* Debug-gcov */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */;
-			buildSettings = {
-				INFOPLIST_FILE = "GTMiPhone-Info.plist";
-				PRODUCT_NAME = GTMiPhoneTest;
-			};
-			name = "Debug-gcov";
-		};
 		F4A0A96C140438ED0010B64B /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */;
@@ -928,7 +898,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4A0A964140438D50010B64B /* Debug */,
-				F4A0A969140438E40010B64B /* Debug-gcov */,
 				F4A0A96E140438ED0010B64B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -938,7 +907,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4A0A962140438D50010B64B /* Debug */,
-				F4A0A967140438E40010B64B /* Debug-gcov */,
 				F4A0A96C140438ED0010B64B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -948,7 +916,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F4A0A963140438D50010B64B /* Debug */,
-				F4A0A968140438E40010B64B /* Debug-gcov */,
 				F4A0A96D140438ED0010B64B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
