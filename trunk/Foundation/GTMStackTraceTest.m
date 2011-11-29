@@ -38,8 +38,8 @@
 
   STAssertGreaterThan([stacklines count], (NSUInteger)3,
                       @"stack trace must have > 3 lines");
-  STAssertLessThan([stacklines count], (NSUInteger)25,
-                   @"stack trace must have < 25 lines");
+  STAssertLessThan([stacklines count], (NSUInteger)35,
+                   @"stack trace must have < 35 lines");
   
   NSString *firstFrame = [stacklines objectAtIndex:0];
   NSRange range = [firstFrame rangeOfString:@"testStackTraceBasic"];
@@ -103,8 +103,8 @@
   
   STAssertGreaterThan([stacklines count], (NSUInteger)4,
                       @"stack trace must have > 4 lines");
-  STAssertLessThan([stacklines count], (NSUInteger)25,
-                   @"stack trace must have < 25 lines");
+  STAssertLessThan([stacklines count], (NSUInteger)35,
+                   @"stack trace must have < 35 lines");
   STAssertEquals([stacklines count],
                  [[exception callStackReturnAddresses] count],
                  @"stack trace should have the same number of lines as the "

@@ -24,6 +24,9 @@ Changes since 1.6.0
   has forced GTM into this model. By default the SDK will be set to the most
   recent SDK installed.
 
+- Initial support for using the Xcode provided OCUnit for unittesting on iOS.
+  Define GTM_IPHONE_USE_SENTEST to 1 to use this.
+
 
 Release 1.6.0
 Changes since 1.5.1

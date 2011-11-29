@@ -53,7 +53,7 @@
 
 #import "GTMDefines.h"
 
-#if (!GTM_IPHONE_SDK) 
+#if (!GTM_IPHONE_SDK) || (GTM_IPHONE_USE_SENTEST)
 #import <SenTestingKit/SenTestingKit.h>
 #else
 #import <Foundation/Foundation.h>
@@ -65,7 +65,7 @@ NSString *STComposeString(NSString *, ...);
 }
 #endif
 
-#endif  // !GTM_IPHONE_SDK
+#endif  // !GTM_IPHONE_SDK || GTM_IPHONE_USE_SENTEST
 
 // Generates a failure when a1 != noErr
 //  Args:
@@ -461,7 +461,8 @@ do { \
   } \
 } while(0)
 
-#if GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
+// When not using the Xcode provided version, define everything ourselves.
 
 // SENTE_BEGIN
 /*" Generates a failure when !{ [a1 isEqualTo:a2] } is false 
@@ -1002,7 +1003,7 @@ GTM_EXTERN NSString *const SenTestFailureException;
 GTM_EXTERN NSString *const SenTestFilenameKey;
 GTM_EXTERN NSString *const SenTestLineNumberKey;
 
-#endif // GTM_IPHONE_SDK
+#endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 
 // All unittest cases in GTM should inherit from GTMTestCase. It makes sure
 // to set up our logging system correctly to verify logging calls.

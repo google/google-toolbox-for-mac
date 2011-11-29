@@ -16,8 +16,8 @@
 //  the License.
 //
 
-#import "GTMNSObject+UnitTesting.h"
 #import "GTMSenTestCase.h"
+#import "GTMNSObject+UnitTesting.h"
 #import "GTMUIImage+Resize.h"
 
 #define GTMUIImageResizeAssertImageEqual(imageObject, imageSuffix) \
@@ -25,10 +25,18 @@
                                           @"GTMUIImage+Resize_" imageSuffix,\
                                           @"Resized image mismatched.")
 
-@interface GTMUIImage_ResizeTest : SenTestCase
+@interface GTMUIImage_ResizeTest : GTMTestCase
+- (UIImage *)testImageNamed:(NSString *)imageName;
 @end
 
 @implementation GTMUIImage_ResizeTest
+
+- (UIImage *)testImageNamed:(NSString *)imageName {
+  NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+  NSString *imagePath = [myBundle pathForResource:imageName ofType:@"png"];
+  UIImage *result = [UIImage imageWithContentsOfFile:imagePath];
+  return result;
+}
 
 - (void)testNilImage {
   UIImage *image = [[UIImage alloc] init];
@@ -61,8 +69,7 @@
 - (void)testImageByResizingWithoutPreservingAspectRatio {
   UIImage *actual = nil;
   // Square image.
-  UIImage *originalImage
-      = [UIImage imageNamed:@"GTMUIImage+Resize_100x100.png"];
+  UIImage *originalImage = [self testImageNamed:@"GTMUIImage+Resize_100x100"];
   STAssertNotNil(originalImage, @"Unable to read image.");
 
   // Resize with same aspect ratio.
@@ -100,8 +107,7 @@
 
 - (void)testImageByResizingPreservingAspectRatioWithoutClip {
   UIImage *actual = nil;
-  UIImage *landscapeImage =
-      [UIImage imageNamed:@"GTMUIImage+Resize_100x50.png"];
+  UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
   STAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Landscape resize to 50x50, but clipped to 50x25.
@@ -142,8 +148,7 @@
   GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_40x60_noclip");
 
   // Portrait Image
-  UIImage *portraitImage =
-      [UIImage imageNamed:@"GTMUIImage+Resize_50x100.png"];
+  UIImage *portraitImage = [self testImageNamed:@"GTMUIImage+Resize_50x100"];
 
   // Portrait resize to 50x50, but clipped to 25x50.
   CGSize expected25x50 = CGSizeMake(25, 50);
@@ -181,8 +186,7 @@
 
 - (void)testImageByResizingPreservingAspectRatioWithClip {
   UIImage *actual = nil;
-  UIImage *landscapeImage =
-      [UIImage imageNamed:@"GTMUIImage+Resize_100x50.png"];
+  UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
   STAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Landscape resize to 50x50
@@ -219,8 +223,7 @@
   GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_40x60_clip");
 
   // Portrait Image.
-  UIImage *portraitImage =
-      [UIImage imageNamed:@"GTMUIImage+Resize_50x100.png"];
+  UIImage *portraitImage = [self testImageNamed:@"GTMUIImage+Resize_50x100"];
 
   // Portrait resize to 50x50
   actual = [portraitImage gtm_imageByResizingToSize:size50x50
@@ -255,8 +258,7 @@
 
 - (void)testImageByRotating {
   UIImage *actual = nil;
-  UIImage *landscapeImage =
-      [UIImage imageNamed:@"GTMUIImage+Resize_100x50.png"];
+  UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
   STAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Rotate 90 degrees.
