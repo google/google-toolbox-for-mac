@@ -428,13 +428,11 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   @synchronized([self class]) {
     if (!gGTMUnitTestSaveToDirectory) {
 #if GTM_IPHONE_SDK
-      // Developer build, use their home directory Desktop.
-      gGTMUnitTestSaveToDirectory 
-        = [[[[[NSHomeDirectory() stringByDeletingLastPathComponent] 
-              stringByDeletingLastPathComponent] 
-             stringByDeletingLastPathComponent] 
-            stringByDeletingLastPathComponent] 
-           stringByAppendingPathComponent:@"Desktop"];
+      // About the only thing safe for the sandbox is the documents directory.
+      NSArray *documentsDirs
+        = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                              NSUserDomainMask, YES);
+      gGTMUnitTestSaveToDirectory = [documentsDirs objectAtIndex:0];
 #else
       NSArray *desktopDirs 
         = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, 

@@ -423,8 +423,9 @@
   @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest)|(otest-i386)|(otest-x86_64)|(otest-ppc))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
 #else  // GTM_MACOS_SDK
   // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
+  //      2011-11-29 12:32:24.129 GTMiPhoneUnitTestingOCUnitTestRig[31540/0xa04dd540] [lvl=1] (unknown) test
   kFormatBasePattern =
-  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (GTMiPhoneTest)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
+  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (GTMiPhoneTest|GTMiPhoneUnitTestingOCUnitTestRig)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
 #endif   // GTM_MACOS_SDK
 
   NSString *msg = nil;

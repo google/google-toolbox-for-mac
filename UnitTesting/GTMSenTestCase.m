@@ -30,7 +30,7 @@
 #import "GTMGarbageCollection.h"
 #endif  // !GTM_IPHONE_SDK
 
-#if GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 #import <stdarg.h>
 
 @interface NSException (GTMSenTestPrivateAdditions)
@@ -397,7 +397,7 @@ static int MethodSort(id a, id b, void *context) {
 
 @end
 
-#endif  // GTM_IPHONE_SDK
+#endif  // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 
 @implementation GTMTestCase : SenTestCase
 - (void)invokeTest {

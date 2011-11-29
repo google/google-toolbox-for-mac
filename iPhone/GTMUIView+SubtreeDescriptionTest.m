@@ -22,7 +22,7 @@
 
 #if !NDEBUG
 
-@interface GTMUIView_SubtreeDescriptionTest : SenTestCase
+@interface GTMUIView_SubtreeDescriptionTest : GTMTestCase
 @end
 
 @implementation GTMUIView_SubtreeDescriptionTest
@@ -125,7 +125,7 @@
 }
 @end
 
-@interface GTMUIView_SubtreeSubClassDescriptionTest : SenTestCase
+@interface GTMUIView_SubtreeSubClassDescriptionTest : GTMTestCase
 @end
 
 @implementation GTMUIView_SubtreeSubClassDescriptionTest
