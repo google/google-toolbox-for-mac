@@ -1272,6 +1272,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GTMiPhoneUnitTestingOCUnitTestRig.app/GTMiPhoneUnitTestingOCUnitTestRig";
+				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = "${SDKROOT}/Developer/Library/Frameworks/";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
