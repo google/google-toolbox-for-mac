@@ -901,7 +901,6 @@
 		F47F1D2D0D4914AD00925B8F /* GTMCalculatedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMCalculatedRange.h; sourceTree = "<group>"; };
 		F47F1D2E0D4914AD00925B8F /* GTMCalculatedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRange.m; sourceTree = "<group>"; };
 		F47F1D2F0D4914AD00925B8F /* GTMCalculatedRangeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRangeTest.m; sourceTree = "<group>"; };
-		F48B91040D94487D00D45044 /* libgcov_readme.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = libgcov_readme.html; sourceTree = "<group>"; };
 		F48D000C0FE994BF00428D0B /* GTMUnitTestingWindow.10.5.7.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = GTMUnitTestingWindow.10.5.7.tiff; sourceTree = "<group>"; };
 		F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugTigerOrLater.xcconfig; sourceTree = "<group>"; };
 		F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugUnittest.xcconfig; sourceTree = "<group>"; };
@@ -1109,7 +1108,6 @@
 				F4FF22760D9D47FB003880AC /* DebugUtils */,
 				F48FE2770D198CEA009257D2 /* UnitTesting */,
 				F48FE23E0D197F70009257D2 /* XcodeConfig */,
-				F48B91030D94485500D45044 /* TigerGcov */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				84D99F350EA661C900C007D5 /* BuildScripts */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -1343,14 +1341,6 @@
 				8B409F120F95352500DF540E /* GTMUILocalizerView1State.gtmUTState */,
 			);
 			path = TestData;
-			sourceTree = "<group>";
-		};
-		F48B91030D94485500D45044 /* TigerGcov */ = {
-			isa = PBXGroup;
-			children = (
-				F48B91040D94487D00D45044 /* libgcov_readme.html */,
-			);
-			path = TigerGcov;
 			sourceTree = "<group>";
 		};
 		F48FE23E0D197F70009257D2 /* XcodeConfig */ = {
