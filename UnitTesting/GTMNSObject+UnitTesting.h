@@ -29,6 +29,9 @@
 
 #import "GTMSenTestCase.h"
 
+// NOTE: for "arch" in the file names on iOS, it is not CPU (armv6, armv7), but
+// instead is "iPhone" or "iPad" for the device form factor.
+
 // Utility functions for GTMAssert* Macros. Don't use them directly
 // but use the macros below instead
 BOOL GTMIsObjectImageEqualToImageNamed(id object, 
