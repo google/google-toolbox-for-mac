@@ -18,8 +18,14 @@
 
 #import "GTMSystemVersion.h"
 #import "GTMGarbageCollection.h"
+#import "GTMObjC2Runtime.h"
 #if GTM_MACOS_SDK
 #import <CoreServices/CoreServices.h>
+#else
+// On iOS we cheat and pull in the header for UIDevice to get the selectors,
+// but call it via runtime since GTMSystemVersion is supposed to only depend on
+// Foundation.
+#import "UIKit/UIDevice.h"
 #endif
 
 static SInt32 sGTMSystemVersionMajor = 0;
@@ -71,10 +77,26 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
 
 #else // GTM_MACOS_SDK
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSDictionary *systemVersionPlist 
-      = [NSDictionary dictionaryWithContentsOfFile:kSystemVersionPlistPath];
-    NSString *version = [systemVersionPlist objectForKey:@"ProductVersion"];
+    NSString *version = nil;
+
+    // The intent is for this file to be Foundation level, so don't directly
+    // call out to UIDevice, but try to get it at runtime before falling back
+    // to the plist.  The problem with using the plist on the Simulator is that
+    // the path will be on the host system, and give us a MacOS (10.x.y) 
+    // version number instead of an iOS version number.
+    Class uideviceClass = NSClassFromString(@"UIDevice");
+    if (uideviceClass) {
+      id currentDevice = objc_msgSend(uideviceClass, @selector(currentDevice));
+      version = [currentDevice performSelector:@selector(systemVersion)];
+    }
+    if (!version) {
+      // Fall back to the info in the Plist.
+      NSDictionary *systemVersionPlist
+        = [NSDictionary dictionaryWithContentsOfFile:kSystemVersionPlistPath];
+      version = [systemVersionPlist objectForKey:@"ProductVersion"];
+    }
     _GTMDevAssert(version, @"Unable to get version");
+
     NSArray *versionInfo = [version componentsSeparatedByString:@"."];
     NSUInteger length = [versionInfo count];
     _GTMDevAssert(length > 1 && length < 4, 
