@@ -32,14 +32,11 @@
 #ifndef MAC_OS_X_VERSION_10_6
   #define MAC_OS_X_VERSION_10_6 1060
 #endif
+#ifndef MAC_OS_X_VERSION_10_7
+  #define MAC_OS_X_VERSION_10_7 1070
+#endif
 
 // Not all __IPHONE_X macros defined in past SDKs
-#ifndef __IPHONE_2_1
-  #define __IPHONE_2_1 20100
-#endif
-#ifndef __IPHONE_2_2
-  #define __IPHONE_2_2 20200
-#endif
 #ifndef __IPHONE_3_0
   #define __IPHONE_3_0 30000
 #endif
@@ -51,6 +48,12 @@
 #endif
 #ifndef __IPHONE_4_0
   #define __IPHONE_4_0 40000
+#endif
+#ifndef __IPHONE_4_3
+  #define __IPHONE_4_3 40300
+#endif
+#ifndef __IPHONE_5_0
+  #define __IPHONE_5_0 50000
 #endif
 
 // ----------------------------------------------------------------------------
