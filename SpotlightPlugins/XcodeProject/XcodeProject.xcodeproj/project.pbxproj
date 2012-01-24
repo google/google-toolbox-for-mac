@@ -48,8 +48,8 @@
 		8B58F75A0E56502600A0E02E /* ReadMe.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = ReadMe.rtf; sourceTree = "<group>"; };
 		8B58F86F0E5726D000A0E02E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8B58F9110E579A1300A0E02E /* LoadableBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LoadableBundle.xcconfig; sourceTree = "<group>"; };
-		8B58F9280E579A1300A0E02E /* DebugTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugTigerOrLater.xcconfig; sourceTree = "<group>"; };
-		8B58F92B0E579A1300A0E02E /* ReleaseTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseTigerOrLater.xcconfig; sourceTree = "<group>"; };
+		8B5F6EE914CF05930076E071 /* DebugMacOSX.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = DebugMacOSX.xcconfig; path = ../Project/DebugMacOSX.xcconfig; sourceTree = "<group>"; };
+		8B5F6EEA14CF059A0076E071 /* ReleaseMacOSX.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = ReleaseMacOSX.xcconfig; path = ../Project/ReleaseMacOSX.xcconfig; sourceTree = "<group>"; };
 		8BF155150E5B442A00D28B05 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		8D576316048677EA00EA77CD /* XcodeProject.mdimporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XcodeProject.mdimporter; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -142,6 +142,8 @@
 		8B58F90F0E579A1300A0E02E /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				8B5F6EEA14CF059A0076E071 /* ReleaseMacOSX.xcconfig */,
+				8B5F6EE914CF05930076E071 /* DebugMacOSX.xcconfig */,
 				8B58F9110E579A1300A0E02E /* LoadableBundle.xcconfig */,
 			);
 			path = Target;
@@ -150,8 +152,6 @@
 		8B58F9250E579A1300A0E02E /* Project */ = {
 			isa = PBXGroup;
 			children = (
-				8B58F9280E579A1300A0E02E /* DebugTigerOrLater.xcconfig */,
-				8B58F92B0E579A1300A0E02E /* ReleaseTigerOrLater.xcconfig */,
 			);
 			path = Project;
 			sourceTree = "<group>";
@@ -184,7 +184,11 @@
 			isa = PBXProject;
 			buildConfigurationList = 70138C880896BE9A00968C2F /* Build configuration list for PBXProject "XcodeProject" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* XcodeProjectSpotlightPlugin */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -219,7 +223,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/python;
-			shellScript = "# test of xcodeproj importer\n\nimport os\nimport subprocess\n\ncmd = \"/usr/bin/mdimport -d 2 -g \" + os.environ[\"BUILT_PRODUCTS_DIR\"] + \"/XcodeProject.mdimporter \" + os.environ[\"SOURCE_ROOT\"] + \"/TestData/test.xcodeproj\"\nimporter_out = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE).stderr.read()\n\nif importer_out.find(\"kMDItemDescription = \\\"test_Prefix.pch\\\\nFoundation.framework\\\\nmain.m\\\\nInfo.plist\\\\nCoreData.framework\\\\nCocoa.framework\\\\ntest\\\\nAppKit.framework\\\\nMainMenu.xib\\\\nInfoPlist.strings\\\\ntest.app\\\";\") == -1:\n\tprint \"error: Bad Description for test.xcodeproj\"\n\texit(1)\nif importer_out.find(\"kMDItemComment = \\\"test comment\\\";\") == -1:\n\tprint \"error: Bad comment for test. xcodeproj\"\n\texit(1)";
+			shellScript = "# test of xcodeproj importer\n\nimport os\nimport subprocess\n\ncmd = \"/usr/bin/mdimport -d 2 -g \" + os.environ[\"BUILT_PRODUCTS_DIR\"] + \"/XcodeProject.mdimporter \" + os.environ[\"SOURCE_ROOT\"] + \"/TestData/test.xcodeproj\"\nimporter_out = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE).stderr.read()\n\nif importer_out.find(\"kMDItemDescription = \\\"\") == -1:\n\tprint \"error: Bad Description for test.xcodeproj\"\n\texit(1)\nif importer_out.find(\"kMDItemComment = \\\"test comment\\\";\") == -1:\n\tprint \"error: Bad comment for test. xcodeproj\"\n\texit(1)";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -277,15 +281,17 @@
 		};
 		70138C890896BE9A00968C2F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B58F9280E579A1300A0E02E /* DebugTigerOrLater.xcconfig */;
+			baseConfigurationReference = 8B5F6EE914CF05930076E071 /* DebugMacOSX.xcconfig */;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 			};
 			name = Debug;
 		};
 		70138C8A0896BE9A00968C2F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B58F92B0E579A1300A0E02E /* ReleaseTigerOrLater.xcconfig */;
+			baseConfigurationReference = 8B5F6EEA14CF059A0076E071 /* ReleaseMacOSX.xcconfig */;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 			};
 			name = Release;
 		};
