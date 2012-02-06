@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -37,12 +37,13 @@
   if (!bytes || !length) {
     return nil;
   }
-  
-  // TODO: support 64bit inputs
-  // avail_in is a uInt, so if length > UINT_MAX we actually need to loop
-  // feeding the data until we've gotten it all in.  not supporting this
-  // at the moment.
-  _GTMDevAssert(length <= UINT_MAX, @"Currently don't support >32bit lengths");
+
+#if defined(__LP64__) && __LP64__
+  // Don't support > 32bit length for 64 bit, see note in header.
+  if (length > UINT_MAX) {
+    return nil;
+  }
+#endif
 
   if (level == Z_DEFAULT_COMPRESSION) {
     // the default value is actually outside the range, so we have to let it
@@ -117,7 +118,7 @@
 
   return result;
 } // gtm_dataByCompressingBytes:length:compressionLevel:useGzip:
-  
+
 
 @end
 
@@ -193,12 +194,13 @@
   if (!bytes || !length) {
     return nil;
   }
-  
-  // TODO: support 64bit inputs
-  // avail_in is a uInt, so if length > UINT_MAX we actually need to loop
-  // feeding the data until we've gotten it all in.  not supporting this
-  // at the moment.
-  _GTMDevAssert(length <= UINT_MAX, @"Currently don't support >32bit lengths");
+
+#if defined(__LP64__) && __LP64__
+  // Don't support > 32bit length for 64 bit, see note in header.
+  if (length > UINT_MAX) {
+    return nil;
+  }
+#endif
 
   z_stream strm;
   bzero(&strm, sizeof(z_stream));
