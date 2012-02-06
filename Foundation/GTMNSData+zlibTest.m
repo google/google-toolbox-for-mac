@@ -358,33 +358,42 @@ static BOOL HasGzipHeader(NSData *data) {
 }
 
 - (void)testLargeData {
-  NSData *data1 = [NSData dataWithBytes:randomDataLarge
-                                 length:sizeof(randomDataLarge)];
-  STAssertNotNil(data1, @"failed to alloc data block");
-  NSData *data2 = [NSData dataWithBytes:randomDataSmall
-                                 length:sizeof(randomDataSmall)];
-  STAssertNotNil(data2, @"failed to alloc data block");
-
-  NSMutableData *input = [NSMutableData data];
+  // Generate some large data out of the random chunk by xoring over it
+  // to make sure it changes and isn't too repeated.
+  NSData *data = [NSData dataWithBytes:randomDataLarge
+                                length:sizeof(randomDataLarge)];
+  STAssertNotNil(data, @"failed to alloc data block");
+  const uint8_t *dataBytes = [data bytes];
+  NSMutableData *scratch = [NSMutableData dataWithLength:[data length]];
+  STAssertNotNil(scratch, @"failed to alloc data block");
+  uint8_t *scratchBytes = [scratch mutableBytes];
+  NSMutableData *input = [NSMutableData dataWithCapacity:200 * [data length]];
   for (NSUInteger i = 0; i < 200; ++i) {
-    [input appendData:data1];
-    for (NSUInteger j = 0; j < i; ++ j) {
-      [input appendData:data2];
+    for (NSUInteger j = 0; j < [data length]; ++j) {
+      scratchBytes[j] = dataBytes[j] ^ i;
     }
+    [input appendData:scratch];
   }
 
-  // Should deflate to > 2048 bytes to take multiple loops during deflation.
+  // The internal buffer size for GTM's deflate/inflate is 1024.
+  NSUInteger internalBufferSize = 1024;
+
+  // Should deflate to more then one buffer size to make sure the internal loop
+  // is working.
   NSData *compressed = [NSData gtm_dataByDeflatingData:input
                                       compressionLevel:9];
   STAssertNotNil(compressed, @"failed to deflate");
-  STAssertGreaterThan([compressed length], (NSUInteger)2048,
-                      @"should have been more then 2048 bytes");
+  STAssertGreaterThan([compressed length], internalBufferSize,
+                      @"should have been more then %d bytes",
+                      (int)internalBufferSize);
 
-  // Should inflate to > 2048 bytes to take multiple loops during inflation.
+  // Should inflate to more then one buffer size to make sure the internal loop
+  // is working.
   NSData *uncompressed = [NSData gtm_dataByInflatingData:compressed];
   STAssertNotNil(uncompressed, @"fail to inflate");
-  STAssertGreaterThan([uncompressed length], (NSUInteger)2048,
-                      @"should have been more then 2048 bytes");
+  STAssertGreaterThan([uncompressed length], internalBufferSize,
+                      @"should have been more then %d bytes",
+                      (int)internalBufferSize);
 
   STAssertEqualObjects(uncompressed, input,
                        @"didn't get the same thing back");
