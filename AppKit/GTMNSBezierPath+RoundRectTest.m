@@ -42,11 +42,11 @@
     NSMakeRect(140.0, 10.0, 150.0, 30.0),  //Large Test
     NSMakeRect(300.0, 10.0, 150.0, 30.0)  //Large Test 2 (for different radius)
   };
-  const NSUInteger theRectCount = sizeof(theRects) / sizeof(NSRect);
+  const NSUInteger theRectCount = sizeof(theRects) / sizeof(theRects[0]);
   
   // Line Width Tests
   CGFloat theLineWidths[] = { 0.5, 50.0, 2.0 };
-  const NSUInteger theLineWidthCount = sizeof(theLineWidths) / sizeof(CGFloat);
+  const NSUInteger theLineWidthCount = sizeof(theLineWidths) / sizeof(theLineWidths[0]);
   NSUInteger i,j;
   
   for (i = 0; i < theLineWidthCount; ++i) {
@@ -69,7 +69,7 @@
     [NSColor colorWithCalibratedRed:1.0 green:0.0 blue:0.0 alpha:1.0], 
     [NSColor colorWithCalibratedRed:0.2 green:0.4 blue:0.6 alpha:0.4]
   };
-  const NSUInteger theColorCount = sizeof(theColors)/sizeof(NSColor);
+  const NSUInteger theColorCount = sizeof(theColors)/sizeof(theColors[0]);
   
   for (i = 0; i < theColorCount; ++i) {
     for (j = 0; j < theRectCount; ++j) {
@@ -84,7 +84,7 @@
   
   // Flatness test
   CGFloat theFlatness[] = {0.0, 0.1, 1.0, 10.0};
-  const NSUInteger theFlatnessCount = sizeof(theFlatness)/sizeof(CGFloat);
+  const NSUInteger theFlatnessCount = sizeof(theFlatness)/sizeof(theFlatness[0]);
   
   for (i = 0; i < theFlatnessCount; i++) {
     for (j = 0; j < theRectCount; ++j) {

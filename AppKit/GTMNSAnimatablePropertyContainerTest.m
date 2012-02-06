@@ -48,7 +48,7 @@
 #endif
 
 - (void)set:(NSInteger)value {
-  value = value;
+#pragma unused(value)
 }
 
 @end
@@ -64,19 +64,19 @@
 
 - (void)windowWillClose:(NSNotification *)notification {
   if (![[notification object] isEqual:[self window]]) {
-    [[NSException exceptionWithName:SenTestFailureException 
-                             reason:@"Bad window in windowWillClose" 
+    [[NSException exceptionWithName:SenTestFailureException
+                             reason:@"Bad window in windowWillClose"
                            userInfo:nil] raise];
   }
   [self autorelease];
 }
-  
+
 @end
 
 @implementation GTMNSAnimatablePropertyContainerTest
-  
+
 - (void)setUp {
-  windowController_ 
+  windowController_
     = [[GTMNSAnimatablePropertyContainerWindowController alloc] init];
   STAssertNotNil(windowController_, nil);
   NSWindow *window = [windowController_ window];
@@ -101,7 +101,7 @@
 - (void)windowFrameStopper:(NSTimer *)timer {
   NSWindow *window = GTM_DYNAMIC_CAST(NSWindow, [timer userInfo]);
   [timerCalled_ setShouldStop:YES];
-  [[window gtm_animatorStopper] setFrame:NSMakeRect(300, 300, 150, 150) 
+  [[window gtm_animatorStopper] setFrame:NSMakeRect(300, 300, 150, 150)
                                  display:YES];
   STAssertEquals([window frame], NSMakeRect(300, 300, 150, 150), nil);
 }
@@ -122,7 +122,7 @@
 
 - (void)testWindowAnimations {
   NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-  
+
   // Test Alpha
   NSWindow *window = [windowController_ window];
   [window setAlphaValue:1.0];
@@ -132,14 +132,14 @@
   [currentContext setDuration:2];
   [[window animator] setAlphaValue:0.5];
   [NSAnimationContext endGrouping];
-  [NSTimer scheduledTimerWithTimeInterval:0.1 
-                                   target:self 
-                                 selector:@selector(windowAlphaValueStopper:) 
-                                 userInfo:window 
+  [NSTimer scheduledTimerWithTimeInterval:0.1
+                                   target:self
+                                 selector:@selector(windowAlphaValueStopper:)
+                                 userInfo:window
                                   repeats:NO];
   STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([window alphaValue], (CGFloat)0.25, nil);
-  
+
   // Test Frame
   [window setFrame:NSMakeRect(100, 100, 100, 100) display:YES];
   [timerCalled_ setShouldStop:NO];
@@ -148,29 +148,29 @@
   [currentContext setDuration:2];
   [[window animator] setFrame:NSMakeRect(200, 200, 200, 200) display:YES];
   [NSAnimationContext endGrouping];
-  [NSTimer scheduledTimerWithTimeInterval:0.1 
-                                   target:self 
-                                 selector:@selector(windowFrameStopper:) 
-                                 userInfo:window 
+  [NSTimer scheduledTimerWithTimeInterval:0.1
+                                   target:self
+                                 selector:@selector(windowFrameStopper:)
+                                 userInfo:window
                                   repeats:NO];
   STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([window frame], NSMakeRect(300, 300, 150, 150), nil);
-  
+
   // Test non-animation value
   [window setTitle:@"Foo"];
   [[window gtm_animatorStopper] setTitle:@"Bar"];
   STAssertEquals([window title], @"Bar", nil);
-  
+
   // Test bad selector
   STAssertThrows([[window gtm_animatorStopper] testWindowAnimations], nil);
 }
 
 - (void)testNonLayerViewAnimations {
   NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-  
+
   NSBox *nonLayerBox = [windowController_ nonLayerBox];
   STAssertNotNil(nonLayerBox, nil);
-  
+
   // Test frame
   [nonLayerBox setFrame:NSMakeRect(50, 50, 50, 50)];
   [timerCalled_ setShouldStop:NO];
@@ -179,30 +179,30 @@
   [currentContext setDuration:2];
   [[nonLayerBox animator] setFrame:NSMakeRect(100, 100, 100, 100)];
   [NSAnimationContext endGrouping];
-  [NSTimer scheduledTimerWithTimeInterval:0.1 
-                                   target:self 
-                                 selector:@selector(nonLayerFrameStopper:) 
-                                 userInfo:nonLayerBox 
+  [NSTimer scheduledTimerWithTimeInterval:0.1
+                                   target:self
+                                 selector:@selector(nonLayerFrameStopper:)
+                                 userInfo:nonLayerBox
                                   repeats:NO];
   STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([nonLayerBox frame], NSMakeRect(200, 200, 200, 200), nil);
-  
+
   // Test non-animation value
   [nonLayerBox setToolTip:@"Foo"];
   [[nonLayerBox gtm_animatorStopper] setToolTip:@"Bar"];
   STAssertEquals([nonLayerBox toolTip], @"Bar", nil);
-  
+
   // Test bad selector
-  STAssertThrows([[nonLayerBox gtm_animatorStopper] testNonLayerViewAnimations], 
+  STAssertThrows([[nonLayerBox gtm_animatorStopper] testNonLayerViewAnimations],
                  nil);
 }
 
 - (void)testLayerViewAnimations {
   NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-  
+
   NSBox *layerBox = [windowController_ layerBox];
   STAssertNotNil(layerBox, nil);
-  
+
   // Test frame
   [layerBox setFrame:NSMakeRect(50, 50, 50, 50)];
   [timerCalled_ setShouldStop:NO];
@@ -211,21 +211,21 @@
   [currentContext setDuration:2];
   [[layerBox animator] setFrame:NSMakeRect(100, 100, 100, 100)];
   [NSAnimationContext endGrouping];
-  [NSTimer scheduledTimerWithTimeInterval:0.1 
-                                   target:self 
-                                 selector:@selector(layerFrameStopper:) 
-                                 userInfo:layerBox 
+  [NSTimer scheduledTimerWithTimeInterval:0.1
+                                   target:self
+                                 selector:@selector(layerFrameStopper:)
+                                 userInfo:layerBox
                                   repeats:NO];
   STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:timerCalled_], nil);
   STAssertEquals([layerBox frame], NSMakeRect(200, 200, 200, 200), nil);
-  
+
   // Test non-animation value
   [layerBox setToolTip:@"Foo"];
   [[layerBox gtm_animatorStopper] setToolTip:@"Bar"];
   STAssertEquals([layerBox toolTip], @"Bar", nil);
-  
+
   // Test bad selector
-  STAssertThrows([[layerBox gtm_animatorStopper] testLayerViewAnimations], 
+  STAssertThrows([[layerBox gtm_animatorStopper] testLayerViewAnimations],
                  nil);
 
   // Test Short Selector
