@@ -137,17 +137,17 @@
     Class currClass = classes[i];
     if (class_respondsToSelector(currClass, @selector(conformsToProtocol:)) &&
         [currClass conformsToProtocol:@protocol(SenTestCase)]) {
-      NSDate *fixtureStartDate = [NSDate date];
-      NSString *fixtureName = NSStringFromClass(currClass);
-      NSString *fixtureStartString
-        = [NSString stringWithFormat:@"Test Suite '%@' started at %@\n",
-                                     fixtureName, fixtureStartDate];
-      int fixtureSuccesses = 0;
-      int fixtureFailures = 0;
-      fputs([fixtureStartString UTF8String], stderr);
-      fflush(stderr);
       NSArray *invocations = [currClass testInvocations];
       if ([invocations count]) {
+        NSDate *fixtureStartDate = [NSDate date];
+        NSString *fixtureName = NSStringFromClass(currClass);
+        NSString *fixtureStartString
+          = [NSString stringWithFormat:@"Test Suite '%@' started at %@\n",
+                                       fixtureName, fixtureStartDate];
+        int fixtureSuccesses = 0;
+        int fixtureFailures = 0;
+        fputs([fixtureStartString UTF8String], stderr);
+        fflush(stderr);
         NSInvocation *invocation;
         GTM_FOREACH_OBJECT(invocation, invocations) {
           GTMTestCase *testCase
@@ -174,7 +174,7 @@
             = [[NSDate date] timeIntervalSinceDate:caseStartDate];
           NSString *caseEndString
             = [NSString stringWithFormat:@"Test Case '-[%@ %@]' %@ (%0.3f "
-               @"seconds).\n",
+               "seconds).\n",
                fixtureName, selectorName,
                failed ? @"failed" : @"passed",
                caseEndTime];
@@ -182,23 +182,22 @@
           fflush(stderr);
           [testCase release];
         }
+        NSDate *fixtureEndDate = [NSDate date];
+        NSTimeInterval fixtureEndTime
+          = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
+        NSString *fixtureEndString
+          = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
+             "Executed %d tests, with %d failures (%d "
+             "unexpected) in %0.3f (%0.3f) seconds\n\n",
+             fixtureName, fixtureEndDate,
+             fixtureSuccesses + fixtureFailures,
+             fixtureFailures, fixtureFailures,
+             fixtureEndTime, fixtureEndTime];
+        fputs([fixtureEndString UTF8String], stderr);
+        fflush(stderr);
+        totalSuccesses_ += fixtureSuccesses;
+        totalFailures_ += fixtureFailures;
       }
-      NSDate *fixtureEndDate = [NSDate date];
-      NSTimeInterval fixtureEndTime
-        = [fixtureEndDate timeIntervalSinceDate:fixtureStartDate];
-      NSString *fixtureEndString
-        = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                                     @"Executed %d tests, with %d failures (%d "
-                                     @"unexpected) in %0.3f (%0.3f) seconds\n\n",
-                                     fixtureName, fixtureEndDate,
-                                     fixtureSuccesses + fixtureFailures,
-                                     fixtureFailures, fixtureFailures,
-                                     fixtureEndTime, fixtureEndTime];
-
-      fputs([fixtureEndString UTF8String], stderr);
-      fflush(stderr);
-      totalSuccesses_ += fixtureSuccesses;
-      totalFailures_ += fixtureFailures;
     }
     [pool release];
   }
@@ -207,8 +206,8 @@
     = [suiteEndDate timeIntervalSinceDate:suiteStartDate];
   NSString *suiteEndString
     = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                                 @"Executed %d tests, with %d failures (%d "
-                                 @"unexpected) in %0.3f (%0.3f) seconds\n\n",
+                                 "Executed %d tests, with %d failures (%d "
+                                 "unexpected) in %0.3f (%0.3f) seconds\n\n",
                                  suiteName, suiteEndDate,
                                  totalSuccesses_ + totalFailures_,
                                  totalFailures_, totalFailures_,
