@@ -116,6 +116,11 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   fi
 
   if [ $GTM_DISABLE_IPHONE_LAUNCH_DAEMONS -eq 0 ]; then
+    # Remove any instance of RunIPhoneLaunchDaemons left running in the case the
+    # 'trap' below fails. We first must check for RunIPhoneLaunchDaemons'
+    # presence as 'launchctl remove' will kill this script if run from within an
+    # Xcode build.
+    launchctl list | grep RunIPhoneLaunchDaemons && launchctl remove RunIPhoneLaunchDaemons
     # If we want to test anything that interacts with the keychain, we need
     # securityd up and running. See RunIPhoneLaunchDaemons.sh for details.
     launchctl submit -l RunIPhoneLaunchDaemons -- "${ScriptDir}/RunIPhoneLaunchDaemons.sh" $IPHONE_SIMULATOR_ROOT $CFFIXED_USER_HOME
