@@ -401,6 +401,7 @@ static int MethodSort(id a, id b, void *context) {
 
 @implementation GTMTestCase : SenTestCase
 - (void)invokeTest {
+  NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   if (devLogClass) {
     [devLogClass performSelector:@selector(enableTracking)];
@@ -412,6 +413,7 @@ static int MethodSort(id a, id b, void *context) {
     [devLogClass performSelector:@selector(verifyNoMoreLogsExpected)];
     [devLogClass performSelector:@selector(disableTracking)];
   }
+  [localPool drain];
 }
 
 + (BOOL)isAbstractTestCase {
