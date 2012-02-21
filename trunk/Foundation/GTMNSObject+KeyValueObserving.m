@@ -667,13 +667,18 @@ GTM_METHOD_CHECK(NSObject,
 
 + (BOOL)_gtmAccessInstanceVariablesDirectly {
   // Apple has lots of "bad" direct instance variable accesses, so we
-  // only want to check our code, as opposed to library code.
+  // only want to check our code, as opposed to library code.  iOS simulator
+  // builds copy the app into the user's home directory.  Xcode 4 also changes
+  // the default location of the output directory.  Don't count being within
+  // the user's home and under "/Library/" as being a system library.
 
   // If this turns out to be slow, we may want to consider a cache to speed
   // things up.
   NSBundle *bundle = [NSBundle bundleForClass:self];
   NSString *path = [bundle bundlePath];
-  return [path rangeOfString:@"/Library/"].location != NSNotFound;
+  BOOL hasLibrary = [path rangeOfString:@"/Library/"].location != NSNotFound;
+  BOOL startsWithUser = [path hasPrefix:@"/Users/"];
+  return !startsWithUser && hasLibrary;
 }
 
 #endif  // GTM_PERFORM_KVO_CHECKS
