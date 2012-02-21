@@ -132,6 +132,16 @@
 		F418AFD80E755D44004FB565 /* GTMPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFD60E755D44004FB565 /* GTMPathTest.m */; };
 		F439ADF00DBD3C4000BE9B91 /* GTMGeometryUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */; };
 		F439ADF10DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */; };
+		F45F27B014F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AB14F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png */; };
+		F45F27B114F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AB14F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png */; };
+		F45F27B214F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AC14F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png */; };
+		F45F27B314F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AC14F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png */; };
+		F45F27B414F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AD14F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png */; };
+		F45F27B514F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AD14F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png */; };
+		F45F27B614F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AE14F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png */; };
+		F45F27B714F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AE14F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png */; };
+		F45F27B814F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */; };
+		F45F27B914F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */; };
 		F4746721129703600022C1FB /* GTMSenTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4746720129703600022C1FB /* GTMSenTestCaseTest.m */; };
 		F4D20EB114852CA40001600C /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */; };
 		F4D20EB214852CA40001600C /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */; };
@@ -446,6 +456,11 @@
 		F439ADED0DBD3C4000BE9B91 /* GTMGeometryUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGeometryUtils.h; sourceTree = "<group>"; };
 		F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtils.m; sourceTree = "<group>"; };
 		F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtilsTest.m; sourceTree = "<group>"; };
+		F45F27AB14F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest1.5.png; path = TestData/GTMFadeTruncatingLabelTest1.5.png; sourceTree = "<group>"; };
+		F45F27AC14F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest2.5.png; path = TestData/GTMFadeTruncatingLabelTest2.5.png; sourceTree = "<group>"; };
+		F45F27AD14F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest3.5.png; path = TestData/GTMFadeTruncatingLabelTest3.5.png; sourceTree = "<group>"; };
+		F45F27AE14F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest4.5.png; path = TestData/GTMFadeTruncatingLabelTest4.5.png; sourceTree = "<group>"; };
+		F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest5.5.png; path = TestData/GTMFadeTruncatingLabelTest5.5.png; sourceTree = "<group>"; };
 		F4746720129703600022C1FB /* GTMSenTestCaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSenTestCaseTest.m; sourceTree = "<group>"; };
 		F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiOS.xcconfig; sourceTree = "<group>"; };
 		F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiOS.xcconfig; sourceTree = "<group>"; };
@@ -553,10 +568,15 @@
 			isa = PBXGroup;
 			children = (
 				9340CFA1140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png */,
+				F45F27AB14F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png */,
 				9340CFA2140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png */,
+				F45F27AC14F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png */,
 				9340CFA3140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png */,
+				F45F27AD14F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png */,
 				9340CFA4140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png */,
+				F45F27AE14F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png */,
 				9340CFA5140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png */,
+				F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */,
 				64D0F5CC0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_60x40.png */,
 				64D0F5CD0FD3E68400506CC7 /* GTMUIImage+Resize_50x100.png */,
 				448D61B011AC1AAD0097ACBC /* GTMUIImage+Resize_50x100_flipped.png */,
@@ -919,6 +939,11 @@
 				9340CFA9140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png in Resources */,
 				9340CFAA140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png in Resources */,
 				169E1E311459AAE100E6F562 /* GTMUILocalizerTest.xib in Resources */,
+				F45F27B014F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png in Resources */,
+				F45F27B214F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png in Resources */,
+				F45F27B414F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png in Resources */,
+				F45F27B614F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png in Resources */,
+				F45F27B814F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -956,6 +981,11 @@
 				F4D20F1714852CA40001600C /* GTMUIViewUnitTestingTest.gtmUTState in Resources */,
 				F4D20F1814852CA40001600C /* GTMUIViewUnitTestingTest.png in Resources */,
 				F4D20F1C14852CA40001600C /* phone.png in Resources */,
+				F45F27B114F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png in Resources */,
+				F45F27B314F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png in Resources */,
+				F45F27B514F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png in Resources */,
+				F45F27B714F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png in Resources */,
+				F45F27B914F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
