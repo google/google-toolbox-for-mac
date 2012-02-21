@@ -42,8 +42,10 @@
 
 - (void)testUIImage {
   NSString* name = @"GTMUIViewUnitTestingTest";
-  UIImage* image =
-      [UIImage imageNamed:[name stringByAppendingPathExtension:@"png"]];
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  NSString *imagePath = [bundle pathForResource:name ofType:@"png"];
+  STAssertNotNil(imagePath, nil);
+  UIImage* image = [UIImage imageWithContentsOfFile:imagePath];
   GTMAssertObjectImageEqualToImageNamed(image, name, nil);
 }
 

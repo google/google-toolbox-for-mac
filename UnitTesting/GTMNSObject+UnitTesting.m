@@ -136,7 +136,11 @@ BOOL GTMIsObjectImageEqualToImageNamed(id object,
       failString = @"systemSettings not valid for taking image";  // COV_NF_LINE
     }
   } else {
-    failString = @"Object does not conform to GTMUnitTestingImaging protocol";
+    if (object == nil) {
+      failString = @"Testing a nil image.";
+    } else {
+      failString = @"Object does not conform to GTMUnitTestingImaging protocol";
+    }
   }
   if (error) {
     *error = failString;
