@@ -113,6 +113,14 @@
   [self setRetainer:nil];
 }
 
+static int ClassSort(const void *a, const void *b) {
+  Class *classA = (Class *)a;
+  Class *classB = (Class *)b;
+  const char *nameA = class_getName(*classA);
+  const char *nameB = class_getName(*classB);
+  return strcmp(nameA, nameB);
+}
+
 // Run through all the registered classes and run test methods on any
 // that are subclasses of SenTestCase. Print results and run time to
 // the default output.
@@ -123,6 +131,11 @@
   Class *classes = (Class*)[classData mutableBytes];
   _GTMDevAssert(classes, @"Couldn't allocate class list");
   objc_getClassList(classes, count);
+
+  // Follow SenTest's lead and sort the classes.  (This may only be a change
+  // in the iOS 5 runtime, but make sure it is always sorted just incase)
+  mergesort(classes, count, sizeof(Class), ClassSort);
+
   totalFailures_ = 0;
   totalSuccesses_ = 0;
   NSString *suiteName = [[NSBundle mainBundle] bundlePath];
