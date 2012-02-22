@@ -1,7 +1,7 @@
 //
 //  GTMFadeTruncatingLabel.h
 //
-//  Copyright 2011 Google Inc.
+//  Copyright 2012 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -28,5 +28,11 @@ typedef enum {
 
 // Which side(s) to truncate.
 @property(nonatomic, assign) GTMFadeTruncatingMode truncateMode;
+
+// Returns a linear gradient mask suitable to use with CGContextClipToMask() to
+// fade the ends of a rectangle the same way this class does it.
++ (UIImage*)getLinearGradient:(CGRect)rect
+                     fadeHead:(BOOL)fadeHead
+                     fadeTail:(BOOL)fadeTail;
 
 @end

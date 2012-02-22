@@ -1,7 +1,7 @@
 //
 //  GTMFadeTruncatingLabel.m
 //
-//  Copyright 2011 Google Inc.
+//  Copyright 2012 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -19,7 +19,6 @@
 
 @interface GTMFadeTruncatingLabel ()
 - (void)setup;
-- (UIImage*)getLinearGradient:(CGRect)rect;
 @end
 
 @implementation GTMFadeTruncatingLabel
@@ -34,6 +33,8 @@
 - (id)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
+    // Use clip as a default value.
+    self.lineBreakMode = UILineBreakModeClip;
     [self setup];
   }
   return self;
@@ -50,7 +51,10 @@
 
   CGSize size = [self.text sizeWithFont:self.font];
   if (size.width > requestedRect.size.width) {
-    UIImage* image = [self getLinearGradient:requestedRect];
+    UIImage* image = [[self class]
+        getLinearGradient:requestedRect
+                 fadeHead:((self.truncateMode & GTMFadeTruncatingHead) > 0)
+                 fadeTail:((self.truncateMode & GTMFadeTruncatingTail) > 0)];
     CGContextClipToMask(context, self.bounds, image.CGImage);
   }
 
@@ -60,21 +64,23 @@
                                      self.shadowOffset.height);
     [self.text drawInRect:shadowRect
                  withFont:self.font
-            lineBreakMode:UILineBreakModeClip
+            lineBreakMode:self.lineBreakMode
                 alignment:self.textAlignment];
   }
 
   CGContextSetFillColorWithColor(context, self.textColor.CGColor);
   [self.text drawInRect:requestedRect
                withFont:self.font
-          lineBreakMode:UILineBreakModeClip
+          lineBreakMode:self.lineBreakMode
               alignment:self.textAlignment];
 
   CGContextRestoreGState(context);
 }
 
 // Create gradient opacity mask based on direction.
-- (UIImage*)getLinearGradient:(CGRect)rect {
++ (UIImage*)getLinearGradient:(CGRect)rect
+                     fadeHead:(BOOL)fadeHead
+                     fadeTail:(BOOL)fadeTail {
   // Create an opaque context.
   CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
   CGContextRef context = CGBitmapContextCreate (NULL,
@@ -100,13 +106,13 @@
   CGFloat fadeWidth = MIN(rect.size.height * 2, floor(rect.size.width / 4));
   CGFloat minX = CGRectGetMinX(rect);
   CGFloat maxX = CGRectGetMaxX(rect);
-  if (self.truncateMode & GTMFadeTruncatingTail) {
+  if (fadeTail) {
     CGFloat startX = maxX - fadeWidth;
     CGPoint startPoint = CGPointMake(startX, CGRectGetMidY(rect));
     CGPoint endPoint = CGPointMake(maxX, CGRectGetMidY(rect));
     CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
   }
-  if (self.truncateMode & GTMFadeTruncatingHead) {
+  if (fadeHead) {
     CGFloat startX = minX + fadeWidth;
     CGPoint startPoint = CGPointMake(startX, CGRectGetMidY(rect));
     CGPoint endPoint = CGPointMake(minX, CGRectGetMidY(rect));
