@@ -22,18 +22,28 @@
 
 #define kChunkSize 1024
 
+typedef enum {
+  CompressionModeZlib,
+  CompressionModeGzip,
+  CompressionModeRaw,
+} CompressionMode;
+
 @interface NSData (GTMZlibAdditionsPrivate)
 + (NSData *)gtm_dataByCompressingBytes:(const void *)bytes
                                 length:(NSUInteger)length
                       compressionLevel:(int)level
-                               useGzip:(BOOL)useGzip;
+                                  mode:(CompressionMode)mode;
++ (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                           isRawData:(BOOL)isRawData;
 @end
 
 @implementation NSData (GTMZlibAdditionsPrivate)
+
 + (NSData *)gtm_dataByCompressingBytes:(const void *)bytes
                                 length:(NSUInteger)length
                       compressionLevel:(int)level
-                               useGzip:(BOOL)useGzip {
+                                  mode:(CompressionMode)mode {
   if (!bytes || !length) {
     return nil;
   }
@@ -57,10 +67,20 @@
   z_stream strm;
   bzero(&strm, sizeof(z_stream));
 
-  int windowBits = 15; // the default
   int memLevel = 8; // the default
-  if (useGzip) {
-    windowBits += 16; // enable gzip header instead of zlib header
+  int windowBits = 15; // the default
+  switch (mode) {
+    case CompressionModeZlib:
+      // nothing to do
+      break;
+
+    case CompressionModeGzip:
+      windowBits += 16; // enable gzip header instead of zlib header
+      break;
+
+    case CompressionModeRaw:
+      windowBits *= -1; // Negative to mean no header.
+      break;
   }
   int retCode;
   if ((retCode = deflateInit2(&strm, level, Z_DEFLATED, windowBits,
@@ -119,78 +139,9 @@
   return result;
 } // gtm_dataByCompressingBytes:length:compressionLevel:useGzip:
 
-
-@end
-
-
-@implementation NSData (GTMZLibAdditions)
-
-+ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length {
-  return [self gtm_dataByCompressingBytes:bytes
-                                   length:length
-                         compressionLevel:Z_DEFAULT_COMPRESSION
-                                  useGzip:YES];
-} // gtm_dataByGzippingBytes:length:
-
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data {
-  return [self gtm_dataByCompressingBytes:[data bytes]
-                                   length:[data length]
-                         compressionLevel:Z_DEFAULT_COMPRESSION
-                                  useGzip:YES];
-} // gtm_dataByGzippingData:
-
-+ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length
-                   compressionLevel:(int)level {
-  return [self gtm_dataByCompressingBytes:bytes
-                                   length:length
-                         compressionLevel:level
-                                  useGzip:YES];
-} // gtm_dataByGzippingBytes:length:level:
-
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data
-                  compressionLevel:(int)level {
-  return [self gtm_dataByCompressingBytes:[data bytes]
-                                   length:[data length]
-                         compressionLevel:level
-                                  useGzip:YES];
-} // gtm_dataByGzippingData:level:
-
-+ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length {
-  return [self gtm_dataByCompressingBytes:bytes
-                                   length:length
-                         compressionLevel:Z_DEFAULT_COMPRESSION
-                                  useGzip:NO];
-} // gtm_dataByDeflatingBytes:length:
-
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data {
-  return [self gtm_dataByCompressingBytes:[data bytes]
-                                   length:[data length]
-                         compressionLevel:Z_DEFAULT_COMPRESSION
-                                  useGzip:NO];
-} // gtm_dataByDeflatingData:
-
-+ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length
-                    compressionLevel:(int)level {
-  return [self gtm_dataByCompressingBytes:bytes
-                                   length:length
-                         compressionLevel:level
-                                  useGzip:NO];
-} // gtm_dataByDeflatingBytes:length:level:
-
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data
-                   compressionLevel:(int)level {
-  return [self gtm_dataByCompressingBytes:[data bytes]
-                                   length:[data length]
-                         compressionLevel:level
-                                  useGzip:NO];
-} // gtm_dataByDeflatingData:level:
-
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length {
+                              length:(NSUInteger)length
+                           isRawData:(BOOL)isRawData {
   if (!bytes || !length) {
     return nil;
   }
@@ -210,7 +161,12 @@
   strm.next_in = (unsigned char*)bytes;
 
   int windowBits = 15; // 15 to enable any window size
-  windowBits += 32; // and +32 to enable zlib or gzip header detection.
+  if (isRawData) {
+    windowBits *= -1; // make it negative to signal no header.
+  } else {
+    windowBits += 32; // and +32 to enable zlib or gzip header detection.
+  }
+
   int retCode;
   if ((retCode = inflateInit2(&strm, windowBits)) != Z_OK) {
     // COV_NF_START - no real way to force this in a unittest (we guard all args)
@@ -259,11 +215,139 @@
   inflateEnd(&strm);
 
   return result;
+} // gtm_dataByInflatingBytes:length:windowBits:
+
+@end
+
+
+@implementation NSData (GTMZLibAdditions)
+
++ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                             length:(NSUInteger)length {
+  return [self gtm_dataByCompressingBytes:bytes
+                                   length:length
+                         compressionLevel:Z_DEFAULT_COMPRESSION
+                                     mode:CompressionModeGzip];
+} // gtm_dataByGzippingBytes:length:
+
++ (NSData *)gtm_dataByGzippingData:(NSData *)data {
+  return [self gtm_dataByCompressingBytes:[data bytes]
+                                   length:[data length]
+                         compressionLevel:Z_DEFAULT_COMPRESSION
+                                     mode:CompressionModeGzip];
+} // gtm_dataByGzippingData:
+
++ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                             length:(NSUInteger)length
+                   compressionLevel:(int)level {
+  return [self gtm_dataByCompressingBytes:bytes
+                                   length:length
+                         compressionLevel:level
+                                     mode:CompressionModeGzip];
+} // gtm_dataByGzippingBytes:length:level:
+
++ (NSData *)gtm_dataByGzippingData:(NSData *)data
+                  compressionLevel:(int)level {
+  return [self gtm_dataByCompressingBytes:[data bytes]
+                                   length:[data length]
+                         compressionLevel:level
+                                     mode:CompressionModeGzip];
+} // gtm_dataByGzippingData:level:
+
+#pragma mark -
+
++ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length {
+  return [self gtm_dataByCompressingBytes:bytes
+                                   length:length
+                         compressionLevel:Z_DEFAULT_COMPRESSION
+                                     mode:CompressionModeZlib];
+} // gtm_dataByDeflatingBytes:length:
+
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data {
+  return [self gtm_dataByCompressingBytes:[data bytes]
+                                   length:[data length]
+                         compressionLevel:Z_DEFAULT_COMPRESSION
+                                     mode:CompressionModeZlib];
+} // gtm_dataByDeflatingData:
+
++ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                    compressionLevel:(int)level {
+  return [self gtm_dataByCompressingBytes:bytes
+                                   length:length
+                         compressionLevel:level
+                                     mode:CompressionModeZlib];
+} // gtm_dataByDeflatingBytes:length:level:
+
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data
+                   compressionLevel:(int)level {
+  return [self gtm_dataByCompressingBytes:[data bytes]
+                                   length:[data length]
+                         compressionLevel:level
+                                     mode:CompressionModeZlib];
+} // gtm_dataByDeflatingData:level:
+
+#pragma mark -
+
++ (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length {
+  return [self gtm_dataByInflatingBytes:bytes
+                                 length:length
+                              isRawData:NO];
 } // gtm_dataByInflatingBytes:length:
 
 + (NSData *)gtm_dataByInflatingData:(NSData *)data {
   return [self gtm_dataByInflatingBytes:[data bytes]
-                                 length:[data length]];
+                                 length:[data length]
+                              isRawData:NO];
 } // gtm_dataByInflatingData:
+
+#pragma mark -
+
++ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length {
+  return [self gtm_dataByCompressingBytes:bytes
+                                   length:length
+                         compressionLevel:Z_DEFAULT_COMPRESSION
+                                     mode:CompressionModeRaw];
+} // gtm_dataByRawDeflatingBytes:length:
+
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data {
+  return [self gtm_dataByCompressingBytes:[data bytes]
+                                   length:[data length]
+                         compressionLevel:Z_DEFAULT_COMPRESSION
+                                     mode:CompressionModeRaw];
+} // gtm_dataByRawDeflatingData:
+
++ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                       compressionLevel:(int)level {
+  return [self gtm_dataByCompressingBytes:bytes
+                                   length:length
+                         compressionLevel:level
+                                     mode:CompressionModeRaw];
+} // gtm_dataByRawDeflatingBytes:length:compressionLevel:
+
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
+                      compressionLevel:(int)level {
+  return [self gtm_dataByCompressingBytes:[data bytes]
+                                   length:[data length]
+                         compressionLevel:level
+                                     mode:CompressionModeRaw];
+} // gtm_dataByRawDeflatingData:compressionLevel:
+
++ (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length {
+  return [self gtm_dataByInflatingBytes:bytes
+                                 length:length
+                              isRawData:YES];
+} // gtm_dataByRawInflatingBytes:length:
+
++ (NSData *)gtm_dataByRawInflatingData:(NSData *)data {
+  return [self gtm_dataByInflatingBytes:[data bytes]
+                                 length:[data length]
+                              isRawData:YES];
+} // gtm_dataByRawInflatingData:
 
 @end
