@@ -318,6 +318,9 @@
 @end  // GTMLoggerMacroHelpers
 
 
+// The convenience macros are only defined if they haven't already been defined.
+#ifndef GTMLoggerInfo
+
 // Convenience macros that log to the shared GTMLogger instance. These macros
 // are how users should typically log to GTMLogger. Notice that GTMLoggerDebug()
 // calls will be compiled out of non-Debug builds.
@@ -336,6 +339,8 @@
 #undef GTMLoggerDebug
 #define GTMLoggerDebug(...) do {} while(0)
 #endif
+
+#endif  // !defined(GTMLoggerInfo)
 
 // Log levels.
 typedef enum {
