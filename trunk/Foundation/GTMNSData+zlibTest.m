@@ -167,13 +167,13 @@ static BOOL HasGzipHeader(NSData *data) {
 
   // test non-compressed data data itself
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: incorrect header check"];
   STAssertNil([NSData gtm_dataByInflatingData:data], nil);
 
   // test deflated data runs that end before they are done
   [GTMUnitTestDevLog expect:([deflated length] / 11) + 1
               casesOfString:@"Error trying to inflate some of the payload, "
-   @"error -5"];
+   @"error -5: (null)"];
   for (NSUInteger x = 1 ; x < [deflated length] ; x += 11) {
     STAssertNil([NSData gtm_dataByInflatingBytes:[deflated bytes]
                                           length:x], nil);
@@ -182,7 +182,7 @@ static BOOL HasGzipHeader(NSData *data) {
   // test gzipped data runs that end before they are done
   [GTMUnitTestDevLog expect:([gzipped length] / 11) + 1
               casesOfString:@"Error trying to inflate some of the payload, "
-   @"error -5"];
+   @"error -5: (null)"];
   for (NSUInteger x = 1 ; x < [gzipped length] ; x += 11) {
     STAssertNil([NSData gtm_dataByInflatingBytes:[gzipped bytes]
                                           length:x], nil);
@@ -190,10 +190,10 @@ static BOOL HasGzipHeader(NSData *data) {
 
   // test raw deflated data runs that end before they are done
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -5"];
+   @"payload, error -5: (null)"];
   [GTMUnitTestDevLog expect:([rawDeflated length] / 11) - 1
               casesOfString:@"Error trying to inflate some of the payload, "
-   @"error -3"];
+   @"error -3: incorrect header check"];
   for (NSUInteger x = 1 ; x < [rawDeflated length] ; x += 11) {
     STAssertNil([NSData gtm_dataByInflatingBytes:[rawDeflated bytes]
                                           length:x], nil);
@@ -206,10 +206,10 @@ static BOOL HasGzipHeader(NSData *data) {
   STAssertNotNil(prefixedDeflated, @"failed to alloc data block");
   [prefixedDeflated appendData:deflated];
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: incorrect header check"];
   STAssertNil([NSData gtm_dataByInflatingData:prefixedDeflated], nil);
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: incorrect header check"];
   STAssertNil([NSData gtm_dataByInflatingBytes:[prefixedDeflated bytes]
                                         length:[prefixedDeflated length]],
               nil);
@@ -218,10 +218,10 @@ static BOOL HasGzipHeader(NSData *data) {
   STAssertNotNil(prefixedDeflated, @"failed to alloc data block");
   [prefixedGzipped appendData:gzipped];
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: incorrect header check"];
   STAssertNil([NSData gtm_dataByInflatingData:prefixedGzipped], nil);
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: incorrect header check"];
   STAssertNil([NSData gtm_dataByInflatingBytes:[prefixedGzipped bytes]
                                         length:[prefixedGzipped length]],
               nil);
@@ -230,10 +230,10 @@ static BOOL HasGzipHeader(NSData *data) {
   STAssertNotNil(prefixedRawDeflated, @"failed to alloc data block");
   [prefixedRawDeflated appendData:rawDeflated];
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: invalid stored block lengths"];
   STAssertNil([NSData gtm_dataByRawInflatingData:prefixedRawDeflated], nil);
   [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3"];
+   @"payload, error -3: invalid stored block lengths"];
   STAssertNil([NSData gtm_dataByRawInflatingBytes:[prefixedRawDeflated bytes]
                                            length:[prefixedRawDeflated length]],
               nil);

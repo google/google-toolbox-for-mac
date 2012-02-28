@@ -186,8 +186,8 @@ typedef enum {
     strm.next_out = output;
     retCode = inflate(&strm, Z_NO_FLUSH);
     if ((retCode != Z_OK) && (retCode != Z_STREAM_END)) {
-      _GTMDevLog(@"Error trying to inflate some of the payload, error %d",
-                 retCode);
+      _GTMDevLog(@"Error trying to inflate some of the payload, error %d: %s",
+                 retCode, strm.msg);
       inflateEnd(&strm);
       return nil;
     }
