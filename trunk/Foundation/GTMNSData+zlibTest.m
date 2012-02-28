@@ -312,7 +312,7 @@ static BOOL HasGzipHeader(NSData *data) {
                        dataPrime, @"failed to round trip via *Data apis");
 
   // loop over the compression levels
-  for (int level = 1 ; level < 9 ; ++level) {
+  for (int level = 1 ; level <= 9 ; ++level) {
     // w/ *Bytes apis, using our level
     deflated = [NSData gtm_dataByDeflatingBytes:[data bytes]
                                          length:[data length]
@@ -380,7 +380,7 @@ static BOOL HasGzipHeader(NSData *data) {
                        @"failed to round trip via *Data apis");
 
   // loop over the compression levels
-  for (int level = 1 ; level < 9 ; ++level) {
+  for (int level = 1 ; level <= 9 ; ++level) {
     // w/ *Bytes apis, using our level
     gzipped = [NSData gtm_dataByGzippingBytes:[data bytes]
                                        length:[data length]
@@ -414,7 +414,7 @@ static BOOL HasGzipHeader(NSData *data) {
   }
 }
 
-- (void)tesRawtInflateRawDeflate {
+- (void)testRawtInflateRawDeflate {
   NSData *data = [NSData dataWithBytes:randomDataLarge
                                 length:sizeof(randomDataLarge)];
   STAssertNotNil(data, @"failed to alloc data block");
@@ -448,7 +448,7 @@ static BOOL HasGzipHeader(NSData *data) {
                        dataPrime, @"failed to round trip via *Data apis");
 
   // loop over the compression levels
-  for (int level = 1 ; level < 9 ; ++level) {
+  for (int level = 1 ; level <= 9 ; ++level) {
     // w/ *Bytes apis, using our level
     rawDeflated = [NSData gtm_dataByRawDeflatingBytes:[data bytes]
                                                length:[data length]
