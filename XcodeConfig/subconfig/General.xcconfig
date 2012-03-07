@@ -29,12 +29,10 @@
 //   SDK_NAME macosx10.5
 //   SDK_NAME macosx10.6
 
-// Build for PPC and Intel (Leopard/SnowLeopard gets 64 bit also)
-// Note that you can't build 10.5 with using SenTestingKit on ppc64 with
-// SnowLeopard XCode because it doesn't ship with a ppc64 version of
-// SenTestingKit. For this reason we are NOT building/testing GTM
-// with ppc64 at this time. We override the 10.5 setting in the project
-// file to turn it off.
+// Pick up the Xcode default settings for ARCHS.  Keep the historical behavior
+// of providing overrides for the older SDKs so existing apps are less likely
+// to break.
+ARCHS[sdk=macosx*] = $(ARCHS_STANDARD_32_64_BIT)
 ARCHS[sdk=macosx10.4*] = i386 ppc
 ARCHS[sdk=macosx10.5*] = i386 x86_64 ppc ppc64
 ARCHS[sdk=macosx10.6*] = i386 x86_64
