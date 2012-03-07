@@ -221,7 +221,7 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
 
 @implementation SenTestCase
 + (id)testCaseWithInvocation:(NSInvocation *)anInvocation {
-  return [[[[self class] alloc] initWithInvocation:anInvocation] autorelease];
+  return [[[self alloc] initWithInvocation:anInvocation] autorelease];
 }
 
 - (id)initWithInvocation:(NSInvocation *)anInvocation {
