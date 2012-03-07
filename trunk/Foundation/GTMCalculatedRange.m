@@ -36,7 +36,7 @@ GTM_INLINE BOOL FPEqual(CGFloat a, CGFloat b) {
 
 @implementation GTMCalculatedRangeStopPrivate
 + (id)stopWithObject:(id)item position:(CGFloat)inPosition {
-  return [[[[self class] alloc] initWithObject:item position:inPosition] autorelease];
+  return [[[self alloc] initWithObject:item position:inPosition] autorelease];
 }
 
 - (id)initWithObject:(id)item position:(CGFloat)inPosition {

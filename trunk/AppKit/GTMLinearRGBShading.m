@@ -36,7 +36,7 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
 + (id)shadingWithColors:(NSColor **)colors fromSpaceNamed:(NSString*)colorSpaceName
             atPositions:(CGFloat *)positions count:(NSUInteger)count {
 
-  GTMLinearRGBShading *theShading = [[[[self class] alloc] initWithColorSpaceName:colorSpaceName] autorelease];
+  GTMLinearRGBShading *theShading = [[[self alloc] initWithColorSpaceName:colorSpaceName] autorelease];
   for (NSUInteger i = 0; i < count; ++i) {
     [theShading insertStop:colors[i] atPosition:positions[i]];
   }
