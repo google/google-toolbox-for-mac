@@ -93,7 +93,7 @@ GTM_INLINE bool OSAtomicCompareAndSwapPtrBarrier(void *predicate,
 #endif  // MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
 
 GTM_INLINE BOOL objc_atomicCompareAndSwapGlobalBarrier(id predicate,
                                                        id replacement,
@@ -109,4 +109,4 @@ GTM_INLINE BOOL objc_atomicCompareAndSwapInstanceVariableBarrier(id predicate,
                                           replacement,
                                           (void * volatile *)objectLocation);
 }
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#endif  // MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
