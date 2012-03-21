@@ -71,6 +71,12 @@
 		8B5547CB0DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */; };
 		8B5A9E200E71CB6C005DA441 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */; };
 		8B6C18740F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */; };
+		8B6FF394151A664600B0642B /* GTMNSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF392151A664600B0642B /* GTMNSThread+Blocks.m */; };
+		8B6FF395151A664600B0642B /* GTMNSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF392151A664600B0642B /* GTMNSThread+Blocks.m */; };
+		8B6FF396151A664600B0642B /* GTMNSThread+BlocksTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF393151A664600B0642B /* GTMNSThread+BlocksTest.m */; };
+		8B6FF397151A664600B0642B /* GTMNSThread+BlocksTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF393151A664600B0642B /* GTMNSThread+BlocksTest.m */; };
+		8B6FF39A151A670100B0642B /* GTMFoundationUnitTestingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF399151A670100B0642B /* GTMFoundationUnitTestingUtilities.m */; };
+		8B6FF39B151A670100B0642B /* GTMFoundationUnitTestingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF399151A670100B0642B /* GTMFoundationUnitTestingUtilities.m */; };
 		8B7DCEAA0DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */; };
 		8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */; };
 		8BB78FA911B94D9500AB31AF /* GTMGoogleSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB78FA711B94D9500AB31AF /* GTMGoogleSearch.m */; };
@@ -363,6 +369,11 @@
 		8B6C18710F3769D200E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
 		8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObserving.m"; sourceTree = "<group>"; };
 		8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObservingTest.m"; sourceTree = "<group>"; };
+		8B6FF391151A664600B0642B /* GTMNSThread+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSThread+Blocks.h"; sourceTree = "<group>"; };
+		8B6FF392151A664600B0642B /* GTMNSThread+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSThread+Blocks.m"; sourceTree = "<group>"; };
+		8B6FF393151A664600B0642B /* GTMNSThread+BlocksTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSThread+BlocksTest.m"; sourceTree = "<group>"; };
+		8B6FF398151A670100B0642B /* GTMFoundationUnitTestingUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFoundationUnitTestingUtilities.h; sourceTree = "<group>"; };
+		8B6FF399151A670100B0642B /* GTMFoundationUnitTestingUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFoundationUnitTestingUtilities.m; sourceTree = "<group>"; };
 		8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDevLogUnitTestingBridge.m; sourceTree = "<group>"; };
 		8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUnitTestDevLog.h; sourceTree = "<group>"; };
 		8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUnitTestDevLog.m; sourceTree = "<group>"; };
@@ -710,6 +721,9 @@
 				8BC0478A0DAE928A00C2D1CA /* GTMNSString+XML.h */,
 				8BC0478B0DAE928A00C2D1CA /* GTMNSString+XML.m */,
 				8BC0478C0DAE928A00C2D1CA /* GTMNSString+XMLTest.m */,
+				8B6FF391151A664600B0642B /* GTMNSThread+Blocks.h */,
+				8B6FF392151A664600B0642B /* GTMNSThread+Blocks.m */,
+				8B6FF393151A664600B0642B /* GTMNSThread+BlocksTest.m */,
 				8BC0478D0DAE928A00C2D1CA /* GTMObjC2Runtime.h */,
 				8BC047900DAE928A00C2D1CA /* GTMObjectSingleton.h */,
 				F418AFD40E755D44004FB565 /* GTMPath.h */,
@@ -755,6 +769,8 @@
 				8B7DCEA90DFF4C760017E983 /* GTMDevLogUnitTestingBridge.m */,
 				8BC047A00DAE928A00C2D1CA /* GTMCALayer+UnitTesting.h */,
 				8BC047A10DAE928A00C2D1CA /* GTMCALayer+UnitTesting.m */,
+				8B6FF398151A670100B0642B /* GTMFoundationUnitTestingUtilities.h */,
+				8B6FF399151A670100B0642B /* GTMFoundationUnitTestingUtilities.m */,
 				8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */,
 				8B5547C80DB3BBF20014CC1C /* GTMUIKit+UnitTesting.h */,
 				8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */,
@@ -1122,6 +1138,9 @@
 				169E1E301459AAE100E6F562 /* GTMUILocalizerTest.m in Sources */,
 				BE9B794114FE9A2C004A993A /* GTMURLBuilderTest.m in Sources */,
 				BE9B794314FE9A3E004A993A /* GTMURLBuilder.m in Sources */,
+				8B6FF394151A664600B0642B /* GTMNSThread+Blocks.m in Sources */,
+				8B6FF396151A664600B0642B /* GTMNSThread+BlocksTest.m in Sources */,
+				8B6FF39A151A670100B0642B /* GTMFoundationUnitTestingUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1207,6 +1226,9 @@
 				F4D20F1B14852CA40001600C /* GTMValidatingContainersTest.m in Sources */,
 				BE9B794214FE9A2E004A993A /* GTMURLBuilderTest.m in Sources */,
 				BE9B794414FE9A3E004A993A /* GTMURLBuilder.m in Sources */,
+				8B6FF395151A664600B0642B /* GTMNSThread+Blocks.m in Sources */,
+				8B6FF397151A664600B0642B /* GTMNSThread+BlocksTest.m in Sources */,
+				8B6FF39B151A670100B0642B /* GTMFoundationUnitTestingUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
