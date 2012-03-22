@@ -31,7 +31,7 @@
 // then this method will return.
 - (void)gtm_performBlock:(void (^)())block;
 
-- (void)gtm_performWaitingUntilDone:(BOOL)wait block:(void (^)())block;
+- (void)gtm_performWaitingUntilDone:(BOOL)waitDone block:(void (^)())block;
 + (void)gtm_performBlockInBackground:(void (^)())block;
 @end
 

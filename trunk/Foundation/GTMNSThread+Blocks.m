@@ -34,11 +34,11 @@
   }
 }
 
-- (void)gtm_performWaitingUntilDone:(BOOL)wait block:(void (^)())block {
+- (void)gtm_performWaitingUntilDone:(BOOL)waitDone block:(void (^)())block {
   [NSThread performSelector:@selector(gtm_runBlockOnCurrentThread:)
                    onThread:self
                  withObject:[[block copy] autorelease]
-              waitUntilDone:wait];
+              waitUntilDone:waitDone];
 }
 
 + (void)gtm_performBlockInBackground:(void (^)())block {
