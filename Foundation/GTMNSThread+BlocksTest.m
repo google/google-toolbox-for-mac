@@ -19,6 +19,8 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
+#if NS_BLOCKS_AVAILABLE
+
 #import "GTMFoundationUnitTestingUtilities.h"
 
 @interface GTMNSThread_BlocksTest : GTMTestCase {
@@ -110,3 +112,5 @@
 }
 
 @end
+
+#endif  // NS_BLOCKS_AVAILABLE
