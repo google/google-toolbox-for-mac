@@ -1,5 +1,5 @@
 //
-//  GTMNSThread+Blocks.h
+//  GTMNSThread+BlocksTest.m
 //
 //  Copyright 2012 Google Inc.
 //
@@ -19,7 +19,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
-#if NS_BLOCKS_AVAILABLE
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
 
 #import "GTMFoundationUnitTestingUtilities.h"
 
@@ -113,4 +113,4 @@
 
 @end
 
-#endif  // NS_BLOCKS_AVAILABLE
+#endif  // GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
