@@ -68,6 +68,7 @@ OBJC_EXPORT struct objc_method_description protocol_getMethodDescription(Protoco
                                                                          SEL aSel,
                                                                          BOOL isRequiredMethod,
                                                                          BOOL isInstanceMethod);
+OBJC_EXPORT BOOL sel_isEqual(SEL lhs, SEL rhs);
 
 // If building for 10.4 but using the 10.5 SDK, don't include these.
 #if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
