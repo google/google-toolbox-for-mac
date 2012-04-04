@@ -434,4 +434,12 @@ AT_REQUIRED
 
 }
 
+- (void)test_sel_isEqual {
+  STAssertTrue(sel_isEqual(@selector(kwyjibo), @selector(kwyjibo)), nil);
+  STAssertFalse(sel_isEqual(@selector(kwyjibo), @selector(dontHaveACow)), nil);
+  STAssertTrue(sel_isEqual(_cmd, @selector(test_sel_isEqual)), nil);
+  STAssertTrue(sel_isEqual(_cmd, _cmd), nil);
+  STAssertFalse(sel_isEqual(_cmd, @selector(kwyjibo)), nil);
+}
+
 @end
