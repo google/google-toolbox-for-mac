@@ -34,6 +34,10 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		23220A06152C9E980060CB7D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23220A05152C9E980060CB7D /* Security.framework */; };
+		234E175D152CBB4900CF3542 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23220A05152C9E980060CB7D /* Security.framework */; };
+		234E17DC152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 234E17DB152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m */; };
+		234E17DD152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 234E17DB152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m */; };
 		448D61FB11AC1F1B0097ACBC /* GTMUIImage+Resize_100x50_flipped.png in Resources */ = {isa = PBXBuildFile; fileRef = 448D61B111AC1AAD0097ACBC /* GTMUIImage+Resize_100x50_flipped.png */; };
 		448D61FC11AC1F250097ACBC /* GTMUIImage+Resize_50x100_flipped.png in Resources */ = {isa = PBXBuildFile; fileRef = 448D61B011AC1AAD0097ACBC /* GTMUIImage+Resize_50x100_flipped.png */; };
 		6294461C0EDE178D009295EA /* GTMNSArray+MergeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */; };
@@ -319,6 +323,8 @@
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* GTMiPhoneTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMiPhoneTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		23220A05152C9E980060CB7D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		234E17DB152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneSecurityLibraryTest.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* GTM_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTM_Prefix.pch; sourceTree = "<group>"; };
 		448D61B011AC1AAD0097ACBC /* GTMUIImage+Resize_50x100_flipped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_50x100_flipped.png"; path = "TestData/GTMUIImage+Resize_50x100_flipped.png"; sourceTree = "<group>"; };
 		448D61B111AC1AAD0097ACBC /* GTMUIImage+Resize_100x50_flipped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_100x50_flipped.png"; path = "TestData/GTMUIImage+Resize_100x50_flipped.png"; sourceTree = "<group>"; };
@@ -506,6 +512,7 @@
 				8BC04D480DB0088500C2D1CA /* libz.dylib in Frameworks */,
 				8B3AA9340E0336AC007E31B5 /* CFNetwork.framework in Frameworks */,
 				8B5A9E200E71CB6C005DA441 /* AddressBook.framework in Frameworks */,
+				23220A06152C9E980060CB7D /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +528,7 @@
 				F4D20F2514852D130001600C /* UIKit.framework in Frameworks */,
 				F4D20F2614852D130001600C /* libz.dylib in Frameworks */,
 				F4D20F4E148532D50001600C /* AddressBook.framework in Frameworks */,
+				234E175D152CBB4900CF3542 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +578,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23220A05152C9E980060CB7D /* Security.framework */,
 				8B3AA9330E0336AC007E31B5 /* CFNetwork.framework */,
 				8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */,
 				8BC04D470DB0088500C2D1CA /* libz.dylib */,
@@ -774,6 +783,7 @@
 				8B5547C70DB3BBF20014CC1C /* GTMUIKit+UnitTesting.m */,
 				8B5547C80DB3BBF20014CC1C /* GTMUIKit+UnitTesting.h */,
 				8B5547C90DB3BBF20014CC1C /* GTMUIKit+UnitTestingTest.m */,
+				234E17DB152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m */,
 				67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */,
 				67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */,
 				8BC047DD0DAE928A00C2D1CA /* GTMIPhoneUnitTestMain.m */,
@@ -1036,7 +1046,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n# Run the unit tests in this test bundle.\n\"${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\"\n";
+			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n\n# Enable launch daemons for security tests.\nexport GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=0\n\n# Run the unit tests in this test bundle.\n${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\n";
 		};
 		F4D20EA814852BFB0001600C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1087,6 +1097,7 @@
 				8B7DCEAD0DFF4CA60017E983 /* GTMUnitTestDevLog.m in Sources */,
 				67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */,
 				8B3AA8F30E032FC7007E31B5 /* GTMNSString+URLArguments.m in Sources */,
+				F4746721129703600022C1FB /* GTMSenTestCaseTest.m in Sources */,
 				8B3AA8F40E032FC7007E31B5 /* GTMNSString+URLArgumentsTest.m in Sources */,
 				8B41EC0F0E0711D40040CF9F /* GTMValidatingContainersTest.m in Sources */,
 				8B41EC100E0711D40040CF9F /* GTMValidatingContainers.m in Sources */,
@@ -1131,7 +1142,6 @@
 				8BFFCD7811C1934900E45777 /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 				8B2908B211F8E7070064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
 				8B2908B311F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
-				F4746721129703600022C1FB /* GTMSenTestCaseTest.m in Sources */,
 				9340CF9F140550CE0026DDC9 /* GTMFadeTruncatingLabel.m in Sources */,
 				9340CFA0140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m in Sources */,
 				169E1E2F1459AAE100E6F562 /* GTMUILocalizer.m in Sources */,
@@ -1141,6 +1151,7 @@
 				8B6FF394151A664600B0642B /* GTMNSThread+Blocks.m in Sources */,
 				8B6FF396151A664600B0642B /* GTMNSThread+BlocksTest.m in Sources */,
 				8B6FF39A151A670100B0642B /* GTMFoundationUnitTestingUtilities.m in Sources */,
+				234E17DC152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1229,6 +1240,7 @@
 				8B6FF395151A664600B0642B /* GTMNSThread+Blocks.m in Sources */,
 				8B6FF397151A664600B0642B /* GTMNSThread+BlocksTest.m in Sources */,
 				8B6FF39B151A670100B0642B /* GTMFoundationUnitTestingUtilities.m in Sources */,
+				234E17DD152CECFB00CF3542 /* GTMIPhoneSecurityLibraryTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -74,6 +74,26 @@ GTMXcodeNote() {
     echo ${ThisScript}:${1}: note: GTM ${2}
 }
 
+# Creates a file containing the plist for the securityd daemon and prints the
+# filename to stdout.
+GTMCreateLaunchDaemonPlist() {
+  local plist_file
+  plist_file="$TMPDIR/securityd.$$.plist"
+  echo $plist_file
+
+  # Create the plist file with PlistBuddy.
+  /usr/libexec/PlistBuddy \
+    -c "Add :Label string RunIPhoneLaunchDaemons" \
+    -c "Add :ProgramArguments array" \
+        -c "Add :ProgramArguments: string \"$IPHONE_SIMULATOR_ROOT/usr/libexec/securityd\"" \
+    -c "Add :EnvironmentVariables dict" \
+        -c "Add :EnvironmentVariables:DYLD_ROOT_PATH string \"$IPHONE_SIMULATOR_ROOT\"" \
+        -c "Add :EnvironmentVariables:IPHONE_SIMULATOR_ROOT string \"$IPHONE_SIMULATOR_ROOT\"" \
+        -c "Add :EnvironmentVariables:CFFIXED_USER_HOME string \"$CFFIXED_USER_HOME\"" \
+    -c "Add :MachServices dict" \
+        -c "Add :MachServices:com.apple.securityd bool YES" "$plist_file" > /dev/null
+}
+
 if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   # We kill the iPhone simulator because otherwise we run into issues where
   # the unittests fail becuase the simulator is currently running, and
@@ -121,9 +141,13 @@ if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
     # presence as 'launchctl remove' will kill this script if run from within an
     # Xcode build.
     launchctl list | grep RunIPhoneLaunchDaemons && launchctl remove RunIPhoneLaunchDaemons
+
     # If we want to test anything that interacts with the keychain, we need
-    # securityd up and running. See RunIPhoneLaunchDaemons.sh for details.
-    launchctl submit -l RunIPhoneLaunchDaemons -- "${ScriptDir}/RunIPhoneLaunchDaemons.sh" $IPHONE_SIMULATOR_ROOT $CFFIXED_USER_HOME
+    # securityd up and running.
+    LAUNCH_DAEMON_PLIST="$(GTMCreateLaunchDaemonPlist)"
+    launchctl load $LAUNCH_DAEMON_PLIST
+    rm $LAUNCH_DAEMON_PLIST
+
     # No matter how we exit, we want to shut down our launchctl job.
     trap "launchctl remove RunIPhoneLaunchDaemons" INT TERM EXIT
   fi
