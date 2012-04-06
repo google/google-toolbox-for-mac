@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -22,33 +22,33 @@
 // Copyright (c) 1997-2005, Sen:te (Sente SA).  All rights reserved.
 //
 // Use of this source code is governed by the following license:
-// 
-// Redistribution and use in source and binary forms, with or without modification, 
+//
+// Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
-// 
-// (1) Redistributions of source code must retain the above copyright notice, 
+//
+// (1) Redistributions of source code must retain the above copyright notice,
 // this list of conditions and the following disclaimer.
-// 
-// (2) Redistributions in binary form must reproduce the above copyright notice, 
-// this list of conditions and the following disclaimer in the documentation 
+//
+// (2) Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
 // and/or other materials provided with the distribution.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS'' 
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-// IN NO EVENT SHALL Sente SA OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL Sente SA OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 // Note: this license is equivalent to the FreeBSD license.
-// 
+//
 // This notice may not be removed from this file.
 
-// Some extra test case macros that would have been convenient for SenTestingKit 
-// to provide. I didn't stick GTM in front of the Macro names, so that they would 
+// Some extra test case macros that would have been convenient for SenTestingKit
+// to provide. I didn't stick GTM in front of the Macro names, so that they would
 // be easy to remember.
 
 #import "GTMDefines.h"
@@ -182,7 +182,7 @@ do { \
   } \
 } while(0)
 
-// Generates a failure when a1 is equal to a2. This test is for C scalars, 
+// Generates a failure when a1 is equal to a2. This test is for C scalars,
 // structs and unions.
 //  Args:
 //    a1: argument 1
@@ -251,7 +251,7 @@ do { \
   }\
 } while(0)
 
-// Generates a failure when a1 is not 'op' to a2. This test is for C scalars. 
+// Generates a failure when a1 is not 'op' to a2. This test is for C scalars.
 //  Args:
 //    a1: argument 1
 //    a2: argument 2
@@ -291,7 +291,7 @@ do { \
   } \
 } while(0)
 
-// Generates a failure when a1 is not > a2. This test is for C scalars. 
+// Generates a failure when a1 is not > a2. This test is for C scalars.
 //  Args:
 //    a1: argument 1
 //    a2: argument 2
@@ -302,7 +302,7 @@ do { \
 #define STAssertGreaterThan(a1, a2, description, ...) \
   STAssertOperation(a1, a2, >, description, ##__VA_ARGS__)
 
-// Generates a failure when a1 is not >= a2. This test is for C scalars. 
+// Generates a failure when a1 is not >= a2. This test is for C scalars.
 //  Args:
 //    a1: argument 1
 //    a2: argument 2
@@ -313,7 +313,7 @@ do { \
 #define STAssertGreaterThanOrEqual(a1, a2, description, ...) \
   STAssertOperation(a1, a2, >=, description, ##__VA_ARGS__)
 
-// Generates a failure when a1 is not < a2. This test is for C scalars. 
+// Generates a failure when a1 is not < a2. This test is for C scalars.
 //  Args:
 //    a1: argument 1
 //    a2: argument 2
@@ -324,7 +324,7 @@ do { \
 #define STAssertLessThan(a1, a2, description, ...) \
   STAssertOperation(a1, a2, <, description, ##__VA_ARGS__)
 
-// Generates a failure when a1 is not <= a2. This test is for C scalars. 
+// Generates a failure when a1 is not <= a2. This test is for C scalars.
 //  Args:
 //    a1: argument 1
 //    a2: argument 2
@@ -461,12 +461,75 @@ do { \
   } \
 } while(0)
 
+/*" Generates a failure when a1 is not equal to a2 within + or - accuracy is false.
+  This test is for GLKit types (GLKVector, GLKMatrix) where small differences
+  could  make these items not exactly equal. Do not use this version directly.
+  Use the explicit STAssertEqualGLKVectors and STAssertEqualGLKMatrices defined
+  below.
+  _{a1    The GLKType on the left.}
+  _{a2    The GLKType on the right.}
+  _{accuracy  The maximum difference between a1 and a2 for these values to be
+  considered equal.}
+  _{description A format string as in the printf() function. Can be nil or
+                      an empty string but must be present.}
+  _{... A variable number of arguments to the format string. Can be absent.}
+"*/
+
+#define STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ...) \
+do { \
+  @try { \
+    if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
+      [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                                 atLine:__LINE__ \
+                                                                        withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
+    } else { \
+      __typeof__(a1) a1GLKValue = (a1); \
+      __typeof__(a2) a2GLKValue = (a2); \
+      __typeof__(accuracy) accuracyvalue = (accuracy); \
+      float *a1FloatValue = ((float*)&a1GLKValue); \
+      float *a2FloatValue = ((float*)&a2GLKValue); \
+      for (size_t i = 0; i < sizeof(__typeof__(a1)) / sizeof(float); ++i) { \
+        float a1value = a1FloatValue[i]; \
+        float a2value = a2FloatValue[i]; \
+        if (STAbsoluteDifference(a1value, a2value) > accuracyvalue) { \
+          NSMutableArray *strings = [NSMutableArray arrayWithCapacity:sizeof(a1) / sizeof(float)]; \
+          NSString *string; \
+          for (size_t j = 0; j < sizeof(__typeof__(a1)) / sizeof(float); ++j) { \
+            string = [NSString stringWithFormat: @"(%0.3f == %0.3f)", a1FloatValue[j], a2FloatValue[j]]; \
+            [strings addObject:string]; \
+          } \
+          string = [strings componentsJoinedByString:@", "]; \
+          NSString *desc = STComposeString(description, ##__VA_ARGS__); \
+          desc = [NSString stringWithFormat:@"%@ With Accuracy %0.3f: %@", string, (float)accuracyvalue, desc]; \
+          [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
+                                                      atLine:__LINE__ \
+                                             withDescription: desc]]; \
+          break; \
+        } \
+      } \
+    } \
+  } \
+  @catch (id anException) { \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+                                              exception:anException \
+                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                 atLine:__LINE__ \
+                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+  } \
+} while(0)
+
+#define STAssertEqualGLKVectors(a1, a2, accuracy, description, ...) \
+     STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
+
+#define STAssertEqualGLKMatrices(a1, a2, accuracy, description, ...) \
+     STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
+
 #if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 // When not using the Xcode provided version, define everything ourselves.
 
 // SENTE_BEGIN
-/*" Generates a failure when !{ [a1 isEqualTo:a2] } is false 
-	(or one is nil and the other is not). 
+/*" Generates a failure when !{ [a1 isEqualTo:a2] } is false
+	(or one is nil and the other is not).
 	_{a1    The object on the left.}
 	_{a2    The object on the right.}
 	_{description A format string as in the printf() function. Can be nil or
@@ -540,8 +603,8 @@ do { \
 #define STAbsoluteDifference(left,right) (MAX(left,right)-MIN(left,right))
 
 
-/*" Generates a failure when a1 is not equal to a2 within + or - accuracy is false. 
-  This test is for scalars such as floats and doubles where small differences 
+/*" Generates a failure when a1 is not equal to a2 within + or - accuracy is false.
+  This test is for scalars such as floats and doubles where small differences
   could make these items not exactly equal, but also works for all scalars.
   _{a1    The scalar on the left.}
   _{a2    The scalar on the right.}
@@ -587,7 +650,7 @@ do { \
 
 
 
-/*" Generates a failure unconditionally. 
+/*" Generates a failure unconditionally.
   _{description A format string as in the printf() function. Can be nil or
                       an empty string but must be present.}
   _{... A variable number of arguments to the format string. Can be absent.}
@@ -659,7 +722,7 @@ do { \
 } while(0)
 
 
-/*" Generates a failure when expression evaluates to false. 
+/*" Generates a failure when expression evaluates to false.
   _{expr    The expression that is tested.}
   _{description A format string as in the printf() function. Can be nil or
   an empty string but must be present.}
@@ -679,8 +742,8 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when expression evaluates to false and in addition will 
-  generate error messages if an exception is encountered. 
+/*" Generates a failure when expression evaluates to false and in addition will
+  generate error messages if an exception is encountered.
   _{expr    The expression that is tested.}
   _{description A format string as in the printf() function. Can be nil or
   an empty string but must be present.}
@@ -709,7 +772,7 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when the expression evaluates to true. 
+/*" Generates a failure when the expression evaluates to true.
   _{expr    The expression that is tested.}
   _{description A format string as in the printf() function. Can be nil or
   an empty string but must be present.}
@@ -729,7 +792,7 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when the expression evaluates to true and in addition 
+/*" Generates a failure when the expression evaluates to true and in addition
   will generate error messages if an exception is encountered.
   _{expr    The expression that is tested.}
   _{description A format string as in the printf() function. Can be nil or
@@ -759,7 +822,7 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when expression does not throw an exception. 
+/*" Generates a failure when expression does not throw an exception.
   _{expression    The expression that is evaluated.}
   _{description A format string as in the printf() function. Can be nil or
   an empty string but must be present.}
@@ -781,8 +844,8 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when expression does not throw an exception of a 
-  specific class. 
+/*" Generates a failure when expression does not throw an exception of a
+  specific class.
   _{expression    The expression that is evaluated.}
   _{specificException    The specified class of the exception.}
   _{description A format string as in the printf() function. Can be nil or
@@ -815,9 +878,9 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when expression does not throw an exception of a 
+/*" Generates a failure when expression does not throw an exception of a
   specific class with a specific name.  Useful for those frameworks like
-  AppKit or Foundation that throw generic NSException w/specific names 
+  AppKit or Foundation that throw generic NSException w/specific names
   (NSInvalidArgumentException, etc).
   _{expression    The expression that is evaluated.}
   _{specificException    The specified class of the exception.}
@@ -863,7 +926,7 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when expression does throw an exception. 
+/*" Generates a failure when expression does throw an exception.
   _{expression    The expression that is evaluated.}
   _{description A format string as in the printf() function. Can be nil or
   an empty string but must be present.}
@@ -910,9 +973,9 @@ do { \
 } while (0)
 
 
-/*" Generates a failure when expression does throw an exception of a 
+/*" Generates a failure when expression does throw an exception of a
   specific class with a specific name.  Useful for those frameworks like
-  AppKit or Foundation that throw generic NSException w/specific names 
+  AppKit or Foundation that throw generic NSException w/specific names
   (NSInvalidArgumentException, etc).
   _{expression    The expression that is evaluated.}
   _{specificException    The specified class of the exception.}
@@ -947,33 +1010,33 @@ do { \
 
 
 @interface NSException (GTMSenTestAdditions)
-+ (NSException *)failureInFile:(NSString *)filename 
-                        atLine:(int)lineNumber 
++ (NSException *)failureInFile:(NSString *)filename
+                        atLine:(int)lineNumber
                withDescription:(NSString *)formatString, ...;
-+ (NSException *)failureInCondition:(NSString *)condition 
-                             isTrue:(BOOL)isTrue 
-                             inFile:(NSString *)filename 
-                             atLine:(int)lineNumber 
++ (NSException *)failureInCondition:(NSString *)condition
+                             isTrue:(BOOL)isTrue
+                             inFile:(NSString *)filename
+                             atLine:(int)lineNumber
                     withDescription:(NSString *)formatString, ...;
 + (NSException *)failureInEqualityBetweenObject:(id)left
                                       andObject:(id)right
                                          inFile:(NSString *)filename
                                          atLine:(int)lineNumber
                                 withDescription:(NSString *)formatString, ...;
-+ (NSException *)failureInEqualityBetweenValue:(NSValue *)left 
-                                      andValue:(NSValue *)right 
-                                  withAccuracy:(NSValue *)accuracy 
-                                        inFile:(NSString *)filename 
++ (NSException *)failureInEqualityBetweenValue:(NSValue *)left
+                                      andValue:(NSValue *)right
+                                  withAccuracy:(NSValue *)accuracy
+                                        inFile:(NSString *)filename
                                         atLine:(int) ineNumber
                                withDescription:(NSString *)formatString, ...;
-+ (NSException *)failureInRaise:(NSString *)expression 
-                         inFile:(NSString *)filename 
++ (NSException *)failureInRaise:(NSString *)expression
+                         inFile:(NSString *)filename
                          atLine:(int)lineNumber
                 withDescription:(NSString *)formatString, ...;
-+ (NSException *)failureInRaise:(NSString *)expression 
-                      exception:(NSException *)exception 
-                         inFile:(NSString *)filename 
-                         atLine:(int)lineNumber 
++ (NSException *)failureInRaise:(NSString *)expression
+                      exception:(NSException *)exception
+                         inFile:(NSString *)filename
+                         atLine:(int)lineNumber
                 withDescription:(NSString *)formatString, ...;
 @end
 
@@ -1022,7 +1085,7 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 //                                            FooExtensionTestCase
 // GTMTestCase <- ExtensionAbstractTestCase <
 //                                            BarExtensionTestCase
-// 
+//
 // So FooExtensionTestCase and BarExtensionTestCase inherit from
 // ExtensionAbstractTestCase (and probably FooExtension and BarExtension inherit
 // from a class named Extension). We want the tests in ExtensionAbstractTestCase
