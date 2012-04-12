@@ -66,6 +66,12 @@ GTM_DISABLE_USERDIR_SETUP=${GTM_DISABLE_USERDIR_SETUP:=0}
 #   to turn it on.
 GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=${GTM_DISABLE_IPHONE_LAUNCH_DAEMONS:=1}
 
+# GTM_TEST_AFTER_BUILD
+#   When set to 1, tests are run only when TEST_AFTER_BUILD is set to "YES".
+#   This can be used to have tests run as an after build step when running
+#   from the command line, but not when running from within XCode.
+GTM_USE_TEST_AFTER_BUILD=${GTM_USE_TEST_AFTER_BUILD:=0}
+
 ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 ScriptName=$(basename "$0")
 ThisScript="${ScriptDir}/${ScriptName}"
@@ -94,7 +100,9 @@ GTMCreateLaunchDaemonPlist() {
         -c "Add :MachServices:com.apple.securityd bool YES" "$plist_file" > /dev/null
 }
 
-if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
+if [[ "$GTM_USE_TEST_AFTER_BUILD" == 1 && "$TEST_AFTER_BUILD" == "NO" ]]; then
+  GTMXcodeNote ${LINENO} "Skipping running of unittests since TEST_AFTER_BUILD=NO."
+elif [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   # We kill the iPhone simulator because otherwise we run into issues where
   # the unittests fail becuase the simulator is currently running, and
   # at this time the iPhone SDK won't allow two simulators running at the same
