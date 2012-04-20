@@ -34,8 +34,13 @@ exec $DEVELOPER_BIN_DIR/xcodebuild \
     -project "${PROJECT_FILE_PATH}" \
     -target "${TARGET_NAME}" \
     -sdk "${SDKROOT}" \
-    -configuration "$CONFIGURATION" \
+    -configuration "${CONFIGURATION}" \
     SDKROOT="${SDKROOT}"  \
+    CONFIGURATION_BUILD_DIR="${CONFIGURATION_BUILD_DIR}" \
+    CONFIGURATION_TEMP_DIR="${CONFIGURATION_TEMP_DIR}" \
+    OBJROOT="${OBJROOT}" \
+    SYMROOT="${SYMROOT}" \
+    CACHE_ROOT="${CACHE_ROOT}" \
     ONLY_ACTIVE_ARCH="${ONLY_ACTIVE_ARCH}" \
     ARCHS="${ARCHS}" \
     RUN_CLANG_STATIC_ANALYZER=NO \
