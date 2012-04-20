@@ -24,16 +24,6 @@
 #import <pthread.h>
 
 
-@interface GTMLogger (PrivateMethods)
-
-- (void)logInternalFunc:(const char *)func
-                 format:(NSString *)fmt
-                 valist:(va_list)args
-                  level:(GTMLoggerLevel)level NS_FORMAT_FUNCTION(2, 0);
-
-@end
-
-
 // Reference to the shared GTMLogger instance. This is not a singleton, it's
 // just an easy reference to one shared instance.
 static GTMLogger *gSharedLogger = nil;

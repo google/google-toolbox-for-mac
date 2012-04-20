@@ -492,4 +492,13 @@ typedef enum {
 @end
 
 
+// For subclasses only
+@interface GTMLogger (PrivateMethods)
+
+- (void)logInternalFunc:(const char *)func
+                 format:(NSString *)fmt
+                 valist:(va_list)args
+                  level:(GTMLoggerLevel)level NS_FORMAT_FUNCTION(2, 0);
+
+@end
 
