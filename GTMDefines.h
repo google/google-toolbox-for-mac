@@ -351,6 +351,24 @@
   #define GTM_NONNULL(x) __attribute__((nonnull(x)))
 #endif
 
+// Invalidates the initializer from which it's called.
+#ifndef GTMInvalidateInitializer
+  #if __has_feature(objc_arc)
+    #define GTMInvalidateInitializer() \
+      do { \
+        _GTMDevAssert(NO, @"Invalid initializer."); \
+        return nil; \
+      } while (0)
+  #else
+    #define GTMInvalidateInitializer() \
+      do { \
+        [self release]; \
+        _GTMDevAssert(NO, @"Invalid initializer."); \
+        return nil; \
+      } while (0)
+  #endif
+#endif
+
 #ifdef __OBJC__
 
 // Declared here so that it can easily be used for logging tracking if
