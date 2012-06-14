@@ -77,7 +77,7 @@
 
 - (NSDictionary *)attributes {
   NSFileManager *mgr = [NSFileManager defaultManager];
-#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
+#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
   NSDictionary *attributes = [mgr fileAttributesAtPath:fullPath_
                                           traverseLink:NO];
 #else
