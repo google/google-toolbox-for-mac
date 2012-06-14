@@ -45,7 +45,11 @@
   // Make sure it's safe to remove this directory before nuking it.
   STAssertNotNil(testDirectory_, nil);
   STAssertNotEqualObjects(testDirectory_, @"/", nil);
+#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
   [[NSFileManager defaultManager] removeFileAtPath:testDirectory_ handler:nil];
+#else
+  [[NSFileManager defaultManager] removeItemAtPath:testDirectory_ error:NULL];
+#endif
   [testDirectory_ release];
 }
 
@@ -136,7 +140,8 @@
   STAssertEqualObjects([path name], @"foo", nil);
   // filePosixPermissions has odd return types in different SDKs, so we use
   // STAssertTrue to avoid the macros type checks from choking us.
-  STAssertTrue([[path attributes] filePosixPermissions] == 0555, nil);
+  STAssertTrue([[path attributes] filePosixPermissions] == 0555,
+               @"got %o", (int)[[path attributes] filePosixPermissions]);
   STAssertTrue([path isDirectory], nil);
   STAssertFalse([path isRoot], nil);
   
@@ -148,14 +153,16 @@
   path = [tmp createDirectoryName:@"foo" mode:0555];
   STAssertNotNil(path, nil);
   STAssertEqualObjects([path name], @"foo", nil);
-  STAssertTrue([[path attributes] filePosixPermissions] == 0555, nil);
+  STAssertTrue([[path attributes] filePosixPermissions] == 0555,
+               @"got %o", (int)[[path attributes] filePosixPermissions]);
   STAssertTrue([path isDirectory], nil);
   STAssertFalse([path isRoot], nil);
   
   GTMPath *foo = [GTMPath pathWithFullPath:fooPath];
   STAssertNotNil(foo, nil);
   STAssertEqualObjects([path name], @"foo", nil);
-  STAssertTrue([[path attributes] filePosixPermissions] == 0555, nil);
+  STAssertTrue([[path attributes] filePosixPermissions] == 0555,
+               @"got %o", (int)[[path attributes] filePosixPermissions]);
   STAssertTrue([path isDirectory], nil);
   STAssertFalse([path isRoot], nil);
 }

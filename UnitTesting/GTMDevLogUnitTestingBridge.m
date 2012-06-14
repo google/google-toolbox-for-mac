@@ -31,14 +31,17 @@
 //
 // See GTMUnitTestDevLog.h for more information on checking logs in unittests.
 //
-void _GTMUnitTestDevLog(NSString *format, ...) {
+void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) {
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   va_list argList;
   va_start(argList, format);
   if (devLogClass) {
     [devLogClass log:format args:argList];
   } else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
     NSLogv(format, argList); // COV_NF_LINE the class is in all our unittest setups
+#pragma GCC diagnostic pop
   }
   va_end(argList);
 }

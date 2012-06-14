@@ -82,13 +82,13 @@
   STAssertEqualObjects([@"this%5Bthat" gtm_stringByUnescapingFromURLArgument], @"this[that", @"- left bracket should be unescaped");
   STAssertEqualObjects([@"this%5Dthat" gtm_stringByUnescapingFromURLArgument], @"this]that", @"- right bracket should be unescaped");
   // make sure a plus come back out as a space
-  STAssertEqualObjects([[NSString stringWithString:@"this+that"] gtm_stringByUnescapingFromURLArgument], @"this that", @"- plus should be unescaped");
+  STAssertEqualObjects([@"this+that" gtm_stringByUnescapingFromURLArgument], @"this that", @"- plus should be unescaped");
   // make sure plus and %2B are handled in the right order
   STAssertEqualObjects([@"this+that%2Bthe%20other" gtm_stringByUnescapingFromURLArgument], @"this that+the other", @"- pluses and spaces should be different");
   // high char test
   NSString *tester = [NSString stringWithUTF8String:"caf\xC3\xA9"];
   STAssertNotNil(tester, @"failed to create from utf8 run");
-  STAssertEqualObjects([[NSString stringWithString:@"caf%C3%A9"] gtm_stringByUnescapingFromURLArgument], tester, @"- high chars should work");
+  STAssertEqualObjects([@"caf%C3%A9" gtm_stringByUnescapingFromURLArgument], tester, @"- high chars should work");
 }
 
 @end

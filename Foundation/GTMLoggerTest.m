@@ -95,7 +95,7 @@
             @"GTMLoggerUnitTest.log"] retain];
   STAssertNotNil(path_, nil);
   // Make sure we're cleaned up from the last run
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
   [[NSFileManager defaultManager] removeFileAtPath:path_ handler:nil];
 #else
   [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
@@ -104,7 +104,7 @@
 
 - (void)tearDown {
   STAssertNotNil(path_, nil);
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
   [[NSFileManager defaultManager] removeFileAtPath:path_ handler:nil];
 #else
   [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
@@ -407,7 +407,7 @@
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
-                           format:@"     ", 1];
+                           format:@"     "];
   STAssertEqualObjects(msg, @"     ", nil);
 }
 
