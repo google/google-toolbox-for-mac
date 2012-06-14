@@ -126,7 +126,7 @@
                                    attributes:attributes
                                         error:&error];
 #else
-    BOOL created = [mgr createDirectoryAtPath:newPath attributes:nil];
+    BOOL created = [mgr createDirectoryAtPath:newPath attributes:attributes];
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     nascentPath = created ? [GTMPath pathWithFullPath:newPath] : nil;
   }
