@@ -31,7 +31,7 @@
 //
 // See GTMUnitTestDevLog.h for more information on checking logs in unittests.
 //
-void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) {
+void _GTMUnitTestDevLog(NSString *format, ...) {
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   va_list argList;
   va_start(argList, format);
