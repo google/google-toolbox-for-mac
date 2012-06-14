@@ -21,7 +21,7 @@
 
 @implementation NSFileManager (GMFileManagerPathAdditions)
 
-#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
+#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
 
 - (BOOL)gtm_createFullPathToDirectory:(NSString *)path
                            attributes:(NSDictionary *)attributes {
@@ -52,7 +52,7 @@
   return YES;
 }
 
-#endif  // GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
+#endif  // GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
 
 - (NSArray *)gtm_filePathsWithExtension:(NSString *)extension
                             inDirectory:(NSString *)directoryPath {
