@@ -1,14 +1,14 @@
 //
 //  GTMDevLogUnitTestingBridge.m
-//  
+//
 //  Copyright 2008 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -31,6 +31,8 @@
 //
 // See GTMUnitTestDevLog.h for more information on checking logs in unittests.
 //
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) {
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   va_list argList;
@@ -38,10 +40,8 @@ void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) {
   if (devLogClass) {
     [devLogClass log:format args:argList];
   } else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
     NSLogv(format, argList); // COV_NF_LINE the class is in all our unittest setups
-#pragma GCC diagnostic pop
   }
   va_end(argList);
 }
+#pragma GCC diagnostic pop
