@@ -31,8 +31,10 @@
 //
 // See GTMUnitTestDevLog.h for more information on checking logs in unittests.
 //
+#if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2) || defined (__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif  // Compiler version checks
 void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) {
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
   va_list argList;
@@ -44,4 +46,6 @@ void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2) {
   }
   va_end(argList);
 }
+#if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2) || defined (__clang__)
 #pragma GCC diagnostic pop
+#endif  // Compiler version checks
