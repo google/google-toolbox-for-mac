@@ -41,7 +41,7 @@
       return nil;
     }
   }
-  
+
   return self;
 }
 
@@ -77,8 +77,13 @@
 
 - (NSDictionary *)attributes {
   NSFileManager *mgr = [NSFileManager defaultManager];
-  NSDictionary *attributes = [mgr fileAttributesAtPath:fullPath_ 
-                                              traverseLink:NO];
+#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
+  NSDictionary *attributes = [mgr fileAttributesAtPath:fullPath_
+                                          traverseLink:NO];
+#else
+  NSDictionary *attributes = [mgr attributesOfItemAtPath:fullPath_
+                                                   error:NULL];
+#endif
   return attributes;
 }
 
@@ -101,9 +106,9 @@
 - (GTMPath *)createDirectoryName:(NSString *)name
                       attributes:(NSDictionary *)attributes {
   if ([name length] == 0) return nil;
-  
+
   // We first check to see if the requested directory alread exists by trying
-  // to create a GTMPath from the desired new path string. Only if the path 
+  // to create a GTMPath from the desired new path string. Only if the path
   // doesn't already exist do we attempt to create it. If the path already
   // exists, we will end up returning a GTMPath for the pre-existing path.
   NSString *newPath = [fullPath_ stringByAppendingPathComponent:name];
@@ -111,10 +116,18 @@
   if (nascentPath && ![nascentPath isDirectory]) {
     return nil;  // Return nil because the path exists, but it's not a dir
   }
-  
+
   if (!nascentPath) {
     NSFileManager *mgr = [NSFileManager defaultManager];
-    BOOL created = [mgr createDirectoryAtPath:newPath attributes:attributes];
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
+    NSError *error = nil;
+    BOOL created = [mgr createDirectoryAtPath:newPath
+                  withIntermediateDirectories:YES
+                                   attributes:attributes
+                                        error:&error];
+#else
+    BOOL created = [mgr createDirectoryAtPath:newPath attributes:nil]
+#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     nascentPath = created ? [GTMPath pathWithFullPath:newPath] : nil;
   }
 
@@ -137,7 +150,7 @@
                  attributes:(NSDictionary *)attributes
                        data:(NSData *)data {
   if ([name length] == 0) return nil;
-  
+
   // See createDirectoryName:attribute: for some high-level notes about what and
   // why this method does what it does.
   NSString *newPath = [fullPath_ stringByAppendingPathComponent:name];
@@ -145,7 +158,7 @@
   if (nascentPath != nil && [nascentPath isDirectory]) {
     return nil;  // Return nil because the path exists, but it's a dir
   }
-  
+
   if (nascentPath == nil) {
     BOOL created = [[NSFileManager defaultManager]
                     createFileAtPath:newPath
@@ -153,7 +166,7 @@
                           attributes:attributes];
     nascentPath = created ? [GTMPath pathWithFullPath:newPath] : nil;
   }
-  
+
   return nascentPath;
 }
 

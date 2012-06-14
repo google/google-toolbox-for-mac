@@ -192,7 +192,10 @@ static BOOL gTrackingEnabled = NO;
       }
     }
   } else {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
     NSLogv(format, args);
+#pragma GCC diagnostic pop
   }
 }
 

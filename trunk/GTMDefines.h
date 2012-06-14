@@ -374,7 +374,7 @@
 // Declared here so that it can easily be used for logging tracking if
 // necessary. See GTMUnitTestDevLog.h for details.
 @class NSString;
-GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...);
+GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 // Macro to allow you to create NSStrings out of other macros.
 // #define FOO foo

@@ -39,7 +39,7 @@
   if (baseDir_) {
     // clean up our directory
     NSFileManager *fm = [NSFileManager defaultManager];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
     NSError *error = nil;
     [fm removeItemAtPath:baseDir_ error:&error];
     STAssertNil(error,
@@ -53,7 +53,7 @@
   }
 }
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#if GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
 
 - (void)testCreateFullPathToDirectoryAttributes {
   STAssertNotNil(baseDir_, @"setUp failed");
@@ -82,7 +82,7 @@
                 @"Should have failed when passed (nil)");
 }
 
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#endif  // GTM_MACOSX_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
 
 - (void)testfilePathsWithExtensionsInDirectory {
   STAssertNotNil(baseDir_, @"setUp failed");
@@ -126,7 +126,7 @@
     NSString *testDir = nil;
     if ([testDirs[i] length]) {
       testDir = [baseDir_ stringByAppendingPathComponent:testDirs[i]];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
       NSError *error = nil;
       STAssertTrue([fm createDirectoryAtPath:testDir
                  withIntermediateDirectories:YES 
@@ -236,7 +236,7 @@
 
   // create the empty dir
   NSString *emptyDir = [baseDir_ stringByAppendingPathComponent:@"emptyDir"];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
   NSError *error = nil;
   STAssertTrue([fm createDirectoryAtPath:emptyDir 
              withIntermediateDirectories:YES 
