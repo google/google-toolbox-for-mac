@@ -18,7 +18,7 @@
 
 #import "GTMObjC2Runtime.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
 #import <stdlib.h>
 #import <string.h>
 
@@ -160,6 +160,4 @@ BOOL sel_isEqual(SEL lhs, SEL rhs) {
   return (lhs == rhs) ? YES : NO;
 }
 
-#endif
-
-
+#endif  // GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
