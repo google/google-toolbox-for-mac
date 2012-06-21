@@ -18,6 +18,8 @@
 
 #import "GTMNSFileHandle+UniqueName.h"
 
+#include <unistd.h>
+
 @implementation NSFileHandle (GTMFileHandleUniqueNameAdditions)
 
 + (id)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)pathTemplate
