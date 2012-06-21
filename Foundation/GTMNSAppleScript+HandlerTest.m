@@ -25,6 +25,12 @@
 #import "GTMSystemVersion.h"
 #import "GTMFourCharCode.h"
 
+@protocol ScriptInterface
+- (id)test;
+- (id)testReturnParam:(id)param;
+- (id)testAddParams:(id)param1 :(id)param2;
+@end
+
 @interface GTMNSAppleScript_HandlerTest : GTMTestCase {
   NSAppleScript *script_; 
 }
@@ -501,13 +507,6 @@
   STAssertNotNil(script, nil);
   STAssertTrue([script gtm_hasOpenDocumentsHandler], nil);
 }
-
-
-@protocol ScriptInterface
-- (id)test;
-- (id)testReturnParam:(id)param;
-- (id)testAddParams:(id)param1 :(id)param2;
-@end
 
 - (void)testForwarding {
   id<ScriptInterface> foo = (id<ScriptInterface>)script_;

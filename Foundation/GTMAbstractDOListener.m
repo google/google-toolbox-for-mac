@@ -255,7 +255,7 @@ static NSMutableSet *gAllListeners = nil;
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   
   _GTMDevAssert(!connection_, @"Connection_ should not be set. Was this "
-                @"listener already started? %@");
+                @"listener already started? %@", self);
   connection_ = [[NSConnection alloc] initWithReceivePort:port_ sendPort:nil];
 
   NSProtocolChecker *checker =

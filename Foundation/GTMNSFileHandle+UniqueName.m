@@ -17,17 +17,6 @@
 //
 
 #import "GTMNSFileHandle+UniqueName.h"
-#include <unistd.h>
-
-NSString *GTMUniqueFileObjectPathBasedOn(NSString *pathTemplate) {
-  if (!pathTemplate) return nil;
-  char *pathTemplateCString = strdup([pathTemplate fileSystemRepresentation]);
-  if (!pathTemplateCString) return nil;
-  char *newCName = mktemp(pathTemplateCString);
-  NSString *newName = newCName ? [NSString stringWithUTF8String:newCName] : nil;
-  free(pathTemplateCString);
-  return newName;
-}
 
 @implementation NSFileHandle (GTMFileHandleUniqueNameAdditions)
 

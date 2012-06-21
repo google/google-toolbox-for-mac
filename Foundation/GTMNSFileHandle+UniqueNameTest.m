@@ -24,16 +24,6 @@
 
 @implementation GTMNSFileHandle_UniqueNameTest
 
-- (void)testGTMUniqueFileObjectPathBasedOn {
-  NSString *path = GTMUniqueFileObjectPathBasedOn(nil);
-  STAssertNil(path, nil);
-  path = GTMUniqueFileObjectPathBasedOn(@"/System");
-  STAssertNil(path, nil);
-  path = GTMUniqueFileObjectPathBasedOn(@"/Users/HappyXXXXXX");
-  STAssertTrue([path hasPrefix:@"/Users/Happy"], nil);
-  STAssertNotEqualObjects(path, @"/Users/HappyXXXXXX", nil);
-}
-
 - (void)testFileHandleWithUniqueNameBasedOnFinalPath {
   NSFileHandle *handle
     = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:nil

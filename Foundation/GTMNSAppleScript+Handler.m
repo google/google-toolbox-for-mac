@@ -222,7 +222,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   }
   if (!wasGood) {
     _GTMDevLog(@"Unable to setValue:%@ forProperty:%@ from %@ (%d)",
-               value, property, self, error);
+               value, property, self, (int)error);
   }
   return wasGood;
 }
@@ -250,7 +250,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     desc = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&result]
             autorelease];
   } else {
-    _GTMDevLog(@"Unable to coerce script %d", error);
+    _GTMDevLog(@"Unable to coerce script %d", (int)error);
   }
   return desc;
 }
@@ -264,7 +264,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
                                     kASHasOpenHandler,
                                     &value);
   if (error) {
-    _GTMDevLog(@"Unable to get script info about open handler %d", error);
+    _GTMDevLog(@"Unable to get script info about open handler %d", (int)error);
     value = 0;
   }
   return value != 0;
@@ -346,7 +346,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   }
   if (error) {
     _GTMDevLog(@"Unable to get valueForProperty:%@ from %@ (%d)",
-               property, self, error);
+               property, self, (int)error);
   }
   return desc;
 }
@@ -390,7 +390,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     array = [desc gtm_objectValue];
   }
   if (error != noErr) {
-    _GTMDevLog(@"Error getting handlers: %d", error); // COV_NF_LINE
+    _GTMDevLog(@"Error getting handlers: %d", (int)error); // COV_NF_LINE
   }
   return [NSSet setWithArray:array];
 }
@@ -409,7 +409,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     array = [desc gtm_objectValue];
   }
   if (error != noErr) {
-    _GTMDevLog(@"Error getting properties: %d", error); // COV_NF_LINE
+    _GTMDevLog(@"Error getting properties: %d", (int)error); // COV_NF_LINE
   }
   return [NSSet setWithArray:array];
 }
@@ -420,7 +420,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   OSAID exactID = osaID;
   OSAError error = OSARealToGenericID(genericComponent, &exactID, component);
   if (error != noErr) {
-    _GTMDevLog(@"Unable to get real id script: %@ %d", self, error); // COV_NF_LINE
+    _GTMDevLog(@"Unable to get real id script: %@ %d", self, (int)error); // COV_NF_LINE
     exactID = kOSANullScript; // COV_NF_LINE
   }
   return exactID;
@@ -462,7 +462,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     }
   }
   if (err != noErr) {
-    _GTMDevLog(@"Unable to create desc for id:%d (%d)", osaID, err); // COV_NF_LINE
+    _GTMDevLog(@"Unable to create desc for id:%d (%d)", osaID, (int)err); // COV_NF_LINE
   }
   return desc;
 }
@@ -480,7 +480,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   ComponentInstance genericComponent = [NSAppleScript _defaultScriptingComponent];
   OSAError error = OSAGenericToRealID(genericComponent, &genericID, component);
   if (error != noErr) {
-    _GTMDevLog(@"Unable to get real id script: %@ %d", self, error); // COV_NF_LINE
+    _GTMDevLog(@"Unable to get real id script: %@ %d", self, (int)error); // COV_NF_LINE
     genericID = kOSANullScript; // COV_NF_LINE
   }
   return genericID;
