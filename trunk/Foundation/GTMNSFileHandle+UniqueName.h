@@ -75,7 +75,3 @@
                                            inDirectory:(NSSearchPathDirectory)directory
                                             domainMask:(NSSearchPathDomainMask)mask;
 @end
-
-// Same template as you would pass to mktemp. Note that this has the same
-// potential race conditions for use with file creation as mktemp does.
-GTM_EXTERN NSString *GTMUniqueFileObjectPathBasedOn(NSString *pathTemplate);

@@ -492,7 +492,7 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
                          uchrChars);
     if (err != noErr) {
       // COV_NF_START
-      _GTMDevLog(@"failed to translate the keycode, err=%d", err);
+      _GTMDevLog(@"failed to translate the keycode, err=%d", (int)err);
       return nil;
       // COV_NF_END
     }

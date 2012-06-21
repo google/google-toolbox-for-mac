@@ -519,7 +519,7 @@ static NSMutableDictionary *gTypeMap = nil;
     = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&replyEvent] autorelease];
   if (err) {
     isGood = NO;
-    _GTMDevLog(@"Unable to send message: %@ %d", self, err);
+    _GTMDevLog(@"Unable to send message: %@ %d", self, (int)err);
   } 
   if (isGood) {
     NSAppleEventDescriptor *errorDesc = [replyDesc descriptorForKeyword:keyErrorNumber];
