@@ -524,6 +524,9 @@ do { \
 #define STAssertEqualGLKMatrices(a1, a2, accuracy, description, ...) \
      STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
 
+#define STAssertEqualGLKQuaternions(a1, a2, accuracy, description, ...) \
+     STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
+
 #if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 // When not using the Xcode provided version, define everything ourselves.
 
