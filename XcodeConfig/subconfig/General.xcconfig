@@ -57,6 +57,13 @@ PREBINDING = NO
 // http://lists.apple.com/archives/Xcode-users/2006/Feb/msg00050.html
 SEPARATE_STRIP = YES
 
+// Do not strip any binaries during copy as it will corrupt code signatures.
+// This wont't affect iOS (since they can't have external executables or
+// frameworks) and prevents corruption on Mac. Xcode 4 warns but does not
+// fix this case:
+// http://stackoverflow.com/questions/5494920/xcode-4-archive-warning-to-skip-copy-phase
+COPY_PHASE_STRIP = NO
+
 // Force C99 dialect
 GCC_C_LANGUAGE_STANDARD = c99
 
