@@ -432,7 +432,7 @@ static int MethodSort(id a, id b, void *context) {
 @end
 
 // Leak detection
-#if !GTM_IPHONE_DEVICE
+#if !GTM_IPHONE_DEVICE && !GTM_SUPPRESS_RUN_LEAKS_HOOK
 // Don't want to get leaks on the iPhone Device as the device doesn't
 // have 'leaks'. The simulator does though.
 
@@ -497,4 +497,4 @@ static __attribute__((constructor)) void _GTMInstallLeaks(void) {
   }
 }
 
-#endif   // !GTM_IPHONE_DEVICE
+#endif   // !GTM_IPHONE_DEVICE && !GTM_SUPPRESS_RUN_LEAKS_HOOK
