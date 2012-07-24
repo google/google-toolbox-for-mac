@@ -77,10 +77,10 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ - %@ (0x%X)", 
+  return [NSString stringWithFormat:@"%@ - %@ (0x%lX)", 
           [self class],
           [self stringValue],
-          code_];
+          (unsigned long)code_];
 }
 
 - (FourCharCode)fourCharCode {

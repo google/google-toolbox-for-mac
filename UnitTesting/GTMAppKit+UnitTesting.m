@@ -321,7 +321,8 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   NSToolbarItem *item = nil;
   NSUInteger i = 0;
   GTM_FOREACH_OBJECT(item, [self items]) {
-    NSString *key = [NSString stringWithFormat:@"ToolbarItem %d", i];
+    NSString *key
+      = [NSString stringWithFormat:@"ToolbarItem %lu", (unsigned long)i];
     [inCoder encodeObject:item forKey:key];
     i = i + 1;
   }
@@ -417,7 +418,7 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
   ENCODE_NSINTEGER(inCoder, segmentCount, @"SegmentCount");
 
   for (NSInteger i = 0; i < segmentCount; ++i) {
-    NSString *key = [NSString stringWithFormat:@"Segment %d", i];
+    NSString *key = [NSString stringWithFormat:@"Segment %ld", (long)i];
     [inCoder encodeObject:[self labelForSegment:i] forKey:key];
   }
 }
@@ -449,7 +450,8 @@ GTM_METHOD_CHECK(NSObject, gtm_unitTestEncodeState:);
     for (NSUInteger i = 0; i < [objectValues count]; ++i) {
       id value = [objectValues objectAtIndex:i];
       if ([value isKindOfClass:[NSString class]]) {
-        NSString *key = [NSString stringWithFormat:@"ComboBoxObjectValue %u", i];
+        NSString *key = [NSString stringWithFormat:@"ComboBoxObjectValue %lu",
+                         (unsigned long)i];
         [inCoder encodeObject:value forKey:key];
       }
     }

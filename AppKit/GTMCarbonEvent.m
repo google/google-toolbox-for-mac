@@ -166,7 +166,8 @@
   *((UInt32 *)cls) = CFSwapInt32HostToBig([self eventClass]);
   kind = [self eventKind];
   cls[4] = 0;
-  return [NSString stringWithFormat:@"GTMCarbonEvent '%s' %lu", cls, kind];
+  return [NSString stringWithFormat:@"GTMCarbonEvent '%s' %lu",
+          cls, (unsigned long)kind];
 }
 
 
@@ -749,7 +750,8 @@ CantCreateKey:
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@ %p> - ref %p signature %lu id %lu",
-          [self class], self, hotKeyRef_, id_.signature, id_.id];
+          [self class], self, hotKeyRef_,
+          (unsigned long)id_.signature, (unsigned long)id_.id];
 }
 
 @end

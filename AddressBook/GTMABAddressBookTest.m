@@ -611,7 +611,7 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
     if (type == kGTMABDictionaryPropertyType) {
       val = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"1", nil];
     } else if (type == kGTMABStringPropertyType) {
-      val = [[NSString alloc] initWithFormat:@"value %d"];
+      val = [[NSString alloc] initWithFormat:@"value %zu", j];
     } else if (type == kGTMABIntegerPropertyType
                || type == kGTMABRealPropertyType ) {
       val = [[NSNumber alloc] initWithInt:143];

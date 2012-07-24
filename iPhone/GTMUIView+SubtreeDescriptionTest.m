@@ -32,8 +32,8 @@
   CGRect frame1 = CGRectMake(0, 0, 100, 200);
   UIView *view1 = [[[UIView alloc] initWithFrame:frame1] autorelease];
   NSString *actual = [view1 subtreeDescription];
-  NSString *format1 = @"UIView %p {x:0 y:0 w:100 h:200}\n";
-  NSString *expected = [NSString stringWithFormat:format1, view1];
+  NSString *expected = [NSString stringWithFormat:
+                        @"UIView %p {x:0 y:0 w:100 h:200}\n", view1];
   STAssertEqualObjects(actual, expected, @"a single, simple view failed");
 
   // Test a view with one child.
@@ -41,9 +41,9 @@
   UIView *view2 = [[[UIView alloc] initWithFrame:frame2] autorelease];
   [view1 addSubview:view2];
   NSString *actual2 = [view1 subtreeDescription];
-  NSString *format2 = @"UIView %p {x:0 y:0 w:100 h:200}\n"
-      "  UIView %p {x:2 y:2 w:102 h:202}\n";
-  NSString *expected2 = [NSString stringWithFormat:format2, view1, view2];
+  NSString *expected2 = [NSString stringWithFormat:
+                         @"UIView %p {x:0 y:0 w:100 h:200}\n"
+                         @"  UIView %p {x:2 y:2 w:102 h:202}\n", view1, view2];
   STAssertEqualObjects(actual2, expected2, @"a view with one child");
 
   // Test a view with two children.
@@ -51,21 +51,21 @@
   UIView *view3 = [[[UIView alloc] initWithFrame:frame3] autorelease];
   [view1 addSubview:view3];
   NSString *actual3 = [view1 subtreeDescription];
-  NSString *format3 = @"UIView %p {x:0 y:0 w:100 h:200}\n"
-      "  UIView %p {x:2 y:2 w:102 h:202}\n"
-      "  UIView %p {x:3 y:3 w:103 h:203}\n";
-  NSString *expected3 = [NSString stringWithFormat:format3,
-    view1, view2, view3];
+  NSString *expected3 = [NSString stringWithFormat:
+                         @"UIView %p {x:0 y:0 w:100 h:200}\n"
+                         @"  UIView %p {x:2 y:2 w:102 h:202}\n"
+                         @"  UIView %p {x:3 y:3 w:103 h:203}\n",
+                         view1, view2, view3];
   STAssertEqualObjects(actual3, expected3, @"a view with two children");
 
   // Test a view with two children, one hidden.
   [view3 setHidden:YES];
-  NSString *format4 = @"UIView %p {x:0 y:0 w:100 h:200}\n"
-      "  UIView %p {x:2 y:2 w:102 h:202}\n"
-      "  UIView %p {x:3 y:3 w:103 h:203} hid\n";
   NSString *actual4 = [view1 subtreeDescription];
-  NSString *expected4 = [NSString stringWithFormat:format4,
-    view1, view2, view3];
+  NSString *expected4 = [NSString stringWithFormat:
+                         @"UIView %p {x:0 y:0 w:100 h:200}\n"
+                         @"  UIView %p {x:2 y:2 w:102 h:202}\n"
+                         @"  UIView %p {x:3 y:3 w:103 h:203} hid\n",
+                         view1, view2, view3];
   STAssertEqualObjects(actual4, expected4, @"with two children, one hidden");
 }
 
@@ -74,8 +74,8 @@
   CGRect frame1 = CGRectMake(0, 0, 100, 200);
   UIView *view1 = [[[UIView alloc] initWithFrame:frame1] autorelease];
   NSString *actual = [view1 sublayersDescription];
-  NSString *format1 = @"CALayer %p {x:0 y:0 w:100 h:200}\n";
-  NSString *expected = [NSString stringWithFormat:format1, [view1 layer]];
+  NSString *expected = [NSString stringWithFormat:
+                        @"CALayer %p {x:0 y:0 w:100 h:200}\n", [view1 layer]];
   STAssertEqualObjects(actual, expected, @"a single, simple layer failed");
 
   // Test a layer with one child.
@@ -83,10 +83,10 @@
   UIView *view2 = [[[UIView alloc] initWithFrame:frame2] autorelease];
   [view1 addSubview:view2];
   NSString *actual2 = [view1 sublayersDescription];
-  NSString *format2 = @"CALayer %p {x:0 y:0 w:100 h:200}\n"
-      "  CALayer %p {x:2 y:2 w:102 h:202}\n";
-  NSString *expected2 = [NSString stringWithFormat:format2,
-    [view1 layer], [view2 layer]];
+  NSString *expected2 = [NSString stringWithFormat:
+                         @"CALayer %p {x:0 y:0 w:100 h:200}\n"
+                         @"  CALayer %p {x:2 y:2 w:102 h:202}\n",
+                         [view1 layer], [view2 layer]];
   STAssertEqualObjects(actual2, expected2, @"a layer with one child");
 
   // Test a layer with two children.
@@ -94,21 +94,21 @@
   UIView *view3 = [[[UIView alloc] initWithFrame:frame3] autorelease];
   [view1 addSubview:view3];
   NSString *actual3 = [view1 sublayersDescription];
-  NSString *format3 = @"CALayer %p {x:0 y:0 w:100 h:200}\n"
-      "  CALayer %p {x:2 y:2 w:102 h:202}\n"
-      "  CALayer %p {x:3 y:3 w:103 h:203}\n";
-  NSString *expected3 = [NSString stringWithFormat:format3,
-    [view1 layer], [view2 layer], [view3 layer]];
+  NSString *expected3 = [NSString stringWithFormat:
+                         @"CALayer %p {x:0 y:0 w:100 h:200}\n"
+                         @"  CALayer %p {x:2 y:2 w:102 h:202}\n"
+                         @"  CALayer %p {x:3 y:3 w:103 h:203}\n",
+                         [view1 layer], [view2 layer], [view3 layer]];
   STAssertEqualObjects(actual3, expected3, @"a layer with two children");
 
   // Test a layer with two children, one hidden.
   [view3 setHidden:YES];
-  NSString *format4 = @"CALayer %p {x:0 y:0 w:100 h:200}\n"
-      "  CALayer %p {x:2 y:2 w:102 h:202}\n"
-      "  CALayer %p {x:3 y:3 w:103 h:203} hid\n";
   NSString *actual4 = [view1 sublayersDescription];
-  NSString *expected4 = [NSString stringWithFormat:format4,
-    [view1 layer], [view2 layer], [view3 layer]];
+  NSString *expected4 = [NSString stringWithFormat:
+                         @"CALayer %p {x:0 y:0 w:100 h:200}\n"
+                         @"  CALayer %p {x:2 y:2 w:102 h:202}\n"
+                         @"  CALayer %p {x:3 y:3 w:103 h:203} hid\n",
+                         [view1 layer], [view2 layer], [view3 layer]];
   STAssertEqualObjects(actual4, expected4, @"with two children, one hidden");
 }
 
@@ -138,9 +138,10 @@
   UIView *view2 = [[[UIMyTestView alloc] initWithFrame:frame2] autorelease];
   [view1 addSubview:view2];
   NSString *actual2 = [view1 subtreeDescription];
-  NSString *format2 = @"UIView %p {x:0 y:0 w:100 h:200}\n"
-      "  UIMyTestView %p {x:2 y:2 w:102 h:202} alpha: 1.0\n";
-  NSString *expected2 = [NSString stringWithFormat:format2, view1, view2];
+  NSString *expected2 = [NSString stringWithFormat:
+                         @"UIView %p {x:0 y:0 w:100 h:200}\n"
+                         @"  UIMyTestView %p {x:2 y:2 w:102 h:202} alpha:1.0\n",
+                         view1, view2];
   STAssertEqualObjects(actual2, expected2, @"a view with one subclassed child");
 }
 @end

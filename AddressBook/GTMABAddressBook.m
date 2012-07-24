@@ -595,11 +595,19 @@ typedef struct {
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ %@ %@ %d", 
+#if GTM_IPHONE_SDK
+  return [NSString stringWithFormat:@"%@ %@ %@ %d",
+          [self class], 
+          [self valueForProperty:kGTMABPersonFirstNameProperty],
+          [self valueForProperty:kGTMABPersonLastNameProperty],
+          [self recordID]]; 
+#else  // GTM_IPHONE_SDK
+  return [NSString stringWithFormat:@"%@ %@ %@ %@",
           [self class], 
           [self valueForProperty:kGTMABPersonFirstNameProperty],
           [self valueForProperty:kGTMABPersonLastNameProperty],
           [self recordID]];
+#endif  // GTM_IPHONE_SDK
 }
 
 + (NSString *)localizedPropertyName:(GTMABPropertyID)property {
@@ -746,10 +754,17 @@ typedef struct {
 }
 
 - (NSString *)description {
+#if GTM_IPHONE_SDK
   return [NSString stringWithFormat:@"%@ %@ %d", 
           [self class], 
           [self valueForProperty:kABGroupNameProperty],
           [self recordID]];
+#else  // GTM_IPHONE_SDK
+  return [NSString stringWithFormat:@"%@ %@ %@", 
+          [self class], 
+          [self valueForProperty:kABGroupNameProperty],
+          [self recordID]];
+#endif  // GTM_IPHONE_SDK
 }
 @end
 

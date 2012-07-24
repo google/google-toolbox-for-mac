@@ -21,9 +21,13 @@
 #include <AvailabilityMacros.h>
 #include <TargetConditionals.h>
 
+#ifdef __OBJC__
+#include <Foundation/NSObjCRuntime.h>
+#endif  // __OBJC__
+
 #if TARGET_OS_IPHONE
 #include <Availability.h>
-#endif //  TARGET_OS_IPHONE
+#endif  // TARGET_OS_IPHONE
 
 // Not all MAC_OS_X_VERSION_10_X macros defined in past SDKs
 #ifndef MAC_OS_X_VERSION_10_5
@@ -436,4 +440,4 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 
   #endif  // DEBUG
 #endif  // GTM_SEL_STRING
 
-#endif // __OBJC__
+#endif  // __OBJC__

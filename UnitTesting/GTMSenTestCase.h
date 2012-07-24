@@ -78,7 +78,7 @@ do { \
   @try { \
     OSStatus a1value = (a1); \
     if (a1value != noErr) { \
-      NSString *_expression = [NSString stringWithFormat:@"Expected noErr, got %ld for (%s)", a1value, #a1]; \
+      NSString *_expression = [NSString stringWithFormat:@"Expected noErr, got %ld for (%s)", (long)a1value, #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                        isTrue:NO \
                        inFile:[NSString stringWithUTF8String:__FILE__] \
@@ -108,7 +108,7 @@ do { \
     OSStatus a1value = (a1); \
     OSStatus a2value = (a2); \
     if (a1value != a2value) { \
-      NSString *_expression = [NSString stringWithFormat:@"Expected %s(%ld) but got %ld for (%s)", #a2, a2value, a1value, #a1]; \
+      NSString *_expression = [NSString stringWithFormat:@"Expected %s(%ld) but got %ld for (%s)", #a2, (long)a2value, (long)a1value, #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                        isTrue:NO \
                        inFile:[NSString stringWithUTF8String:__FILE__] \
@@ -1015,32 +1015,32 @@ do { \
 @interface NSException (GTMSenTestAdditions)
 + (NSException *)failureInFile:(NSString *)filename
                         atLine:(int)lineNumber
-               withDescription:(NSString *)formatString, ...;
+               withDescription:(NSString *)formatString, ... NS_FORMAT_FUNCTION(3, 4);
 + (NSException *)failureInCondition:(NSString *)condition
                              isTrue:(BOOL)isTrue
                              inFile:(NSString *)filename
                              atLine:(int)lineNumber
-                    withDescription:(NSString *)formatString, ...;
+                    withDescription:(NSString *)formatString, ... NS_FORMAT_FUNCTION(5, 6);
 + (NSException *)failureInEqualityBetweenObject:(id)left
                                       andObject:(id)right
                                          inFile:(NSString *)filename
                                          atLine:(int)lineNumber
-                                withDescription:(NSString *)formatString, ...;
+                                withDescription:(NSString *)formatString, ... NS_FORMAT_FUNCTION(5, 6);
 + (NSException *)failureInEqualityBetweenValue:(NSValue *)left
                                       andValue:(NSValue *)right
                                   withAccuracy:(NSValue *)accuracy
                                         inFile:(NSString *)filename
                                         atLine:(int) ineNumber
-                               withDescription:(NSString *)formatString, ...;
+                               withDescription:(NSString *)formatString, ... NS_FORMAT_FUNCTION(6, 7);
 + (NSException *)failureInRaise:(NSString *)expression
                          inFile:(NSString *)filename
                          atLine:(int)lineNumber
-                withDescription:(NSString *)formatString, ...;
+                withDescription:(NSString *)formatString, ... NS_FORMAT_FUNCTION(4, 5);
 + (NSException *)failureInRaise:(NSString *)expression
                       exception:(NSException *)exception
                          inFile:(NSString *)filename
                          atLine:(int)lineNumber
-                withDescription:(NSString *)formatString, ...;
+                withDescription:(NSString *)formatString, ... NS_FORMAT_FUNCTION(5, 6);
 @end
 
 // SENTE_END
