@@ -124,7 +124,7 @@ static const CGFloat kGTMLuminanceDarkCutoff = 0.6;
       color = [self gtm_colorByAdjustingLuminance:-0.25];
       break;
     default:
-      _GTMDevLog(@"Invalid Coloration Use %d", use);
+      _GTMDevLog(@"Invalid Coloration Use %lu", (unsigned long)use);
       color = self;
       break;
   }

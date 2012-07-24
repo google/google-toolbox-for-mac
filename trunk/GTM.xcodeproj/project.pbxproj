@@ -697,6 +697,27 @@
 		8B55479A0DB3B7A50014CC1C /* GTMAppKit+UnitTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMAppKit+UnitTesting.h"; sourceTree = "<group>"; };
 		8B55479B0DB3B7A50014CC1C /* GTMAppKit+UnitTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMAppKit+UnitTesting.m"; sourceTree = "<group>"; };
 		8B58E9940E547EB000A0E02E /* GTMGetURLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGetURLHandler.m; sourceTree = "<group>"; };
+		8B5B4ABC15BF31050081A96C /* CodeCoverage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CodeCoverage.xcconfig; sourceTree = "<group>"; };
+		8B5B4ABD15BF31050081A96C /* CodeCoverageStatic.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CodeCoverageStatic.xcconfig; sourceTree = "<group>"; };
+		8B5B4ABE15BF31050081A96C /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		8B5B4ABF15BF31050081A96C /* GCSupported.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GCSupported.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC015BF31050081A96C /* General.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = General.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC115BF31050081A96C /* GTMMerge.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GTMMerge.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC215BF31050081A96C /* iOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iOS.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC315BF31050081A96C /* iPhone30.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone30.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC415BF31050081A96C /* iPhone31.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone31.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC515BF31050081A96C /* iPhone312.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone312.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC615BF31050081A96C /* iPhone313.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone313.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC715BF31050081A96C /* iPhone32.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone32.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC815BF31050081A96C /* iPhone40.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone40.xcconfig; sourceTree = "<group>"; };
+		8B5B4AC915BF31050081A96C /* iPhone41.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iPhone41.xcconfig; sourceTree = "<group>"; };
+		8B5B4ACA15BF31050081A96C /* LeopardOrLater.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LeopardOrLater.xcconfig; sourceTree = "<group>"; };
+		8B5B4ACB15BF31050081A96C /* MacOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacOS.xcconfig; sourceTree = "<group>"; };
+		8B5B4ACC15BF31050081A96C /* MacOSX.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacOSX.xcconfig; sourceTree = "<group>"; };
+		8B5B4ACD15BF31050081A96C /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		8B5B4ACE15BF31050081A96C /* SnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
+		8B5B4ACF15BF31050081A96C /* TigerOrLater.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = TigerOrLater.xcconfig; sourceTree = "<group>"; };
+		8B5B4AD015BF31050081A96C /* Unittest.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Unittest.xcconfig; sourceTree = "<group>"; };
 		8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTrace.m; sourceTree = "<group>"; };
 		8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
 		8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObserving.m"; sourceTree = "<group>"; };
@@ -1175,6 +1196,34 @@
 			path = GTMUIUnitTestingHarness;
 			sourceTree = "<group>";
 		};
+		8B5B4ABB15BF31050081A96C /* subconfig */ = {
+			isa = PBXGroup;
+			children = (
+				8B5B4ABC15BF31050081A96C /* CodeCoverage.xcconfig */,
+				8B5B4ABD15BF31050081A96C /* CodeCoverageStatic.xcconfig */,
+				8B5B4ABE15BF31050081A96C /* Debug.xcconfig */,
+				8B5B4ABF15BF31050081A96C /* GCSupported.xcconfig */,
+				8B5B4AC015BF31050081A96C /* General.xcconfig */,
+				8B5B4AC115BF31050081A96C /* GTMMerge.xcconfig */,
+				8B5B4AC215BF31050081A96C /* iOS.xcconfig */,
+				8B5B4AC315BF31050081A96C /* iPhone30.xcconfig */,
+				8B5B4AC415BF31050081A96C /* iPhone31.xcconfig */,
+				8B5B4AC515BF31050081A96C /* iPhone312.xcconfig */,
+				8B5B4AC615BF31050081A96C /* iPhone313.xcconfig */,
+				8B5B4AC715BF31050081A96C /* iPhone32.xcconfig */,
+				8B5B4AC815BF31050081A96C /* iPhone40.xcconfig */,
+				8B5B4AC915BF31050081A96C /* iPhone41.xcconfig */,
+				8B5B4ACA15BF31050081A96C /* LeopardOrLater.xcconfig */,
+				8B5B4ACB15BF31050081A96C /* MacOS.xcconfig */,
+				8B5B4ACC15BF31050081A96C /* MacOSX.xcconfig */,
+				8B5B4ACD15BF31050081A96C /* Release.xcconfig */,
+				8B5B4ACE15BF31050081A96C /* SnowLeopardOrLater.xcconfig */,
+				8B5B4ACF15BF31050081A96C /* TigerOrLater.xcconfig */,
+				8B5B4AD015BF31050081A96C /* Unittest.xcconfig */,
+			);
+			path = subconfig;
+			sourceTree = "<group>";
+		};
 		8BFE13AF0FB0F2B9001BE894 /* AddressBook */ = {
 			isa = PBXGroup;
 			children = (
@@ -1352,6 +1401,7 @@
 			children = (
 				F4CA854E0DAFAAB600B4AB10 /* xcconfigs-readme.txt */,
 				F4CA852B0DAFA92A00B4AB10 /* Project */,
+				8B5B4ABB15BF31050081A96C /* subconfig */,
 				F4CA852E0DAFA92F00B4AB10 /* Target */,
 			);
 			path = XcodeConfig;
@@ -2764,7 +2814,6 @@
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
-				GTM_PLATFORM_WARNING_CFLAGS = "-Wno-missing-format-attribute";
 			};
 			name = Debug;
 		};
@@ -2867,7 +2916,6 @@
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
-				GTM_PLATFORM_WARNING_CFLAGS = "-Wno-missing-format-attribute";
 			};
 			name = Release;
 		};

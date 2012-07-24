@@ -250,7 +250,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     desc = [[[NSAppleEventDescriptor alloc] initWithAEDescNoCopy:&result]
             autorelease];
   } else {
-    _GTMDevLog(@"Unable to coerce script %d", (int)error);
+    _GTMDevLog(@"Unable to coerce script %ld", (long)error);
   }
   return desc;
 }
@@ -264,7 +264,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
                                     kASHasOpenHandler,
                                     &value);
   if (error) {
-    _GTMDevLog(@"Unable to get script info about open handler %d", (int)error);
+    _GTMDevLog(@"Unable to get script info about open handler %ld", (long)error);
     value = 0;
   }
   return value != 0;
@@ -462,7 +462,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
     }
   }
   if (err != noErr) {
-    _GTMDevLog(@"Unable to create desc for id:%d (%d)", osaID, (int)err); // COV_NF_LINE
+    _GTMDevLog(@"Unable to create desc for id:%lu (%ld)", (unsigned long)osaID, (long)err); // COV_NF_LINE
   }
   return desc;
 }

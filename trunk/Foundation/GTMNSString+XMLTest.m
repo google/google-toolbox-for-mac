@@ -37,7 +37,7 @@
                                               length:sizeof(chars) / sizeof(UniChar)];
   NSString *string2 =
    [NSString stringWithFormat:@"zzzzz&quot;z&amp;z&apos;z&lt;z&gt;z zzz%Czzz\nz\rz\tz",
-    0xE000];
+    (unsigned short)0xE000];
 
   STAssertEqualObjects([string1 gtm_stringBySanitizingAndEscapingForXML],
                        string2,
@@ -69,7 +69,7 @@
                                               length:sizeof(chars) / sizeof(UniChar)];
   NSString *string2 =
     [NSString stringWithFormat:@"zzzzz\"z&z'z<z>z zzz%Czzz\nz\rz\tz",
-     0xE000];
+     (unsigned short)0xE000];
   
   STAssertEqualObjects([string1 gtm_stringBySanitizingToXMLSpec],
                        string2,

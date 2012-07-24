@@ -86,6 +86,10 @@
  @private
   NSString *path_;
 }
+
+- (NSString *)stringFromFormatter:(id<GTMLogFormatter>)formatter
+                            level:(GTMLoggerLevel)level
+                           format:(NSString *)fmt, ... NS_FORMAT_FUNCTION(3,4);
 @end
 
 @implementation GTMLoggerTest

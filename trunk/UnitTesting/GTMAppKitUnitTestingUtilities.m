@@ -175,8 +175,9 @@ void GTMRestoreColorProfile(void) {
       // COV_NF_START
       // No way to force this case in a unittest.
       _GTMDevLog(@"Failed to restore previous color profile! "
-            "You may need to open System Preferences : Displays : Color "
-            "and manually restore your color settings. (Error: %i)", error);
+                 @"You may need to open System Preferences : Displays : Color "
+                 @"and manually restore your color settings. (Error: %ld)",
+                 (long)error);
       // COV_NF_END
     } else {
       _GTMDevLog(@"Color profile restored");

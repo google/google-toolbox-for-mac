@@ -155,10 +155,10 @@ static const UInt32 kTestParameterValue = 'bam ';
        autorelease];
   [handler registerForEvents:&types count:1];
   OSStatus status = [event_ sendToTarget:handler options:0];
-  STAssertErr(status, eventNotHandledErr, @"status: %ld", status);
+  STAssertErr(status, eventNotHandledErr, @"status: %ld", (long)status);
   [handler setDelegate:self];
   status = [event_ sendToTarget:handler options:0];
-  STAssertNoErr(status, @"status: %ld", status);
+  STAssertNoErr(status, @"status: %ld", (long)status);
   [handler unregisterForEvents:&types count:1];
 }
 
@@ -167,15 +167,15 @@ static const UInt32 kTestParameterValue = 'bam ';
   [event_ postToMainQueue];
   OSStatus status = [event_ postToQueue:eventQueue
                                priority:kEventPriorityStandard];
-  STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", status);
+  STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", (long)status);
   EventTypeSpec types = { kTestClass, kTestKind };
   status = FlushEventsMatchingListFromQueue(eventQueue, 1, &types);
-  STAssertNoErr(status, @"status: %ld", status);
+  STAssertNoErr(status, @"status: %ld", (long)status);
 
   eventQueue = GetCurrentEventQueue();
   [event_ postToCurrentQueue];
   status = [event_ postToQueue:eventQueue priority:kEventPriorityStandard];
-  STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", status);
+  STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", (long)status);
   status = FlushEventsMatchingListFromQueue(eventQueue, 1, &types);
   STAssertNoErr(status, @"status: %ld", status);
 }
@@ -191,7 +191,8 @@ static const UInt32 kTestParameterValue = 'bam ';
 
 - (void)testDescription {
   NSString *descString
-    = [NSString stringWithFormat:@"GTMCarbonEvent 'foo ' %d", kTestKind];
+    = [NSString stringWithFormat:@"GTMCarbonEvent 'foo ' %lu",
+       (unsigned long)kTestKind];
   STAssertEqualObjects([event_ description], descString, nil);
 }
 @end
@@ -213,7 +214,8 @@ static const UInt32 kTestParameterValue = 'bam ';
 - (void)testEventHandler {
   [GTMUnitTestDevLogDebug expectPattern:
    @"DebugAssert: GoogleToolboxForMac: event CantUseParams .*"];
-  STAssertErr([handler_ handleEvent:nil handler:nil], eventNotHandledErr, nil);
+  STAssertErr([handler_ handleEvent:nil handler:nil],
+              (long)eventNotHandledErr, nil);
 }
 
 - (void)testDelegate {

@@ -539,9 +539,10 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
   NSString *systemVersions[4];
   systemVersions[0] = [NSString stringWithFormat:@".%d.%d.%d",
-                       major, minor, bugFix];
-  systemVersions[1] = [NSString stringWithFormat:@".%d.%d", major, minor];
-  systemVersions[2] = [NSString stringWithFormat:@".%d", major];
+                       (int)major, (int)minor, (int)bugFix];
+  systemVersions[1]
+      = [NSString stringWithFormat:@".%d.%d", (int)major, (int)minor];
+  systemVersions[2] = [NSString stringWithFormat:@".%d", (int)major];
   systemVersions[3] = @"";
   // Architecture
   NSString *architecture[2];
@@ -620,7 +621,7 @@ static NSString *gGTMUnitTestSaveToDirectory = nil;
   // We don't include the CompilerSDK in here because it is not something that
   // that is commonly needed.
   NSString *fullName = [NSString stringWithFormat:@"%@.%d.%d.%d.%@",
-                        name, major, minor, bugFix, systemArchitecture];
+    name, (int)major, (int)minor, (int)bugFix, systemArchitecture];
 
   NSString *basePath = [[self class] gtm_getUnitTestSaveToDirectory];
   return [[basePath stringByAppendingPathComponent:fullName]
