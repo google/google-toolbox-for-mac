@@ -62,8 +62,8 @@ static NSString * const kPassword = @"GTMTestingSecurityPassword";
 
   OSStatus result = SecItemAdd((CFDictionaryRef)passwordItem, NULL);
   STAssertTrue(result == noErr || result == errSecDuplicateItem,
-               @"Unexpected result code: %d",
-               result);
+               @"Unexpected result code: %lu",
+               (unsigned long)result);
   [self assertCorrectPassword];
 
   // Test that accessing the keychain will continue to work after a delay.

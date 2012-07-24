@@ -60,7 +60,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-NSString *STComposeString(NSString *, ...);
+NSString *STComposeString(NSString *, ...) NS_FORMAT_FUNCTION(1, 2);
 #ifdef __cplusplus
 }
 #endif

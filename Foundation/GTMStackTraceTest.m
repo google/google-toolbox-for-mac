@@ -67,7 +67,8 @@
   STAssertGreaterThan(depth, (size_t)4, nil);
   // All that we got have symbols
   for (NSUInteger lp = 0 ; lp < depth ; ++lp) {
-    STAssertNotNULL(descs[lp].symbol, @"didn't get a symbol at depth %lu", lp);
+    STAssertNotNULL(descs[lp].symbol, @"didn't get a symbol at depth %lu",
+                    (unsigned long)lp);
   }
   
   // Do it again, but don't give it enough space (to make sure it handles that)
@@ -78,7 +79,8 @@
   STAssertLessThan(depth, fullDepth, nil);
   // All that we got have symbols
   for (NSUInteger lp = 0 ; lp < depth ; ++lp) {
-    STAssertNotNULL(descs[lp].symbol, @"didn't get a symbol at depth %lu", lp);
+    STAssertNotNULL(descs[lp].symbol, @"didn't get a symbol at depth %lu",
+                    (unsigned long)lp);
   }
   
 }
