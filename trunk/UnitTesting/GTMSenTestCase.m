@@ -198,8 +198,6 @@
 
 @end
 
-NSString *STComposeString(NSString *formatString, ...) NS_FORMAT_FUNCTION(1, 2);
-
 NSString *STComposeString(NSString *formatString, ...) {
   NSString *reason = @"";
   if (formatString) {
