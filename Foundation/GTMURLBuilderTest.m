@@ -62,17 +62,6 @@
   STAssertFalse([URLBuilderA isEqual:URLBuilderB], nil);
 }
 
-- (void)testURLWithString {
-  STAssertEqualStrings(@";/?:@&=+$,",
-                      [[GTMURLBuilder URLWithString:@";/?:@&=+$,"]
-                          absoluteString],
-                      nil);
-  STAssertEqualStrings(@"a%20b%20&%20c%20-%20URL=http://test.com/",
-                       [[GTMURLBuilder URLWithString:
-                           @"a b & c - URL=http://test.com/"] absoluteString],
-                       nil);
-}
-
 - (void)testSetParameters {
   GTMURLBuilder *URLBuilderA =
       [GTMURLBuilder builderWithString:@"http://google.com/"];

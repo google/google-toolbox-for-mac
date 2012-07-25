@@ -130,9 +130,4 @@
   return YES;
 }
 
-+ (NSURL *)URLWithString:(NSString *)URLString {
-  return [NSURL URLWithString:
-    [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-}
-
 @end
