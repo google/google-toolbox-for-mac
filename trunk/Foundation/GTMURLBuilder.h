@@ -37,9 +37,6 @@
 
 @property(nonatomic, readonly) NSString *baseURLString;
 
-// Encodes URL by percent-encoding, except reserved characters:
-// ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | ","
-+ (NSURL *)URLWithString:(NSString *)URLString;
 // |URLString| is expected to be a valid URL with already escaped parameter
 // values.
 + (GTMURLBuilder *)builderWithString:(NSString *)URLString;
