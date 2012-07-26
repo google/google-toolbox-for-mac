@@ -60,7 +60,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+  
+#if defined __clang__
+// gcc and gcc-llvm do not allow you to use STAssert(blah, nil) with nil
+// as a description if you have the NS_FORMAT_FUNCTION on.
+// clang however will not compile without warnings if you don't have it.
 NSString *STComposeString(NSString *, ...) NS_FORMAT_FUNCTION(1, 2);
+#else
+NSString *STComposeString(NSString *, ...);
+#endif  // __clang__
+  
 #ifdef __cplusplus
 }
 #endif
