@@ -24,6 +24,16 @@
 #import <pthread.h>
 
 
+#if !defined(__clang__) && (__GNUC__*10+__GNUC_MINOR__ >= 42)
+// Some versions of GCC (4.2 and below AFAIK) aren't great about supporting
+// -Wmissing-format-attribute
+// when the function is anything more complex than foo(NSString *fmt, ...).
+// You see the error inside the function when you turn ... into va_args and
+// attempt to call another function (like vsprintf for example).
+// So we just shut off the warning for this file. We reenable it at the end.
+#pragma GCC diagnostic ignored "-Wmissing-format-attribute"
+#endif  // !__clang__
+
 // Reference to the shared GTMLogger instance. This is not a singleton, it's
 // just an easy reference to one shared instance.
 static GTMLogger *gSharedLogger = nil;
@@ -265,7 +275,6 @@ static GTMLogger *gSharedLogger = nil;
 
 @end  // GTMLogger
 
-
 @implementation GTMLogger (GTMLoggerMacroHelpers)
 
 - (void)logFuncDebug:(const char *)func msg:(NSString *)fmt, ... {
@@ -297,7 +306,6 @@ static GTMLogger *gSharedLogger = nil;
 }
 
 @end  // GTMLoggerMacroHelpers
-
 
 @implementation GTMLogger (PrivateMethods)
 
@@ -596,3 +604,9 @@ static BOOL IsVerboseLoggingEnabled(void) {
 }
 
 @end  // GTMLogMaximumLevelFilter
+
+#if !defined(__clang__) && (__GNUC__*10+__GNUC_MINOR__ >= 42)
+// See comment at top of file.
+#pragma GCC diagnostic error "-Wmissing-format-attribute"
+#endif  // !__clang__
+
