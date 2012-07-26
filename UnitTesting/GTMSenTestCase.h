@@ -91,7 +91,7 @@ do { \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -121,7 +121,7 @@ do { \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -150,7 +150,7 @@ do { \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -178,7 +178,7 @@ do { \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -196,7 +196,7 @@ do { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                   atLine:__LINE__ \
-                                         withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
+                                         withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
       __typeof__(a1) a1value = (a1); \
       __typeof__(a2) a2value = (a2); \
@@ -217,7 +217,7 @@ do { \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-            withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+            withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -265,7 +265,7 @@ do { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                   atLine:__LINE__ \
-                                         withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
+                                         withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
       __typeof__(a1) a1value = (a1); \
       __typeof__(a2) a2value = (a2); \
@@ -287,7 +287,7 @@ do { \
                   exception:anException \
                      inFile:[NSString stringWithUTF8String:__FILE__] \
                      atLine:__LINE__ \
-            withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+            withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -355,18 +355,18 @@ do { \
     if ([a1value isKindOfClass:[NSString class]] && \
         [a2value isKindOfClass:[NSString class]] && \
         [a1value compare:a2value options:0] == NSOrderedSame) continue; \
-     [self failWithException:[NSException failureInEqualityBetweenObject: a1value \
-                                                               andObject: a2value \
-                                                                  inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                  atLine: __LINE__ \
-                                                         withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+     [self failWithException:[NSException failureInEqualityBetweenObject:a1value \
+                                                               andObject:a2value \
+                                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                  atLine:__LINE__ \
+                                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -389,18 +389,18 @@ do { \
     if ([a1value isKindOfClass:[NSString class]] && \
         [a2value isKindOfClass:[NSString class]] && \
         [a1value compare:a2value options:0] != NSOrderedSame) continue; \
-     [self failWithException:[NSException failureInEqualityBetweenObject: a1value \
-                                                               andObject: a2value \
-                                                                  inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                  atLine: __LINE__ \
-                                                         withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+     [self failWithException:[NSException failureInEqualityBetweenObject:a1value \
+                                                               andObject:a2value \
+                                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                  atLine:__LINE__ \
+                                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) != (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) != (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -418,18 +418,18 @@ do { \
     const char* a2value = (a2); \
     if (a1value == a2value) continue; \
     if (strcmp(a1value, a2value) == 0) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject: [NSString stringWithUTF8String:a1value] \
-                                                              andObject: [NSString stringWithUTF8String:a2value] \
-                                                                 inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                 atLine: __LINE__ \
-                                                        withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:a1value] \
+                                                              andObject:[NSString stringWithUTF8String:a2value] \
+                                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                 atLine:__LINE__ \
+                                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -446,18 +446,18 @@ do { \
     const char* a1value = (a1); \
     const char* a2value = (a2); \
     if (strcmp(a1value, a2value) != 0) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject: [NSString stringWithUTF8String:a1value] \
-                                                              andObject: [NSString stringWithUTF8String:a2value] \
-                                                                 inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                 atLine: __LINE__ \
-                                                        withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:a1value] \
+                                                              andObject:[NSString stringWithUTF8String:a2value] \
+                                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                 atLine:__LINE__ \
+                                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) != (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) != (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -481,7 +481,7 @@ do { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
-                                                                        withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
+                                                                        withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
       __typeof__(a1) a1GLKValue = (a1); \
       __typeof__(a2) a2GLKValue = (a2); \
@@ -495,7 +495,7 @@ do { \
           NSMutableArray *strings = [NSMutableArray arrayWithCapacity:sizeof(a1) / sizeof(float)]; \
           NSString *string; \
           for (size_t j = 0; j < sizeof(__typeof__(a1)) / sizeof(float); ++j) { \
-            string = [NSString stringWithFormat: @"(%0.3f == %0.3f)", a1FloatValue[j], a2FloatValue[j]]; \
+            string = [NSString stringWithFormat:@"(%0.3f == %0.3f)", a1FloatValue[j], a2FloatValue[j]]; \
             [strings addObject:string]; \
           } \
           string = [strings componentsJoinedByString:@", "]; \
@@ -503,18 +503,18 @@ do { \
           desc = [NSString stringWithFormat:@"%@ With Accuracy %0.3f: %@", string, (float)accuracyvalue, desc]; \
           [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                       atLine:__LINE__ \
-                                             withDescription: desc]]; \
+                                             withDescription:desc]]; \
           break; \
         } \
       } \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -547,19 +547,19 @@ do { \
     if (a1value == a2value) continue; \
     if ((strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
         (strcmp(@encode(__typeof__(a2value)), @encode(id)) == 0) && \
-        [(id)a1value isEqual: (id)a2value]) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject: a1value \
-                                                              andObject: a2value \
-                                                                 inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                 atLine: __LINE__ \
-                                                        withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+        [(id)a1value isEqual:(id)a2value]) continue; \
+    [self failWithException:[NSException failureInEqualityBetweenObject:a1value \
+                                                              andObject:a2value \
+                                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                 atLine:__LINE__ \
+                                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -578,28 +578,28 @@ do { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
-                                                                        withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
+                                                                        withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
       __typeof__(a1) a1value = (a1); \
       __typeof__(a2) a2value = (a2); \
-      NSValue *a1encoded = [NSValue value:&a1value withObjCType: @encode(__typeof__(a1))]; \
-      NSValue *a2encoded = [NSValue value:&a2value withObjCType: @encode(__typeof__(a2))]; \
+      NSValue *a1encoded = [NSValue value:&a1value withObjCType:@encode(__typeof__(a1))]; \
+      NSValue *a2encoded = [NSValue value:&a2value withObjCType:@encode(__typeof__(a2))]; \
       if (![a1encoded isEqualToValue:a2encoded]) { \
-        [self failWithException:[NSException failureInEqualityBetweenValue: a1encoded \
-                                                                  andValue: a2encoded \
-                                                              withAccuracy: nil \
-                                                                    inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                    atLine: __LINE__ \
-                                                           withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+        [self failWithException:[NSException failureInEqualityBetweenValue:a1encoded \
+                                                                  andValue:a2encoded \
+                                                              withAccuracy:nil \
+                                                                    inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                    atLine:__LINE__ \
+                                                           withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
       } \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -624,7 +624,7 @@ do { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
-                                                                        withDescription:[@"Type mismatch -- " stringByAppendingString:STComposeString(description, ##__VA_ARGS__)]]]; \
+                                                                        withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
       __typeof__(a1) a1value = (a1); \
       __typeof__(a2) a2value = (a2); \
@@ -633,21 +633,21 @@ do { \
               NSValue *a1encoded = [NSValue value:&a1value withObjCType:@encode(__typeof__(a1))]; \
               NSValue *a2encoded = [NSValue value:&a2value withObjCType:@encode(__typeof__(a2))]; \
               NSValue *accuracyencoded = [NSValue value:&accuracyvalue withObjCType:@encode(__typeof__(accuracy))]; \
-              [self failWithException:[NSException failureInEqualityBetweenValue: a1encoded \
-                                                                        andValue: a2encoded \
-                                                                    withAccuracy: accuracyencoded \
-                                                                          inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                                          atLine: __LINE__ \
-                                                                 withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+              [self failWithException:[NSException failureInEqualityBetweenValue:a1encoded \
+                                                                        andValue:a2encoded \
+                                                                    withAccuracy:accuracyencoded \
+                                                                          inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                                          atLine:__LINE__ \
+                                                                 withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
       } \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == (%s)", #a1, #a2] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
                                                                          exception:anException \
                                                                             inFile:[NSString stringWithUTF8String:__FILE__] \
                                                                             atLine:__LINE__ \
-                                                                   withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                                                   withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -659,9 +659,9 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STFail(description, ...) \
-[self failWithException:[NSException failureInFile: [NSString stringWithUTF8String:__FILE__] \
-                                            atLine: __LINE__ \
-                                   withDescription: STComposeString(description, ##__VA_ARGS__)]]
+[self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
+                                            atLine:__LINE__ \
+                                   withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]
 
 
 
@@ -676,21 +676,21 @@ do { \
   @try { \
     id a1value = (a1); \
     if (a1value != nil) { \
-      NSString *_a1 = [NSString stringWithUTF8String: #a1]; \
+      NSString *_a1 = [NSString stringWithUTF8String:#a1]; \
       NSString *_expression = [NSString stringWithFormat:@"((%@) == nil)", _a1]; \
-      [self failWithException:[NSException failureInCondition: _expression \
-                                                       isTrue: NO \
-                                                       inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                       atLine: __LINE__ \
-                                              withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+      [self failWithException:[NSException failureInCondition:_expression \
+                                                       isTrue:NO \
+                                                       inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                       atLine:__LINE__ \
+                                              withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == nil fails", #a1] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == nil fails", #a1] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -706,21 +706,21 @@ do { \
   @try { \
     id a1value = (a1); \
     if (a1value == nil) { \
-      NSString *_a1 = [NSString stringWithUTF8String: #a1]; \
+      NSString *_a1 = [NSString stringWithUTF8String:#a1]; \
       NSString *_expression = [NSString stringWithFormat:@"((%@) != nil)", _a1]; \
-      [self failWithException:[NSException failureInCondition: _expression \
-                                                       isTrue: NO \
-                                                       inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                       atLine: __LINE__ \
-                                              withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+      [self failWithException:[NSException failureInCondition:_expression \
+                                                       isTrue:NO \
+                                                       inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                       atLine:__LINE__ \
+                                              withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) != nil fails", #a1] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) != nil fails", #a1] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while(0)
 
@@ -735,12 +735,12 @@ do { \
 do { \
   BOOL _evaluatedExpression = (expr); \
   if (!_evaluatedExpression) { \
-    NSString *_expression = [NSString stringWithUTF8String: #expr]; \
-    [self failWithException:[NSException failureInCondition: _expression \
-                                                     isTrue: NO \
-                                                     inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                     atLine: __LINE__ \
-                                            withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+    NSString *_expression = [NSString stringWithUTF8String:#expr]; \
+    [self failWithException:[NSException failureInCondition:_expression \
+                                                     isTrue:NO \
+                                                     inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                     atLine:__LINE__ \
+                                            withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while (0)
 
@@ -757,20 +757,20 @@ do { \
   @try { \
     BOOL _evaluatedExpression = (expr); \
     if (!_evaluatedExpression) { \
-      NSString *_expression = [NSString stringWithUTF8String: #expr]; \
-      [self failWithException:[NSException failureInCondition: _expression \
-                                                       isTrue: NO \
-                                                       inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                       atLine: __LINE__ \
-                                              withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+      NSString *_expression = [NSString stringWithUTF8String:#expr]; \
+      [self failWithException:[NSException failureInCondition:_expression \
+                                                       isTrue:NO \
+                                                       inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                       atLine:__LINE__ \
+                                              withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) ", #expr] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) ", #expr] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while (0)
 
@@ -785,12 +785,12 @@ do { \
 do { \
   BOOL _evaluatedExpression = (expr); \
   if (_evaluatedExpression) { \
-    NSString *_expression = [NSString stringWithUTF8String: #expr]; \
-    [self failWithException:[NSException failureInCondition: _expression \
-                                                     isTrue: YES \
-                                                     inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                     atLine: __LINE__ \
-                                            withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+    NSString *_expression = [NSString stringWithUTF8String:#expr]; \
+    [self failWithException:[NSException failureInCondition:_expression \
+                                                     isTrue:YES \
+                                                     inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                     atLine:__LINE__ \
+                                            withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while (0)
 
@@ -807,20 +807,20 @@ do { \
   @try { \
     BOOL _evaluatedExpression = (expr); \
     if (_evaluatedExpression) { \
-      NSString *_expression = [NSString stringWithUTF8String: #expr]; \
-      [self failWithException:[NSException failureInCondition: _expression \
-                                                       isTrue: YES \
-                                                       inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                       atLine: __LINE__ \
-                                              withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+      NSString *_expression = [NSString stringWithUTF8String:#expr]; \
+      [self failWithException:[NSException failureInCondition:_expression \
+                                                       isTrue:YES \
+                                                       inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                       atLine:__LINE__ \
+                                              withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
     } \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"!(%s) ", #expr] \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"!(%s) ", #expr] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while (0)
 
@@ -839,11 +839,11 @@ do { \
   @catch (id anException) { \
     continue; \
   } \
-  [self failWithException:[NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                                            exception: nil \
-                                               inFile: [NSString stringWithUTF8String:__FILE__] \
-                                               atLine: __LINE__ \
-                                      withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+  [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                                            exception:nil \
+                                               inFile:[NSString stringWithUTF8String:__FILE__] \
+                                               atLine:__LINE__ \
+                                      withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
 } while (0)
 
 
@@ -865,19 +865,19 @@ do { \
   } \
   @catch (id anException) { \
     NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
-    [self failWithException:[NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                                              exception: anException \
-                                                 inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                 atLine: __LINE__ \
-                                        withDescription: STComposeString(_descrip, ##__VA_ARGS__)]]; \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                                              exception:anException \
+                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                 atLine:__LINE__ \
+                                        withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
                                             continue; \
   } \
   NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
-  [self failWithException:[NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                                            exception: nil \
-                                               inFile: [NSString stringWithUTF8String:__FILE__] \
-                                               atLine: __LINE__ \
-                                      withDescription: STComposeString(_descrip, ##__VA_ARGS__)]]; \
+  [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                                            exception:nil \
+                                               inFile:[NSString stringWithUTF8String:__FILE__] \
+                                               atLine:__LINE__ \
+                                      withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
 } while (0)
 
 
@@ -899,33 +899,33 @@ do { \
     (expr); \
   } \
   @catch (specificException *anException) { \
-    if ([aName isEqualToString: [anException name]]) continue; \
+    if ([aName isEqualToString:[anException name]]) continue; \
     NSString *_descrip = STComposeString(@"(Expected exception: %@ (name: %@)) %@", NSStringFromClass([specificException class]), aName, description); \
     [self failWithException: \
-      [NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                        exception: anException \
-                           inFile: [NSString stringWithUTF8String:__FILE__] \
-                           atLine: __LINE__ \
-                  withDescription: STComposeString(_descrip, ##__VA_ARGS__)]]; \
+      [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                        exception:anException \
+                           inFile:[NSString stringWithUTF8String:__FILE__] \
+                           atLine:__LINE__ \
+                  withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
     continue; \
   } \
   @catch (id anException) { \
     NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
     [self failWithException: \
-      [NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                        exception: anException \
-                           inFile: [NSString stringWithUTF8String:__FILE__] \
-                           atLine: __LINE__ \
-                  withDescription: STComposeString(_descrip, ##__VA_ARGS__)]]; \
+      [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                        exception:anException \
+                           inFile:[NSString stringWithUTF8String:__FILE__] \
+                           atLine:__LINE__ \
+                  withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
     continue; \
   } \
   NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
   [self failWithException: \
-    [NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                      exception: nil \
-                         inFile: [NSString stringWithUTF8String:__FILE__] \
-                         atLine: __LINE__ \
-                withDescription: STComposeString(_descrip, ##__VA_ARGS__)]]; \
+    [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                      exception:nil \
+                         inFile:[NSString stringWithUTF8String:__FILE__] \
+                         atLine:__LINE__ \
+                withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
 } while (0)
 
 
@@ -941,11 +941,11 @@ do { \
     (expr); \
   } \
   @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                                              exception: anException \
-                                                 inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                 atLine: __LINE__ \
-                                        withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                                              exception:anException \
+                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                 atLine:__LINE__ \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while (0)
 
@@ -964,11 +964,11 @@ do { \
     (expr); \
   } \
   @catch (specificException *anException) { \
-    [self failWithException:[NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                                              exception: anException \
-                                                 inFile: [NSString stringWithUTF8String:__FILE__] \
-                                                 atLine: __LINE__ \
-                                        withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+    [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                                              exception:anException \
+                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                 atLine:__LINE__ \
+                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
   @catch (id anythingElse) { \
     ; \
@@ -994,14 +994,14 @@ do { \
     (expr); \
   } \
   @catch (specificException *anException) { \
-    if ([aName isEqualToString: [anException name]]) { \
+    if ([aName isEqualToString:[anException name]]) { \
       NSString *_descrip = STComposeString(@"(Expected exception: %@ (name: %@)) %@", NSStringFromClass([specificException class]), aName, description); \
       [self failWithException: \
-        [NSException failureInRaise: [NSString stringWithUTF8String:#expr] \
-                          exception: anException \
-                             inFile: [NSString stringWithUTF8String:__FILE__] \
-                             atLine: __LINE__ \
-                    withDescription: STComposeString(_descrip, ##__VA_ARGS__)]]; \
+        [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
+                          exception:anException \
+                             inFile:[NSString stringWithUTF8String:__FILE__] \
+                             atLine:__LINE__ \
+                    withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
     } \
     continue; \
   } \
