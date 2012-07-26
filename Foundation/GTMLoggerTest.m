@@ -58,6 +58,17 @@
 @interface DumbFormatter : GTMLogBasicFormatter
 @end
 @implementation DumbFormatter
+
+#if !defined(__clang__) && (__GNUC__*10+__GNUC_MINOR__ >= 42)
+// Some versions of GCC (4.2 and below AFAIK) aren't great about supporting
+// -Wmissing-format-attribute
+// when the function is anything more complex than foo(NSString *fmt, ...).
+// You see the error inside the function when you turn ... into va_args and
+// attempt to call another function (like vsprintf for example).
+// So we just shut off the warning for this function.
+#pragma GCC diagnostic ignored "-Wmissing-format-attribute"
+#endif  // !__clang__
+
 - (NSString *)stringForFunc:(NSString *)func
                  withFormat:(NSString *)fmt
                      valist:(va_list)args
@@ -65,6 +76,11 @@
   return [NSString stringWithFormat:@"DUMB [%d] %@", level,
           [super stringForFunc:nil withFormat:fmt valist:args level:level]];
 }
+
+#if !defined(__clang__) && (__GNUC__*10+__GNUC_MINOR__ >= 42)
+#pragma GCC diagnostic error "-Wmissing-format-attribute"
+#endif  // !__clang__
+
 @end  // DumbFormatter
 
 
