@@ -22,6 +22,16 @@
 #import "GTMRegex.h"
 #import "GTMSenTestCase.h"
 
+#if !defined(__clang__) && (__GNUC__*10+__GNUC_MINOR__ >= 42)
+// Some versions of GCC (4.2 and below AFAIK) aren't great about supporting
+// -Wmissing-format-attribute
+// when the function is anything more complex than foo(NSString *fmt, ...).
+// You see the error inside the function when you turn ... into va_args and
+// attempt to call another function (like vsprintf for example).
+// So we just shut off the warning for this file. We reenable it at the end.
+#pragma GCC diagnostic ignored "-Wmissing-format-attribute"
+#endif  // !__clang__
+
 #if !GTM_IPHONE_SDK
 // Add support for grabbing messages from Carbon.
 #import <CoreServices/CoreServices.h>
@@ -281,3 +291,8 @@ casesOfPattern:(NSString*)format
 }
 
 @end
+
+#if !defined(__clang__) && (__GNUC__*10+__GNUC_MINOR__ >= 42)
+// See comment at top of file.
+#pragma GCC diagnostic error "-Wmissing-format-attribute"
+#endif  // !__clang__
