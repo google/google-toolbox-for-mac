@@ -503,7 +503,7 @@ do { \
           desc = [NSString stringWithFormat:@"%@ With Accuracy %0.3f: %@", string, (float)accuracyvalue, desc]; \
           [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                       atLine:__LINE__ \
-                                             withDescription:desc]]; \
+                                             withDescription:@"%@", desc]]; \
           break; \
         } \
       } \
