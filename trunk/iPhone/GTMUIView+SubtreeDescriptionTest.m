@@ -140,7 +140,7 @@
   NSString *actual2 = [view1 subtreeDescription];
   NSString *expected2 = [NSString stringWithFormat:
                          @"UIView %p {x:0 y:0 w:100 h:200}\n"
-                         @"  UIMyTestView %p {x:2 y:2 w:102 h:202} alpha:1.0\n",
+                         @"  UIMyTestView %p {x:2 y:2 w:102 h:202} alpha: 1.0\n",
                          view1, view2];
   STAssertEqualObjects(actual2, expected2, @"a view with one subclassed child");
 }
