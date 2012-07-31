@@ -53,6 +53,7 @@ static struct GTMClassDescription *GTMClassDescriptions(NSUInteger *total_count)
     } else {
       // COV_NF_START - Don't know how to force this in a unittest
       free(class_descs);
+      class_descs = NULL;
       class_count = 0;
       // COV_NF_END
     }
@@ -89,6 +90,9 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
   // obj methods.
   struct GTMClassDescription *class_descs 
     = GTMClassDescriptions(&class_desc_count);
+  if (class_descs == NULL) {
+    class_desc_count = 0;
+  }
   
   // Iterate through the stack.
   for (NSUInteger i = 0; i < count; ++i) {
