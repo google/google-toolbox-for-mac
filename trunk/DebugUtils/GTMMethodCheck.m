@@ -54,9 +54,11 @@ static BOOL ConformsToNSObjectProtocol(Class cls) {
     return YES;
   }
 
-// iPhone SDK does not define the |Object| class, so we instead test for the
-// |NSObject| class.
-#if GTM_IPHONE_SDK
+  // iPhone and Mac OS X 10.8 with Obj-C 2 SDKs do not define the |Object|
+  // class, so we instead test for the |NSObject| class.
+#if GTM_IPHONE_SDK || \
+    (__OBJC2__ && defined(MAC_OS_X_VERSION_10_8) && \
+     MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8)
   // Iterate through all the protocols |cls| supports looking for NSObject.
   if (cls == [NSObject class]
       || class_conformsToProtocol(cls, @protocol(NSObject))) {
