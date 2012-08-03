@@ -663,8 +663,6 @@ Boolean GTMSMJobRemove(CFStringRef jobLabel, CFErrorRef *error) {
         break;
     }
     launch_data_free(resp);
-  } else {
-    local_error = GTMCFLaunchCreateUnlocalizedError(errno, CFSTR(""));
   }
   if (error) {
     *error = local_error;
