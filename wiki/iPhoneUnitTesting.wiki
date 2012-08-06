@@ -21,7 +21,7 @@ Hopefully your project already has an application target for building something 
   # Add `google-toolbox-for-mac/Foundation/GTMRegex.h` to your project
   # Add `google-toolbox-for-mac/GTMDefines.h` to your project
   # Add a new 'run script' build phase as the last step of your target build via "Project Menu > New Build Phase > New Run Script Build Phase", and dragging it to the end of the build steps if needed.
-  # Edit your Run Script Build Phase by double clicking it, and set the shell to "/bin/sh" and the script to `"PATH_TO_GTM/UnitTesting/RunIPhoneUnitTest.sh"`, where PATH_TO_GTM is the path to your local version of google-toolbox-for-mac.
+  # Edit your Run Script Build Phase by double clicking it, and set the shell to "/bin/sh" and the script to `"PATH_TO_GTM/UnitTesting/SCRIPT_NAME"`, where PATH_TO_GTM is the path to your local version of google-toolbox-for-mac and SCRIPT_NAME should be RunIPhoneUnitTest.sh if you are using Xcode 4.4 or lower and RuniOSUnitTestsUnderSimulator.sh if you are using Xcode 4.5 or higher.
   # Xcode's new application stationery generates an Info.plist that specifies a Main nib file base name. Open the new unit test's .plist file and remove that line. If you don't do this, RunIPhoneUnitTest.sh will crash when UIApplication throws an exception trying to load an inappropriate or non-existent nib file.
   # Build! Note that if you choose build and go you will see your unit tests executed twice, once as part of the build script, and once being run
 
@@ -30,6 +30,7 @@ Your target should now build cleanly, and if you check the build log you should 
 
 = Trouble Shooting =
  * Make sure you are not linked against the `SenTestingKit.framework`.
+ * RunIPhoneUnitTest.sh vs. RuniOSUnitTestsUnderSimulator.sh: The scripts will attempt to warn you if you are using the wrong one, Xcode 4.5 changed how the simulator can be launched, so RunIPhoneUnitTest.sh no longer works.  RuniOSUnitTestsUnderSimulator.sh uses a new method that is closer to what Xcode does when launching applications under the simulator.
 
 = Creating a unit test =
   # Add the source you want to test to your target. For example if you want to test class Foo, make sure to add Foo.h and Foo.m to your target.
