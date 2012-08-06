@@ -1046,7 +1046,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Nuke coverage data each run\nexport GTM_REMOVE_GCOV_DATA=1\n\n# Run the unit tests in this test bundle.\n${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\n";
+			shellScript = "# Nuke coverage data earch run\nexport GTM_REMOVE_GCOV_DATA=1\n\n# Enable launch daemons for security tests.\nexport GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=0\n\n# Run the unit tests in this test bundle.\n${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\n";
 		};
 		F4D20EA814852BFB0001600C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1059,7 +1059,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Honor TEST_AFTER_BUILD\nexport GTM_USE_TEST_AFTER_BUILD=1\n\n# Run the unit tests in this test bundle.\n${SRCROOT}/UnitTesting/RunIPhoneUnitTest.sh\n";
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

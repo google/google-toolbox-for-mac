@@ -1,6 +1,6 @@
 #!/bin/bash
 #  RunIPhoneUnitTest.sh
-#  Copyright 2008-2012 Google Inc.
+#  Copyright 2008 Google Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 #  use this file except in compliance with the License.  You may obtain a copy
@@ -22,17 +22,11 @@ set -o nounset
 # Uncomment the next line to trace execution.
 #set -o verbose
 
-# GTM_DEVICE_TYPE -
-#   Set to 'iPhone' or 'iPad' to control which simulator is used.
-GTM_DEVICE_TYPE=${GTM_DEVICE_TYPE:=iPhone}
-
-# GTM_SIMULATOR_SDK_VERSION
-#   Set to something like 5.1 to use a specific SDK version (the needed
-#   simulator support must be installed).  Use 'default' to get the dev tools
-#   default value.
-GTM_SIMULATOR_SDK_VERSION=${GTM_SIMULATOR_SDK_VERSION:=default}
-
-# TODO(tvl): Add a variable for the simulator user dir
+#  Controlling environment variables:
+# GTM_DISABLE_ZOMBIES -
+#   Set to a non-zero value to turn on zombie checks. You will probably
+#   want to turn this off if you enable leaks.
+GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=1}
 
 # GTM_ENABLE_LEAKS -
 #   Set to a non-zero value to turn on the leaks check. You will probably want
@@ -57,130 +51,143 @@ GTM_SIMULATOR_SDK_VERSION=${GTM_SIMULATOR_SDK_VERSION:=default}
 #
 GTM_REMOVE_GCOV_DATA=${GTM_REMOVE_GCOV_DATA:=0}
 
+# GTM_DISABLE_USERDIR_SETUP
+#   Controls whether or not CFFIXED_USER_HOME is erased and set up from scratch
+#   for you each time the script is run. In some cases you may have a wrapper
+#   script calling this one that takes care of that for us so you can set up
+#   a certain user configuration.
+GTM_DISABLE_USERDIR_SETUP=${GTM_DISABLE_USERDIR_SETUP:=0}
+
+# GTM_DISABLE_IPHONE_LAUNCH_DAEMONS
+#   Controls whether or not we launch up the iPhone Launch Daemons before
+#   we start testing. You need Launch Daemons to test anything that interacts
+#   with security. Note that it is OFF by default. Set
+#   GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=0 before calling this script
+#   to turn it on.
+GTM_DISABLE_IPHONE_LAUNCH_DAEMONS=${GTM_DISABLE_IPHONE_LAUNCH_DAEMONS:=1}
+
 # GTM_TEST_AFTER_BUILD
 #   When set to 1, tests are run only when TEST_AFTER_BUILD is set to "YES".
 #   This can be used to have tests run as an after build step when running
 #   from the command line, but not when running from within XCode.
 GTM_USE_TEST_AFTER_BUILD=${GTM_USE_TEST_AFTER_BUILD:=0}
 
-readonly ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
-readonly ScriptName=$(basename "$0")
-readonly ThisScript="${ScriptDir}/${ScriptName}"
-readonly SimExecutable="${ScriptDir}/iossim"
-
-# A variable that follow Xcode unittesting conventions
-readonly TEST_BUNDLE_PATH="${TEST_BUNDLE_PATH:=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}}"
-TEST_HOST="${TEST_HOST:=}"
+ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
+ScriptName=$(basename "$0")
+ThisScript="${ScriptDir}/${ScriptName}"
 
 GTMXcodeNote() {
-  echo ${ThisScript}:${1}: note: GTM ${2}
+    echo ${ThisScript}:${1}: note: GTM ${2}
 }
 
-GTMFakeUnitTestingMsg() {
-  echo "${DEVELOPER_DIR}/Tools/RunPlatformUnitTests.include:${1}: ${2}: ${3}"
+# Creates a file containing the plist for the securityd daemon and prints the
+# filename to stdout.
+GTMCreateLaunchDaemonPlist() {
+  local plist_file
+  plist_file="$TMPDIR/securityd.$$.plist"
+  echo $plist_file
+
+  # Create the plist file with PlistBuddy.
+  /usr/libexec/PlistBuddy \
+    -c "Add :Label string RunIPhoneLaunchDaemons" \
+    -c "Add :ProgramArguments array" \
+        -c "Add :ProgramArguments: string \"$IPHONE_SIMULATOR_ROOT/usr/libexec/securityd\"" \
+    -c "Add :EnvironmentVariables dict" \
+        -c "Add :EnvironmentVariables:DYLD_ROOT_PATH string \"$IPHONE_SIMULATOR_ROOT\"" \
+        -c "Add :EnvironmentVariables:IPHONE_SIMULATOR_ROOT string \"$IPHONE_SIMULATOR_ROOT\"" \
+        -c "Add :EnvironmentVariables:CFFIXED_USER_HOME string \"$CFFIXED_USER_HOME\"" \
+    -c "Add :MachServices dict" \
+        -c "Add :MachServices:com.apple.securityd bool YES" "$plist_file" > /dev/null
 }
 
-GTMKillSimulator() {
-  # If there is something killed, sleep for few seconds to let the simulator
-  # spin down so it isn't still seen as running when the next thing tries to
-  # launch it.
-  /usr/bin/killall "iPhone Simulator" 2> /dev/null && sleep 2 || true
-}
-
-# Honor TEST_AFTER_BUILD if requested.
 if [[ "$GTM_USE_TEST_AFTER_BUILD" == 1 && "$TEST_AFTER_BUILD" == "NO" ]]; then
   GTMXcodeNote ${LINENO} "Skipping running of unittests since TEST_AFTER_BUILD=NO."
-  exit 0
-fi
+elif [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
+  # We kill the iPhone simulator because otherwise we run into issues where
+  # the unittests fail becuase the simulator is currently running, and
+  # at this time the iPhone SDK won't allow two simulators running at the same
+  # time.
+  set +e
+  /usr/bin/killall "iPhone Simulator"
+  set -e
 
-# Only support simulator builds.
-if [[ "${PLATFORM_NAME}" != "iphonesimulator" ]]; then
-  GTMXcodeNote ${LINENO} "Skipping running of unittests for device build."
-  exit 0
-fi
-
-# Make sure the iossim executable exists and is executable.
-if [[ ! -x "${SimExecutable}" ]]; then
-  GTMXcodeNote ${LINENO} "ERROR: Unable to run tests: ${SimExecutable} was not found/executable."
-  exit 1
-fi
-
-# We kill the iPhone simulator because otherwise we run into issues where
-# the unittests fail becuase the simulator is currently running, and
-# at this time the iPhone SDK won't allow two simulators running at the same
-# time.
-GTMKillSimulator
-
-if [ $GTM_REMOVE_GCOV_DATA -ne 0 ]; then
-  if [ "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" != "-" ]; then
-    if [ -d "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" ]; then
-      GTMXcodeNote ${LINENO} "Removing any .gcda files"
-      (cd "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" && \
-          find . -type f -name "*.gcda" -print0 | xargs -0 rm -f )
+  if [ $GTM_REMOVE_GCOV_DATA -ne 0 ]; then
+    if [ "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" != "-" ]; then
+      if [ -d "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" ]; then
+        GTMXcodeNote ${LINENO} "Removing any .gcda files"
+        (cd "${OBJECT_FILE_DIR}-${CURRENT_VARIANT}" && \
+            find . -type f -name "*.gcda" -print0 | xargs -0 rm -f )
+      fi
     fi
   fi
-fi
 
-# 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if
-#         CFFIXED_USER_HOME empty
-GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
+  export DYLD_ROOT_PATH="$SDKROOT"
+  export DYLD_FRAMEWORK_PATH="$CONFIGURATION_BUILD_DIR"
+  export IPHONE_SIMULATOR_ROOT="$SDKROOT"
+  export CFFIXED_USER_HOME="$TEMP_FILES_DIR/iPhone Simulator User Dir"
 
-#
-# Build up the command line to run.
-#
+  # See http://developer.apple.com/technotes/tn2004/tn2124.html for an
+  # explanation of these environment variables.
 
-GTM_TEST_COMMAND=(
-  "${SimExecutable}" "-d" "${GTM_DEVICE_TYPE}"
-)
-if [[ "${GTM_SIMULATOR_SDK_VERSION}" != "default" ]] ; then
-  GTM_TEST_COMMAND+=( "-s" "${GTM_SIMULATOR_SDK_VERSION}" )
-fi
-if [ "${TEST_HOST}" != "" ]; then
-  # When using a test host, it is usually set to the executable within the app
-  # bundle, back up one to point at the bundle.
-  TEST_HOST_FILENAME=$(basename "${TEST_HOST}")
-  TEST_HOST_EXTENSION="${TEST_HOST_FILENAME##*.}"
-  if [[ "${TEST_HOST_EXTENSION}" != "app" ]] ; then
-    TEST_HOST=$(dirname "${TEST_HOST}")
+  # NOTE: any setup work is done before turning on the environment variables
+  # to avoid having the setup work also get checked by what the variables
+  # enabled.
+
+  if [ $GTM_DISABLE_USERDIR_SETUP -eq 0 ]; then
+    # Cleanup user home directory
+    if [ -d "$CFFIXED_USER_HOME" ]; then
+      rm -rf "$CFFIXED_USER_HOME"
+    fi
+    mkdir "$CFFIXED_USER_HOME"
+    mkdir "$CFFIXED_USER_HOME/Documents"
+    mkdir -p "$CFFIXED_USER_HOME/Library/Caches"
   fi
-  # Yes the DYLD_INSERT_LIBRARIES value below looks odd, that is found from
-  # looking at what Xcode sets when it invokes unittests directly.
-  GTM_TEST_COMMAND+=( \
-    "-e" "DYLD_INSERT_LIBRARIES=/../../Library/PrivateFrameworks/IDEBundleInjection.framework/IDEBundleInjection" \
-    "-e" "XCInjectBundle=${TEST_BUNDLE_PATH}" \
-    "-e" "XCInjectBundleInto=${TEST_HOST}" \
-    "${TEST_HOST}" \
-  )
+
+  if [ $GTM_DISABLE_IPHONE_LAUNCH_DAEMONS -eq 0 ]; then
+    # Remove any instance of RunIPhoneLaunchDaemons left running in the case the
+    # 'trap' below fails. We first must check for RunIPhoneLaunchDaemons'
+    # presence as 'launchctl remove' will kill this script if run from within an
+    # Xcode build.
+    launchctl list | grep RunIPhoneLaunchDaemons && launchctl remove RunIPhoneLaunchDaemons
+
+    # If we want to test anything that interacts with the keychain, we need
+    # securityd up and running.
+    LAUNCH_DAEMON_PLIST="$(GTMCreateLaunchDaemonPlist)"
+    launchctl load $LAUNCH_DAEMON_PLIST
+    rm $LAUNCH_DAEMON_PLIST
+
+    # No matter how we exit, we want to shut down our launchctl job.
+    trap "launchctl remove RunIPhoneLaunchDaemons" INT TERM EXIT
+  fi
+
+  if [ $GTM_DISABLE_ZOMBIES -eq 0 ]; then
+    GTMXcodeNote ${LINENO} "Enabling zombies"
+    export CFZombieLevel=3
+    export NSZombieEnabled=YES
+  fi
+
+  export MallocScribble=YES
+  export MallocPreScribble=YES
+  export MallocGuardEdges=YES
+  export MallocStackLogging=YES
+  export NSAutoreleaseFreedObjectCheckEnabled=YES
+
+  # Turn on the mostly undocumented OBJC_DEBUG stuff.
+  export OBJC_DEBUG_FRAGILE_SUPERCLASSES=YES
+  export OBJC_DEBUG_UNLOAD=YES
+  # Turned off due to the amount of false positives from NS classes.
+  # export OBJC_DEBUG_FINALIZERS=YES
+  export OBJC_DEBUG_NIL_SYNC=YES
+  export OBJC_PRINT_REPLACED_METHODS=YES
+
+  # 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if
+  #         CFFIXED_USER_HOME empty
+  GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
+
+  # Start our app.
+  "$TARGET_BUILD_DIR/$EXECUTABLE_PATH" -RegisterForSystemEvents
+
 else
-  GTM_TEST_COMMAND+=( "${TEST_BUNDLE_PATH}" )
+  GTMXcodeNote ${LINENO} "Skipping running of unittests for device build."
 fi
-GTM_TEST_COMMAND+=( \
-    "-NSTreatUnknownArgumentsAsOpen" "NO" \
-    "-ApplePersistenceIgnoreState" "YES" \
-    "-SenTest" "All" \
-  )
-# There was a test host, add the test bundle at the end as an arg to the app.
-if [ "${TEST_HOST}" != "" ]; then
-  GTM_TEST_COMMAND+=( "${TEST_BUNDLE_PATH}" )
-fi
-
-# These two lines seem to fake out Xcode just enough that its log parser acts
-# as though Xcode were running the unit test via the UI. This prevents false
-# failures based on lines including "error" and such (which tends to happen in
-# raw NSLogs in code).
-GTMFakeUnitTestingMsg ${LINENO} "note" "Started tests for architectures 'i386'"
-GTMFakeUnitTestingMsg ${LINENO} "note" "Running tests for architecture 'i386' (GC OFF)"
-
-set +e
-"${GTM_TEST_COMMAND[@]}"
-TEST_HOST_RESULT=$?
-set -e
-
-GTMKillSimulator
-
-if [ ${TEST_HOST_RESULT} -ne 0 ]; then
-  GTMXcodeNote ${LINENO} "ERROR: Tests failed."
-  exit 1
-fi
-
 exit 0
