@@ -19,7 +19,6 @@
 #import "GTMLogger.h"
 #import "GTMRegex.h"
 #import "GTMSenTestCase.h"
-#import "GTMSystemVersion.h"
 
 
 // A test writer that stores log messages in an array for easy retrieval.
