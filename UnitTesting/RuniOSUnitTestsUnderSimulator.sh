@@ -32,6 +32,11 @@ GTM_DEVICE_TYPE=${GTM_DEVICE_TYPE:=iPhone}
 #   default value.
 GTM_SIMULATOR_SDK_VERSION=${GTM_SIMULATOR_SDK_VERSION:=default}
 
+# GTM_SIMULATOR_START_TIMEOUT
+#   Controls the simulator startup timeout. Things like machine load, running
+#   on a VM, etc.; can cause the startup to take longer.
+GTM_SIMULATOR_START_TIMEOUT=${GTM_SIMULATOR_START_TIMEOUT:=60}
+
 # TODO(tvl): Add a variable for the simulator user dir.
 
 # GTM_ENABLE_LEAKS -
@@ -162,7 +167,9 @@ GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
 #
 
 GTM_TEST_COMMAND=(
-  "${SimExecutable}" "-d" "${GTM_DEVICE_TYPE}"
+  "${SimExecutable}"
+    "-d" "${GTM_DEVICE_TYPE}"
+    "-t" "${GTM_SIMULATOR_START_TIMEOUT}"
 )
 if [[ "${GTM_SIMULATOR_SDK_VERSION}" != "default" ]] ; then
   GTM_TEST_COMMAND+=( "-s" "${GTM_SIMULATOR_SDK_VERSION}" )
@@ -177,19 +184,19 @@ if [[ -n "${TEST_HOST}" ]]; then
   fi
   # Yes the DYLD_INSERT_LIBRARIES value below looks odd, that is found from
   # looking at what Xcode sets when it invokes unittests directly.
-  GTM_TEST_COMMAND+=( \
-    "-e" "DYLD_INSERT_LIBRARIES=/../../Library/PrivateFrameworks/IDEBundleInjection.framework/IDEBundleInjection" \
-    "-e" "XCInjectBundle=${TEST_BUNDLE_PATH}" \
-    "-e" "XCInjectBundleInto=${TEST_HOST}" \
-    "${TEST_HOST}" \
+  GTM_TEST_COMMAND+=(
+    "-e" "DYLD_INSERT_LIBRARIES=/../../Library/PrivateFrameworks/IDEBundleInjection.framework/IDEBundleInjection"
+    "-e" "XCInjectBundle=${TEST_BUNDLE_PATH}"
+    "-e" "XCInjectBundleInto=${TEST_HOST}"
+    "${TEST_HOST}"
   )
 else
   GTM_TEST_COMMAND+=( "${TEST_BUNDLE_PATH}" )
 fi
-GTM_TEST_COMMAND+=( \
-    "-NSTreatUnknownArgumentsAsOpen" "NO" \
-    "-ApplePersistenceIgnoreState" "YES" \
-    "-SenTest" "All" \
+GTM_TEST_COMMAND+=(
+    "-NSTreatUnknownArgumentsAsOpen" "NO"
+    "-ApplePersistenceIgnoreState" "YES"
+    "-SenTest" "All"
   )
 # There was a test host, add the test bundle at the end as an arg to the app.
 if [[ -n "${TEST_HOST}" ]]; then
