@@ -360,6 +360,7 @@
   #if __has_feature(objc_arc)
     #define GTMInvalidateInitializer() \
       do { \
+        [self class]; /* Avoid warning of dead store to |self|. */ \
         _GTMDevAssert(NO, @"Invalid initializer."); \
         return nil; \
       } while (0)
