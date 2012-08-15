@@ -72,6 +72,7 @@
 + (id)context;
 - (BOOL)shouldStop;
 - (void)setShouldStop:(BOOL)stop;
+- (void)reset;
 @end
 
 // Some category methods to simplify spinning the runloops in such a way as
