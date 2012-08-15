@@ -73,6 +73,10 @@
   shouldStop_ = stop;
 }
 
+- (void)reset {
+  shouldStop_ = NO;
+}
+
 @end
 
 @implementation NSRunLoop (GTMUnitTestingAdditions)
