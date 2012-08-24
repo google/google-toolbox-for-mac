@@ -13,6 +13,8 @@ Both plugins should be installed in:
 
 "~/Library/Application Support/Developer/Shared/Xcode/Plug-ins"
 
+Note: the path might not exist, you'll need to create it in that case.
+
 After installation, restart Xcode, and you should have a "About GTM Xcode Plugin" menu item under the Xcode menu. If you don't have this item, please check the location you installed it and try again. You may also want to check the console to see if anything interesting was spit out there.
 
 == Bugs ==
