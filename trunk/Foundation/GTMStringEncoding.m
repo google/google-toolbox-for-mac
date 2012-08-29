@@ -261,7 +261,7 @@ GTM_INLINE int lcm(int a, int b) {
         buffer |= val & mask_;
         bitsLeft += shift_;
         if (bitsLeft >= 8) {
-          outBuf[outPos++] = buffer >> (bitsLeft - 8);
+          outBuf[outPos++] = (unsigned char)(buffer >> (bitsLeft - 8));
           bitsLeft -= 8;
         }
         break;
