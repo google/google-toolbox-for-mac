@@ -144,8 +144,8 @@ do { \
 #define STAssertNotNULL(a1, description, ...) \
 do { \
   @try { \
-    const void* a1value = (a1); \
-    if (a1value == NULL) { \
+    __typeof__(a1) a1value = (a1); \
+    if (a1value == (__typeof__(a1))NULL) { \
       NSString *_expression = [NSString stringWithFormat:@"((%s) != NULL)", #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                        isTrue:NO \
@@ -172,8 +172,8 @@ do { \
 #define STAssertNULL(a1, description, ...) \
 do { \
   @try { \
-    const void* a1value = (a1); \
-    if (a1value != NULL) { \
+    __typeof__(a1) a1value = (a1); \
+    if (a1value != (__typeof__(a1))NULL) { \
       NSString *_expression = [NSString stringWithFormat:@"((%s) == NULL)", #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                                                         isTrue:NO \
