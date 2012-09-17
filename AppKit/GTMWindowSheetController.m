@@ -134,7 +134,7 @@ willPositionSheet:(NSWindow*)sheet
   _GTMDevAssert([sheets_ count] == 0,
                 @"Finalizing a controller with sheets still active!");
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  
+
   [super finalize];
 }
 
@@ -460,7 +460,7 @@ willPositionSheet:(NSWindow*)sheet
       return &kGTMWSCSystemSheetInfoData[i];
     }
   }
-  
+
   _GTMDevLog(@"Failed to find info for sheet of type %@", [systemSheet class]);
   return nil;
 }
@@ -488,8 +488,7 @@ willPositionSheet:(NSWindow*)sheet
 }
 
 - (NSRect)screenFrameOfView:(NSView*)view {
-  NSRect viewFrame = [view frame];
-  viewFrame = [[view superview] convertRect:viewFrame toView:nil];
+  NSRect viewFrame = [view convertRect:[view bounds] toView:nil];
   viewFrame.origin = [[view window] convertBaseToScreen:viewFrame.origin];
   return viewFrame;
 }
