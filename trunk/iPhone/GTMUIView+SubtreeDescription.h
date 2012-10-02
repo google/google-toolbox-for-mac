@@ -17,6 +17,13 @@
 //
 #import <UIKit/UIKit.h>
 
+// This entire file, and the corresponding .m is similar to, and predates
+// Apple's recursiveDescription, used like so:
+//
+// (lldb) po [[self view] recursiveDescription]
+//
+// As documented in Technical Note TN2239 iOS Debugging Magic.
+
 // This entire file, and the corresponding .m is DEBUG only.
 // But you can define INCLUDE_UIVIEW_SUBTREE_DESCRIPTION to no-zero to override.
 #if DEBUG || INCLUDE_UIVIEW_SUBTREE_DESCRIPTION
