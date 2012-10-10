@@ -484,7 +484,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
               value < USHRT_MAX &&
               value > 0 
               && [scanner scanLocation] == length - 4) {
-            unichar uchar = value;
+            unichar uchar = (unichar)value;
             NSString *charString = [NSString stringWithCharacters:&uchar length:1];
             [finalString replaceCharactersInRange:escapeRange withString:charString];
           }
@@ -498,7 +498,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
               value < USHRT_MAX &&
               value > 0 
               && [scanner scanLocation] == length - 3) {
-            unichar uchar = value;
+            unichar uchar = (unichar)value;
             NSString *charString = [NSString stringWithCharacters:&uchar length:1];
             [finalString replaceCharactersInRange:escapeRange withString:charString];
           }
