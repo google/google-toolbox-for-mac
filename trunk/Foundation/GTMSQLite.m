@@ -761,6 +761,7 @@ static void UpperLower16(sqlite3_context *context,
                                 convertedBytesForSQLite, &free);
         break;
       default:
+        free(returnBuffer);
         // COV_NF_START no way to tell sqlite to not use utf8 or utf16?
         sqlite3_result_error(context,
                              "LOWER/UPPER CF implementation " \
