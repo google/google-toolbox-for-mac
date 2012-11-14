@@ -18,6 +18,8 @@
 
 #import "GTMNSThread+Blocks.h"
 
+#include <pthread.h>
+
 #if NS_BLOCKS_AVAILABLE
 
 @implementation NSThread (GTMBlocksAdditions)
@@ -49,3 +51,42 @@
 @end
 
 #endif  // NS_BLOCKS_AVAILABLE
+
+@implementation GTMSimpleWorkerThread
+
+- (void)main {
+  [self setThreadDebuggerName:[self name]];
+
+  // Add a port to the runloop so that it stays alive. Without a port attached
+  // to it, a runloop will immediately return when you call run on it.
+  NSPort *tempPort = [NSPort port];
+  NSRunLoop *loop = [NSRunLoop currentRunLoop];
+  [loop addPort:tempPort forMode:NSDefaultRunLoopMode];
+
+  // Run the loop using CFRunLoopRun because [NSRunLoop run] will sometimes nest
+  // runloops making it impossible to stop.
+  runLoop_ = [loop getCFRunLoop];
+  CFRunLoopRun();
+}
+
+- (void)setThreadDebuggerName:(NSString *)name {
+  // [NSThread setName:] doesn't actually set the name in such a way that the
+  // debugger can see it. So we handle it here instead.
+  pthread_setname_np([name UTF8String]);
+}
+
+- (void)stop {
+  CFRunLoopStop(runLoop_);
+}
+
+- (void)setName:(NSString *)name {
+  if ([self isExecuting]) {
+    [self performSelector:@selector(setThreadDebuggerName:)
+                 onThread:self
+               withObject:name
+            waitUntilDone:YES];
+  }
+  [super setName:name];
+}
+
+@end
