@@ -36,3 +36,14 @@
 @end
 
 #endif  // NS_BLOCKS_AVAILABLE
+
+// A simple thread that does nothing but handle performBlock and
+// performSelector calls.
+@interface GTMSimpleWorkerThread : NSThread {
+ @private
+  CFRunLoopRef runLoop_;
+}
+
+// Will stop the thread.
+- (void)stop;
+@end
