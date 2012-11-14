@@ -54,6 +54,12 @@
 
 @implementation GTMSimpleWorkerThread
 
+- (void)setThreadDebuggerName:(NSString *)name {
+  // [NSThread setName:] doesn't actually set the name in such a way that the
+  // debugger can see it. So we handle it here instead.
+  pthread_setname_np([name UTF8String]);
+}
+
 - (void)main {
   [self setThreadDebuggerName:[self name]];
 
@@ -67,12 +73,6 @@
   // runloops making it impossible to stop.
   runLoop_ = [loop getCFRunLoop];
   CFRunLoopRun();
-}
-
-- (void)setThreadDebuggerName:(NSString *)name {
-  // [NSThread setName:] doesn't actually set the name in such a way that the
-  // debugger can see it. So we handle it here instead.
-  pthread_setname_np([name UTF8String]);
 }
 
 - (void)stop {
