@@ -37,6 +37,10 @@
 
 #endif  // NS_BLOCKS_AVAILABLE
 
+// [NSObject performSelector:onThread:...] 10.5 and later, so this makes no
+// sense on any earlier SDK.
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
+
 // A simple thread that does nothing but handle performBlock and
 // performSelector calls.
 @interface GTMSimpleWorkerThread : NSThread {
@@ -47,3 +51,5 @@
 // Will stop the thread.
 - (void)stop;
 @end
+
+#endif  // GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)

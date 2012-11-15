@@ -18,7 +18,11 @@
 
 #import "GTMNSThread+Blocks.h"
 
-#include <pthread.h>
+#import <pthread.h>
+#import <dlfcn.h>
+
+// Only available 10.6 and later.
+typedef int (*pthread_setname_np_Ptr)(const char*);
 
 #if NS_BLOCKS_AVAILABLE
 
@@ -52,12 +56,17 @@
 
 #endif  // NS_BLOCKS_AVAILABLE
 
+#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
+
 @implementation GTMSimpleWorkerThread
 
 - (void)setThreadDebuggerName:(NSString *)name {
   // [NSThread setName:] doesn't actually set the name in such a way that the
   // debugger can see it. So we handle it here instead.
-  pthread_setname_np([name UTF8String]);
+  // pthread_setname_np only available 10.6 and later, look up dynamically.
+  pthread_setname_np_Ptr setName = dlsym(RTLD_DEFAULT, "pthread_setname_np");
+  if (!setName) return;
+  setName([name UTF8String]);
 }
 
 - (void)main {
@@ -90,3 +99,5 @@
 }
 
 @end
+
+#endif  // GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
