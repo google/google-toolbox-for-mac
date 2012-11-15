@@ -18,6 +18,7 @@
 // Based on http://www.informit.com/blogs/blog.aspx?uk=Ask-Big-Nerd-Ranch-Blocks-in-Objective-C
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 // Extension to NSThread to work with blocks.
 
