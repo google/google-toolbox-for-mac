@@ -62,7 +62,7 @@ GTM_SIMULATOR_START_TIMEOUT=${GTM_SIMULATOR_START_TIMEOUT:=60}
 #
 GTM_REMOVE_GCOV_DATA=${GTM_REMOVE_GCOV_DATA:=0}
 
-# GTM_TEST_AFTER_BUILD
+# GTM_USE_TEST_AFTER_BUILD
 #   When set to 1, tests are run only when TEST_AFTER_BUILD is set to "YES".
 #   This can be used to have tests run as an after build step when running
 #   from the command line, but not when running from within XCode.
