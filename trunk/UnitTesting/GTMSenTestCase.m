@@ -399,7 +399,8 @@ static int MethodSort(id a, id b, void *context) {
 
 #endif  // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 
-@implementation GTMTestCase : SenTestCase
+@implementation GTMTestCase
+
 - (void)invokeTest {
   NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
   Class devLogClass = NSClassFromString(@"GTMUnitTestDevLog");
