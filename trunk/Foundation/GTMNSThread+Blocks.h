@@ -47,6 +47,7 @@
 @interface GTMSimpleWorkerThread : NSThread {
  @private
   CFRunLoopRef runLoop_;
+  NSConditionLock *runLock_;
 }
 
 // Will stop the thread.
