@@ -58,7 +58,25 @@ typedef int (*pthread_setname_np_Ptr)(const char*);
 
 #if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
 
+enum {
+  GTMSimpleThreadIsStarting = 1,
+  GTMSimpleThreadIsFinished
+};
+
 @implementation GTMSimpleWorkerThread
+
+- (id)init {
+  if ((self = [super init])) {
+    runLock_ =
+        [[NSConditionLock alloc] initWithCondition:GTMSimpleThreadIsStarting];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [runLock_ release];
+  [super dealloc];
+}
 
 - (void)setThreadDebuggerName:(NSString *)name {
   // [NSThread setName:] doesn't actually set the name in such a way that the
@@ -70,6 +88,10 @@ typedef int (*pthread_setname_np_Ptr)(const char*);
 }
 
 - (void)main {
+  _GTMDevAssert([runLock_ condition] == GTMSimpleThreadIsStarting,
+                @"Bad start condition %d", [runLock_ condition]);
+  [runLock_ lockWhenCondition:GTMSimpleThreadIsStarting];
+  
   [self setThreadDebuggerName:[self name]];
 
   // Add a port to the runloop so that it stays alive. Without a port attached
@@ -82,10 +104,19 @@ typedef int (*pthread_setname_np_Ptr)(const char*);
   // runloops making it impossible to stop.
   runLoop_ = [loop getCFRunLoop];
   CFRunLoopRun();
+  [runLock_ unlockWithCondition:GTMSimpleThreadIsFinished];
 }
 
 - (void)stop {
   CFRunLoopStop(runLoop_);
+  if (![[NSThread currentThread] isEqual:self]) {
+    // If we are calling stop from a separate thread, we block until the
+    // simple thread actually leaves the runloop so there is no race condition
+    // between the current thread and the simple thread. In effect it's a
+    // join operation.
+    [runLock_ lockWhenCondition:GTMSimpleThreadIsFinished];
+    [runLock_ unlockWithCondition:GTMSimpleThreadIsFinished];
+  }
 }
 
 - (void)setName:(NSString *)name {
