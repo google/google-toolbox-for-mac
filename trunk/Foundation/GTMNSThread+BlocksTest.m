@@ -16,6 +16,7 @@
 //  under the License.
 //
 
+#import <pthread.h>
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
@@ -25,90 +26,240 @@
 
 @interface GTMNSThread_BlocksTest : GTMTestCase {
  @private
-  NSThread *workerThread_;
-  BOOL workerRunning_;
+  GTMSimpleWorkerThread *workerThread_;
 }
-
-@property (nonatomic, readwrite, getter=isWorkerRunning) BOOL workerRunning;
 @end
 
 @implementation GTMNSThread_BlocksTest
 
-@synthesize workerRunning = workerRunning_;
-
-- (void)stopTestRunning:(GTMUnitTestingBooleanRunLoopContext *)context{
-  [context setShouldStop:YES];
-}
-
-- (void)workerMain:(id)object {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  while ([self isWorkerRunning]) {
-    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                             beforeDate:[NSDate distantFuture]];
-  }
-  [pool drain];
-}
-
-- (void)killWorkerThread:(GTMUnitTestingBooleanRunLoopContext *)context {
-  [self setWorkerRunning:NO];
-  [context setShouldStop:YES];
-}
-
 - (void)setUp {
-  [self setWorkerRunning:YES];
-  workerThread_ = [[NSThread alloc] initWithTarget:self
-                                          selector:@selector(workerMain:)
-                                            object:nil];
+  workerThread_ = [[GTMSimpleWorkerThread alloc] init];
   [workerThread_ start];
 }
 
 - (void)tearDown {
-  GTMUnitTestingBooleanRunLoopContext *context
-      = [GTMUnitTestingBooleanRunLoopContext context];
-  [self performSelector:@selector(killWorkerThread:)
-               onThread:workerThread_
-             withObject:context
-          waitUntilDone:NO];
-  NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:context], nil);
+  [workerThread_ stop];
   [workerThread_ release];
 }
 
-- (void)testPerformBlock {
+- (void)testPerformBlockOnCurrentThread {
   NSThread *currentThread = [NSThread currentThread];
-  GTMUnitTestingBooleanRunLoopContext *context
-      = [GTMUnitTestingBooleanRunLoopContext context];
-  [workerThread_ gtm_performBlock:^{
-    [self performSelector:@selector(stopTestRunning:)
-                 onThread:currentThread
-               withObject:context
-            waitUntilDone:YES];
-  }];
-  NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:context], nil);
-}
 
-- (void)testPerformBlockWaitUntilDone {
-  GTMUnitTestingBooleanRunLoopContext *context
-      = [GTMUnitTestingBooleanRunLoopContext context];
-  [workerThread_ gtm_performWaitingUntilDone:YES block:^{
+  GTMUnitTestingBooleanRunLoopContext *context =
+      [GTMUnitTestingBooleanRunLoopContext context];
+  __block NSThread *runThread = nil;
+
+  // Straight block runs right away (no runloop spin)
+  runThread = nil;
+  [context setShouldStop:NO];
+  [currentThread gtm_performBlock:^{
+    runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
+  STAssertEqualObjects(runThread, currentThread, nil);
+  STAssertTrue([context shouldStop], nil);
+
+  // Block with waiting runs immediately as well.
+  runThread = nil;
+  [context setShouldStop:NO];
+  [currentThread gtm_performWaitingUntilDone:YES block:^{
+    runThread = [NSThread currentThread];
+    [context setShouldStop:YES];
+  }];
+  STAssertEqualObjects(runThread, currentThread, nil);
+  STAssertTrue([context shouldStop], nil);
+
+  // Block without waiting requires a runloop spin.
+  runThread = nil;
+  [context setShouldStop:NO];
+  [currentThread gtm_performWaitingUntilDone:NO block:^{
+    runThread = [NSThread currentThread];
+    [context setShouldStop:YES];
+  }];
+  STAssertTrue([[NSRunLoop currentRunLoop]
+                    gtm_runUpToSixtySecondsWithContext:context], nil);
+  STAssertEqualObjects(runThread, currentThread, nil);
   STAssertTrue([context shouldStop], nil);
 }
 
 - (void)testPerformBlockInBackground {
-  NSThread *currentThread = [NSThread currentThread];
-  GTMUnitTestingBooleanRunLoopContext *context
-      = [GTMUnitTestingBooleanRunLoopContext context];
+  GTMUnitTestingBooleanRunLoopContext *context =
+      [GTMUnitTestingBooleanRunLoopContext context];
+  __block NSThread *runThread = nil;
   [NSThread gtm_performBlockInBackground:^{
-    [self performSelector:@selector(stopTestRunning:)
-                 onThread:currentThread
-               withObject:context
-            waitUntilDone:YES];
+    runThread = [NSThread currentThread];
+    [context setShouldStop:YES];
   }];
-  NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-  STAssertTrue([runLoop gtm_runUpToSixtySecondsWithContext:context], nil);
+  STAssertTrue([[NSRunLoop currentRunLoop]
+                    gtm_runUpToSixtySecondsWithContext:context], nil);
+  STAssertNotNil(runThread, nil);
+  STAssertNotEqualObjects(runThread, [NSThread currentThread], nil);
+}
+
+- (void)testWorkerThreadBasics {
+  // Unstarted worker isn't running.
+  GTMSimpleWorkerThread *worker = [[GTMSimpleWorkerThread alloc] init];
+  STAssertFalse([worker isExecuting], nil);
+  STAssertFalse([worker isFinished], nil);
+
+  // Unstarted worker can be stopped without error.
+  [worker stop];
+  STAssertFalse([worker isExecuting], nil);
+  STAssertTrue([worker isFinished], nil);
+
+  // And can be stopped again
+  [worker stop];
+  STAssertFalse([worker isExecuting], nil);
+  STAssertTrue([worker isFinished], nil);
+
+  // A thread we start can be stopped with correct state.
+  worker = [[GTMSimpleWorkerThread alloc] init];
+  STAssertFalse([worker isExecuting], nil);
+  STAssertFalse([worker isFinished], nil);
+  [worker start];
+  STAssertTrue([worker isExecuting], nil);
+  STAssertFalse([worker isFinished], nil);
+  [worker stop];
+  STAssertFalse([worker isExecuting], nil);
+  STAssertTrue([worker isFinished], nil);
+
+  // A cancel is also honored
+  worker = [[GTMSimpleWorkerThread alloc] init];
+  STAssertFalse([worker isExecuting], nil);
+  STAssertFalse([worker isFinished], nil);
+  [worker start];
+  STAssertTrue([worker isExecuting], nil);
+  STAssertFalse([worker isFinished], nil);
+  [worker cancel];
+  // And after some time we're done. We're generous here, this needs to
+  // exceed the worker thread's runloop timeout.
+  sleep(5);
+  STAssertFalse([worker isExecuting], nil);
+  STAssertTrue([worker isFinished], nil);
+}
+
+- (void)testWorkerThreadStopTiming {
+  // Throw a sleep and make sure that we stop as soon as we can.
+  NSDate *start = [NSDate date];
+  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
+                                    autorelease];
+  [workerThread_ gtm_performBlock:^{
+    [threadLock lock];
+    [threadLock unlockWithCondition:1];
+    sleep(10);
+  }];
+  [threadLock lockWhenCondition:1];
+  [threadLock unlock];
+  [workerThread_ stop];
+  STAssertFalse([workerThread_ isExecuting], nil);
+  STAssertTrue([workerThread_ isFinished], nil);
+  STAssertEqualsWithAccuracy(-[start timeIntervalSinceNow], 10.0, 2.0, nil);
+}
+
+- (void)testPerformBlockOnWorkerThread {
+  GTMUnitTestingBooleanRunLoopContext *context =
+      [GTMUnitTestingBooleanRunLoopContext context];
+  __block NSThread *runThread = nil;
+
+  // Runs on the other thread
+  runThread = nil;
+  [context setShouldStop:NO];
+  [workerThread_ gtm_performBlock:^{
+    runThread = [NSThread currentThread];
+    [context setShouldStop:YES];
+  }];
+  STAssertTrue([[NSRunLoop currentRunLoop]
+                    gtm_runUpToSixtySecondsWithContext:context], nil);
+  STAssertNotNil(runThread, nil);
+  STAssertEqualObjects(runThread, workerThread_, nil);
+
+  // Other thread no wait.
+  runThread = nil;
+  [context setShouldStop:NO];
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    runThread = [NSThread currentThread];
+    [context setShouldStop:YES];
+  }];
+  STAssertTrue([[NSRunLoop currentRunLoop]
+                    gtm_runUpToSixtySecondsWithContext:context], nil);
+  STAssertNotNil(runThread, nil);
+  STAssertEqualObjects(runThread, workerThread_, nil);
+
+  // Waiting requires no runloop spin
+  runThread = nil;
+  [context setShouldStop:NO];
+  [workerThread_ gtm_performWaitingUntilDone:YES block:^{
+    runThread = [NSThread currentThread];
+    [context setShouldStop:YES];
+  }];
+  STAssertTrue([context shouldStop], nil);
+  STAssertNotNil(runThread, nil);
+  STAssertEqualObjects(runThread, workerThread_, nil);
+}
+
+- (void)testExitingBlockIsExecuting {
+  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
+                                    autorelease];
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    [threadLock lock];
+    [threadLock unlockWithCondition:1];
+    pthread_exit(NULL);
+  }];
+  [threadLock lockWhenCondition:1];
+  [threadLock unlock];
+  // Give the pthread_exit() a bit of time
+  sleep(5);
+  // Did we notice the thread died? Does [... isExecuting] clean up?
+  STAssertFalse([workerThread_ isExecuting], nil);
+  STAssertTrue([workerThread_ isFinished], nil);
+}
+
+- (void)testExitingBlockCancel {
+  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
+                                    autorelease];
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    [threadLock lock];
+    [threadLock unlockWithCondition:1];
+    pthread_exit(NULL);
+  }];
+  [threadLock lockWhenCondition:1];
+  [threadLock unlock];
+  // Give the pthread_exit() a bit of time
+  sleep(5);
+  // Cancel/stop the thread
+  [workerThread_ stop];
+  // Did we notice the thread died? Did we clean up?
+  STAssertFalse([workerThread_ isExecuting], nil);
+  STAssertTrue([workerThread_ isFinished], nil);
+}
+
+- (void)testStopFromThread {
+  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
+                                    autorelease];
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    [threadLock lock];
+    [workerThread_ stop];  // Shold not block.
+    [threadLock unlockWithCondition:1];
+  }];
+  // Block should complete before the stop occurs.
+  [threadLock lockWhenCondition:1];
+  [threadLock unlock];
+  // Still need to give the thread a moment to not be executing
+  sleep(5);
+  STAssertFalse([workerThread_ isExecuting], nil);
+  STAssertTrue([workerThread_ isFinished], nil);
+}
+
+- (void)testPThreadName {
+  NSString *testName = @"InigoMontoya";
+  [workerThread_ setName:testName];
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    STAssertEqualObjects([workerThread_ name], testName, nil);
+    char threadName[100];
+    pthread_getname_np(pthread_self(), threadName, 100);
+    STAssertEqualObjects([NSString stringWithUTF8String:threadName],
+                         testName, nil);
+  }];
 }
 
 @end
