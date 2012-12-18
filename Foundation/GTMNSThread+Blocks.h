@@ -50,8 +50,9 @@
   NSConditionLock *runLock_;
 }
 
-// Will stop the thread.
+// Will stop the thread, blocking till the thread exits.
 - (void)stop;
+
 @end
 
 #endif  // GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
