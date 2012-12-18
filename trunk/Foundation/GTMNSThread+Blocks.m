@@ -21,10 +21,6 @@
 #import <pthread.h>
 #import <dlfcn.h>
 
-// Only available 10.6 and later.
-typedef int (*PThreadSetNameNPPTr)(const char*);
-static PThreadSetNameNPPTr gPThreadSetNameNP = NULL;
-
 #if NS_BLOCKS_AVAILABLE
 
 @implementation NSThread (GTMBlocksAdditions)
@@ -58,6 +54,10 @@ static PThreadSetNameNPPTr gPThreadSetNameNP = NULL;
 #endif  // NS_BLOCKS_AVAILABLE
 
 #if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
+
+// Only available 10.6 and later.
+typedef int (*PThreadSetNameNPPTr)(const char*);
+static PThreadSetNameNPPTr gPThreadSetNameNP = NULL;
 
 enum {
   kGTMSimpleThreadInitialized = 0,
