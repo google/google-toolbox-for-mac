@@ -93,7 +93,13 @@ enum {
 }
 
 - (void)setThreadDebuggerName:(NSString *)name {
-  if (gPThreadSetNameNP) gPThreadSetNameNP([name UTF8String]);
+  if (gPThreadSetNameNP) {
+    if ([name length]) {
+      gPThreadSetNameNP([name UTF8String]);
+    } else {
+      gPThreadSetNameNP("");
+    }
+  }
 }
 
 - (void)main {
