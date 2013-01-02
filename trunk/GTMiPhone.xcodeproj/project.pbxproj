@@ -157,6 +157,16 @@
 		F45F27B814F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */; };
 		F45F27B914F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */ = {isa = PBXBuildFile; fileRef = F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */; };
 		F4746721129703600022C1FB /* GTMSenTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4746720129703600022C1FB /* GTMSenTestCaseTest.m */; };
+		F4C35E70164EB3A300688B6E /* GTMFadeTruncatingLabelTest1.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6B164EB39F00688B6E /* GTMFadeTruncatingLabelTest1.6.png */; };
+		F4C35E71164EB3A300688B6E /* GTMFadeTruncatingLabelTest1.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6B164EB39F00688B6E /* GTMFadeTruncatingLabelTest1.6.png */; };
+		F4C35E72164EB3A300688B6E /* GTMFadeTruncatingLabelTest2.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6C164EB39F00688B6E /* GTMFadeTruncatingLabelTest2.6.png */; };
+		F4C35E73164EB3A300688B6E /* GTMFadeTruncatingLabelTest2.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6C164EB39F00688B6E /* GTMFadeTruncatingLabelTest2.6.png */; };
+		F4C35E74164EB3A300688B6E /* GTMFadeTruncatingLabelTest3.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6D164EB3A000688B6E /* GTMFadeTruncatingLabelTest3.6.png */; };
+		F4C35E75164EB3A300688B6E /* GTMFadeTruncatingLabelTest3.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6D164EB3A000688B6E /* GTMFadeTruncatingLabelTest3.6.png */; };
+		F4C35E76164EB3A300688B6E /* GTMFadeTruncatingLabelTest4.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6E164EB3A100688B6E /* GTMFadeTruncatingLabelTest4.6.png */; };
+		F4C35E77164EB3A300688B6E /* GTMFadeTruncatingLabelTest4.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6E164EB3A100688B6E /* GTMFadeTruncatingLabelTest4.6.png */; };
+		F4C35E78164EB3A300688B6E /* GTMFadeTruncatingLabelTest5.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6F164EB3A100688B6E /* GTMFadeTruncatingLabelTest5.6.png */; };
+		F4C35E79164EB3A300688B6E /* GTMFadeTruncatingLabelTest5.6.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C35E6F164EB3A100688B6E /* GTMFadeTruncatingLabelTest5.6.png */; };
 		F4D20EB114852CA40001600C /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */; };
 		F4D20EB214852CA40001600C /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */; };
 		F4D20EB314852CA40001600C /* GTMABAddressBookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */; };
@@ -488,6 +498,11 @@
 		F4746720129703600022C1FB /* GTMSenTestCaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSenTestCaseTest.m; sourceTree = "<group>"; };
 		F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiOS.xcconfig; sourceTree = "<group>"; };
 		F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiOS.xcconfig; sourceTree = "<group>"; };
+		F4C35E6B164EB39F00688B6E /* GTMFadeTruncatingLabelTest1.6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest1.6.png; path = TestData/GTMFadeTruncatingLabelTest1.6.png; sourceTree = "<group>"; };
+		F4C35E6C164EB39F00688B6E /* GTMFadeTruncatingLabelTest2.6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest2.6.png; path = TestData/GTMFadeTruncatingLabelTest2.6.png; sourceTree = "<group>"; };
+		F4C35E6D164EB3A000688B6E /* GTMFadeTruncatingLabelTest3.6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest3.6.png; path = TestData/GTMFadeTruncatingLabelTest3.6.png; sourceTree = "<group>"; };
+		F4C35E6E164EB3A100688B6E /* GTMFadeTruncatingLabelTest4.6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest4.6.png; path = TestData/GTMFadeTruncatingLabelTest4.6.png; sourceTree = "<group>"; };
+		F4C35E6F164EB3A100688B6E /* GTMFadeTruncatingLabelTest5.6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GTMFadeTruncatingLabelTest5.6.png; path = TestData/GTMFadeTruncatingLabelTest5.6.png; sourceTree = "<group>"; };
 		F4D20EAA14852BFB0001600C /* GTMiPhoneUnitTestingOCUnit.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GTMiPhoneUnitTestingOCUnit.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D20EAB14852BFB0001600C /* GTMiPhoneUnitTestingOCUnit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GTMiPhoneUnitTestingOCUnit-Info.plist"; sourceTree = "<group>"; };
 		F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIFont+LineHeight.h"; sourceTree = "<group>"; };
@@ -594,25 +609,25 @@
 		64D0F5CB0FD3E66A00506CC7 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
-				9340CFA1140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png */,
 				F45F27AB14F41441003A91E6 /* GTMFadeTruncatingLabelTest1.5.png */,
-				9340CFA2140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png */,
+				F4C35E6B164EB39F00688B6E /* GTMFadeTruncatingLabelTest1.6.png */,
+				9340CFA1140550E30026DDC9 /* GTMFadeTruncatingLabelTest1.png */,
 				F45F27AC14F41441003A91E6 /* GTMFadeTruncatingLabelTest2.5.png */,
-				9340CFA3140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png */,
+				F4C35E6C164EB39F00688B6E /* GTMFadeTruncatingLabelTest2.6.png */,
+				9340CFA2140550E30026DDC9 /* GTMFadeTruncatingLabelTest2.png */,
 				F45F27AD14F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png */,
-				9340CFA4140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png */,
+				F4C35E6D164EB3A000688B6E /* GTMFadeTruncatingLabelTest3.6.png */,
+				9340CFA3140550E30026DDC9 /* GTMFadeTruncatingLabelTest3.png */,
 				F45F27AE14F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png */,
-				9340CFA5140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png */,
+				F4C35E6E164EB3A100688B6E /* GTMFadeTruncatingLabelTest4.6.png */,
+				9340CFA4140550E30026DDC9 /* GTMFadeTruncatingLabelTest4.png */,
 				F45F27AF14F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png */,
+				F4C35E6F164EB3A100688B6E /* GTMFadeTruncatingLabelTest5.6.png */,
+				9340CFA5140550E30026DDC9 /* GTMFadeTruncatingLabelTest5.png */,
+				64D0F5DB0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png */,
+				64D0F5DC0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_40x60.png */,
+				64D0F5DD0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png */,
 				64D0F5CC0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_60x40.png */,
-				64D0F5CD0FD3E68400506CC7 /* GTMUIImage+Resize_50x100.png */,
-				448D61B011AC1AAD0097ACBC /* GTMUIImage+Resize_50x100_flipped.png */,
-				64D0F5CE0FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_40x60_clip.png */,
-				64D0F5CF0FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_40x60_noclip.png */,
-				64D0F5D00FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_50x50_clip.png */,
-				64D0F5D10FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_50x50_noclip.png */,
-				64D0F5D20FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_60x40_clip.png */,
-				64D0F5D30FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_60x40_noclip.png */,
 				64D0F5D40FD3E68400506CC7 /* GTMUIImage+Resize_100x50.png */,
 				448D61B111AC1AAD0097ACBC /* GTMUIImage+Resize_100x50_flipped.png */,
 				64D0F5D50FD3E68400506CC7 /* GTMUIImage+Resize_100x50_to_40x60_clip.png */,
@@ -621,9 +636,14 @@
 				64D0F5D80FD3E68400506CC7 /* GTMUIImage+Resize_100x50_to_50x50_noclip.png */,
 				64D0F5D90FD3E68400506CC7 /* GTMUIImage+Resize_100x50_to_60x40_clip.png */,
 				64D0F5DA0FD3E68400506CC7 /* GTMUIImage+Resize_100x50_to_60x40_noclip.png */,
-				64D0F5DB0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png */,
-				64D0F5DC0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_40x60.png */,
-				64D0F5DD0FD3E68400506CC7 /* GTMUIImage+Resize_100x100_to_50x50.png */,
+				64D0F5CD0FD3E68400506CC7 /* GTMUIImage+Resize_50x100.png */,
+				448D61B011AC1AAD0097ACBC /* GTMUIImage+Resize_50x100_flipped.png */,
+				64D0F5CE0FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_40x60_clip.png */,
+				64D0F5CF0FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_40x60_noclip.png */,
+				64D0F5D00FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_50x50_clip.png */,
+				64D0F5D10FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_50x50_noclip.png */,
+				64D0F5D20FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_60x40_clip.png */,
+				64D0F5D30FD3E68400506CC7 /* GTMUIImage+Resize_50x100_to_60x40_noclip.png */,
 			);
 			name = TestData;
 			sourceTree = "<group>";
@@ -980,6 +1000,11 @@
 				F45F27B414F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png in Resources */,
 				F45F27B614F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png in Resources */,
 				F45F27B814F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */,
+				F4C35E70164EB3A300688B6E /* GTMFadeTruncatingLabelTest1.6.png in Resources */,
+				F4C35E72164EB3A300688B6E /* GTMFadeTruncatingLabelTest2.6.png in Resources */,
+				F4C35E74164EB3A300688B6E /* GTMFadeTruncatingLabelTest3.6.png in Resources */,
+				F4C35E76164EB3A300688B6E /* GTMFadeTruncatingLabelTest4.6.png in Resources */,
+				F4C35E78164EB3A300688B6E /* GTMFadeTruncatingLabelTest5.6.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1022,6 +1047,11 @@
 				F45F27B514F41441003A91E6 /* GTMFadeTruncatingLabelTest3.5.png in Resources */,
 				F45F27B714F41441003A91E6 /* GTMFadeTruncatingLabelTest4.5.png in Resources */,
 				F45F27B914F41441003A91E6 /* GTMFadeTruncatingLabelTest5.5.png in Resources */,
+				F4C35E71164EB3A300688B6E /* GTMFadeTruncatingLabelTest1.6.png in Resources */,
+				F4C35E73164EB3A300688B6E /* GTMFadeTruncatingLabelTest2.6.png in Resources */,
+				F4C35E75164EB3A300688B6E /* GTMFadeTruncatingLabelTest3.6.png in Resources */,
+				F4C35E77164EB3A300688B6E /* GTMFadeTruncatingLabelTest4.6.png in Resources */,
+				F4C35E79164EB3A300688B6E /* GTMFadeTruncatingLabelTest5.6.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -134,16 +134,6 @@
   return carbonEvent;
 }
 
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  if (event_) {
-    ReleaseEvent(event_);
-    event_ = NULL;
-  }
-  [super finalize];
-}
-#endif
-
 // releases our retained event
 //
 - (void)dealloc {

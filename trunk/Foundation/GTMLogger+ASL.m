@@ -157,13 +157,6 @@
   [super dealloc];
 }
 
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  if (client_ != NULL) asl_close(client_);
-  [super finalize];
-}
-#endif
-
 // We don't test this one line because we don't want to pollute actual system
 // logs with test messages.
 // COV_NF_START

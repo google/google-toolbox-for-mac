@@ -58,18 +58,6 @@ static void cShadeFunction(void *info, const CGFloat *inPos, CGFloat *outVals);
   return self;
 }
 
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  if (nil != function_) {
-    CGFunctionRelease(function_);
-  }
-  if (nil != colorSpace_) {
-    CGColorSpaceRelease(colorSpace_);
-  }
-  [super finalize];
-}
-#endif
-
 - (void)dealloc {
   if (nil != function_) {
     CGFunctionRelease(function_);

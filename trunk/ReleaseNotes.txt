@@ -27,6 +27,9 @@ Changes since 1.6.0
 - Initial support for using the Xcode provided OCUnit for unittesting on iOS.
   Define GTM_IPHONE_USE_SENTEST to 1 to use this.
 
+- Removed support for Garbage Collection, leaving just the shell for other code
+  that might have depended on some of the constants/method GTM provided.
+
 
 Release 1.6.0
 Changes since 1.5.1
