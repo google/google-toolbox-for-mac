@@ -25,6 +25,7 @@
 // Never recursively call any of these methods. Always call
 // -[self localizeObject:recursively:].
 - (void)localizeToolbar:(UIToolbar *)toolbar;
+- (void)localizeSegmentedControl:(UISegmentedControl *)segmentedControl;
 - (void)localizeView:(UIView *)view recursively:(BOOL)recursive;
 - (void)localizeButton:(UIButton *)button;
 @end
@@ -96,10 +97,12 @@
     if ([object isKindOfClass:[UIViewController class]]) {
         UIView *view = [object view];
         [self localizeView:view recursively:recursive];
-    } else if ([object isKindOfClass:[UIView class]]) {
-      [self localizeView:(UIView *)object recursively:recursive];
     } else if ([object isKindOfClass:[UIToolbar class]]) {
       [self localizeToolbar:(UIToolbar*)object];
+    } else if ([object isKindOfClass:[UISegmentedControl class]]) {
+      [self localizeSegmentedControl:(UISegmentedControl*)object];
+    } else if ([object isKindOfClass:[UIView class]]) {
+      [self localizeView:(UIView *)object recursively:recursive];
     }
   }
 }
@@ -114,6 +117,23 @@
       title = [self localizedStringForString:title];
       if (title) {
         [item setTitle:title];
+      }
+    }
+  }
+}
+
+- (void)localizeSegmentedControl:(UISegmentedControl *)segmentedControl {
+  // A UISegmentedControl uses a few objects as subviews, but they aren't
+  // documented.  It happened to work out that their inherritance was right
+  // with the selectors they implemented that things localized, but iOS 6
+  // changed some of that, so they are now directly handled.
+  NSUInteger numberOfSegments = segmentedControl.numberOfSegments;
+  for (NSUInteger i = 0; i < numberOfSegments; ++i) {
+    NSString *title = [segmentedControl titleForSegmentAtIndex:i];
+    if (title) {
+      title = [self localizedStringForString:title];
+      if (title) {
+        [segmentedControl setTitle:title forSegmentAtIndex:i];
       }
     }
   }

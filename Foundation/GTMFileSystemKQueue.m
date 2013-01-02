@@ -85,14 +85,6 @@ static CFSocketRef gRunLoopSocket = NULL;
   return self;
 }
 
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  [self unregisterWithKQueue];
-
-  [super finalize];
-}
-#endif
-
 - (void)dealloc {
   [self unregisterWithKQueue];
   [path_ release];

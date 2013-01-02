@@ -190,19 +190,6 @@ static NSString *const kReplacementPattern =
   return self;
 }
 
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  // we used pattern_ as our flag that we initialized the regex_t
-  if (pattern_) {
-    regfree(&regexData_);
-    [pattern_ release];
-    // play it safe and clear it since we use it as a flag for regexData_
-    pattern_ = nil;
-  }
-  [super finalize];
-}
-#endif
-
 - (void)dealloc {
   // we used pattern_ as our flag that we initialized the regex_t
   if (pattern_) {

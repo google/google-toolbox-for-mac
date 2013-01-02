@@ -224,13 +224,6 @@ static CFLocaleRef gCurrentLocale = NULL;
                   errorCode:err];
 }
 
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  [self cleanupDB];
-  [super finalize];
-}
-#endif
-
 - (void)dealloc {
   [self cleanupDB];
   [super dealloc];
@@ -1716,16 +1709,6 @@ static void Glob16(sqlite3_context *context, int argc, sqlite3_value **argv) {
   if (err) *err = rc;
   return obj;
 }
-
-#if GTM_SUPPORT_GC
-- (void)finalize {
-  if (statement_) {
-    _GTMDevLog(@"-[GTMSQLiteStatement finalizeStatement] must be called when"
-               @" statement is no longer needed");
-  }
-  [super finalize];
-}
-#endif
 
 - (void)dealloc {
   if (statement_) {

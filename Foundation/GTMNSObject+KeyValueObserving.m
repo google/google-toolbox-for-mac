@@ -121,18 +121,6 @@ static char* GTMKeyValueObservingHelperContext
           NSStringFromSelector(selector_)];
 }
 
-#if GTM_SUPPORT_GC
-
-- (void)finalize {
-  if (target_) {
-    _GTMDevLog(@"Didn't deregister %@", self);
-    [self deregister];
-  }
-  [super finalize];
-}
-
-#endif  // GTM_SUPPORT_GC
-
 - (void)dealloc {
   if (target_) {
     _GTMDevLog(@"Didn't deregister %@", self);

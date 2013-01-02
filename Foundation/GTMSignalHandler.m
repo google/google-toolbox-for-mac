@@ -86,15 +86,6 @@ static CFSocketRef gRunLoopSocket = NULL;
   return self;
 }
 
-#if GTM_SUPPORT_GC
-
-- (void)finalize {
-  [self invalidate];
-  [super finalize];
-}
-
-#endif
-
 - (void)dealloc {
   [self invalidate];
   [super dealloc];
