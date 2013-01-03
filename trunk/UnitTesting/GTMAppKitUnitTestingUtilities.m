@@ -205,8 +205,8 @@ void GTMSetColorProfileToGenericRGB(void) {
     // No way to force this case in a unittest.
     _GTMDevLog(@"Failed to get current color profile. "
                "I will not be able to restore your current profile, thus I'm "
-               "not changing it. Many unit tests may fail as a result. (Error: %i)",
-          error);
+               "not changing it. Many unit tests may fail as a result. (Error: %li)",
+          (long)error);
     return;
     // COV_NF_END
   }
@@ -230,7 +230,7 @@ void GTMSetColorProfileToGenericRGB(void) {
     // COV_NF_START
     // No way to force this case in a unittest.
     _GTMDevLog(@"Failed to set color profile to \"%@\"! Many unit tests will fail as "
-               "a result.  (Error: %i)", genericProfileName, error);
+               "a result.  (Error: %li)", genericProfileName, (long)error);
     // COV_NF_END
   } else {
     gGTMCurrentColorProfile = previousProfile;

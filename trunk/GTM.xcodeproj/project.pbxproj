@@ -2814,6 +2814,7 @@
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 			};
 			name = Debug;
 		};
@@ -2916,6 +2917,7 @@
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "COMPONENT_SIGNATURE=\"\\'GTM \\'\" kComponentSignatureString=\"\\\"GoogleToolboxForMac\\\"\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 			};
 			name = Release;
 		};
