@@ -26,9 +26,11 @@
 #import "GTMObjC2Runtime.h"
 #import "GTMUnitTestDevLog.h"
 
-#if !GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK
+#import <UIKit/UIKit.h>
+#else
 #import "GTMGarbageCollection.h"
-#endif  // !GTM_IPHONE_SDK
+#endif  // GTM_IPHONE_SDK
 
 #if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 #import <stdarg.h>
@@ -421,6 +423,24 @@ static int MethodSort(id a, id b, void *context) {
   NSString *name = NSStringFromClass(self);
   return [name rangeOfString:@"AbstractTest"].location != NSNotFound;
 }
+
+#if GTM_IPHONE_SDK
+- (UIImage *)imageFromResource:(NSString *)resource {
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  NSString *path = [bundle pathForResource:resource ofType:nil];
+  UIImage *image = [UIImage imageWithContentsOfFile:path];
+  STAssertNotNil(image, @"Could not load image from resource: %@", path);
+  return image;
+}
+#else
+- (NSImage *)imageFromResource:(NSString *)resource {
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  NSString *path = [bundle pathForResource:resource ofType:nil];
+  NSImage *image = [NSImage imageWithContentsOfFile:path];
+  STAssertNotNil(image, @"Could not load image from resource: %@", path);
+  return image;
+}
+#endif
 
 + (NSArray *)testInvocations {
   NSArray *invocations = nil;
