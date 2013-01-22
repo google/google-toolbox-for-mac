@@ -1080,6 +1080,12 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 
 #endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 
+#if GTM_IPHONE_SDK
+
+@class UIImage;
+
+#endif // GTM_IPHONE_SDK
+
 // All unittest cases in GTM should inherit from GTMTestCase. It makes sure
 // to set up our logging system correctly to verify logging calls.
 // See GTMUnitTestDevLog.h for details
@@ -1106,5 +1112,23 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 // implementation checks to see if the name of the class contains the word
 // "AbstractTest" (case sensitive).
 + (BOOL)isAbstractTestCase;
+
+#if GTM_IPHONE_SDK
+// Returns the UIImage for the the named |resource|. Asserts that the image is
+// loaded (is non-nil).
+//
+// This is required as while under test, [UIImage imageNamed:...] does not
+// correctly load images from the resources associated with a test class.
+- (UIImage *)imageFromResource:(NSString *)resource;
+
+#else
+// Returns the NSImage for the the named |resource|. Asserts that the image is
+// loaded (is non-nil).
+//
+// This is required as while under test, [NSImage imageNamed:...] does not
+// correctly load images from the resources associated with a test class.
+- (NSImage *)imageFromResource:(NSString *)resource;
+
+#endif // GTM_IPHONE_SDK
 
 @end
