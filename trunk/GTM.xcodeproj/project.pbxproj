@@ -321,11 +321,6 @@
 		B71B91E31332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B71B91E11332CD680039B2CB /* GTMFadeTruncatingTextFieldCellTest6.tiff */; };
 		B71B92371332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B71B92361332DA380039B2CB /* GTMFadeTruncatingTextFieldCellTest7.tiff */; };
 		B7764E80133906B600AFDC7D /* GTMFadeTruncatingTextFieldCellTest8.tiff in Resources */ = {isa = PBXBuildFile; fileRef = B7764E7F133906B600AFDC7D /* GTMFadeTruncatingTextFieldCellTest8.tiff */; };
-		F40F81FD16AF86900080B8E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
-		F40F81FE16AF86940080B8E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
-		F40F81FF16AF86980080B8E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
-		F40F820016AF869A0080B8E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
-		F40F820116AF869B0080B8E5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D6A5FE840307C02AAC07 /* AppKit.framework */; };
 		F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */ = {isa = PBXBuildFile; fileRef = F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */; };
 		F41711350ECDFBD500B9B276 /* GTMLightweightProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F41711320ECDFBD500B9B276 /* GTMLightweightProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1043,7 +1038,6 @@
 				8B45A19A0DA46AAA001148C5 /* QuartzCore.framework in Frameworks */,
 				8B7DCBA50DFF0EFF0017E983 /* GoogleToolboxForMac.framework in Frameworks */,
 				8B3E2A3F0EEB564D000681D8 /* Carbon.framework in Frameworks */,
-				F40F820016AF869A0080B8E5 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1071,7 +1065,6 @@
 				8BFE13EE0FB0F2D8001BE894 /* GoogleToolboxForMac.framework in Frameworks */,
 				8BFE13EF0FB0F2D8001BE894 /* SenTestingKit.framework in Frameworks */,
 				8BFE158E0FB0F34C001BE894 /* AddressBook.framework in Frameworks */,
-				F40F820116AF869B0080B8E5 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1084,7 +1077,6 @@
 				F42E089D0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */,
 				8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */,
 				F99161B50F0B151400213D3B /* libsqlite3.dylib in Frameworks */,
-				F40F81FF16AF86980080B8E5 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1098,7 +1090,6 @@
 				F43E4F6D0D4E60C50041161F /* libz.dylib in Frameworks */,
 				8B4D78080E40AFFA00EFEDD8 /* QuartzCore.framework in Frameworks */,
 				8BFE158D0FB0F34C001BE894 /* AddressBook.framework in Frameworks */,
-				F40F81FD16AF86900080B8E5 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,7 +1101,6 @@
 				F42E087F0D199AB400D5DDE0 /* GoogleToolboxForMac.framework in Frameworks */,
 				F42E089C0D199B1800D5DDE0 /* SenTestingKit.framework in Frameworks */,
 				8B8B10F90EEB8B9E00E543D0 /* Carbon.framework in Frameworks */,
-				F40F81FE16AF86940080B8E5 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
