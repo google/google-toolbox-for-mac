@@ -1081,9 +1081,9 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 #endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
 
 #if GTM_IPHONE_SDK
-
 @class UIImage;
-
+#else
+@class NSImage;
 #endif // GTM_IPHONE_SDK
 
 // All unittest cases in GTM should inherit from GTMTestCase. It makes sure
