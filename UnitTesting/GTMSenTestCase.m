@@ -29,7 +29,6 @@
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>
 #else
-#import <AppKit/AppKit.h> // For NSImage
 #import "GTMGarbageCollection.h"
 #endif  // GTM_IPHONE_SDK
 
@@ -430,14 +429,6 @@ static int MethodSort(id a, id b, void *context) {
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   NSString *path = [bundle pathForResource:resource ofType:nil];
   UIImage *image = [UIImage imageWithContentsOfFile:path];
-  STAssertNotNil(image, @"Could not load image from resource: %@", path);
-  return image;
-}
-#else
-- (NSImage *)imageFromResource:(NSString *)resource {
-  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-  NSString *path = [bundle pathForResource:resource ofType:nil];
-  NSImage *image = [[NSImage alloc] initWithContentsOfFile:path];
   STAssertNotNil(image, @"Could not load image from resource: %@", path);
   return image;
 }
