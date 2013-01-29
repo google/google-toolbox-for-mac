@@ -812,7 +812,6 @@
 				8BC047F60DAE928A00C2D1CA /* GTMSenTestCase.h */,
 				8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */,
 				F4746720129703600022C1FB /* GTMSenTestCaseTest.m */,
-				8BC048010DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png */,
 				8B7DCEAB0DFF4CA60017E983 /* GTMUnitTestDevLog.h */,
 				8B7DCEAC0DFF4CA60017E983 /* GTMUnitTestDevLog.m */,
 				8BC0480E0DAE928A00C2D1CA /* RunIPhoneUnitTest.sh */,
@@ -871,6 +870,7 @@
 		F435E49F0DC8F5290069CDE8 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				8BC048010DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.png */,
 				8BC048000DAE928A00C2D1CA /* GTMUIViewUnitTestingTest.gtmUTState */,
 			);
 			path = TestData;
@@ -938,6 +938,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "GTMiPhone" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
