@@ -64,7 +64,7 @@
 //    Autoreleased GTMCarbonEvent
 //
 + (id)eventWithClass:(UInt32)inClass kind:(UInt32)kind {
-  return [[[[self class] alloc] initWithClass:inClass kind:kind] autorelease];
+  return [[[self alloc] initWithClass:inClass kind:kind] autorelease];
 }
 
 
@@ -74,7 +74,7 @@
 //    Autoreleased GTMCarbonEvent
 //
 + (id)eventWithEvent:(EventRef)event {
-  return [[[[self class] alloc] initWithEvent:event] autorelease];
+  return [[[self alloc] initWithEvent:event] autorelease];
 }
 
 
@@ -84,7 +84,7 @@
 //    Autoreleased GTMCarbonEvent
 //
 + (id)currentEvent {
-  return [[self class] eventWithEvent:GetCurrentEvent()];
+  return [self eventWithEvent:GetCurrentEvent()];
 }
 
 

@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -39,7 +39,7 @@
 @end
 
 @interface GTMVCValidatorTests : GTMVCValidatingTests
-@end 
+@end
 
 @interface GTMVCContainerTests : GTMVCValidatingTests {
   GTMConformsToProtocolValidator *validator_;
@@ -64,7 +64,7 @@
 
 @implementation GTMVCTestClass
 + (id)instance {
-  return [[[[self class] alloc] init] autorelease];
+  return [[[self alloc] init] autorelease];
 }
 
 - (NSString*)description {
@@ -115,17 +115,17 @@
   GTMKindOfClassValidator *validator;
   validator = [GTMKindOfClassValidator validateAgainstClass:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   Class cls = [GTMVCTestClass class];
   validator = [GTMKindOfClassValidator validateAgainstClass:cls];
   STAssertNotNil(validator, @"should be valid");
-  
+
   BOOL isGood = [validator validateObject:testClass_ forContainer:nil];
   STAssertTrue(isGood, @"should be validated");
-  
+
   isGood = [validator validateObject:testSubClass_ forContainer:nil];
   STAssertTrue(isGood, @"should be validated");
-  
+
   isGood = [validator validateObject:[NSNumber numberWithInt:0]
                         forContainer:nil];
   STAssertFalse(isGood, @"should fail");
@@ -133,11 +133,11 @@
   GTMKindOfClassValidator *validator;
   validator = [GTMKindOfClassValidator validateAgainstClass:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   Class cls = [GTMVCTestClass class];
   validator = [GTMKindOfClassValidator validateAgainstClass:cls];
   STAssertNil(validator, @"should be nil");
-#endif  // GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT 
+#endif  // GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
 }
 
 - (void)testMemberOfClassValidator {
@@ -146,20 +146,20 @@
   GTMMemberOfClassValidator *validator;
   validator = [GTMMemberOfClassValidator validateAgainstClass:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   Class cls = [GTMVCTestClass class];
   validator = [GTMMemberOfClassValidator validateAgainstClass:cls];
   STAssertNotNil(validator, @"should be valid");
-  
+
   BOOL isGood = [validator validateObject:testClass_ forContainer:nil];
   STAssertTrue(isGood, @"should be validated");
- 
+
   isGood = [validator validateObject:testSubClass_ forContainer:nil];
   STAssertFalse(isGood, @"should fail");
-  
+
   isGood = [validator validateObject:nil forContainer:nil];
   STAssertFalse(isGood, @"should fail");
-  
+
   isGood = [validator validateObject:[NSNumber numberWithInt:0]
                         forContainer:nil];
   STAssertFalse(isGood, @"should fail");
@@ -167,7 +167,7 @@
   GTMMemberOfClassValidator *validator;
   validator = [GTMMemberOfClassValidator validateAgainstClass:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   Class cls = [GTMVCTestClass class];
   validator = [GTMMemberOfClassValidator validateAgainstClass:cls];
   STAssertNil(validator, @"should be nil");
@@ -180,24 +180,24 @@
   GTMConformsToProtocolValidator *validator;
   validator = [GTMConformsToProtocolValidator validateAgainstProtocol:nil];
   STAssertNil(validator, @"should be nil");
- 
+
   Protocol *prot = @protocol(GTMVCTestProtocol);
   validator = [GTMConformsToProtocolValidator validateAgainstProtocol:prot];
   STAssertNotNil(validator, @"should be valid");
-  
+
   BOOL isGood = [validator validateObject:testClass_ forContainer:nil];
   STAssertFalse(isGood, @"should fail");
-  
+
   isGood = [validator validateObject:testSubClass_ forContainer:nil];
   STAssertTrue(isGood, @"should succeed");
-  
+
   isGood = [validator validateObject:nil forContainer:nil];
   STAssertFalse(isGood, @"should fail");
 #else  // GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
   GTMConformsToProtocolValidator *validator;
   validator = [GTMConformsToProtocolValidator validateAgainstProtocol:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   Protocol *prot = @protocol(GTMVCTestProtocol);
   validator = [GTMConformsToProtocolValidator validateAgainstProtocol:prot];
   STAssertNil(validator, @"should be nil");
@@ -210,24 +210,24 @@
   GTMRespondsToSelectorValidator *validator;
   validator = [GTMRespondsToSelectorValidator validateAgainstSelector:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   SEL sel = @selector(foo);
   validator = [GTMRespondsToSelectorValidator validateAgainstSelector:sel];
   STAssertNotNil(validator, @"should be valid");
-  
+
   BOOL isGood = [validator validateObject:testClass_ forContainer:nil];
   STAssertFalse(isGood, @"should fail");
-  
+
   isGood = [validator validateObject:testSubClass_ forContainer:nil];
   STAssertTrue(isGood, @"should succeed");
-  
+
   isGood = [validator validateObject:nil forContainer:nil];
   STAssertFalse(isGood, @"should fail");
 #else  // GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT
   GTMRespondsToSelectorValidator *validator;
   validator = [GTMRespondsToSelectorValidator validateAgainstSelector:nil];
   STAssertNil(validator, @"should be nil");
-  
+
   SEL sel = @selector(foo);
   validator = [GTMRespondsToSelectorValidator validateAgainstSelector:sel];
   STAssertNil(validator, @"should be nil");
@@ -243,16 +243,16 @@
   array = [GTMValidatingArray validatingArrayWithTarget:validator_
                                                selector:selector_];
   STAssertNotNil(array, @"should be valid");
-  
+
   array = [[[GTMValidatingArray alloc] initValidatingWithTarget:validator_
                                                        selector:selector_] autorelease];
   STAssertNotNil(array, @"should be valid");
-  
+
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for GTMValidatingArray .*"];
   [array addObject:testSubClass_];
   [array addObject:testClass_];
   STAssertEquals([array objectAtIndex:0], testSubClass_, @"");
-  
+
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for GTMValidatingArray .*"];
   [array insertObject:testClass_ atIndex:0];
   [array insertObject:testSubClass_ atIndex:0];
@@ -278,21 +278,21 @@
   dictionary = [GTMValidatingDictionary validatingDictionaryWithTarget:validator_
                                                               selector:selector_];
   STAssertNotNil(dictionary, @"should be valid");
-  
+
   dictionary = [[[GTMValidatingDictionary alloc] initValidatingWithTarget:validator_
                                                                  selector:selector_] autorelease];
   STAssertNotNil(dictionary, @"should be valid");
-  
+
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for GTMValidatingDictionary .*"];
   [dictionary setObject:testClass_ forKey:@"Key1"];
   [dictionary setObject:testSubClass_ forKey:@"Key2"];
   STAssertEquals([dictionary objectForKey:@"Key2"], testSubClass_, @"");
   STAssertNotNil([dictionary keyEnumerator], @"");
-  
+
   [dictionary removeObjectForKey:@"Key2"];
   [dictionary removeObjectForKey:@"Key1"];
   STAssertEquals([dictionary count], (NSUInteger)0, @"should have no objects left");
-  
+
   // So we get full code coverage
   [testSubClass_ foo];
 #if !(GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT)
@@ -308,17 +308,17 @@
   set = [GTMValidatingSet validatingSetWithTarget:validator_
                                          selector:selector_];
   STAssertNotNil(set, @"should be valid");
-  
+
   set = [[[GTMValidatingSet alloc] initValidatingWithTarget:validator_
                                                    selector:selector_] autorelease];
   STAssertNotNil(set, @"should be valid");
-  
+
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for GTMValidatingSet .*"];
   [set addObject:testClass_];
   [set addObject:testSubClass_];
   STAssertEqualObjects([set member:testSubClass_], testSubClass_, @"");
   STAssertNotNil([set objectEnumerator], @"");
-  
+
   [set removeObject:testClass_];
   [set removeObject:testSubClass_];
 #if !(GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT)
@@ -339,36 +339,36 @@
                                     [GTMVCTestClass instance], @"key1",
                                     [GTMVCTestSubClass instance], @"key2",
                                     nil];
-  
+
   // Test bad container
   [GTMUnitTestDevLog expectPattern:@"container does not respont to -objectEnumerator: .*"];
-  _GTMValidateContainerContainsKindOfClass([NSString string], 
+  _GTMValidateContainerContainsKindOfClass([NSString string],
                                            [GTMVCTestSubClass class]);
-  
-  _GTMValidateContainerContainsKindOfClass(homogenousDict, 
+
+  _GTMValidateContainerContainsKindOfClass(homogenousDict,
                                            [GTMVCTestSubClass class]);
-  _GTMValidateContainerContainsKindOfClass(heterogenousDict, 
+  _GTMValidateContainerContainsKindOfClass(heterogenousDict,
                                            [GTMVCTestClass class]);
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for .*"];
-  _GTMValidateContainerContainsKindOfClass(heterogenousDict, 
+  _GTMValidateContainerContainsKindOfClass(heterogenousDict,
                                            [GTMVCTestSubClass class]);
 
-  _GTMValidateContainerContainsMemberOfClass(homogenousDict, 
+  _GTMValidateContainerContainsMemberOfClass(homogenousDict,
                                              [GTMVCTestSubClass class]);
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestSubClass failed container verification for .*"];
-  _GTMValidateContainerContainsMemberOfClass(heterogenousDict, 
+  _GTMValidateContainerContainsMemberOfClass(heterogenousDict,
                                              [GTMVCTestClass class]);
 
-  _GTMValidateContainerConformsToProtocol(homogenousDict, 
+  _GTMValidateContainerConformsToProtocol(homogenousDict,
                                            @protocol(GTMVCTestProtocol));
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for .*"];
-  _GTMValidateContainerConformsToProtocol(heterogenousDict, 
+  _GTMValidateContainerConformsToProtocol(heterogenousDict,
                                              @protocol(GTMVCTestProtocol));
 
-  _GTMValidateContainerItemsRespondToSelector(homogenousDict, 
+  _GTMValidateContainerItemsRespondToSelector(homogenousDict,
                                           @selector(foo));
   [GTMUnitTestDevLog expectPattern:@"GTMVCTestClass failed container verification for .*"];
-  _GTMValidateContainerItemsRespondToSelector(heterogenousDict, 
+  _GTMValidateContainerItemsRespondToSelector(heterogenousDict,
                                           @selector(foo));
 #if !(GTM_CONTAINERS_VALIDATE && GTM_CONTAINERS_VALIDATION_FAILED_LOG && !GTM_CONTAINERS_VALIDATION_FAILED_ASSERT)
   // If we're not validating, we don't expect any logs
