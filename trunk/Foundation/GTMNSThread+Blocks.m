@@ -70,7 +70,7 @@ enum {
 @implementation GTMSimpleWorkerThread
 
 + (void)initialize {
-  if ([self class] == [GTMSimpleWorkerThread class]) {
+  if (self == [GTMSimpleWorkerThread class]) {
     // Resolve pthread_setname_np() on 10.6 and later.
     gPThreadSetNameNP = dlsym(RTLD_DEFAULT, "pthread_setname_np");
   }

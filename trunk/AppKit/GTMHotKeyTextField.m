@@ -51,9 +51,9 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 + (id)hotKeyWithKeyCode:(NSUInteger)keyCode
               modifiers:(NSUInteger)modifiers
      useDoubledModifier:(BOOL)doubledModifier {
-  return [[[[self class] alloc] initWithKeyCode:keyCode
-                                      modifiers:modifiers
-                             useDoubledModifier:doubledModifier] autorelease];
+  return [[[self alloc] initWithKeyCode:keyCode
+                              modifiers:modifiers
+                     useDoubledModifier:doubledModifier] autorelease];
 }
 
 - (id)initWithKeyCode:(NSUInteger)keyCode
