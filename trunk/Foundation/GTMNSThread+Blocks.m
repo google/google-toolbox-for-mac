@@ -57,7 +57,12 @@
 
 // Only available 10.6 and later.
 typedef int (*PThreadSetNameNPPTr)(const char*);
+#if !GTM_IPHONE_SDK
 static PThreadSetNameNPPTr gPThreadSetNameNP = NULL;
+#else
+// Defined on iPhone since 3.2
+static PThreadSetNameNPPTr gPThreadSetNameNP = pthread_setname_np;
+#endif // !GTM_IPHONE_SDK
 
 enum {
   kGTMSimpleThreadInitialized = 0,
@@ -69,12 +74,14 @@ enum {
 
 @implementation GTMSimpleWorkerThread
 
+#if !GTM_IPHONE_SDK
 + (void)initialize {
   if (self == [GTMSimpleWorkerThread class]) {
     // Resolve pthread_setname_np() on 10.6 and later.
     gPThreadSetNameNP = dlsym(RTLD_DEFAULT, "pthread_setname_np");
   }
 }
+#endif // !GTM_IPHONE_SDK
 
 - (id)init {
   if ((self = [super init])) {
