@@ -45,7 +45,3 @@ GTM_CONFIGURATION_GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1
 GTM_CONFIGURATION_OTHER_CFLAGS = -fstack-protector -fstack-protector-all
 // Stack protection doesn't exist on Tiger
 GTM_CONFIGURATION_OTHER_CFLAGS[sdk=macosx10.4*] =
-
-// And is really broken on the iPhone Device. Works on simulator though.
-// rdar://639430 Xcode generates bad Arm code if -fstack-protector -fstack-protector-all
-GTM_CONFIGURATION_OTHER_CFLAGS[sdk=iphoneos*] =
