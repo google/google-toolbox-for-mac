@@ -71,10 +71,11 @@
 // localizing all non-default toolbar items by hand.
 //
 @interface GTMUILocalizer : NSObject {
- @private
+ @protected
   IBOutlet id owner_;
   IBOutlet id otherObjectToLocalize_;
   IBOutlet id yetAnotherObjectToLocalize_;
+ @private
   NSBundle *bundle_;
 }
 - (id)initWithBundle:(NSBundle *)bundle;
