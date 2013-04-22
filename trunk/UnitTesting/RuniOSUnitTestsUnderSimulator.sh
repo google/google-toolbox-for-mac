@@ -35,9 +35,7 @@ GTM_SIMULATOR_SDK_VERSION=${GTM_SIMULATOR_SDK_VERSION:=default}
 # GTM_SIMULATOR_START_TIMEOUT
 #   Controls the simulator startup timeout. Things like machine load, running
 #   on a VM, etc.; can cause the startup to take longer.
-GTM_SIMULATOR_START_TIMEOUT=${GTM_SIMULATOR_START_TIMEOUT:=60}
-
-# TODO(tvl): Add a variable for the simulator user dir.
+GTM_SIMULATOR_START_TIMEOUT=${GTM_SIMULATOR_START_TIMEOUT:=120}
 
 # GTM_ENABLE_LEAKS -
 #   Set to a non-zero value to turn on the leaks check. You will probably want
