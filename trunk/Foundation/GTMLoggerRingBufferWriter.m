@@ -65,7 +65,12 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
     writer_ = [writer retain];
     capacity_ = capacity;
 
-    buffer_ = (GTMRingBufferPair *)calloc(capacity_, sizeof(GTMRingBufferPair));
+    // iVars are initialized to NULL.
+    // Calling calloc with 0 is outside the standard.
+    if (capacity_) {
+      buffer_ = (GTMRingBufferPair *)calloc(capacity_,
+                                            sizeof(GTMRingBufferPair));
+    }
 
     nextIndex_ = 0;
 
