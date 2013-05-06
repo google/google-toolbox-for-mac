@@ -53,15 +53,12 @@
 
     // NSURL does not work with ports.
     baseURLString_ = [URL absoluteString];
-    if ([URL path]) {
+    if ([URL query]) {
       NSRange pathRange =
-          [baseURLString_ rangeOfString:[URL path] options:NSBackwardsSearch];
+          [baseURLString_ rangeOfString:[URL query] options:NSBackwardsSearch];
       if (pathRange.location != NSNotFound) {
-        baseURLString_ = [baseURLString_ substringToIndex:pathRange.location];
+        baseURLString_ = [baseURLString_ substringToIndex:pathRange.location-1];
       }
-
-      baseURLString_ =
-          [NSString stringWithFormat:@"%@%@", baseURLString_, [URL path]];
     }
     [baseURLString_ retain];
     params_ = [[NSDictionary gtm_dictionaryWithHttpArgumentsString:[URL query]]
