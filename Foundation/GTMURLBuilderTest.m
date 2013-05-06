@@ -37,6 +37,18 @@
   STAssertEqualStrings(@"http://google.com:8080/pathA/pathB?param=val",
                       [URLBuilder URLString], nil);
   STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
+
+  URLBuilder = [GTMURLBuilder builderWithString:
+                @"http://google.com:8080/path%3AA/pathB?param=val"];
+  STAssertEqualStrings(@"http://google.com:8080/path%3AA/pathB?param=val",
+                       [URLBuilder URLString], nil);
+  STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
+
+  URLBuilder = [GTMURLBuilder builderWithString:
+                @"http://google.com:8080/pathA/pathB%2F?param=val"];
+  STAssertEqualStrings(@"http://google.com:8080/pathA/pathB%2F?param=val",
+                       [URLBuilder URLString], nil);
+  STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
 }
 
 - (void)testMailToHandling {
@@ -92,6 +104,8 @@
   STAssertEqualStrings(@"http://google.com/", [URLBuilder URLString], nil);
   URLBuilder = [GTMURLBuilder builderWithString:@"http://google.com/pA/pB"];
   STAssertEqualStrings(@"http://google.com/pA/pB", [URLBuilder URLString], nil);
+  URLBuilder = [GTMURLBuilder builderWithString:@"http://google.com/p%3AA/pB"];
+  STAssertEqualStrings(@"http://google.com/p%3AA/pB", [URLBuilder URLString], nil);
 }
 
 @end
