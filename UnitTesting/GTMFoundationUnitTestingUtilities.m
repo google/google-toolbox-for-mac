@@ -81,6 +81,12 @@
 
 @implementation NSRunLoop (GTMUnitTestingAdditions)
 
+- (BOOL)gtm_runUpToNSeconds:(NSTimeInterval)seconds
+                    context:(id<GTMUnitTestingRunLoopContext>)context {
+  return [self gtm_runUntilDate:[NSDate dateWithTimeIntervalSinceNow:seconds]
+                        context:context];
+}
+
 - (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context {
   return [self gtm_runUntilDate:[NSDate dateWithTimeIntervalSinceNow:60]
                         context:context];
