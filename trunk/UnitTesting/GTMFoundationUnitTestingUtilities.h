@@ -92,7 +92,16 @@
                  context:(id<GTMUnitTestingRunLoopContext>)context;
 
 // Calls -gtm_runUntilDate:mode:context: with mode set to NSDefaultRunLoopMode,
+// and the timeout date set to |seconds| seconds.
+- (BOOL)gtm_runUpToNSeconds:(NSTimeInterval)seconds
+                    context:(id<GTMUnitTestingRunLoopContext>)context;
+
+// Calls -gtm_runUntilDate:mode:context: with mode set to NSDefaultRunLoopMode,
 // and the timeout date set to 60 seconds.
+// This is a good time to use for AppleEvent calls (which default to 60 seconds)
+// but may be a bit long for standard unit tests, and could cause a long unit
+// testing run if you have multiple failures.
+// Calling -[gtm_runUpToNSeconds:context:] is preferred.
 - (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context;
 
 @end
