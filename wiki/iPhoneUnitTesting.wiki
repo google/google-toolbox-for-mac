@@ -3,9 +3,27 @@
 
 = Introduction =
 
-This is a quick tutorial on doing iPhone unit testing using the facilities in the Google Toolbox For Mac. Please send mail to [http://groups.google.com/group/google-toolbox-for-mac the group] if any clarification is required. 
+For a long time, Apple didn't provide a way to do iOS unittesting, so Google Toolbox For Mac helped fill that gap by providing all the support to write tests with SenTest just like you could for OS X.  But as of Xcode 4.x, Apple has supported Unittesting iOS and taken it even further then before with Xcode integration for controlling what tests are run, debugger support, etc.  Google Toolbox For Mac now support both the old Google Toolbox For Mac only way and working in parallel with Apple support (like Google Toolbox For Mac does for OS X testing).
 
-= Basic Project Setup =
+= GTM UnitTesting with Apple's support/Xcode integration =
+
+This is now the suggested way to using Google Toolbox For Mac for UnitTesting on iOS.
+
+== Basic Project Setup ==
+
+Start by follow Apple's [http://developer.apple.com/library/ios/#documentation/DeveloperTools/Conceptual/UnitTesting/00-About_Unit_Testing/about.html UnitTesting documentation].  Then add `GTM_IPHONE_USE_SENTEST=1` to your `GCC_PREPROCESSOR_DEFINITIONS` settings of your testing target(s). Lastly, add `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.m` and `google-toolbox-for-mac/UnitTesting/GTMSenTestCase.h` to your testing target(s).
+
+That's it, you'll get the added support the GTM provides to test cases using the stock Apple supported SenTest.
+
+== Supporting Command Line Building/Testing ==
+
+Apple describes two types of tests, Logic and Application tests.  The Application tests work by hosting the test bundle inside of the an Application.  As of Xcode 4.6, Apple still doesn't support running these type of tests in command line builds.  Google Toolbox for Mac provides a replacement script (RuniOSUnitTestsUnderSimulator.sh) that can be used inplace of the one Xcode provides that is able to launch these tests from the command line.  Simple update the Script phase on your testing target(s) to use it instead of the one bundled with Xcode.
+
+= GTM UnitTesting without Apple'a support/Xcode integration =
+
+This is a quick tutorial on the older way of doing iOS unit testing using the facilities in the Google Toolbox For Mac. Please send mail to [http://groups.google.com/group/google-toolbox-for-mac the group] if any clarification is required. 
+
+== Basic Project Setup ==
 Hopefully your project already has an application target for building something for the iPhone.
   # Create a new iPhone Target of type "Cocoa Touch Application" via "Project Menu > New Target...". Choose a name that makes some sense such as "Unit Test". Be sure to use a "Cocoa Touch Application" target as opposed to a "Cocoa Application" target or a "Cocoa Touch Static Library" target or "Cocoa Touch Unit Test Bundle".
   # Add `google-toolbox-for-mac/UnitTesting/GTMIPhoneUnitTestMain.m` to your target
@@ -28,11 +46,11 @@ Hopefully your project already has an application target for building something 
 Your target should now build cleanly, and if you check the build log you should see something like:
 "Executed 0 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds" at the end.
 
-= Trouble Shooting =
+== Trouble Shooting ==
  * Make sure you are not linked against the `SenTestingKit.framework`.
  * RunIPhoneUnitTest.sh vs. RuniOSUnitTestsUnderSimulator.sh: The scripts will attempt to warn you if you are using the wrong one, Xcode 4.5 changed how the simulator can be launched, so RunIPhoneUnitTest.sh no longer works.  RuniOSUnitTestsUnderSimulator.sh uses a new method that is closer to what Xcode does when launching applications under the simulator.
 
-= Creating a unit test =
+== Creating a unit test ==
   # Add the source you want to test to your target. For example if you want to test class Foo, make sure to add Foo.h and Foo.m to your target.
   # Add a new unit test file to your target via "File > New File" and choose "Objective-C test case class" from the "Mac OS X" Cocoa category. Call it `FooTest.m`, or follow whatever convention your project has for naming test classes.
   # In `FooTest.h`, change `#import <SenTestingKit/SenTestingKit.h>` to `#import "GTMSenTestCase.h"`
@@ -41,10 +59,13 @@ Your target should now build cleanly, and if you check the build log you should 
  
 Now when you build your target you should now see test cases executing.  You can repeat this process creating additional source files for each class you want to write Unittests for.
 
-= Debugging =
+== Debugging ==
 You can debug your unit test executable the exact same way you would unit test any executable. You shouldn't have to set up anything. Note that you may see cases where the unit test build fails, but it doesn't fail when you are debugging. When the unit test build is running several flags are turned on to encourage failures such as `MallocScribble`, `NSAutoreleaseFreedObjectCheckEnabled` etc. You may want to look in `RunIPhoneUnitTest.sh` and see what is being enabled for you.
 
 = Notes =
+
+These apply to both forms of UnitTesting that GTM supports.
+
   * We find that having a .h for tests to be mostly useless, and tend to just the interfaces for the tests in with the implementation so I only have one file to worry about.
   * Make sure to check out the extra ST macros that we have added in `GTMSenTestCase.h` that go above and beyond the set included with the default OCUnit.
     * STAssertNoErr(a1, description, ...), STAssertErr(a1, a2, description, ...)
@@ -57,6 +78,8 @@ You can debug your unit test executable the exact same way you would unit test a
   * You can't run the build script while the iPhone simulator is running. The build script does attempt to kill it off before it runs, but if you see `Couldn't register PurpleSystemEventPort with the bootstrap server. Error: unknown error code. This generally means that another instance of this process was already running or is hung in the debugger.` or `Abort trap "$TARGET_BUILD_DIR/$EXECUTABLE_PAT" -RegisterForSystemEvents` you probably need to figure out why the simulator (or another iPhone process) is already running.  The exact error has changed with different versions of the iPhone SDK.
 
 = Advanced Stuff =
+
+_NOTE:_ Some of these only apply to the older form of GTM UnitTesting support.  Check the script for launching UnitTests for the latest information on what is supported where.
 
 == Unit test Logging ==
 When Unittesting is done correctly, you often have a lot of log messages logging because you are testing edge cases that you may not expect to hit in the real world very often. It's nice to be able to verify that the log messages you are receiving as you run your tests are the ones that you expect to receive. You can do this in GTM by enabling unit test logging.
