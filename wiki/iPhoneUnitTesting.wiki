@@ -3,9 +3,9 @@
 
 = Introduction =
 
-For a long time, Apple didn't provide a way to do iOS unittesting, so Google Toolbox For Mac helped fill that gap by providing all the support to write tests with SenTest just like you could for OS X.  But as of Xcode 4.x, Apple has supported Unittesting iOS and taken it even further then before with Xcode integration for controlling what tests are run, debugger support, etc.  Google Toolbox For Mac now support both the old Google Toolbox For Mac only way and working in parallel with Apple support (like Google Toolbox For Mac does for OS X testing).
+For a long time, Apple didn't provide a way to do iOS unit testing, so Google Toolbox For Mac helped fill that gap by providing all the support to write tests with SenTest just like you could for OS X.  But as of Xcode 4.x, Apple has supported unit testing iOS and taken it even further then before with Xcode integration for controlling what tests are run, debugger support, etc.  Google Toolbox For Mac now support both the old Google Toolbox For Mac only way and working in parallel with Apple support (like Google Toolbox For Mac does for OS X testing).
 
-= GTM UnitTesting with Apple's support/Xcode integration =
+= GTM Unit Testing with Apple's support/Xcode integration =
 
 This is now the suggested way to using Google Toolbox For Mac for UnitTesting on iOS.
 
@@ -19,7 +19,7 @@ That's it, you'll get the added support the GTM provides to test cases using the
 
 Apple describes two types of tests, Logic and Application tests.  The Application tests work by hosting the test bundle inside of the an Application.  As of Xcode 4.6, Apple still doesn't support running these type of tests in command line builds.  Google Toolbox for Mac provides a replacement script (RuniOSUnitTestsUnderSimulator.sh) that can be used inplace of the one Xcode provides that is able to launch these tests from the command line.  Simple update the Script phase on your testing target(s) to use it instead of the one bundled with Xcode.
 
-= GTM UnitTesting without Apple'a support/Xcode integration =
+= GTM Unit Testing without Apple'a support/Xcode integration =
 
 This is a quick tutorial on the older way of doing iOS unit testing using the facilities in the Google Toolbox For Mac. Please send mail to [http://groups.google.com/group/google-toolbox-for-mac the group] if any clarification is required. 
 
