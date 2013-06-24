@@ -212,6 +212,7 @@ static NSUInteger gTestPass = 0;
 }
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
 - (void)testSizeToFitFixedHeightTextField {
   struct {
     const char *name;
@@ -266,6 +267,19 @@ static NSUInteger gTestPass = 0;
     }
   }
 }
+
+- (void)testSizeToFitFixedHeightTextFieldIntegral {
+  NSTextField* textField =
+      [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 100, 50)];
+  [textField setBezeled:NO];
+  [textField setStringValue:@"The quick brown fox jumps over the lazy dog."];
+  [GTMUILocalizerAndLayoutTweaker sizeToFitFixedHeightTextField:textField];
+  STAssertTrue(
+      NSEqualRects([textField bounds], NSIntegralRect([textField bounds])),
+      nil);
+  [textField release];
+}
+
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 @end
