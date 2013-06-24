@@ -18,7 +18,7 @@
 //
 
 //
-// This file is still around for compatibility with apps relying on its macro,
+// This file has been kept around for compatibility with apps relying on its macro,
 // but given how simple this is, there is not a compelling reason for any app to
 // use this macro.
 //
@@ -30,6 +30,13 @@
 // GTMOBJECT_SINGLETON_BOILERPLATE(SomeUsefulManager, sharedSomeUsefulManager)
 // (with no trailing semicolon)
 //
+
+#include <AvailabilityMacros.h>
+
+#if (defined(__IPHONE_7_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0)) \
+    || (defined(MAC_OS_X_VERSION_10_9) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_9))
+#error "GTMOBJECT_SINGLETON_BOILERPLATE is deprecated; change this in your sources to a class method using dispatch_once."
+#endif
 
 #if NS_BLOCKS_AVAILABLE
 
