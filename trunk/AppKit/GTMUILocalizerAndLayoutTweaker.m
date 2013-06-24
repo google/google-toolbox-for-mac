@@ -313,6 +313,9 @@ static const CGFloat kWrapperStringSlop = 0.9;
   if (minWidth > fixedSize.width) {
     finalSize.width = minWidth;
   }
+  // Make integral.
+  finalSize.width = ceil(fixedSize.width);
+  finalSize.height = ceil(fixedSize.height);
   if (!NSEqualSizes(fixedSize, finalSize)) {
     [textField setFrameSize:finalSize];
   }
