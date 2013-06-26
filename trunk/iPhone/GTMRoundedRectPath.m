@@ -25,8 +25,8 @@ void GTMCGContextAddRoundRect(CGContextRef context,
   if (!CGRectIsEmpty(rect)) {
     if (radius > 0.0) {
       // Clamp radius to be no larger than half the rect's width or height.
-      radius = MIN(radius, 0.5 * MIN(rect.size.width, rect.size.height));
-      
+      radius = MIN(radius, 0.5f * MIN(rect.size.width, rect.size.height));
+
       CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
       CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
       CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), 
@@ -55,8 +55,8 @@ void GTMCGPathAddRoundRect(CGMutablePathRef path,
   if (!CGRectIsEmpty(rect)) {
     if (radius > 0.0) {
       // Clamp radius to be no larger than half the rect's width or height.
-      radius = MIN(radius, 0.5 * MIN(rect.size.width, rect.size.height));
-      
+      radius = MIN(radius, 0.5f * MIN(rect.size.width, rect.size.height));
+
       CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
       CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
       CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), 
