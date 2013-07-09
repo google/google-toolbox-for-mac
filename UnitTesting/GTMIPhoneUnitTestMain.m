@@ -26,14 +26,23 @@
 // SenTestCase, outputs results and test run time, and terminates right
 // afterwards.
 int main(int argc, char *argv[]) {
+  int retVal;
+#if __has_feature(objc_arc)
+  @autoreleasepool {
+#else
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+#endif
 #if GTM_IPHONE_USE_SENTEST
   // Is using SenTest, just create a dummy app that can be used as the
   // TEST_HOST.
-  int retVal = UIApplicationMain(argc, argv, nil, nil);
+  retVal = UIApplicationMain(argc, argv, nil, nil);
 #else
-  int retVal = UIApplicationMain(argc, argv, nil, @"GTMIPhoneUnitTestDelegate");
+  retVal = UIApplicationMain(argc, argv, nil, @"GTMIPhoneUnitTestDelegate");
 #endif
+#if __has_feature(objc_arc)
+  }
+#else
   [pool release];
+#endif
   return retVal;
 }
