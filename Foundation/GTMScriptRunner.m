@@ -19,6 +19,8 @@
 #import "GTMScriptRunner.h"
 #import "GTMDefines.h"
 
+#include <sys/ioctl.h>
+
 static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 @interface GTMScriptRunner (PrivateMethods)
@@ -93,46 +95,82 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   NSTask *task = [self interpreterTaskWithAdditionalArgs:nil];
   NSFileHandle *toTask = [[task standardInput] fileHandleForWriting];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
-  
+  NSFileHandle *errTask = [[task standardError] fileHandleForReading];
+
   if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
   
   [toTask writeData:[cmds dataUsingEncoding:NSUTF8StringEncoding]];
   [toTask closeFile];
-  
-  NSData *outData = [fromTask readDataToEndOfFile];
-  NSString *output = [[[NSString alloc] initWithData:outData
-                                            encoding:NSUTF8StringEncoding] autorelease];
-  
-  // Handle returning standard error if |err| is not nil
-  if (err) {
-    NSFileHandle *stderror = [[task standardError] fileHandleForReading];
-    NSData *errData = [stderror readDataToEndOfFile];
-    *err = [[[NSString alloc] initWithData:errData
-                                  encoding:NSUTF8StringEncoding] autorelease];
-    if (trimsWhitespace_) {
-      *err = [*err stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    }
 
-    // let folks test for nil instead of @""
-    if ([*err length] < 1) {
-      *err = nil;
+  // Must keep both file handle buffers empty to avoid the deadlock described in
+  // http://code.google.com/p/google-toolbox-for-mac/issues/detail?id=25
+  NSMutableString *mutableOutString = [NSMutableString string];
+  NSMutableString *mutableErrString = [NSMutableString string];
+  while (true) {
+    // availableByteCountNonBlocking must be called on both fromTask and errTask
+    // each time through the loop.
+    unsigned int bytesFromTask = [self availableByteCountNonBlocking:fromTask];
+    unsigned int bytesErrTask = [self availableByteCountNonBlocking:errTask];
+    if (![task isRunning] && (bytesFromTask == 0) && (bytesErrTask == 0)) {
+      break;
+    }
+    if (bytesFromTask > 0) {
+      NSData *outData = [fromTask availableData];
+      NSString *dataString =
+          [[NSString alloc] initWithData:outData encoding:NSUTF8StringEncoding];
+      [mutableOutString appendString:dataString];
+      [dataString release];
+    }
+    if (bytesErrTask > 0 && err) {
+      NSData *errData = [errTask availableData];
+      NSString *dataString =
+          [[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding];
+      [mutableErrString appendString:dataString];
+      [dataString release];
     }
   }
   
   [task terminate];
-  
+
+  NSString *outString = mutableOutString;
+  NSString *errString = mutableErrString;
+
   if (trimsWhitespace_) {
-    output = [output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    outString = [outString stringByTrimmingCharactersInSet:set];
+    if (err) {
+      errString = [errString stringByTrimmingCharactersInSet:set];
+    }
   }
   
   // let folks test for nil instead of @""
-  if ([output length] < 1) {
-    output = nil;
+  if ([outString length] < 1) {
+    outString = nil;
   }
-      
-  return output;
+
+  // Handle returning standard error if |err| is not nil
+  if (err) {
+    // let folks test for nil instead of @""
+    if ([errString length] < 1) {
+      *err = nil;
+    } else {
+      *err = errString;
+    }
+  }
+
+  return outString;
+}
+
+- (unsigned int)availableByteCountNonBlocking:(NSFileHandle *)file {
+  int fd = [file fileDescriptor];
+  int numBytes;
+  if (ioctl(fd, FIONREAD, (char *) &numBytes) == -1) {
+    [NSException raise:NSFileHandleOperationException
+                format:@"ioctl() error %d", errno];
+  }
+  return numBytes;
 }
 
 - (NSString *)runScript:(NSString *)path {

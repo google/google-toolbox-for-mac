@@ -407,24 +407,19 @@
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)(512 + 512*200), nil);
   STAssertEquals([err length], (NSUInteger)512, nil);
-#if 0
-  // Not fixed yet
+
   cmd = [NSString stringWithFormat:GENERATOR_FORMAT_STR, @"'b1', 'e200'"];
   STAssertNotNil(cmd, nil);
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)512, nil);
   STAssertEquals([err length], (NSUInteger)(512 + 512*200), nil);
-#endif  
 
   // Now send a large amount down both to make sure we spool it all in.
-#if 0
-  // Not fixed yet
   cmd = [NSString stringWithFormat:GENERATOR_FORMAT_STR, @"'b200'"];
   STAssertNotNil(cmd, nil);
   output = [sr run:cmd standardError:&err];
   STAssertEquals([output length], (NSUInteger)(512*200), nil);
   STAssertEquals([err length], (NSUInteger)(512*200), nil);
-#endif
 }
 
 
