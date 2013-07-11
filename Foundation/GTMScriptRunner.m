@@ -25,6 +25,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 @interface GTMScriptRunner (PrivateMethods)
 - (NSTask *)interpreterTaskWithAdditionalArgs:(NSArray *)args;
+- (unsigned int)availableByteCountNonBlocking:(NSFileHandle *)file;
 @end
 
 @implementation GTMScriptRunner
@@ -163,16 +164,6 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   return outString;
 }
 
-- (unsigned int)availableByteCountNonBlocking:(NSFileHandle *)file {
-  int fd = [file fileDescriptor];
-  int numBytes;
-  if (ioctl(fd, FIONREAD, (char *) &numBytes) == -1) {
-    [NSException raise:NSFileHandleOperationException
-                format:@"ioctl() error %d", errno];
-  }
-  return numBytes;
-}
-
 - (NSString *)runScript:(NSString *)path {
   return [self runScript:path withArgs:nil];
 }
@@ -275,6 +266,16 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   }
   
   return task;
+}
+
+- (unsigned int)availableByteCountNonBlocking:(NSFileHandle *)file {
+  int fd = [file fileDescriptor];
+  int numBytes;
+  if (ioctl(fd, FIONREAD, (char *) &numBytes) == -1) {
+    [NSException raise:NSFileHandleOperationException
+                format:@"ioctl() error %d", errno];
+  }
+  return numBytes;
 }
 
 @end
