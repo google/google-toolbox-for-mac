@@ -873,20 +873,26 @@ do { \
     continue; \
   } \
   @catch (id anException) { \
-    NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
+    NSString *_descrip = STComposeString( \
+        @"(Expected exception: %@) ", \
+        NSStringFromClass([specificException class])); \
+    _descrip = [_descrip stringByAppendingFormat:description, ##__VA_ARGS__]; \
     [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
                                               exception:anException \
                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                  atLine:__LINE__ \
-                                        withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
-                                            continue; \
+                                        withDescription:@"%@", _descrip]]; \
+    continue; \
   } \
-  NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
+  NSString *_descrip = STComposeString( \
+      @"(Expected exception: %@) ", \
+      NSStringFromClass([specificException class])); \
+  _descrip = [_descrip stringByAppendingFormat:description, ##__VA_ARGS__]; \
   [self failWithException:[NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
                                             exception:nil \
                                                inFile:[NSString stringWithUTF8String:__FILE__] \
                                                atLine:__LINE__ \
-                                      withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
+                                      withDescription:@"%@", _descrip]]; \
 } while (0)
 
 
@@ -909,32 +915,41 @@ do { \
   } \
   @catch (specificException *anException) { \
     if ([aName isEqualToString:[anException name]]) continue; \
-    NSString *_descrip = STComposeString(@"(Expected exception: %@ (name: %@)) %@", NSStringFromClass([specificException class]), aName, description); \
+    NSString *_descrip = STComposeString( \
+        @"(Expected exception: %@ (name: %@)) ", \
+        NSStringFromClass([specificException class]), aName); \
+    _descrip = [_descrip stringByAppendingFormat:description, ##__VA_ARGS__]; \
     [self failWithException: \
       [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
                         exception:anException \
                            inFile:[NSString stringWithUTF8String:__FILE__] \
                            atLine:__LINE__ \
-                  withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
+                  withDescription:@"%@", _descrip]]; \
     continue; \
   } \
   @catch (id anException) { \
-    NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
+    NSString *_descrip = STComposeString( \
+        @"(Expected exception: %@ (name: %@)) ", \
+        NSStringFromClass([specificException class]), aName); \
+    _descrip = [_descrip stringByAppendingFormat:description, ##__VA_ARGS__]; \
     [self failWithException: \
       [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
                         exception:anException \
                            inFile:[NSString stringWithUTF8String:__FILE__] \
                            atLine:__LINE__ \
-                  withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
+                  withDescription:@"%@", _descrip]]; \
     continue; \
   } \
-  NSString *_descrip = STComposeString(@"(Expected exception: %@) %@", NSStringFromClass([specificException class]), description); \
+  NSString *_descrip = STComposeString( \
+      @"(Expected exception: %@ (name: %@)) ", \
+      NSStringFromClass([specificException class]), aName); \
+  _descrip = [_descrip stringByAppendingFormat:description, ##__VA_ARGS__]; \
   [self failWithException: \
     [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
                       exception:nil \
                          inFile:[NSString stringWithUTF8String:__FILE__] \
                          atLine:__LINE__ \
-                withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
+                withDescription:@"%@", _descrip]]; \
 } while (0)
 
 
@@ -1004,13 +1019,16 @@ do { \
   } \
   @catch (specificException *anException) { \
     if ([aName isEqualToString:[anException name]]) { \
-      NSString *_descrip = STComposeString(@"(Expected exception: %@ (name: %@)) %@", NSStringFromClass([specificException class]), aName, description); \
+      NSString *_descrip = STComposeString( \
+          @"(Expected exception: %@ (name: %@)) ", \
+          NSStringFromClass([specificException class]), aName); \
+      _descrip = [_descrip stringByAppendingFormat:description, ##__VA_ARGS__]; \
       [self failWithException: \
         [NSException failureInRaise:[NSString stringWithUTF8String:#expr] \
                           exception:anException \
                              inFile:[NSString stringWithUTF8String:__FILE__] \
                              atLine:__LINE__ \
-                    withDescription:@"%@", STComposeString(_descrip, ##__VA_ARGS__)]]; \
+                    withDescription:@"%@", _descrip]]; \
     } \
     continue; \
   } \
