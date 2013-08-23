@@ -34,7 +34,7 @@
   self = [super initWithFrame:frame];
   if (self) {
     // Use clip as a default value.
-    self.lineBreakMode = UILineBreakModeClip;
+    self.lineBreakMode = NSLineBreakByClipping;
     [self setup];
   }
   return self;
