@@ -56,7 +56,7 @@
     void *a4ContextInfo = (a4); \
     CGRect frame = CGRectMake(0, 0, a2Size.width, a2Size.height); \
     GTMUnitTestView *view = [[[GTMUnitTestView alloc] initWithFrame:frame drawer:a1Drawer contextInfo:a4ContextInfo] autorelease]; \
-    GTMAssertObjectImageEqualToImageNamed(view, a3String, STComposeString(description, ##__VA_ARGS__)); \
+    GTMAssertObjectImageEqualToImageNamed(view, a3String, @"%@", STComposeString(description, ##__VA_ARGS__)); \
   } while(0)
 
 //  Category for making unit testing of graphics/UI easier.
