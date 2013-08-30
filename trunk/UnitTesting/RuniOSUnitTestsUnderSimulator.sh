@@ -37,6 +37,14 @@ GTM_SIMULATOR_SDK_VERSION=${GTM_SIMULATOR_SDK_VERSION:=default}
 #   on a VM, etc.; can cause the startup to take longer.
 GTM_SIMULATOR_START_TIMEOUT=${GTM_SIMULATOR_START_TIMEOUT:=120}
 
+# GTM_SIMULATOR_USER_HOME -
+#   Root directory for simulator file system. Allows persistence across runs.
+GTM_SIMULATOR_USER_HOME=${GTM_SIMULATOR_USER_HOME:=default}
+
+# GTM_SIMULATOR_EXTRA_ENV -
+#   Space separated set env variables in format of "KEY1=value1 KEY2=value2"
+GTM_SIMULATOR_EXTRA_ENV=${GTM_SIMULATOR_EXTRA_ENV:=default}
+
 # GTM_ENABLE_LEAKS -
 #   Set to a non-zero value to turn on the leaks check. You will probably want
 #   to disable zombies, otherwise you will get a lot of false positives.
@@ -175,6 +183,16 @@ GTM_TEST_COMMAND=(
 )
 if [[ "${GTM_SIMULATOR_SDK_VERSION}" != "default" ]] ; then
   GTM_TEST_COMMAND+=( "-s" "${GTM_SIMULATOR_SDK_VERSION}" )
+fi
+if [[ "${GTM_SIMULATOR_USER_HOME}" != "default" ]]; then
+  GTM_TEST_COMMAND+=( "-u" "${GTM_SIMULATOR_USER_HOME}" )
+fi
+if [[ "${GTM_SIMULATOR_EXTRA_ENV}" != "default" ]]; then
+  EXTRA_ENV_ARRAY=(${GTM_SIMULATOR_EXTRA_ENV})
+  for i in "${!EXTRA_ENV_ARRAY[@]}"
+  do
+    GTM_TEST_COMMAND+=( "-e" ${EXTRA_ENV_ARRAY[i]} )
+  done
 fi
 if [[ -n "${TEST_HOST}" ]]; then
   # When using a test host, it is usually set to the executable within the app
