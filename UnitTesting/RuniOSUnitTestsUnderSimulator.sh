@@ -176,6 +176,17 @@ GTM_TEST_COMMAND=(
 if [[ "${GTM_SIMULATOR_SDK_VERSION}" != "default" ]] ; then
   GTM_TEST_COMMAND+=( "-s" "${GTM_SIMULATOR_SDK_VERSION}" )
 fi
+if [[ "${GTM_SIMULATOR_USER_HOME}" ]]; then
+  GTM_TEST_COMMAND+=( "-u" "${GTM_SIMULATOR_USER_HOME}" )
+fi
+# pass in extra env variables in format of "KEY1=value1 KEY2=value2"
+if [[ "${GTM_SIMULATOR_EXTRA_ENV}" ]]; then
+  EXTRA_ENV_ARRAY=(${GTM_SIMULATOR_EXTRA_ENV})
+  for i in "${!EXTRA_ENV_ARRAY[@]}"
+  do
+    GTM_TEST_COMMAND+=( "-e" ${EXTRA_ENV_ARRAY[i]} )
+  done
+fi
 if [[ -n "${TEST_HOST}" ]]; then
   # When using a test host, it is usually set to the executable within the app
   # bundle, back up one to point at the bundle.
