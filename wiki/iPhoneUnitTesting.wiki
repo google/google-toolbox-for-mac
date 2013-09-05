@@ -21,7 +21,9 @@ That's it, you'll get the added support the GTM provides to test cases using the
 
 Apple describes two types of tests, Logic and Application tests.  The Application tests work by hosting the test bundle inside of the Application.  As of Xcode 4.6, Apple still doesn't support running these type of tests in command line builds.  Google Toolbox for Mac provides a replacement script (RuniOSUnitTestsUnderSimulator.sh) that can be used in place of the one Xcode provides that is able to launch these tests from the command line.  Simply update the Script phase on your testing target(s) to use it instead of the one bundled with Xcode.
 
-_That's it, ignore the rest of this as it is for the other/older method of testing._
+<br/>
+
+_That's it, ignore the next section, as it is for the other/older method of testing._
 
 <br/>
 ----
