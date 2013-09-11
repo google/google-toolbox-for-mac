@@ -83,7 +83,7 @@ GCC_OBJC_CALL_CXX_CDTORS = YES
 GCC_FAST_OBJC_DISPATCH = YES
 
 // Warn on implicit data conversions in 64bit builds
-GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64*] = YES
+GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64] = YES
 
 // Strictest warning policy that we can do
 // Options intentionally turned off
