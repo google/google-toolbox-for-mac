@@ -37,6 +37,12 @@ GTM_SIMULATOR_SDK_VERSION=${GTM_SIMULATOR_SDK_VERSION:=default}
 #   on a VM, etc.; can cause the startup to take longer.
 GTM_SIMULATOR_START_TIMEOUT=${GTM_SIMULATOR_START_TIMEOUT:=120}
 
+# GTM_KILL_SLEEP_TIME
+#   Controls the time the script will sleep when it kills a process. Things
+#   like machine load, running on a VM, etc.; can cause the time for things to
+#   die to take longer.
+GTM_KILL_SLEEP_TIME=${GTM_KILL_SLEEP_TIME:=5}
+
 # GTM_SIMULATOR_USER_HOME -
 #   Root directory for simulator file system. Allows persistence across runs.
 GTM_SIMULATOR_USER_HOME=${GTM_SIMULATOR_USER_HOME:=default}
@@ -107,10 +113,10 @@ GTMFakeUnitTestingMsg() {
 }
 
 GTMKillNamedAndWait() {
-  # If there is something killed, sleep for few seconds to let the simulator
+  # If there is something killed, sleep for few seconds to let the process
   # spin down so it isn't still seen as running when the next thing tries to
   # launch it.
-  /usr/bin/killall "${1}" 2> /dev/null && sleep 2 || true
+  /usr/bin/killall "${1}" 2> /dev/null && sleep "${GTM_KILL_SLEEP_TIME}" || true
 }
 
 GTMKillSimulator() {
