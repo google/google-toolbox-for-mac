@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -18,14 +18,14 @@
 
 #import "GTMScriptRunner.h"
 #import "GTMDefines.h"
-
-#include <sys/ioctl.h>
+#import <unistd.h>
+#import <fcntl.h>
+#import <sys/select.h>
 
 static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 @interface GTMScriptRunner (PrivateMethods)
 - (NSTask *)interpreterTaskWithAdditionalArgs:(NSArray *)args;
-- (unsigned int)availableByteCountNonBlocking:(NSFileHandle *)file;
 @end
 
 @implementation GTMScriptRunner
@@ -39,11 +39,11 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 + (GTMScriptRunner *)runnerWithPerl {
-  return [self runnerWithInterpreter:@"/usr/bin/perl"];  
+  return [self runnerWithInterpreter:@"/usr/bin/perl"];
 }
 
 + (GTMScriptRunner *)runnerWithPython {
-  return [self runnerWithInterpreter:@"/usr/bin/python"]; 
+  return [self runnerWithInterpreter:@"/usr/bin/python"];
 }
 
 + (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp {
@@ -92,7 +92,16 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 - (NSString *)run:(NSString *)cmds standardError:(NSString **)err {
   if (!cmds) return nil;
-  
+
+  // Convert input to data
+  NSData *inputData = nil;
+  if ([cmds length]) {
+    inputData = [cmds dataUsingEncoding:NSUTF8StringEncoding];
+    if (![inputData length]) {
+      return nil;
+    }
+  }
+
   NSTask *task = [self interpreterTaskWithAdditionalArgs:nil];
   NSFileHandle *toTask = [[task standardInput] fileHandleForWriting];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
@@ -101,43 +110,134 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
-  
-  [toTask writeData:[cmds dataUsingEncoding:NSUTF8StringEncoding]];
-  [toTask closeFile];
 
-  // Must keep both file handle buffers empty to avoid the deadlock described in
-  // http://code.google.com/p/google-toolbox-for-mac/issues/detail?id=25
-  NSMutableString *mutableOutString = [NSMutableString string];
-  NSMutableString *mutableErrString = [NSMutableString string];
-  while (true) {
-    // availableByteCountNonBlocking must be called on both fromTask and errTask
-    // each time through the loop.
-    unsigned int bytesFromTask = [self availableByteCountNonBlocking:fromTask];
-    unsigned int bytesErrTask = [self availableByteCountNonBlocking:errTask];
-    if (![task isRunning] && (bytesFromTask == 0) && (bytesErrTask == 0)) {
-      break;
+  // We're reading an writing to child task via pipes, which is full of
+  // deadlock dangers. We use non-blocking IO and select() to handle.
+  // Note that error handling below isn't quite right since
+  // [task terminate] may not always kill the child. But we want to keep
+  // this simple.
+
+  // Setup for select()
+  size_t inputOffset = 0;
+  int toFD = -1;
+  int fromFD = -1;
+  int errFD = -1;
+  int selectMaxFD = -1;
+  fd_set fdToReadSet, fdToWriteSet;
+  FD_ZERO(&fdToReadSet);
+  FD_ZERO(&fdToWriteSet);
+  if ([inputData length]) {
+    toFD = [toTask fileDescriptor];
+    FD_SET(toFD, &fdToWriteSet);
+    selectMaxFD = MAX(toFD, selectMaxFD);
+    int flags = fcntl(toFD, F_GETFL);
+    if ((flags == -1) ||
+        (fcntl(toFD, F_SETFL, flags | O_NONBLOCK) == -1)) {
+      [task terminate];
+      return nil;
     }
-    if (bytesFromTask > 0) {
-      NSData *outData = [fromTask availableData];
-      NSString *dataString =
-          [[NSString alloc] initWithData:outData encoding:NSUTF8StringEncoding];
-      [mutableOutString appendString:dataString];
-      [dataString release];
+  } else {
+    [toTask closeFile];
+  }
+  fromFD = [fromTask fileDescriptor];
+  FD_SET(fromFD, &fdToReadSet);
+  selectMaxFD = MAX(fromFD, selectMaxFD);
+  errFD = [errTask fileDescriptor];
+  FD_SET(errFD, &fdToReadSet);
+  selectMaxFD = MAX(errFD, selectMaxFD);
+
+  // Convert to string only at the end, so we don't get partial UTF8 sequences.
+  NSMutableData *mutableOut = [NSMutableData data];
+  NSMutableData *mutableErr = [NSMutableData data];
+
+  // Communicate till we've removed everything from the select() or timeout
+  while (([inputData length] && FD_ISSET(toFD, &fdToWriteSet)) ||
+         ((fromFD != -1) && FD_ISSET(fromFD, &fdToReadSet)) ||
+         ((errFD != -1) && FD_ISSET(errFD, &fdToReadSet))) {
+    // select() on a modifiable copy, we use originals to track state
+    fd_set selectReadSet;
+    FD_COPY(&fdToReadSet, &selectReadSet);
+    fd_set selectWriteSet;
+    FD_COPY(&fdToWriteSet, &selectWriteSet);
+    int selectResult = select(selectMaxFD + 1, &selectReadSet, &selectWriteSet,
+                              NULL, NULL);
+    if (selectResult < 0) {
+      if ((errno == EAGAIN) || (errno == EINTR)) {
+        continue;  // No change to |fdToReadSet| or |fdToWriteSet|
+      } else {
+        [task terminate];
+        return nil;
+      }
     }
-    if (bytesErrTask > 0 && err) {
-      NSData *errData = [errTask availableData];
-      NSString *dataString =
-          [[NSString alloc] initWithData:errData encoding:NSUTF8StringEncoding];
-      [mutableErrString appendString:dataString];
-      [dataString release];
+    // STDIN
+    if ([inputData length] && FD_ISSET(toFD, &selectWriteSet)) {
+      // Use a multiple of PIPE_BUF so that we exercise the non-blocking
+      // aspect of this IO.
+      size_t writeSize = PIPE_BUF * 4;
+      if (([inputData length] - inputOffset) < writeSize) {
+        writeSize = [inputData length] - inputOffset;
+      }
+      if (writeSize > 0) {
+        // We are non-blocking, so as much as the pipe will take will be
+        // written.
+        ssize_t writtenSize = 0;
+        do {
+          writtenSize = write(toFD, (char *)[inputData bytes] + inputOffset,
+                              writeSize);
+        } while ((writtenSize) < 0 && (errno == EINTR));
+        if ((writtenSize < 0) && (errno != EAGAIN)) {
+          [task terminate];
+          return nil;
+        }
+        inputOffset += writeSize;
+      }
+      if (inputOffset >= [inputData length]) {
+        FD_CLR(toFD, &fdToWriteSet);
+        [toTask closeFile];
+      }
+    }
+    // STDOUT
+    if ((fromFD != -1) && FD_ISSET(fromFD, &selectReadSet)) {
+      char readBuf[1024];
+      ssize_t readSize = 0;
+      do {
+        readSize = read(fromFD, readBuf, 1024);
+      } while (readSize < 0 && ((errno == EAGAIN) || (errno == EINTR)));
+      if (readSize < 0) {
+          [task terminate];
+          return nil;
+      } else if (readSize == 0) {
+        FD_CLR(fromFD, &fdToReadSet);  // Hit EOF
+      } else {
+        [mutableOut appendBytes:readBuf length:readSize];
+      }
+    }
+    // STDERR
+    if ((errFD != -1) && FD_ISSET(errFD, &selectReadSet)) {
+      char readBuf[1024];
+      ssize_t readSize = 0;
+      do {
+        readSize = read(errFD, readBuf, 1024);
+      } while (readSize < 0 && ((errno == EAGAIN) || (errno == EINTR)));
+      if (readSize < 0) {
+          [task terminate];
+          return nil;
+      } else if (readSize == 0) {
+        FD_CLR(errFD, &fdToReadSet);  // Hit EOF
+      } else {
+        [mutableErr appendBytes:readBuf length:readSize];
+      }
     }
   }
-  
-  [task terminate];
+  // All filehandles closed, wait.
+  [task waitUntilExit];
 
-  NSString *outString = mutableOutString;
-  NSString *errString = mutableErrString;
-
+  NSString *outString = [[[NSString alloc] initWithData:mutableOut
+                                               encoding:NSUTF8StringEncoding]
+                            autorelease];
+  NSString *errString = [[[NSString alloc] initWithData:mutableErr
+                                               encoding:NSUTF8StringEncoding]
+                            autorelease];;
   if (trimsWhitespace_) {
     NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     outString = [outString stringByTrimmingCharactersInSet:set];
@@ -145,7 +245,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
       errString = [errString stringByTrimmingCharactersInSet:set];
     }
   }
-  
+
   // let folks test for nil instead of @""
   if ([outString length] < 1) {
     outString = nil;
@@ -174,11 +274,11 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 - (NSString *)runScript:(NSString *)path withArgs:(NSArray *)args standardError:(NSString **)err {
   if (!path) return nil;
-  
+
   NSArray *scriptPlusArgs = [[NSArray arrayWithObject:path] arrayByAddingObjectsFromArray:args];
   NSTask *task = [self interpreterTaskWithAdditionalArgs:scriptPlusArgs];
   NSFileHandle *fromTask = [[task standardOutput] fileHandleForReading];
-  
+
   if (!LaunchNSTaskCatchingExceptions(task)) {
     return nil;
   }
@@ -186,7 +286,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   NSData *outData = [fromTask readDataToEndOfFile];
   NSString *output = [[[NSString alloc] initWithData:outData
                                             encoding:NSUTF8StringEncoding] autorelease];
-  
+
   // Handle returning standard error if |err| is not nil
   if (err) {
     NSFileHandle *stderror = [[task standardError] fileHandleForReading];
@@ -202,18 +302,18 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
       *err = nil;
     }
   }
-  
+
   [task terminate];
-  
+
   if (trimsWhitespace_) {
     output = [output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   }
-  
+
   // let folks test for nil instead of @""
   if ([output length] < 1) {
     output = nil;
   }
-  
+
   return output;
 }
 
@@ -245,13 +345,13 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   [task setStandardInput:[NSPipe pipe]];
   [task setStandardOutput:[NSPipe pipe]];
   [task setStandardError:[NSPipe pipe]];
-  
+
   // If |environment_| is nil, then use an empty dictionary, otherwise use
   // environment_ exactly.
   [task setEnvironment:(environment_
                         ? environment_
                         : [NSDictionary dictionary])];
-  
+
   // Build args to interpreter.  The format is:
   //   interp [args-to-interp] [script-name [args-to-script]]
   NSArray *allArgs = nil;
@@ -264,18 +364,8 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   if (allArgs){
     [task setArguments:allArgs];
   }
-  
-  return task;
-}
 
-- (unsigned int)availableByteCountNonBlocking:(NSFileHandle *)file {
-  int fd = [file fileDescriptor];
-  int numBytes;
-  if (ioctl(fd, FIONREAD, (char *) &numBytes) == -1) {
-    [NSException raise:NSFileHandleOperationException
-                format:@"ioctl() error %d", errno];
-  }
-  return numBytes;
+  return task;
 }
 
 @end
