@@ -127,4 +127,8 @@
   return YES;
 }
 
+- (NSUInteger)hash {
+  return [baseURLString_ hash] * 17 + [params_ hash] * 37;
+}
+
 @end
