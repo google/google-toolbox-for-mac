@@ -118,12 +118,12 @@ BOOL GTMIsObjectImageEqualToImageNamed(id object,
             }
             if ([data writeToFile:diffPath atomically:YES]) {
               failString = [NSString stringWithFormat:@"Object image different "
-                            @"than file %@. Saved image to %@. "
-                            @"Saved diff to %@",
+                            @"than file\n%@\nSaved image to\n%@\n"
+                            @"Saved diff to\n%@\n",
                             aPath, fullSavePath, diffPath];
             } else {
               failString = [NSString stringWithFormat:@"Object image different "
-                            @"than file %@. Saved image to %@. Unable to save "
+                            @"than file\n%@\nSaved image to\n%@\nUnable to save "
                             @"diff. Most likely the image and diff are "
                             @"different sizes.",
                             aPath, fullSavePath];
