@@ -9,7 +9,7 @@ For a long time, Apple didn't provide a way to do iOS unit testing, so Google To
 ----
 = GTM Unit Testing with Apple's support/Xcode integration =
 
-This is now the suggested way to using Google Toolbox For Mac for UnitTesting on iOS.
+This is now the suggested way to using Google Toolbox For Mac for unit testing on iOS.
 
 == Basic Project Setup ==
 
