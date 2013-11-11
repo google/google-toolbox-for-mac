@@ -27,7 +27,7 @@ _That's it, ignore the next section, as it is for the other/older method of test
 
 <br/>
 ----
-= Older: GTM Unit Testing _without_ Apple'a support/Xcode integration =
+= Older: GTM Unit Testing _without_ Apple's support/Xcode integration =
 
 This is a quick tutorial on the older way of doing iOS unit testing using the facilities in the Google Toolbox For Mac. Please send mail to [http://groups.google.com/group/google-toolbox-for-mac the group] if any clarification is required. 
 
