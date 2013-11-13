@@ -51,12 +51,12 @@ static int gSuiteCount = 0;
 }
 
 + (void)suiteStarted:(NSNotification *)notification {
-  #pragma unused (notification);
+  #pragma unused (notification)
   gSuiteCount += 1;
 }
 
 + (void)suiteStopped:(NSNotification *)notification {
-  #pragma unused (notification);
+  #pragma unused (notification)
   gSuiteCount -= 1;
   if (gSuiteCount == 0) {
     id application = [UIApplication sharedApplication];
