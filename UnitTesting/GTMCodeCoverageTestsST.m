@@ -28,6 +28,12 @@
 
 #import "GTMCodeCoverageApp.h"
 
+// Add GTM_IS_COVERAGE_BUILD to your GCC_PREPROCESSOR_DEFINITIONS for the
+// Xcode Configuration that wants CodeCoverage support.
+#if GTM_IS_COVERAGE_BUILD
+
+extern void __gcov_flush();
+
 static int gSuiteCount = 0;
 
 @interface GTMCodeCoverageTests : NSObject
@@ -63,7 +69,12 @@ static int gSuiteCount = 0;
     if ([application respondsToSelector:@selector(gtm_gcov_flush)]) {
       [application performSelector:@selector(gtm_gcov_flush)];
     }
+
+    // Call flush for this executable unit.
+    __gcov_flush();
   }
 }
 
 @end
+
+#endif  // GTM_IS_COVERAGE_BUILD
