@@ -18,6 +18,7 @@
 
 #import "GTMIPhoneUnitTestDelegate.h"
 
+#import "GTMCodeCoverageApp.h"
 #import "GTMDefines.h"
 #if !GTM_IPHONE_SDK
 #error GTMIPhoneUnitTestDelegate for iPhone only
@@ -93,6 +94,10 @@
 // Run through all tests and then exit application if required.
 - (void)runTestsAndExit:(UIApplication *)application {
   [self runTests];
+
+  if ([application respondsToSelector:@selector(gtm_gcov_flush)]) {
+    [application performSelector:@selector(gtm_gcov_flush)];
+  }
 
   if (!getenv("GTM_DISABLE_TERMINATION")) {
     // To help using xcodebuild, make the exit status 0/1 to signal the tests
