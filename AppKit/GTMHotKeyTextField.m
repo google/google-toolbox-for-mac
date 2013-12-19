@@ -18,7 +18,6 @@
 #import "GTMHotKeyTextField.h"
 
 #import <Carbon/Carbon.h>
-#import "GTMObjectSingleton.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 #import "GTMSystemVersion.h"
@@ -570,7 +569,13 @@ static CFStringRef kGTM_TISPropertyUnicodeKeyLayoutData = NULL;
 
 @implementation GTMHotKeyFieldEditor
 
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMHotKeyFieldEditor, sharedHotKeyFieldEditor)
++ (GTMHotKeyFieldEditor *)sharedHotKeyFieldEditor {
+  static GTMHotKeyFieldEditor *obj;
+  if (!obj) {
+    obj = [[self alloc] init];
+  }
+  return obj;
+}
 
 - (id)init {
   if ((self = [super init])) {

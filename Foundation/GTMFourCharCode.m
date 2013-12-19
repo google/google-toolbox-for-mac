@@ -19,7 +19,6 @@
 
 #import "GTMDefines.h"
 #import "GTMFourCharCode.h"
-#import "GTMGarbageCollection.h"
 #import <CoreServices/CoreServices.h>
 
 @implementation GTMFourCharCode

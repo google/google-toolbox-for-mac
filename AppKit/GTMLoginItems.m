@@ -19,7 +19,6 @@
 
 #import "GTMLoginItems.h"
 #import "GTMDefines.h"
-#import "GTMGarbageCollection.h"
 
 #include <Carbon/Carbon.h>
 

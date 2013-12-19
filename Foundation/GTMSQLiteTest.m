@@ -20,7 +20,6 @@
 #import "GTMSQLite.h"
 #import "GTMSenTestCase.h"
 #import "GTMUnitTestDevLog.h"
-#import "GTMGarbageCollection.h"
 
 @interface GTMSQLiteTest : GTMTestCase
 @end
@@ -1744,51 +1743,47 @@ static NSArray* LikeGlobTestHelper(GTMSQLiteDatabase *db, NSString *sql) {
 }
 
 - (void)testThatNotFinalizingStatementsThrowsAssertion {
-  // The run-time check is discouraged, but we're using it because the
-  // same test binary is used for both GC & Non-GC runs
-  if (!GTMIsGarbageCollectionEnabled())  {
-      NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
+  NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];
 
-    int err;
-    GTMSQLiteDatabase *db =
-      [[[GTMSQLiteDatabase alloc] initInMemoryWithCFAdditions:YES
-                                                         utf8:YES
-                                                    errorCode:&err]
-        autorelease];
+  int err;
+  GTMSQLiteDatabase *db =
+    [[[GTMSQLiteDatabase alloc] initInMemoryWithCFAdditions:YES
+                                                       utf8:YES
+                                                  errorCode:&err]
+      autorelease];
 
-    STAssertNotNil(db, @"Failed to create database");
+  STAssertNotNil(db, @"Failed to create database");
 
-    sqlite3 *sqlite3DB = [db sqlite3DB];
-    
-    NSString *selectSQL = @"select 1";
-    GTMSQLiteStatement *statement;
-    statement = [GTMSQLiteStatement statementWithSQL:selectSQL
-                                          inDatabase:db
-                                           errorCode:&err];
-    STAssertNotNil(statement, @"Failed to create select statement");
-    STAssertEquals(err, SQLITE_OK, @"Failed to create select statement");
+  sqlite3 *sqlite3DB = [db sqlite3DB];
+  
+  NSString *selectSQL = @"select 1";
+  GTMSQLiteStatement *statement;
+  statement = [GTMSQLiteStatement statementWithSQL:selectSQL
+                                        inDatabase:db
+                                         errorCode:&err];
+  STAssertNotNil(statement, @"Failed to create select statement");
+  STAssertEquals(err, SQLITE_OK, @"Failed to create select statement");
 
-    sqlite3_stmt *sqlite3Statment = [statement sqlite3Statement];
+  sqlite3_stmt *sqlite3Statment = [statement sqlite3Statement];
 
-    err = [statement stepRow];
-    STAssertEquals(err, SQLITE_ROW,
-                   @"failed to step row for finalize test");
+  err = [statement stepRow];
+  STAssertEquals(err, SQLITE_ROW,
+                 @"failed to step row for finalize test");
 
-    NSString *expectedLog = 
-      @"-[GTMSQLiteStatement finalizeStatement] must be called "
-      @"when statement is no longer needed";
+  NSString *expectedLog = 
+    @"-[GTMSQLiteStatement finalizeStatement] must be called "
+    @"when statement is no longer needed";
 
-    [GTMUnitTestDevLog expectString:@"%@", expectedLog];
-    [GTMUnitTestDevLog expectPattern:@"Unable to close .*"];
-    [localPool drain];
-    
-    // Clean up leaks. Since we hadn't finalized the statement above we
-    // were unable to clean up the sqlite databases. Since the pool is drained
-    // all of our objective-c objects are gone, so we have to call the
-    // sqlite3 api directly.
-    STAssertEquals(sqlite3_finalize(sqlite3Statment), SQLITE_OK, nil);
-    STAssertEquals(sqlite3_close(sqlite3DB), SQLITE_OK, nil);
-  }
+  [GTMUnitTestDevLog expectString:@"%@", expectedLog];
+  [GTMUnitTestDevLog expectPattern:@"Unable to close .*"];
+  [localPool drain];
+  
+  // Clean up leaks. Since we hadn't finalized the statement above we
+  // were unable to clean up the sqlite databases. Since the pool is drained
+  // all of our objective-c objects are gone, so we have to call the
+  // sqlite3 api directly.
+  STAssertEquals(sqlite3_finalize(sqlite3Statment), SQLITE_OK, nil);
+  STAssertEquals(sqlite3_close(sqlite3DB), SQLITE_OK, nil);
 }
 
 - (void)testCompleteSQLString {

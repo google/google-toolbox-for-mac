@@ -18,7 +18,6 @@
 
 #import "GTMDefines.h"
 #import "GTMNSString+XML.h"
-#import "GTMGarbageCollection.h"
 
 enum {
   kGTMXMLCharModeEncodeQUOT  = 0,

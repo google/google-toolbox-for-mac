@@ -22,7 +22,6 @@
 #import "GTMAppKit+UnitTesting.h"
 #import "GTMGeometryUtils.h"
 #import "GTMMethodCheck.h"
-#import "GTMGarbageCollection.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
  #define ENCODE_NSINTEGER(coder, i, key) [(coder) encodeInt:(i) forKey:(key)]

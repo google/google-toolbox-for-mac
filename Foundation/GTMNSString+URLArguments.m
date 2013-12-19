@@ -17,7 +17,8 @@
 //
 
 #import "GTMNSString+URLArguments.h"
-#import "GTMGarbageCollection.h"
+
+#import "GTMDefines.h"
 
 @implementation NSString (GTMNSStringURLArgumentsAdditions)
 

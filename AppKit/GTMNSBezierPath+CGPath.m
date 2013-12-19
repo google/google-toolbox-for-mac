@@ -19,7 +19,6 @@
 //
 #import "GTMNSBezierPath+CGPath.h"
 #import "GTMDefines.h"
-#import "GTMGarbageCollection.h"
 
 @implementation NSBezierPath (GTMBezierPathCGPathAdditions)
 

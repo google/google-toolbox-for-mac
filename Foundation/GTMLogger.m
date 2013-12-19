@@ -17,7 +17,6 @@
 //
 
 #import "GTMLogger.h"
-#import "GTMGarbageCollection.h"
 #import <fcntl.h>
 #import <unistd.h>
 #import <stdlib.h>

@@ -371,6 +371,14 @@
   #endif
 #endif
 
+#ifndef GTMCFAutorelease
+  #if __has_feature(objc_arc)
+    #define GTMCFAutorelease(x) CFBridgingRelease(x)
+  #else
+    #define GTMCFAutorelease(x) ([(id)x autorelease])
+  #endif
+#endif
+
 #ifdef __OBJC__
 
 // Declared here so that it can easily be used for logging tracking if

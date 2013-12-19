@@ -19,13 +19,6 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
-// :::WARNING::: NSAppleScript and Garbage Collect (GC)
-//
-// As of 10.5.6 (and below) Apple has bugs in NSAppleScript when running with
-// GC; ie-things crash that have nothing to do w/ this or your code.  See
-// http://rails.wincent.com/issues/640 for a good amount of detail about the
-// problems and simple cases that show it.
-
 // A category for calling handlers in NSAppleScript
 
 enum {
