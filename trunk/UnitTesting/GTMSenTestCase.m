@@ -28,8 +28,6 @@
 
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>
-#else
-#import "GTMGarbageCollection.h"
 #endif  // GTM_IPHONE_SDK
 
 #if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
@@ -488,25 +486,19 @@ static void _GTMRunLeaks(void) {
 // COV_NF_END
 
 static __attribute__((constructor)) void _GTMInstallLeaks(void) {
-  BOOL checkLeaks = YES;
-#if !GTM_IPHONE_SDK
-  checkLeaks = GTMIsGarbageCollectionEnabled() ? NO : YES;
-#endif  // !GTM_IPHONE_SDK
+  BOOL checkLeaks = getenv("GTM_ENABLE_LEAKS") ? YES : NO;
   if (checkLeaks) {
-    checkLeaks = getenv("GTM_ENABLE_LEAKS") ? YES : NO;
-    if (checkLeaks) {
-      // COV_NF_START
-      // We don't have leak checking on by default, so this won't be hit.
-      fprintf(stderr, "Leak Checking Enabled\n");
-      fflush(stderr);
-      int ret = atexit(&_GTMRunLeaks);
-      // To avoid unused variable warning when _GTMDevAssert is stripped.
-      (void)ret;
-      _GTMDevAssert(ret == 0,
-                    @"Unable to install _GTMRunLeaks as an atexit handler (%d)",
-                    errno);
-      // COV_NF_END
-    }
+    // COV_NF_START
+    // We don't have leak checking on by default, so this won't be hit.
+    fprintf(stderr, "Leak Checking Enabled\n");
+    fflush(stderr);
+    int ret = atexit(&_GTMRunLeaks);
+    // To avoid unused variable warning when _GTMDevAssert is stripped.
+    (void)ret;
+    _GTMDevAssert(ret == 0,
+                  @"Unable to install _GTMRunLeaks as an atexit handler (%d)",
+                  errno);
+    // COV_NF_END
   }
 }
 

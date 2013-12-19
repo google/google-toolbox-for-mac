@@ -17,7 +17,6 @@
 //
 
 #import "GTMABAddressBook.h"
-#import "GTMGarbageCollection.h"
 #import "GTMTypeCasting.h"
 
 #if GTM_IPHONE_SDK

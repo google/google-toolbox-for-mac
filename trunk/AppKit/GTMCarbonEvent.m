@@ -18,7 +18,6 @@
 
 #import "GTMCarbonEvent.h"
 #import <AppKit/AppKit.h>
-#import "GTMObjectSingleton.h"
 #import "GTMDebugSelectorValidation.h"
 #import "GTMTypeCasting.h"
 
@@ -477,8 +476,13 @@ static OSStatus EventHandler(EventHandlerCallRef inHandler,
 
 @implementation GTMCarbonEventMonitorHandler
 
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventMonitorHandler,
-                                sharedEventMonitorHandler);
++ (GTMCarbonEventMonitorHandler *)sharedEventMonitorHandler {
+  static GTMCarbonEventMonitorHandler *obj = nil;
+  if (!obj) {
+    obj = [[self alloc] init];
+  }
+  return obj;
+}
 
 - (EventTargetRef)eventTarget {
   return GetEventMonitorTarget();
@@ -494,8 +498,13 @@ extern EventTargetRef GetApplicationEventTarget(void);
 
 @implementation GTMCarbonEventApplicationEventHandler
 
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventApplicationEventHandler,
-                                sharedApplicationEventHandler);
++ (GTMCarbonEventApplicationEventHandler *)sharedApplicationEventHandler {
+  static GTMCarbonEventApplicationEventHandler *obj = nil;
+  if (!obj) {
+    obj = [[self alloc] init];
+  }
+  return obj;
+}
 
 - (EventTargetRef)eventTarget {
   return GetApplicationEventTarget();
@@ -505,8 +514,13 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventApplicationEventHandler,
 
 @implementation GTMCarbonEventDispatcherHandler
 
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMCarbonEventDispatcherHandler,
-                                sharedEventDispatcherHandler);
++ (GTMCarbonEventDispatcherHandler *)sharedEventDispatcherHandler {
+  static GTMCarbonEventDispatcherHandler *obj = nil;
+  if (!obj) {
+    obj = [[self alloc] init];
+  }
+  return obj;
+}
 
 // Register for the events we handle, and set up the dictionaries we need
 // to keep track of the hotkeys and commands that we handle.

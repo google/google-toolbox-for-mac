@@ -203,7 +203,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   if (propertyName && desc) {
     NSAppleScript *script = self;
     OSAID valueID = kOSANullScript;
-    ComponentInstance component;
+    ComponentInstance component = NULL;
     OSAID scriptID = [script gtm_realIDAndComponent:&component];
     error = OSACoerceFromDesc(component,
                               [desc aeDesc],
@@ -256,7 +256,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (BOOL)gtm_hasOpenDocumentsHandler {
-  ComponentInstance component;
+  ComponentInstance component = NULL;
   OSAID osaID = [self gtm_realIDAndComponent:&component];
   long value = 0;
   OSAError error = OSAGetScriptInfo(component,
@@ -332,7 +332,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   NSAppleEventDescriptor *propertyName
     = [self gtm_descriptorForPropertyValue:property];
   if (propertyName) {
-    ComponentInstance component;
+    ComponentInstance component = NULL;
     OSAID scriptID = [self gtm_realIDAndComponent:&component];
     OSAID valueID = kOSANullScript;
     error = OSAGetProperty(component,
@@ -380,7 +380,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   GTMAssertRunningOnMainThread();
   AEDescList names = { typeNull, NULL };
   NSArray *array = nil;
-  ComponentInstance component;
+  ComponentInstance component = NULL;
   OSAID osaID = [self gtm_realIDAndComponent:&component];
   OSAError error = OSAGetHandlerNames(component, kOSAModeNull, osaID, &names);
   if (error == noErr) {
@@ -399,7 +399,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   GTMAssertRunningOnMainThread();
   AEDescList names = { typeNull, NULL };
   NSArray *array = nil;
-  ComponentInstance component;
+  ComponentInstance component = NULL;
   OSAID osaID = [self gtm_realIDAndComponent:&component];
   OSAError error = OSAGetPropertyNames(component, kOSAModeNull, osaID, &names);
   if (error == noErr) {
@@ -495,7 +495,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
   if (!error) {
     NSAppleEventDescriptor *desc = nil;
     NSAppleEventDescriptor *event = [data objectForKey:GTMNSAppleScriptEventKey];
-    ComponentInstance component;
+    ComponentInstance component = NULL;
     OSAID scriptID = [self gtm_realIDAndComponent:&component];
     OSAID valueID;
     OSAError err = OSAExecuteEvent(component, [event aeDesc], scriptID,

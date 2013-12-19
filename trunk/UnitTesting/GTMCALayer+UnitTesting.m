@@ -21,7 +21,6 @@
 //
 
 #import "GTMCALayer+UnitTesting.h"
-#import "GTMGarbageCollection.h"
 
 @implementation CALayer (GTMUnitTestingAdditions) 
 

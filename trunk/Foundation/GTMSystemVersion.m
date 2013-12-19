@@ -17,7 +17,6 @@
 //
 
 #import "GTMSystemVersion.h"
-#import "GTMGarbageCollection.h"
 #import "GTMObjC2Runtime.h"
 #if GTM_MACOS_SDK
 #import <CoreServices/CoreServices.h>
@@ -134,7 +133,6 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
       NSDictionary *systemVersionPlist 
         = [NSDictionary dictionaryWithContentsOfFile:kSystemVersionPlistPath];
       sBuild = [[systemVersionPlist objectForKey:@"ProductBuildVersion"] retain];
-      GTMNSMakeUncollectable(sBuild);
       _GTMDevAssert(sBuild, @"Unable to get build version");
     }
   }

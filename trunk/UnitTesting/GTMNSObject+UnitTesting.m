@@ -20,8 +20,6 @@
 
 #import "GTMNSObject+UnitTesting.h"
 #import "GTMSystemVersion.h"
-#import "GTMGarbageCollection.h"
-#import "GTMNSNumber+64Bit.h"
 
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>

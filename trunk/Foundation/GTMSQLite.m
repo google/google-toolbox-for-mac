@@ -27,7 +27,6 @@
 #import "GTMMethodCheck.h"
 #import "GTMDefines.h"
 #include <limits.h>
-#import "GTMGarbageCollection.h"
 
 typedef struct {
   BOOL upperCase;

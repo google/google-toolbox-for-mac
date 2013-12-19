@@ -21,7 +21,6 @@
 #import "GTMNSAppleScript+Handler.h"
 #import "GTMNSAppleEventDescriptor+Foundation.h"
 #import "GTMUnitTestDevLog.h"
-#import "GTMGarbageCollection.h"
 #import "GTMSystemVersion.h"
 #import "GTMFourCharCode.h"
 
@@ -37,21 +36,6 @@
 @end
 
 @implementation GTMNSAppleScript_HandlerTest
-- (void)invokeTest {
-  // NOTE: These tests are disabled in GC is on.  See the comment/warning in the
-  // GTMNSAppleScript+Handler.h for more details, but we disable them to avoid
-  // the tests failing (crashing) when it's Apple's bug. Please bump the system
-  // check as appropriate when new systems are tested. Currently broken on
-  // 10.5.8 and below. Radar 6126682.
-  SInt32 major, minor, bugfix;
-  [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugfix];
-  BOOL gcEnabled = GTMIsGarbageCollectionEnabled();
-  if (gcEnabled && major <= 10 && minor <= 5 && bugfix <= 8) {
-    NSLog(@"--- %@ NOT run because of GC incompatibilites ---", [self name]);
-  } else {
-    [super invokeTest];
-  }
-}
 
 - (void)setUp {
   NSBundle *bundle

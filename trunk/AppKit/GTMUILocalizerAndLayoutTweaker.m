@@ -18,7 +18,6 @@
 
 #import "GTMUILocalizerAndLayoutTweaker.h"
 #import "GTMUILocalizer.h"
-#import "GTMNSNumber+64Bit.h"
 
 // Controls if +wrapString:width:font: uses a subclassed TypeSetter to do
 // its work in one pass.
@@ -69,7 +68,7 @@ static const CGFloat kWrapperStringSlop = 0.9;
 }
 
 - (BOOL)shouldBreakLineByWordBeforeCharacterAtIndex:(NSUInteger)charIndex {
-  [array_ addObject:[NSNumber gtm_numberWithUnsignedInteger:charIndex]];
+  [array_ addObject:[NSNumber numberWithUnsignedInteger:charIndex]];
   return YES;
 }
 
@@ -207,7 +206,7 @@ static const CGFloat kWrapperStringSlop = 0.9;
   NSNumber *number;
   while ((number = [reverseEnumerator nextObject]) != nil) {
     [workerStr insertString:kForcedWrapString
-                    atIndex:[number gtm_unsignedIntegerValue]];
+                    atIndex:[number unsignedIntegerValue]];
   }
 #else
   // Find out how tall lines would be for the layout loop.
@@ -454,7 +453,11 @@ static const CGFloat kWrapperStringSlop = 0.9;
     // once we know this view's size.
     if (IsRightAnchored(subView)) {
       [rightAlignedSubViews addObject:subView];
-      NSNumber *nsDelta = [NSNumber gtm_numberWithCGFloat:delta];
+#if CGFLOAT_IS_DOUBLE
+      NSNumber *nsDelta = [NSNumber numberWithDouble:delta];
+#else
+      NSNumber *nsDelta = [NSNumber numberWithFloat:delta];
+#endif
       [rightAlignedSubViewDeltas addObject:nsDelta];
     }
   }

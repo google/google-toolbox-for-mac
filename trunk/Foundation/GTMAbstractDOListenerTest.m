@@ -19,9 +19,6 @@
 #import "GTMSenTestCase.h"
 #import "GTMAbstractDOListener.h"
 
-// Needed for GTMIsGarbageCollectionEnabled
-#import "GTMGarbageCollection.h"
-
 // Needed for GTMUnitTestDevLog expectPattern
 #import "GTMUnitTestDevLog.h"
 
@@ -358,16 +355,11 @@ enum {
                  listenerCount + 1, nil);
   [pool drain];
 
-  if (!GTMIsGarbageCollectionEnabled()) {
-    // Not much point with GC on.
-    STAssertEquals([listener retainCount], (NSUInteger)1, nil);
-  }
+  STAssertEquals([listener retainCount], (NSUInteger)1, nil);
 
   [listener release];
-  if (!GTMIsGarbageCollectionEnabled()) {
-    STAssertEquals([[GTMAbstractDOListener allListeners] count], listenerCount,
-                   nil);
-  }
+  STAssertEquals([[GTMAbstractDOListener allListeners] count], listenerCount,
+                 nil);
 }
 
 @end

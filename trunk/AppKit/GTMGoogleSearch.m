@@ -17,8 +17,7 @@
 //
 
 #import "GTMGoogleSearch.h"
-#import "GTMObjectSingleton.h"
-#import "GTMGarbageCollection.h"
+#import "GTMDefines.h"
 
 #if GTM_IPHONE_SDK
 #import <UIKit/UIKit.h>
@@ -128,7 +127,13 @@ static NSString *const kDefaultLanguage = @"en";
 
 @implementation GTMGoogleSearch
 
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
++ (GTMGoogleSearch *)sharedInstance {
+  static GTMGoogleSearch *obj;
+  if (!obj) {
+    obj = [[self alloc] init];
+  }
+  return obj;
+}
 
 - (id)init {
   self = [super init];
@@ -166,8 +171,8 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
       }
     }
     
-    curAppCachedDomain_ = GTMNSMakeCollectable(domain);
-    curAppCachedLanguage_ = GTMNSMakeCollectable(lang);
+    curAppCachedDomain_ = (NSString *)domain;
+    curAppCachedLanguage_ = (NSString *)lang;
     
     NSBundle *bundle = [NSBundle mainBundle];
     
@@ -180,14 +185,14 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
 
 #if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
 - (void)finalize {
-  [[NSDistributedNotificationCenter defaultCenter] removeObject:self];
+  [[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
   [super finalize];
 }
 #endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
 
 - (void)dealloc {
 #if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
-  [[NSDistributedNotificationCenter defaultCenter] removeObject:self];
+  [[NSDistributedNotificationCenter defaultCenter] removeObserver:self];
 #endif  // GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
   [allAppsCachedDomain_ release];
   [allAppsCachedLanguage_ release];
@@ -484,8 +489,8 @@ GTMOBJECT_SINGLETON_BOILERPLATE(GTMGoogleSearch, sharedInstance);
     }
   }
 
-  allAppsCachedDomain_ = GTMNSMakeCollectable(domain);
-  allAppsCachedLanguage_ = GTMNSMakeCollectable(lang);
+  allAppsCachedDomain_ = (NSString *)domain;
+  allAppsCachedLanguage_ = (NSString *)lang;
 }
 
 // -updateAllAppsDomain:language:

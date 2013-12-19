@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMFileSystemKQueue.h"
-#import "GTMGarbageCollection.h"
 #import "GTMUnitTestDevLog.h"
 
 
@@ -509,15 +508,10 @@
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Now destroy the queue, with events outstanding from the CFSocket, but
-  // unconsumed. For GC this involves us using a private method since |helper|
-  // still has a reference. For non-GC we'll force the release.
-  if (GTMIsGarbageCollectionEnabled()) {
-    [testKQ unregisterWithKQueue];
-  } else {
-    STAssertEquals([testKQ retainCount], (NSUInteger)1, nil);
-    [testKQ release];
-    testKQ = nil;
-  }
+  // unconsumed.
+  STAssertEquals([testKQ retainCount], (NSUInteger)1, nil);
+  [testKQ release];
+  testKQ = nil;
 
   // Spin the runloop, no events were delivered (and we should not hang)
   [self spinForEvents:helper];

@@ -18,7 +18,6 @@
 
 #import "GTMNSDictionary+CaseInsensitive.h"
 #import "GTMDefines.h"
-#import "GTMGarbageCollection.h"
 #import <CoreFoundation/CoreFoundation.h>
 
 @interface NSMutableDictionary (GTMNSMutableDictionaryCaseInsensitiveAdditions)
@@ -85,14 +84,9 @@ static CFHashCode CaseInsensitiveHashCallback(const void *value) {
   keyCallbacks.equal = CaseInsensitiveEqualCallback;
   keyCallbacks.hash = CaseInsensitiveHashCallback;
 
-  // GTMNSMakeCollectable drops the retain count in GC mode so the object can
-  // be garbage collected.
-  // GTMNSMakeCollectable not GTMCFAutorelease because this is an initializer
-  // and in non-GC mode we need to return a +1 retain count object.
-  self = GTMNSMakeCollectable(
-      CFDictionaryCreate(kCFAllocatorDefault,
-                         keys, values, count, &keyCallbacks,
-                         &kCFTypeDictionaryValueCallBacks));
+  self = (id)CFDictionaryCreate(kCFAllocatorDefault,
+                                keys, values, count, &keyCallbacks,
+                                &kCFTypeDictionaryValueCallBacks);
 
   free(keys);
   free(values);
@@ -111,13 +105,8 @@ static CFHashCode CaseInsensitiveHashCallback(const void *value) {
 
 - (id)gtm_initWithDictionaryCaseInsensitive:(NSDictionary *)dictionary {
   if ((self = [super gtm_initWithDictionaryCaseInsensitive:dictionary])) {
-    // GTMNSMakeCollectable drops the retain count in GC mode so the object can
-    // be garbage collected.
-    // GTMNSMakeCollectable not GTMCFAutorelease because this is an initializer
-    // and in non-GC mode we need to return a +1 retain count object.
-    id copy = GTMNSMakeCollectable(
-        CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0,
-                                      (CFDictionaryRef)self));
+    id copy = (id)CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0,
+                                                (CFDictionaryRef)self);
     [self release];
     self = copy;
   }

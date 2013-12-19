@@ -19,7 +19,7 @@
 //
 
 #import "GTMNSImage+SearchCache.h"
-#import "GTMGarbageCollection.h"
+#import "GTMDefines.h"
 
 @implementation NSImage (GTMNSImageSearchCache)
 + (NSImage *)gtm_imageWithPath:(NSString *)path {

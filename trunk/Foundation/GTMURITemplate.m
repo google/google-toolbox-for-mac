@@ -15,7 +15,7 @@
 
 #import "GTMURITemplate.h"
 
-#import "GTMGarbageCollection.h"
+#import "GTMDefines.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 

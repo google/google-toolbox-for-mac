@@ -21,7 +21,6 @@
 #include <signal.h>
 #include <unistd.h>
 #import "GTMDefines.h"
-#import "GTMGarbageCollection.h"
 
 // The Users profile before we change it on them
 static CMProfileRef gGTMCurrentColorProfile = NULL;

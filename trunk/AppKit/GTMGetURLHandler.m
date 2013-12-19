@@ -56,7 +56,6 @@
 // @end
 
 #import <AppKit/AppKit.h>
-#import "GTMGarbageCollection.h"
 #import "GTMNSAppleEventDescriptor+Foundation.h"
 #import "GTMMethodCheck.h"
 
@@ -119,7 +118,6 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
     sHandler = [GTMGetURLHandler handlerForBundle:bundle];
     if (sHandler) {
       [sHandler retain];
-      GTMNSMakeUncollectable(sHandler);
     }
   }
   [sHandler getUrl:event withReplyEvent:replyEvent];

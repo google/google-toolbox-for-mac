@@ -19,9 +19,8 @@
 #import "GTMNSWorkspace+Running.h"
 #import <Carbon/Carbon.h>
 #import <unistd.h>
-#import "GTMGarbageCollection.h"
 #import "GTMSystemVersion.h"
-#import "GTMObjectSingleton.h"
+
 
 NSString *const kGTMWorkspaceRunningPSN = @"PSN";
 NSString *const kGTMWorkspaceRunningFlavor = @"Flavor";
@@ -190,8 +189,14 @@ NSString *const kGTMWorkspaceRunningBundleVersion = @"CFBundleVersion";
 
 @implementation GTMWorkspaceRunningApplicationList
 
-GTMOBJECT_SINGLETON_BOILERPLATE(GTMWorkspaceRunningApplicationList,
-                                sharedApplicationList)
++ (GTMWorkspaceRunningApplicationList *)sharedApplicationList {
+  static GTMWorkspaceRunningApplicationList *obj;
+  if (!obj) {
+    obj = [[self alloc] init];
+  }
+  return obj;
+}
+
 - (id)init {
   if ((self = [super init])) {
     [self didLaunchOrTerminateApp:nil];
