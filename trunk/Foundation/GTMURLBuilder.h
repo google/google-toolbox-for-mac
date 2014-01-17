@@ -48,6 +48,10 @@
 - (void)setValue:(NSString *)value forParameter:(NSString *)parameter;
 - (void)setIntegerValue:(NSInteger)value forParameter:(NSString *)parameter;
 - (NSString *)valueForParameter:(NSString *)parameter;
+// Returns 0 if there is no value for |parameter| or if the value cannot
+// be parsed into an NSInteger. Use valueForParameter if you want to make
+// sure that the value is set before attempting the parsing.
+- (NSInteger)integerValueForParameter:(NSString *)parameter;
 - (void)removeParameter:(NSString *)parameter;
 - (void)setParameters:(NSDictionary *)parameters;
 - (NSDictionary *)parameters;

@@ -85,6 +85,10 @@
   return [params_ objectForKey:parameter];
 }
 
+- (NSInteger)integerValueForParameter:(NSString *)parameter {
+  return [[params_ objectForKey:parameter] integerValue];
+}
+
 - (void)removeParameter:(NSString *)parameter {
   [params_ removeObjectForKey:parameter];
 }
