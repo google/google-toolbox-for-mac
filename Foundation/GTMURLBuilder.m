@@ -78,7 +78,7 @@
 }
 
 - (void)setIntegerValue:(NSInteger)value forParameter:(NSString *)parameter {
-  [params_ setObject:[NSString stringWithFormat:@"%i", value] forKey:parameter];
+  [params_ setObject:[NSString stringWithFormat:@"%ld", (long)value] forKey:parameter];
 }
 
 - (NSString *)valueForParameter:(NSString *)parameter {
