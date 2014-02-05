@@ -77,7 +77,12 @@ typedef struct {
 - (id)init {
   if ((self = [super init])) {
 #if GTM_IPHONE_SDK
-    addressBook_ = ABAddressBookCreate();
+    CFErrorRef error = nil;
+    addressBook_ = ABAddressBookCreateWithOptions(NULL, &error);
+    if (error) {
+      _GTMDevLog(@"ABAddressBookCreate: %@", error);
+      CFRelease(error);
+    }
 #else  // GTM_IPHONE_SDK
     addressBook_ = ABGetSharedAddressBook();
     CFRetain(addressBook_);
