@@ -176,39 +176,71 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
 
 #if GTM_MACOS_SDK
 + (BOOL)isPanther {
+#if defined(__MAC_10_4) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_4
+  return NO;
+#else
   return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 3;
+#endif
 }
 
 + (BOOL)isTiger {
+#if defined(__MAC_10_5) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_5
+  return NO;
+#else
   return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 4;
+#endif
 }
 
 + (BOOL)isLeopard {
+#if defined(__MAC_10_6) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_6
+  return NO;
+#else
   return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 5;
+#endif
 }
 
 + (BOOL)isSnowLeopard {
+#if defined(__MAC_10_7) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_7
+  return NO;
+#else
   return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 6;
+#endif
 }
 
 + (BOOL)isPantherOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+#if defined(__MAC_10_3) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_3
+  return YES;
+#else
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 3);
+#endif
 }
 
 + (BOOL)isTigerOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+#if defined(__MAC_10_4) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_4
+  return YES;
+#else
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 4);
+#endif
 }
 
 + (BOOL)isLeopardOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+#if defined(__MAC_10_5) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_5
+  return YES;
+#else
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 5);
+#endif
 }
 
 + (BOOL)isSnowLeopardOrGreater {
-  return (sGTMSystemVersionMajor > 10) || 
+#if defined(__MAC_10_6) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_6
+  return YES;
+#else
+  return (sGTMSystemVersionMajor > 10) ||
           (sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor >= 6);
+#endif
 }
 
 #endif // GTM_MACOS_SDK
