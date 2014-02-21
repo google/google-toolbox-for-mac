@@ -247,7 +247,7 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   STAssertEqualObjects(string, @"Last", nil);
 
   string = [GTMABPerson localizedPropertyName:kGTMABRecordInvalidID];
-#ifdef GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK
   STAssertEqualObjects(string, kGTMABUnknownPropertyName, nil);
 #else  // GTM_IPHONE_SDK
   STAssertEqualObjects(string, kGTMABRecordInvalidID, nil);
@@ -270,7 +270,7 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   GTMABImage *image
     = [[[GTMABImage alloc] initWithContentsOfFile:phonePath] autorelease];
   STAssertNotNil(image, nil);
-#ifdef GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK
   data = UIImagePNGRepresentation(image);
 #else  // GTM_IPHONE_SDK
   data = [image TIFFRepresentation];
@@ -285,7 +285,7 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   STAssertTrue([person setImage:image], nil);
   GTMABImage *image2 = [person image];
   STAssertNotNil(image2, nil);
-#ifdef GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK
   STAssertEqualObjects(UIImagePNGRepresentation(image),
                        UIImagePNGRepresentation(image2), nil);
 #else  // GTM_IPHONE_SDK
@@ -599,7 +599,7 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   };
   for (size_t j = 0; j < sizeof(types) / sizeof(ABPropertyType); ++j) {
     ABPropertyType type = types[j];
-#ifdef GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK
     ABMultiValueRef ref = ABMultiValueCreateMutable(type);
 #else  // GTM_IPHONE_SDK
     ABMutableMultiValueRef ref = ABMultiValueCreateMutable();
