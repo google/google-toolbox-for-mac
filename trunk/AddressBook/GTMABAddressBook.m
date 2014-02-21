@@ -366,7 +366,7 @@ typedef struct {
 }
 
 - (id)valueForProperty:(GTMABPropertyID)property {
-#ifdef GTM_IPHONE_SDK
+#if GTM_IPHONE_SDK
   id value = GTMCFAutorelease(ABRecordCopyValue(record_, property));
 #else  // GTM_IPHONE_SDK 
   id value = GTMCFAutorelease(ABRecordCopyValue(record_, (CFStringRef)property));

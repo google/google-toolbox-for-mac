@@ -22,8 +22,19 @@
 
 #import <UIKit/UIKit.h>
 
+
+// Add GTM_IS_COVERAGE_BUILD to your GCC_PREPROCESSOR_DEFINITIONS for the
+// Xcode Configuration that wants CodeCoverage support.
+#ifndef GTM_IS_COVERAGE_BUILD
+#define GTM_IS_COVERAGE_BUILD 0
+#endif
+
 // If you are using this with XCTest (as opposed to SenTestingKit)
 // make sure to define GTM_USING_XCTEST.
+#ifndef GTM_USING_XCTEST
+#define GTM_USING_XCTEST 0
+#endif
+
 #define GTMXCTestObserverClassKey @"XCTestObserverClass"
 #define GTMXCTestLogClass @"XCTestLog"
 

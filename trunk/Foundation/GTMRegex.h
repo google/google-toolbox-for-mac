@@ -56,7 +56,7 @@ typedef NSUInteger GTMRegexOptions;
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
-#ifdef GTMREGEX_DEFINE_GLOBALS
+#if GTMREGEX_DEFINE_GLOBALS
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
