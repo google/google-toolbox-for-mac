@@ -46,6 +46,12 @@
 // - Write some C++ tests and add them to your test bundle sources.
 // - Build and run tests. Your C++ tests should just execute.
 
+// If you are using this with XCTest (as opposed to SenTestingKit)
+// make sure to define GTM_USING_XCTEST.
+#ifndef GTM_USING_XCTEST
+#define GTM_USING_XCTEST 0
+#endif
+
 #if GTM_USING_XCTEST
 #import <XCTest/XCTest.h>
 #define SenTestCase XCTestCase
