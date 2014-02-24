@@ -193,9 +193,11 @@
   // For iPhone specific stuff
   #define GTM_IPHONE_SDK 1
   #if TARGET_IPHONE_SIMULATOR
+    #define GTM_IPHONE_DEVICE 0
     #define GTM_IPHONE_SIMULATOR 1
   #else
     #define GTM_IPHONE_DEVICE 1
+    #define GTM_IPHONE_SIMULATOR 0
   #endif  // TARGET_IPHONE_SIMULATOR
   // By default, GTM has provided it's own unittesting support, define this
   // to use the support provided by Xcode, especially for the Xcode4 support
