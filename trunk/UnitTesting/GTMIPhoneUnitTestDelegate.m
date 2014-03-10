@@ -105,9 +105,15 @@
     int exitStatus = (([self totalFailures] == 0U) ? 0 : 1);
     // Alternative to exit(status); so it cleanly terminates the UIApplication
     // and classes that depend on this signal to exit cleanly.
-    if ([application respondsToSelector:@selector(_terminateWithStatus:)]) {
-      [application performSelector:@selector(_terminateWithStatus:)
-                        withObject:(id)exitStatus];
+    NSMethodSignature * terminateSignature
+      = [UIApplication instanceMethodSignatureForSelector:@selector(_terminateWithStatus:)];
+    if (terminateSignature != nil) {
+      NSInvocation * terminateInvocation
+        = [NSInvocation invocationWithMethodSignature:terminateSignature];
+      [terminateInvocation setTarget:application];
+      [terminateInvocation setSelector:@selector(_terminateWithStatus:)];
+      [terminateInvocation setArgument:&exitStatus atIndex:2];
+      [terminateInvocation invoke];
     } else {
       exit(exitStatus);
     }
@@ -224,7 +230,7 @@ static int ClassSort(const void *a, const void *b) {
     = [suiteEndDate timeIntervalSinceDate:suiteStartDate];
   NSString *suiteEndString
     = [NSString stringWithFormat:@"Test Suite '%@' finished at %@.\n"
-                                 "Executed %d tests, with %d failures (%d "
+                                 "Executed %tu tests, with %tu failures (%tu "
                                  "unexpected) in %0.3f (%0.3f) seconds\n\n",
                                  suiteName, suiteEndDate,
                                  totalSuccesses_ + totalFailures_,
