@@ -60,12 +60,18 @@
   if ((self = [super init])) {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self
-           selector:@selector(applicationDidFinishLaunching:)
+           selector:@selector(handleApplicationDidFinishLaunchingNotification:)
                name:UIApplicationDidFinishLaunchingNotification
              object:[UIApplication sharedApplication]];
     [self setRetainer:self];
   }
   return self;
+}
+
+// If running in the mode were we get the notification, bridge it over to
+// the method we'd get if we are the app delegate.
+- (void)handleApplicationDidFinishLaunchingNotification:(NSNotification *)note {
+  [self applicationDidFinishLaunching:[note object]];
 }
 
 // Run through all the registered classes and run test methods on any
@@ -82,7 +88,7 @@
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc removeObserver:self
                 name:UIApplicationDidFinishLaunchingNotification
-              object:[UIApplication sharedApplication]];
+              object:application];
 
   // To permit UI-based tests, run the tests and exit app in a delayed selector
   // call. This ensures tests are run outside of applicationDidFinishLaunching:.
