@@ -71,7 +71,7 @@
 // Run through all the registered classes and run test methods on any
 // that are subclasses of SenTestCase. Terminate the application upon
 // test completion.
-- (void)applicationDidFinishLaunching:(UIApplication *)application {
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
 
   // We could get called twice once from our notification registration, and
   // once if we actually still are the delegate of the application after
@@ -87,7 +87,7 @@
   // To permit UI-based tests, run the tests and exit app in a delayed selector
   // call. This ensures tests are run outside of applicationDidFinishLaunching:.
   [self performSelector:@selector(runTestsAndExit:)
-             withObject:application
+             withObject:[notification object]
              afterDelay:0];
 }
 
