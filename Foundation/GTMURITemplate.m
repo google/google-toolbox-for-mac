@@ -15,8 +15,6 @@
 
 #import "GTMURITemplate.h"
 
-#import "GTMDefines.h"
-
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 // Key constants for handling variables.
@@ -63,7 +61,7 @@ static NSString *EscapeString(NSString *str, BOOL allowReserved) {
                                             forceEscapedChars,
                                             kCFStringEncodingUTF8);
   if (escapedStr) {
-    resultStr = GTMCFAutorelease(escapedStr);
+    resultStr = [(NSString *)escapedStr autorelease];
   }
   return resultStr;
 }
