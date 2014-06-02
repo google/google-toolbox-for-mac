@@ -413,7 +413,7 @@ NSString *STComposeString(NSString *, ...);
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNoErr(a1, description, ...) \
-({ \
+do { \
   @try { \
     OSStatus _a1value = (a1); \
     if (_a1value != noErr) { \
@@ -432,7 +432,7 @@ NSString *STComposeString(NSString *, ...);
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when a1 != a2
 //  Args:
@@ -442,7 +442,7 @@ NSString *STComposeString(NSString *, ...);
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertErr(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     OSStatus _a1value = (a1); \
     OSStatus _a2value = (a2); \
@@ -462,7 +462,7 @@ NSString *STComposeString(NSString *, ...);
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 
 // Generates a failure when a1 is NULL
@@ -472,7 +472,7 @@ NSString *STComposeString(NSString *, ...);
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotNULL(a1, description, ...) \
-({ \
+do { \
   @try { \
     __typeof__(a1) _a1value = (a1); \
     if (_a1value == (__typeof__(a1))NULL) { \
@@ -491,7 +491,7 @@ NSString *STComposeString(NSString *, ...);
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when a1 is not NULL
 //  Args:
@@ -500,7 +500,7 @@ NSString *STComposeString(NSString *, ...);
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNULL(a1, description, ...) \
-({ \
+do { \
   @try { \
     __typeof__(a1) _a1value = (a1); \
     if (_a1value != (__typeof__(a1))NULL) { \
@@ -519,7 +519,7 @@ NSString *STComposeString(NSString *, ...);
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when a1 is equal to a2. This test is for C scalars,
 // structs and unions.
@@ -530,7 +530,7 @@ NSString *STComposeString(NSString *, ...);
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotEquals(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
@@ -558,7 +558,7 @@ NSString *STComposeString(NSString *, ...);
                                                  atLine:__LINE__ \
             withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when a1 is equal to a2. This test is for objects.
 //  Args:
@@ -588,7 +588,7 @@ do { \
                                                   atLine:__LINE__ \
                                          withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)])]; \
   }\
-} while(0)
+} while (0)
 
 // Generates a failure when a1 is not 'op' to a2. This test is for C scalars.
 //  Args:
@@ -599,7 +599,7 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertOperation(a1, a2, op, description, ...) \
-({ \
+do { \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
@@ -628,7 +628,7 @@ do { \
                      atLine:__LINE__ \
             withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when a1 is not > a2. This test is for C scalars.
 //  Args:
@@ -707,7 +707,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0);
+} while (0);
 
 // Generates a failure when string a1 is equal to string a2. This call
 // differs from STAssertEqualObjects in that strings that are different in
@@ -721,7 +721,7 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotEqualStrings(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     id _a1value = (a1); \
     id _a2value = (a2); \
@@ -741,7 +741,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when c-string a1 is not equal to c-string a2.
 //  Args:
@@ -751,7 +751,7 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertEqualCStrings(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     const char* _a1value = (a1); \
     const char* _a2value = (a2); \
@@ -770,7 +770,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 // Generates a failure when c-string a1 is equal to c-string a2.
 //  Args:
@@ -780,7 +780,7 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotEqualCStrings(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     const char* _a1value = (a1); \
     const char* _a2value = (a2); \
@@ -798,7 +798,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 /*" Generates a failure when a1 is not equal to a2 within + or - accuracy is false.
   This test is for GLKit types (GLKVector, GLKMatrix) where small differences
@@ -815,7 +815,7 @@ do { \
 "*/
 
 #define STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ...) \
-({ \
+do { \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
@@ -855,7 +855,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 #define STAssertEqualGLKVectors(a1, a2, accuracy, description, ...) \
      STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
@@ -880,7 +880,7 @@ do { \
 	_{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertEqualObjects(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     id _a1value = (a1); \
     id _a2value = (a2); \
@@ -901,7 +901,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 
 /*" Generates a failure when a1 is not equal to a2. This test is for
@@ -913,7 +913,7 @@ do { \
     _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertEquals(a1, a2, description, ...) \
-({ \
+do { \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
@@ -941,7 +941,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 #define STAbsoluteDifference(left,right) (MAX(left,right)-MIN(left,right))
 
@@ -959,7 +959,7 @@ do { \
 "*/
 
 #define STAssertEqualsWithAccuracy(a1, a2, accuracy, description, ...) \
-({ \
+do { \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
@@ -989,7 +989,7 @@ do { \
                                                                             atLine:__LINE__ \
                                                                    withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 
 
@@ -1012,7 +1012,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNil(a1, description, ...) \
-({ \
+do { \
   @try { \
     id _a1value = (a1); \
     if (_a1value != nil) { \
@@ -1032,7 +1032,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 
 /*" Generates a failure when a1 is nil.
@@ -1042,7 +1042,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNotNil(a1, description, ...) \
-({ \
+do { \
   @try { \
     id _a1value = (a1); \
     if (_a1value == nil) { \
@@ -1062,7 +1062,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-})
+} while (0)
 
 
 /*" Generates a failure when expression evaluates to false.
@@ -1072,7 +1072,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertTrue(expr, description, ...) \
-({ \
+do { \
   BOOL _evaluatedExpression = (expr); \
   if (!_evaluatedExpression) { \
     NSString *_expression = [NSString stringWithUTF8String:#expr]; \
@@ -1093,7 +1093,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertTrueNoThrow(expr, description, ...) \
-({ \
+do { \
   @try { \
     BOOL _evaluatedExpression = (expr); \
     if (!_evaluatedExpression) { \
@@ -1122,7 +1122,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertFalse(expr, description, ...) \
-({ \
+do { \
   BOOL _evaluatedExpression = (expr); \
   if (_evaluatedExpression) { \
     NSString *_expression = [NSString stringWithUTF8String:#expr]; \
@@ -1143,7 +1143,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertFalseNoThrow(expr, description, ...) \
-({ \
+do { \
   @try { \
     BOOL _evaluatedExpression = (expr); \
     if (_evaluatedExpression) { \
@@ -1172,7 +1172,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.
 "*/
 #define STAssertThrows(expr, description, ...) \
-({ \
+do { \
   @try { \
     (expr); \
   } \
@@ -1196,7 +1196,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertThrowsSpecific(expr, specificException, description, ...) \
-({ \
+do { \
   @try { \
     (expr); \
   } \
@@ -1240,7 +1240,7 @@ do { \
 
 "*/
 #define STAssertThrowsSpecificNamed(expr, specificException, aName, description, ...) \
-({ \
+do { \
   @try { \
     (expr); \
   } \
@@ -1291,7 +1291,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNoThrow(expr, description, ...) \
-({ \
+do { \
   @try { \
     (expr); \
   } \
@@ -1314,7 +1314,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNoThrowSpecific(expr, specificException, description, ...) \
-({ \
+do { \
   @try { \
     (expr); \
   } \
@@ -1344,7 +1344,7 @@ do { \
 
 "*/
 #define STAssertNoThrowSpecificNamed(expr, specificException, aName, description, ...) \
-({ \
+do { \
   @try { \
     (expr); \
   } \
