@@ -223,8 +223,16 @@
   // By default, GTM has provided it's own unittesting support, define this
   // to use the support provided by Xcode, especially for the Xcode4 support
   // for unittesting.
+  // This is going to be deprecated as Apple is deprecating SenTest.
   #ifndef GTM_IPHONE_USE_SENTEST
     #define GTM_IPHONE_USE_SENTEST 0
+  #endif
+  // Define this to use XCTest instead of OCUnit/SenTest.
+  #ifndef GTM_USING_XCTEST
+    #define GTM_USING_XCTEST 0
+  #endif
+  #if GTM_IPHONE_USE_SENTEST && GTM_USING_XCTEST
+    #error Can't define both GTM_IPHONE_USE_SENTEST and GTM_USING_XCTEST
   #endif
   #define GTM_MACOS_SDK 0
 #else
@@ -234,6 +242,7 @@
   #define GTM_IPHONE_SIMULATOR 0
   #define GTM_IPHONE_DEVICE 0
   #define GTM_IPHONE_USE_SENTEST 0
+  #define GTM_USING_XCTEST 0
 #endif
 
 // Some of our own availability macros
