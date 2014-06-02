@@ -53,8 +53,10 @@
 
 #import "GTMDefines.h"
 
-#if (!GTM_IPHONE_SDK) || (GTM_IPHONE_USE_SENTEST)
+#if GTM_IPHONE_USE_SENTEST
 #import <SenTestingKit/SenTestingKit.h>
+#elif GTM_USING_XCTEST
+#import <XCTest/XCTest.h>
 #else
 #import <Foundation/Foundation.h>
 #ifdef __cplusplus
@@ -74,7 +76,335 @@ NSString *STComposeString(NSString *, ...);
 }
 #endif
 
-#endif  // !GTM_IPHONE_SDK || GTM_IPHONE_USE_SENTEST
+#endif
+
+#if GTM_USING_XCTEST
+
+#define _XCExceptionFormatString @"throwing \"%@\""
+#define _XCUnknownExceptionString @"throwing an unknown exception"
+
+// Generates a failure when a1 != noErr
+//  Args:
+//    a1: should be either an OSErr or an OSStatus
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertNoErr(a1, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    __typeof__(a1) _a1value = (a1); \
+    if (_a1value != noErr) { \
+      _failure = [NSString stringWithFormat:@"%ld != noErr", (long)_a1value]; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = @": " _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"((%@) != noErr) failed%@", @#a1, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+// Generates a failure when a1 != a2
+//  Args:
+//    a1: received value. Should be either an OSErr or an OSStatus
+//    a2: expected value. Should be either an OSErr or an OSStatus
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertErr(a1, a2, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    __typeof__(a1) _a1value = (a1); \
+    __typeof__(a2) _a2value = (a2); \
+    if (_a1value != _a2value) { \
+      _failure = [NSString stringWithFormat:@"(%ld) != (%ld)", (long)_a1value, (long)_a2value]; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = @": " _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+     NSString *_expression = [NSString stringWithFormat:@"((%@) != (@%)) failed %@", @#a1, @#a2, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+
+// Generates a failure when a1 is NULL
+//  Args:
+//    a1: should be a pointer (use XCTAssertNotNil for an object)
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertNotNULL(a1, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    __typeof__(a1) _a1value = (a1); \
+    if (_a1value == (__typeof__(a1))NULL) { \
+      _failure = @""; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = @": " _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"((%@) != NULL) failed%@", @#a1, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+
+// Generates a failure when a1 is not NULL
+//  Args:
+//    a1: should be a pointer (use XCTAssertNil for an object)
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertNULL(a1, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    __typeof__(a1) _a1value = (a1); \
+    if (_a1value != (__typeof__(a1))NULL) { \
+      _failure = @""; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = @": " _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"((%@) == NULL) failed%@", @#a1, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+// Generates a failure when a1 is not 'op' to a2. This test is for C scalars.
+//  Args:
+//    a1: argument 1
+//    a2: argument 2
+//    op: operation
+//    format: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertOperation(a1, a2, op, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    __typeof__(a1) _a1value = (a1); \
+    __typeof__(a2) _a2value = (a2); \
+    if (!(_a1value op _a2value)) { \
+      _failure = [NSString stringWithFormat:@"(%@) is not %s (%@)", @(_a1value), #op, @(_a2value)]; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:_XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"((%@) %s (%@)) failed: %@", @#a1, #op, @#a2, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+// Generates a failure when a1 is not > a2. This test is for C scalars.
+//  Args:
+//    a1: argument 1
+//    a2: argument 2
+//    op: operation
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertGreaterThan(a1, a2, format...) \
+  XCTAssertOperation(a1, a2, >, ##format)
+
+// Generates a failure when a1 is not >= a2. This test is for C scalars.
+//  Args:
+//    a1: argument 1
+//    a2: argument 2
+//    op: operation
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertGreaterThanOrEqual(a1, a2, format...) \
+  XCTAssertOperation(a1, a2, >=, ##format)
+
+// Generates a failure when a1 is not < a2. This test is for C scalars.
+//  Args:
+//    a1: argument 1
+//    a2: argument 2
+//    op: operation
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertLessThan(a1, a2, format...) \
+  XCTAssertOperation(a1, a2, <, ##format)
+
+// Generates a failure when a1 is not <= a2. This test is for C scalars.
+//  Args:
+//    a1: argument 1
+//    a2: argument 2
+//    op: operation
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertLessThanOrEqual(a1, a2, format...) \
+  XCTAssertOperation(a1, a2, <=, ##format)
+
+// Generates a failure when string a1 is not equal to string a2. This call
+// differs from XCTAssertEqualObjects in that strings that are different in
+// composition (precomposed vs decomposed) will compare equal if their final
+// representation is equal.
+// ex O + umlaut decomposed is the same as O + umlaut composed.
+//  Args:
+//    a1: string 1
+//    a2: string 2
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertEqualStrings(a1, a2, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    id _a1value = (a1); \
+    id _a2value = (a2); \
+    NSComparisonResult _result; \
+    if (![_a1value isKindOfClass:[NSString class]]) { \
+      _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a1, [_a1value class]]; \
+    } else if (![_a2value isKindOfClass:[NSString class]]) { \
+      _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a2, [_a2value class]]; \
+    } else if ((_result = [_a1value compare:_a2value]) != NSOrderedSame) { \
+      _failure = [NSString stringWithFormat:@"(%@) vs (%@) == %d", _a1value, _a2value, _result]; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:_XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"([(%@) compare:(%@)] == NSOrderedSame) failed: %@", @#a1, @#a2, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+
+// Generates a failure when string a1 is equal to string a2. This call
+// differs from XCTAssertEqualObjects in that strings that are different in
+// composition (precomposed vs decomposed) will compare equal if their final
+// representation is equal.
+// ex O + umlaut decomposed is the same as O + umlaut composed.
+//  Args:
+//    a1: string 1
+//    a2: string 2
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertNotEqualStrings(a1, a2, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    id _a1value = (a1); \
+    id _a2value = (a2); \
+    NSComparisonResult _result; \
+    if (![_a1value isKindOfClass:[NSString class]]) { \
+      _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a1, [_a1value class]]; \
+    } else if (![_a2value isKindOfClass:[NSString class]]) { \
+      _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a2, [_a2value class]]; \
+    } else if ((_result = [_a1value compare:_a2value]) == NSOrderedSame) { \
+      _failure = [NSString stringWithFormat:@"(%@) vs (%@) == %d", _a1value, _a2value, _result]; \
+    } \
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:_XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = _XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"([(%@) compare:(%@)] != NSOrderedSame) failed: %@", @#a1, @#a2, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+// Generates a failure when c-string a1 is not equal to c-string a2.
+//  Args:
+//    a1: string 1
+//    a2: string 2
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertEqualCStrings(a1, a2, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    const char* _a1value = (a1); \
+    const char* _a2value = (a2); \
+    if (_a1value != _a2value && strcmp(_a1value, _a2value) != 0) { \
+      failure = @""; \
+    }\
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = @": "_XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"((%s) == (%s) failed%@", @#a1, @#a2, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+// Generates a failure when c-string a1 is equal to c-string a2.
+//  Args:
+//    a1: string 1
+//    a2: string 2
+//    description: A format string as in the printf() function. Can be nil or
+//                 an empty string but must be present.
+//    ...: A variable number of arguments to the format string. Can be absent.
+#define XCTAssertNotEqualCStrings(a1, a2, format...) \
+({ \
+  NSString *_failure = nil; \
+  @try { \
+    const char* _a1value = (a1); \
+    const char* _a2value = (a2); \
+    if (_a1value == _a2value || strcmp(_a1value, _a2value) == 0) { \
+      failure = @""; \
+    }\
+  } \
+  @catch (NSException *_exception) { \
+    _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
+  } \
+  @catch (...) { \
+    _failure = @": "_XCUnknownExceptionString; \
+  } \
+  if (_failure) { \
+    NSString *_expression = [NSString stringWithFormat:@"((%s) != (%s) failed%@", @#a1, @#a2, _failure]; \
+    _XCTRegisterFailure(_expression, format); \
+  } \
+})
+
+#else  // GTM_USING_XCTEST
 
 // Generates a failure when a1 != noErr
 //  Args:
@@ -83,16 +413,16 @@ NSString *STComposeString(NSString *, ...);
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNoErr(a1, description, ...) \
-do { \
+({ \
   @try { \
-    OSStatus a1value = (a1); \
-    if (a1value != noErr) { \
-      NSString *_expression = [NSString stringWithFormat:@"Expected noErr, got %ld for (%s)", (long)a1value, #a1]; \
+    OSStatus _a1value = (a1); \
+    if (_a1value != noErr) { \
+      NSString *_expression = [NSString stringWithFormat:@"Expected noErr, got %ld for (%s)", (long)_a1value, #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                        isTrue:NO \
                        inFile:[NSString stringWithUTF8String:__FILE__] \
                        atLine:__LINE__ \
-              withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)])]; \
+              withDescription:@"%@", XCComposeString(description, ##__VA_ARGS__)])]; \
     } \
   } \
   @catch (id anException) { \
@@ -102,7 +432,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when a1 != a2
 //  Args:
@@ -112,12 +442,12 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertErr(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
-    OSStatus a1value = (a1); \
-    OSStatus a2value = (a2); \
-    if (a1value != a2value) { \
-      NSString *_expression = [NSString stringWithFormat:@"Expected %s(%ld) but got %ld for (%s)", #a2, (long)a2value, (long)a1value, #a1]; \
+    OSStatus _a1value = (a1); \
+    OSStatus _a2value = (a2); \
+    if (_a1value != _a2value) { \
+      NSString *_expression = [NSString stringWithFormat:@"Expected %s(%ld) but got %ld for (%s)", #a2, (long)_a2value, (long)_a1value, #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                        isTrue:NO \
                        inFile:[NSString stringWithUTF8String:__FILE__] \
@@ -132,7 +462,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 
 // Generates a failure when a1 is NULL
@@ -142,10 +472,10 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotNULL(a1, description, ...) \
-do { \
+({ \
   @try { \
-    __typeof__(a1) a1value = (a1); \
-    if (a1value == (__typeof__(a1))NULL) { \
+    __typeof__(a1) _a1value = (a1); \
+    if (_a1value == (__typeof__(a1))NULL) { \
       NSString *_expression = [NSString stringWithFormat:@"((%s) != NULL)", #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                        isTrue:NO \
@@ -161,7 +491,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when a1 is not NULL
 //  Args:
@@ -170,10 +500,10 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNULL(a1, description, ...) \
-do { \
+({ \
   @try { \
-    __typeof__(a1) a1value = (a1); \
-    if (a1value != (__typeof__(a1))NULL) { \
+    __typeof__(a1) _a1value = (a1); \
+    if (_a1value != (__typeof__(a1))NULL) { \
       NSString *_expression = [NSString stringWithFormat:@"((%s) == NULL)", #a1]; \
       [self failWithException:([NSException failureInCondition:_expression \
                                                         isTrue:NO \
@@ -189,7 +519,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when a1 is equal to a2. This test is for C scalars,
 // structs and unions.
@@ -200,17 +530,17 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotEquals(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                   atLine:__LINE__ \
                                          withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
-      __typeof__(a1) a1value = (a1); \
-      __typeof__(a2) a2value = (a2); \
-      NSValue *a1encoded = [NSValue value:&a1value withObjCType:@encode(__typeof__(a1))]; \
-      NSValue *a2encoded = [NSValue value:&a2value withObjCType:@encode(__typeof__(a2))]; \
+      __typeof__(a1) _a1value = (a1); \
+      __typeof__(a2) _a2value = (a2); \
+      NSValue *a1encoded = [NSValue value:&_a1value withObjCType:@encode(__typeof__(a1))]; \
+      NSValue *a2encoded = [NSValue value:&_a2value withObjCType:@encode(__typeof__(a2))]; \
       if ([a1encoded isEqualToValue:a2encoded]) { \
         NSString *_expression = [NSString stringWithFormat:@"((%s) != (%s))", #a1, #a2]; \
         [self failWithException:([NSException failureInCondition:_expression \
@@ -228,7 +558,7 @@ do { \
                                                  atLine:__LINE__ \
             withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when a1 is equal to a2. This test is for objects.
 //  Args:
@@ -240,13 +570,13 @@ do { \
 #define STAssertNotEqualObjects(a1, a2, description, ...) \
 do { \
   @try {\
-    id a1value = (a1); \
-    id a2value = (a2); \
-    if ( (strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
-         (strcmp(@encode(__typeof__(a2value)), @encode(id)) == 0) && \
-         (![(id)a1value isEqual:(id)a2value]) ) continue; \
-    [self failWithException:([NSException failureInEqualityBetweenObject:a1value \
-                  andObject:a2value \
+    id _a1value = (a1); \
+    id _a2value = (a2); \
+    if ( (strcmp(@encode(__typeof__(_a1value)), @encode(id)) == 0) && \
+         (strcmp(@encode(__typeof__(_a2value)), @encode(id)) == 0) && \
+         (![(id)_a1value isEqual:(id)_a2value]) ) continue; \
+    [self failWithException:([NSException failureInEqualityBetweenObject:_a1value \
+                  andObject:_a2value \
                      inFile:[NSString stringWithUTF8String:__FILE__] \
                      atLine:__LINE__ \
             withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)])]; \
@@ -269,18 +599,18 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertOperation(a1, a2, op, description, ...) \
-do { \
+({ \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                   atLine:__LINE__ \
                                          withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
-      __typeof__(a1) a1value = (a1); \
-      __typeof__(a2) a2value = (a2); \
-      if (!(a1value op a2value)) { \
-        double a1DoubleValue = a1value; \
-        double a2DoubleValue = a2value; \
+      __typeof__(a1) _a1value = (a1); \
+      __typeof__(a2) _a2value = (a2); \
+      if (!(_a1value op _a2value)) { \
+        double a1DoubleValue = _a1value; \
+        double a2DoubleValue = _a2value; \
         NSString *_expression = [NSString stringWithFormat:@"(%s (%lg) %s %s (%lg))", #a1, a1DoubleValue, #op, #a2, a2DoubleValue]; \
         [self failWithException:([NSException failureInCondition:_expression \
                          isTrue:NO \
@@ -298,7 +628,7 @@ do { \
                      atLine:__LINE__ \
             withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when a1 is not > a2. This test is for C scalars.
 //  Args:
@@ -358,14 +688,14 @@ do { \
 #define STAssertEqualStrings(a1, a2, description, ...) \
 do { \
   @try { \
-    id a1value = (a1); \
-    id a2value = (a2); \
-    if (a1value == a2value) continue; \
-    if ([a1value isKindOfClass:[NSString class]] && \
-        [a2value isKindOfClass:[NSString class]] && \
-        [a1value compare:a2value options:0] == NSOrderedSame) continue; \
-     [self failWithException:[NSException failureInEqualityBetweenObject:a1value \
-                                                               andObject:a2value \
+    id _a1value = (a1); \
+    id _a2value = (a2); \
+    if (_a1value == _a2value) continue; \
+    if ([_a1value isKindOfClass:[NSString class]] && \
+        [_a2value isKindOfClass:[NSString class]] && \
+        [_a1value compare:_a2value options:0] == NSOrderedSame) continue; \
+     [self failWithException:[NSException failureInEqualityBetweenObject:_a1value \
+                                                               andObject:_a2value \
                                                                   inFile:[NSString stringWithUTF8String:__FILE__] \
                                                                   atLine:__LINE__ \
                                                          withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
@@ -377,7 +707,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+} while(0);
 
 // Generates a failure when string a1 is equal to string a2. This call
 // differs from STAssertEqualObjects in that strings that are different in
@@ -391,15 +721,15 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotEqualStrings(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
-    id a1value = (a1); \
-    id a2value = (a2); \
-    if ([a1value isKindOfClass:[NSString class]] && \
-        [a2value isKindOfClass:[NSString class]] && \
-        [a1value compare:a2value options:0] != NSOrderedSame) continue; \
-     [self failWithException:[NSException failureInEqualityBetweenObject:a1value \
-                                                               andObject:a2value \
+    id _a1value = (a1); \
+    id _a2value = (a2); \
+    if ([_a1value isKindOfClass:[NSString class]] && \
+        [_a2value isKindOfClass:[NSString class]] && \
+        [_a1value compare:_a2value options:0] != NSOrderedSame) continue; \
+     [self failWithException:[NSException failureInEqualityBetweenObject:_a1value \
+                                                               andObject:_a2value \
                                                                   inFile:[NSString stringWithUTF8String:__FILE__] \
                                                                   atLine:__LINE__ \
                                                          withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
@@ -411,7 +741,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when c-string a1 is not equal to c-string a2.
 //  Args:
@@ -421,14 +751,14 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertEqualCStrings(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
-    const char* a1value = (a1); \
-    const char* a2value = (a2); \
-    if (a1value == a2value) continue; \
-    if (strcmp(a1value, a2value) == 0) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:a1value] \
-                                                              andObject:[NSString stringWithUTF8String:a2value] \
+    const char* _a1value = (a1); \
+    const char* _a2value = (a2); \
+    if (_a1value == _a2value) continue; \
+    if (strcmp(_a1value, _a2value) == 0) continue; \
+    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:_a1value] \
+                                                              andObject:[NSString stringWithUTF8String:_a2value] \
                                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                                  atLine:__LINE__ \
                                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
@@ -440,7 +770,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 // Generates a failure when c-string a1 is equal to c-string a2.
 //  Args:
@@ -450,13 +780,13 @@ do { \
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
 #define STAssertNotEqualCStrings(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
-    const char* a1value = (a1); \
-    const char* a2value = (a2); \
-    if (strcmp(a1value, a2value) != 0) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:a1value] \
-                                                              andObject:[NSString stringWithUTF8String:a2value] \
+    const char* _a1value = (a1); \
+    const char* _a2value = (a2); \
+    if (strcmp(_a1value, _a2value) != 0) continue; \
+    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:_a1value] \
+                                                              andObject:[NSString stringWithUTF8String:_a2value] \
                                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                                  atLine:__LINE__ \
                                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
@@ -468,7 +798,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 /*" Generates a failure when a1 is not equal to a2 within + or - accuracy is false.
   This test is for GLKit types (GLKVector, GLKMatrix) where small differences
@@ -485,7 +815,7 @@ do { \
 "*/
 
 #define STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ...) \
-do { \
+({ \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
@@ -498,9 +828,9 @@ do { \
       float *a1FloatValue = ((float*)&a1GLKValue); \
       float *a2FloatValue = ((float*)&a2GLKValue); \
       for (size_t i = 0; i < sizeof(__typeof__(a1)) / sizeof(float); ++i) { \
-        float a1value = a1FloatValue[i]; \
-        float a2value = a2FloatValue[i]; \
-        if (STAbsoluteDifference(a1value, a2value) > accuracyvalue) { \
+        float _a1value = a1FloatValue[i]; \
+        float _a2value = a2FloatValue[i]; \
+        if (STAbsoluteDifference(_a1value, _a2value) > accuracyvalue) { \
           NSMutableArray *strings = [NSMutableArray arrayWithCapacity:sizeof(a1) / sizeof(float)]; \
           NSString *string; \
           for (size_t j = 0; j < sizeof(__typeof__(a1)) / sizeof(float); ++j) { \
@@ -525,7 +855,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 #define STAssertEqualGLKVectors(a1, a2, accuracy, description, ...) \
      STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
@@ -536,7 +866,8 @@ do { \
 #define STAssertEqualGLKQuaternions(a1, a2, accuracy, description, ...) \
      STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
 
-#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
+#endif  // GTM_USING_XCTEST
+#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
 // When not using the Xcode provided version, define everything ourselves.
 
 // SENTE_BEGIN
@@ -549,16 +880,16 @@ do { \
 	_{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertEqualObjects(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
-    id a1value = (a1); \
-    id a2value = (a2); \
-    if (a1value == a2value) continue; \
-    if ((strcmp(@encode(__typeof__(a1value)), @encode(id)) == 0) && \
-        (strcmp(@encode(__typeof__(a2value)), @encode(id)) == 0) && \
-        [(id)a1value isEqual:(id)a2value]) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject:a1value \
-                                                              andObject:a2value \
+    id _a1value = (a1); \
+    id _a2value = (a2); \
+    if (_a1value == _a2value) continue; \
+    if ((strcmp(@encode(__typeof__(_a1value)), @encode(id)) == 0) && \
+        (strcmp(@encode(__typeof__(_a2value)), @encode(id)) == 0) && \
+        [(id)_a1value isEqual:(id)_a2value]) continue; \
+    [self failWithException:[NSException failureInEqualityBetweenObject:_a1value \
+                                                              andObject:_a2value \
                                                                  inFile:[NSString stringWithUTF8String:__FILE__] \
                                                                  atLine:__LINE__ \
                                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
@@ -570,7 +901,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 
 /*" Generates a failure when a1 is not equal to a2. This test is for
@@ -582,17 +913,17 @@ do { \
     _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertEquals(a1, a2, description, ...) \
-do { \
+({ \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
                                                                         withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
-      __typeof__(a1) a1value = (a1); \
-      __typeof__(a2) a2value = (a2); \
-      NSValue *a1encoded = [NSValue value:&a1value withObjCType:@encode(__typeof__(a1))]; \
-      NSValue *a2encoded = [NSValue value:&a2value withObjCType:@encode(__typeof__(a2))]; \
+      __typeof__(a1) _a1value = (a1); \
+      __typeof__(a2) _a2value = (a2); \
+      NSValue *a1encoded = [NSValue value:&_a1value withObjCType:@encode(__typeof__(a1))]; \
+      NSValue *a2encoded = [NSValue value:&_a2value withObjCType:@encode(__typeof__(a2))]; \
       if (![a1encoded isEqualToValue:a2encoded]) { \
         [self failWithException:[NSException failureInEqualityBetweenValue:a1encoded \
                                                                   andValue:a2encoded \
@@ -610,7 +941,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 #define STAbsoluteDifference(left,right) (MAX(left,right)-MIN(left,right))
 
@@ -628,19 +959,19 @@ do { \
 "*/
 
 #define STAssertEqualsWithAccuracy(a1, a2, accuracy, description, ...) \
-do { \
+({ \
   @try { \
     if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
       [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
                                                                                  atLine:__LINE__ \
                                                                         withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
     } else { \
-      __typeof__(a1) a1value = (a1); \
-      __typeof__(a2) a2value = (a2); \
+      __typeof__(a1) _a1value = (a1); \
+      __typeof__(a2) _a2value = (a2); \
       __typeof__(accuracy) accuracyvalue = (accuracy); \
-      if (STAbsoluteDifference(a1value, a2value) > accuracyvalue) { \
-              NSValue *a1encoded = [NSValue value:&a1value withObjCType:@encode(__typeof__(a1))]; \
-              NSValue *a2encoded = [NSValue value:&a2value withObjCType:@encode(__typeof__(a2))]; \
+      if (STAbsoluteDifference(_a1value, _a2value) > accuracyvalue) { \
+              NSValue *a1encoded = [NSValue value:&_a1value withObjCType:@encode(__typeof__(a1))]; \
+              NSValue *a2encoded = [NSValue value:&_a2value withObjCType:@encode(__typeof__(a2))]; \
               NSValue *accuracyencoded = [NSValue value:&accuracyvalue withObjCType:@encode(__typeof__(accuracy))]; \
               [self failWithException:[NSException failureInEqualityBetweenValue:a1encoded \
                                                                         andValue:a2encoded \
@@ -658,7 +989,7 @@ do { \
                                                                             atLine:__LINE__ \
                                                                    withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 
 
@@ -681,10 +1012,10 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNil(a1, description, ...) \
-do { \
+({ \
   @try { \
-    id a1value = (a1); \
-    if (a1value != nil) { \
+    id _a1value = (a1); \
+    if (_a1value != nil) { \
       NSString *_a1 = [NSString stringWithUTF8String:#a1]; \
       NSString *_expression = [NSString stringWithFormat:@"((%@) == nil)", _a1]; \
       [self failWithException:[NSException failureInCondition:_expression \
@@ -701,7 +1032,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 
 /*" Generates a failure when a1 is nil.
@@ -711,10 +1042,10 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNotNil(a1, description, ...) \
-do { \
+({ \
   @try { \
-    id a1value = (a1); \
-    if (a1value == nil) { \
+    id _a1value = (a1); \
+    if (_a1value == nil) { \
       NSString *_a1 = [NSString stringWithUTF8String:#a1]; \
       NSString *_expression = [NSString stringWithFormat:@"((%@) != nil)", _a1]; \
       [self failWithException:[NSException failureInCondition:_expression \
@@ -731,7 +1062,7 @@ do { \
                                                  atLine:__LINE__ \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
-} while(0)
+})
 
 
 /*" Generates a failure when expression evaluates to false.
@@ -741,7 +1072,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertTrue(expr, description, ...) \
-do { \
+({ \
   BOOL _evaluatedExpression = (expr); \
   if (!_evaluatedExpression) { \
     NSString *_expression = [NSString stringWithUTF8String:#expr]; \
@@ -762,7 +1093,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertTrueNoThrow(expr, description, ...) \
-do { \
+({ \
   @try { \
     BOOL _evaluatedExpression = (expr); \
     if (!_evaluatedExpression) { \
@@ -791,7 +1122,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertFalse(expr, description, ...) \
-do { \
+({ \
   BOOL _evaluatedExpression = (expr); \
   if (_evaluatedExpression) { \
     NSString *_expression = [NSString stringWithUTF8String:#expr]; \
@@ -812,7 +1143,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertFalseNoThrow(expr, description, ...) \
-do { \
+({ \
   @try { \
     BOOL _evaluatedExpression = (expr); \
     if (_evaluatedExpression) { \
@@ -841,7 +1172,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.
 "*/
 #define STAssertThrows(expr, description, ...) \
-do { \
+({ \
   @try { \
     (expr); \
   } \
@@ -865,7 +1196,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertThrowsSpecific(expr, specificException, description, ...) \
-do { \
+({ \
   @try { \
     (expr); \
   } \
@@ -909,7 +1240,7 @@ do { \
 
 "*/
 #define STAssertThrowsSpecificNamed(expr, specificException, aName, description, ...) \
-do { \
+({ \
   @try { \
     (expr); \
   } \
@@ -960,7 +1291,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNoThrow(expr, description, ...) \
-do { \
+({ \
   @try { \
     (expr); \
   } \
@@ -983,7 +1314,7 @@ do { \
   _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertNoThrowSpecific(expr, specificException, description, ...) \
-do { \
+({ \
   @try { \
     (expr); \
   } \
@@ -1013,7 +1344,7 @@ do { \
 
 "*/
 #define STAssertNoThrowSpecificNamed(expr, specificException, aName, description, ...) \
-do { \
+({ \
   @try { \
     (expr); \
   } \
@@ -1096,7 +1427,7 @@ GTM_EXTERN NSString *const SenTestFailureException;
 GTM_EXTERN NSString *const SenTestFilenameKey;
 GTM_EXTERN NSString *const SenTestLineNumberKey;
 
-#endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
+#endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
 
 #if GTM_IPHONE_SDK
 
@@ -1107,7 +1438,11 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 // All unittest cases in GTM should inherit from GTMTestCase. It makes sure
 // to set up our logging system correctly to verify logging calls.
 // See GTMUnitTestDevLog.h for details
+#if GTM_USING_XCTEST
+@interface GTMTestCase : XCTestCase
+#else
 @interface GTMTestCase : SenTestCase
+#endif
 
 // Returns YES if this is an abstract testCase class as opposed to a concrete
 // testCase class that you want tests run against. SenTestCase is not designed

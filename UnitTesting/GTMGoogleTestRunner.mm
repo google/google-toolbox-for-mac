@@ -79,7 +79,7 @@ namespace {
 class GoogleTestPrinter : public EmptyTestEventListener {
  public:
   GoogleTestPrinter(SenTestCase *test_case) : test_case_(test_case) {}
-  
+
   virtual ~GoogleTestPrinter() {}
 
   virtual void OnTestPartResult(const TestPartResult &test_part_result) {

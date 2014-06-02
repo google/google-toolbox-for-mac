@@ -30,7 +30,7 @@
 #import <UIKit/UIKit.h>
 #endif  // GTM_IPHONE_SDK
 
-#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
+#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
 #import <stdarg.h>
 
 @interface NSException (GTMSenTestPrivateAdditions)
@@ -427,7 +427,11 @@ static NSInteger MethodSort(id a, id b, void *context) {
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   NSString *path = [bundle pathForResource:resource ofType:nil];
   UIImage *image = [UIImage imageWithContentsOfFile:path];
+#if GTM_USING_XCTEST
+  XCTAssertNotNil(image, @"Could not load image from resource: %@", path);
+#else
   STAssertNotNil(image, @"Could not load image from resource: %@", path);
+#endif  // GTM_USING_XCTEST
   return image;
 }
 #endif

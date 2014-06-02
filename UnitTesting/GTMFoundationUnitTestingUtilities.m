@@ -17,7 +17,7 @@
 //
 
 #import <unistd.h>
-
+#import "GTMDefines.h"
 #import "GTMFoundationUnitTestingUtilities.h"
 
 @implementation GTMFoundationUnitTestingUtilities
@@ -25,17 +25,20 @@
 // Returns YES if we are currently being unittested.
 + (BOOL)areWeBeingUnitTested {
   BOOL answer = NO;
-
-  // Check to see if the SenTestProbe class is linked in before we call it.
-  Class SenTestProbeClass = NSClassFromString(@"SenTestProbe");
-  if (SenTestProbeClass != Nil) {
+  Class testProbeClass;
+#if GTM_IPHONE_USE_SENTEST
+  testProbeClass = NSClassFromString(@"SenTestProbe");
+#elif GTM_USING_XCTEST
+  testProbeClass = NSClassFromString(@"XCTestProbe");
+#endif
+  if (testProbeClass != Nil) {
     // Doing this little dance so we don't actually have to link
     // SenTestingKit in
     SEL selector = NSSelectorFromString(@"isTesting");
-    NSMethodSignature *sig = [SenTestProbeClass methodSignatureForSelector:selector];
+    NSMethodSignature *sig = [testProbeClass methodSignatureForSelector:selector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
     [invocation setSelector:selector];
-    [invocation invokeWithTarget:SenTestProbeClass];
+    [invocation invokeWithTarget:testProbeClass];
     [invocation getReturnValue:&answer];
   }
   return answer;
