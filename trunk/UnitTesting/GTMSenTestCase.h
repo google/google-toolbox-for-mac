@@ -82,6 +82,13 @@ NSString *STComposeString(NSString *, ...);
 
 #define _XCExceptionFormatString @"throwing \"%@\""
 #define _XCUnknownExceptionString @"throwing an unknown exception"
+#if defined __IPHONE_8_0
+// They changed the call to _XCTRegisterFailure in iOS 8. Once we no longer need to support
+// the iOS 7 SDK, we can remove this.
+#define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(self, expression, format)
+#else
+#define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(expression, format)
+#endif  // defined __IPHONE_8_0
 
 // Generates a failure when a1 != noErr
 //  Args:
@@ -89,6 +96,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertNoErr
 #define XCTAssertNoErr(a1, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -106,9 +114,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) != noErr) failed%@", @#a1, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
+#endif  // XCTAssertNoErr
 
 // Generates a failure when a1 != a2
 //  Args:
@@ -117,6 +126,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertErr
 #define XCTAssertErr(a1, a2, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -135,10 +145,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
      NSString *_expression = [NSString stringWithFormat:@"((%@) != (@%)) failed %@", @#a1, @#a2, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
-
+#endif // XCTAssertErr
 
 // Generates a failure when a1 is NULL
 //  Args:
@@ -146,6 +156,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertNotNULL
 #define XCTAssertNotNULL(a1, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -163,10 +174,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) != NULL) failed%@", @#a1, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
-
+#endif  // XCTAssertNotNULL
 
 // Generates a failure when a1 is not NULL
 //  Args:
@@ -174,6 +185,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertNULL
 #define XCTAssertNULL(a1, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -191,9 +203,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) == NULL) failed%@", @#a1, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
+#endif  // XCTAssertNULL
 
 // Generates a failure when a1 is not 'op' to a2. This test is for C scalars.
 //  Args:
@@ -203,6 +216,7 @@ NSString *STComposeString(NSString *, ...);
 //    format: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertOperation
 #define XCTAssertOperation(a1, a2, op, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -221,9 +235,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) %s (%@)) failed: %@", @#a1, #op, @#a2, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
+#endif // XCTAssertOperation
 
 // Generates a failure when a1 is not > a2. This test is for C scalars.
 //  Args:
@@ -233,8 +248,10 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertGreaterThanOrEqual
 #define XCTAssertGreaterThan(a1, a2, format...) \
   XCTAssertOperation(a1, a2, >, ##format)
+#endif  // XCTAssertGreaterThan
 
 // Generates a failure when a1 is not >= a2. This test is for C scalars.
 //  Args:
@@ -244,8 +261,10 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertGreaterThanOrEqual
 #define XCTAssertGreaterThanOrEqual(a1, a2, format...) \
   XCTAssertOperation(a1, a2, >=, ##format)
+#endif  // XCTAssertGreaterThanOrEqual
 
 // Generates a failure when a1 is not < a2. This test is for C scalars.
 //  Args:
@@ -255,8 +274,10 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertLessThan
 #define XCTAssertLessThan(a1, a2, format...) \
   XCTAssertOperation(a1, a2, <, ##format)
+#endif  // XCTAssertLessThan
 
 // Generates a failure when a1 is not <= a2. This test is for C scalars.
 //  Args:
@@ -266,8 +287,10 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertLessThanOrEqual
 #define XCTAssertLessThanOrEqual(a1, a2, format...) \
   XCTAssertOperation(a1, a2, <=, ##format)
+#endif  // XCTAssertLessThanOrEqual
 
 // Generates a failure when string a1 is not equal to string a2. This call
 // differs from XCTAssertEqualObjects in that strings that are different in
@@ -280,6 +303,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertEqualStrings
 #define XCTAssertEqualStrings(a1, a2, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -303,10 +327,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"([(%@) compare:(%@)] == NSOrderedSame) failed: %@", @#a1, @#a2, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
-
+#endif  // XCTAssertEqualStrings
 
 // Generates a failure when string a1 is equal to string a2. This call
 // differs from XCTAssertEqualObjects in that strings that are different in
@@ -319,6 +343,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertNotEqualStrings
 #define XCTAssertNotEqualStrings(a1, a2, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -342,9 +367,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"([(%@) compare:(%@)] != NSOrderedSame) failed: %@", @#a1, @#a2, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
+#endif  // XCTAssertNotEqualStrings
 
 // Generates a failure when c-string a1 is not equal to c-string a2.
 //  Args:
@@ -353,6 +379,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertEqualCStrings
 #define XCTAssertEqualCStrings(a1, a2, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -371,9 +398,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%s) == (%s) failed%@", @#a1, @#a2, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
+#endif  // XCTAssertEqualCStrings
 
 // Generates a failure when c-string a1 is equal to c-string a2.
 //  Args:
@@ -382,6 +410,7 @@ NSString *STComposeString(NSString *, ...);
 //    description: A format string as in the printf() function. Can be nil or
 //                 an empty string but must be present.
 //    ...: A variable number of arguments to the format string. Can be absent.
+#ifndef XCTAssertNotEqualCStrings
 #define XCTAssertNotEqualCStrings(a1, a2, format...) \
 ({ \
   NSString *_failure = nil; \
@@ -400,9 +429,10 @@ NSString *STComposeString(NSString *, ...);
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%s) != (%s) failed%@", @#a1, @#a2, _failure]; \
-    _XCTRegisterFailure(_expression, format); \
+    _GTMXCRegisterFailure(_expression, format); \
   } \
 })
+#endif  // XCTAssertNotEqualCStrings
 
 #else  // GTM_USING_XCTEST
 
