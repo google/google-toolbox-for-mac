@@ -62,7 +62,7 @@ static NSString *iOS_Idiom(void) {
     return @"iPad";
   }
   _GTMDevAssert((idiom == UIUserInterfaceIdiomPhone),
-                @"unknown idiom %d", idiom);
+                @"unknown idiom %zd", idiom);
   return @"iPhone";
 }
 #endif  // GTM_IPHONE_SDK
