@@ -82,13 +82,13 @@ NSString *STComposeString(NSString *, ...);
 
 #define _XCExceptionFormatString @"throwing \"%@\""
 #define _XCUnknownExceptionString @"throwing an unknown exception"
-#if defined __IPHONE_8_0
+#if defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 // They changed the call to _XCTRegisterFailure in iOS 8. Once we no longer need to support
 // the iOS 7 SDK, we can remove this.
 #define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(self, expression, format)
 #else
 #define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(expression, format)
-#endif  // defined __IPHONE_8_0
+#endif  // defined defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 
 // Generates a failure when a1 != noErr
 //  Args:
