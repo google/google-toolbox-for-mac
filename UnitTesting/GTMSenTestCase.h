@@ -53,7 +53,8 @@
 
 #import "GTMDefines.h"
 
-#if GTM_IPHONE_USE_SENTEST
+// XCTest didn't exist before Xcode 5. Xcode 5 uses clang 5.
+#if (__clang_major__ < 5) || GTM_IPHONE_USE_SENTEST
 #import <SenTestingKit/SenTestingKit.h>
 #elif GTM_USING_XCTEST
 #import <XCTest/XCTest.h>
