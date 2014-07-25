@@ -19,6 +19,10 @@
 #import <Foundation/Foundation.h>
 #import <objc/objc.h>
 
+// NOTE:  These utilities predate XCTestExpectation (introduced with Xcode 6).
+//        Newer unit tests should use [self waitForExpectationsWithTimeout:]
+//        to spin the run loop instead of using the context utilities below.
+
 // Many tests need to spin the runloop and wait for an event to happen. This is
 // often done by calling:
 // NSDate* next = [NSDate dateWithTimeIntervalSinceNow:resolution];
