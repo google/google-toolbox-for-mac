@@ -388,7 +388,7 @@ NSString *STComposeString(NSString *, ...);
     const char* _a1value = (a1); \
     const char* _a2value = (a2); \
     if (_a1value != _a2value && strcmp(_a1value, _a2value) != 0) { \
-      failure = @""; \
+      _failure = @""; \
     }\
   } \
   @catch (NSException *_exception) { \
