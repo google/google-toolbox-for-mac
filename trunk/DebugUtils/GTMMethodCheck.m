@@ -49,8 +49,8 @@ static BOOL ConformsToNSObjectProtocol(Class cls) {
        || (strcmp(className, "__IncompleteProtocol") == 0)
        || (strcmp(className, "__ARCLite__") == 0)
        || (strcmp(className, "WebMIMETypeRegistry") == 0)
-#if GTM_IPHONE_SDK
        || (strcmp(className, "Object") == 0)
+#if GTM_IPHONE_SDK
        || (strcmp(className, "UIKeyboardCandidateUtilities") == 0)
        || (strcmp(className, "JSExport") == 0)
 #endif

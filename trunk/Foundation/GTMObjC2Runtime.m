@@ -18,7 +18,8 @@
 
 #import "GTMObjC2Runtime.h"
 
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
+#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5) && !__OBJC2__
+#import <objc/objc-runtime.h>
 #import <stdlib.h>
 #import <string.h>
 
@@ -73,11 +74,16 @@ Method *class_copyMethodList(Class cls, unsigned int *outCount) {
 
   while ( (mlist = class_nextMethodList(cls, &iterator)) ) {
     if (mlist->method_count == 0) continue;
-    methods = (Method *)realloc(methods,
-                                sizeof(Method) * (count + mlist->method_count + 1));
-    if (!methods) {
+    Method *new_methods = (Method *)realloc(methods,
+                                            sizeof(Method) * (count + mlist->method_count + 1));
+    if (!new_methods) {
+      // COV_NF_START
       //Memory alloc failed, so what can we do?
-      return NULL;  // COV_NF_LINE
+      free(methods);
+      return NULL;
+      // COV_NF_END
+    } else {
+      methods = new_methods;
     }
     for (int i = 0; i < mlist->method_count; i++) {
       methods[i + count] = &mlist->method_list[i];
