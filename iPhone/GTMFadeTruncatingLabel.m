@@ -49,7 +49,12 @@
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+  // |sizeWithFont:| is deprecated in iOS 7, replaced by |sizeWithAttributes:|
   CGSize size = [self.text sizeWithFont:self.font];
+#else
+  CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
+#endif
   if (size.width > requestedRect.size.width) {
     UIImage* image = [[self class]
         getLinearGradient:requestedRect
@@ -62,18 +67,47 @@
     CGContextSetFillColorWithColor(context, self.shadowColor.CGColor);
     CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
                                      self.shadowOffset.height);
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+  // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
+  // replaced by |drawInRect:withAttributes:|
     [self.text drawInRect:shadowRect
                  withFont:self.font
             lineBreakMode:self.lineBreakMode
                 alignment:self.textAlignment];
+#else
+    NSMutableParagraphStyle* textStyle =
+        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    textStyle.lineBreakMode = self.lineBreakMode;
+    textStyle.alignment = self.textAlignment;
+    NSDictionary* attributes = @{
+        NSFontAttributeName:self.font,
+        NSParagraphStyleAttributeName:textStyle,
+    };
+    [self.text drawInRect:shadowRect
+           withAttributes:attributes];
+#endif
   }
 
   CGContextSetFillColorWithColor(context, self.textColor.CGColor);
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+  // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
+  // replaced by |drawInRect:withAttributes:|
   [self.text drawInRect:requestedRect
                withFont:self.font
           lineBreakMode:self.lineBreakMode
               alignment:self.textAlignment];
-
+#else
+    NSMutableParagraphStyle* textStyle =
+        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    textStyle.lineBreakMode = self.lineBreakMode;
+    textStyle.alignment = self.textAlignment;
+    NSDictionary* attributes = @{
+        NSFontAttributeName:self.font,
+        NSParagraphStyleAttributeName:textStyle,
+    };
+    [self.text drawInRect:requestedRect
+           withAttributes:attributes];
+#endif
   CGContextRestoreGState(context);
 }
 
