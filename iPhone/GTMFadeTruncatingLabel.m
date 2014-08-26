@@ -64,12 +64,12 @@
   }
 
   if (self.shadowColor) {
-    CGContextSetFillColorWithColor(context, self.shadowColor.CGColor);
     CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
                                      self.shadowOffset.height);
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
   // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
   // replaced by |drawInRect:withAttributes:|
+    CGContextSetFillColorWithColor(context, self.shadowColor.CGColor);
     [self.text drawInRect:shadowRect
                  withFont:self.font
             lineBreakMode:self.lineBreakMode
@@ -82,16 +82,28 @@
     NSDictionary* attributes = @{
         NSFontAttributeName:self.font,
         NSParagraphStyleAttributeName:textStyle,
+        NSForegroundColorAttributeName:self.shadowColor
     };
     [self.text drawInRect:shadowRect
            withAttributes:attributes];
 #endif
   }
 
-  CGContextSetFillColorWithColor(context, self.textColor.CGColor);
+  // We check for nilness of shadowColor above, but there's no need to do so
+  // for textColor here because  UILabel's textColor property cannot be nil.
+  // The UILabel docs say the default textColor is black and experimentation
+  // shows that calling -textColor will return the cached [UIColor blackColor]
+  // when called on a freshly alloc/init-ed UILabel, or a UILabel whose
+  // textColor has been set to nil.
+  //
+  // @see https://developer.apple.com/Library/ios/documentation/UIKit/Reference/UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textColor
+  // (NOTE(bgoodwin): interesting side-note. These docs also say setting
+  // textColor to nil will result in an exception. In my testing, that did not
+  // happen.)
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
   // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
   // replaced by |drawInRect:withAttributes:|
+  CGContextSetFillColorWithColor(context, self.textColor.CGColor);
   [self.text drawInRect:requestedRect
                withFont:self.font
           lineBreakMode:self.lineBreakMode
@@ -104,6 +116,7 @@
     NSDictionary* attributes = @{
         NSFontAttributeName:self.font,
         NSParagraphStyleAttributeName:textStyle,
+        NSForegroundColorAttributeName:self.textColor
     };
     [self.text drawInRect:requestedRect
            withAttributes:attributes];
