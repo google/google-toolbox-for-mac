@@ -53,7 +53,7 @@
   // |sizeWithFont:| is deprecated in iOS 7, replaced by |sizeWithAttributes:|
   CGSize size = [self.text sizeWithFont:self.font];
 #else
-  CGSize size = CGSizeZero();
+  CGSize size = CGSizeZero;
   if (self.font) {
     size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
     // sizeWithAttributes: may return fractional values, so ceil the width and
