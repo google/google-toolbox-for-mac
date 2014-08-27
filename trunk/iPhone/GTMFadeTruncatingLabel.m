@@ -53,7 +53,13 @@
   // |sizeWithFont:| is deprecated in iOS 7, replaced by |sizeWithAttributes:|
   CGSize size = [self.text sizeWithFont:self.font];
 #else
-  CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
+  CGSize size = CGSizeZero();
+  if (self.font) {
+    size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
+    // sizeWithAttributes: may return fractional values, so ceil the width and
+    // height to preserve the behavior of sizeWithFont:.
+    size = CGSizeMake(ceil(size.width), ceil(size.height));
+  }
 #endif
   if (size.width > requestedRect.size.width) {
     UIImage* image = [[self class]
@@ -67,25 +73,27 @@
     CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
                                      self.shadowOffset.height);
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-  // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
-  // replaced by |drawInRect:withAttributes:|
+    // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
+    // replaced by |drawInRect:withAttributes:|
     CGContextSetFillColorWithColor(context, self.shadowColor.CGColor);
     [self.text drawInRect:shadowRect
                  withFont:self.font
             lineBreakMode:self.lineBreakMode
                 alignment:self.textAlignment];
 #else
-    NSMutableParagraphStyle* textStyle =
-        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-    textStyle.lineBreakMode = self.lineBreakMode;
-    textStyle.alignment = self.textAlignment;
-    NSDictionary* attributes = @{
-        NSFontAttributeName:self.font,
-        NSParagraphStyleAttributeName:textStyle,
-        NSForegroundColorAttributeName:self.shadowColor
-    };
-    [self.text drawInRect:shadowRect
-           withAttributes:attributes];
+    if (self.font) {
+      NSMutableParagraphStyle* textStyle =
+          [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+      textStyle.lineBreakMode = self.lineBreakMode;
+      textStyle.alignment = self.textAlignment;
+      NSDictionary* attributes = @{
+          NSFontAttributeName:self.font,
+          NSParagraphStyleAttributeName:textStyle,
+          NSForegroundColorAttributeName:self.shadowColor
+      };
+      [self.text drawInRect:shadowRect
+             withAttributes:attributes];
+    }
 #endif
   }
 
@@ -109,17 +117,19 @@
           lineBreakMode:self.lineBreakMode
               alignment:self.textAlignment];
 #else
-    NSMutableParagraphStyle* textStyle =
-        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-    textStyle.lineBreakMode = self.lineBreakMode;
-    textStyle.alignment = self.textAlignment;
-    NSDictionary* attributes = @{
-        NSFontAttributeName:self.font,
-        NSParagraphStyleAttributeName:textStyle,
-        NSForegroundColorAttributeName:self.textColor
-    };
-    [self.text drawInRect:requestedRect
-           withAttributes:attributes];
+    if (self.font) {
+      NSMutableParagraphStyle* textStyle =
+          [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+      textStyle.lineBreakMode = self.lineBreakMode;
+      textStyle.alignment = self.textAlignment;
+      NSDictionary* attributes = @{
+          NSFontAttributeName:self.font,
+          NSParagraphStyleAttributeName:textStyle,
+          NSForegroundColorAttributeName:self.textColor
+      };
+      [self.text drawInRect:requestedRect
+             withAttributes:attributes];
+    }
 #endif
   CGContextRestoreGState(context);
 }
