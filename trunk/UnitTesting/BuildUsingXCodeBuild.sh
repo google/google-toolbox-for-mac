@@ -30,7 +30,7 @@ fi
 # TEST_AFTER_BUILD is explicitly set to YES to ensure that when we build
 # through xcodebuild we will not hit this point again. xcodebuild used to
 # set this to YES itself, but starting with 4.3, it no longer sets it.
-exec $DEVELOPER_BIN_DIR/xcodebuild \
+exec "${DEVELOPER_BIN_DIR}/xcodebuild" \
     -project "${PROJECT_FILE_PATH}" \
     -target "${TARGET_NAME}" \
     -sdk "${SDKROOT}" \
