@@ -34,8 +34,16 @@
 
 extern void __gcov_flush();
 
+// NOTE: As of Xcode 6, Apple made XCTestObserver and XCTestLog deprecated without
+// having a replacement. Things still seem to work, but there doesn't seem to be a
+// different way yet to hook when the tests finish.
+// radr/18395261 - XCTestObserver deprecated with no replacement
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @interface GTMCodeCoverageTests : XCTestObserver
 @end
+#pragma clang diagnostic pop
 
 @implementation GTMCodeCoverageTests
 
@@ -53,7 +61,7 @@ extern void __gcov_flush();
 
   // Reset defaults back to what they should be.
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults removeObjectForKey:XCTestObserverClassKey];
+  [defaults removeObjectForKey:GTMXCTestObserverClassKey];
 }
 
 + (void)load {
@@ -65,10 +73,13 @@ extern void __gcov_flush();
           selfClass);
     mustExit = YES;
   }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   if (![GTMXCTestObserverClassKey isEqual:XCTestObserverClassKey]) {
     NSLog(@"Apple has changed %@ to %@", GTMXCTestObserverClassKey, XCTestObserverClassKey);
     mustExit = YES;
   }
+#pragma clang diagnostic pop
   if (!NSClassFromString(GTMXCTestLogClass)) {
     NSLog(@"Apple has gotten rid of the log class %@", GTMXCTestLogClass);
     mustExit = YES;

@@ -35,6 +35,11 @@
 #define GTM_USING_XCTEST 0
 #endif
 
+// NOTE: As of Xcode 6, Apple made XCTestObserver and XCTestLog deprecated without
+// having a replacement. Things still seem to work, but there doesn't seem to be a
+// different way yet to hook when the tests finish.
+// radr/18395261 - XCTestObserver deprecated with no replacement
+
 #define GTMXCTestObserverClassKey @"XCTestObserverClass"
 #define GTMXCTestLogClass @"XCTestLog"
 
