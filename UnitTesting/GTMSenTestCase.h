@@ -324,7 +324,7 @@
     } else if (![_a2value isKindOfClass:[NSString class]]) { \
       _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a2, [_a2value class]]; \
     } else if ((_result = [_a1value compare:_a2value]) != NSOrderedSame) { \
-      _failure = [NSString stringWithFormat:@"(%@) vs (%@) == %ld", _a1value, _a2value, (long)_result]; \
+      _failure = [NSString stringWithFormat:@"(%@) vs (%@) == %zd", _a1value, _a2value, (long)_result]; \
     } \
   } \
   @catch (NSException *_exception) { \
@@ -364,7 +364,7 @@
     } else if (![_a2value isKindOfClass:[NSString class]]) { \
       _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a2, [_a2value class]]; \
     } else if ((_result = [_a1value compare:_a2value]) == NSOrderedSame) { \
-      _failure = [NSString stringWithFormat:@"(%@) vs (%@) == %d", _a1value, _a2value, _result]; \
+      _failure = [NSString stringWithFormat:@"(%@) vs (%@) == %zd", _a1value, _a2value, _result]; \
     } \
   } \
   @catch (NSException *_exception) { \
