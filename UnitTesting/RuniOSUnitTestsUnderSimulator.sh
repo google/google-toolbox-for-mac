@@ -85,6 +85,13 @@ readonly ScriptName=$(basename "$0")
 readonly ThisScript="${ScriptDir}/${ScriptName}"
 readonly SimExecutable="${ScriptDir}/iossim"
 
+# Simulator process name changes from Xcode 6.
+if [[ ${XCODE_VERSION_MINOR} -ge "0600" ]]; then
+  readonly SimulatorProcessName='iOS Simulator'
+else
+  readonly SimulatorProcessName='iPhone Simulator'
+fi
+
 # Variables that follow Xcode unittesting conventions
 readonly TEST_BUNDLE_PATH="${TEST_BUNDLE_PATH:=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.${WRAPPER_EXTENSION}}"
 TEST_HOST="${TEST_HOST:=}"
@@ -120,7 +127,7 @@ GTMKillNamedAndWait() {
 }
 
 GTMKillSimulator() {
-  GTMKillNamedAndWait "iPhone Simulator"
+  GTMKillNamedAndWait "${SimulatorProcessName}"
 }
 
 # Honor TEST_AFTER_BUILD if requested.
