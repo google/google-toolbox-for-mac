@@ -193,8 +193,8 @@ launch_data_t GTMLaunchDataCreateFromCFType(CFTypeRef cf_type_ref,
       free(buffer);
     } else {
       local_error = GTMCFLaunchCreateUnlocalizedError(ENOMEM,
-                                                      CFSTR("calloc of %zu failed"),
-                                                      buffer_size);
+                                                      CFSTR("calloc of %lu failed"),
+                                                      (unsigned long)buffer_size);
     }
   } else if (cf_type == CFBooleanGetTypeID()) {
     result = launch_data_alloc(LAUNCH_DATA_BOOL);
@@ -278,7 +278,7 @@ launch_data_t GTMLaunchDataCreateFromCFType(CFTypeRef cf_type_ref,
     local_error
       = GTMCFLaunchCreateUnlocalizedError(EINVAL,
                                           CFSTR("Unknown CFTypeID %lu"),
-                                          cf_type);
+                                          (unsigned long)cf_type);
   }
 
 exit:
