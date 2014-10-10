@@ -28,7 +28,12 @@
   NSString *extension = [pathTemplate pathExtension];
   char *pathTemplateCString = strdup([pathTemplate fileSystemRepresentation]);
   if (!pathTemplateCString) return nil;
-  int fileDescriptor = mkstemps(pathTemplateCString, (int)[extension length]);
+  int len = (int)[extension length];
+  if (len > 0) {
+    // Suffix length needs to include a period.
+    len++;
+  }
+  int fileDescriptor = mkstemps(pathTemplateCString, len);
   if (fileDescriptor == -1) {
     free(pathTemplateCString);
     return nil;
