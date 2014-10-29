@@ -97,7 +97,7 @@ static GTMLogger *gSharedLogger = nil;
 
   // Don't trust NSFileHandle not to throw
   @try {
-    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init] 
+    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init]
                                           autorelease];
     GTMLogger *stdoutLogger =
         [self loggerWithWriter:[NSFileHandle fileHandleWithStandardOutput]
@@ -475,9 +475,6 @@ static GTMLogger *gSharedLogger = nil;
 
 @end  // GTMLogStandardFormatter
 
-
-@implementation GTMLogLevelFilter
-
 // Check the environment and the user preferences for the GTMVerboseLogging key
 // to see if verbose logging has been enabled. The environment variable will
 // override the defaults setting, so check the environment first.
@@ -502,6 +499,29 @@ static BOOL IsVerboseLoggingEnabled(void) {
 }
 // COV_NF_END
 
+@implementation GTMLogLevelFilter
+
+- (id)init {
+  self = [super init];
+  if (self) {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(defaultsChanged:)
+                                                 name:NSUserDefaultsDidChangeNotification
+                                               object:nil];
+
+      verboseLoggingEnabled_ = IsVerboseLoggingEnabled();
+  }
+
+  return self;
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:NSUserDefaultsDidChangeNotification
+                                                object:nil];
+  [super dealloc];
+}
+
 // In DEBUG builds, log everything. If we're not in a debug build we'll assume
 // that we're in a Release build.
 - (BOOL)filterAllowsMessage:(NSString *)msg level:(GTMLoggerLevel)level {
@@ -516,7 +536,7 @@ static BOOL IsVerboseLoggingEnabled(void) {
       allow = NO;
       break;
     case kGTMLoggerLevelInfo:
-      allow = IsVerboseLoggingEnabled();
+      allow = verboseLoggingEnabled_;
       break;
     case kGTMLoggerLevelError:
       allow = YES;
@@ -530,6 +550,10 @@ static BOOL IsVerboseLoggingEnabled(void) {
   }
 
   return allow;
+}
+
+- (void)defaultsChanged:(NSNotification *)note {
+  verboseLoggingEnabled_ = IsVerboseLoggingEnabled();
 }
 
 @end  // GTMLogLevelFilter

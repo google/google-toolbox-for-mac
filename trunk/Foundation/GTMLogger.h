@@ -454,7 +454,10 @@ typedef enum {
 // out of non-debug builds unless GTMVerboseLogging is set in the environment or
 // the processes's defaults. Messages at the kGTMLoggerLevelError level are
 // never filtered.
-@interface GTMLogLevelFilter : NSObject <GTMLogFilter>
+@interface GTMLogLevelFilter : NSObject <GTMLogFilter> {
+ @private
+  BOOL verboseLoggingEnabled_;
+}
 @end  // GTMLogLevelFilter
 
 // A simple log filter that does NOT filter anything out;
