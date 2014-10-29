@@ -60,6 +60,8 @@
 #import <SenTestingKit/SenTestingKit.h>
 #endif  // GTM_USING_XCTEST
 
+#import <objc/runtime.h>
+
 #include "third_party/gtest/include/gtest/gtest.h"
 
 using ::testing::EmptyTestEventListener;
@@ -114,6 +116,13 @@ class GoogleTestPrinter : public EmptyTestEventListener {
   SenTestCase *test_case_;
 };
 
+NSString *SelectorNameFromGTestName(NSString *testName) {
+  NSRange dot = [testName rangeOfString:@"."];
+  return [NSString stringWithFormat:@"%@::%@",
+          [testName substringToIndex:dot.location],
+          [testName substringFromIndex:dot.location + 1]];
+}
+
 }  // namespace
 
 // GTMGoogleTestRunner is a GTMTestCase that makes a sub test suite populated
@@ -158,7 +167,23 @@ class GoogleTestPrinter : public EmptyTestEventListener {
 }
 
 - (id)initWithName:(NSString *)testName {
-  if ((self = [super initWithSelector:@selector(runGoogleTest)])) {
+  // Xcode 6.1 started taking the testName from the selector instead of calling
+  // -name.
+  // So we will add selectors to GTMGoogleTestRunner.
+  // They should all be unique because the selectors are named cppclass.method
+  // Filed as radar 18798444.
+  Class cls = [self class];
+  NSString *selectorTestName = SelectorNameFromGTestName(testName);
+  SEL selector = sel_registerName([selectorTestName UTF8String]);
+  Method method = class_getInstanceMethod(cls, @selector(runGoogleTest));
+  IMP implementation = method_getImplementation(method);
+  const char *encoding = method_getTypeEncoding(method);
+  if (!class_addMethod(cls, selector, implementation, encoding)) {
+    // If we can't add a method, we should blow up here.
+    [NSException raise:NSInternalInconsistencyException
+                format:@"Unable to add %@ to %@.", testName, cls];
+  }
+  if ((self = [super initWithSelector:selector])) {
     testName_ = testName;
   }
   return self;
