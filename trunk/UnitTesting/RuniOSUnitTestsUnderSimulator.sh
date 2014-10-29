@@ -130,6 +130,13 @@ GTMKillSimulator() {
   GTMKillNamedAndWait "${SimulatorProcessName}"
 }
 
+GTMResetSimulator() {
+  GTMKillSimulator
+  device_id=`xcrun simctl list | grep "${GTM_DEVICE_TYPE} (" | sed -n 2p | \
+      cut -d "(" -f2 | cut -d ")" -f1`
+  xcrun simctl erase $device_id || true
+}
+
 # Honor TEST_AFTER_BUILD if requested.
 if [[ "$GTM_USE_TEST_AFTER_BUILD" == 1 && "$TEST_AFTER_BUILD" == "NO" ]]; then
   GTMXcodeNote ${LINENO} "Skipping running of unittests since TEST_AFTER_BUILD=NO."
@@ -264,6 +271,17 @@ set -e
 
 GTMKillSimulator
 GTMKillNamedAndWait "${GTM_TEST_APP_NAME}"
+
+# If the simulator fails to open with error FBSOpenApplicationErrorDomain:4,
+# reset the sim and try again (Known simulator issue for Xcode 6).
+if [ ${TEST_HOST_RESULT} -eq 4 ] && [ ${XCODE_VERSION_MINOR} -ge "0600" ]; then
+    GTMFakeUnitTestingMsg ${LINENO} "Simulator failed to open" "$TEST_HOST_RESULT, trying again."
+    GTMResetSimulator
+    set +e
+    "${GTM_TEST_COMMAND[@]}"
+    TEST_HOST_RESULT=$?
+    set -e
+fi
 
 if [[ ${TEST_HOST_RESULT} -ne 0 ]]; then
   GTMXcodeError ${LINENO} "Tests failed."
