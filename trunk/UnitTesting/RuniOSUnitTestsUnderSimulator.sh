@@ -275,7 +275,7 @@ GTMKillNamedAndWait "${GTM_TEST_APP_NAME}"
 # If the simulator fails to open with error FBSOpenApplicationErrorDomain:4,
 # reset the sim and try again (Known simulator issue for Xcode 6).
 if [ ${TEST_HOST_RESULT} -eq 4 ] && [ ${XCODE_VERSION_MINOR} -ge "0600" ]; then
-    GTMFakeUnitTestingMsg ${LINENO} "Simulator failed to open" "$TEST_HOST_RESULT, trying again."
+    GTMFakeUnitTestingMsg ${LINENO} "note" "Simulator failed to open with result $TEST_HOST_RESULT, trying again."
     GTMResetSimulator
     set +e
     "${GTM_TEST_COMMAND[@]}"
