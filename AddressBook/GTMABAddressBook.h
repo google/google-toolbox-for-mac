@@ -102,7 +102,7 @@ typedef ABMultiValueIdentifier GTMABMultiValueIdentifier;
   kGTMABMultiDateTimePropertyType   = kABMultiDateTimePropertyType,
   kGTMABMultiDictionaryPropertyType = kABMultiDictionaryPropertyType,
 };
-typedef CFIndex GTMABPropertyType;
+typedef ABPropertyType GTMABPropertyType;
 #define kGTMABPersonFirstNameProperty kABPersonFirstNameProperty
 #define kGTMABPersonLastNameProperty kABPersonLastNameProperty
 #define kGTMABPersonBirthdayProperty kABPersonBirthdayProperty
