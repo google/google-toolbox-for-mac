@@ -1,7 +1,10 @@
-Google Toolbox for Mac Release Notes
+# GTM: Google Toolbox for Mac #
 
-Project site:     http://code.google.com/p/google-toolbox-for-mac/
-Discussion group: http://groups.google.com/group/google-toolbox-for-mac
+**Project site** <https://github.com/google/google-toolbox-for-mac><br>
+**Discussion group** <http://groups.google.com/group/google-toolbox-for-mac>
+
+
+## Release History ##
 
 Release 2.0.??
 Changes since 1.6.0
