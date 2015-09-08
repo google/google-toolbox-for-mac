@@ -8,9 +8,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -24,23 +24,23 @@
 @implementation NSImage (GTMNSImageScaling)
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
-// If you are on SnowLeopard use 
-// -[NSImage bestRepresentationForRect:context:hints:] 
+// If you are on SnowLeopard use
+// -[NSImage bestRepresentationForRect:context:hints:]
 - (NSImageRep *)gtm_bestRepresentationForSize:(NSSize)size {
   NSImageRep *bestRep = [self gtm_representationOfSize:size];
   if (bestRep) {
     return bestRep;
-  } 
+  }
   NSArray *reps = [self representations];
-  
+
   CGFloat repDistance = CGFLOAT_MAX;
-  
+
   NSImageRep *thisRep;
   GTM_FOREACH_OBJECT(thisRep, reps) {
     CGFloat thisDistance;
     thisDistance = MIN(size.width - [thisRep size].width,
-                       size.height - [thisRep size].height);  
-    
+                       size.height - [thisRep size].height);
+
     if (repDistance < 0 && thisDistance > 0) continue;
     if (ABS(thisDistance) < ABS(repDistance)
         || (thisDistance < 0 && repDistance > 0)) {
@@ -48,18 +48,18 @@
       bestRep = thisRep;
     }
   }
-  
+
   if (!bestRep) {
     bestRep = [self bestRepresentationForDevice:nil];
   }
-  
+
   return bestRep;
 }
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
 
 - (NSImageRep *)gtm_representationOfSize:(NSSize)size {
   NSArray *reps = [self representations];
-  
+
   NSImageRep *thisRep;
   GTM_FOREACH_OBJECT(thisRep, reps) {
     if (NSEqualSizes([thisRep size], size)) {
@@ -70,14 +70,17 @@
 }
 
 - (BOOL)gtm_createIconRepresentations {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   [self setFlipped:NO];
-  [self gtm_createRepresentationOfSize:NSMakeSize(16, 16)];  
+  [self gtm_createRepresentationOfSize:NSMakeSize(16, 16)];
   [self gtm_createRepresentationOfSize:NSMakeSize(32, 32)];
   [self setScalesWhenResized:NO];
+#pragma clang diagnostic pop
   return YES;
 }
 
-- (BOOL)gtm_createRepresentationOfSize:(NSSize)size { 
+- (BOOL)gtm_createRepresentationOfSize:(NSSize)size {
   if ([self gtm_representationOfSize:size]) {
     return NO;
   }
@@ -86,13 +89,13 @@
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
   bestRep = (NSBitmapImageRep *)[self gtm_bestRepresentationForSize:size];
 #else
-  bestRep 
+  bestRep
     = (NSBitmapImageRep *)[self bestRepresentationForRect:GTMNSRectOfSize(size)
                                                   context:nil
                                                     hints:nil];
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
-  
-  NSRect drawRect = GTMNSScaleRectToRect(GTMNSRectOfSize([bestRep size]), 
+
+  NSRect drawRect = GTMNSScaleRectToRect(GTMNSRectOfSize([bestRep size]),
                                        GTMNSRectOfSize(size),
                                        GTMScaleProportionally,
                                        GTMRectAlignCenter);
@@ -102,11 +105,11 @@
   SEL cgImageSel = NSSelectorFromString(@"CGImage");
   if ([bestRep respondsToSelector:cgImageSel]) {
     CGImageRef imageRef = (CGImageRef)[bestRep performSelector:cgImageSel];
-    
-    CGColorSpaceRef cspace = CGColorSpaceCreateDeviceRGB();   
+
+    CGColorSpaceRef cspace = CGColorSpaceCreateDeviceRGB();
     if (!cspace) return NO;
-    
-    CGContextRef smallContext = 
+
+    CGContextRef smallContext =
       CGBitmapContextCreate(NULL,
                             size.width,
                             size.height,
@@ -116,18 +119,18 @@
                             kCGBitmapByteOrder32Host
                             | kCGImageAlphaPremultipliedLast);
     CFRelease(cspace);
-    
+
     if (!smallContext) return NO;
- 
-    
+
+
     CGContextDrawImage(smallContext, GTMNSRectToCGRect(drawRect), imageRef);
-    
+
     CGImageRef smallImage = CGBitmapContextCreateImage(smallContext);
-   
+
     if (smallImage) {
-      NSBitmapImageRep *cgRep = 
+      NSBitmapImageRep *cgRep =
        [[[NSBitmapImageRep alloc] initWithCGImage:smallImage] autorelease];
-      [self addRepresentation:cgRep];   
+      [self addRepresentation:cgRep];
       CGImageRelease(smallImage);
     } else {
       CGContextRelease(smallContext);
@@ -144,13 +147,13 @@
     [graphicsContext setImageInterpolation:NSImageInterpolationHigh];
     [graphicsContext setShouldAntialias:YES];
     [bestRep drawInRect:drawRect];
-    NSBitmapImageRep* iconRep = 
+    NSBitmapImageRep* iconRep =
     [[[NSBitmapImageRep alloc] initWithFocusedViewRect:
       NSMakeRect(0, 0, size.width, size.height)] autorelease];
     [scaledImage unlockFocus];
     [scaledImage release];
     [self addRepresentation:iconRep];
-    return YES; 
+    return YES;
   }
   return NO;
 }
@@ -174,7 +177,10 @@
 - (NSImage *)gtm_duplicateOfSize:(NSSize)size {
   NSImage *duplicate = [[self copy] autorelease];
   [duplicate gtm_shrinkToSize:size];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   [duplicate setFlipped:NO];
+#pragma clang diagnostic pop
   return duplicate;
 }
 

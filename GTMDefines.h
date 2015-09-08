@@ -95,6 +95,16 @@
   #define GTM_CONTAINERS_VALIDATION_FAILED_ASSERT 0
 #endif
 
+// Ensure __has_feature and __has_extension are safe to use.
+// See http://clang-analyzer.llvm.org/annotations.html
+#ifndef __has_feature      // Optional.
+  #define __has_feature(x) 0 // Compatibility with non-clang compilers.
+#endif
+
+#ifndef __has_extension
+  #define __has_extension __has_feature // Compatibility with pre-3.0 compilers.
+#endif
+
 // Give ourselves a consistent way to do inlines.  Apple's macros even use
 // a few different actual definitions, so we're based off of the foundation
 // one.
@@ -170,8 +180,9 @@
     do {                                                                      \
       if (!(condition)) {                                                     \
         [[NSAssertionHandler currentHandler]                                  \
-            handleFailureInFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__] \
-                               file:[NSString stringWithUTF8String:__FILE__]  \
+            handleFailureInFunction:(NSString *)                              \
+                                        [NSString stringWithUTF8String:__PRETTY_FUNCTION__] \
+                               file:(NSString *)[NSString stringWithUTF8String:__FILE__]  \
                          lineNumber:__LINE__                                  \
                         description:__VA_ARGS__];                             \
       }                                                                       \
@@ -183,6 +194,10 @@
 #endif // _GTMDevAssert
 
 // _GTMCompileAssert
+//
+// Note:  Software for current compilers should just use _Static_assert directly
+// instead of this macro.
+//
 // _GTMCompileAssert is an assert that is meant to fire at compile time if you
 // want to check things at compile instead of runtime. For example if you
 // want to check that a wchar is 4 bytes instead of 2 you would use
@@ -193,13 +208,18 @@
 // Wrapping this in an #ifndef allows external groups to define their own
 // compile time assert scheme.
 #ifndef _GTMCompileAssert
-  // We got this technique from here:
-  // http://unixjunkie.blogspot.com/2007/10/better-compile-time-asserts_29.html
-
-  #define _GTMCompileAssertSymbolInner(line, msg) _GTMCOMPILEASSERT ## line ## __ ## msg
-  #define _GTMCompileAssertSymbol(line, msg) _GTMCompileAssertSymbolInner(line, msg)
-  #define _GTMCompileAssert(test, msg) \
-    typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
+  #if __has_feature(c_static_assert) || __has_extension(c_static_assert)
+    #define _GTMCompileAssert(test, msg) _Static_assert((test), #msg)
+  #else
+    // Pre-Xcode 7 support.
+    //
+    // We got this technique from here:
+    // http://unixjunkie.blogspot.com/2007/10/better-compile-time-asserts_29.html
+    #define _GTMCompileAssertSymbolInner(line, msg) _GTMCOMPILEASSERT ## line ## __ ## msg
+    #define _GTMCompileAssertSymbol(line, msg) _GTMCompileAssertSymbolInner(line, msg)
+    #define _GTMCompileAssert(test, msg) \
+      typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
+  #endif  // __has_feature(c_static_assert) || __has_extension(c_static_assert)
 #endif // _GTMCompileAssert
 
 // ----------------------------------------------------------------------------
@@ -296,11 +316,6 @@
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 // Some support for advanced clang static analysis functionality
-// See http://clang-analyzer.llvm.org/annotations.html
-#ifndef __has_feature      // Optional.
-  #define __has_feature(x) 0 // Compatibility with non-clang compilers.
-#endif
-
 #ifndef NS_RETURNS_RETAINED
   #if __has_feature(attribute_ns_returns_retained)
     #define NS_RETURNS_RETAINED __attribute__((ns_returns_retained))

@@ -442,9 +442,9 @@ typedef enum {
 //   Log Filters
 //
 
-// Protocol to be imlemented by a GTMLogFilter instance.
+// Protocol to be implemented by a GTMLogFilter instance.
 @protocol GTMLogFilter <NSObject>
-// Returns YES if |msg| at |level| should be filtered out; NO otherwise.
+// Returns YES if |msg| at |level| should be logged; NO otherwise.
 - (BOOL)filterAllowsMessage:(NSString *)msg level:(GTMLoggerLevel)level;
 @end  // GTMLogFilter
 
