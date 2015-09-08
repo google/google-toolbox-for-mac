@@ -137,12 +137,23 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 
 @implementation GTMGoogleTestRunner
 
-+ (id)defaultTestSuite {
-  int argc = 0;
-  char *argv = NULL;
++ (void)initGoogleTest {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    NSArray *arguments = [NSProcessInfo processInfo].arguments;
+    int argc = (int)arguments.count;
+    char **argv = static_cast<char **>(alloca((sizeof(char *) * (argc + 1))));
+    for (int index = 0; index < argc; index++) {
+      argv[index] = const_cast<char *> ([arguments[index] UTF8String]);
+    }
+    argv[argc] = NULL;
 
-  // Initialize GoogleTest with no values.
-  testing::InitGoogleTest(&argc, &argv);
+    testing::InitGoogleTest(&argc, argv);
+  });
+}
+
++ (id)defaultTestSuite {
+  [GTMGoogleTestRunner initGoogleTest];
   SenTestSuite *result =
       [[SenTestSuite alloc] initWithName:NSStringFromClass(self)];
   UnitTest *test = UnitTest::GetInstance();
@@ -198,10 +209,7 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 }
 
 - (void)runGoogleTest {
-  // Initialize GoogleTest with no values.
-  int argc = 0;
-  char *argv = NULL;
-  testing::InitGoogleTest(&argc, &argv);
+  [GTMGoogleTestRunner initGoogleTest];
 
   // Gets hold of the event listener list.
   TestEventListeners& listeners = UnitTest::GetInstance()->listeners();
