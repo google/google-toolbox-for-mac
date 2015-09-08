@@ -97,7 +97,7 @@ static GTMLogger *gSharedLogger = nil;
 
   // Don't trust NSFileHandle not to throw
   @try {
-    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init]
+    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init] 
                                           autorelease];
     GTMLogger *stdoutLogger =
         [self loggerWithWriter:[NSFileHandle fileHandleWithStandardOutput]
