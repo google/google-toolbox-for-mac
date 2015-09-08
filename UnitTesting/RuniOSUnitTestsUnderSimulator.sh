@@ -80,10 +80,24 @@ GTM_REMOVE_GCOV_DATA=${GTM_REMOVE_GCOV_DATA:=0}
 #   from the command line, but not when running from within XCode.
 GTM_USE_TEST_AFTER_BUILD=${GTM_USE_TEST_AFTER_BUILD:=0}
 
+function realpath() {
+  OLDPWD=${PWD}
+  cd "$(dirname "$1")"
+  TARGET="$(readlink "$(basename "$1")")"
+  while [[ -n "${TARGET}" ]]; do
+    cd "$(dirname "${TARGET}")"
+    TARGET=$(readlink "$(basename "$1")")
+  done
+  REALPATH="${PWD}/$(basename "$1")"
+  cd "${OLDPWD}"
+  echo "${REALPATH}"
+}
+
 readonly ScriptDir=$(dirname "$(echo $0 | sed -e "s,^\([^/]\),$(pwd)/\1,")")
 readonly ScriptName=$(basename "$0")
 readonly ThisScript="${ScriptDir}/${ScriptName}"
-readonly SimExecutable="${ScriptDir}/iossim"
+# iossim fails if it's behind the right combination of symlinks
+readonly SimExecutable="$(realpath "${ScriptDir}/iossim")"
 
 # Simulator process name changes from Xcode 6.
 if [[ ${XCODE_VERSION_MINOR} -ge "0600" ]]; then
