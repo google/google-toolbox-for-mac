@@ -25,6 +25,9 @@ set -o nounset
 # Uncomment the next line to trace execution.
 #set -o verbose
 
+# Required to make Xcode 6 actually run tests.
+export TEST_AFTER_BUILD=YES
+
 # Controlling environment variables:
 #
 # GTM_DISABLE_ZOMBIES -
@@ -237,7 +240,7 @@ RunTests() {
   VALID_ARCHS="${LEAK_TEST_ARCHS}"
   GTMXcodeNote ${LINENO} "Leak checking enabled for $ARCHS. Ignoring leaks from $GTM_LEAKS_SYMBOLS_TO_IGNORE."
   SetMemoryVariables
-  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"
 
   # Running leaks on architectures that don't support leaks.
   unset MallocStackLogging
@@ -245,7 +248,7 @@ RunTests() {
   ARCHS="${NO_LEAK_TEST_ARCHS}"
   VALID_ARCHS="${NO_LEAK_TEST_ARCHS}"
   GTMXcodeNote ${LINENO} "Leak checking disabled for $ARCHS due to no support for leaks on platform".
-  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"
 }
 
 if [ ! $GTM_DO_NOT_REMOVE_GCOV_DATA ]; then
@@ -269,5 +272,5 @@ if [ $GTM_ENABLE_LEAKS -ne 0 ]; then
 else
   GTMXcodeNote ${LINENO} "Leak checking disabled."
   SetMemoryVariables
-  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests"
+  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"
 fi
