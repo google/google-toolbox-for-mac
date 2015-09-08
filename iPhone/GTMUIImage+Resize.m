@@ -156,7 +156,7 @@ GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
       return nil;
   }
 
-  UIGraphicsBeginImageContext(bounds.size);
+  UIGraphicsBeginImageContextWithOptions(bounds.size, NO, self.scale);
   CGContextRef context = UIGraphicsGetCurrentContext();
 
   switch (orientation) {
