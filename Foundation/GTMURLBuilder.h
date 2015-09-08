@@ -26,6 +26,10 @@
 // [URLBuilder setValue:@"abc" forParameter:@"q"];
 // NSURL *URL = [URLBuilder URL];
 //
+// NOTE: Apps targeting iOS 8 or OS X 10.10 and later should use
+//       NSURLComponents and NSURLQueryItem to create URLs with
+//       query arguments instead of using this class.
+
 
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"

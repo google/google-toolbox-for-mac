@@ -25,6 +25,10 @@
 /// string of the form key1=value1&key2=value2&...&keyN=valueN.
 /// Keys and values will be unescaped automatically.
 /// Only the first value for a repeated key is returned.
+///
+/// NOTE: Apps targeting iOS 8 or OS X 10.10 and later should use
+///       NSURLComponents and NSURLQueryItem to create URLs with
+///       query arguments instead of using these category methods.
 + (NSDictionary *)gtm_dictionaryWithHttpArgumentsString:(NSString *)argString;
 
 /// Gets a string representation of the dictionary in the form
