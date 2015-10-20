@@ -827,7 +827,7 @@ typedef struct {
     isEqual = multiValue_ == [object multiValueRef];
     if (!isEqual) {
       NSUInteger count = [self count];
-      NSUInteger objCount = [object count];
+      NSUInteger objCount = [(GTMABMultiValue *)object count];
       isEqual = count == objCount;
       for (NSUInteger i = 0; isEqual && i < count;  ++i) {
         NSString *label = [self labelAtIndex:i];
