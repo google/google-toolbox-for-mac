@@ -316,8 +316,8 @@
 ({ \
   NSString *_failure = nil; \
   @try { \
-    id _a1value = (a1); \
-    id _a2value = (a2); \
+    NSString *_a1value = (a1); \
+    NSString *_a2value = (a2); \
     NSComparisonResult _result; \
     if (![_a1value isKindOfClass:[NSString class]]) { \
       _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a1, [_a1value class]]; \
@@ -356,8 +356,8 @@
 ({ \
   NSString *_failure = nil; \
   @try { \
-    id _a1value = (a1); \
-    id _a2value = (a2); \
+    NSString *_a1value = (a1); \
+    NSString *_a2value = (a2); \
     NSComparisonResult _result; \
     if (![_a1value isKindOfClass:[NSString class]]) { \
       _failure = [NSString stringWithFormat:@"(%@) is not an NSString* (%@)", @#a1, [_a1value class]]; \
@@ -394,18 +394,20 @@
   @try { \
     const char* _a1value = (a1); \
     const char* _a2value = (a2); \
-    if (_a1value != _a2value && strcmp(_a1value, _a2value) != 0) { \
-      _failure = @""; \
+    if (_a1value != _a2value && \
+        (_a1value == NULL || _a2value == NULL || strcmp(_a1value, _a2value) != 0)) { \
+      _failure = [NSString stringWithFormat:@"strcmp(\"%s\", \"%s\") != 0", _a1value, _a2value]; \
     }\
   } \
   @catch (NSException *_exception) { \
     _failure = [NSString stringWithFormat:@": " _XCExceptionFormatString, [_exception reason]]; \
   } \
   @catch (...) { \
-    _failure = @": "_XCUnknownExceptionString; \
+    _failure = @": " _XCUnknownExceptionString; \
   } \
   if (_failure) { \
-    NSString *_expression = [NSString stringWithFormat:@"((%s) == (%s) failed%@", @#a1, @#a2, _failure]; \
+    NSString *_expression = [NSString stringWithFormat:@"((%@) vs. (%@) failed: %@", \
+        GTM_NSSTRINGIFY(a1), GTM_NSSTRINGIFY(a2), _failure]; \
     _GTMXCRegisterFailure(_expression, format); \
   } \
 })
