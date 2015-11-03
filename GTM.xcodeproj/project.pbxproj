@@ -975,7 +975,6 @@
 		F4C62485109753960069CADD /* GTMIBArrayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIBArrayTest.h; sourceTree = "<group>"; };
 		F4C62486109753960069CADD /* GTMIBArrayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIBArrayTest.m; sourceTree = "<group>"; };
 		F4C62487109753960069CADD /* GTMIBArrayTest.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMIBArrayTest.xib; sourceTree = "<group>"; };
-		F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
 		F4CA854E0DAFAAB600B4AB10 /* xcconfigs-readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "xcconfigs-readme.txt"; sourceTree = "<group>"; };
 		F4CA864C0DB3ACD200B4AB10 /* LoadableBundleGCSupported.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LoadableBundleGCSupported.xcconfig; sourceTree = "<group>"; };
 		F4CA864D0DB3ACD200B4AB10 /* SharedLibraryGCSupported.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = SharedLibraryGCSupported.xcconfig; sourceTree = "<group>"; };
@@ -1120,7 +1119,6 @@
 			isa = PBXGroup;
 			children = (
 				444B3B7619F6D24000B9191E /* CoreServices.framework */,
-				F4C978090D5B79C7001C29A6 /* ReleaseNotes.txt */,
 				F440EDB70DFECC4B0003E81F /* BuildingAndUsing.txt */,
 				8B1A16050D90344B00CA1E8E /* GTMDefines.h */,
 				8BFE13AF0FB0F2B9001BE894 /* AddressBook */,

@@ -440,7 +440,6 @@
 		8BC04A710DAF144700C2D1CA /* GTMSystemVersionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersionTest.m; sourceTree = "<group>"; };
 		8BC04A740DAF145200C2D1CA /* GTMSystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersion.m; sourceTree = "<group>"; };
 		8BC04D470DB0088500C2D1CA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.txt; sourceTree = "<group>"; };
 		8BCB5AAE11C02D7D009B6C40 /* GTMNSScanner+Unsigned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSScanner+Unsigned.h"; sourceTree = "<group>"; };
 		8BCB5AAF11C02D7D009B6C40 /* GTMNSScanner+Unsigned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+Unsigned.m"; sourceTree = "<group>"; };
 		8BCB5AB011C02D7D009B6C40 /* GTMNSScanner+UnsignedTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+UnsignedTest.m"; sourceTree = "<group>"; };
@@ -572,7 +571,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				8BC04DE70DB023D400C2D1CA /* ReleaseNotes.txt */,
 				8BC047750DAE926E00C2D1CA /* GTMDefines.h */,
 				8BFE15BF0FB0F764001BE894 /* AddressBook */,
 				8BB78FA011B94D6C00AB31AF /* AppKit */,
@@ -914,7 +912,7 @@
 			name = GTMiPhoneUnitTestingOCUnit;
 			productName = GTMiPhoneUnitTestingOCUnit;
 			productReference = F4D20EAA14852BFB0001600C /* GTMiPhoneUnitTestingOCUnit.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		F4F1D80714853D8F00E05BB6 /* GTMiPhoneUnitTestingOCUnitTestRig */ = {
 			isa = PBXNativeTarget;
