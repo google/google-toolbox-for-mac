@@ -39,7 +39,7 @@
 @interface GTMFSKQTestHelper : NSObject {
  @private
   int writes_, renames_, deletes_;
-  __weak GTMFileSystemKQueue *queue_;
+  GTM_WEAK GTMFileSystemKQueue *queue_;
 }
 @end
 

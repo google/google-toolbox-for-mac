@@ -17,6 +17,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "GTMDefines.h"
 
 // A class to manage multiple sheets for a window. Use it for tab-style
 // interfaces, where each tab might need its own sheet.
@@ -56,9 +57,9 @@
 
 @interface GTMWindowSheetController : NSObject {
  @private
-  __weak NSWindow* window_;
-  __weak NSView* activeView_;
-  __weak id <GTMWindowSheetControllerDelegate> delegate_;
+  GTM_WEAK NSWindow* window_;
+  GTM_WEAK NSView* activeView_;
+  GTM_WEAK id <GTMWindowSheetControllerDelegate> delegate_;
 
   NSMutableDictionary* sheets_;  // NSValue*(NSView*) -> SheetInfo*
 }

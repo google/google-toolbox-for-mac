@@ -17,6 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 #import <sys/event.h>  // for kqueue() and kevent and the NOTE_* constants
 
@@ -50,7 +51,7 @@ typedef unsigned int GTMFileSystemKQueueEvents;
   int fd_;
   GTMFileSystemKQueueEvents events_;
   BOOL acrossReplace_;
-  __weak id target_;
+  GTM_WEAK id target_;
   SEL action_;
 }
 

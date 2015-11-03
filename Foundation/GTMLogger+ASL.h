@@ -52,7 +52,7 @@
 //
 @interface GTMLogASLWriter : NSObject <GTMLogWriter> {
  @private
-  __weak Class aslClientClass_;
+  GTM_WEAK Class aslClientClass_;
   NSString *facility_;
 }
 
