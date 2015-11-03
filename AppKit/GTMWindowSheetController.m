@@ -26,7 +26,7 @@
   NSWindow* overlayWindow_;
 
   // delegate data
-  __weak id modalDelegate_;
+  GTM_WEAK id modalDelegate_;
   SEL didEndSelector_;
   void* contextInfo_;
 

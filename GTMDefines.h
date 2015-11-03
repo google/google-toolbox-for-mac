@@ -500,4 +500,31 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 
   #endif  // DEBUG
 #endif  // GTM_SEL_STRING
 
+#ifndef GTM_WEAK
+  #if defined(__OBJC_GC__)
+    // In -fobjc-gc mode, __weak means "a reference not visible to the gargabe
+    // collector".  __weak references are set to zero when their pointee is
+    // collected.  __weak is not needed to prevent cycles because cycles
+    // are cleaned up fine by the garbage collector.
+    #define GTM_WEAK __weak
+  #elif __has_feature(objc_arc_weak)
+    // With ARC enabled, __weak means a reference that isn't implicitly
+    // retained.  __weak objects are accessed through runtime functions, so
+    // they are zeroed out, but this requires OS X 10.7+.
+    // At clang r251041+, ARC-style zeroing weak references even work in
+    // non-ARC mode.
+    #define GTM_WEAK __weak
+  #elif __has_feature(objc_arc)
+    // ARC, but targeting 10.6 or older, where zeroing weak references don't
+    // exist.
+    #define GTM_WEAK __unsafe_unretained
+  #else
+    // With manual reference counting, __weak used to be silently ignored.
+    // clang r251041 gives it the ARC semantics instead.  This means they
+    // now require a deployment target of 10.7, while some clients of GTM
+    // still target 10.6.  In these cases, expand to __unsafe_unretained instead
+    #define GTM_WEAK
+  #endif
+#endif
+
 #endif  // __OBJC__

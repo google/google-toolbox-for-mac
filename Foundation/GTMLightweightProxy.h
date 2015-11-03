@@ -17,6 +17,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GTMDefines.h"
 
 //
 // GTMLightweightProxy
@@ -31,7 +32,7 @@
 //
 @interface GTMLightweightProxy : NSProxy {
  @private
-  __weak id representedObject_;
+  GTM_WEAK id representedObject_;
 }
 
 // Initializes the object to represent |object|.

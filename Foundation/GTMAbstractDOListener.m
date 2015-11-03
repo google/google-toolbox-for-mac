@@ -29,7 +29,7 @@
 // message.  This is only need on Tiger.
 #if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 @interface GTMReceivePortDelegate : NSObject {
-  __weak id delegate_;
+  GTM_WEAK id delegate_;
 }
 - (id)initWithDelegate:(id)delegate;
 - (void)handlePortMessage:(NSPortMessage *)message;

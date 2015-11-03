@@ -34,7 +34,7 @@
 @interface GTMNSObject_KeyValueObservingTest : GTMTestCase  {
   int32_t count_;
   NSMutableDictionary *dict_;
-  __weak NSString *expectedValue_;
+  GTM_WEAK NSString *expectedValue_;
 }
 
 - (void)observeValueChange:(GTMKeyValueChangeNotification *)notification;
@@ -133,8 +133,8 @@
  @private
   id value_;
   id _value2;
-  __weak NSArray *value3_;
-  __weak NSString *value4;
+  GTM_WEAK NSArray *value3_;
+  GTM_WEAK NSString *value4;
 }
 - (NSString *)value4;
 @end
