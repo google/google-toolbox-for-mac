@@ -23,7 +23,7 @@
 #import "GTMObjC2Runtime.h"
 #import <dlfcn.h>
 
-// Checks to see if the cls passed in (or one of it's superclasses) conforms
+// Checks to see if the cls passed in (or one of its superclasses) conforms
 // to NSObject protocol. Inheriting from NSObject is the easiest way to do this
 // but not all classes (i.e. NSProxy) inherit from NSObject. Also, some classes
 // inherit from Object instead of NSObject which is fine, and we'll count as
@@ -46,6 +46,8 @@ static BOOL ConformsToNSObjectProtocol(Class cls) {
        || (strncmp(className, "_NS", 3) == 0)
        || (strncmp(className, "__NS", 4) == 0)
        || (strcmp(className, "CFObject") == 0)
+       || (strcmp(className, "_CNZombie_") == 0)
+       || (strcmp(className, "FigIrisAutoTrimmerMotionSampleExport") == 0)
        || (strcmp(className, "__IncompleteProtocol") == 0)
        || (strcmp(className, "__ARCLite__") == 0)
        || (strcmp(className, "WebMIMETypeRegistry") == 0)
