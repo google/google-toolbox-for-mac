@@ -18,6 +18,10 @@
 
 #import "GTMObjC2Runtime.h"
 
+// Export a nonsense symbol to suppress a libtool warning when this is linked alone in a static lib.
+__attribute__((visibility("default"))) char GTMObjC2RuntimeExportToSuppressLibToolWarning = 0;
+
+
 #if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5) && !__OBJC2__
 #import <objc/objc-runtime.h>
 #import <stdlib.h>
