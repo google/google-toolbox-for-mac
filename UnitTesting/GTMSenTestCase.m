@@ -298,7 +298,7 @@ NSString *const SenTestLineNumberKey = @"SenTestLineNumberKey";
         // It turns out that on iOS4 (and 3.2) exceptions thrown inside an
         // [invocation invoke] on the simulator cannot be caught.
         // http://openradar.appspot.com/8081169
-        objc_msgSend(self, [invocation selector]);
+        ((void (*)(id, SEL))objc_msgSend)(self, [invocation selector]);
 #else
         [invocation invokeWithTarget:self];
 #endif
