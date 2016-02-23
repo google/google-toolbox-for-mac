@@ -148,11 +148,26 @@
       return nil;
       // COV_NF_END
     }
+#if TARGET_OS_IPHONE
+    // On iOS we need to flag the messages as available for read so
+    // asl_search() can see our own output.
+    msgOptions_ = asl_new(ASL_TYPE_MSG);
+    if ((msgOptions_ == NULL) ||
+        (asl_set(msgOptions_,
+                 ASL_KEY_READ_UID,
+                 [[NSString stringWithFormat:@"%d", getuid()] UTF8String]) != 0)) {
+      // COV_NF_START - no real way to test this
+      [self release];
+      return nil;
+      // COV_NF_END
+    }
+#endif
   }
   return self;
 }
 
 - (void)dealloc {
+  if (msgOptions_ != NULL) asl_free(msgOptions_);
   if (client_ != NULL) asl_close(client_);
   [super dealloc];
 }
@@ -161,7 +176,7 @@
 // logs with test messages.
 // COV_NF_START
 - (void)log:(NSString *)msg level:(int)level {
-  asl_log(client_, NULL, level, "%s", [msg UTF8String]);
+  asl_log(client_, msgOptions_, level, "%s", [msg UTF8String]);
 }
 // COV_NF_END
 

@@ -93,6 +93,7 @@
 @interface GTMLoggerASLClient : NSObject {
  @private
   aslclient client_;
+  aslmsg msgOptions_;
 }
 
 // Designated initializer, |facility| is supplied to asl_open().

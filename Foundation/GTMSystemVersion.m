@@ -85,7 +85,7 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
     // version number instead of an iOS version number.
     Class uideviceClass = NSClassFromString(@"UIDevice");
     if (uideviceClass) {
-      id currentDevice = objc_msgSend(uideviceClass, @selector(currentDevice));
+      id currentDevice = ((id (*)(id, SEL))objc_msgSend)(uideviceClass, @selector(currentDevice));
       version = [currentDevice performSelector:@selector(systemVersion)];
     }
     if (!version) {
