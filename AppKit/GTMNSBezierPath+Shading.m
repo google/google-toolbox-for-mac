@@ -94,8 +94,8 @@
       }
       CGColorSpaceRef colorspace = [shading colorSpace];
       if (nil != colorspace) {
-        CGPoint toCGPoint = GTMNSPointToCGPoint(toPoint);
-        CGPoint fromCGPoint = GTMNSPointToCGPoint(fromPoint);
+        CGPoint toCGPoint = {.x = toPoint.x, .y = toPoint.y};
+        CGPoint fromCGPoint = {.x = fromPoint.x, .y = fromPoint.y};
         CGShadingRef myCGShading;
         if(axially) {
           myCGShading = CGShadingCreateAxial(colorspace, fromCGPoint, 

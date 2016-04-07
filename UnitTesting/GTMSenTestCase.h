@@ -462,7 +462,7 @@ do { \
                        isTrue:NO \
                        inFile:[NSString stringWithUTF8String:__FILE__] \
                        atLine:__LINE__ \
-              withDescription:@"%@", XCComposeString(description, ##__VA_ARGS__)])]; \
+              withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)])]; \
     } \
   } \
   @catch (id anException) { \
