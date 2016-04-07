@@ -25,34 +25,10 @@
 @implementation GTMGeometryUtilsTest
 
 #if !GTM_IPHONE_SDK
-- (void)testGTMCGPointToNSPoint {
-  CGPoint cgPoint = CGPointMake(15.1,6.2);
-  NSPoint nsPoint = GTMCGPointToNSPoint(cgPoint);
-  STAssertTrue(CGPointEqualToPoint(*(CGPoint*)&nsPoint, cgPoint), nil);
-}
-
-- (void)testGTMNSPointToCGPoint {
-  NSPoint nsPoint = NSMakePoint(10.2,1.5);
-  CGPoint cgPoint = GTMNSPointToCGPoint(nsPoint);
-  STAssertTrue(CGPointEqualToPoint(cgPoint, *(CGPoint*)&nsPoint), nil);
-}
-
-- (void)testGTMCGRectToNSRect {
-  CGRect cgRect = CGRectMake(1.5,2.4,10.6,11.7);
-  NSRect nsRect = GTMCGRectToNSRect(cgRect);
-  STAssertTrue(CGRectEqualToRect(cgRect, *(CGRect*)&nsRect), nil);
-}
-
 - (void)testGTMNSRectToCGRect {
   NSRect nsRect = NSMakeRect(4.6,3.2,22.1,45.0);
   CGRect cgRect = GTMNSRectToCGRect(nsRect);
   STAssertTrue(CGRectEqualToRect(cgRect, *(CGRect*)&nsRect), nil);
-}
-
-- (void)testGTMCGSizeToNSSize {
-  CGSize cgSize = {5,6};
-  NSSize nsSize = GTMCGSizeToNSSize(cgSize);
-  STAssertTrue(CGSizeEqualToSize(cgSize, *(CGSize*)&nsSize), nil);
 }
 
 - (void)testGTMNSSizeToCGSize {
