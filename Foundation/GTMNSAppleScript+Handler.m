@@ -22,7 +22,6 @@
 #import "GTMNSAppleEventDescriptor+Handler.h"
 #import "GTMFourCharCode.h"
 #import "GTMMethodCheck.h"
-#import "GTMDebugThreadValidation.h"
 
 // Keys for passing AppleScript calls from other threads to the main thread
 // and back through gtm_internalExecuteAppleEvent:
@@ -326,7 +325,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (NSAppleEventDescriptor*)gtm_valueDescriptorForProperty:(id)property {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   OSAError error = paramErr;
   NSAppleEventDescriptor *desc = nil;
   NSAppleEventDescriptor *propertyName
@@ -377,7 +376,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (NSSet*)gtm_scriptHandlers {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   AEDescList names = { typeNull, NULL };
   NSArray *array = nil;
   ComponentInstance component = NULL;
@@ -396,7 +395,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (NSSet*)gtm_scriptProperties {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   AEDescList names = { typeNull, NULL };
   NSArray *array = nil;
   ComponentInstance component = NULL;
@@ -415,7 +414,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (OSAID)gtm_genericID:(OSAID)osaID forComponent:(ComponentInstance)component {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   ComponentInstance genericComponent = [NSAppleScript _defaultScriptingComponent];
   OSAID exactID = osaID;
   OSAError error = OSARealToGenericID(genericComponent, &exactID, component);
@@ -428,7 +427,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 
 - (NSAppleEventDescriptor*)descForScriptID:(OSAID)osaID
                                  component:(ComponentInstance)component {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   NSAppleEventDescriptor *desc = nil;
   // If we have a script, return a typeGTMOSAID, otherwise convert it to
   // it's default AEDesc using OSACoerceToDesc with typeWildCard.
@@ -468,7 +467,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (OSAID)gtm_realIDAndComponent:(ComponentInstance*)component {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   if (![self isCompiled]) {
     NSDictionary *error;
     if (![self compileAndReturnError:&error]) {
@@ -487,7 +486,7 @@ GTM_METHOD_CHECK(NSAppleEventDescriptor, gtm_registerSelector:forTypes:count:);
 }
 
 - (void)gtm_internalExecuteAppleEvent:(NSMutableDictionary *)data {
-  GTMAssertRunningOnMainThread();
+  _GTMDevAssert([NSThread isMainThread], @"Requires main thread.");
   NSDictionary *error = nil;
   if (![self isCompiled]) {
     [self compileAndReturnError:&error];

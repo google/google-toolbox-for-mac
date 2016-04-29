@@ -100,8 +100,10 @@ static LanguageDefaultInfo kLanguageListDefaultMappingTable[] = {
 };
 
 // the notification we use for syncing up instances in different processes
-static NSString *const kNotificationName 
+#if GTM_GOOGLE_SEARCH_SUPPORTS_DISTRIBUTED_NOTIFICATIONS
+static NSString *const kNotificationName
   = @"com.google.GoogleSearchAllApps.prefsWritten";
+#endif
 
 // this is the bundle id we use for the pref file used for all apps
 static CFStringRef const kAllAppsBuildIdentifier 

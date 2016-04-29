@@ -1,7 +1,7 @@
 //
 //  GTMDebugThreadValidation.h
 //
-//  Copyright 2008 Google Inc.
+//  Copyright 2016 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -16,40 +16,29 @@
 //  the License.
 //
 
-#if DEBUG
 #import "GTMDefines.h"
 #import <Foundation/Foundation.h>
 
-// GTMAssertRunningOnMainThread will allow you to verify that you are
-// currently running on the main thread. This can be useful for checking
-// under DEBUG to make sure that code that requires being run on the main thread
-// is doing so. Use the GTMAssertRunningOnMainThread macro, don't use
-// the _GTMAssertRunningOnMainThread or _GTMIsRunningOnMainThread
-// helper functions.
+// GTMCheckCurrentQueue, GTMIsCurrentQueue
+//
+// GTMCheckCurrentQueue takes a target queue and uses _GTMDevAssert to
+// report if that is not the currently executing queue.
+//
+// GTMIsCurrentQueue takes a target queue and returns true if the target queue
+// is the currently executing dispatch queue. This can be passed to another
+// assertion call in debug builds; it should never be used in release code.
+//
+// The dispatch queue must have a label.
+#define GTMCheckCurrentQueue(targetQueue)                    \
+  _GTMDevAssert(GTMIsCurrentQueue(targetQueue),              \
+                @"Current queue is %s (expected %s)",        \
+                _GTMQueueName(DISPATCH_CURRENT_QUEUE_LABEL), \
+                _GTMQueueName(targetQueue))
 
-// On Leopard and above we can just use NSThread functionality.
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-BOOL _GTMIsRunningOnMainThread(void);
-#else  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-#import <Foundation/Foundation.h>
-GTM_INLINE BOOL _GTMIsRunningOnMainThread(void) { 
-  return [NSThread isMainThread]; 
-}
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
+#define GTMIsCurrentQueue(targetQueue)                 \
+  (strcmp(_GTMQueueName(DISPATCH_CURRENT_QUEUE_LABEL), \
+          _GTMQueueName(targetQueue)) == 0)
 
-GTM_INLINE void _GTMAssertRunningOnMainThread(const char *func,
-                                              const char *file, 
-                                              int lineNum) { 
-  _GTMDevAssert(_GTMIsRunningOnMainThread(), 
-                @"%s not being run on main thread (%s - %d)",
-                func, file, lineNum);
-}
-
-#define GTMAssertRunningOnMainThread() \
-  (_GTMAssertRunningOnMainThread(__func__, __FILE__, __LINE__))
-
-#else // DEBUG
-
-#define GTMAssertRunningOnMainThread() do { } while (0)
-
-#endif // DEBUG
+#define _GTMQueueName(queue)                     \
+  (strlen(dispatch_queue_get_label(queue)) > 0 ? \
+    dispatch_queue_get_label(queue) : "unnamed")
