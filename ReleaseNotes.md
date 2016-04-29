@@ -39,6 +39,9 @@ Changes since 1.6.0<br>
 
 - Removed GTM_ENABLE_LEAKS.
 
+- Removed GTMGarbageCollection.h.
+
+
 **Release 1.6.0**<br>
 Changes since 1.5.1<br>
 18-August-2010

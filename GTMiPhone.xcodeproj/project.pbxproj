@@ -400,7 +400,6 @@
 		8BC047770DAE928A00C2D1CA /* GTMCalculatedRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMCalculatedRange.h; sourceTree = "<group>"; };
 		8BC047780DAE928A00C2D1CA /* GTMCalculatedRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRange.m; sourceTree = "<group>"; };
 		8BC047790DAE928A00C2D1CA /* GTMCalculatedRangeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCalculatedRangeTest.m; sourceTree = "<group>"; };
-		8BC0477A0DAE928A00C2D1CA /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGarbageCollection.h; sourceTree = "<group>"; };
 		8BC0477E0DAE928A00C2D1CA /* GTMNSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSData+zlib.h"; sourceTree = "<group>"; };
 		8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlib.m"; sourceTree = "<group>"; };
 		8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSData+zlibTest.m"; sourceTree = "<group>"; };
@@ -696,7 +695,6 @@
 				F418AF930E7558DC004FB565 /* GTMExceptionalInlines.h */,
 				F418AF940E7558DC004FB565 /* GTMExceptionalInlines.m */,
 				F418AF950E7558DC004FB565 /* GTMExceptionalInlinesTest.m */,
-				8BC0477A0DAE928A00C2D1CA /* GTMGarbageCollection.h */,
 				F439ADED0DBD3C4000BE9B91 /* GTMGeometryUtils.h */,
 				F439ADEE0DBD3C4000BE9B91 /* GTMGeometryUtils.m */,
 				F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */,
