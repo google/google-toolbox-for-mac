@@ -1,7 +1,7 @@
 //
 //  GTMDebugThreadValidation.m
 //
-//  Copyright 2008 Google Inc.
+//  Copyright 2016 Google Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
@@ -16,22 +16,4 @@
 //  the License.
 //
 
-#import "GTMDebugThreadValidation.h"
-
-#if DEBUG && MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-
-static NSThread *gGTMMainThread = nil;
-
-static __attribute__((constructor)) void _GTMInitThread(void) {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  gGTMMainThread = [NSThread currentThread];
-  [gGTMMainThread retain];
-  [pool release];
-}
-
-
-BOOL _GTMIsRunningOnMainThread(void) {
-  return [[NSThread currentThread] isEqual:gGTMMainThread];
-}
-
-#endif  // DEBUG && MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
+// No implementation source currently needed.

@@ -37,6 +37,7 @@ Changes since 1.6.0<br>
 
 - Removed GTMNSNumber+64Bit methods as obsolete.
 
+- Removed GTM_ENABLE_LEAKS.
 
 **Release 1.6.0**<br>
 Changes since 1.5.1<br>

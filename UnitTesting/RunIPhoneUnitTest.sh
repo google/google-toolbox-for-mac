@@ -28,21 +28,10 @@ set -o nounset
 #   want to turn this off if you enable leaks.
 GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=1}
 
-# GTM_ENABLE_LEAKS -
-#   Set to a non-zero value to turn on the leaks check. You will probably want
-#   to disable zombies, otherwise you will get a lot of false positives.
-
 # GTM_DISABLE_TERMINATION
 #   Set to a non-zero value so that the app doesn't terminate when it's finished
 #   running tests. This is useful when using it with external tools such
 #   as Instruments.
-
-# GTM_LEAKS_SYMBOLS_TO_IGNORE
-#   List of comma separated symbols that leaks should ignore. Mainly to control
-#   leaks in frameworks you don't have control over.
-#   Search this file for GTM_LEAKS_SYMBOLS_TO_IGNORE to see examples.
-#   Please feel free to add other symbols as you find them but make sure to
-#   reference Radars or other bug systems so we can track them.
 
 # GTM_REMOVE_GCOV_DATA
 #   Before starting the test, remove any *.gcda files for the current run so
@@ -193,10 +182,6 @@ elif [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
   # export OBJC_DEBUG_FINALIZERS=YES
   export OBJC_DEBUG_NIL_SYNC=YES
   export OBJC_PRINT_REPLACED_METHODS=YES
-
-  # 6251475 iPhone simulator leaks @ CFHTTPCookieStore shutdown if
-  #         CFFIXED_USER_HOME empty
-  GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
 
   # Start our app.
   "$TARGET_BUILD_DIR/$EXECUTABLE_PATH" -RegisterForSystemEvents
