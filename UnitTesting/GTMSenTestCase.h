@@ -216,90 +216,6 @@
 })
 #endif  // XCTAssertNULL
 
-// Generates a failure when a1 is not 'op' to a2. This test is for C scalars.
-//  Args:
-//    a1: argument 1
-//    a2: argument 2
-//    op: operation
-//    format: A format string as in the printf() function. Can be nil or
-//                 an empty string but must be present.
-//    ...: A variable number of arguments to the format string. Can be absent.
-#ifndef XCTAssertOperation
-#define XCTAssertOperation(a1, a2, op, format...) \
-({ \
-  NSString *_failure = nil; \
-  @try { \
-    __typeof__(a1) _a1value = (a1); \
-    __typeof__(a2) _a2value = (a2); \
-    if (!(_a1value op _a2value)) { \
-      _failure = [NSString stringWithFormat:@"(%@) is not %s (%@)", @(_a1value), #op, @(_a2value)]; \
-    } \
-  } \
-  @catch (NSException *_exception) { \
-    _failure = [NSString stringWithFormat:_XCExceptionFormatString, [_exception reason]]; \
-  } \
-  @catch (...) { \
-    _failure = _XCUnknownExceptionString; \
-  } \
-  if (_failure) { \
-    NSString *_expression = [NSString stringWithFormat:@"((%@) %s (%@)) failed: %@", @#a1, #op, @#a2, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
-  } \
-})
-#endif // XCTAssertOperation
-
-// Generates a failure when a1 is not > a2. This test is for C scalars.
-//  Args:
-//    a1: argument 1
-//    a2: argument 2
-//    op: operation
-//    description: A format string as in the printf() function. Can be nil or
-//                 an empty string but must be present.
-//    ...: A variable number of arguments to the format string. Can be absent.
-#ifndef XCTAssertGreaterThanOrEqual
-#define XCTAssertGreaterThan(a1, a2, format...) \
-  XCTAssertOperation(a1, a2, >, ##format)
-#endif  // XCTAssertGreaterThan
-
-// Generates a failure when a1 is not >= a2. This test is for C scalars.
-//  Args:
-//    a1: argument 1
-//    a2: argument 2
-//    op: operation
-//    description: A format string as in the printf() function. Can be nil or
-//                 an empty string but must be present.
-//    ...: A variable number of arguments to the format string. Can be absent.
-#ifndef XCTAssertGreaterThanOrEqual
-#define XCTAssertGreaterThanOrEqual(a1, a2, format...) \
-  XCTAssertOperation(a1, a2, >=, ##format)
-#endif  // XCTAssertGreaterThanOrEqual
-
-// Generates a failure when a1 is not < a2. This test is for C scalars.
-//  Args:
-//    a1: argument 1
-//    a2: argument 2
-//    op: operation
-//    description: A format string as in the printf() function. Can be nil or
-//                 an empty string but must be present.
-//    ...: A variable number of arguments to the format string. Can be absent.
-#ifndef XCTAssertLessThan
-#define XCTAssertLessThan(a1, a2, format...) \
-  XCTAssertOperation(a1, a2, <, ##format)
-#endif  // XCTAssertLessThan
-
-// Generates a failure when a1 is not <= a2. This test is for C scalars.
-//  Args:
-//    a1: argument 1
-//    a2: argument 2
-//    op: operation
-//    description: A format string as in the printf() function. Can be nil or
-//                 an empty string but must be present.
-//    ...: A variable number of arguments to the format string. Can be absent.
-#ifndef XCTAssertLessThanOrEqual
-#define XCTAssertLessThanOrEqual(a1, a2, format...) \
-  XCTAssertOperation(a1, a2, <=, ##format)
-#endif  // XCTAssertLessThanOrEqual
-
 // Generates a failure when string a1 is not equal to string a2. This call
 // differs from XCTAssertEqualObjects in that strings that are different in
 // composition (precomposed vs decomposed) will compare equal if their final
@@ -811,100 +727,6 @@ do { \
                                         withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
   } \
 } while (0)
-
-// Generates a failure when c-string a1 is equal to c-string a2.
-//  Args:
-//    a1: string 1
-//    a2: string 2
-//    description: A format string as in the printf() function. Can be nil or
-//                 an empty string but must be present.
-//    ...: A variable number of arguments to the format string. Can be absent.
-#define STAssertNotEqualCStrings(a1, a2, description, ...) \
-do { \
-  @try { \
-    const char* _a1value = (a1); \
-    const char* _a2value = (a2); \
-    if (strcmp(_a1value, _a2value) != 0) continue; \
-    [self failWithException:[NSException failureInEqualityBetweenObject:[NSString stringWithUTF8String:_a1value] \
-                                                              andObject:[NSString stringWithUTF8String:_a2value] \
-                                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
-                                                                 atLine:__LINE__ \
-                                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
-  } \
-  @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) != (%s)", #a1, #a2] \
-                                              exception:anException \
-                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
-                                                 atLine:__LINE__ \
-                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
-  } \
-} while (0)
-
-/*" Generates a failure when a1 is not equal to a2 within + or - accuracy is false.
-  This test is for GLKit types (GLKVector, GLKMatrix) where small differences
-  could  make these items not exactly equal. Do not use this version directly.
-  Use the explicit STAssertEqualGLKVectors and STAssertEqualGLKMatrices defined
-  below.
-  _{a1    The GLKType on the left.}
-  _{a2    The GLKType on the right.}
-  _{accuracy  The maximum difference between a1 and a2 for these values to be
-  considered equal.}
-  _{description A format string as in the printf() function. Can be nil or
-                      an empty string but must be present.}
-  _{... A variable number of arguments to the format string. Can be absent.}
-"*/
-
-#define STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ...) \
-do { \
-  @try { \
-    if (strcmp(@encode(__typeof__(a1)), @encode(__typeof__(a2)))) { \
-      [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
-                                                                                 atLine:__LINE__ \
-                                                                        withDescription:@"Type mismatch -- %@", STComposeString(description, ##__VA_ARGS__)]]; \
-    } else { \
-      __typeof__(a1) a1GLKValue = (a1); \
-      __typeof__(a2) a2GLKValue = (a2); \
-      __typeof__(accuracy) accuracyvalue = (accuracy); \
-      float *a1FloatValue = ((float*)&a1GLKValue); \
-      float *a2FloatValue = ((float*)&a2GLKValue); \
-      for (size_t i = 0; i < sizeof(__typeof__(a1)) / sizeof(float); ++i) { \
-        float _a1value = a1FloatValue[i]; \
-        float _a2value = a2FloatValue[i]; \
-        if (STAbsoluteDifference(_a1value, _a2value) > accuracyvalue) { \
-          NSMutableArray *strings = [NSMutableArray arrayWithCapacity:sizeof(a1) / sizeof(float)]; \
-          NSString *string; \
-          for (size_t j = 0; j < sizeof(__typeof__(a1)) / sizeof(float); ++j) { \
-            string = [NSString stringWithFormat:@"(%0.3f == %0.3f)", a1FloatValue[j], a2FloatValue[j]]; \
-            [strings addObject:string]; \
-          } \
-          string = [strings componentsJoinedByString:@", "]; \
-          NSString *desc = STComposeString(description, ##__VA_ARGS__); \
-          desc = [NSString stringWithFormat:@"%@ With Accuracy %0.3f: %@", string, (float)accuracyvalue, desc]; \
-          [self failWithException:[NSException failureInFile:[NSString stringWithUTF8String:__FILE__] \
-                                                      atLine:__LINE__ \
-                                             withDescription:@"%@", desc]]; \
-          break; \
-        } \
-      } \
-    } \
-  } \
-  @catch (id anException) { \
-    [self failWithException:[NSException failureInRaise:[NSString stringWithFormat:@"(%s) == (%s)", #a1, #a2] \
-                                              exception:anException \
-                                                 inFile:[NSString stringWithUTF8String:__FILE__] \
-                                                 atLine:__LINE__ \
-                                        withDescription:@"%@", STComposeString(description, ##__VA_ARGS__)]]; \
-  } \
-} while (0)
-
-#define STAssertEqualGLKVectors(a1, a2, accuracy, description, ...) \
-     STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
-
-#define STAssertEqualGLKMatrices(a1, a2, accuracy, description, ...) \
-     STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
-
-#define STAssertEqualGLKQuaternions(a1, a2, accuracy, description, ...) \
-     STInternalAssertEqualGLKVectorsOrMatrices(a1, a2, accuracy, description, ##__VA_ARGS__)
 
 #endif  // GTM_USING_XCTEST
 #if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
@@ -1469,12 +1291,6 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 
 #endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
 
-#if GTM_IPHONE_SDK
-
-@class UIImage;
-
-#endif // GTM_IPHONE_SDK
-
 // All unittest cases in GTM should inherit from GTMTestCase. It makes sure
 // to set up our logging system correctly to verify logging calls.
 // See GTMUnitTestDevLog.h for details
@@ -1505,14 +1321,5 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 // implementation checks to see if the name of the class contains the word
 // "AbstractTest" (case sensitive).
 + (BOOL)isAbstractTestCase;
-
-#if GTM_IPHONE_SDK
-// Returns the UIImage for the the named |resource|. Asserts that the image is
-// loaded (is non-nil).
-//
-// This is required as while under test, [UIImage imageNamed:...] does not
-// correctly load images from the resources associated with a test class.
-- (UIImage *)imageFromResource:(NSString *)resource;
-#endif // GTM_IPHONE_SDK
 
 @end

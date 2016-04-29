@@ -35,19 +35,6 @@ export TEST_AFTER_BUILD=YES
 #   want to turn this off if you enable leaks.
 GTM_DISABLE_ZOMBIES=${GTM_DISABLE_ZOMBIES:=0}
 
-# GTM_ENABLE_LEAKS -
-#   Set to a non-zero value to turn on the leaks check. You will probably want
-#   to disable zombies, otherwise you will get a lot of false positives.
-GTM_ENABLE_LEAKS=${GTM_ENABLE_LEAKS:=0}
-
-# GTM_LEAKS_SYMBOLS_TO_IGNORE
-#   List of comma separated symbols that leaks should ignore. Mainly to control
-#   leaks in frameworks you don't have control over.
-#   Search this file for GTM_LEAKS_SYMBOLS_TO_IGNORE to see examples.
-#   Please feel free to add other symbols as you find them but make sure to
-#   reference Radars or other bug systems so we can track them.
-GTM_LEAKS_SYMBOLS_TO_IGNORE=${GTM_LEAKS_SYMBOLS_TO_IGNORE:=""}
-
 # GTM_DO_NOT_REMOVE_GCOV_DATA
 #   By default before starting the test, we remove any *.gcda files for the
 #   current project build configuration so you won't get errors when a source
@@ -96,71 +83,6 @@ sys.exit(subprocess.call(sys.argv[1:]))" "${@}"
   fi
 }
 
-# The workaround below is due to
-# Radar 6248062 otest won't run with MallocHistory enabled under rosetta
-# Basically we go through and check what architecture we are running on
-# and which architectures we can support
-AppendToSymbolsLeaksShouldIgnore() {
-  if [ "${GTM_LEAKS_SYMBOLS_TO_IGNORE}" = "" ]; then
-    GTM_LEAKS_SYMBOLS_TO_IGNORE="${1}"
-  else
-    GTM_LEAKS_SYMBOLS_TO_IGNORE="${GTM_LEAKS_SYMBOLS_TO_IGNORE}, ${1}"
-  fi
-}
-
-AppendToLeakTestArchs() {
-  if [ "${LEAK_TEST_ARCHS}" = "" ]; then
-    LEAK_TEST_ARCHS="${1}"
-  else
-    LEAK_TEST_ARCHS="${LEAK_TEST_ARCHS} ${1}"
-  fi
-}
-
-AppendToNoLeakTestArchs() {
-  if [ "${NO_LEAK_TEST_ARCHS}" = "" ]; then
-    NO_LEAK_TEST_ARCHS="${1}"
-  else
-    NO_LEAK_TEST_ARCHS="${NO_LEAK_TEST_ARCHS} ${1}"
-  fi
-}
-
-UpdateArchitecturesToTest() {
-  case "${NATIVE_ARCH_ACTUAL}" in
-    ppc)
-      if [ "${1}" = "ppc" ]; then
-        AppendToLeakTestArchs "${1}"
-      fi
-      ;;
-
-    ppc64)
-      if [ "${1}" = "ppc" -o "${1}" = "ppc64" ]; then
-        AppendToLeakTestArchs "${1}"
-      fi
-      ;;
-
-    i386)
-      if [ "${1}" = "i386" ]; then
-        AppendToLeakTestArchs "${1}"
-      elif [ "${1}" = "ppc" ]; then
-        AppendToNoLeakTestArchs "${1}"
-      fi
-      ;;
-
-    x86_64)
-      if [ "${1}" = "i386" -o "${1}" = "x86_64" ]; then
-        AppendToLeakTestArchs "${1}"
-      elif [ "${1}" = "ppc" -o "${1}" = "ppc64" ]; then
-        AppendToNoLeakTestArchs "${1}"
-      fi
-      ;;
-
-    *)
-      echo "RunMacOSUnitTests.sh Unknown native architecture: ${NATIVE_ARCH_ACTUAL}"
-      exit 1
-      ;;
-  esac
-}
-
 SetMemoryVariables() {
   # Jack up some memory stress so we can catch more bugs.
 
@@ -189,68 +111,6 @@ SetMemoryVariables() {
   export OBJC_DEBUG_NIL_SYNC=YES
 }
 
-RunTests() {
-  if [ "${CURRENT_ARCH}" = "" ]; then
-    CURRENT_ARCH=`arch`
-  fi
-
-  if [ "${ONLY_ACTIVE_ARCH}" = "YES" ]; then
-    ARCHS="${CURRENT_ARCH}"
-  fi
-
-  if [ "${ARCHS}" = "" ]; then
-    ARCHS=`arch`
-  fi
-
-  if [ "${VALID_ARCHS}" = "" ]; then
-    VALID_ARCHS=`arch`
-  fi
-
-  if [ "${NATIVE_ARCH_ACTUAL}" = "" ]; then
-    NATIVE_ARCH_ACTUAL=`arch`
-  fi
-
-  LEAK_TEST_ARCHS=""
-  NO_LEAK_TEST_ARCHS=""
-
-  for TEST_ARCH in ${ARCHS}; do
-    for TEST_VALID_ARCH in ${VALID_ARCHS}; do
-      if [ "${TEST_VALID_ARCH}" = "${TEST_ARCH}" ]; then
-        UpdateArchitecturesToTest "${TEST_ARCH}"
-      fi
-    done
-  done
-
-  # These are symbols that leak on OS 10.5.5
-  # radar 6247293 NSCollatorElement leaks in +initialize.
-  AppendToSymbolsLeaksShouldIgnore "+[NSCollatorElement initialize]"
-  # radar 6247911 The first call to udat_open leaks only on x86_64
-  AppendToSymbolsLeaksShouldIgnore "icu::TimeZone::initDefault()"
-  # radar 6263983 +[IMService allServices] leaks
-  AppendToSymbolsLeaksShouldIgnore "-[IMServiceAgentImpl allServices]"
-  # radar 6264034 +[IKSFEffectDescription initialize] Leaks
-  AppendToSymbolsLeaksShouldIgnore "+[IKSFEffectDescription initialize]"
-  # radar 7598715 Leak when creating new NSColor using lab color space.
-  AppendToSymbolsLeaksShouldIgnore "CMSSetLabCLUT"
-
-  # Running leaks on architectures that support leaks.
-  export MallocStackLogging=YES
-  export GTM_LEAKS_SYMBOLS_TO_IGNORE="${GTM_LEAKS_SYMBOLS_TO_IGNORE}"
-  ARCHS="${LEAK_TEST_ARCHS}"
-  VALID_ARCHS="${LEAK_TEST_ARCHS}"
-  GTMXcodeNote ${LINENO} "Leak checking enabled for $ARCHS. Ignoring leaks from $GTM_LEAKS_SYMBOLS_TO_IGNORE."
-  SetMemoryVariables
-  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"
-
-  # Running leaks on architectures that don't support leaks.
-  unset MallocStackLogging
-  unset GTM_ENABLE_LEAKS
-  ARCHS="${NO_LEAK_TEST_ARCHS}"
-  VALID_ARCHS="${NO_LEAK_TEST_ARCHS}"
-  GTMXcodeNote ${LINENO} "Leak checking disabled for $ARCHS due to no support for leaks on platform".
-  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"
-}
-
 if [ ! $GTM_DO_NOT_REMOVE_GCOV_DATA ]; then
   GTM_GCOV_CLEANUP_DIR="${CONFIGURATION_TEMP_DIR}"
   if [ $GTM_REMOVE_TARGET_GCOV_ONLY ]; then
@@ -265,12 +125,5 @@ if [ ! $GTM_DO_NOT_REMOVE_GCOV_DATA ]; then
   fi
 fi
 
-# If leaks testing is enabled, we have to go through our convoluted path
-# to handle architectures that don't allow us to do leak testing.
-if [ $GTM_ENABLE_LEAKS -ne 0 ]; then
-  RunTests
-else
-  GTMXcodeNote ${LINENO} "Leak checking disabled."
-  SetMemoryVariables
-  MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"
-fi
+SetMemoryVariables
+MaybeFlock "${SYSTEM_DEVELOPER_DIR}/Tools/RunTargetUnitTests"

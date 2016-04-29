@@ -51,21 +51,10 @@ GTM_SIMULATOR_USER_HOME=${GTM_SIMULATOR_USER_HOME:=default}
 #   Space separated set env variables in format of "KEY1=value1 KEY2=value2"
 GTM_SIMULATOR_EXTRA_ENV=${GTM_SIMULATOR_EXTRA_ENV:=default}
 
-# GTM_ENABLE_LEAKS -
-#   Set to a non-zero value to turn on the leaks check. You will probably want
-#   to disable zombies, otherwise you will get a lot of false positives.
-
 # GTM_DISABLE_TERMINATION
 #   Set to a non-zero value so that the app doesn't terminate when it's finished
 #   running tests. This is useful when using it with external tools such
 #   as Instruments.
-
-# GTM_LEAKS_SYMBOLS_TO_IGNORE
-#   List of comma separated symbols that leaks should ignore. Mainly to control
-#   leaks in frameworks you don't have control over.
-#   Search this file for GTM_LEAKS_SYMBOLS_TO_IGNORE to see examples.
-#   Please feel free to add other symbols as you find them but make sure to
-#   reference Radars or other bug systems so we can track them.
 
 # GTM_REMOVE_GCOV_DATA
 #   Before starting the test, remove any *.gcda files for the current run so
@@ -201,10 +190,6 @@ if [[ $GTM_REMOVE_GCOV_DATA -ne 0 ]]; then
     fi
   fi
 fi
-
-# 6251475 iPhone Simulator leaks @ CFHTTPCookieStore shutdown if
-#         CFFIXED_USER_HOME empty
-GTM_LEAKS_SYMBOLS_TO_IGNORE="CFHTTPCookieStore"
 
 #
 # Build up the command line to run.
