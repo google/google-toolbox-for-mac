@@ -385,10 +385,10 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
 
   // this block is common between GTMNSString+HTML and GTMNSString+XML but
   // it's so short that it isn't really worth trying to share.
-  const unichar *buffer = CFStringGetCharactersPtr((CFStringRef)self);
+  const unichar *buffer = NULL; //CFStringGetCharactersPtr((CFStringRef)self);
   if (!buffer) {
     // We want this buffer to be autoreleased.
-    NSMutableData *data = [NSMutableData dataWithLength:length * sizeof(UniChar)];
+    NSMutableData *data = [NSMutableData dataWithLength:length * sizeof(unichar)];
     if (!data) {
       // COV_NF_START  - Memory fail case
       _GTMDevLog(@"couldn't alloc buffer");
@@ -416,9 +416,11 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
                                  sizeof(HTMLEscapeMap), EscapeMapCompare);
     if (val || (escapeUnicode && buffer[i] > 127)) {
       if (buffer2Length) {
-        CFStringAppendCharacters((CFMutableStringRef)finalString, 
+      [finalString appendString:[NSString stringWithCharacters:buffer2
+                                                        length:buffer2Length]];
+/*        CFStringAppendCharacters((CFMutableStringRef)finalString,
                                  buffer2, 
-                                 buffer2Length);
+                                 buffer2Length);*/
         buffer2Length = 0;
       }
       if (val) {
@@ -434,9 +436,11 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
     }
   }
   if (buffer2Length) {
-    CFStringAppendCharacters((CFMutableStringRef)finalString, 
+      [finalString appendString:[NSString stringWithCharacters:buffer2
+                                                        length:buffer2Length]];
+/*    CFStringAppendCharacters((CFMutableStringRef)finalString,
                              buffer2, 
-                             buffer2Length);
+                             buffer2Length);*/
   }
   return finalString;
 }
