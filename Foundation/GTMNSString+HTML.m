@@ -381,7 +381,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
   }
   
   NSMutableString *finalString = [NSMutableString string];
-  NSMutableData *data2 = [NSMutableData dataWithCapacity:sizeof(unichar) * length];
+  NSMutableData *data2 = [NSMutableData dataWithLength:sizeof(unichar) * length];
 
   // this block is common between GTMNSString+HTML and GTMNSString+XML but
   // it's so short that it isn't really worth trying to share.
