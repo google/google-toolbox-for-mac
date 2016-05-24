@@ -397,17 +397,6 @@ static void SwizzleMethodsInClass(Class cls, SEL sel1, SEL sel2) {
   method_exchangeImplementations(m1, m2);
 }
 
-#if GTM_PERFORM_KVO_CHECKS
-
-// This is only used when GTM_PERFORM_KVO_CHECKS is on.
-static void SwizzleClassMethodsInClass(Class cls, SEL sel1, SEL sel2) {
-  Method m1 = class_getClassMethod(cls, sel1);
-  Method m2 = class_getClassMethod(cls, sel2);
-  method_exchangeImplementations(m1, m2);
-}
-
-#endif  // GTM_PERFORM_KVO_CHECKS
-
 // This category exists to attempt to help deal with tricky KVO issues.
 // KVO is a wonderful technology in some ways, but is extremely fragile and
 // allows developers a lot of freedom to shoot themselves in the foot.
@@ -415,43 +404,12 @@ static void SwizzleClassMethodsInClass(Class cls, SEL sel1, SEL sel2) {
 // debugging it.
 // These are some tools that we have found useful when working with KVO. Note
 // that these tools are only on in Debug builds.
-//
-// We have divided these tools up into two categories: Checks and Debugs.
-//
-// Debugs
-// Debugs are mainly for logging all the KVO/KVC that is occurring in your
-// application. To enable our KVO debugging, set the GTMDebugKVO environment
+// To enable our KVO debugging, set the GTMDebugKVO environment
 // variable to 1 and you will get a whole pile of KVO logging that may help you
 // track down problems.
 // bash - export GTMDebugKVO=1
 // csh/tcsh - setenv GTMDebugKVO 1
 //
-// Checks
-// First we believe that instance variables should be private by default,
-// and that any KVO should be done via accessors. Apple by default allows KVO
-// to get at instance variables directly. Since our coding standards define
-// that instance variables should be @private, we feel that KVO shouldn't be
-// breaking this encapsulation. Unfortunately the @private, @protected
-// designators are a compile time convention only, and don't get carried over
-// into the runtime, so there's no way to check on an individual iVar what
-// it's visibility is. We therefore assume that an instance variable is private,
-// and disallow KVO access to instance variables. The problem with most KVO
-// issues is that they occur at runtime and unless you execute that case you
-// may never see the bug until it's too late. We try to force KVO issues to
-// rear their head at the time of the observing if at all possible.
-// Checks are on by default in debug builds. They can be turned off by defining
-// the compile flag GTM_PERFORM_KVO_CHECKS to 0
-// i.e. #define GTM_PERFORM_KVO_CHECKS 0, or set it
-// in GCC_PREPROCESSOR_DEFINITIONS.
-//
-// Checks work at a couple of different levels.
-// The most restrictive of the checks is that we set
-// |accessInstanceVariablesDirectly| to NO by default. This means that if you
-// attempt to perform KVO on an instance variable, you will get an exception
-// thrown.
-// Also, when adding an observer, we check to see if any member of the path
-// starts or ends with _ which by convention denotes an instance variable. If so
-// we warn you about attempting to access a ivar directly.
 
 @interface NSObject (GTMDebugKeyValueObserving)
 - (void)_gtmDebugAddObserver:(NSObject *)observer
@@ -471,20 +429,6 @@ static void SwizzleClassMethodsInClass(Class cls, SEL sel1, SEL sel2) {
 - (void)_gtmDebugWillChangeValueForKey:(NSString*)key;
 - (void)_gtmDebugDidChangeValueForKey:(NSString*)key;
 
-#if GTM_PERFORM_KVO_CHECKS
-
-- (void)_gtmCheckAddObserver:(NSObject *)observer
-                  forKeyPath:(NSString *)keyPath
-                     options:(NSKeyValueObservingOptions)options
-                     context:(void *)context;
-- (void)_gtmCheckAddObserver:(NSObject *)observer
-          toObjectsAtIndexes:(NSIndexSet *)indexes
-                  forKeyPath:(NSString *)keyPath
-                     options:(NSKeyValueObservingOptions)options
-                     context:(void *)context;
-+ (BOOL)_gtmAccessInstanceVariablesDirectly;
-
-#endif  // GTM_PERFORM_KVO_CHECKS
 @end
 
 @implementation NSObject (GTMDebugKeyValueObserving)
@@ -496,17 +440,6 @@ GTM_METHOD_CHECK(NSArray,
     _gtmDebugArrayAddObserver:toObjectsAtIndexes:forKeyPath:options:context:);
 GTM_METHOD_CHECK(NSArray,
     _gtmDebugArrayRemoveObserver:fromObjectsAtIndexes:forKeyPath:);
-
-#if GTM_PERFORM_KVO_CHECKS
-
-GTM_METHOD_CHECK(NSObject,
-    _gtmCheckAddObserver:forKeyPath:options:context:);
-GTM_METHOD_CHECK(NSArray,
-    _gtmCheckAddObserver:toObjectsAtIndexes:forKeyPath:options:context:);
-GTM_METHOD_CHECK(NSObject,
-    _gtmAccessInstanceVariablesDirectly);
-
-#endif  // GTM_PERFORM_KVO_CHECKS
 
 + (void)load {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -542,20 +475,6 @@ GTM_METHOD_CHECK(NSObject,
         @selector(removeObserver:fromObjectsAtIndexes:forKeyPath:),
         @selector(_gtmDebugArrayRemoveObserver:fromObjectsAtIndexes:forKeyPath:));
   }
-#if GTM_PERFORM_KVO_CHECKS
-  cls = [NSObject class];
-  SwizzleMethodsInClass(cls,
-      @selector(addObserver:forKeyPath:options:context:),
-      @selector(_gtmCheckAddObserver:forKeyPath:options:context:));
-  SwizzleClassMethodsInClass(cls,
-      @selector(accessInstanceVariablesDirectly),
-      @selector(_gtmAccessInstanceVariablesDirectly));
-  cls = [NSArray class];
-  SwizzleMethodsInClass(cls,
-      @selector(addObserver:toObjectsAtIndexes:forKeyPath:options:context:),
-      @selector(_gtmCheckAddObserver:toObjectsAtIndexes:forKeyPath:options:context:));
-
-#endif  // GTM_PERFORM_KVO_CHECKS
   [pool drain];
 }
 
@@ -607,69 +526,6 @@ GTM_METHOD_CHECK(NSObject,
   _GTMDevLog(@"Did change '%@' of %@", key, self);
   [self _gtmDebugDidChangeValueForKey:key];
 }
-
-#if GTM_PERFORM_KVO_CHECKS
-
-- (void)_gtmCheckAddObserver:(NSObject *)observer
-                  forKeyPath:(NSString *)keyPath
-                     options:(NSKeyValueObservingOptions)options
-                     context:(void *)context {
-  NSArray *keyPathElements = [keyPath componentsSeparatedByString:@"."];
-  NSString *element;
-  GTM_FOREACH_OBJECT(element, keyPathElements) {
-    if ([element hasPrefix:@"_"] || [element hasSuffix:@"_"]) {
-      _GTMDevLog(@"warning: %@ is registering an observation on what appears "
-                 @"to be a private ivar of %@ (or a sub keyed object) with "
-                 @"element %@ of keyPath %@.", observer, self, element,
-                 keyPath);
-    }
-  }
-  [self _gtmCheckAddObserver:observer
-                  forKeyPath:keyPath
-                     options:options
-                     context:context];
-}
-
-- (void)_gtmCheckAddObserver:(NSObject *)observer
-          toObjectsAtIndexes:(NSIndexSet *)indexes
-                  forKeyPath:(NSString *)keyPath
-                     options:(NSKeyValueObservingOptions)options
-                     context:(void *)context {
-  NSArray *keyPathElements = [keyPath componentsSeparatedByString:@"."];
-  NSString *element;
-  GTM_FOREACH_OBJECT(element, keyPathElements) {
-    if ([element hasPrefix:@"_"] || [element hasSuffix:@"_"]) {
-      _GTMDevLog(@"warning: %@ is registering an observation on what appears "
-                 @"to be a private ivar of %@ (or a sub keyed object) with "
-                 @"element %@ of keyPath %@.", observer, self, element,
-                 keyPath);
-    }
-  }
-  [self _gtmCheckAddObserver:observer
-          toObjectsAtIndexes:indexes
-                  forKeyPath:keyPath
-                     options:options
-                     context:context];
-}
-
-
-+ (BOOL)_gtmAccessInstanceVariablesDirectly {
-  // Apple has lots of "bad" direct instance variable accesses, so we
-  // only want to check our code, as opposed to library code.  iOS simulator
-  // builds copy the app into the user's home directory.  Xcode 4 also changes
-  // the default location of the output directory.  Don't count being within
-  // the user's home and under "/Library/" as being a system library.
-
-  // If this turns out to be slow, we may want to consider a cache to speed
-  // things up.
-  NSBundle *bundle = [NSBundle bundleForClass:self];
-  NSString *path = [bundle bundlePath];
-  BOOL hasLibrary = [path rangeOfString:@"/Library/"].location != NSNotFound;
-  BOOL startsWithUser = [path hasPrefix:@"/Users/"];
-  return !startsWithUser && hasLibrary;
-}
-
-#endif  // GTM_PERFORM_KVO_CHECKS
 
 @end
 
