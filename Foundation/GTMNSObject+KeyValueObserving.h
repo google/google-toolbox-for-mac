@@ -32,12 +32,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef GTM_PERFORM_KVO_CHECKS
-// Controls whether KVO checking code is on in debug. See 
-// GTMNSObject+KeyValueObserving.m for details
-#define GTM_PERFORM_KVO_CHECKS 1
-#endif
-
 // If you read the articles above you will see that doing KVO correctly
 // is actually pretty tricky, and that Apple's documentation may not be
 // completely clear as to how things should be used. Use the methods below
