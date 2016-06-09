@@ -18,8 +18,10 @@
 
 // ============================================================================
 
-#include <AvailabilityMacros.h>
-#include <TargetConditionals.h>
+#ifdef __APPLE__
+# include <AvailabilityMacros.h>
+# include <TargetConditionals.h>
+#endif
 
 #ifdef __OBJC__
 # ifndef __MULLE_OBJC_RUNTIME__
