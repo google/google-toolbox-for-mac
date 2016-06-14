@@ -48,6 +48,7 @@
 }
 
 - (void)awakeFromNib {
+  [super awakeFromNib];
   id owner = self.owner;
   if (owner) {
     NSBundle *newBundle = [[self class] bundleForOwner:owner];
