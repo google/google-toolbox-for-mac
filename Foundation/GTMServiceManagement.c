@@ -43,6 +43,12 @@
 #include <sys/stat.h>
 #include <vproc.h>
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10 && \
+    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_8
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#endif
+
 typedef struct {
   CFMutableDictionaryRef dict;
   bool convert_non_standard_objects;
@@ -55,6 +61,31 @@ typedef struct {
 } GTMCFToLDictContext;
 
 static bool IsOsYosemiteOrGreater() {
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10
+  // In 10.10, [[NSProcessInfo processInfo] operatingSystemVersion] exists,
+  // but if we can assume 10.10 we already know the answer.
+  return true;
+#elif MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_8
+  // Gestalt() is deprected in 10.8, and the recommended replacement is sysctl.
+  // https://developer.apple.com/library/mac/releasenotes/General/CarbonCoreDeprecations/index.html#//apple_ref/doc/uid/TP40012224-CH1-SW16
+  const size_t N = 128;
+  char buffer[N];
+  size_t buffer_size = N;
+  int ctl_name[] = {CTL_KERN, KERN_OSRELEASE};
+  if (sysctl(ctl_name, 2, buffer, &buffer_size, NULL, 0) != 0) {
+    return false;
+  }
+  // The buffer now contains a string of the form XX.YY.ZZ, where
+  // XX is the major kernel version component.
+  char* period_pos = strchr(buffer, '.');
+  if (!period_pos) {
+    return false;
+  }
+  *period_pos = '\0';
+  long kernel_version_major = strtol(buffer, NULL, 10);
+  // Kernel version 14 corresponds to OS X 10.10 Yosemite.
+  return kernel_version_major >= 14;
+#else
   SInt32 version_major;
   SInt32 version_minor;
   require_noerr(Gestalt(gestaltSystemVersionMajor, &version_major),
@@ -64,6 +95,7 @@ static bool IsOsYosemiteOrGreater() {
   return version_major > 10 || (version_major == 10 && version_minor >= 10);
   failedGestalt:
     return false;
+#endif
 }
 
 static CFErrorRef GTMCFLaunchCreateUnlocalizedError(CFIndex code,
