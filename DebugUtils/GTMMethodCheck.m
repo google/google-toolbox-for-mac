@@ -23,65 +23,6 @@
 #import "GTMObjC2Runtime.h"
 #import <dlfcn.h>
 
-// Checks to see if the cls passed in (or one of its superclasses) conforms
-// to NSObject protocol. Inheriting from NSObject is the easiest way to do this
-// but not all classes (i.e. NSProxy) inherit from NSObject. Also, some classes
-// inherit from Object instead of NSObject which is fine, and we'll count as
-// conforming to NSObject for our needs.
-static BOOL ConformsToNSObjectProtocol(Class cls) {
-  // If we get nil, obviously doesn't conform.
-  if (!cls) return NO;
-  const char *className = class_getName(cls);
-  if (!className) return NO;
-
-  // We're going to assume that all Apple classes will work
-  // (and aren't being checked)
-  // Note to apple: why doesn't obj-c have real namespaces instead of two
-  // letter hacks? If you name your own classes starting with NS this won't
-  // work for you.
-  // Some classes (like _NSZombie) start with _NS.
-  // On Leopard we have to look for CFObject as well.
-  // On iPhone we check Object as well
-  if ((strncmp(className, "NS", 2) == 0)
-       || (strncmp(className, "_NS", 3) == 0)
-       || (strncmp(className, "__NS", 4) == 0)
-       || (strcmp(className, "CFObject") == 0)
-       || (strcmp(className, "_CNZombie_") == 0)
-       || (strcmp(className, "FigIrisAutoTrimmerMotionSampleExport") == 0)
-       || (strcmp(className, "__IncompleteProtocol") == 0)
-       || (strcmp(className, "__ARCLite__") == 0)
-       || (strcmp(className, "WebMIMETypeRegistry") == 0)
-       || (strcmp(className, "Object") == 0)
-#if GTM_IPHONE_SDK
-       || (strcmp(className, "UIKeyboardCandidateUtilities") == 0)
-       || (strcmp(className, "JSExport") == 0)
-#endif
-    ) {
-    return YES;
-  }
-
-  // iPhone and Mac OS X 10.8 with Obj-C 2 SDKs do not define the |Object|
-  // class, so we instead test for the |NSObject| class.
-#if GTM_IPHONE_SDK || \
-    (__OBJC2__ && defined(MAC_OS_X_VERSION_10_8) && \
-     MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8)
-  // Iterate through all the protocols |cls| supports looking for NSObject.
-  if (cls == [NSObject class]
-      || class_conformsToProtocol(cls, @protocol(NSObject))) {
-    return YES;
-  }
-#else
-  // Iterate through all the protocols |cls| supports looking for NSObject.
-  if (cls == [Object class]
-      || class_conformsToProtocol(cls, @protocol(NSObject))) {
-    return YES;
-  }
-#endif
-
-  // Recursively check the superclasses.
-  return ConformsToNSObjectProtocol(class_getSuperclass(cls));
-}
-
 void GTMMethodCheckMethodChecker(void) {
   // Run through all the classes looking for class methods that are
   // prefixed with xxGMMethodCheckMethod. If it finds one, it calls it.
@@ -95,84 +36,78 @@ void GTMMethodCheckMethodChecker(void) {
   // the copy in our local image. This will give us access to our local image
   // in the methodCheckerInfo structure.
   Dl_info methodCheckerInfo;
-  if (dladdr(GTMMethodCheckMethodChecker,
-             &methodCheckerInfo)) {
-    int numClasses = 0;
-    int newNumClasses = objc_getClassList(NULL, 0);
-    int i;
-    Class *classes = NULL;
-    while (numClasses < newNumClasses) {
-      numClasses = newNumClasses;
-      classes = (Class *)realloc(classes, sizeof(Class) * numClasses);
-      _GTMDevAssert(classes, @"Unable to allocate memory for classes");
-      newNumClasses = objc_getClassList(classes, numClasses);
+  int foundMethodChecker = dladdr(GTMMethodCheckMethodChecker,
+                                  &methodCheckerInfo);
+  _GTMDevAssert(foundMethodChecker, @"GTMMethodCheckMethodChecker: Unable to "
+                @"get dladdr for GTMMethodCheckMethodChecker");
+  int numClasses = 0;
+  int newNumClasses = objc_getClassList(NULL, 0);
+  int i;
+  Class *classes = NULL;
+  while (numClasses < newNumClasses) {
+    numClasses = newNumClasses;
+    classes = (Class *)realloc(classes, sizeof(Class) * numClasses);
+    _GTMDevAssert(classes, @"Unable to allocate memory for classes");
+    newNumClasses = objc_getClassList(classes, numClasses);
+  }
+  for (i = 0; i < numClasses && classes; ++i) {
+    Class cls = classes[i];
+    const char *className = class_getName(cls);
+    _GTMDevAssert(className, @"GTMMethodCheckMethodChecker: Unable to "
+                  @"get className for class %d", i);
+    // Since we are looking for a class method (+xxGMMethodCheckMethod...)
+    // we need to query the isa pointer to see what methods it support, but
+    // send the method (if it's supported) to the class itself.
+    if (strcmp(className, "__ARCLite__") == 0) {
+      // __ARCLite__ is "magic" and does not have a metaClass.
+      continue;
     }
-    for (i = 0; i < numClasses && classes; ++i) {
-      Class cls = classes[i];
+    Class metaClass = objc_getMetaClass(className);
+    _GTMDevAssert(metaClass, @"GTMMethodCheckMethodChecker: Unable to "
+                  @"get metaClass for %s", className);
+    unsigned int count;
+    Method *methods = class_copyMethodList(metaClass, &count);
+    if (count == 0) {
+      continue;
+    }
+    _GTMDevAssert(methods, @"GTMMethodCheckMethodChecker: Unable to "
+                  @"get methods for class %s", className);
 
-      // Since we are directly calling objc_msgSend, we need to conform to
-      // @protocol(NSObject), or else we will tumble into a _objc_msgForward
-      // recursive loop when we try and call a function by name.
-      if (!ConformsToNSObjectProtocol(cls)) {
-        // COV_NF_START
-        _GTMDevLog(@"GTMMethodCheckMethodChecker: Class %s does not conform "
-                   "to @protocol(NSObject), so won't be checked",
-                   class_getName(cls));
-        continue;
-        // COV_NF_END
-      }
-      // Since we are looking for a class method (+xxGMMethodCheckMethod...)
-      // we need to query the isa pointer to see what methods it support, but
-      // send the method (if it's supported) to the class itself.
-      unsigned int count;
-      Class metaClass = objc_getMetaClass(class_getName(cls));
-      Method *methods = class_copyMethodList(metaClass, &count);
-      unsigned int j;
-      for (j = 0; j < count; ++j) {
-        SEL selector = method_getName(methods[j]);
-        const char *name = sel_getName(selector);
-        if (strstr(name, "xxGTMMethodCheckMethod") == name) {
-          Dl_info methodInfo;
-          if (!dladdr(method_getImplementation(methods[j]),
-                      &methodInfo)) {
-            // COV_NF_START
-            // Don't know how to force this case in a unittest
-            // Certainly hope we never see it.
-            _GTMDevLog(@"GTMMethodCheckMethodChecker: Unable to get dladdr "
-                       "info for %s while introspecting +[%s %s]]", name,
-                       class_getName(cls), name);
-            continue;
-            // COV_NF_END
-          }
+    unsigned int j;
+    for (j = 0; j < count; ++j) {
+      SEL selector = method_getName(methods[j]);
+      _GTMDevAssert(selector, @"GTMMethodCheckMethodChecker: Unable to "
+                    @"get selector for method %d of %s", j, className);
+      const char *name = sel_getName(selector);
+      _GTMDevAssert(selector, @"GTMMethodCheckMethodChecker: Unable to "
+                    @"get name for method %d of %s", j, className);
+      if (strstr(name, "xxGTMMethodCheckMethod") == name) {
+        Dl_info methodInfo;
+        IMP imp = method_getImplementation(methods[j]);
+        _GTMDevAssert(selector, @"GTMMethodCheckMethodChecker: Unable to "
+                      @"get IMP for method %s of %s", name, className);
+        int foundMethod = dladdr(imp, &methodInfo);
+        _GTMDevAssert(foundMethod, @"GTMMethodCheckMethodChecker: Unable to "
+                      @"get dladdr for method %s of %s", name, className);
 
-          // Check to make sure that the method we are checking comes from the
-          // same image that we are in. We compare the address of the local
-          // image (stored in |methodCheckerInfo| as noted above) with the
-          // address of the image which implements the method we want to
-          // check. If they match we continue. This does two things:
-          // a) minimizes the amount of calls we make to the xxxGTMMethodCheck
-          //    methods. They should only be called once.
-          // b) prevents initializers for various classes being called too
-          //    early
-          if (methodCheckerInfo.dli_fbase == methodInfo.dli_fbase) {
-            typedef void (*GTMMethodCheckMethod)(Class, SEL);
-            GTMMethodCheckMethod func = (GTMMethodCheckMethod)objc_msgSend;
-            func(cls, selector);
-          }
+        // Check to make sure that the method we are checking comes from the
+        // same image that we are in. We compare the address of the local
+        // image (stored in |methodCheckerInfo| as noted above) with the
+        // address of the image which implements the method we want to
+        // check. If they match we continue. This does two things:
+        // a) minimizes the amount of calls we make to the xxxGTMMethodCheck
+        //    methods. They should only be called once.
+        // b) prevents initializers for various classes being called too
+        //    early
+        if (methodCheckerInfo.dli_fbase == methodInfo.dli_fbase) {
+          void (*func)(id, SEL) = (void *)imp;
+          func(cls, selector);
         }
       }
-      free(methods);
     }
-    free(classes);
-  } else {
-    // COV_NF_START
-    // This means that we didn't find the GTMMethodCheckMethodChecker method
-    // Don't know how to force this case in a unittest.
-    // Certainly hope we never see it.
-    _GTMDevLog(@"GTMMethodCheckMethodChecker: Unable to get dladdr info "
-               "for GTMMethodCheckMethodChecker");
-    // COV_NF_END
+    free(methods);
   }
+  free(classes);
 #if !defined(__has_feature) || !__has_feature(objc_arc)
   [pool drain];
 #else
