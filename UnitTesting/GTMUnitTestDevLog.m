@@ -61,6 +61,8 @@ static inline void GTMInstallDebugAssertOutputHandler(void) {};
 static inline void GTMUninstallDebugAssertOutputHandler(void) {};
 #endif  // GTM_IPHONE_SDK
 
+NSString *const GTMLogFailureException = @"GTMLogFailureException";
+
 @interface GTMUnttestDevLogAssertionHandler : NSAssertionHandler
 @end
 
@@ -182,12 +184,13 @@ static BOOL gTrackingEnabled = NO;
         [patterns removeObjectAtIndex:0];
       }
       if (logError) {
+
         if (regex) {
-          [NSException raise:SenTestFailureException
+          [NSException raise:GTMLogFailureException
                       format:@"Unexpected log: %@\nExpected: %@",
            logString, regex];
         } else {
-          [NSException raise:SenTestFailureException
+          [NSException raise:GTMLogFailureException
                       format:@"Unexpected log: %@", logString];
         }
       } else {
@@ -262,7 +265,7 @@ casesOfPattern:(NSString*)format
     if ([patterns count] > 0) {
       NSMutableArray *patternsCopy = [[patterns copy] autorelease];
       [self resetExpectedLogs];
-      [NSException raise:SenTestFailureException
+      [NSException raise:GTMLogFailureException
                   format:@"Logs still expected %@", patternsCopy];
     }
   }
