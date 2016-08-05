@@ -97,7 +97,7 @@ static GTMLogger *gSharedLogger = nil;
 
   // Don't trust NSFileHandle not to throw
   @try {
-    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init] 
+    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init]
                                           autorelease];
     GTMLogger *stdoutLogger =
         [self loggerWithWriter:[NSFileHandle fileHandleWithStandardOutput]
@@ -475,12 +475,13 @@ static GTMLogger *gSharedLogger = nil;
 
 @end  // GTMLogStandardFormatter
 
+static NSString *const kVerboseLoggingKey = @"GTMVerboseLogging";
+
 // Check the environment and the user preferences for the GTMVerboseLogging key
 // to see if verbose logging has been enabled. The environment variable will
 // override the defaults setting, so check the environment first.
 // COV_NF_START
-static BOOL IsVerboseLoggingEnabled(void) {
-  static NSString *const kVerboseLoggingKey = @"GTMVerboseLogging";
+static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
   NSString *value = [[[NSProcessInfo processInfo] environment]
                         objectForKey:kVerboseLoggingKey];
   if (value) {
@@ -495,7 +496,7 @@ static BOOL IsVerboseLoggingEnabled(void) {
       return NO;
     }
   }
-  return [[NSUserDefaults standardUserDefaults] boolForKey:kVerboseLoggingKey];
+  return [userDefaults boolForKey:kVerboseLoggingKey];
 }
 // COV_NF_END
 
@@ -504,21 +505,28 @@ static BOOL IsVerboseLoggingEnabled(void) {
 - (id)init {
   self = [super init];
   if (self) {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(defaultsChanged:)
-                                                 name:NSUserDefaultsDidChangeNotification
-                                               object:nil];
+    // Keep a reference to standardUserDefaults, avoiding a crash if client code calls
+    // "NSUserDefaults resetStandardUserDefaults" which releases it from memory. We are still
+    // notified of changes through our instance. Note: resetStandardUserDefaults does not actually
+    // clear settings:
+    // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html#//apple_ref/occ/clm/NSUserDefaults/resetStandardUserDefaults
+    // and so should only be called in test code if necessary.
+    userDefaults_ = [[NSUserDefaults standardUserDefaults] retain];
+    [userDefaults_ addObserver:self
+                    forKeyPath:kVerboseLoggingKey
+                       options:NSKeyValueObservingOptionNew
+                       context:nil];
 
-      verboseLoggingEnabled_ = IsVerboseLoggingEnabled();
+    verboseLoggingEnabled_ = IsVerboseLoggingEnabled(userDefaults_);
   }
 
   return self;
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:NSUserDefaultsDidChangeNotification
-                                                object:nil];
+  [userDefaults_ removeObserver:self forKeyPath:kVerboseLoggingKey];
+  [userDefaults_ release];
+
   [super dealloc];
 }
 
@@ -552,8 +560,14 @@ static BOOL IsVerboseLoggingEnabled(void) {
   return allow;
 }
 
-- (void)defaultsChanged:(NSNotification *)note {
-  verboseLoggingEnabled_ = IsVerboseLoggingEnabled();
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+  if([keyPath isEqual:kVerboseLoggingKey]) {
+    verboseLoggingEnabled_ = IsVerboseLoggingEnabled(userDefaults_);
+  }
 }
 
 @end  // GTMLogLevelFilter
@@ -632,4 +646,3 @@ static BOOL IsVerboseLoggingEnabled(void) {
 // See comment at top of file.
 #pragma GCC diagnostic error "-Wmissing-format-attribute"
 #endif  // !__clang__
-

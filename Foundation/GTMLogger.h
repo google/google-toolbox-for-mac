@@ -457,6 +457,7 @@ typedef enum {
 @interface GTMLogLevelFilter : NSObject <GTMLogFilter> {
  @private
   BOOL verboseLoggingEnabled_;
+  NSUserDefaults *userDefaults_;
 }
 @end  // GTMLogLevelFilter
 
