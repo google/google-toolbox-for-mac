@@ -41,8 +41,7 @@ Pod::Spec.new do |s|
     sp.source_files =
         'DebugUtils/GTMDebugSelectorValidation.{h,m}',
         'DebugUtils/GTMDebugThreadValidation.h',
-        'DebugUtils/GTMMethodCheck.{h,m}'
-    sp.requires_arc = 'DebugUtils/GTMMethodCheck.m'
+        'DebugUtils/GTMMethodCheck.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"
   end
@@ -56,10 +55,6 @@ Pod::Spec.new do |s|
   s.subspec 'KVO' do |sp|
     sp.source_files =
         'Foundation/GTMNSObject+KeyValueObserving.{h,m}',
-        # The symbol in this file is hidden by default, and so
-        # must be directly included here where it's needed,
-        # even though it's already included in DebugUtils
-        'DebugUtils/GTMMethodCheck.m'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/DebugUtils', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"

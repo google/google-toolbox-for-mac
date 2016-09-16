@@ -15,40 +15,5 @@
 //  the License.
 //
 
-#import "GTMSenTestCase.h"
-#import "GTMMethodCheck.h"
-
-static BOOL gTestCheckVar = NO;
-
-@interface GTMMethodCheckTest : GTMTestCase
-+ (void)GTMMethodCheckTestClassMethod;
-- (void)GTMMethodCheckTestMethod;
-@end
-
-@implementation GTMMethodCheckTest
-GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestMethod);
-GTM_METHOD_CHECK(GTMMethodCheckTest, GTMMethodCheckTestClassMethod);
-
-- (void)GTMMethodCheckTestMethod {
-}
-
-+ (void)GTMMethodCheckTestClassMethod {
-}
-
-+ (void)xxGTMMethodCheckMethodTestCheck {
-  // This gets called because of its special name by GMMethodCheck
-  // Look at the Macros in GMMethodCheck.h for details.
-  gTestCheckVar = YES;
-}
-
-- (void)testGTMMethodCheck {
-#ifdef DEBUG
-  // GTMMethodCheck only runs in debug
-  STAssertTrue(gTestCheckVar, @"Should be true");
-#endif
-
-  // Next two calls just verify our code coverage
-  [self GTMMethodCheckTestMethod];
-  [[self class] GTMMethodCheckTestClassMethod];
-}
-@end
+// TODO(dmaclach): This file no longer needed. Delete once we have cleaned up
+// GTM projects.
