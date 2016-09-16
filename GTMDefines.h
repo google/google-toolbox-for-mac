@@ -152,7 +152,7 @@
 // for a little more background on the usage of these macros.
 //
 //    _GTMDevLog           log some error/problem in debug builds
-//    _GTMDevAssert        assert if conditon isn't met w/in a method/function
+//    _GTMDevAssert        assert if condition isn't met w/in a method/function
 //                           in all builds.
 //
 // To replace this system, just provide different macro definitions in your

@@ -423,7 +423,7 @@ static NSInteger MethodSort(id a, id b, void *context) {
 }
 
 + (NSArray *)testInvocations {
-  NSArray *invocations = nil;
+  NSArray *invocations = @[];
   if (![self isAbstractTestCase]) {
     invocations = [super testInvocations];
   }
