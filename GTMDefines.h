@@ -18,11 +18,15 @@
 
 // ============================================================================
 
-#include <AvailabilityMacros.h>
-#include <TargetConditionals.h>
+#ifdef __APPLE__
+# include <AvailabilityMacros.h>
+# include <TargetConditionals.h>
+#endif
 
 #ifdef __OBJC__
-#include <Foundation/NSObjCRuntime.h>
+# ifndef __MULLE_OBJC_RUNTIME__
+#  include <Foundation/NSObjCRuntime.h>
+# endif
 #endif  // __OBJC__
 
 #if TARGET_OS_IPHONE
