@@ -382,8 +382,11 @@ CFTypeRef GTMCFTypeCreateFromLaunchData(launch_data_t ldata,
     }
 
     case LAUNCH_DATA_OPAQUE: {
-      size_t size = launch_data_get_opaque_size(ldata);
+      // Must get the data before we get the size.
+      // Otherwise the size will come back faulty on macOS 10.11.6.
+      // Radar: 28509492 launch_data_get_opaque_size gives wrong size
       void *data = launch_data_get_opaque(ldata);
+      size_t size = launch_data_get_opaque_size(ldata);
       cf_type_ref = CFDataCreate(kCFAllocatorDefault, data, size);
       break;
     }
@@ -780,48 +783,6 @@ CFDictionaryRef GTMSMCopyAllJobDictionaries(void) {
     CFShow(error);
 #endif //  DEBUG
     CFRelease(error);
-  }
-  return dict;
-}
-
-// Some private SPIs defined by apple in the launchd sources
-// http://opensource.apple.com/source/launchd/launchd-258.25/launchd/src/
-// and
-// http://opensource.apple.com/source/launchd/launchd-329.3/launchd/src/
-// It turns out that they renamed the enum that I need to use between 10.5 and
-// 10.6. Luckily if we request the 10_5 value on 10_6 we get an error
-// so we just ask for the 10_5 value first, and then the 10_6 value second.
-
-typedef enum {
-  VPROC_GSK_ENVIRONMENT_10_5 = 10,
-  VPROC_GSK_ENVIRONMENT_10_6 = 11
-} vproc_gsk_t;
-
-extern vproc_err_t vproc_swap_complex(vproc_t vp,
-                                      vproc_gsk_t key,
-                                      launch_data_t inval,
-                                      launch_data_t *outval);
-
-CFDictionaryRef GTMCopyLaunchdExports(void) {
-  launch_data_t resp;
-  CFDictionaryRef dict = NULL;
-  vproc_err_t err = vproc_swap_complex(NULL,
-                                       VPROC_GSK_ENVIRONMENT_10_5,
-                                       NULL,
-                                       &resp);
-  if (err) {
-    err = vproc_swap_complex(NULL, VPROC_GSK_ENVIRONMENT_10_6, NULL, &resp);
-  }
-  if (err == NULL) {
-    CFErrorRef error = NULL;
-    dict = GTMCFTypeCreateFromLaunchData(resp, false, &error);
-    if (error) {
-#ifdef DEBUG
-      CFShow(error);
-#endif //  DEBUG
-      CFRelease(error);
-    }
-    launch_data_free(resp);
   }
   return dict;
 }

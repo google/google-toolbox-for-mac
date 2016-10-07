@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMWindowSheetController.h"
-#import "GTMNSObject+UnitTesting.h"
 
 @interface GTMWindowSheetControllerTest : GTMTestCase
                                           <GTMWindowSheetControllerDelegate,
@@ -49,11 +48,11 @@
                                    styleMask:NSTitledWindowMask
                                      backing:NSBackingStoreBuffered
                                        defer:NO] autorelease];
-  STAssertNotNil(window, @"Could not allocate window");
+  XCTAssertNotNil(window, @"Could not allocate window");
   NSTabView *tabView =
       [[[NSTabView alloc] initWithFrame:NSMakeRect(10, 10, 580, 580)]
       autorelease];
-  STAssertNotNil(tabView, @"Could not allocate tab view");
+  XCTAssertNotNil(tabView, @"Could not allocate tab view");
   [[window contentView] addSubview:tabView];
   [tabView setDelegate:self];
 
@@ -70,10 +69,10 @@
       [[[GTMWindowSheetController alloc] initWithWindow:window
                                                delegate:self] autorelease];
 
-  STAssertFalse([sheetController_ isSheetAttachedToView:
-                 [[tabView selectedTabViewItem] view]],
-                @"Sheet should not be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertFalse([sheetController_ isSheetAttachedToView:
+                  [[tabView selectedTabViewItem] view]],
+                 @"Sheet should not be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)0,
                  @"Should have no views with sheets");
 
@@ -98,19 +97,19 @@
                                       nil]];
   didAlertClose_ = NO;
 
-  STAssertTrue([sheetController_ isSheetAttachedToView:
-                [[tabView selectedTabViewItem] view]],
-                @"Sheet should be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertTrue([sheetController_ isSheetAttachedToView:
+                 [[tabView selectedTabViewItem] view]],
+                 @"Sheet should be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)1,
                  @"Should have one view with sheets");
 
   [tabView selectTabViewItem:item2];
 
-  STAssertFalse([sheetController_ isSheetAttachedToView:
-                 [[tabView selectedTabViewItem] view]],
-                @"Sheet should not be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertFalse([sheetController_ isSheetAttachedToView:
+                  [[tabView selectedTabViewItem] view]],
+                 @"Sheet should not be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)1,
                  @"Should have one view with sheets");
 
@@ -128,52 +127,52 @@
                    contextInfo:nil];
   didSheetClose_ = NO;
 
-  STAssertTrue([sheetController_ isSheetAttachedToView:
-                [[tabView selectedTabViewItem] view]],
-               @"Sheet should be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertTrue([sheetController_ isSheetAttachedToView:
+                 [[tabView selectedTabViewItem] view]],
+                @"Sheet should be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)2,
                  @"Should have two views with sheets");
 
   [tabView selectTabViewItem:item1];
 
-  STAssertTrue([sheetController_ isSheetAttachedToView:
-                [[tabView selectedTabViewItem] view]],
-               @"Sheet should be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertTrue([sheetController_ isSheetAttachedToView:
+                 [[tabView selectedTabViewItem] view]],
+                @"Sheet should be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)2,
                  @"Should have two views with sheets");
 
   // Close alert
   [alertButton performClick:self];
 
-  STAssertFalse([sheetController_ isSheetAttachedToView:
-                 [[tabView selectedTabViewItem] view]],
-                @"Sheet should not be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertFalse([sheetController_ isSheetAttachedToView:
+                  [[tabView selectedTabViewItem] view]],
+                 @"Sheet should not be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)1,
                  @"Should have one view with sheets");
-  STAssertTrue(didAlertClose_, @"Alert should have closed");
+  XCTAssertTrue(didAlertClose_, @"Alert should have closed");
 
   [tabView selectTabViewItem:item2];
 
-  STAssertTrue([sheetController_ isSheetAttachedToView:
-                [[tabView selectedTabViewItem] view]],
-               @"Sheet should be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertTrue([sheetController_ isSheetAttachedToView:
+                 [[tabView selectedTabViewItem] view]],
+                @"Sheet should be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)1,
                  @"Should have one view with sheets");
 
   // Close sheet
   [[NSApplication sharedApplication] endSheet:sheet returnCode:NSOKButton];
 
-  STAssertFalse([sheetController_ isSheetAttachedToView:
-                 [[tabView selectedTabViewItem] view]],
-                @"Sheet should not be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertFalse([sheetController_ isSheetAttachedToView:
+                  [[tabView selectedTabViewItem] view]],
+                 @"Sheet should not be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)0,
                  @"Should have no views with sheets");
-  STAssertTrue(didSheetClose_, @"Sheet should have closed");
+  XCTAssertTrue(didSheetClose_, @"Sheet should have closed");
 }
 
 - (void)testOpenSheetAfterFirst {
@@ -183,16 +182,15 @@
                                  styleMask:NSTitledWindowMask
                                    backing:NSBackingStoreBuffered
                                      defer:NO] autorelease];
-  STAssertNotNil(window_, @"Could not allocate window");
+  XCTAssertNotNil(window_, @"Could not allocate window");
 
   sheetController_ =
       [[[GTMWindowSheetController alloc] initWithWindow:window_
                                                delegate:self] autorelease];
 
-  STAssertFalse([sheetController_ isSheetAttachedToView:
-                 [window_ contentView]],
-                @"Sheet should not be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertFalse([sheetController_ isSheetAttachedToView:[window_ contentView]],
+                 @"Sheet should not be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)0,
                  @"Should have no views with sheets");
 
@@ -225,34 +223,31 @@
   didAlertClose_ = NO;
   didSheetClose_ = NO;
 
-  STAssertTrue([sheetController_ isSheetAttachedToView:
-                [window_ contentView]],
+  XCTAssertTrue([sheetController_ isSheetAttachedToView:[window_ contentView]],
                 @"Sheet should be attached to view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)1,
                  @"Should have one view with sheets");
 
   // Close alert
   [alertButton performClick:self];
 
-  STAssertTrue([sheetController_ isSheetAttachedToView:
-                [window_ contentView]],
+  XCTAssertTrue([sheetController_ isSheetAttachedToView:[window_ contentView]],
                 @"Second sheet should be attached to view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)1,
                  @"Should have one view with sheets");
-  STAssertTrue(didAlertClose_, @"Alert should have closed");
+  XCTAssertTrue(didAlertClose_, @"Alert should have closed");
 
   // Close sheet
   [[NSApplication sharedApplication] endSheet:sheet returnCode:NSOKButton];
 
-  STAssertFalse([sheetController_ isSheetAttachedToView:
-                 [window_ contentView]],
-                @"Sheet should not be attached to current view");
-  STAssertEquals([[sheetController_ viewsWithAttachedSheets] count],
+  XCTAssertFalse([sheetController_ isSheetAttachedToView:[window_ contentView]],
+                 @"Sheet should not be attached to current view");
+  XCTAssertEqual([[sheetController_ viewsWithAttachedSheets] count],
                  (NSUInteger)0,
                  @"Should have no views with sheets");
-  STAssertTrue(didSheetClose_, @"Sheet should have closed");
+  XCTAssertTrue(didSheetClose_, @"Sheet should have closed");
 }
 
 - (void)alertDidEnd:(NSAlert *)alert
@@ -283,13 +278,13 @@
 }
 
 - (void)tabView:(NSTabView *)tabView
-didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
+    didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
   NSView* view = [tabViewItem view];
   [sheetController_ setActiveView:view];
 }
 
 - (void)gtm_systemRequestsVisibilityForView:(NSView*)view {
-  STAssertTrue(false, @"Shouldn't be called");
+  XCTAssertTrue(false, @"Shouldn't be called");
 }
 
 @end

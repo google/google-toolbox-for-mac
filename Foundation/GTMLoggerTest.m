@@ -112,22 +112,14 @@
 - (void)setUp {
   path_ = [[NSTemporaryDirectory() stringByAppendingPathComponent:
             @"GTMLoggerUnitTest.log"] retain];
-  STAssertNotNil(path_, nil);
+  XCTAssertNotNil(path_);
   // Make sure we're cleaned up from the last run
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-  [[NSFileManager defaultManager] removeFileAtPath:path_ handler:nil];
-#else
   [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
-#endif
 }
 
 - (void)tearDown {
-  STAssertNotNil(path_, nil);
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-  [[NSFileManager defaultManager] removeFileAtPath:path_ handler:nil];
-#else
+  XCTAssertNotNil(path_);
   [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
-#endif
   [path_ release];
   path_ = nil;
 }
@@ -138,58 +130,58 @@
   logger1 = [GTMLogger sharedLogger];
   logger2 = [GTMLogger sharedLogger];
 
-  STAssertTrue(logger1 == logger2, nil);
+  XCTAssertTrue(logger1 == logger2);
 
-  STAssertNotNil([logger1 writer], nil);
-  STAssertNotNil([logger1 formatter], nil);
-  STAssertNotNil([logger1 filter], nil);
+  XCTAssertNotNil([logger1 writer]);
+  XCTAssertNotNil([logger1 formatter]);
+  XCTAssertNotNil([logger1 filter]);
 
   // Get a new instance; not the shared instance
   logger2 = [GTMLogger standardLogger];
 
-  STAssertTrue(logger1 != logger2, nil);
-  STAssertNotNil([logger2 writer], nil);
-  STAssertNotNil([logger2 formatter], nil);
-  STAssertNotNil([logger2 filter], nil);
+  XCTAssertTrue(logger1 != logger2);
+  XCTAssertNotNil([logger2 writer]);
+  XCTAssertNotNil([logger2 formatter]);
+  XCTAssertNotNil([logger2 filter]);
 
   // Set the new instance to be the shared logger.
   [GTMLogger setSharedLogger:logger2];
-  STAssertTrue(logger2 == [GTMLogger sharedLogger], nil);
-  STAssertTrue(logger1 != [GTMLogger sharedLogger], nil);
+  XCTAssertTrue(logger2 == [GTMLogger sharedLogger]);
+  XCTAssertTrue(logger1 != [GTMLogger sharedLogger]);
 
   // Set the shared logger to nil, which should reset it to a new "standard"
   // logger.
   [GTMLogger setSharedLogger:nil];
-  STAssertNotNil([GTMLogger sharedLogger], nil);
-  STAssertTrue(logger2 != [GTMLogger sharedLogger], nil);
-  STAssertTrue(logger1 != [GTMLogger sharedLogger], nil);
+  XCTAssertNotNil([GTMLogger sharedLogger]);
+  XCTAssertTrue(logger2 != [GTMLogger sharedLogger]);
+  XCTAssertTrue(logger1 != [GTMLogger sharedLogger]);
 
   GTMLogger *logger = [GTMLogger logger];
-  STAssertNotNil(logger, nil);
+  XCTAssertNotNil(logger);
 
   logger = [GTMLogger standardLoggerWithStderr];
-  STAssertNotNil(logger, nil);
+  XCTAssertNotNil(logger);
 
   logger = [GTMLogger standardLoggerWithPath:path_];
-  STAssertNotNil(logger, nil);
+  XCTAssertNotNil(logger);
 }
 
 - (void)testAccessors {
   GTMLogger *logger = [GTMLogger standardLogger];
-  STAssertNotNil(logger, nil);
+  XCTAssertNotNil(logger);
 
-  STAssertNotNil([logger writer], nil);
-  STAssertNotNil([logger formatter], nil);
-  STAssertNotNil([logger filter], nil);
+  XCTAssertNotNil([logger writer]);
+  XCTAssertNotNil([logger formatter]);
+  XCTAssertNotNil([logger filter]);
 
   [logger setWriter:nil];
   [logger setFormatter:nil];
   [logger setFilter:nil];
 
   // These attributes should NOT be nil. They should be set to their defaults.
-  STAssertNotNil([logger writer], nil);
-  STAssertNotNil([logger formatter], nil);
-  STAssertNotNil([logger filter], nil);
+  XCTAssertNotNil([logger writer]);
+  XCTAssertNotNil([logger formatter]);
+  XCTAssertNotNil([logger filter]);
 }
 
 - (void)testLogger {
@@ -212,7 +204,7 @@
                                         formatter:nil  // basic formatter
                                            filter:filter];
 
-  STAssertNotNil(logger, nil);
+  XCTAssertNotNil(logger);
 
   // Log a few messages to test with
   [logger logInfo:@"hi"];
@@ -222,22 +214,22 @@
 
   // Makes sure the messages got logged
   NSArray *messages = [writer messages];
-  STAssertNotNil(messages, nil);
-  STAssertEquals([messages count], (NSUInteger)4, nil);
-  STAssertEqualObjects([messages objectAtIndex:0], @"hi", nil);
-  STAssertEqualObjects([messages objectAtIndex:1], @"foo", nil);
-  STAssertEqualObjects([messages objectAtIndex:2], @"blah", nil);
-  STAssertEqualObjects([messages objectAtIndex:3], @"baz", nil);
+  XCTAssertNotNil(messages);
+  XCTAssertEqual([messages count], (NSUInteger)4);
+  XCTAssertEqualObjects([messages objectAtIndex:0], @"hi");
+  XCTAssertEqualObjects([messages objectAtIndex:1], @"foo");
+  XCTAssertEqualObjects([messages objectAtIndex:2], @"blah");
+  XCTAssertEqualObjects([messages objectAtIndex:3], @"baz");
 
   // Log a message that should be ignored, and make sure it did NOT get logged
   [logger logInfo:@"please ignore this"];
   messages = [writer messages];
-  STAssertNotNil(messages, nil);
-  STAssertEquals([messages count], (NSUInteger)4, nil);
-  STAssertEqualObjects([messages objectAtIndex:0], @"hi", nil);
-  STAssertEqualObjects([messages objectAtIndex:1], @"foo", nil);
-  STAssertEqualObjects([messages objectAtIndex:2], @"blah", nil);
-  STAssertEqualObjects([messages objectAtIndex:3], @"baz", nil);
+  XCTAssertNotNil(messages);
+  XCTAssertEqual([messages count], (NSUInteger)4);
+  XCTAssertEqualObjects([messages objectAtIndex:0], @"hi");
+  XCTAssertEqualObjects([messages objectAtIndex:1], @"foo");
+  XCTAssertEqualObjects([messages objectAtIndex:2], @"blah");
+  XCTAssertEqualObjects([messages objectAtIndex:3], @"baz");
 
   // Change the formatter to our "dumb formatter"
   id<GTMLogFormatter> formatter = [[[DumbFormatter alloc] init] autorelease];
@@ -245,14 +237,14 @@
 
   [logger logInfo:@"bleh"];
   messages = [writer messages];
-  STAssertNotNil(messages, nil);
-  STAssertEquals([messages count], (NSUInteger)5, nil);  // Message count should increase
+  XCTAssertNotNil(messages);
+  XCTAssertEqual([messages count], (NSUInteger)5);  // Message count should increase
   // The previously logged messages should not change
-  STAssertEqualObjects([messages objectAtIndex:0], @"hi", nil);
-  STAssertEqualObjects([messages objectAtIndex:1], @"foo", nil);
-  STAssertEqualObjects([messages objectAtIndex:2], @"blah", nil);
-  STAssertEqualObjects([messages objectAtIndex:3], @"baz", nil);
-  STAssertEqualObjects([messages objectAtIndex:4], @"DUMB [2] bleh", nil);
+  XCTAssertEqualObjects([messages objectAtIndex:0], @"hi");
+  XCTAssertEqualObjects([messages objectAtIndex:1], @"foo");
+  XCTAssertEqualObjects([messages objectAtIndex:2], @"blah");
+  XCTAssertEqualObjects([messages objectAtIndex:3], @"baz");
+  XCTAssertEqualObjects([messages objectAtIndex:4], @"DUMB [2] bleh");
 }
 
 - (void)testConvenienceMacros {
@@ -267,10 +259,10 @@
   // test to make sure the logged message does indeed contain the name of the
   // current function "testConvenienceMacros".
   GTMLoggerError(@"test ========================");
-  STAssertEquals([[writer messages] count], (NSUInteger)1, nil);
+  XCTAssertEqual([[writer messages] count], (NSUInteger)1);
   NSRange rangeOfFuncName =
     [[[writer messages] objectAtIndex:0] rangeOfString:@"testConvenienceMacros"];
-  STAssertTrue(rangeOfFuncName.location != NSNotFound, nil);
+  XCTAssertTrue(rangeOfFuncName.location != NSNotFound);
   [writer clear];
 
   [[GTMLogger sharedLogger] setFormatter:nil];
@@ -281,19 +273,19 @@
   GTMLoggerAssert(@"test %d", 4);
 
   NSArray *messages = [writer messages];
-  STAssertNotNil(messages, nil);
+  XCTAssertNotNil(messages);
 
 #ifdef DEBUG
-  STAssertEquals([messages count], (NSUInteger)4, nil);
-  STAssertEqualObjects([messages objectAtIndex:0], @"test 1", nil);
-  STAssertEqualObjects([messages objectAtIndex:1], @"test 2", nil);
-  STAssertEqualObjects([messages objectAtIndex:2], @"test 3", nil);
-  STAssertEqualObjects([messages objectAtIndex:3], @"test 4", nil);
+  XCTAssertEqual([messages count], (NSUInteger)4);
+  XCTAssertEqualObjects([messages objectAtIndex:0], @"test 1");
+  XCTAssertEqualObjects([messages objectAtIndex:1], @"test 2");
+  XCTAssertEqualObjects([messages objectAtIndex:2], @"test 3");
+  XCTAssertEqualObjects([messages objectAtIndex:3], @"test 4");
 #else
   // In Release builds, only the Error and Assert messages will be logged
-  STAssertEquals([messages count], (NSUInteger)2, nil);
-  STAssertEqualObjects([messages objectAtIndex:0], @"test 3", nil);
-  STAssertEqualObjects([messages objectAtIndex:1], @"test 4", nil);
+  XCTAssertEqual([messages count], (NSUInteger)2);
+  XCTAssertEqualObjects([messages objectAtIndex:0], @"test 3");
+  XCTAssertEqualObjects([messages objectAtIndex:1], @"test 4");
 #endif
 
 }
@@ -302,10 +294,10 @@
   NSFileHandle *fh = nil;
 
   fh = [NSFileHandle fileHandleForWritingAtPath:path_];
-  STAssertNil(fh, nil);
+  XCTAssertNil(fh);
 
   fh = [NSFileHandle fileHandleForLoggingAtPath:path_ mode:0644];
-  STAssertNotNil(fh, nil);
+  XCTAssertNotNil(fh);
 
   [fh logMessage:@"test 0" level:kGTMLoggerLevelUnknown];
   [fh logMessage:@"test 1" level:kGTMLoggerLevelDebug];
@@ -318,24 +310,24 @@
   NSString *contents = [NSString stringWithContentsOfFile:path_
                                                  encoding:NSUTF8StringEncoding
                                                     error:&err];
-  STAssertNotNil(contents, @"Error loading log file: %@", err);
-  STAssertEqualObjects(@"test 0\ntest 1\ntest 2\ntest 3\ntest 4\n", contents, nil);
+  XCTAssertNotNil(contents, @"Error loading log file: %@", err);
+  XCTAssertEqualObjects(@"test 0\ntest 1\ntest 2\ntest 3\ntest 4\n", contents);
 }
 
 - (void)testLoggerAdapterWriter {
   ArrayWriter *writer = [[[ArrayWriter alloc] init] autorelease];
-  STAssertNotNil(writer, nil);
+  XCTAssertNotNil(writer);
 
   GTMLogger *sublogger = [GTMLogger loggerWithWriter:writer
                                          formatter:nil
                                             filter:nil];
-  STAssertNotNil(sublogger, nil);
+  XCTAssertNotNil(sublogger);
 
   GTMLogger *logger = [GTMLogger loggerWithWriter:sublogger
                                       formatter:nil
                                          filter:nil];
 
-  STAssertNotNil(logger, nil);
+  XCTAssertNotNil(logger);
 
   // Log a few messages to test with
   [logger logInfo:@"hi"];
@@ -345,12 +337,12 @@
 
   // Makes sure the messages got logged
   NSArray *messages = [writer messages];
-  STAssertNotNil(messages, nil);
-  STAssertEquals([messages count], (NSUInteger)4, nil);
-  STAssertEqualObjects([messages objectAtIndex:0], @"hi", nil);
-  STAssertEqualObjects([messages objectAtIndex:1], @"foo", nil);
-  STAssertEqualObjects([messages objectAtIndex:2], @"blah", nil);
-  STAssertEqualObjects([messages objectAtIndex:3], @"assert", nil);
+  XCTAssertNotNil(messages);
+  XCTAssertEqual([messages count], (NSUInteger)4);
+  XCTAssertEqualObjects([messages objectAtIndex:0], @"hi");
+  XCTAssertEqualObjects([messages objectAtIndex:1], @"foo");
+  XCTAssertEqualObjects([messages objectAtIndex:2], @"blah");
+  XCTAssertEqualObjects([messages objectAtIndex:3], @"assert");
 }
 
 // Helper method to help testing GTMLogFormatters
@@ -370,211 +362,177 @@
 - (void)testFunctionPrettifier {
   GTMLogBasicFormatter *fmtr = [[[GTMLogBasicFormatter alloc] init]
                                  autorelease];
-  STAssertNotNil(fmtr, nil);
+  XCTAssertNotNil(fmtr);
 
   // Nil, empty and whitespace
-  STAssertEqualObjects([fmtr prettyNameForFunc:nil], @"(unknown)", nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@""], @"(unknown)", nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@"   \n\t"], @"(unknown)", nil);
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:nil], @"(unknown)");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@""], @"(unknown)");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@"   \n\t"], @"(unknown)");
 
   // C99 __func__
-  STAssertEqualObjects([fmtr prettyNameForFunc:@"main"], @"main()", nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@"main"], @"main()", nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@" main "], @"main()", nil);
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@"main"], @"main()");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@"main"], @"main()");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@" main "], @"main()");
 
   // GCC Obj-C __func__ and __PRETTY_FUNCTION__
-  STAssertEqualObjects([fmtr prettyNameForFunc:@"+[Foo bar]"], @"+[Foo bar]",
-                        nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@" +[Foo bar] "], @"+[Foo bar]",
-                        nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@"-[Foo baz]"], @"-[Foo baz]",
-                        nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@" -[Foo baz] "], @"-[Foo baz]",
-                        nil);
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@"+[Foo bar]"], @"+[Foo bar]");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@" +[Foo bar] "], @"+[Foo bar]");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@"-[Foo baz]"], @"-[Foo baz]");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@" -[Foo baz] "], @"-[Foo baz]");
 
   // GCC C++ __PRETTY_FUNCTION__
-  STAssertEqualObjects([fmtr prettyNameForFunc:@"void a::sub(int)"],
-                        @"void a::sub(int)", nil);
-  STAssertEqualObjects([fmtr prettyNameForFunc:@" void a::sub(int) "],
-                        @"void a::sub(int)", nil);
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@"void a::sub(int)"],
+                        @"void a::sub(int)");
+  XCTAssertEqualObjects([fmtr prettyNameForFunc:@" void a::sub(int) "],
+                        @"void a::sub(int)");
 }
 
 - (void)testBasicFormatter {
   id<GTMLogFormatter> fmtr = [[[GTMLogBasicFormatter alloc] init] autorelease];
-  STAssertNotNil(fmtr, nil);
+  XCTAssertNotNil(fmtr);
   NSString *msg = nil;
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"test"];
-  STAssertEqualObjects(msg, @"test", nil);
+  XCTAssertEqualObjects(msg, @"test");
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"test %d", 1];
-  STAssertEqualObjects(msg, @"test 1", nil);
+  XCTAssertEqualObjects(msg, @"test 1");
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"test %@", @"foo"];
-  STAssertEqualObjects(msg, @"test foo", nil);
+  XCTAssertEqualObjects(msg, @"test foo");
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@""];
-  STAssertEqualObjects(msg, @"", nil);
+  XCTAssertEqualObjects(msg, @"");
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"     "];
-  STAssertEqualObjects(msg, @"     ", nil);
+  XCTAssertEqualObjects(msg, @"     ");
 }
 
 - (void)testStandardFormatter {
   id<GTMLogFormatter> fmtr = [[[GTMLogStandardFormatter alloc] init] autorelease];
-  STAssertNotNil(fmtr, nil);
+  XCTAssertNotNil(fmtr);
 
-  NSString * kFormatBasePattern;
-#if GTM_MACOS_SDK
-  // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
-  // E.g. 2009-10-26 22:26:25.086 otest-i386[53200/0xa0438500] [lvl=1] (no func) test
-  kFormatBasePattern =
-  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} ((otest)|(otest-i386)|(otest-x86_64)|(otest-ppc))\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
-#else  // GTM_MACOS_SDK
-  // E.g. 2008-01-04 09:16:26.906 otest[5567/0xa07d0f60] [lvl=1] (no func) test
-  //      2011-11-29 12:32:24.129 GTMiPhoneUnitTestingOCUnitTestRig[31540/0xa04dd540] [lvl=1] (unknown) test
-  kFormatBasePattern =
-  @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} (GTMiPhoneTest|GTMiPhoneUnitTestingOCUnitTestRig)\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) ";
-#endif   // GTM_MACOS_SDK
+  // E.g. 2008-01-04 09:16:26.906 xctest[5567/0xa07d0f60] [lvl=1] (no func) test
+  #define kFormatBasePattern @"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} %@\\[[0-9]+/0x[0-9a-f]+\\] \\[lvl=[0-3]\\] \\(unknown\\) %@"
 
   NSString *msg = nil;
+  NSString *executableName = [[[NSBundle mainBundle] executablePath] lastPathComponent];
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelDebug
                            format:@"test"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]],
-               @"msg: %@", msg);
+  NSString *pattern = [NSString stringWithFormat:kFormatBasePattern, executableName, @"test"];
+  XCTAssertTrue([msg gtm_matchesPattern:pattern], @"msg: %@", msg);
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelError
                            format:@"test %d", 1];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test 1"]],
-               @"msg: %@", msg);
-
+  pattern = [NSString stringWithFormat:kFormatBasePattern, executableName, @"test 1"];
+  XCTAssertTrue([msg gtm_matchesPattern:pattern], @"msg: %@", msg);
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelInfo
                            format:@"test %@", @"hi"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test hi"]],
-               @"msg: %@", msg);
+  pattern = [NSString stringWithFormat:kFormatBasePattern, executableName, @"test hi"];
+  XCTAssertTrue([msg gtm_matchesPattern:pattern], @"msg: %@", msg);
 
 
   msg = [self stringFromFormatter:fmtr
                             level:kGTMLoggerLevelUnknown
                            format:@"test"];
-  STAssertTrue([msg gtm_matchesPattern:[kFormatBasePattern stringByAppendingString:@"test"]],
-               @"msg: %@", msg);
+  pattern = [NSString stringWithFormat:kFormatBasePattern, executableName, @"test"];
+  XCTAssertTrue([msg gtm_matchesPattern:pattern], @"msg: %@", msg);
 }
 
 - (void)testNoFilter {
   id<GTMLogFilter> filter = [[[GTMLogNoFilter alloc] init] autorelease];
-  STAssertNotNil(filter, nil);
+  XCTAssertNotNil(filter);
 
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown], nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug], nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo], nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError], nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert], nil);
-  STAssertTrue([filter filterAllowsMessage:@"" level:kGTMLoggerLevelDebug], nil);
-  STAssertTrue([filter filterAllowsMessage:nil level:kGTMLoggerLevelDebug], nil);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
+  XCTAssertTrue([filter filterAllowsMessage:@"" level:kGTMLoggerLevelDebug]);
+  XCTAssertTrue([filter filterAllowsMessage:nil level:kGTMLoggerLevelDebug]);
 }
 
 - (void)testMinimumFilter {
   id<GTMLogFilter> filter = [[[GTMLogMininumLevelFilter alloc]
                                 initWithMinimumLevel:kGTMLoggerLevelInfo]
                                     autorelease];
-  STAssertNotNil(filter, nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
-                nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
-               nil);
+  XCTAssertNotNil(filter);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
   filter = [[[GTMLogMininumLevelFilter alloc]
                initWithMinimumLevel:kGTMLoggerLevelDebug] autorelease];
-  STAssertNotNil(filter, nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
-               nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
-               nil);
+  XCTAssertNotNil(filter);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
   // Cannot exceed min/max levels filter
   filter = [[[GTMLogMininumLevelFilter alloc]
                initWithMinimumLevel:kGTMLoggerLevelAssert + 1] autorelease];
-  STAssertNil(filter, nil);
+  XCTAssertNil(filter);
   filter = [[[GTMLogMininumLevelFilter alloc]
                initWithMinimumLevel:kGTMLoggerLevelUnknown - 1] autorelease];
-  STAssertNil(filter, nil);
+  XCTAssertNil(filter);
 }
 
 - (void)testMaximumFilter {
   id<GTMLogFilter> filter = [[[GTMLogMaximumLevelFilter alloc]
                                 initWithMaximumLevel:kGTMLoggerLevelInfo]
                                     autorelease];
-  STAssertNotNil(filter, nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
-               nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
-               nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
-               nil);
+  XCTAssertNotNil(filter);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo]);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
   filter = [[[GTMLogMaximumLevelFilter alloc]
                initWithMaximumLevel:kGTMLoggerLevelDebug] autorelease];
-  STAssertNotNil(filter, nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown],
-                nil);
-  STAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug],
-               nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo],
-               nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError],
-               nil);
-  STAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert],
-               nil);
+  XCTAssertNotNil(filter);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
+  XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelInfo]);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
+  XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
   // Cannot exceed min/max levels filter
   filter = [[[GTMLogMaximumLevelFilter alloc]
                initWithMaximumLevel:kGTMLoggerLevelAssert + 1] autorelease];
-  STAssertNil(filter, nil);
+  XCTAssertNil(filter);
   filter = [[[GTMLogMaximumLevelFilter alloc]
                initWithMaximumLevel:kGTMLoggerLevelUnknown - 1] autorelease];
-  STAssertNil(filter, nil);
+  XCTAssertNil(filter);
 }
 
 - (void)testFileHandleCreation {
   NSFileHandle *fh = nil;
 
   fh = [NSFileHandle fileHandleForLoggingAtPath:nil mode:0644];
-  STAssertNil(fh, nil);
+  XCTAssertNil(fh);
 
   fh = [NSFileHandle fileHandleForLoggingAtPath:path_ mode:0644];
-  STAssertNotNil(fh, nil);
+  XCTAssertNotNil(fh);
 
   [fh logMessage:@"test 1" level:kGTMLoggerLevelInfo];
   [fh logMessage:@"test 2" level:kGTMLoggerLevelInfo];
@@ -583,7 +541,7 @@
 
   // Re-open file and make sure our log messages get appended
   fh = [NSFileHandle fileHandleForLoggingAtPath:path_ mode:0644];
-  STAssertNotNil(fh, nil);
+  XCTAssertNotNil(fh);
 
   [fh logMessage:@"test 4" level:kGTMLoggerLevelInfo];
   [fh logMessage:@"test 5" level:kGTMLoggerLevelInfo];
@@ -594,8 +552,8 @@
   NSString *contents = [NSString stringWithContentsOfFile:path_
                                                  encoding:NSUTF8StringEncoding
                                                     error:&err];
-  STAssertNotNil(contents, @"Error loading log file: %@", err);
-  STAssertEqualObjects(@"test 1\ntest 2\ntest 3\ntest 4\ntest 5\ntest 6\n", contents, nil);
+  XCTAssertNotNil(contents, @"Error loading log file: %@", err);
+  XCTAssertEqualObjects(@"test 1\ntest 2\ntest 3\ntest 4\ntest 5\ntest 6\n", contents);
 }
 
 @end

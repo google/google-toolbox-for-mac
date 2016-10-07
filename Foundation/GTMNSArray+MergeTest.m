@@ -37,8 +37,8 @@
   NSArray *emptyArrayB = [NSArray array];
   NSArray *mergedArray = [emptyArrayA gtm_mergeArray:emptyArrayB
                                        mergeSelector:nil];
-  STAssertNil(mergedArray,
-              @"merge of two empty arrays with no merger should render nil");
+  XCTAssertNil(mergedArray,
+               @"merge of two empty arrays with no merger should render nil");
 }
 
 - (void)testMergingTwoEmptyArraysWithMerger {
@@ -47,8 +47,8 @@
   NSArray *mergedArray
     = [emptyArrayA gtm_mergeArray:emptyArrayB
                     mergeSelector:@selector(mergeString:)];
-  STAssertNil(mergedArray,
-              @"merge of two empty arrays with merger should render nil");
+  XCTAssertNil(mergedArray,
+               @"merge of two empty arrays with merger should render nil");
 }
 
 - (void)testMergingEmptyWithNilArray {
@@ -56,8 +56,8 @@
   NSArray *nilArrayB = nil;
   NSArray *mergedArray = [emptyArrayA gtm_mergeArray:nilArrayB
                                        mergeSelector:nil];
-  STAssertNil(mergedArray,
-              @"merge of empty with nil array with no merger should render nil");
+  XCTAssertNil(mergedArray,
+               @"merge of empty with nil array with no merger should render nil");
 }
 
 - (void)testMergingEmptyWithNilArrayWithMerger {
@@ -66,8 +66,8 @@
   NSArray *mergedArray
     = [emptyArrayA gtm_mergeArray:nilArrayB
                     mergeSelector:@selector(mergeString:)];
-  STAssertNil(mergedArray,
-              @"merge of empty with nil array with merger should render nil");
+  XCTAssertNil(mergedArray,
+               @"merge of empty with nil array with merger should render nil");
 }
 
 - (void)testMergingTwoOneItemArraysThatDontMatch {
@@ -75,13 +75,13 @@
   NSArray *arrayB = [NSArray arrayWithObject:@"abc.ghi"];
   NSArray *mergedArray = [arrayA gtm_mergeArray:arrayB
                                   mergeSelector:nil];
-  STAssertNotNil(mergedArray,
-                 @"merge of two non empty arrays with no merger should render "
-                 @"an array");
-  STAssertEquals([mergedArray count], (NSUInteger)2,
+  XCTAssertNotNil(mergedArray,
+                  @"merge of two non empty arrays with no merger should render "
+                  @"an array");
+  XCTAssertEqual([mergedArray count], (NSUInteger)2,
                  @"merged array should have two items");
-  STAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def", nil);
-  STAssertEqualObjects([mergedArray objectAtIndex:1], @"abc.ghi", nil);
+  XCTAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def");
+  XCTAssertEqualObjects([mergedArray objectAtIndex:1], @"abc.ghi");
 }
 
 - (void)testMergingTwoOneItemArraysThatDontMatchWithMerger {
@@ -89,13 +89,13 @@
   NSArray *arrayB = [NSArray arrayWithObject:@"abc.ghi"];
   NSArray *mergedArray = [arrayA gtm_mergeArray:arrayB
                                   mergeSelector:@selector(mergeString:)];
-  STAssertNotNil(mergedArray,
-                 @"merge of two non empty arrays with merger should render "
-                 @"an array");
-  STAssertEquals([mergedArray count], (NSUInteger)2,
+  XCTAssertNotNil(mergedArray,
+                  @"merge of two non empty arrays with merger should render "
+                  @"an array");
+  XCTAssertEqual([mergedArray count], (NSUInteger)2,
                  @"merged array should have two items");
-  STAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def", nil);
-  STAssertEqualObjects([mergedArray objectAtIndex:1], @"abc.ghi", nil);
+  XCTAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def");
+  XCTAssertEqualObjects([mergedArray objectAtIndex:1], @"abc.ghi");
 }
 
 - (void)testMergingTwoOneItemArraysThatMatch {
@@ -103,13 +103,13 @@
   NSArray *arrayB = [NSArray arrayWithObject:@"abc.def"];
   NSArray *mergedArray = [arrayA gtm_mergeArray:arrayB
                                   mergeSelector:nil];
-  STAssertNotNil(mergedArray,
-                 @"merge of two matching arrays with no merger should render "
-                 @"an array");
-  STAssertEquals([mergedArray count], (NSUInteger)2,
+  XCTAssertNotNil(mergedArray,
+                  @"merge of two matching arrays with no merger should render "
+                  @"an array");
+  XCTAssertEqual([mergedArray count], (NSUInteger)2,
                  @"merged array with no merger should have two items");
-  STAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def", nil);
-  STAssertEqualObjects([mergedArray objectAtIndex:1], @"abc.def", nil);
+  XCTAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def");
+  XCTAssertEqualObjects([mergedArray objectAtIndex:1], @"abc.def");
 }
 
 - (void)testMergingTwoOneItemArraysThatMatchWithMerger {
@@ -117,12 +117,12 @@
   NSArray *arrayB = [NSArray arrayWithObject:@"abc.def"];
   NSArray *mergedArray = [arrayA gtm_mergeArray:arrayB
                                   mergeSelector:@selector(mergeString:)];
-  STAssertNotNil(mergedArray,
-                 @"merge of two matching arrays with merger should render "
-                 @"an array");
-  STAssertEquals([mergedArray count], (NSUInteger)1,
+  XCTAssertNotNil(mergedArray,
+                  @"merge of two matching arrays with merger should render "
+                  @"an array");
+  XCTAssertEqual([mergedArray count], (NSUInteger)1,
                  @"merged array with merger should have one items");
-  STAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def", nil);
+  XCTAssertEqualObjects([mergedArray objectAtIndex:0], @"abc.def");
 }
 
 - (void)testMergingMultipleItemArray {
@@ -141,10 +141,10 @@
                      nil];
   NSArray *mergedArray = [arrayA gtm_mergeArray:arrayB
                                   mergeSelector:nil];
-  STAssertNotNil(mergedArray,
-                 @"merge of two non empty arrays with no merger should render "
-                 @"an array");
-  STAssertEquals([mergedArray count], (NSUInteger)9,
+  XCTAssertNotNil(mergedArray,
+                  @"merge of two non empty arrays with no merger should render "
+                  @"an array");
+  XCTAssertEqual([mergedArray count], (NSUInteger)9,
                  @"merged array should have 9 items");
 }
 
@@ -164,10 +164,10 @@
                      nil];
   NSArray *mergedArray = [arrayA gtm_mergeArray:arrayB
                                   mergeSelector:@selector(mergeString:)];
-  STAssertNotNil(mergedArray,
-                 @"merge of two non empty arrays with merger should render "
-                 @"an array");
-  STAssertEquals([mergedArray count], (NSUInteger)7,
+  XCTAssertNotNil(mergedArray,
+                  @"merge of two non empty arrays with merger should render "
+                  @"an array");
+  XCTAssertEqual([mergedArray count], (NSUInteger)7,
                  @"merged array should have 7 items");
 }
 
@@ -175,35 +175,34 @@
   NSArray *arrayA = [NSArray arrayWithObjects:@"xyz", @"abc", @"mno", nil];
   NSArray *arrayB = [NSArray array];
   NSArray *expected = [NSArray arrayWithObjects:@"abc", @"mno", @"xyz", nil];
-  STAssertNotNil(arrayA, nil);
-  STAssertNotNil(arrayB, nil);
-  STAssertNotNil(expected, nil);
+  XCTAssertNotNil(arrayA);
+  XCTAssertNotNil(arrayB);
+  XCTAssertNotNil(expected);
   NSArray *mergedArray;
 
   // no merger
   mergedArray = [arrayA gtm_mergeArray:arrayB
                          mergeSelector:nil];
-  STAssertNotNil(mergedArray, nil);
-  STAssertEqualObjects(mergedArray, expected, nil);
+  XCTAssertNotNil(mergedArray);
+  XCTAssertEqualObjects(mergedArray, expected);
 
   // w/ merger
   mergedArray = [arrayA gtm_mergeArray:arrayB
                          mergeSelector:@selector(mergeString:)];
-  STAssertNotNil(mergedArray, nil);
-  STAssertEqualObjects(mergedArray, expected, nil);
+  XCTAssertNotNil(mergedArray);
+  XCTAssertEqualObjects(mergedArray, expected);
 
   // no merger and array args reversed
   mergedArray = [arrayB gtm_mergeArray:arrayA
                          mergeSelector:nil];
-  STAssertNotNil(mergedArray, nil);
-  STAssertEqualObjects(mergedArray, expected, nil);
+  XCTAssertNotNil(mergedArray);
+  XCTAssertEqualObjects(mergedArray, expected);
 
   // w/ merger and array args reversed
   mergedArray = [arrayB gtm_mergeArray:arrayA
                          mergeSelector:@selector(mergeString:)];
-  STAssertNotNil(mergedArray, nil);
-  STAssertEqualObjects(mergedArray, expected, nil);
-
+  XCTAssertNotNil(mergedArray);
+  XCTAssertEqualObjects(mergedArray, expected);
 }
 
 @end

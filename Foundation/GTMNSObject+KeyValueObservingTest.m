@@ -29,7 +29,6 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSObject+KeyValueObserving.h"
 #import "GTMDefines.h"
-#import "GTMUnitTestDevLog.h"
 
 @interface GTMNSObject_KeyValueObservingTest : GTMTestCase  {
   int32_t count_;
@@ -61,12 +60,12 @@
                 options:NSKeyValueObservingOptionNew];
   expectedValue_ = @"bar";
   [dict_ setObject:expectedValue_ forKey:@"key"];
-  STAssertEquals(count_, (int32_t)1, nil);
+  XCTAssertEqual(count_, (int32_t)1);
   [dict_ gtm_removeObserver:self
                  forKeyPath:@"key"
                   selector:@selector(observeValueChange:)];
   [dict_ setObject:@"foo" forKey:@"key"];
-  STAssertEquals(count_, (int32_t)1, nil);
+  XCTAssertEqual(count_, (int32_t)1);
 }
 
 - (void)testStopObservingAllKeyPaths {
@@ -78,17 +77,14 @@
                  options:NSKeyValueObservingOptionNew];
   expectedValue_ = @"bar";
   [dict_ setObject:expectedValue_ forKey:@"key"];
-  STAssertEquals(count_, (int32_t)1, nil);
+  XCTAssertEqual(count_, (int32_t)1);
   [self gtm_stopObservingAllKeyPaths];
   [dict_ setObject:@"foo" forKey:@"key"];
-  STAssertEquals(count_, (int32_t)1, nil);
+  XCTAssertEqual(count_, (int32_t)1);
 }
 
 
 - (void)testRemoving {
-  [GTMUnitTestDevLogDebug expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
-   @" testRemoving\\] was not observing.*"];
-
   [dict_ gtm_removeObserver:self
                  forKeyPath:@"key"
                    selector:@selector(observeValueChange:)];
@@ -100,8 +96,6 @@
                 selector:@selector(observeValueChange:)
                 userInfo:@"userInfo"
                  options:NSKeyValueObservingOptionNew];
-  [GTMUnitTestDevLog expectPattern:@"-\\[GTMNSObject_KeyValueObservingTest"
-   @" testAdding\\] already observing.*"];
   [dict_ gtm_addObserver:self
               forKeyPath:@"key"
                 selector:@selector(observeValueChange:)
@@ -113,17 +107,17 @@
 }
 
 - (void)observeValueChange:(GTMKeyValueChangeNotification *)notification {
-  STAssertEqualObjects([notification userInfo], @"userInfo", nil);
-  STAssertEqualObjects([notification keyPath], @"key", nil);
-  STAssertEqualObjects([notification object], dict_, nil);
+  XCTAssertEqualObjects([notification userInfo], @"userInfo");
+  XCTAssertEqualObjects([notification keyPath], @"key");
+  XCTAssertEqualObjects([notification object], dict_);
   NSDictionary *change = [notification change];
   NSString *value = [change objectForKey:NSKeyValueChangeNewKey];
-  STAssertEqualObjects(value, expectedValue_, nil);
+  XCTAssertEqualObjects(value, expectedValue_);
   ++count_;
 
   GTMKeyValueChangeNotification *copy = [[notification copy] autorelease];
-  STAssertEqualObjects(notification, copy, nil);
-  STAssertEquals([notification hash], [copy hash], nil);
+  XCTAssertEqualObjects(notification, copy);
+  XCTAssertEqual([notification hash], [copy hash]);
 }
 
 @end

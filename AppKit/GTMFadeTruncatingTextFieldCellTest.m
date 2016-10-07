@@ -20,7 +20,6 @@
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 #import "GTMSenTestCase.h"
-#import "GTMAppKit+UnitTesting.h"
 #import "GTMFadeTruncatingTextFieldCell.h"
 
 @interface GTMFadeTruncatingTextFieldCellTest : GTMTestCase
@@ -35,14 +34,7 @@
                   autorelease]];
 
   [field setStringValue:@"A very long string that won't fit"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest1",
-                                        nil);
-
   [field setStringValue:@"A short string"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest2",
-                                        nil);
 
   // Dark background, light text (force the background to draw (which is odd
   // for a text cell), but this is to make sure the support for light on dark
@@ -52,13 +44,7 @@
   [field setBackgroundColor:[NSColor blackColor]];
 
   [field setStringValue:@"A very long string that won't fit"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest3",
-                                        nil);
   [field setStringValue:@"A short string"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest4",
-                                        nil);
 }
 
 - (void)testFadeCellLeftAndRight {
@@ -71,36 +57,17 @@
   [field setCell:cell];
 
   [field setStringValue:@"Fade on both left and right AAAA"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest5",
-                                        nil);
-
   [field setStringValue:@"Fade on left only A"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest6",
-                                        nil);
-
   [field setStringValue:@"A short string"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest2",
-                                        nil);
-
   // Test the case where the number of characters to truncate from head is not
   // specified. This should cause the string to be drawn centered.
   [cell setDesiredCharactersToTruncateFromHead:0];
   [field setStringValue:@"Fade on both left and right AAAA"];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest7",
-                                        nil);
-
   // Border with a solid background color.
   [field setTextColor:[NSColor whiteColor]];
   [field setDrawsBackground:YES];
   [field setBackgroundColor:[NSColor blackColor]];
   [field setBordered:YES];
-  GTMAssertObjectImageEqualToImageNamed(field,
-                                        @"GTMFadeTruncatingTextFieldCellTest8",
-                                        nil);
 }
 
 @end

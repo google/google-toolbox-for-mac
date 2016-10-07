@@ -6,13 +6,13 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-//  License for the specific language governing permissions and limitations 
+//  License for the specific language governing permissions and limitations
 //  under the License.
 //
 
@@ -48,20 +48,20 @@
     [mergingArray sortUsingSelector:comparer];
     NSArray *sortedNewArray
       = [newArray sortedArrayUsingSelector:comparer];
-    
+
     NSUInteger oldIndex = 0;
     NSUInteger oldCount = [mergingArray count];
     id oldItem = (oldIndex < oldCount)
                  ? [mergingArray objectAtIndex:0]
                  : nil;
-    
+
     id newItem = nil;
-    GTM_FOREACH_OBJECT(newItem, sortedNewArray) {
+    for (newItem in sortedNewArray) {
       BOOL stillLooking = YES;
       while (oldIndex < oldCount && stillLooking) {
         // We must take care here, since Intel leaves junk in high bytes of
         // return register for predicates that return BOOL.
-        // For details see: 
+        // For details see:
         // http://developer.apple.com/documentation/MacOSX/Conceptual/universal_binary/universal_binary_tips/chapter_5_section_23.html
         // and
         // http://www.red-sweater.com/blog/320/abusing-objective-c-with-class#comment-83187

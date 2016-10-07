@@ -21,39 +21,6 @@
 
 @implementation NSFileManager (GMFileManagerPathAdditions)
 
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-
-- (BOOL)gtm_createFullPathToDirectory:(NSString *)path
-                           attributes:(NSDictionary *)attributes {
-  if (!path) return NO;
-
-  BOOL isDir;
-  BOOL exists = [self fileExistsAtPath:path isDirectory:&isDir];
-
-  // Quick check for the case where we have nothing to do.
-  if (exists && isDir)
-    return YES;
-
-  NSString *actualPath = @"/";
-  NSString *directory;
-
-  GTM_FOREACH_OBJECT(directory, [path pathComponents]) {
-    actualPath = [actualPath stringByAppendingPathComponent:directory];
-
-    if ([self fileExistsAtPath:actualPath isDirectory:&isDir] && isDir) {
-      continue;
-    } else if ([self createDirectoryAtPath:actualPath attributes:attributes]) {
-      continue;
-    } else {
-      return NO;
-    }
-  }
-
-  return YES;
-}
-
-#endif  // GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-
 - (NSArray *)gtm_filePathsWithExtension:(NSString *)extension
                             inDirectory:(NSString *)directoryPath {
   NSArray *extensions = nil;
@@ -73,12 +40,9 @@
   }
 
   // |basenames| will contain only the matching file names, not their full paths.
-#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
   NSArray *basenames = [self contentsOfDirectoryAtPath:directoryPath
                                                  error:nil];
-#else
-  NSArray *basenames = [self directoryContentsAtPath:directoryPath];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+
 
   // Check if dir doesn't exist or couldn't be opened.
   if (!basenames) {
@@ -94,7 +58,7 @@
   NSString *basename;
 
   // Convert all the |basenames| to full paths.
-  GTM_FOREACH_OBJECT(basename, basenames) {
+  for (basename in basenames) {
     NSString *fullPath = [directoryPath stringByAppendingPathComponent:basename];
     [paths addObject:fullPath];
   }

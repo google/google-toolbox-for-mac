@@ -19,7 +19,6 @@
 #import "GTMSenTestCase.h"
 #import "GTMCarbonEvent.h"
 #import "GTMAppKitUnitTestingUtilities.h"
-#import "GTMUnitTestDevLog.h"
 
 @interface GTMCarbonEventTest : GTMTestCase {
  @private
@@ -62,23 +61,23 @@ static const UInt32 kTestParameterValue = 'bam ';
 
 - (void)testCopy {
   GTMCarbonEvent *event2 = [[event_ copy] autorelease];
-  STAssertNotNil(event2, nil);
+  XCTAssertNotNil(event2);
 }
 
 - (void)testEventWithClassAndKind {
-  STAssertEquals([event_ eventClass], kTestClass, nil);
-  STAssertEquals([event_ eventKind], kTestKind, nil);
+  XCTAssertEqual([event_ eventClass], kTestClass);
+  XCTAssertEqual([event_ eventKind], kTestKind);
 }
 
 - (void)testEventWithEvent {
   GTMCarbonEvent *event2 = [GTMCarbonEvent eventWithEvent:[event_ event]];
-  STAssertEquals([event2 event], [event_ event], nil);
+  XCTAssertEqual([event2 event], [event_ event]);
 }
 
 - (void)testCurrentEvent {
   EventRef eventRef = GetCurrentEvent();
   GTMCarbonEvent *event = [GTMCarbonEvent currentEvent];
-  STAssertEquals([event event], eventRef, nil);
+  XCTAssertEqual([event event], eventRef);
 }
 
 - (void)testEventClass {
@@ -91,13 +90,13 @@ static const UInt32 kTestParameterValue = 'bam ';
 
 - (void)testSetTime {
   EventTime eventTime = [event_ time];
-  STAssertNotEquals(eventTime, kEventDurationNoWait, nil);
-  STAssertNotEquals(eventTime, kEventDurationForever, nil);
+  XCTAssertNotEqualWithAccuracy(eventTime, kEventDurationNoWait, 0.01);
+  XCTAssertNotEqualWithAccuracy(eventTime, kEventDurationForever, 0.01);
   [event_ setTime:kEventDurationForever];
   EventTime testTime = [event_ time];
-  STAssertEquals(testTime, kEventDurationForever, nil);
+  XCTAssertEqualWithAccuracy(testTime, kEventDurationForever, 0.01);
   [event_ setTime:eventTime];
-  STAssertEquals([event_ time], eventTime, nil);
+  XCTAssertEqualWithAccuracy([event_ time], eventTime, 0.01);
 }
 
 - (void)testTime {
@@ -112,21 +111,21 @@ static const UInt32 kTestParameterValue = 'bam ';
   UInt32 theData = kTestParameterValue;
   [event_ setUInt32ParameterNamed:kTestParameterName data:&theData];
   theData = 0;
-  STAssertEquals([event_ sizeOfParameterNamed:kTestParameterName
+  XCTAssertEqual([event_ sizeOfParameterNamed:kTestParameterName
                                          type:typeUInt32],
-                 sizeof(UInt32), nil);
-  STAssertTrue([event_ getUInt32ParameterNamed:kTestParameterName
-                                          data:&theData], nil);
-  STAssertEquals(theData, kTestParameterValue, nil);
+                  sizeof(UInt32));
+  XCTAssertTrue([event_ getUInt32ParameterNamed:kTestParameterName
+                                           data:&theData]);
+  XCTAssertEqual(theData, kTestParameterValue);
 }
 
 - (void)testGetParameterNamed {
   [self testSetParameterNamed];
   UInt32 theData = kTestParameterValue;
-  STAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName
-                                           data:&theData], nil);
-  STAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName
-                                           data:NULL], nil);
+  XCTAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName
+                                            data:&theData]);
+  XCTAssertFalse([event_ getUInt32ParameterNamed:kTestBadParameterName
+                                            data:NULL]);
 
 }
 
@@ -155,10 +154,10 @@ static const UInt32 kTestParameterValue = 'bam ';
        autorelease];
   [handler registerForEvents:&types count:1];
   OSStatus status = [event_ sendToTarget:handler options:0];
-  STAssertErr(status, eventNotHandledErr, @"status: %ld", (long)status);
+  XCTAssertErr(status, eventNotHandledErr, @"status: %d", (int)status);
   [handler setDelegate:self];
   status = [event_ sendToTarget:handler options:0];
-  STAssertNoErr(status, @"status: %ld", (long)status);
+  XCTAssertNoErr(status, @"status: %d", (int)status);
   [handler unregisterForEvents:&types count:1];
 }
 
@@ -167,17 +166,17 @@ static const UInt32 kTestParameterValue = 'bam ';
   [event_ postToMainQueue];
   OSStatus status = [event_ postToQueue:eventQueue
                                priority:kEventPriorityStandard];
-  STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", (long)status);
+  XCTAssertErr(status, eventAlreadyPostedErr, @"status: %d", (int)status);
   EventTypeSpec types = { kTestClass, kTestKind };
   status = FlushEventsMatchingListFromQueue(eventQueue, 1, &types);
-  STAssertNoErr(status, @"status: %ld", (long)status);
+  XCTAssertNoErr(status, @"status: %ld", (long)status);
 
   eventQueue = GetCurrentEventQueue();
   [event_ postToCurrentQueue];
   status = [event_ postToQueue:eventQueue priority:kEventPriorityStandard];
-  STAssertErr(status, eventAlreadyPostedErr, @"status: %ld", (long)status);
+  XCTAssertErr(status, eventAlreadyPostedErr, @"status: %d", (int)status);
   status = FlushEventsMatchingListFromQueue(eventQueue, 1, &types);
-  STAssertNoErr(status, @"status: %ld", status);
+  XCTAssertNoErr(status, @"status: %ld", (long)status);
 }
 
 - (void)testPostToMainQueue {
@@ -185,7 +184,7 @@ static const UInt32 kTestParameterValue = 'bam ';
 }
 
 - (void)testPostToCurrentQueue {
-  STAssertEquals(GetCurrentEventQueue(), GetMainEventQueue(), nil);
+  XCTAssertEqual(GetCurrentEventQueue(), GetMainEventQueue());
   [self testPostToMainQueue];
 }
 
@@ -193,7 +192,7 @@ static const UInt32 kTestParameterValue = 'bam ';
   NSString *descString
     = [NSString stringWithFormat:@"GTMCarbonEvent 'foo ' %lu",
        (unsigned long)kTestKind];
-  STAssertEqualObjects([event_ description], descString, nil);
+  XCTAssertEqualObjects([event_ description], descString);
 }
 @end
 
@@ -208,21 +207,19 @@ static const UInt32 kTestParameterValue = 'bam ';
 }
 
 - (void)testEventTarget {
-  STAssertNULL([handler_ eventTarget], nil);
+  XCTAssertNULL([handler_ eventTarget]);
 }
 
 - (void)testEventHandler {
-  [GTMUnitTestDevLogDebug expectPattern:
-   @"DebugAssert: GoogleToolboxForMac: event CantUseParams .*"];
-  STAssertErr([handler_ handleEvent:nil handler:nil],
-              (long)eventNotHandledErr, nil);
+  XCTAssertErr([handler_ handleEvent:nil handler:nil],
+               (long)eventNotHandledErr);
 }
 
 - (void)testDelegate {
   [handler_ setDelegate:self];
-  STAssertEqualObjects([handler_ delegate], self, nil);
+  XCTAssertEqualObjects([handler_ delegate], self);
   [handler_ setDelegate:nil];
-  STAssertNil([handler_ delegate], nil);
+  XCTAssertNil([handler_ delegate]);
 }
 
 
@@ -237,7 +234,7 @@ static const UInt32 kTestParameterValue = 'bam ';
 - (void)testEventHandler {
   GTMCarbonEventMonitorHandler *monitor
     = [GTMCarbonEventMonitorHandler sharedEventMonitorHandler];
-  STAssertEquals([monitor eventTarget], GetEventMonitorTarget(), nil);
+  XCTAssertEqual([monitor eventTarget], GetEventMonitorTarget());
 }
 
 @end
@@ -253,7 +250,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
 - (void)testEventHandler {
   GTMCarbonEventApplicationEventHandler *handler
     = [GTMCarbonEventApplicationEventHandler sharedApplicationEventHandler];
-  STAssertEquals([handler eventTarget], GetApplicationEventTarget(), nil);
+  XCTAssertEqual([handler eventTarget], GetApplicationEventTarget());
 }
 
 @end
@@ -272,16 +269,16 @@ extern EventTargetRef GetApplicationEventTarget(void);
 - (void)testEventHandler {
   GTMCarbonEventDispatcherHandler *dispatcher
     = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
-  STAssertEquals([dispatcher eventTarget], GetEventDispatcherTarget(), nil);
+  XCTAssertEqual([dispatcher eventTarget], GetEventDispatcherTarget());
 }
 
 - (void)hitHotKey:(GTMCarbonHotKey *)key {
-  STAssertEqualObjects([key userInfo], self, nil);
+  XCTAssertEqualObjects([key userInfo], self);
   [hotKeyHit_ setShouldStop:YES];
 }
 
 - (void)hitExceptionalHotKey:(GTMCarbonHotKey *)key {
-  STAssertEqualObjects([key userInfo], self, nil);
+  XCTAssertEqualObjects([key userInfo], self);
   [hotKeyHit_ setShouldStop:YES];
   [NSException raise:@"foo" format:@"bar"];
 }
@@ -293,32 +290,30 @@ extern EventTargetRef GetApplicationEventTarget(void);
   if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
     GTMCarbonEventDispatcherHandler *dispatcher
       = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
-    STAssertNotNil(dispatcher, @"Unable to acquire singleton");
+    XCTAssertNotNil(dispatcher, @"Unable to acquire singleton");
     UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
                       | NSAlternateKeyMask | NSCommandKeyMask);
-    [GTMUnitTestDevLogDebug expectPattern:@"DebugAssert: GoogleToolboxForMac: "
-     @"newKey CantCreateKey .*"];
-    STAssertNil([dispatcher registerHotKey:0x5
-                                 modifiers:keyMods
-                                    target:nil
-                                    action:nil
-                                  userInfo:nil
-                               whenPressed:YES],
-                 @"Shouldn't have created hotkey");
+    XCTAssertNil([dispatcher registerHotKey:0x5
+                                  modifiers:keyMods
+                                     target:nil
+                                     action:nil
+                                   userInfo:nil
+                                whenPressed:YES],
+                  @"Shouldn't have created hotkey");
     GTMCarbonHotKey *hotKey = [dispatcher registerHotKey:0x5
                                                modifiers:keyMods
                                                   target:self
                                                   action:@selector(hitHotKey:)
                                                 userInfo:self
                                              whenPressed:YES];
-    STAssertNotNil(hotKey, @"Unable to create hotkey");
+    XCTAssertNotNil(hotKey, @"Unable to create hotkey");
 
     // Post the hotkey combo to the event queue. If everything is working
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
     // happen.
     [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
+    XCTAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_]);
     [dispatcher unregisterHotKey:hotKey];
   }
 }
@@ -330,7 +325,7 @@ extern EventTargetRef GetApplicationEventTarget(void);
   if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
     GTMCarbonEventDispatcherHandler *dispatcher
       = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
-    STAssertNotNil(dispatcher, @"Unable to acquire singleton");
+    XCTAssertNotNil(dispatcher, @"Unable to acquire singleton");
     UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
                       | NSAlternateKeyMask | NSCommandKeyMask);
     GTMCarbonHotKey *hotKey
@@ -340,15 +335,14 @@ extern EventTargetRef GetApplicationEventTarget(void);
                             action:@selector(hitExceptionalHotKey:)
                           userInfo:self
                        whenPressed:YES];
-    STAssertNotNil(hotKey, @"Unable to create hotkey");
+    XCTAssertNotNil(hotKey, @"Unable to create hotkey");
 
     // Post the hotkey combo to the event queue. If everything is working
     // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
     // us.  We run the event loop for a set amount of time waiting for this to
     // happen.
     [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    [GTMUnitTestDevLog expectString:@"Exception fired in hotkey: foo (bar)"];
-    STAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_], nil);
+    XCTAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_]);
     [dispatcher unregisterHotKey:hotKey];
   }
 }
@@ -374,11 +368,9 @@ extern EventTargetRef GetApplicationEventTarget(void);
         carbonMods |= keyMap[j].carbonKey_;
       }
     }
-    STAssertEquals(GTMCocoaToCarbonKeyModifiers(cocoaMods), carbonMods, nil);
-    STAssertEquals(GTMCarbonToCocoaKeyModifiers(carbonMods), cocoaMods, nil);
+    XCTAssertEqual(GTMCocoaToCarbonKeyModifiers(cocoaMods), carbonMods);
+    XCTAssertEqual(GTMCarbonToCocoaKeyModifiers(carbonMods), cocoaMods);
   }
 }
 
-
 @end
-

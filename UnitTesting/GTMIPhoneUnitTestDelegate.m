@@ -179,7 +179,7 @@ static int ClassSort(const void *a, const void *b) {
         fputs([fixtureStartString UTF8String], stderr);
         fflush(stderr);
         NSInvocation *invocation;
-        GTM_FOREACH_OBJECT(invocation, invocations) {
+        for (invocation in invocations) {
           GTMTestCase *testCase
             = [[currClass alloc] initWithInvocation:invocation];
           BOOL failed = NO;

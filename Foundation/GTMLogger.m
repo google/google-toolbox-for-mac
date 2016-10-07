@@ -367,7 +367,7 @@ static GTMLogger *gSharedLogger = nil;
 - (void)logMessage:(NSString *)msg level:(GTMLoggerLevel)level {
   @synchronized(self) {
     id<GTMLogWriter> child = nil;
-    GTM_FOREACH_OBJECT(child, self) {
+    for (child in self) {
       if ([child conformsToProtocol:@protocol(GTMLogWriter)])
         [child logMessage:msg level:level];
     }

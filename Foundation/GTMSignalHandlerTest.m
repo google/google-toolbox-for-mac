@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMSignalHandler.h"
-#import "GTMUnitTestDevLog.h"
 #import "GTMFoundationUnitTestingUtilities.h"
 
 @interface GTMSignalHandlerTest : GTMTestCase
@@ -66,56 +65,54 @@
 
 @implementation GTMSignalHandlerTest
 - (void)nomnomnom:(int)blah {
-  STFail(@"Should never be called!");
+  XCTFail(@"Should never be called!");
 }
 
 - (void)testNillage {
   GTMSignalHandler *handler;
 
   // Just an init should return nil.
-  [GTMUnitTestDevLog expectString:@"Don't call init, use "
-                                  @"initWithSignal:target:action:"];
   handler = [[[GTMSignalHandler alloc] init] autorelease];
-  STAssertNil(handler, nil);
+  XCTAssertNil(handler);
 
   // Zero signal should return nil as well.
   handler = [[[GTMSignalHandler alloc]
               initWithSignal:0
                       target:self
                       action:@selector(nomnomnom:)] autorelease];
-  STAssertNil(handler, nil);
+  XCTAssertNil(handler);
 
 }
 
 - (void)testSingleHandler {
   SignalCounter *counter = [SignalCounter signalCounter];
-  STAssertNotNil(counter, nil);
+  XCTAssertNotNil(counter);
 
   GTMSignalHandler *handler = [[[GTMSignalHandler alloc]
                                  initWithSignal:SIGWINCH
                                          target:counter
                                          action:@selector(countSignal:)]
                                autorelease];
-  STAssertNotNil(handler, nil);
+  XCTAssertNotNil(handler);
   raise(SIGWINCH);
 
   NSRunLoop *rl = [NSRunLoop currentRunLoop];
   [rl gtm_runUpToSixtySecondsWithContext:counter];
 
-  STAssertEquals([counter count], 1, nil);
-  STAssertEquals([counter lastSeen], SIGWINCH, nil);
+  XCTAssertEqual([counter count], 1);
+  XCTAssertEqual([counter lastSeen], SIGWINCH);
   [counter resetShouldStop];
 
   raise(SIGWINCH);
   [rl gtm_runUpToSixtySecondsWithContext:counter];
 
-  STAssertEquals([counter count], 2, nil);
-  STAssertEquals([counter lastSeen], SIGWINCH, nil);
+  XCTAssertEqual([counter count], 2);
+  XCTAssertEqual([counter lastSeen], SIGWINCH);
   [counter resetShouldStop];
 
   // create a second one to make sure we're seding data where we want
   SignalCounter *counter2 = [SignalCounter signalCounter];
-  STAssertNotNil(counter2, nil);
+  XCTAssertNotNil(counter2);
   [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
                                      target:counter2
                                      action:@selector(countSignal:)] autorelease];
@@ -123,10 +120,10 @@
   raise(SIGUSR1);
   [rl gtm_runUpToSixtySecondsWithContext:counter2];
 
-  STAssertEquals([counter count], 2, nil);
-  STAssertEquals([counter lastSeen], SIGWINCH, nil);
-  STAssertEquals([counter2 count], 1, nil);
-  STAssertEquals([counter2 lastSeen], SIGUSR1, nil);
+  XCTAssertEqual([counter count], 2);
+  XCTAssertEqual([counter lastSeen], SIGWINCH);
+  XCTAssertEqual([counter2 count], 1);
+  XCTAssertEqual([counter2 lastSeen], SIGUSR1);
 
   [handler invalidate];
 
@@ -135,16 +132,16 @@
   raise(SIGWINCH);
   [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
 
-  STAssertEquals([counter count], 2, nil);
-  STAssertEquals([counter lastSeen], SIGWINCH, nil);
-  STAssertEquals([counter2 count], 1, nil);
-  STAssertEquals([counter2 lastSeen], SIGUSR1, nil);
+  XCTAssertEqual([counter count], 2);
+  XCTAssertEqual([counter lastSeen], SIGWINCH);
+  XCTAssertEqual([counter2 count], 1);
+  XCTAssertEqual([counter2 lastSeen], SIGUSR1);
 
 }
 
 - (void)testIgnore {
   SignalCounter *counter = [SignalCounter signalCounter];
-  STAssertNotNil(counter, nil);
+  XCTAssertNotNil(counter);
 
   [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
                                      target:counter
@@ -153,7 +150,7 @@
   raise(SIGUSR1);
   NSRunLoop *rl = [NSRunLoop currentRunLoop];
   [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
-  STAssertEquals([counter count], 0, nil);
+  XCTAssertEqual([counter count], 0);
 
 }
 

@@ -144,14 +144,14 @@ static const CGFloat kWrapperStringSlop = 0.9;
   } else if ([view isKindOfClass:[NSTabView class]]) {
     NSArray *tabViewItems = [(NSTabView *)view tabViewItems];
     NSTabViewItem *item = nil;
-    GTM_FOREACH_OBJECT(item, tabViewItems) {
+    for (item in tabViewItems) {
       [self tweakView:[item view]];
     }
   // Generically look for subviews...
   } else {
     NSArray *subviews = [view subviews];
     NSView *subview = nil;
-    GTM_FOREACH_OBJECT(subview, subviews) {
+    for (subview in subviews) {
       [self tweakView:subview];
     }
   }
@@ -175,6 +175,10 @@ static const CGFloat kWrapperStringSlop = 0.9;
   // fragments to get the same wrapping as what the NSCell will do in the end.
   [textContainer setLineFragmentPadding:2.0f];
 
+  if (font == NULL) {
+    // If the font is NULL, it is the System font.
+    font = [NSFont systemFontOfSize:[NSFont systemFontSize]];
+  }
   // Apply the font.
   [textStorage setFont:font];
 
@@ -343,7 +347,7 @@ static const CGFloat kWrapperStringSlop = 0.9;
   NSFont *font = [radioGroup font];
 
   NSCell *cell;
-  GTM_FOREACH_OBJECT(cell, [radioGroup cells]) {
+  for (cell in [radioGroup cells]) {
     NSRect titleFrame = [cell titleRectForBounds:tmpRect];
     NSString* newTitle = [self wrapString:[cell title]
                                     width:NSWidth(titleFrame)
@@ -437,7 +441,7 @@ static const CGFloat kWrapperStringSlop = 0.9;
   NSView *subView;
   CGFloat finalDelta = sumMode ? 0 : -CGFLOAT_MAX;
   NSPoint subViewOffset = NSZeroPoint;
-  GTM_FOREACH_OBJECT(subView, subviews) {
+  for (subView in subviews) {
     if (sumMode) {
       subViewOffset.x = finalDelta;
     }
@@ -580,7 +584,7 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
         NSMatrix *matrix = (NSMatrix *)view;
         // See note on kWrapperStringSlop for why this is done.
         NSCell *cell;
-        GTM_FOREACH_OBJECT(cell, [matrix cells]) {
+        for (cell in [matrix cells]) {
           if ([[cell title] rangeOfString:kForcedWrapString].location !=
               NSNotFound) {
             newFrame.size.width += kWrapperStringSlop;

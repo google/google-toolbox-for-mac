@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMUILocalizerAndLayoutTweakerTest.h"
-#import "GTMNSObject+UnitTesting.h"
 #import "GTMUILocalizerAndLayoutTweaker.h"
 
 static NSUInteger gTestPass = 0;
@@ -35,12 +34,7 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest1"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", gTestPass);
-    NSString *imageName =
-      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest1-%ld",
-        (long)gTestPass];
-    GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %zu", gTestPass);
+    XCTAssertNotNil(window, @"Pass %tu", gTestPass);
     [controller release];
   }
   // Test with nib 2
@@ -49,12 +43,7 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest2"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", gTestPass);
-    NSString *imageName =
-      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest2-%ld",
-        (long)gTestPass];
-    GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %zu", gTestPass);
+    XCTAssertNotNil(window, @"Pass %tu", gTestPass);
     [controller release];
   }
 }
@@ -89,19 +78,14 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest3"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", lp);
+    XCTAssertNotNil(window, @"Pass %tu", lp);
     NSTextField *field;
-    GTM_FOREACH_OBJECT(field, [[window contentView] subviews]) {
-      STAssertTrue([field isMemberOfClass:[NSTextField class]],
-                   @"Pass %zu", lp);
+    for (field in [[window contentView] subviews]) {
+      XCTAssertTrue([field isMemberOfClass:[NSTextField class]],
+                    @"Pass %tu", lp);
       [field setStringValue:kTestStrings[lp]];
       [GTMUILocalizerAndLayoutTweaker sizeToFitFixedWidthTextField:field];
     }
-    NSString *imageName =
-      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest3-%ld",
-       (long)lp];
-    GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %zu", lp);
     [controller release];
   }
 }
@@ -119,12 +103,7 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest4"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", gTestPass);
-    NSString *imageName =
-      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest4-%ld",
-        (long)gTestPass];
-    GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %zu", gTestPass);
+    XCTAssertNotNil(window, @"Pass %tu", gTestPass);
     [controller release];
   }
 }
@@ -144,20 +123,20 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest5"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", lp);
+    XCTAssertNotNil(window, @"Pass %tu", lp);
     NSView *view;
-    GTM_FOREACH_OBJECT(view, [[window contentView] subviews]) {
+    for (view in [[window contentView] subviews]) {
       if ([view isMemberOfClass:[NSButton class]]) {
         NSButton *btn = (id)view;
         [btn setTitle:kTestStrings[lp]];
         [GTMUILocalizerAndLayoutTweaker wrapButtonTitleForWidth:btn];
       } else {
-        STAssertTrue([view isMemberOfClass:[NSMatrix class]],
-                     @"Pass %zu", lp);
+        XCTAssertTrue([view isMemberOfClass:[NSMatrix class]],
+                      @"Pass %tu", lp);
         NSMatrix *mtx = (id)view;
         NSCell *cell;
         int i = 0;
-        GTM_FOREACH_OBJECT(cell, [mtx cells]) {
+        for (cell in [mtx cells]) {
           [cell setTitle:[NSString stringWithFormat:@"%d %@",
                           ++i, kTestStrings[lp]]];
         }
@@ -165,11 +144,6 @@ static NSUInteger gTestPass = 0;
       }
       [GTMUILocalizerAndLayoutTweaker sizeToFitView:view];
     }
-    NSString *imageName =
-      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest5-%ld",
-       (long)lp];
-    GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %zu", lp);
     [controller release];
   }
 }
@@ -181,17 +155,11 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest6"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", gTestPass);
+    XCTAssertNotNil(window, @"Pass %tu", gTestPass);
     NSTabView *tabView = [controller tabView];
     for (NSInteger tabIndex = 0; tabIndex < [tabView numberOfTabViewItems];
          ++tabIndex) {
       [tabView selectTabViewItemAtIndex:tabIndex];
-      NSString *imageName =
-        [NSString stringWithFormat:
-          @"GTMUILocalizerAndLayoutTweakerTest6-tab%ld-%ld",
-          (long)tabIndex, (long)gTestPass];
-      GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                            @"Pass %zu", gTestPass);
     }
     [controller release];
   }
@@ -201,12 +169,7 @@ static NSUInteger gTestPass = 0;
       [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
         initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest2"];
     NSWindow *window = [controller window];
-    STAssertNotNil(window, @"Pass %zu", gTestPass);
-    NSString *imageName =
-      [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest2-%ld",
-        (long)gTestPass];
-    GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                          @"Pass %zu", gTestPass);
+    XCTAssertNotNil(window, @"Pass %tu", gTestPass);
     [controller release];
   }
 }
@@ -244,11 +207,11 @@ static NSUInteger gTestPass = 0;
           [[GTMUILocalizerAndLayoutTweakerTestWindowController alloc]
            initWithWindowNibName:@"GTMUILocalizerAndLayoutTweakerTest7"];
       NSWindow *window = [controller window];
-      STAssertNotNil(window, @"Pass %zu", lp);
+      XCTAssertNotNil(window, @"Pass %tu", lp);
       NSTextField *field;
-      GTM_FOREACH_OBJECT(field, [[window contentView] subviews]) {
-        STAssertTrue([field isMemberOfClass:[NSTextField class]],
-                     @"Pass %zu", lp);
+      for (field in [[window contentView] subviews]) {
+        XCTAssertTrue([field isMemberOfClass:[NSTextField class]],
+                      @"Pass %tu", lp);
         [field setStringValue:kTestStrings[lp]];
         NSUInteger minWidth = kTestModes[modeLoop].minWidth;
         if (minWidth) {
@@ -258,11 +221,6 @@ static NSUInteger gTestPass = 0;
           [GTMUILocalizerAndLayoutTweaker sizeToFitFixedHeightTextField:field];
         }
       }
-      NSString *imageName =
-        [NSString stringWithFormat:@"GTMUILocalizerAndLayoutTweakerTest7-%s-%ld",
-         kTestModes[modeLoop].name, (long)lp];
-      GTMAssertObjectImageEqualToImageNamed(window, imageName,
-                                            @"Pass %zu-%zu", modeLoop, lp);
       [controller release];
     }
   }
@@ -274,9 +232,8 @@ static NSUInteger gTestPass = 0;
   [textField setBezeled:NO];
   [textField setStringValue:@"The quick brown fox jumps over the lazy dog."];
   [GTMUILocalizerAndLayoutTweaker sizeToFitFixedHeightTextField:textField];
-  STAssertTrue(
-      NSEqualRects([textField bounds], NSIntegralRect([textField bounds])),
-      nil);
+  XCTAssertTrue(
+      NSEqualRects([textField bounds], NSIntegralRect([textField bounds])));
   [textField release];
 }
 

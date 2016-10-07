@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -19,10 +19,15 @@
 #import "GTMDefines.h"
 #import "GTMNSScanner+JSON.h"
 
+// Export a nonsense symbol to suppress a libtool warning when this is linked
+// alone in a static lib.
+__attribute__((visibility("default")))
+    char NSScanner_GTMNSScannerJSONAdditionsExportToSuppressLibToolWarning = 0;
+
 @implementation NSScanner (GTMNSScannerJSONAdditions)
 
-- (BOOL)gtm_scanJSONString:(NSString **)jsonString 
-                 startChar:(unichar)startChar 
+- (BOOL)gtm_scanJSONString:(NSString **)jsonString
+                 startChar:(unichar)startChar
                    endChar:(unichar)endChar {
   BOOL isGood = NO;
   NSRange jsonRange = { NSNotFound, 0 };
@@ -73,11 +78,11 @@
 }
 
 - (BOOL)gtm_scanJSONObjectString:(NSString **)jsonString {
-  return [self gtm_scanJSONString:jsonString startChar:'{' endChar:'}'];  
+  return [self gtm_scanJSONString:jsonString startChar:'{' endChar:'}'];
 }
 
 - (BOOL)gtm_scanJSONArrayString:(NSString**)jsonString {
-  return [self gtm_scanJSONString:jsonString startChar:'[' endChar:']'];  
+  return [self gtm_scanJSONString:jsonString startChar:'[' endChar:']'];
 }
 
 @end

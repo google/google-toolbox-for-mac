@@ -16,6 +16,15 @@
 //  the License.
 //
 
+#import "GTMDefines.h"
+
+// This test currently executes under XCTest and under the GTM SenTest replacement.
+#if !GTM_USING_XCTEST
+#define XCTAssertFalse STAssertFalse
+#define XCTAssertEqual STAssertEquals
+#define XCTAssertTrue STAssertTrue
+#endif  // !GTM_USING_XCTEST
+
 #import "GTMSenTestCase.h"
 
 // These make use of the fact that methods are run in alphebetical order
@@ -39,8 +48,8 @@ static int gZzCheckCalls_ = 0;
 @implementation GTMTestingAbstractTest
 
 - (void)testAbstractUnitTest {
-  STAssertFalse([self isMemberOfClass:[GTMTestingAbstractTest class]],
-                @"test should not run on the abstract class");
+  XCTAssertFalse([self isMemberOfClass:[GTMTestingAbstractTest class]],
+                 @"test should not run on the abstract class");
   ++gAbstractCalls_;
 }
 
@@ -51,11 +60,12 @@ static int gZzCheckCalls_ = 0;
 - (void)testZZCheck {
   ++gZzCheckCalls_;
   if ([self isMemberOfClass:[GTMTestingTestOne class]]) {
-    STAssertEquals(gAbstractCalls_, 1,
+    XCTAssertEqual(gAbstractCalls_, 1,
                    @"wrong number of abstract calls at this point");
   } else {
-    STAssertTrue([self isMemberOfClass:[GTMTestingTestTwo class]], nil);
-    STAssertEquals(gAbstractCalls_, 2,
+    XCTAssertTrue([self isMemberOfClass:[GTMTestingTestTwo class]],
+                  @"Not member of class");
+    XCTAssertEqual(gAbstractCalls_, 2,
                    @"wrong number of abstract calls at this point");
   }
 }
@@ -66,7 +76,7 @@ static int gZzCheckCalls_ = 0;
 
 - (void)testZZZCheck {
   // Test defined at this leaf, it should always run, check on the other methods.
-  STAssertEquals(gZzCheckCalls_, 2, @"the parent class method wasn't called");
+  XCTAssertEqual(gZzCheckCalls_, 2, @"the parent class method wasn't called");
 }
 
 @end

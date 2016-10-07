@@ -17,13 +17,7 @@
 //
 
 #import "GTMSenTestCase.h"
-#import "GTMNSObject+UnitTesting.h"
 #import "GTMUIImage+Resize.h"
-
-#define GTMUIImageResizeAssertImageEqual(imageObject, imageSuffix) \
-    GTMAssertObjectImageEqualToImageNamed(imageObject, \
-                                          @"GTMUIImage+Resize_" imageSuffix,\
-                                          @"Resized image mismatched.")
 
 @interface GTMUIImage_ResizeTest : GTMTestCase
 - (UIImage *)testImageNamed:(NSString *)imageName;
@@ -43,7 +37,7 @@
   UIImage *actual = [image gtm_imageByResizingToSize:CGSizeMake(100, 100)
                                  preserveAspectRatio:YES
                                            trimToFit:NO];
-  STAssertNil(actual, @"Invalid inputs should return nil");
+  XCTAssertNil(actual, @"Invalid inputs should return nil");
 }
 
 - (void)testInvalidInput {
@@ -53,62 +47,59 @@
   actual = [image gtm_imageByResizingToSize:CGSizeZero
                         preserveAspectRatio:YES
                                   trimToFit:NO];
-  STAssertNil(actual, @"CGSizeZero resize should be ignored.");
+  XCTAssertNil(actual, @"CGSizeZero resize should be ignored.");
 
   actual = [image gtm_imageByResizingToSize:CGSizeMake(0.1, 0.1)
                         preserveAspectRatio:YES
                                   trimToFit:NO];
-  STAssertNil(actual, @"Invalid size should be ignored.");
+  XCTAssertNil(actual, @"Invalid size should be ignored.");
 
   actual = [image gtm_imageByResizingToSize:CGSizeMake(-100, -100)
                         preserveAspectRatio:YES
                                   trimToFit:NO];
-  STAssertNil(actual, @"Invalid size should be ignored.");
+  XCTAssertNil(actual, @"Invalid size should be ignored.");
 }
 
 - (void)testImageByResizingWithoutPreservingAspectRatio {
   UIImage *actual = nil;
   // Square image.
   UIImage *originalImage = [self testImageNamed:@"GTMUIImage+Resize_100x100"];
-  STAssertNotNil(originalImage, @"Unable to read image.");
+  XCTAssertNotNil(originalImage, @"Unable to read image.");
 
   // Resize with same aspect ratio.
   CGSize size50x50 = CGSizeMake(50, 50);
   actual = [originalImage gtm_imageByResizingToSize:size50x50
                                 preserveAspectRatio:NO
                                           trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], size50x50),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size50x50),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x100_to_50x50");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size50x50),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size50x50),
+                NSStringFromCGSize([actual size]));
 
   // Resize with different aspect ratio
   CGSize size60x40 = CGSizeMake(60, 40);
   actual = [originalImage gtm_imageByResizingToSize:size60x40
                                 preserveAspectRatio:NO
                                           trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], size60x40),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size60x40),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x100_to_60x40");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size60x40),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size60x40),
+                NSStringFromCGSize([actual size]));
 
   CGSize size40x60 = CGSizeMake(40, 60);
   actual = [originalImage gtm_imageByResizingToSize:size40x60
                                 preserveAspectRatio:NO
                                           trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], size40x60),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size40x60),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x100_to_40x60");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size40x60),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size40x60),
+                NSStringFromCGSize([actual size]));
 }
 
 - (void)testImageByResizingPreservingAspectRatioWithoutClip {
   UIImage *actual = nil;
   UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
-  STAssertNotNil(landscapeImage, @"Unable to read image.");
+  XCTAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Landscape resize to 50x50, but clipped to 50x25.
   CGSize size50x50 = CGSizeMake(50, 50);
@@ -116,11 +107,10 @@
   actual = [landscapeImage gtm_imageByResizingToSize:size50x50
                                  preserveAspectRatio:YES
                                            trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], expected50x25),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(expected50x25),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_50x50_noclip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], expected50x25),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(expected50x25),
+                NSStringFromCGSize([actual size]));
 
   // Landscape resize to 60x40, but clipped to 60x30.
   CGSize size60x40 = CGSizeMake(60, 40);
@@ -129,11 +119,10 @@
   actual = [landscapeImage gtm_imageByResizingToSize:size60x40
                                  preserveAspectRatio:YES
                                            trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], expected60x30),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(expected60x30),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_60x40_noclip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], expected60x30),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(expected60x30),
+                NSStringFromCGSize([actual size]));
 
   // Landscape resize to 40x60, but clipped to 40x20.
   CGSize expected40x20 = CGSizeMake(40, 20);
@@ -141,11 +130,10 @@
   actual = [landscapeImage gtm_imageByResizingToSize:size40x60
                                  preserveAspectRatio:YES
                                            trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], expected40x20),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(expected40x20),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_40x60_noclip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], expected40x20),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(expected40x20),
+                NSStringFromCGSize([actual size]));
 
   // Portrait Image
   UIImage *portraitImage = [self testImageNamed:@"GTMUIImage+Resize_50x100"];
@@ -155,72 +143,66 @@
   actual = [portraitImage gtm_imageByResizingToSize:size50x50
                                 preserveAspectRatio:YES
                                           trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], expected25x50),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(expected25x50),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_50x50_noclip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], expected25x50),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(expected25x50),
+                NSStringFromCGSize([actual size]));
 
   // Portrait resize to 60x40, but clipped to 20x40.
   CGSize expected20x40 = CGSizeMake(20, 40);
   actual = [portraitImage gtm_imageByResizingToSize:size60x40
                                 preserveAspectRatio:YES
                                           trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], expected20x40),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(expected20x40),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_60x40_noclip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], expected20x40),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(expected20x40),
+                NSStringFromCGSize([actual size]));
 
   // Portrait resize to 40x60, but clipped to 30x60.
   CGSize expected30x60 = CGSizeMake(30, 60);
   actual = [portraitImage gtm_imageByResizingToSize:size40x60
                                 preserveAspectRatio:YES
                                           trimToFit:NO];
-  STAssertTrue(CGSizeEqualToSize([actual size], expected30x60),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(expected30x60),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_40x60_noclip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], expected30x60),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(expected30x60),
+                NSStringFromCGSize([actual size]));
 }
 
 - (void)testImageByResizingPreservingAspectRatioWithClip {
   UIImage *actual = nil;
   UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
-  STAssertNotNil(landscapeImage, @"Unable to read image.");
+  XCTAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Landscape resize to 50x50
   CGSize size50x50 = CGSizeMake(50, 50);
   actual = [landscapeImage gtm_imageByResizingToSize:size50x50
                                  preserveAspectRatio:YES
                                            trimToFit:YES];
-  STAssertTrue(CGSizeEqualToSize([actual size], size50x50),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size50x50),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_50x50_clip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size50x50),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size50x50),
+                NSStringFromCGSize([actual size]));
 
   // Landscape resize to 60x40
   CGSize size60x40 = CGSizeMake(60, 40);
   actual = [landscapeImage gtm_imageByResizingToSize:size60x40
                                  preserveAspectRatio:YES
                                            trimToFit:YES];
-  STAssertTrue(CGSizeEqualToSize([actual size], size60x40),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size60x40),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_60x40_clip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size60x40),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size60x40),
+                NSStringFromCGSize([actual size]));
 
   // Landscape resize to 40x60
   CGSize size40x60 = CGSizeMake(40, 60);
   actual = [landscapeImage gtm_imageByResizingToSize:size40x60
                                  preserveAspectRatio:YES
                                            trimToFit:YES];
-  STAssertTrue(CGSizeEqualToSize([actual size], size40x60),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size40x60),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50_to_40x60_clip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size40x60),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size40x60),
+                NSStringFromCGSize([actual size]));
 
   // Portrait Image.
   UIImage *portraitImage = [self testImageNamed:@"GTMUIImage+Resize_50x100"];
@@ -229,56 +211,46 @@
   actual = [portraitImage gtm_imageByResizingToSize:size50x50
                                   preserveAspectRatio:YES
                                              trimToFit:YES];
-  STAssertTrue(CGSizeEqualToSize([actual size], size50x50),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size50x50),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_50x50_clip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size50x50),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size50x50),
+                NSStringFromCGSize([actual size]));
 
   // Portrait resize to 60x40
   actual = [portraitImage gtm_imageByResizingToSize:size60x40
                                 preserveAspectRatio:YES
                                           trimToFit:YES];
-  STAssertTrue(CGSizeEqualToSize([actual size], size60x40),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size60x40),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_60x40_clip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size60x40),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size60x40),
+                NSStringFromCGSize([actual size]));
 
   // Portrait resize to 40x60.
   actual = [portraitImage gtm_imageByResizingToSize:size40x60
                                 preserveAspectRatio:YES
                                           trimToFit:YES];
-  STAssertTrue(CGSizeEqualToSize([actual size], size40x60),
-               @"Resized image should equal size: %@ actual: %@",
-               NSStringFromCGSize(size40x60),
-               NSStringFromCGSize([actual size]));
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100_to_40x60_clip");
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size40x60),
+                @"Resized image should equal size: %@ actual: %@",
+                NSStringFromCGSize(size40x60),
+                NSStringFromCGSize([actual size]));
 }
 
 - (void)testImageByRotating {
   UIImage *actual = nil;
   UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
-  STAssertNotNil(landscapeImage, @"Unable to read image.");
+  XCTAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Rotate 90 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationRight];
-  GTMUIImageResizeAssertImageEqual(actual, @"50x100");
 
   // Rotate 180 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationDown];
-  GTMUIImageResizeAssertImageEqual(actual,
-                                   @"100x50_flipped");
-
 
   // Rotate 270 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationLeft];
-  GTMUIImageResizeAssertImageEqual(actual,
-                                   @"50x100_flipped");
 
   // Rotate 360 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationUp];
-  GTMUIImageResizeAssertImageEqual(actual, @"100x50");
 }
 
 @end

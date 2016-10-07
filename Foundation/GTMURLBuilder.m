@@ -27,17 +27,6 @@
 
 @synthesize baseURLString = baseURLString_;
 
-#if (!TARGET_OS_IPHONE && defined(MAC_OS_X_VERSION_10_10) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10) \
-  || (TARGET_OS_IPHONE && defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0)
-#if DEBUG
-+ (void)load {
-  // Apps targeting iOS 8 and OS X 10.10 and higher should no longer use GTMURLBuilder.
-  NSLog(@"*** GTMURLBuilder is obsolete; update your app to use NSURLComponents"
-        @" queryItems property instead.");
-}
-#endif  // DEBUG
-#endif  // iOS 8+/OS X 10.10+
-
 + (GTMURLBuilder *)builderWithString:(NSString *)URLString {
   GTMURLBuilder *URLBuilder =
       [[[GTMURLBuilder alloc] initWithString:URLString] autorelease];

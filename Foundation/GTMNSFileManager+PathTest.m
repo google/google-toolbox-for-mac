@@ -39,53 +39,17 @@
   if (baseDir_) {
     // clean up our directory
     NSFileManager *fm = [NSFileManager defaultManager];
-#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
     NSError *error = nil;
     [fm removeItemAtPath:baseDir_ error:&error];
-    STAssertNil(error,
-                @"Unable to delete %@: %@", baseDir_, error);
-#else
-    [fm removeFileAtPath:baseDir_ handler:nil];
-#endif
+    XCTAssertNil(error, @"Unable to delete %@: %@", baseDir_, error);
 
     [baseDir_ release];
     baseDir_ = nil;
   }
 }
 
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-
-- (void)testCreateFullPathToDirectoryAttributes {
-  STAssertNotNil(baseDir_, @"setUp failed");
-
-  NSString *testPath =
-    [baseDir_ stringByAppendingPathComponent:@"/foo/bar/baz"];
-  STAssertNotNil(testPath, nil);
-  NSFileManager *fm = [NSFileManager defaultManager];
-
-  STAssertFalse([fm fileExistsAtPath:testPath],
-                @"You must delete '%@' before running this test", testPath);
-
-  STAssertFalse([fm gtm_createFullPathToDirectory:nil attributes:nil],
-                @"didn't fail on nil input");
-
-  STAssertTrue([fm gtm_createFullPathToDirectory:testPath attributes:nil],
-               @"Failed to create nested testPath");
-  STAssertTrue([fm gtm_createFullPathToDirectory:testPath attributes:nil],
-               @"Failed to succeed on second create of testPath");
-
-  NSString *pathToFail = [@"/etc" stringByAppendingPathComponent:testPath];
-  STAssertFalse([fm gtm_createFullPathToDirectory:pathToFail attributes:nil],
-                @"We were allowed to create a dir in '/etc'?!");
-
-  STAssertFalse([fm gtm_createFullPathToDirectory:nil attributes:nil],
-                @"Should have failed when passed (nil)");
-}
-
-#endif  // GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-
 - (void)testfilePathsWithExtensionsInDirectory {
-  STAssertNotNil(baseDir_, @"setUp failed");
+  XCTAssertNotNil(baseDir_, @"setUp failed");
 
   NSFileManager *fm = [NSFileManager defaultManager];
   NSString *bogusPath = @"/some/place/that/does/not/exist";
@@ -94,23 +58,23 @@
   // test fail cases first
 
   // single
-  STAssertNil([fm gtm_filePathsWithExtension:nil inDirectory:nil],
-              @"shouldn't have gotten anything for nil dir");
-  STAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:nil],
-              @"shouldn't have gotten anything for nil dir");
-  STAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:bogusPath],
-              @"shouldn't have gotten anything for a bogus dir");
+  XCTAssertNil([fm gtm_filePathsWithExtension:nil inDirectory:nil],
+               @"shouldn't have gotten anything for nil dir");
+  XCTAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:nil],
+               @"shouldn't have gotten anything for nil dir");
+  XCTAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:bogusPath],
+               @"shouldn't have gotten anything for a bogus dir");
   // array
-  STAssertNil([fm gtm_filePathsWithExtensions:nil inDirectory:nil],
-              @"shouldn't have gotten anything for nil dir");
-  STAssertNil([fm gtm_filePathsWithExtensions:[NSArray array] inDirectory:nil],
-              @"shouldn't have gotten anything for nil dir");
-  STAssertNil([fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
-                                  inDirectory:nil],
-              @"shouldn't have gotten anything for nil dir");
-  STAssertNil([fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
-                                  inDirectory:bogusPath],
-              @"shouldn't have gotten anything for a bogus dir");
+  XCTAssertNil([fm gtm_filePathsWithExtensions:nil inDirectory:nil],
+               @"shouldn't have gotten anything for nil dir");
+  XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray array] inDirectory:nil],
+               @"shouldn't have gotten anything for nil dir");
+  XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
+                                   inDirectory:nil],
+               @"shouldn't have gotten anything for nil dir");
+  XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
+                                   inDirectory:bogusPath],
+               @"shouldn't have gotten anything for a bogus dir");
 
   // --------------------------------------------------------------------------
   // create some test data
@@ -126,26 +90,22 @@
     NSString *testDir = nil;
     if ([testDirs[i] length]) {
       testDir = [baseDir_ stringByAppendingPathComponent:testDirs[i]];
-#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
       NSError *error = nil;
-      STAssertTrue([fm createDirectoryAtPath:testDir
-                 withIntermediateDirectories:YES
-                                  attributes:nil
-                                       error:&error],
-                   @"Can't create %@ (%@)", testDir, error);
-#else
-      STAssertTrue([fm createDirectoryAtPath:testDir attributes:nil], nil);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+      XCTAssertTrue([fm createDirectoryAtPath:testDir
+                  withIntermediateDirectories:YES
+                                   attributes:nil
+                                        error:&error],
+                    @"Can't create %@ (%@)", testDir, error);
     } else {
       testDir = baseDir_;
     }
     for (size_t j = 0; j < sizeof(testFiles) / sizeof(NSString*); j++) {
       NSString *testFile = [testDir stringByAppendingPathComponent:testFiles[j]];
       NSError *err = nil;
-      STAssertTrue([@"test" writeToFile:testFile
-                             atomically:YES
-                               encoding:NSUTF8StringEncoding
-                                  error:&err], @"Error: %@", err);
+      XCTAssertTrue([@"test" writeToFile:testFile
+                              atomically:YES
+                                encoding:NSUTF8StringEncoding
+                                   error:&err], @"Error: %@", err);
     }
   }
 
@@ -173,23 +133,23 @@
 
   // single
   matches = [fm gtm_filePathsWithExtension:nil inDirectory:baseDir_];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:allFiles],
-                       @"didn't get all files for nil extension");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:allFiles],
+                        @"didn't get all files for nil extension");
   matches = [fm gtm_filePathsWithExtension:@"" inDirectory:baseDir_];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:allFiles],
-                       @"didn't get all files for nil extension");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:allFiles],
+                        @"didn't get all files for nil extension");
   // array
   matches = [fm gtm_filePathsWithExtensions:nil inDirectory:baseDir_];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:allFiles],
-                       @"didn't get all files for nil extension");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:allFiles],
+                        @"didn't get all files for nil extension");
   matches = [fm gtm_filePathsWithExtensions:[NSArray array]
                                 inDirectory:baseDir_];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:allFiles],
-                       @"didn't get all files for nil extension");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:allFiles],
+                        @"didn't get all files for nil extension");
 
   // --------------------------------------------------------------------------
   // test match something
@@ -198,21 +158,21 @@
   extensions = [NSArray arrayWithObject:@"txt"];
   matches = [fm gtm_filePathsWithExtension:@"txt" inDirectory:baseDir_];
   expectedMatches = [allFiles pathsMatchingExtensions:extensions];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:expectedMatches],
-                       @"didn't get expected files");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:expectedMatches],
+                        @"didn't get expected files");
   // array
   matches = [fm gtm_filePathsWithExtensions:extensions inDirectory:baseDir_];
   expectedMatches = [allFiles pathsMatchingExtensions:extensions];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:expectedMatches],
-                       @"didn't get expected files");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:expectedMatches],
+                        @"didn't get expected files");
   extensions = [NSArray arrayWithObjects:@"txt", @"rtf", @"xyz", nil];
   matches = [fm gtm_filePathsWithExtensions:extensions inDirectory:baseDir_];
   expectedMatches = [allFiles pathsMatchingExtensions:extensions];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:expectedMatches],
-                       @"didn't get expected files");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:expectedMatches],
+                        @"didn't get expected files");
 
   // --------------------------------------------------------------------------
   // test match nothing
@@ -221,43 +181,37 @@
   extensions = [NSArray arrayWithObject:@"xyz"];
   matches = [fm gtm_filePathsWithExtension:@"xyz" inDirectory:baseDir_];
   expectedMatches = [allFiles pathsMatchingExtensions:extensions];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:expectedMatches],
-                       @"didn't get expected files");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:expectedMatches],
+                        @"didn't get expected files");
   // array
   matches = [fm gtm_filePathsWithExtensions:extensions inDirectory:baseDir_];
   expectedMatches = [allFiles pathsMatchingExtensions:extensions];
-  STAssertEqualObjects([NSSet setWithArray:matches],
-                       [NSSet setWithArray:expectedMatches],
-                       @"didn't get expected files");
+  XCTAssertEqualObjects([NSSet setWithArray:matches],
+                        [NSSet setWithArray:expectedMatches],
+                        @"didn't get expected files");
 
   // --------------------------------------------------------------------------
   // test match an empty dir
 
   // create the empty dir
   NSString *emptyDir = [baseDir_ stringByAppendingPathComponent:@"emptyDir"];
-#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
   NSError *error = nil;
-  STAssertTrue([fm createDirectoryAtPath:emptyDir
-             withIntermediateDirectories:YES
-                              attributes:nil
-                                   error:&error],
-               @"Can't create %@ (%@)", emptyDir, error);
-#else
-  STAssertTrue([fm createDirectoryAtPath:emptyDir attributes:nil], nil);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
+  XCTAssertTrue([fm createDirectoryAtPath:emptyDir
+              withIntermediateDirectories:YES
+                               attributes:nil
+                                    error:&error],
+                @"Can't create %@ (%@)", emptyDir, error);
 
   // single
   matches = [fm gtm_filePathsWithExtension:@"txt" inDirectory:emptyDir];
-  STAssertEqualObjects([NSSet setWithArray:matches], [NSSet set],
-                       @"expected empty dir");
+  XCTAssertEqualObjects([NSSet setWithArray:matches], [NSSet set],
+                        @"expected empty dir");
   // array
   matches = [fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
                                 inDirectory:emptyDir];
-  STAssertEqualObjects([NSSet setWithArray:matches], [NSSet set],
-                       @"expected empty dir");
-
+  XCTAssertEqualObjects([NSSet setWithArray:matches], [NSSet set],
+                        @"expected empty dir");
 }
 
 @end

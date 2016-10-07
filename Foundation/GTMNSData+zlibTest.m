@@ -17,9 +17,8 @@
 //
 
 #import "GTMSenTestCase.h"
-#import "GTMUnitTestDevLog.h"
 #import "GTMNSData+zlib.h"
-#import <stdlib.h> // for randiom/srandomdev
+#import <stdlib.h> // for random/srandomdev
 #import <zlib.h>
 
 @interface GTMNSData_zlibTest : GTMTestCase
@@ -91,405 +90,526 @@ static BOOL HasGzipHeader(NSData *data) {
          ((bytes[0] == 0x1f) && (bytes[1] == 0x8b));
 }
 
+#define GTMCheckZLibError(error, errorCode) \
+  XCTAssertEqual([error code], GTMNSDataZlibErrorInternal); \
+  XCTAssertEqualObjects([error domain], GTMNSDataZlibErrorDomain); \
+  XCTAssertEqualObjects([[error userInfo] objectForKey:GTMNSDataZlibErrorKey], \
+                        [NSNumber numberWithInt:errorCode]); \
+  error = nil
+
+#define GTMCheckRemainingError(error, bytes) \
+  XCTAssertEqual([error code], GTMNSDataZlibErrorDataRemaining); \
+  XCTAssertEqualObjects([error domain], GTMNSDataZlibErrorDomain); \
+  XCTAssertEqualObjects([[error userInfo] objectForKey:GTMNSDataZlibRemainingBytesKey], \
+                        [NSNumber numberWithInt:bytes]); \
+  error = nil
 
 @implementation GTMNSData_zlibTest
 
-- (void)testBoundryValues {
+- (void)testBoundaryValues {
   // build some test data
   NSData *data = [NSData dataWithBytes:randomDataLarge
                                 length:sizeof(randomDataLarge)];
-  STAssertNotNil(data, @"failed to alloc data block");
+  XCTAssertNotNil(data, @"failed to alloc data block");
 
   // bogus args to start
-  STAssertNil([NSData gtm_dataByDeflatingData:nil], nil);
-  STAssertNil([NSData gtm_dataByDeflatingBytes:nil length:666], nil);
-  STAssertNil([NSData gtm_dataByDeflatingBytes:[data bytes] length:0], nil);
-  STAssertNil([NSData gtm_dataByGzippingData:nil], nil);
-  STAssertNil([NSData gtm_dataByGzippingBytes:nil length:666], nil);
-  STAssertNil([NSData gtm_dataByGzippingBytes:[data bytes] length:0], nil);
-  STAssertNil([NSData gtm_dataByInflatingData:nil], nil);
-  STAssertNil([NSData gtm_dataByInflatingBytes:nil length:666], nil);
-  STAssertNil([NSData gtm_dataByInflatingBytes:[data bytes] length:0], nil);
-  STAssertNil([NSData gtm_dataByRawDeflatingData:nil], nil);
-  STAssertNil([NSData gtm_dataByRawDeflatingBytes:nil length:666], nil);
-  STAssertNil([NSData gtm_dataByRawDeflatingBytes:[data bytes] length:0], nil);
-  STAssertNil([NSData gtm_dataByRawInflatingData:nil], nil);
-  STAssertNil([NSData gtm_dataByRawInflatingBytes:nil length:666], nil);
-  STAssertNil([NSData gtm_dataByRawInflatingBytes:[data bytes] length:0], nil);
+  NSError *error = nil;
+  XCTAssertNil([NSData gtm_dataByDeflatingData:nil error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByDeflatingBytes:nil length:666 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByDeflatingBytes:[data bytes] length:0 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByGzippingData:nil error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByGzippingBytes:nil length:666 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByGzippingBytes:[data bytes] length:0 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByInflatingData:nil error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByInflatingBytes:nil length:666 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByInflatingBytes:[data bytes] length:0 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByRawDeflatingData:nil error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByRawDeflatingBytes:nil length:666 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByRawDeflatingBytes:[data bytes] length:0 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByRawInflatingData:nil error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByRawInflatingBytes:nil length:666 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertNil([NSData gtm_dataByRawInflatingBytes:[data bytes] length:0 error:&error]);
+  XCTAssertNil(error);
+  error = nil;
 
   // test deflate w/ compression levels out of range
   NSData *deflated = [NSData gtm_dataByDeflatingData:data
-                                    compressionLevel:-4];
-  STAssertNotNil(deflated, nil);
-  STAssertFalse(HasGzipHeader(deflated), nil);
-  NSData *dataPrime = [NSData gtm_dataByInflatingData:deflated];
-  STAssertNotNil(dataPrime, nil);
-  STAssertEqualObjects(data, dataPrime, nil);
+                                    compressionLevel:-4
+                                               error:&error];
+  XCTAssertNotNil(deflated);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertFalse(HasGzipHeader(deflated));
+  NSData *dataPrime = [NSData gtm_dataByInflatingData:deflated error:&error];
+  XCTAssertNotNil(dataPrime);
+  XCTAssertEqualObjects(data, dataPrime);
+  XCTAssertNil(error);
+  error = nil;
   deflated = [NSData gtm_dataByDeflatingData:data
-                             compressionLevel:20];
-  STAssertNotNil(deflated, nil);
-  STAssertFalse(HasGzipHeader(deflated), nil);
-  dataPrime = [NSData gtm_dataByInflatingData:deflated];
-  STAssertNotNil(dataPrime, nil);
-  STAssertEqualObjects(data, dataPrime, nil);
+                             compressionLevel:20
+                                       error:&error];
+  XCTAssertNotNil(deflated);
+  XCTAssertFalse(HasGzipHeader(deflated));
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByInflatingData:deflated error:&error];
+  XCTAssertNotNil(dataPrime);
+  XCTAssertEqualObjects(data, dataPrime);
+  XCTAssertNil(error);
+  error = nil;
 
   // test gzip w/ compression levels out of range
   NSData *gzipped = [NSData gtm_dataByGzippingData:data
-                                   compressionLevel:-4];
-  STAssertNotNil(gzipped, nil);
-  STAssertTrue(HasGzipHeader(gzipped), nil);
-  dataPrime = [NSData gtm_dataByInflatingData:gzipped];
-  STAssertNotNil(dataPrime, nil);
-  STAssertEqualObjects(data, dataPrime, nil);
+                                   compressionLevel:-4
+                                             error:&error];
+  XCTAssertNotNil(gzipped);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertTrue(HasGzipHeader(gzipped));
+  dataPrime = [NSData gtm_dataByInflatingData:gzipped error:&error];
+  XCTAssertNotNil(dataPrime);
+  XCTAssertEqualObjects(data, dataPrime);
+  XCTAssertNil(error);
+  error = nil;
   gzipped = [NSData gtm_dataByGzippingData:data
-                           compressionLevel:20];
-  STAssertNotNil(gzipped, nil);
-  STAssertTrue(HasGzipHeader(gzipped), nil);
-  dataPrime = [NSData gtm_dataByInflatingData:gzipped];
-  STAssertNotNil(dataPrime, nil);
-  STAssertEqualObjects(data, dataPrime, nil);
+                           compressionLevel:20
+                                     error:&error];
+  XCTAssertNotNil(gzipped);
+  XCTAssertTrue(HasGzipHeader(gzipped));
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByInflatingData:gzipped error:&error];
+  XCTAssertNotNil(dataPrime);
+  XCTAssertEqualObjects(data, dataPrime);
+  XCTAssertNil(error);
+  error = nil;
 
   // test raw deflate w/ compression levels out of range
   NSData *rawDeflated = [NSData gtm_dataByRawDeflatingData:data
-                                          compressionLevel:-4];
-  STAssertNotNil(rawDeflated, nil);
-  STAssertFalse(HasGzipHeader(rawDeflated), nil);
-  dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated];
-  STAssertNotNil(dataPrime, nil);
-  STAssertEqualObjects(data, dataPrime, nil);
+                                          compressionLevel:-4
+                                                     error:&error];
+  XCTAssertNotNil(rawDeflated);
+  XCTAssertFalse(HasGzipHeader(rawDeflated));
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated error:&error];
+  XCTAssertNotNil(dataPrime);
+  XCTAssertEqualObjects(data, dataPrime);
+  XCTAssertNil(error);
+  error = nil;
   rawDeflated = [NSData gtm_dataByRawDeflatingData:data
-                                  compressionLevel:20];
-  STAssertNotNil(rawDeflated, nil);
-  STAssertFalse(HasGzipHeader(rawDeflated), nil);
-  dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated];
-  STAssertNotNil(dataPrime, nil);
-  STAssertEqualObjects(data, dataPrime, nil);
+                                  compressionLevel:20
+                                             error:&error];
+  XCTAssertNotNil(rawDeflated);
+  XCTAssertFalse(HasGzipHeader(rawDeflated));
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated error:&error];
+  XCTAssertNotNil(dataPrime);
+  XCTAssertEqualObjects(data, dataPrime);
+  XCTAssertNil(error);
+  error = nil;
 
   // test non-compressed data data itself
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: incorrect header check"];
-  STAssertNil([NSData gtm_dataByInflatingData:data], nil);
-
+  XCTAssertNil([NSData gtm_dataByInflatingData:data error:&error]);
+  GTMCheckZLibError(error, -3);
   // test deflated data runs that end before they are done
-  [GTMUnitTestDevLog expect:([deflated length] / 11) + 1
-              casesOfString:@"Error trying to inflate some of the payload, "
-   @"error -5: (null)"];
   for (NSUInteger x = 1 ; x < [deflated length] ; x += 11) {
-    STAssertNil([NSData gtm_dataByInflatingBytes:[deflated bytes]
-                                          length:x], nil);
+    XCTAssertNil([NSData gtm_dataByInflatingBytes:[deflated bytes]
+                                           length:x
+                                            error:&error]);
+    GTMCheckZLibError(error, -5);
   }
 
   // test gzipped data runs that end before they are done
-  [GTMUnitTestDevLog expect:([gzipped length] / 11) + 1
-              casesOfString:@"Error trying to inflate some of the payload, "
-   @"error -5: (null)"];
   for (NSUInteger x = 1 ; x < [gzipped length] ; x += 11) {
-    STAssertNil([NSData gtm_dataByInflatingBytes:[gzipped bytes]
-                                          length:x], nil);
+    XCTAssertNil([NSData gtm_dataByInflatingBytes:[gzipped bytes]
+                                           length:x
+                                            error:&error]);
+    GTMCheckZLibError(error, -5);
   }
 
   // test raw deflated data runs that end before they are done
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -5: (null)"];
-  [GTMUnitTestDevLog expect:([rawDeflated length] / 11) - 1
-              casesOfString:@"Error trying to inflate some of the payload, "
-   @"error -3: incorrect header check"];
   for (NSUInteger x = 1 ; x < [rawDeflated length] ; x += 11) {
-    STAssertNil([NSData gtm_dataByInflatingBytes:[rawDeflated bytes]
-                                          length:x], nil);
+    XCTAssertNil([NSData gtm_dataByInflatingBytes:[rawDeflated bytes]
+                                           length:x
+                                            error:&error]);
+    int expectedError = (x == 1) ? -5 : -3;
+    GTMCheckZLibError(error, expectedError);
   }
 
   // test extra data before the deflated/gzipped data (just to make sure we
   // don't seek to the "real" data)
   NSMutableData *prefixedDeflated =
     [NSMutableData dataWithBytes:randomDataSmall length:sizeof(randomDataSmall)];
-  STAssertNotNil(prefixedDeflated, @"failed to alloc data block");
+  XCTAssertNotNil(prefixedDeflated, @"failed to alloc data block");
   [prefixedDeflated appendData:deflated];
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: incorrect header check"];
-  STAssertNil([NSData gtm_dataByInflatingData:prefixedDeflated], nil);
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: incorrect header check"];
-  STAssertNil([NSData gtm_dataByInflatingBytes:[prefixedDeflated bytes]
-                                        length:[prefixedDeflated length]],
-              nil);
+  XCTAssertNil([NSData gtm_dataByInflatingData:prefixedDeflated error:&error]);
+  GTMCheckZLibError(error, -3);
+  XCTAssertNil([NSData gtm_dataByInflatingBytes:[prefixedDeflated bytes]
+                                         length:[prefixedDeflated length]
+                                          error:&error]);
+  GTMCheckZLibError(error, -3);
   NSMutableData *prefixedGzipped =
     [NSMutableData dataWithBytes:randomDataSmall length:sizeof(randomDataSmall)];
-  STAssertNotNil(prefixedDeflated, @"failed to alloc data block");
+  XCTAssertNotNil(prefixedDeflated, @"failed to alloc data block");
   [prefixedGzipped appendData:gzipped];
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: incorrect header check"];
-  STAssertNil([NSData gtm_dataByInflatingData:prefixedGzipped], nil);
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: incorrect header check"];
-  STAssertNil([NSData gtm_dataByInflatingBytes:[prefixedGzipped bytes]
-                                        length:[prefixedGzipped length]],
-              nil);
+  XCTAssertNil([NSData gtm_dataByInflatingData:prefixedGzipped error:&error]);
+  GTMCheckZLibError(error, -3);
+  XCTAssertNil([NSData gtm_dataByInflatingBytes:[prefixedGzipped bytes]
+                                         length:[prefixedGzipped length]
+                                          error:&error]);
+  GTMCheckZLibError(error, -3);
   NSMutableData *prefixedRawDeflated =
     [NSMutableData dataWithBytes:randomDataSmall length:sizeof(randomDataSmall)];
-  STAssertNotNil(prefixedRawDeflated, @"failed to alloc data block");
+  XCTAssertNotNil(prefixedRawDeflated, @"failed to alloc data block");
   [prefixedRawDeflated appendData:rawDeflated];
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: invalid stored block lengths"];
-  STAssertNil([NSData gtm_dataByRawInflatingData:prefixedRawDeflated], nil);
-  [GTMUnitTestDevLog expectString:@"Error trying to inflate some of the "
-   @"payload, error -3: invalid stored block lengths"];
-  STAssertNil([NSData gtm_dataByRawInflatingBytes:[prefixedRawDeflated bytes]
-                                           length:[prefixedRawDeflated length]],
-              nil);
+  XCTAssertNil([NSData gtm_dataByRawInflatingData:prefixedRawDeflated error:&error]);
+  GTMCheckZLibError(error, -3);
+  XCTAssertNil([NSData gtm_dataByRawInflatingBytes:[prefixedRawDeflated bytes]
+                                            length:[prefixedRawDeflated length]
+                                             error:&error]);
+  GTMCheckZLibError(error, -3);
 
   // test extra data after the deflated/gzipped data (just to make sure we
   // don't ignore some of the data)
   NSMutableData *suffixedDeflated = [NSMutableData data];
-  STAssertNotNil(suffixedDeflated, @"failed to alloc data block");
+  XCTAssertNotNil(suffixedDeflated, @"failed to alloc data block");
   [suffixedDeflated appendData:deflated];
   [suffixedDeflated appendBytes:[data bytes] length:20];
-  [GTMUnitTestDevLog expectString:@"thought we finished inflate w/o using "
-   @"all input, 20 bytes left"];
-  STAssertNil([NSData gtm_dataByInflatingData:suffixedDeflated], nil);
-  [GTMUnitTestDevLog expectString:@"thought we finished inflate w/o using "
-   @"all input, 20 bytes left"];
-  STAssertNil([NSData gtm_dataByInflatingBytes:[suffixedDeflated bytes]
-                                        length:[suffixedDeflated length]],
-              nil);
+  XCTAssertNil([NSData gtm_dataByInflatingData:suffixedDeflated
+                                         error:&error]);
+  GTMCheckRemainingError(error, 20);
+  XCTAssertNil([NSData gtm_dataByInflatingBytes:[suffixedDeflated bytes]
+                                         length:[suffixedDeflated length]
+                                          error:&error]);
+  GTMCheckRemainingError(error, 20);
   NSMutableData *suffixedGZipped = [NSMutableData data];
-  STAssertNotNil(suffixedGZipped, @"failed to alloc data block");
+  XCTAssertNotNil(suffixedGZipped, @"failed to alloc data block");
   [suffixedGZipped appendData:gzipped];
   [suffixedGZipped appendBytes:[data bytes] length:20];
-  [GTMUnitTestDevLog expectString:@"thought we finished inflate w/o using "
-   @"all input, 20 bytes left"];
-  STAssertNil([NSData gtm_dataByInflatingData:suffixedGZipped], nil);
-  [GTMUnitTestDevLog expectString:@"thought we finished inflate w/o using "
-   @"all input, 20 bytes left"];
-  STAssertNil([NSData gtm_dataByInflatingBytes:[suffixedGZipped bytes]
-                                        length:[suffixedGZipped length]],
-              nil);
+  XCTAssertNil([NSData gtm_dataByInflatingData:suffixedGZipped error:&error]);
+  GTMCheckRemainingError(error, 20);
+  XCTAssertNil([NSData gtm_dataByInflatingBytes:[suffixedGZipped bytes]
+                                         length:[suffixedGZipped length]
+                                          error:&error]);
+  GTMCheckRemainingError(error, 20);
   NSMutableData *suffixedRawDeflated = [NSMutableData data];
-  STAssertNotNil(suffixedRawDeflated, @"failed to alloc data block");
+  XCTAssertNotNil(suffixedRawDeflated, @"failed to alloc data block");
   [suffixedRawDeflated appendData:rawDeflated];
   [suffixedRawDeflated appendBytes:[data bytes] length:20];
-  [GTMUnitTestDevLog expectString:@"thought we finished inflate w/o using "
-   @"all input, 20 bytes left"];
-  STAssertNil([NSData gtm_dataByRawInflatingData:suffixedRawDeflated], nil);
-  [GTMUnitTestDevLog expectString:@"thought we finished inflate w/o using "
-   @"all input, 20 bytes left"];
-  STAssertNil([NSData gtm_dataByRawInflatingBytes:[suffixedRawDeflated bytes]
-                                           length:[suffixedRawDeflated length]],
-              nil);
+  XCTAssertNil([NSData gtm_dataByRawInflatingData:suffixedRawDeflated  error:&error]);
+  GTMCheckRemainingError(error, 20);
+  XCTAssertNil([NSData gtm_dataByRawInflatingBytes:[suffixedRawDeflated bytes]
+                                            length:[suffixedRawDeflated length]
+                                             error:&error]);
+  GTMCheckRemainingError(error, 20);
 }
 
 - (void)testInflateDeflate {
   NSData *data = [NSData dataWithBytes:randomDataLarge
                                 length:sizeof(randomDataLarge)];
-  STAssertNotNil(data, @"failed to alloc data block");
+  XCTAssertNotNil(data, @"failed to alloc data block");
 
   // w/ *Bytes apis, default level
+  NSError *error = nil;
   NSData *deflated = [NSData gtm_dataByDeflatingBytes:[data bytes]
-                                               length:[data length]];
-  STAssertNotNil(deflated, @"failed to deflate data block");
-  STAssertGreaterThan([deflated length],
-                      (NSUInteger)0, @"failed to deflate data block");
-  STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
+                                               length:[data length]
+                                                error:&error];
+  XCTAssertNotNil(deflated, @"failed to deflate data block");
+  XCTAssertGreaterThan([deflated length], (NSUInteger)0,
+                       @"failed to deflate data block");
+  XCTAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
+  XCTAssertNil(error);
+  error = nil;
+
   NSData *dataPrime = [NSData gtm_dataByInflatingBytes:[deflated bytes]
-                                                length:[deflated length]];
-  STAssertNotNil(dataPrime, @"failed to inflate data block");
-  STAssertGreaterThan([dataPrime length],
-                      (NSUInteger)0, @"failed to inflate data block");
-  STAssertEqualObjects(data,
-                       dataPrime, @"failed to round trip via *Bytes apis");
+                                                length:[deflated length]
+                                                 error:&error];
+  XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+  XCTAssertGreaterThan([dataPrime length], (NSUInteger)0,
+                       @"failed to inflate data block");
+  XCTAssertEqualObjects(data, dataPrime,
+                        @"failed to round trip via *Bytes apis");
+  XCTAssertNil(error);
+  error = nil;
 
   // w/ *Data apis, default level
-  deflated = [NSData gtm_dataByDeflatingData:data];
-  STAssertNotNil(deflated, @"failed to deflate data block");
-  STAssertGreaterThan([deflated length],
-                      (NSUInteger)0, @"failed to deflate data block");
-  STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
-  dataPrime = [NSData gtm_dataByInflatingData:deflated];
-  STAssertNotNil(dataPrime, @"failed to inflate data block");
-  STAssertGreaterThan([dataPrime length],
-                      (NSUInteger)0, @"failed to inflate data block");
-  STAssertEqualObjects(data,
-                       dataPrime, @"failed to round trip via *Data apis");
+  deflated = [NSData gtm_dataByDeflatingData:data  error:&error];
+  XCTAssertNotNil(deflated, @"failed to deflate data block");
+  XCTAssertGreaterThan([deflated length], (NSUInteger)0,
+                       @"failed to deflate data block");
+  XCTAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByInflatingData:deflated error:&error];
+
+  XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+  XCTAssertGreaterThan([dataPrime length], (NSUInteger)0,
+                       @"failed to inflate data block");
+  XCTAssertEqualObjects(data, dataPrime,
+                        @"failed to round trip via *Data apis");
+  XCTAssertNil(error);
+  error = nil;
 
   // loop over the compression levels
   for (int level = 1 ; level <= 9 ; ++level) {
     // w/ *Bytes apis, using our level
     deflated = [NSData gtm_dataByDeflatingBytes:[data bytes]
                                          length:[data length]
-                               compressionLevel:level];
-    STAssertNotNil(deflated, @"failed to deflate data block");
-    STAssertGreaterThan([deflated length],
-                        (NSUInteger)0, @"failed to deflate data block");
-    STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
+                               compressionLevel:level
+                                          error:&error];
+    XCTAssertNotNil(deflated, @"failed to deflate data block");
+    XCTAssertGreaterThan([deflated length],
+                         (NSUInteger)0, @"failed to deflate data block");
+    XCTAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
+    XCTAssertNil(error);
+    error = nil;
     dataPrime = [NSData gtm_dataByInflatingBytes:[deflated bytes]
-                                          length:[deflated length]];
-    STAssertNotNil(dataPrime, @"failed to inflate data block");
-    STAssertGreaterThan([dataPrime length],
-                        (NSUInteger)0, @"failed to inflate data block");
-    STAssertEqualObjects(data,
-                         dataPrime, @"failed to round trip via *Bytes apis");
+                                          length:[deflated length]
+                                           error:&error];
+    XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+    XCTAssertGreaterThan([dataPrime length],
+                         (NSUInteger)0, @"failed to inflate data block");
+    XCTAssertEqualObjects(data,
+                          dataPrime, @"failed to round trip via *Bytes apis");
+    XCTAssertNil(error);
+    error = nil;
 
     // w/ *Data apis, using our level
-    deflated = [NSData gtm_dataByDeflatingData:data compressionLevel:level];
-    STAssertNotNil(deflated, @"failed to deflate data block");
-    STAssertGreaterThan([deflated length],
-                        (NSUInteger)0, @"failed to deflate data block");
-    STAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
-    dataPrime = [NSData gtm_dataByInflatingData:deflated];
-    STAssertNotNil(dataPrime, @"failed to inflate data block");
-    STAssertGreaterThan([dataPrime length],
-                        (NSUInteger)0, @"failed to inflate data block");
-    STAssertEqualObjects(data,
-                         dataPrime, @"failed to round trip via *Data apis");
+    deflated = [NSData gtm_dataByDeflatingData:data compressionLevel:level error:&error];
+    XCTAssertNotNil(deflated, @"failed to deflate data block");
+    XCTAssertGreaterThan([deflated length],
+                         (NSUInteger)0, @"failed to deflate data block");
+    XCTAssertFalse(HasGzipHeader(deflated), @"has gzip header on zlib data");
+    XCTAssertNil(error);
+    error = nil;
+    dataPrime = [NSData gtm_dataByInflatingData:deflated error:&error];
+    XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+    XCTAssertGreaterThan([dataPrime length],
+                         (NSUInteger)0, @"failed to inflate data block");
+    XCTAssertEqualObjects(data,
+                          dataPrime, @"failed to round trip via *Data apis");
+    XCTAssertNil(error);
+    error = nil;
   }
 }
 
 - (void)testInflateGzip {
   NSData *data = [NSData dataWithBytes:randomDataLarge
                                 length:sizeof(randomDataLarge)];
-  STAssertNotNil(data, @"failed to alloc data block");
+  XCTAssertNotNil(data, @"failed to alloc data block");
 
   // w/ *Bytes apis, default level
+  NSError *error = nil;
   NSData *gzipped = [NSData gtm_dataByGzippingBytes:[data bytes]
                                              length:[data length]];
-  STAssertNotNil(gzipped, @"failed to gzip data block");
-  STAssertGreaterThan([gzipped length],
-                      (NSUInteger)0, @"failed to gzip data block");
-  STAssertTrue(HasGzipHeader(gzipped),
-               @"doesn't have gzip header on gzipped data");
+  XCTAssertNotNil(gzipped, @"failed to gzip data block");
+  XCTAssertGreaterThan([gzipped length],
+                       (NSUInteger)0, @"failed to gzip data block");
+  XCTAssertTrue(HasGzipHeader(gzipped),
+                @"doesn't have gzip header on gzipped data");
   NSData *dataPrime = [NSData gtm_dataByInflatingBytes:[gzipped bytes]
-                                                length:[gzipped length]];
-  STAssertNotNil(dataPrime, @"failed to inflate data block");
-  STAssertGreaterThan([dataPrime length],
-                      (NSUInteger)0, @"failed to inflate data block");
-  STAssertEqualObjects(data,
-                       dataPrime, @"failed to round trip via *Bytes apis");
+                                                length:[gzipped length]
+                                                 error:&error];
+  XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+  XCTAssertGreaterThan([dataPrime length],
+                       (NSUInteger)0, @"failed to inflate data block");
+  XCTAssertEqualObjects(data,
+                        dataPrime, @"failed to round trip via *Bytes apis");
+  XCTAssertNil(error);
+  error = nil;
 
   // w/ *Data apis, default level
-  gzipped = [NSData gtm_dataByGzippingData:data];
-  STAssertNotNil(gzipped, @"failed to gzip data block");
-  STAssertGreaterThan([gzipped length],
+  gzipped = [NSData gtm_dataByGzippingData:data error:&error];
+  XCTAssertNotNil(gzipped, @"failed to gzip data block");
+  XCTAssertGreaterThan([gzipped length],
                       (NSUInteger)0, @"failed to gzip data block");
-  STAssertTrue(HasGzipHeader(gzipped),
-               @"doesn't have gzip header on gzipped data");
-  dataPrime = [NSData gtm_dataByInflatingData:gzipped];
-  STAssertNotNil(dataPrime, @"failed to inflate data block");
-  STAssertGreaterThan([dataPrime length],
-                      (NSUInteger)0, @"failed to inflate data block");
-  STAssertEqualObjects(data, dataPrime,
-                       @"failed to round trip via *Data apis");
+  XCTAssertTrue(HasGzipHeader(gzipped),
+                @"doesn't have gzip header on gzipped data");
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByInflatingData:gzipped error:&error];
+  XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+  XCTAssertGreaterThan([dataPrime length],
+                       (NSUInteger)0, @"failed to inflate data block");
+  XCTAssertEqualObjects(data, dataPrime,
+                        @"failed to round trip via *Data apis");
+  XCTAssertNil(error);
+  error = nil;
 
   // loop over the compression levels
   for (int level = 1 ; level <= 9 ; ++level) {
     // w/ *Bytes apis, using our level
     gzipped = [NSData gtm_dataByGzippingBytes:[data bytes]
                                        length:[data length]
-                             compressionLevel:level];
-    STAssertNotNil(gzipped, @"failed to gzip data block");
-    STAssertGreaterThan([gzipped length],
-                        (NSUInteger)0, @"failed to gzip data block");
-    STAssertTrue(HasGzipHeader(gzipped),
-                 @"doesn't have gzip header on gzipped data");
+                             compressionLevel:level
+                                        error:&error];
+    XCTAssertNotNil(gzipped, @"failed to gzip data block");
+    XCTAssertGreaterThan([gzipped length],
+                         (NSUInteger)0, @"failed to gzip data block");
+    XCTAssertTrue(HasGzipHeader(gzipped),
+                  @"doesn't have gzip header on gzipped data");
+    XCTAssertNil(error);
+    error = nil;
     dataPrime = [NSData gtm_dataByInflatingBytes:[gzipped bytes]
-                                          length:[gzipped length]];
-    STAssertNotNil(dataPrime, @"failed to inflate data block");
-    STAssertGreaterThan([dataPrime length],
-                        (NSUInteger)0, @"failed to inflate data block");
-    STAssertEqualObjects(data, dataPrime,
-                         @"failed to round trip via *Bytes apis");
+                                          length:[gzipped length]
+                                           error:&error];
+    XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+    XCTAssertGreaterThan([dataPrime length],
+                         (NSUInteger)0, @"failed to inflate data block");
+    XCTAssertEqualObjects(data, dataPrime,
+                          @"failed to round trip via *Bytes apis");
+    XCTAssertNil(error);
+    error = nil;
 
     // w/ *Data apis, using our level
-    gzipped = [NSData gtm_dataByGzippingData:data compressionLevel:level];
-    STAssertNotNil(gzipped, @"failed to gzip data block");
-    STAssertGreaterThan([gzipped length],
-                        (NSUInteger)0, @"failed to gzip data block");
-    STAssertTrue(HasGzipHeader(gzipped),
-                 @"doesn't have gzip header on gzipped data");
-    dataPrime = [NSData gtm_dataByInflatingData:gzipped];
-    STAssertNotNil(dataPrime, @"failed to inflate data block");
-    STAssertGreaterThan([dataPrime length],
-                        (NSUInteger)0, @"failed to inflate data block");
-    STAssertEqualObjects(data,
-                         dataPrime, @"failed to round trip via *Data apis");
+    gzipped = [NSData gtm_dataByGzippingData:data compressionLevel:level error:&error];
+    XCTAssertNotNil(gzipped, @"failed to gzip data block");
+    XCTAssertGreaterThan([gzipped length],
+                         (NSUInteger)0, @"failed to gzip data block");
+    XCTAssertTrue(HasGzipHeader(gzipped),
+                  @"doesn't have gzip header on gzipped data");
+    XCTAssertNil(error);
+    error = nil;
+    dataPrime = [NSData gtm_dataByInflatingData:gzipped error:&error];
+    XCTAssertNotNil(dataPrime, @"failed to inflate data block");
+    XCTAssertGreaterThan([dataPrime length],
+                         (NSUInteger)0, @"failed to inflate data block");
+    XCTAssertEqualObjects(data,
+                          dataPrime, @"failed to round trip via *Data apis");
+    XCTAssertNil(error);
+    error = nil;
   }
 }
 
 - (void)testRawtInflateRawDeflate {
+  NSError *error = nil;
   NSData *data = [NSData dataWithBytes:randomDataLarge
                                 length:sizeof(randomDataLarge)];
-  STAssertNotNil(data, @"failed to alloc data block");
+  XCTAssertNotNil(data, @"failed to alloc data block");
 
   // w/ *Bytes apis, default level
   NSData *rawDeflated = [NSData gtm_dataByRawDeflatingBytes:[data bytes]
-                                                     length:[data length]];
-  STAssertNotNil(rawDeflated, @"failed to raw deflate data block");
-  STAssertGreaterThan([rawDeflated length],
-                      (NSUInteger)0, @"failed to raw deflate data block");
-  STAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
+                                                     length:[data length]
+                                                      error:&error];
+  XCTAssertNotNil(rawDeflated, @"failed to raw deflate data block");
+  XCTAssertGreaterThan([rawDeflated length],
+                       (NSUInteger)0, @"failed to raw deflate data block");
+  XCTAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
+  XCTAssertNil(error);
+  error = nil;
   NSData *dataPrime = [NSData gtm_dataByRawInflatingBytes:[rawDeflated bytes]
-                                                   length:[rawDeflated length]];
-  STAssertNotNil(dataPrime, @"failed to raw inflate data block");
-  STAssertGreaterThan([dataPrime length],
-                      (NSUInteger)0, @"failed to raw inflate data block");
-  STAssertEqualObjects(data,
-                       dataPrime, @"failed to round trip via *Bytes apis");
+                                                   length:[rawDeflated length]
+                                                    error:&error];
+  XCTAssertNotNil(dataPrime, @"failed to raw inflate data block");
+  XCTAssertGreaterThan([dataPrime length],
+                       (NSUInteger)0, @"failed to raw inflate data block");
+  XCTAssertEqualObjects(data,
+                        dataPrime, @"failed to round trip via *Bytes apis");
+  XCTAssertNil(error);
+  error = nil;
 
   // w/ *Data apis, default level
-  rawDeflated = [NSData gtm_dataByRawDeflatingData:data];
-  STAssertNotNil(rawDeflated, @"failed to raw deflate data block");
-  STAssertGreaterThan([rawDeflated length],
-                      (NSUInteger)0, @"failed to raw deflate data block");
-  STAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
-  dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated];
-  STAssertNotNil(dataPrime, @"failed to raw inflate data block");
-  STAssertGreaterThan([dataPrime length],
-                      (NSUInteger)0, @"failed to raw inflate data block");
-  STAssertEqualObjects(data,
-                       dataPrime, @"failed to round trip via *Data apis");
+  rawDeflated = [NSData gtm_dataByRawDeflatingData:data error:&error];
+  XCTAssertNotNil(rawDeflated, @"failed to raw deflate data block");
+  XCTAssertGreaterThan([rawDeflated length],
+                       (NSUInteger)0, @"failed to raw deflate data block");
+  XCTAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
+  XCTAssertNil(error);
+  error = nil;
+  dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated error:&error];
+  XCTAssertNotNil(dataPrime, @"failed to raw inflate data block");
+  XCTAssertGreaterThan([dataPrime length],
+                       (NSUInteger)0, @"failed to raw inflate data block");
+  XCTAssertEqualObjects(data,
+                        dataPrime, @"failed to round trip via *Data apis");
+  XCTAssertNil(error);
+  error = nil;
 
   // loop over the compression levels
   for (int level = 1 ; level <= 9 ; ++level) {
     // w/ *Bytes apis, using our level
     rawDeflated = [NSData gtm_dataByRawDeflatingBytes:[data bytes]
                                                length:[data length]
-                                     compressionLevel:level];
-    STAssertNotNil(rawDeflated, @"failed to rawDeflate data block");
-    STAssertGreaterThan([rawDeflated length],
-                        (NSUInteger)0, @"failed to raw deflate data block");
-    STAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
+                                     compressionLevel:level
+                                                error:&error];
+    XCTAssertNotNil(rawDeflated, @"failed to rawDeflate data block");
+    XCTAssertGreaterThan([rawDeflated length],
+                         (NSUInteger)0, @"failed to raw deflate data block");
+    XCTAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
+    XCTAssertNil(error);
+    error = nil;
     dataPrime = [NSData gtm_dataByRawInflatingBytes:[rawDeflated bytes]
-                                             length:[rawDeflated length]];
-    STAssertNotNil(dataPrime, @"failed to raw inflate data block");
-    STAssertGreaterThan([dataPrime length],
-                        (NSUInteger)0, @"failed to raw inflate data block");
-    STAssertEqualObjects(data,
-                         dataPrime, @"failed to round trip via *Bytes apis");
+                                             length:[rawDeflated length]
+                                              error:&error];
+    XCTAssertNotNil(dataPrime, @"failed to raw inflate data block");
+    XCTAssertGreaterThan([dataPrime length],
+                         (NSUInteger)0, @"failed to raw inflate data block");
+    XCTAssertEqualObjects(data,
+                          dataPrime, @"failed to round trip via *Bytes apis");
+    XCTAssertNil(error);
+    error = nil;
 
     // w/ *Data apis, using our level
     rawDeflated = [NSData gtm_dataByRawDeflatingData:data
-                                    compressionLevel:level];
-    STAssertNotNil(rawDeflated, @"failed to deflate data block");
-    STAssertGreaterThan([rawDeflated length],
-                        (NSUInteger)0, @"failed to raw deflate data block");
-    STAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
-    dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated];
-    STAssertNotNil(dataPrime, @"failed to raw inflate data block");
-    STAssertGreaterThan([dataPrime length],
-                        (NSUInteger)0, @"failed to raw inflate data block");
-    STAssertEqualObjects(data,
-                         dataPrime, @"failed to round trip via *Data apis");
+                                    compressionLevel:level
+                                               error:&error];
+    XCTAssertNotNil(rawDeflated, @"failed to deflate data block");
+    XCTAssertGreaterThan([rawDeflated length],
+                         (NSUInteger)0, @"failed to raw deflate data block");
+    XCTAssertFalse(HasGzipHeader(rawDeflated), @"has gzip header on raw data");
+    XCTAssertNil(error);
+    error = nil;
+    dataPrime = [NSData gtm_dataByRawInflatingData:rawDeflated error:&error];
+    XCTAssertNotNil(dataPrime, @"failed to raw inflate data block");
+    XCTAssertGreaterThan([dataPrime length],
+                         (NSUInteger)0, @"failed to raw inflate data block");
+    XCTAssertEqualObjects(data,
+                          dataPrime, @"failed to round trip via *Data apis");
+    XCTAssertNil(error);
+    error = nil;
   }
 }
 
 - (void)testLargeData {
   // Generate some large data out of the random chunk by xoring over it
   // to make sure it changes and isn't too repeated.
+  NSError *error = nil;
   NSData *data = [NSData dataWithBytes:randomDataLarge
                                 length:sizeof(randomDataLarge)];
-  STAssertNotNil(data, @"failed to alloc data block");
+  XCTAssertNotNil(data, @"failed to alloc data block");
   const uint8_t *dataBytes = [data bytes];
   NSMutableData *scratch = [NSMutableData dataWithLength:[data length]];
-  STAssertNotNil(scratch, @"failed to alloc data block");
+  XCTAssertNotNil(scratch, @"failed to alloc data block");
   uint8_t *scratchBytes = [scratch mutableBytes];
   NSMutableData *input = [NSMutableData dataWithCapacity:200 * [data length]];
   for (NSUInteger i = 0; i < 200; ++i) {
@@ -505,22 +625,27 @@ static BOOL HasGzipHeader(NSData *data) {
   // Should deflate to more then one buffer size to make sure the internal loop
   // is working.
   NSData *compressed = [NSData gtm_dataByDeflatingData:input
-                                      compressionLevel:9];
-  STAssertNotNil(compressed, @"failed to deflate");
-  STAssertGreaterThan([compressed length], internalBufferSize,
-                      @"should have been more then %d bytes",
-                      (int)internalBufferSize);
+                                      compressionLevel:9
+                                                 error:&error];
+  XCTAssertNotNil(compressed, @"failed to deflate");
+  XCTAssertGreaterThan([compressed length], internalBufferSize,
+                       @"should have been more then %d bytes",
+                       (int)internalBufferSize);
+  XCTAssertNil(error);
+  error = nil;
 
   // Should inflate to more then one buffer size to make sure the internal loop
   // is working.
-  NSData *uncompressed = [NSData gtm_dataByInflatingData:compressed];
-  STAssertNotNil(uncompressed, @"fail to inflate");
-  STAssertGreaterThan([uncompressed length], internalBufferSize,
-                      @"should have been more then %d bytes",
-                      (int)internalBufferSize);
+  NSData *uncompressed = [NSData gtm_dataByInflatingData:compressed error:&error];
+  XCTAssertNotNil(uncompressed, @"fail to inflate");
+  XCTAssertGreaterThan([uncompressed length], internalBufferSize,
+                       @"should have been more then %d bytes",
+                       (int)internalBufferSize);
 
-  STAssertEqualObjects(uncompressed, input,
-                       @"didn't get the same thing back");
+  XCTAssertEqualObjects(uncompressed, input,
+                        @"didn't get the same thing back");
+  XCTAssertNil(error);
+  error = nil;
 }
 
 @end

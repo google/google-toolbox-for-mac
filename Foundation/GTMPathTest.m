@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMPath.h"
-#import "GTMUnitTestDevLog.h"
 #import "GTMNSFileHandle+UniqueName.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5

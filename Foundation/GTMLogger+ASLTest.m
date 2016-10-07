@@ -57,10 +57,10 @@ static NSMutableArray *gDummyLog;  // weak
 
 - (void)testCreation {
   GTMLogger *aslLogger = [GTMLogger standardLoggerWithASL];
-  STAssertNotNil(aslLogger, nil);
+  XCTAssertNotNil(aslLogger);
 
   GTMLogASLWriter *writer = [GTMLogASLWriter aslWriter];
-  STAssertNotNil(writer, nil);
+  XCTAssertNotNil(writer);
 }
 
 - (void)testLogWriter {
@@ -71,8 +71,8 @@ static NSMutableArray *gDummyLog;  // weak
                              autorelease];
 
 
-  STAssertNotNil(writer, nil);
-  STAssertEquals([gDummyLog count], (NSUInteger)0, nil);
+  XCTAssertNotNil(writer);
+  XCTAssertEqual([gDummyLog count], (NSUInteger)0);
 
   // Log some messages
   [writer logMessage:@"unknown" level:kGTMLoggerLevelUnknown];
@@ -93,7 +93,7 @@ static NSMutableArray *gDummyLog;  // weak
                        @"-assert-1",
                        nil];
 
-  STAssertEqualObjects(gDummyLog, expected, nil);
+  XCTAssertEqualObjects(gDummyLog, expected);
   [gDummyLog removeAllObjects];
 
   // Same test with facility
@@ -102,8 +102,8 @@ static NSMutableArray *gDummyLog;  // weak
                           facility:@"testfac"] autorelease];
 
 
-  STAssertNotNil(writer, nil);
-  STAssertEquals([gDummyLog count], (NSUInteger)0, nil);
+  XCTAssertNotNil(writer);
+  XCTAssertEqual([gDummyLog count], (NSUInteger)0);
 
   [writer logMessage:@"unknown" level:kGTMLoggerLevelUnknown];
   [writer logMessage:@"debug" level:kGTMLoggerLevelDebug];
@@ -117,14 +117,14 @@ static NSMutableArray *gDummyLog;  // weak
                 @"testfac-error-3",
                 @"testfac-assert-1",
                 nil];
-  STAssertEqualObjects(gDummyLog, expected, nil);
+  XCTAssertEqualObjects(gDummyLog, expected);
 
   gDummyLog = nil;
 }
 
 - (void)testASLClient {
   GTMLoggerASLClient *client = [[GTMLoggerASLClient alloc] init];
-  STAssertNotNil(client, nil);
+  XCTAssertNotNil(client);
   [client release];
 }
 

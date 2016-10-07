@@ -34,6 +34,10 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+#if (!TARGET_OS_IPHONE && defined(MAC_OS_X_VERSION_10_10) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10) \
+|| (TARGET_OS_IPHONE && defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0)
+__deprecated_msg("GTMURLBuilder is obsolete; update your app to use NSURLComponents queryItems property instead.")
+#endif
 @interface GTMURLBuilder : NSObject {
  @private
   NSMutableDictionary *params_;

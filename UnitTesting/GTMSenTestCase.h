@@ -90,7 +90,7 @@
 
 #define _XCExceptionFormatString @"throwing \"%@\""
 #define _XCUnknownExceptionString @"throwing an unknown exception"
-#if defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+#if (defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0) || (GTM_MACOS_SDK == 1)
 // They changed the call to _XCTRegisterFailure in iOS 8. Once we no longer need to support
 // the iOS 7 SDK, we can remove this.
 #define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(self, expression, format)
@@ -111,7 +111,7 @@
   @try { \
     __typeof__(a1) _a1value = (a1); \
     if (_a1value != noErr) { \
-      _failure = [NSString stringWithFormat:@"%ld != noErr", (long)_a1value]; \
+      _failure = [NSString stringWithFormat:@"%d != noErr", (int)_a1value]; \
     } \
   } \
   @catch (NSException *_exception) { \
@@ -142,7 +142,7 @@
     __typeof__(a1) _a1value = (a1); \
     __typeof__(a2) _a2value = (a2); \
     if (_a1value != _a2value) { \
-      _failure = [NSString stringWithFormat:@"(%ld) != (%ld)", (long)_a1value, (long)_a2value]; \
+      _failure = [NSString stringWithFormat:@"(%d) != (%d)", (int)_a1value, (int)_a2value]; \
     } \
   } \
   @catch (NSException *_exception) { \
@@ -152,7 +152,7 @@
     _failure = @": " _XCUnknownExceptionString; \
   } \
   if (_failure) { \
-     NSString *_expression = [NSString stringWithFormat:@"((%@) != (@%)) failed %@", @#a1, @#a2, _failure]; \
+     NSString *_expression = [NSString stringWithFormat:@"((%@) != (%@)) failed %@", @#a1, @#a2, _failure]; \
     _GTMXCRegisterFailure(_expression, format); \
   } \
 })
@@ -734,12 +734,12 @@ do { \
 
 // SENTE_BEGIN
 /*" Generates a failure when !{ [a1 isEqualTo:a2] } is false
-	(or one is nil and the other is not).
-	_{a1    The object on the left.}
-	_{a2    The object on the right.}
-	_{description A format string as in the printf() function. Can be nil or
-		an empty string but must be present.}
-	_{... A variable number of arguments to the format string. Can be absent.}
+  (or one is nil and the other is not).
+  _{a1    The object on the left.}
+  _{a2    The object on the right.}
+  _{description A format string as in the printf() function. Can be nil or
+    an empty string but must be present.}
+  _{... A variable number of arguments to the format string. Can be absent.}
 "*/
 #define STAssertEqualObjects(a1, a2, description, ...) \
 do { \

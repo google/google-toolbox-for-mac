@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -24,15 +24,6 @@
 #else  // GTM_IPHONE_SDK
 #import <Cocoa/Cocoa.h>
 #endif  // GTM_IPHONE_SDK
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
-// Tiger does not have this functionality, so we just set them to 0
-// as they are "or'd" in. This does change the functionality slightly.
-enum {
-  NSDiacriticInsensitiveSearch = 0,
-  NSWidthInsensitiveSearch = 0
-};
-#endif
 
 NSString *const kGTMABUnknownPropertyName = @"UNKNOWN_PROPERTY";
 
@@ -62,11 +53,9 @@ typedef struct {
 + (id)valueEnumeratorFor:(GTMABMultiValue*)enumeree;
 + (id)labelEnumeratorFor:(GTMABMultiValue*)enumeree;
 - (id)initWithEnumeree:(GTMABMultiValue*)enumeree useLabels:(BOOL)useLabels;
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state 
-                                  objects:(id *)stackbuf 
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+                                  objects:(id *)stackbuf
                                     count:(NSUInteger)len;
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 @end
 
 @implementation GTMABAddressBook
@@ -109,7 +98,7 @@ typedef struct {
   CFErrorRef cfError = NULL;
   bool wasGood = ABAddressBookSave(addressBook_, &cfError);
   if (!wasGood) {
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
   }
@@ -135,13 +124,13 @@ typedef struct {
   if (!record) return NO;
 #if GTM_IPHONE_SDK
   CFErrorRef cfError = NULL;
-  bool wasGood = ABAddressBookAddRecord(addressBook_, 
+  bool wasGood = ABAddressBookAddRecord(addressBook_,
                                         [record recordRef], &cfError);
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
-    CFRelease(cfError);  
+    CFRelease(cfError);
     // COV_NF_END
   }
 #else  // GTM_IPHONE_SDK
@@ -156,11 +145,11 @@ typedef struct {
   if (!record) return NO;
 #if GTM_IPHONE_SDK
   CFErrorRef cfError = NULL;
-  bool wasGood = ABAddressBookRemoveRecord(addressBook_, 
+  bool wasGood = ABAddressBookRemoveRecord(addressBook_,
                                            [record recordRef], &cfError);
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
     // COV_NF_END
@@ -175,19 +164,19 @@ typedef struct {
   }
 #endif  // GTM_IPHONE_SDK
   return wasGood ? YES : NO;
-}  
+}
 
 - (NSArray *)people {
 #if GTM_IPHONE_SDK
-  NSArray *people 
+  NSArray *people
     = GTMCFAutorelease(ABAddressBookCopyArrayOfAllPeople(addressBook_));
 #else  // GTM_IPHONE_SDK
-  NSArray *people 
+  NSArray *people
     = GTMCFAutorelease(ABCopyArrayOfAllPeople(addressBook_));
-#endif  // GTM_IPHONE_SDK  
+#endif  // GTM_IPHONE_SDK
   NSMutableArray *result = [NSMutableArray arrayWithCapacity:[people count]];
   id person;
-  GTM_FOREACH_OBJECT(person, people) {
+  for (person in people) {
     [result addObject:[GTMABPerson recordWithRecord:person]];
   }
   return result;
@@ -195,15 +184,15 @@ typedef struct {
 
 - (NSArray *)groups {
 #if GTM_IPHONE_SDK
-  NSArray *groups 
+  NSArray *groups
     = GTMCFAutorelease(ABAddressBookCopyArrayOfAllGroups(addressBook_));
 #else  // GTM_IPHONE_SDK
-  NSArray *groups 
+  NSArray *groups
     = GTMCFAutorelease(ABCopyArrayOfAllGroups(addressBook_));
-#endif  // GTM_IPHONE_SDK  
+#endif  // GTM_IPHONE_SDK
   NSMutableArray *result = [NSMutableArray arrayWithCapacity:[groups count]];
   id group;
-  GTM_FOREACH_OBJECT(group, groups) {
+  for (group in groups) {
     [result addObject:[GTMABGroup recordWithRecord:group]];
   }
   return result;
@@ -218,7 +207,7 @@ typedef struct {
 #if GTM_IPHONE_SDK
   ABRecordRef ref = ABAddressBookGetPersonWithRecordID(addressBook_, uniqueId);
 #else  // GTM_IPHONE_SDK
-  ABRecordRef ref = ABCopyRecordForUniqueId(addressBook_, 
+  ABRecordRef ref = ABCopyRecordForUniqueId(addressBook_,
                                             (CFStringRef)uniqueId);
 #endif  // GTM_IPHONE_SDK
   if (ref) {
@@ -232,7 +221,7 @@ typedef struct {
 #if GTM_IPHONE_SDK
   ABRecordRef ref = ABAddressBookGetGroupWithRecordID(addressBook_, uniqueId);
 #else  // GTM_IPHONE_SDK
-  ABRecordRef ref = ABCopyRecordForUniqueId(addressBook_, 
+  ABRecordRef ref = ABCopyRecordForUniqueId(addressBook_,
                                             (CFStringRef)uniqueId);
 #endif  // GTM_IPHONE_SDK
   if (ref) {
@@ -241,16 +230,16 @@ typedef struct {
   return group;
 }
 
-// Performs a prefix search on the composite names of people in an address book 
+// Performs a prefix search on the composite names of people in an address book
 // and returns an array of persons that match the search criteria.
 - (NSArray *)peopleWithCompositeNameWithPrefix:(NSString *)prefix {
 #if GTM_IPHONE_SDK
-  NSArray *people = 
+  NSArray *people =
     GTMCFAutorelease(ABAddressBookCopyPeopleWithName(addressBook_,
                                                      (CFStringRef)prefix));
   NSMutableArray *gtmPeople = [NSMutableArray arrayWithCapacity:[people count]];
   id person;
-  GTM_FOREACH_OBJECT(person, people) {
+  for (person in people) {
     GTMABPerson *gtmPerson = [GTMABPerson recordWithRecord:person];
     [gtmPeople addObject:gtmPerson];
   }
@@ -263,10 +252,10 @@ typedef struct {
   NSArray *people = [self people];
   NSMutableArray *foundPeople = [NSMutableArray array];
   GTMABPerson *person;
-  GTM_FOREACH_OBJECT(person, people) {
+  for (person in people) {
     NSString *compositeName = [person compositeName];
     NSRange range = [compositeName rangeOfString:prefix
-                                         options:(NSCaseInsensitiveSearch 
+                                         options:(NSCaseInsensitiveSearch
                                                   | NSDiacriticInsensitiveSearch
                                                   | NSWidthInsensitiveSearch
                                                   | NSAnchoredSearch)];
@@ -278,16 +267,16 @@ typedef struct {
 #endif
 }
 
-// Performs a prefix search on the composite names of groups in an address book 
+// Performs a prefix search on the composite names of groups in an address book
 // and returns an array of groups that match the search criteria.
 - (NSArray *)groupsWithCompositeNameWithPrefix:(NSString *)prefix {
   NSArray *groups = [self groups];
   NSMutableArray *foundGroups = [NSMutableArray array];
   GTMABGroup *group;
-  GTM_FOREACH_OBJECT(group, groups) {
+  for (group in groups) {
     NSString *compositeName = [group compositeName];
     NSRange range = [compositeName rangeOfString:prefix
-                                         options:(NSCaseInsensitiveSearch 
+                                         options:(NSCaseInsensitiveSearch
                                                   | NSDiacriticInsensitiveSearch
                                                   | NSWidthInsensitiveSearch
                                                   | NSAnchoredSearch)];
@@ -296,7 +285,7 @@ typedef struct {
     }
   }
   return foundGroups;
-}  
+}
 
 + (NSString *)localizedLabel:(NSString *)label {
 #if GTM_IPHONE_SDK
@@ -342,7 +331,7 @@ typedef struct {
   // 6203836 ABRecords hash to their address
   // but it's the best we can do without knowing what properties
   // are in a record, and we don't have an API for that.
-  return [object respondsToSelector:@selector(recordRef)] 
+  return [object respondsToSelector:@selector(recordRef)]
     && CFEqual(record_, [object recordRef]);
 }
 
@@ -368,12 +357,12 @@ typedef struct {
 - (id)valueForProperty:(GTMABPropertyID)property {
 #if GTM_IPHONE_SDK
   id value = GTMCFAutorelease(ABRecordCopyValue(record_, property));
-#else  // GTM_IPHONE_SDK 
+#else  // GTM_IPHONE_SDK
   id value = GTMCFAutorelease(ABRecordCopyValue(record_, (CFStringRef)property));
 #endif  // GTM_IPHONE_SDK
   if (value) {
     if ([[self class] typeOfProperty:property] & kABMultiValueMask) {
-      value = [[[GTMABMultiValue alloc] 
+      value = [[[GTMABMultiValue alloc]
                 initWithMultiValue:(ABMultiValueRef)value] autorelease];
     }
   }
@@ -384,7 +373,7 @@ typedef struct {
   if (!value) return NO;
   // We check the type here because of
   // Radar 6201046 ABRecordSetValue returns true even if you pass in a bad type
-  //               for a value  
+  //               for a value
   TypeClassNameMap fullTypeMap[] = {
     { kGTMABStringPropertyType, [NSString class] },
     { kGTMABIntegerPropertyType, [NSNumber class] },
@@ -414,11 +403,11 @@ typedef struct {
   }
 #if GTM_IPHONE_SDK
   CFErrorRef cfError = nil;
-  bool wasGood = ABRecordSetValue(record_, property, 
+  bool wasGood = ABRecordSetValue(record_, property,
                                   (CFTypeRef)value, &cfError);
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
     // COV_NF_END
@@ -433,13 +422,13 @@ typedef struct {
 #if GTM_IPHONE_SDK
   CFErrorRef cfError = nil;
   // We check to see if the value is in the property because of:
-  // Radar 6201005 ABRecordRemoveValue returns true for value that aren't 
+  // Radar 6201005 ABRecordRemoveValue returns true for value that aren't
   //               in the record
   id value = [self valueForProperty:property];
   bool wasGood = value && ABRecordRemoveValue(record_, property, &cfError);
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
     // COV_NF_END
@@ -466,20 +455,20 @@ typedef struct {
 
 + (NSString *)localizedPropertyName:(GTMABPropertyID)property {
   [self doesNotRecognizeSelector:_cmd];
-  return nil; 
+  return nil;
 }
 // COV_NF_END
 @end
 
 @implementation GTMABPerson
 
-+ (GTMABPerson *)personWithFirstName:(NSString *)first 
++ (GTMABPerson *)personWithFirstName:(NSString *)first
                             lastName:(NSString *)last {
   GTMABPerson *person = [[[self alloc] init] autorelease];
   if (person) {
     BOOL isGood = YES;
     if (first) {
-      isGood = [person setValue:first 
+      isGood = [person setValue:first
                     forProperty:kGTMABPersonFirstNameProperty];
     }
     if (isGood && last) {
@@ -500,7 +489,7 @@ typedef struct {
   self = [super initWithRecord:person];
   if (person) {
     CFRelease(person);
-  } 
+  }
   return self;
 }
 
@@ -514,12 +503,12 @@ typedef struct {
     // We verify that the data is good because of:
     // Radar 6202868 ABPersonSetImageData should validate image data
     UIImage *image = [UIImage imageWithData:data];
-    wasGood = image && ABPersonSetImageData([self recordRef], 
+    wasGood = image && ABPersonSetImageData([self recordRef],
                                             (CFDataRef)data, &cfError);
   }
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
     // COV_NF_END
@@ -569,7 +558,7 @@ typedef struct {
   } else {
     NSString *firstName = [self valueForProperty:kGTMABPersonFirstNameProperty];
     NSString *lastName = [self valueForProperty:kGTMABPersonLastNameProperty];
-    
+
     if (firstName && lastName) {
       GTMABPersonCompositeNameFormat format;
       if (flags & kABFirstNameFirst) {
@@ -593,7 +582,7 @@ typedef struct {
       compositeName = @"";
     }
   }
-    
+
   return compositeName;
 #endif  // GTM_IPHONE_SDK
 }
@@ -601,13 +590,13 @@ typedef struct {
 - (NSString *)description {
 #if GTM_IPHONE_SDK
   return [NSString stringWithFormat:@"%@ %@ %@ %d",
-          [self class], 
+          [self class],
           [self valueForProperty:kGTMABPersonFirstNameProperty],
           [self valueForProperty:kGTMABPersonLastNameProperty],
-          [self recordID]]; 
+          [self recordID]];
 #else  // GTM_IPHONE_SDK
   return [NSString stringWithFormat:@"%@ %@ %@ %@",
-          [self class], 
+          [self class],
           [self valueForProperty:kGTMABPersonFirstNameProperty],
           [self valueForProperty:kGTMABPersonLastNameProperty],
           [self recordID]];
@@ -616,7 +605,7 @@ typedef struct {
 
 + (NSString *)localizedPropertyName:(GTMABPropertyID)property {
 #if GTM_IPHONE_SDK
-  return GTMCFAutorelease(ABPersonCopyLocalizedPropertyName(property)); 
+  return GTMCFAutorelease(ABPersonCopyLocalizedPropertyName(property));
 #else  // GTM_IPHONE_SDK
   return ABLocalizedPropertyOrLabel(property);
 #endif  // GTM_IPHONE_SDK
@@ -630,9 +619,9 @@ typedef struct {
     return ABPersonGetCompositeNameFormatForRecord(NULL);
   #endif  // __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
 #else  // GTM_IPHONE_SDK
-  NSInteger nameOrdering 
+  NSInteger nameOrdering
     = [[ABAddressBook sharedAddressBook] defaultNameOrdering];
-  return nameOrdering == kABFirstNameFirst ? 
+  return nameOrdering == kABFirstNameFirst ?
     kABPersonCompositeNameFormatFirstNameFirst :
     kABPersonCompositeNameFormatLastNameFirst;
 #endif  // GTM_IPHONE_SDK
@@ -642,8 +631,8 @@ typedef struct {
 #if GTM_IPHONE_SDK
   return ABPersonGetTypeOfProperty(property);
 #else  // GTM_IPHONE_SDK
-  return ABTypeOfProperty([[GTMABAddressBook addressBook] addressBookRef], 
-                          (CFStringRef)kABPersonRecordType, 
+  return ABTypeOfProperty([[GTMABAddressBook addressBook] addressBookRef],
+                          (CFStringRef)kABPersonRecordType,
                           (CFStringRef)property);
 #endif  // GTM_IPHONE_SDK
 }
@@ -669,41 +658,41 @@ typedef struct {
   self = [super initWithRecord:group];
   if (group) {
     CFRelease(group);
-  } 
+  }
   return self;
 }
 
 - (NSArray *)members {
-  NSArray *people 
+  NSArray *people
     = GTMCFAutorelease(ABGroupCopyArrayOfAllMembers([self recordRef]));
   NSMutableArray *gtmPeople = [NSMutableArray arrayWithCapacity:[people count]];
   id person;
-  GTM_FOREACH_OBJECT(person, people) {
+  for (person in people) {
     [gtmPeople addObject:[GTMABPerson recordWithRecord:(ABRecordRef)person]];
   }
   return gtmPeople;
-}  
+}
 
 - (BOOL)addMember:(GTMABPerson *)person {
 #if GTM_IPHONE_SDK
   CFErrorRef cfError = nil;
   // We check for person because of
   // Radar 6202860 Passing nil person into ABGroupAddMember crashes
-  bool wasGood = person && ABGroupAddMember([self recordRef], 
+  bool wasGood = person && ABGroupAddMember([self recordRef],
                                             [person recordRef], &cfError);
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
     // COV_NF_END
   }
 #else  // GTM_IPHONE_SDK
-  bool wasGood = person && ABGroupAddMember([self recordRef], 
+  bool wasGood = person && ABGroupAddMember([self recordRef],
                                             [person recordRef]);
 #endif  // GTM_IPHONE_SDK
   return wasGood ? YES : NO;
-}  
+}
 
 - (BOOL)removeMember:(GTMABPerson *)person {
 #if GTM_IPHONE_SDK
@@ -711,11 +700,11 @@ typedef struct {
   // We check for person because of
   // Radar 6202860 Passing nil person into ABGroupAddMember crashes
   // (I know this is remove, but it crashes there too)
-  bool wasGood = person && ABGroupRemoveMember([self recordRef], 
+  bool wasGood = person && ABGroupRemoveMember([self recordRef],
                                                [person recordRef], &cfError);
   if (cfError) {
     // COV_NF_START
-    _GTMDevLog(@"Error in [%@ %@]: %@", 
+    _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
     CFRelease(cfError);
     // COV_NF_END
@@ -725,7 +714,7 @@ typedef struct {
   if (wasGood) {
     NSArray *array = GTMCFAutorelease(ABPersonCopyParentGroups([person recordRef]));
     if ([array containsObject:[self recordRef]]) {
-      wasGood = ABGroupRemoveMember([self recordRef], 
+      wasGood = ABGroupRemoveMember([self recordRef],
                                     [person recordRef]);
     } else {
       wasGood = NO;
@@ -733,7 +722,7 @@ typedef struct {
   }
 #endif  // GTM_IPHONE_SDK
   return wasGood ? YES : NO;
-}  
+}
 
 - (NSString *)compositeName {
 #if GTM_IPHONE_SDK
@@ -747,7 +736,7 @@ typedef struct {
   GTMABPropertyType type = kGTMABInvalidPropertyType;
   if (property == kABGroupNameProperty) {
     type = kGTMABStringPropertyType;
-  } 
+  }
   return type;
 }
 
@@ -755,7 +744,7 @@ typedef struct {
   NSString *name = kGTMABUnknownPropertyName;
   if (property == kABGroupNameProperty) {
     name = NSLocalizedStringFromTable(@"Name",
-                                      @"GTMABAddressBook", 
+                                      @"GTMABAddressBook",
                                       @"name property");
   }
   return name;
@@ -763,13 +752,13 @@ typedef struct {
 
 - (NSString *)description {
 #if GTM_IPHONE_SDK
-  return [NSString stringWithFormat:@"%@ %@ %d", 
-          [self class], 
+  return [NSString stringWithFormat:@"%@ %@ %d",
+          [self class],
           [self valueForProperty:kABGroupNameProperty],
           [self recordID]];
 #else  // GTM_IPHONE_SDK
-  return [NSString stringWithFormat:@"%@ %@ %@", 
-          [self class], 
+  return [NSString stringWithFormat:@"%@ %@ %@",
+          [self class],
           [self valueForProperty:kABGroupNameProperty],
           [self recordID]];
 #endif  // GTM_IPHONE_SDK
@@ -823,7 +812,7 @@ typedef struct {
   // 6203854 ABMultiValues hash to their address
   // and it appears CFEquals just calls through to hash to compare them.
   BOOL isEqual = NO;
-  if ([object respondsToSelector:@selector(multiValueRef)]) { 
+  if ([object respondsToSelector:@selector(multiValueRef)]) {
     isEqual = multiValue_ == [object multiValueRef];
     if (!isEqual) {
       NSUInteger count = [self count];
@@ -835,7 +824,7 @@ typedef struct {
         isEqual = [label isEqual:objLabel];
         if (isEqual) {
           id value = [self valueAtIndex:i];
-          GTMABMultiValue *multiValueObject 
+          GTMABMultiValue *multiValueObject
             = GTM_STATIC_CAST(GTMABMultiValue, object);
           id objValue = [multiValueObject valueAtIndex:i];
           isEqual = [value isEqual:objValue];
@@ -870,13 +859,13 @@ typedef struct {
   if (idx < [self count]) {
     value = GTMCFAutorelease(ABMultiValueCopyValueAtIndex(multiValue_, idx));
     ABPropertyType type = [self propertyType];
-    if (type == kGTMABIntegerPropertyType 
+    if (type == kGTMABIntegerPropertyType
         || type == kGTMABRealPropertyType
         || type == kGTMABDictionaryPropertyType) {
       // This is because of
       // 6208390 Integer and real values don't work in ABMultiValueRefs
-      // Apparently they forget to add a ref count on int, real and 
-      // dictionary values in ABMultiValueCopyValueAtIndex, although they do 
+      // Apparently they forget to add a ref count on int, real and
+      // dictionary values in ABMultiValueCopyValueAtIndex, although they do
       // remember them for all other types.
       // Once they fix this, this will lead to a leak, but I figure the leak
       // is better than the crash. Our unittests will test to make sure that
@@ -907,7 +896,7 @@ typedef struct {
 #if GTM_IPHONE_SDK
     identifier = ABMultiValueGetIdentifierAtIndex(multiValue_, idx);
 #else  // GTM_IPHONE_SDK
-    identifier = GTMCFAutorelease(ABMultiValueCopyIdentifierAtIndex(multiValue_, 
+    identifier = GTMCFAutorelease(ABMultiValueCopyIdentifierAtIndex(multiValue_,
                                                                   idx));
 #endif  // GTM_IPHONE_SDK
   }
@@ -918,7 +907,7 @@ typedef struct {
 #if GTM_IPHONE_SDK
   NSUInteger idx = ABMultiValueGetIndexForIdentifier(multiValue_, identifier);
 #else  // GTM_IPHONE_SDK
-  NSUInteger idx = ABMultiValueIndexForIdentifier(multiValue_, 
+  NSUInteger idx = ABMultiValueIndexForIdentifier(multiValue_,
                                                   (CFStringRef)identifier);
 #endif  // GTM_IPHONE_SDK
   return idx == (NSUInteger)kCFNotFound ? (NSUInteger)NSNotFound : idx;
@@ -974,7 +963,7 @@ typedef struct {
   self = [super initWithMultiValue:ref];
   if (ref) {
     CFRelease(ref);
-  } 
+  }
   return self;
 }
 
@@ -986,7 +975,7 @@ typedef struct {
   self = [super initWithMultiValue:ref];
   if (ref) {
     CFRelease(ref);
-  } 
+  }
   return self;
 }
 
@@ -1006,11 +995,11 @@ typedef struct {
     };
     GTMABPropertyType type = [self propertyType] & ~kABMultiValueMask;
 #if GTM_MACOS_SDK
-    // Since on the desktop mutables don't have a type UNTIL they have 
+    // Since on the desktop mutables don't have a type UNTIL they have
     // something in them, return YES if it's empty.
     if ((type == 0) && ([self count] == 0)) return YES;
 #endif  // GTM_MACOS_SDK
-    for (size_t i = 0; 
+    for (size_t i = 0;
          i < sizeof(singleValueTypeMap) / sizeof(TypeClassNameMap); ++i) {
       if (singleValueTypeMap[i].pType == type) {
         if ([[value class] isSubclassOfClass:singleValueTypeMap[i].class]) {
@@ -1030,14 +1019,14 @@ typedef struct {
   bool wasGood = label && [self checkValueType:value];
   if (wasGood) {
 #if GTM_IPHONE_SDK
-    wasGood = ABMultiValueAddValueAndLabel(multiValue_, 
-                                           value, 
-                                           label, 
+    wasGood = ABMultiValueAddValueAndLabel(multiValue_,
+                                           value,
+                                           label,
                                            &identifier);
-#else  // GTM_IPHONE_SDK 
-    wasGood = ABMultiValueAdd((ABMutableMultiValueRef)multiValue_, 
-                              value, 
-                              label, 
+#else  // GTM_IPHONE_SDK
+    wasGood = ABMultiValueAdd((ABMutableMultiValueRef)multiValue_,
+                              value,
+                              label,
                               (CFStringRef *)&identifier);
 #endif  // GTM_IPHONE_SDK
   }
@@ -1049,12 +1038,12 @@ typedef struct {
   return identifier;
 }
 
-- (GTMABMultiValueIdentifier)insertValue:(id)value 
-                               withLabel:(CFStringRef)label 
+- (GTMABMultiValueIdentifier)insertValue:(id)value
+                               withLabel:(CFStringRef)label
                                  atIndex:(NSUInteger)idx {
   GTMABMultiValueIdentifier identifier = kGTMABMultiValueInvalidIdentifier;
   // We perform a check here to ensure that we don't get bitten by
-  // Radar 6202807 ABMultiValueInsertValueAndLabelAtIndex allows you to insert 
+  // Radar 6202807 ABMultiValueInsertValueAndLabelAtIndex allows you to insert
   //               values past end
   NSUInteger count = [self count];
   // We check label and value here because of
@@ -1062,16 +1051,16 @@ typedef struct {
   bool wasGood = idx <= count && label && [self checkValueType:value];
   if (wasGood) {
 #if GTM_IPHONE_SDK
-    wasGood = ABMultiValueInsertValueAndLabelAtIndex(multiValue_, 
-                                                     value, 
-                                                     label, 
-                                                     idx, 
+    wasGood = ABMultiValueInsertValueAndLabelAtIndex(multiValue_,
+                                                     value,
+                                                     label,
+                                                     idx,
                                                      &identifier);
 #else  // GTM_IPHONE_SDK
-    wasGood = ABMultiValueInsert((ABMutableMultiValueRef)multiValue_, 
-                                 value, 
-                                 label, 
-                                 idx, 
+    wasGood = ABMultiValueInsert((ABMutableMultiValueRef)multiValue_,
+                                 value,
+                                 label,
+                                 idx,
                                  (CFStringRef *)&identifier);
 #endif  // GTM_IPHONE_SDK
   }
@@ -1088,7 +1077,7 @@ typedef struct {
   NSUInteger count = [self count];
   if (idx < count) {
 #if GTM_IPHONE_SDK
-    bool wasGood = ABMultiValueRemoveValueAndLabelAtIndex(multiValue_, 
+    bool wasGood = ABMultiValueRemoveValueAndLabelAtIndex(multiValue_,
                                                           idx);
 #else  // GTM_IPHONE_SDK
     bool wasGood = ABMultiValueRemove((ABMutableMultiValueRef)multiValue_,
@@ -1099,7 +1088,7 @@ typedef struct {
       isGood = YES;
     }
   }
-  return isGood; 
+  return isGood;
 }
 
 - (BOOL)replaceValueAtIndex:(NSUInteger)idx withValue:(id)value {
@@ -1107,11 +1096,11 @@ typedef struct {
   NSUInteger count = [self count];
   if (idx < count && [self checkValueType:value]) {
 #if GTM_IPHONE_SDK
-    bool goodReplace = ABMultiValueReplaceValueAtIndex(multiValue_, 
+    bool goodReplace = ABMultiValueReplaceValueAtIndex(multiValue_,
                                                        value, idx);
 #else  // GTM_IPHONE_SDK
-    bool goodReplace 
-      = ABMultiValueReplaceValue((ABMutableMultiValueRef)multiValue_, 
+    bool goodReplace
+      = ABMultiValueReplaceValue((ABMutableMultiValueRef)multiValue_,
                                  (CFTypeRef)value, idx);
 #endif  // GTM_IPHONE_SDK
     if (goodReplace) {
@@ -1119,7 +1108,7 @@ typedef struct {
       isGood = YES;
     }
   }
-  return isGood; 
+  return isGood;
 }
 
 - (BOOL)replaceLabelAtIndex:(NSUInteger)idx withLabel:(CFStringRef)label {
@@ -1127,11 +1116,11 @@ typedef struct {
   NSUInteger count = [self count];
   if (idx < count) {
 #if GTM_IPHONE_SDK
-    bool goodReplace = ABMultiValueReplaceLabelAtIndex(multiValue_, 
+    bool goodReplace = ABMultiValueReplaceLabelAtIndex(multiValue_,
                                                        label, idx);
 #else  // GTM_IPHONE_SDK
-    bool goodReplace 
-      = ABMultiValueReplaceLabel((ABMutableMultiValueRef)multiValue_, 
+    bool goodReplace
+      = ABMultiValueReplaceLabel((ABMutableMultiValueRef)multiValue_,
                                  (CFTypeRef)label, idx);
 #endif  // GTM_IPHONE_SDK
     if (goodReplace) {
@@ -1139,14 +1128,14 @@ typedef struct {
       isGood = YES;
     }
   }
-  return isGood; 
+  return isGood;
 }
-      
+
 - (unsigned long*)mutations {
   return &mutations_;
 }
 @end
-      
+
 
 @implementation GTMABMultiValueEnumerator
 
@@ -1180,19 +1169,18 @@ typedef struct {
   [super dealloc];
 }
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state 
-                                  objects:(id *)stackbuf 
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+                                  objects:(id *)stackbuf
                                     count:(NSUInteger)len {
   NSUInteger i;
   if (!ref_) {
     count_ = [enumeree_ count];
     ref_ = [enumeree_ multiValueRef];
   }
-  
+
   for (i = 0; state->state < count_ && i < len; ++i, ++state->state) {
     if (useLabels_) {
-      stackbuf[i] = GTMCFAutorelease(ABMultiValueCopyLabelAtIndex(ref_, 
+      stackbuf[i] = GTMCFAutorelease(ABMultiValueCopyLabelAtIndex(ref_,
                                                                   state->state));
     } else {
       // TODO(dmaclach) Check this on Mac Desktop and use fast path if we can
@@ -1203,12 +1191,11 @@ typedef struct {
       stackbuf[i] = [enumeree_ valueAtIndex:state->state];
     }
   }
-    
+
   state->itemsPtr = stackbuf;
   state->mutationsPtr = [enumeree_ mutations];
   return i;
 }
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 - (id)nextObject {
   id value = nil;
@@ -1227,7 +1214,7 @@ typedef struct {
   }
   if (index_ < count_) {
     if (useLabels_) {
-      value = GTMCFAutorelease(ABMultiValueCopyLabelAtIndex(ref_, 
+      value = GTMCFAutorelease(ABMultiValueCopyLabelAtIndex(ref_,
                                                             index_));
     } else {
       // TODO(dmaclach) Check this on Mac Desktop and use fast path if we can

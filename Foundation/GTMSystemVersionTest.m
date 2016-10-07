@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -27,67 +27,67 @@
   SInt32 major;
   SInt32 minor;
   SInt32 bugFix;
-  
+
   [GTMSystemVersion getMajor:NULL minor:NULL bugFix:NULL];
   [GTMSystemVersion getMajor:&major minor:NULL bugFix:NULL];
   [GTMSystemVersion getMajor:NULL minor:&minor bugFix:NULL];
   [GTMSystemVersion getMajor:NULL minor:NULL bugFix:&bugFix];
   [GTMSystemVersion getMajor:&major minor:&minor bugFix:&bugFix];
 #if GTM_IPHONE_SDK
-  STAssertTrue(major >= 2 && minor >= 0 && bugFix >= 0, nil);
+  XCTAssertTrue(major >= 2 && minor >= 0 && bugFix >= 0);
 #else
-  STAssertTrue(major >= 10 && minor >= 3 && bugFix >= 0, nil);
+  XCTAssertTrue(major >= 10 && minor >= 3 && bugFix >= 0);
   BOOL isPanther = (major == 10) && (minor == 3);
   BOOL isTiger = (major == 10) && (minor == 4);
   BOOL isLeopard = (major == 10) && (minor == 5);
   BOOL isSnowLeopard = (major == 10) && (minor == 6);
-  
+
   BOOL isLater = (major > 10) || ((major == 10) && (minor > 6));
-  STAssertEquals([GTMSystemVersion isPanther], isPanther, nil);
-  STAssertEquals([GTMSystemVersion isPantherOrGreater],
-                 (BOOL)(isPanther || isTiger 
-                        || isLeopard || isSnowLeopard || isLater), nil);
-  STAssertEquals([GTMSystemVersion isTiger], isTiger, nil);
-  STAssertEquals([GTMSystemVersion isTigerOrGreater],
-                 (BOOL)(isTiger || isLeopard || isSnowLeopard || isLater), nil);
-  STAssertEquals([GTMSystemVersion isLeopard], isLeopard, nil);
-  STAssertEquals([GTMSystemVersion isLeopardOrGreater],
-                 (BOOL)(isLeopard || isSnowLeopard || isLater), nil);
-  STAssertEquals([GTMSystemVersion isSnowLeopard], isSnowLeopard, nil);
-  STAssertEquals([GTMSystemVersion isSnowLeopardOrGreater],
-                 (BOOL)(isSnowLeopard || isLater), nil);
-#endif  
+  XCTAssertEqual([GTMSystemVersion isPanther], isPanther);
+  XCTAssertEqual([GTMSystemVersion isPantherOrGreater],
+                 (BOOL)(isPanther || isTiger
+                        || isLeopard || isSnowLeopard || isLater));
+  XCTAssertEqual([GTMSystemVersion isTiger], isTiger);
+  XCTAssertEqual([GTMSystemVersion isTigerOrGreater],
+                 (BOOL)(isTiger || isLeopard || isSnowLeopard || isLater));
+  XCTAssertEqual([GTMSystemVersion isLeopard], isLeopard);
+  XCTAssertEqual([GTMSystemVersion isLeopardOrGreater],
+                 (BOOL)(isLeopard || isSnowLeopard || isLater));
+  XCTAssertEqual([GTMSystemVersion isSnowLeopard], isSnowLeopard);
+  XCTAssertEqual([GTMSystemVersion isSnowLeopardOrGreater],
+                 (BOOL)(isSnowLeopard || isLater));
+#endif
 }
 
 - (void)testRuntimeArchitecture {
   // Not sure how to test this short of recoding it and verifying.
   // This at least executes the code for me.
-  STAssertNotNil([GTMSystemVersion runtimeArchitecture], nil);
+  XCTAssertNotNil([GTMSystemVersion runtimeArchitecture]);
 }
 
 - (void)testBuild {
   // Not sure how to test this short of coding up a large fragile table.
   // This at least executes the code for me.
   NSString *systemVersion = [GTMSystemVersion build];
-  STAssertNotEquals([systemVersion length], (NSUInteger)0, nil);
-  
+  XCTAssertNotEqual([systemVersion length], (NSUInteger)0);
+
   NSString *smallVersion = @"1A00";
   NSString *largeVersion = @"100Z100";
-  STAssertTrue([GTMSystemVersion isBuildGreaterThan:smallVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildGreaterThan:systemVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildGreaterThan:largeVersion], nil);
-  STAssertTrue([GTMSystemVersion isBuildGreaterThanOrEqualTo:smallVersion], nil);
-  STAssertTrue([GTMSystemVersion isBuildGreaterThanOrEqualTo:systemVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildGreaterThanOrEqualTo:largeVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildEqualTo:smallVersion], nil);
-  STAssertTrue([GTMSystemVersion isBuildEqualTo:systemVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildEqualTo:largeVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildLessThanOrEqualTo:smallVersion], nil);
-  STAssertTrue([GTMSystemVersion isBuildLessThanOrEqualTo:systemVersion], nil);
-  STAssertTrue([GTMSystemVersion isBuildLessThanOrEqualTo:largeVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildLessThan:smallVersion], nil);
-  STAssertFalse([GTMSystemVersion isBuildLessThan:systemVersion], nil);
-  STAssertTrue([GTMSystemVersion isBuildLessThan:largeVersion], nil);
-  
+  XCTAssertTrue([GTMSystemVersion isBuildGreaterThan:smallVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildGreaterThan:systemVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildGreaterThan:largeVersion]);
+  XCTAssertTrue([GTMSystemVersion isBuildGreaterThanOrEqualTo:smallVersion]);
+  XCTAssertTrue([GTMSystemVersion isBuildGreaterThanOrEqualTo:systemVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildGreaterThanOrEqualTo:largeVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildEqualTo:smallVersion]);
+  XCTAssertTrue([GTMSystemVersion isBuildEqualTo:systemVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildEqualTo:largeVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildLessThanOrEqualTo:smallVersion]);
+  XCTAssertTrue([GTMSystemVersion isBuildLessThanOrEqualTo:systemVersion]);
+  XCTAssertTrue([GTMSystemVersion isBuildLessThanOrEqualTo:largeVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildLessThan:smallVersion]);
+  XCTAssertFalse([GTMSystemVersion isBuildLessThan:systemVersion]);
+  XCTAssertTrue([GTMSystemVersion isBuildLessThan:largeVersion]);
+
 }
 @end

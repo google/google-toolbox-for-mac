@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMRegex.h"
-#import "GTMUnitTestDevLog.h"
 
 //
 // NOTE:
@@ -36,104 +35,97 @@
 @implementation GTMRegexTest
 
 - (void)testEscapedPatternForString {
-  STAssertEqualStrings([GTMRegex escapedPatternForString:@"abcdefghijklmnopqrstuvwxyz0123456789"],
-                       @"abcdefghijklmnopqrstuvwxyz0123456789",
-                       nil);
-  STAssertEqualStrings([GTMRegex escapedPatternForString:@"^.[$()|*+?{\\"],
-                       @"\\^\\.\\[\\$\\(\\)\\|\\*\\+\\?\\{\\\\",
-                       nil);
-  STAssertEqualStrings([GTMRegex escapedPatternForString:@"a^b.c[d$e(f)g|h*i+j?k{l\\m"],
-                       @"a\\^b\\.c\\[d\\$e\\(f\\)g\\|h\\*i\\+j\\?k\\{l\\\\m",
-                       nil);
+  XCTAssertEqualStrings([GTMRegex escapedPatternForString:@"abcdefghijklmnopqrstuvwxyz0123456789"],
+                        @"abcdefghijklmnopqrstuvwxyz0123456789");
+  XCTAssertEqualStrings([GTMRegex escapedPatternForString:@"^.[$()|*+?{\\"],
+                        @"\\^\\.\\[\\$\\(\\)\\|\\*\\+\\?\\{\\\\");
+  XCTAssertEqualStrings([GTMRegex escapedPatternForString:@"a^b.c[d$e(f)g|h*i+j?k{l\\m"],
+                        @"a\\^b\\.c\\[d\\$e\\(f\\)g\\|h\\*i\\+j\\?k\\{l\\\\m");
 
-  STAssertNil([GTMRegex escapedPatternForString:nil], nil);
-  STAssertEqualStrings([GTMRegex escapedPatternForString:@""], @"", nil);
+  XCTAssertNil([GTMRegex escapedPatternForString:nil]);
+  XCTAssertEqualStrings([GTMRegex escapedPatternForString:@""], @"");
 }
 
 
 - (void)testInit {
 
   // fail cases
-  STAssertNil([[[GTMRegex alloc] init] autorelease], nil);
-  STAssertNil([[[GTMRegex alloc] initWithPattern:nil] autorelease], nil);
-  STAssertNil([[[GTMRegex alloc] initWithPattern:nil
-                                         options:kGTMRegexOptionIgnoreCase] autorelease], nil);
-  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
-  STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."] autorelease], nil);
-  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
-  STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
-                                         options:kGTMRegexOptionIgnoreCase] autorelease], nil);
+  XCTAssertNil([[[GTMRegex alloc] init] autorelease]);
+  XCTAssertNil([[[GTMRegex alloc] initWithPattern:nil] autorelease]);
+  XCTAssertNil([[[GTMRegex alloc] initWithPattern:nil
+                                          options:kGTMRegexOptionIgnoreCase] autorelease]);
+  XCTAssertNil([[[GTMRegex alloc] initWithPattern:@"(."] autorelease]);
+  XCTAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
+                                          options:kGTMRegexOptionIgnoreCase] autorelease]);
   // fail cases w/ error param
   NSError *error = nil;
-  STAssertNil([[[GTMRegex alloc] initWithPattern:nil
-                                         options:kGTMRegexOptionIgnoreCase
-                                       withError:&error] autorelease], nil);
-  STAssertNil(error, @"no pattern, shouldn't get error object");
-  STAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
-                                         options:kGTMRegexOptionIgnoreCase
-                                       withError:&error] autorelease], nil);
-  STAssertNotNil(error, nil);
-  STAssertEqualObjects([error domain], kGTMRegexErrorDomain, nil);
-  STAssertEquals([error code], (NSInteger)kGTMRegexPatternParseFailedError, nil);
+  XCTAssertNil([[[GTMRegex alloc] initWithPattern:nil
+                                          options:kGTMRegexOptionIgnoreCase
+                                        withError:&error] autorelease]);
+  XCTAssertNil(error, @"no pattern, shouldn't get error object");
+  XCTAssertNil([[[GTMRegex alloc] initWithPattern:@"(."
+                                          options:kGTMRegexOptionIgnoreCase
+                                        withError:&error] autorelease]);
+  XCTAssertNotNil(error);
+  XCTAssertEqualObjects([error domain], kGTMRegexErrorDomain);
+  XCTAssertEqual([error code], (NSInteger)kGTMRegexPatternParseFailedError);
   NSDictionary *userInfo = [error userInfo];
-  STAssertNotNil(userInfo, @"failed to get userInfo from error");
-  STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
-  STAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString], nil);
+  XCTAssertNotNil(userInfo, @"failed to get userInfo from error");
+  XCTAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.");
+  XCTAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString]);
 
   // basic pattern w/ options
-  STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"] autorelease], nil);
-  STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
-                                            options:0] autorelease], nil);
-  STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
-                                            options:kGTMRegexOptionIgnoreCase] autorelease], nil);
+  XCTAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"] autorelease]);
+  XCTAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
+                                             options:0] autorelease]);
+  XCTAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
+                                             options:kGTMRegexOptionIgnoreCase] autorelease]);
   error = nil;
-  STAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
-                                            options:kGTMRegexOptionIgnoreCase
-                                          withError:&error] autorelease], nil);
-  STAssertNil(error, @"shouldn't have been any error");
+  XCTAssertNotNil([[[GTMRegex alloc] initWithPattern:@"(.*)"
+                                             options:kGTMRegexOptionIgnoreCase
+                                           withError:&error] autorelease]);
+  XCTAssertNil(error, @"shouldn't have been any error");
 
   // fail cases (helper)
-  STAssertNil([GTMRegex regexWithPattern:nil], nil);
-  STAssertNil([GTMRegex regexWithPattern:nil
-                                 options:0], nil);
-  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
-  STAssertNil([GTMRegex regexWithPattern:@"(."], nil);
-  [GTMUnitTestDevLog expectString:@"Invalid pattern \"(.\", error: \"parentheses not balanced\""];
-  STAssertNil([GTMRegex regexWithPattern:@"(."
-                                 options:0], nil);
+  XCTAssertNil([GTMRegex regexWithPattern:nil]);
+  XCTAssertNil([GTMRegex regexWithPattern:nil
+                                  options:0]);
+  XCTAssertNil([GTMRegex regexWithPattern:@"(."]);
+  XCTAssertNil([GTMRegex regexWithPattern:@"(."
+                                  options:0]);
   // fail cases (helper) w/ error param
-  STAssertNil([GTMRegex regexWithPattern:nil
-                                 options:kGTMRegexOptionIgnoreCase
-                               withError:&error], nil);
-  STAssertNil(error, @"no pattern, shouldn't get error object");
-  STAssertNil([GTMRegex regexWithPattern:@"(."
-                                 options:kGTMRegexOptionIgnoreCase
-                               withError:&error], nil);
-  STAssertNotNil(error, nil);
-  STAssertEqualObjects([error domain], kGTMRegexErrorDomain, nil);
-  STAssertEquals([error code], (NSInteger)kGTMRegexPatternParseFailedError, nil);
+  XCTAssertNil([GTMRegex regexWithPattern:nil
+                                  options:kGTMRegexOptionIgnoreCase
+                                withError:&error]);
+  XCTAssertNil(error, @"no pattern, shouldn't get error object");
+  XCTAssertNil([GTMRegex regexWithPattern:@"(."
+                                  options:kGTMRegexOptionIgnoreCase
+                                withError:&error]);
+  XCTAssertNotNil(error);
+  XCTAssertEqualObjects([error domain], kGTMRegexErrorDomain);
+  XCTAssertEqual([error code], (NSInteger)kGTMRegexPatternParseFailedError);
   userInfo = [error userInfo];
-  STAssertNotNil(userInfo, @"failed to get userInfo from error");
-  STAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.", nil);
-  STAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString], nil);
-  
+  XCTAssertNotNil(userInfo, @"failed to get userInfo from error");
+  XCTAssertEqualObjects([userInfo objectForKey:kGTMRegexPatternErrorPattern], @"(.");
+  XCTAssertNotNil([userInfo objectForKey:kGTMRegexPatternErrorErrorString]);
+
   // basic pattern w/ options (helper)
-  STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"], nil);
-  STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
-                                    options:0], nil);
-  STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
-                                    options:kGTMRegexOptionIgnoreCase], nil);
+  XCTAssertNotNil([GTMRegex regexWithPattern:@"(.*)"]);
+  XCTAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
+                                     options:0]);
+  XCTAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
+                                     options:kGTMRegexOptionIgnoreCase]);
   error = nil;
-  STAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
-                                    options:kGTMRegexOptionIgnoreCase
-                                  withError:&error], nil);
-  STAssertNil(error, @"shouldn't have been any error");
-  
+  XCTAssertNotNil([GTMRegex regexWithPattern:@"(.*)"
+                                     options:kGTMRegexOptionIgnoreCase
+                                   withError:&error]);
+  XCTAssertNil(error, @"shouldn't have been any error");
+
   // not really a test on GTMRegex, but make sure we block attempts to directly
   // alloc/init a GTMRegexStringSegment.
-  STAssertThrowsSpecificNamed([[[GTMRegexStringSegment alloc] init] autorelease],
-                              NSException, NSInvalidArgumentException,
-                              @"shouldn't have been able to alloc/init a GTMRegexStringSegment");
+  XCTAssertThrowsSpecificNamed([[[GTMRegexStringSegment alloc] init] autorelease],
+                               NSException, NSInvalidArgumentException,
+                               @"shouldn't have been able to alloc/init a GTMRegexStringSegment");
 }
 
 - (void)testOptions {
@@ -142,767 +134,759 @@
 
   // default options
   GTMRegex *regex = [GTMRegex regexWithPattern:@"a+"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   NSEnumerator *enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa"
   GTMRegexStringSegment *seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   // " AAA\nbbb BBB\n "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @" AAA\nbbb BBB\n ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @" AAA\nbbb BBB\n ");
   // "aaa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   // " "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @" ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @" ");
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "A"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"A", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"A");
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "\n bbb BbB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\n bbb BbB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\n bbb BbB");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // kGTMRegexOptionIgnoreCase
   regex = [GTMRegex regexWithPattern:@"a+" options:kGTMRegexOptionIgnoreCase];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   // " "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @" ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @" ");
   // "AAA"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"AAA", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"AAA");
   // "\nbbb BBB\n "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\nbbb BBB\n ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\nbbb BBB\n ");
   // "aaa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   // " "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @" ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @" ");
   // "aAa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aAa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aAa");
   // "\n bbb BbB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\n bbb BbB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\n bbb BbB");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // defaults w/ '^'
   regex = [GTMRegex regexWithPattern:@"^a+"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   // " AAA\nbbb BBB\n aaa aAa\n bbb BbB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @" AAA\nbbb BBB\n aaa aAa\n bbb BbB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @" AAA\nbbb BBB\n aaa aAa\n bbb BbB");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // defaults w/ '$'
   regex = [GTMRegex regexWithPattern:@"B+$"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa AAA\nbbb "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa AAA\nbbb ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa AAA\nbbb ");
   // "BBB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"BBB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"BBB");
   // "\n aaa aAa\n bbb Bb"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\n aaa aAa\n bbb Bb", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\n aaa aAa\n bbb Bb");
   // "B"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"B", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"B");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // kGTMRegexOptionIgnoreCase w/ '$'
   regex = [GTMRegex regexWithPattern:@"B+$"
-                            options:kGTMRegexOptionIgnoreCase];
-  STAssertNotNil(regex, nil);
+                             options:kGTMRegexOptionIgnoreCase];
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa AAA\nbbb "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa AAA\nbbb ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa AAA\nbbb ");
   // "BBB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"BBB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"BBB");
   // "\n aaa aAa\n bbb "
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\n aaa aAa\n bbb ", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\n aaa aAa\n bbb ");
   // "BbB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"BbB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"BbB");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test w/ kGTMRegexOptionSupressNewlineSupport and \n in the string
   regex = [GTMRegex regexWithPattern:@"a.*b" options:kGTMRegexOptionSupressNewlineSupport];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa AAA\nbbb BBB\n aaa aAa\n bbb Bb"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa AAA\nbbb BBB\n aaa aAa\n bbb Bb", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa AAA\nbbb BBB\n aaa aAa\n bbb Bb");
   // "B"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"B", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"B");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test w/o kGTMRegexOptionSupressNewlineSupport and \n in the string
   // (this is no match since it '.' can't match the '\n')
   regex = [GTMRegex regexWithPattern:@"a.*b"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa AAA\nbbb BBB\n aaa aAa\n bbb BbB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa AAA\nbbb BBB\n aaa aAa\n bbb BbB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa AAA\nbbb BBB\n aaa aAa\n bbb BbB");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
-  
+  XCTAssertNil(seg);
+
   // kGTMRegexOptionSupressNewlineSupport w/ '^'
   regex = [GTMRegex regexWithPattern:@"^a+" options:kGTMRegexOptionSupressNewlineSupport];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   // " AAA\nbbb BBB\n aaa aAa\n bbb BbB"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @" AAA\nbbb BBB\n aaa aAa\n bbb BbB", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @" AAA\nbbb BBB\n aaa aAa\n bbb BbB");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // kGTMRegexOptionSupressNewlineSupport w/ '$'
   regex = [GTMRegex regexWithPattern:@"B+$" options:kGTMRegexOptionSupressNewlineSupport];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:testString];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aaa AAA\nbbb BBB\n aaa aAa\n bbb Bb"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa AAA\nbbb BBB\n aaa aAa\n bbb Bb", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa AAA\nbbb BBB\n aaa aAa\n bbb Bb");
   // "B"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"B", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"B");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 }
 
 - (void)testSubPatternCount {
-  STAssertEquals((NSUInteger)0, [[GTMRegex regexWithPattern:@".*"] subPatternCount], nil);
-  STAssertEquals((NSUInteger)1, [[GTMRegex regexWithPattern:@"(.*)"] subPatternCount], nil);
-  STAssertEquals((NSUInteger)1, [[GTMRegex regexWithPattern:@"[fo]*(.*)[bar]*"] subPatternCount], nil);
-  STAssertEquals((NSUInteger)3, [[GTMRegex regexWithPattern:@"([fo]*)(.*)([bar]*)"] subPatternCount], nil);
-  STAssertEquals((NSUInteger)7, [[GTMRegex regexWithPattern:@"(([bar]*)|([fo]*))(.*)(([bar]*)|([fo]*))"] subPatternCount], nil);
+  XCTAssertEqual((NSUInteger)0, [[GTMRegex regexWithPattern:@".*"] subPatternCount]);
+  XCTAssertEqual((NSUInteger)1, [[GTMRegex regexWithPattern:@"(.*)"] subPatternCount]);
+  XCTAssertEqual((NSUInteger)1, [[GTMRegex regexWithPattern:@"[fo]*(.*)[bar]*"] subPatternCount]);
+  XCTAssertEqual((NSUInteger)3,
+                 [[GTMRegex regexWithPattern:@"([fo]*)(.*)([bar]*)"] subPatternCount]);
+  XCTAssertEqual((NSUInteger)7,
+                 [[GTMRegex regexWithPattern:@"(([bar]*)|([fo]*))(.*)(([bar]*)|([fo]*))"] subPatternCount]);
 }
 
 - (void)testMatchesString {
   // simple pattern
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo.*bar"];
-  STAssertNotNil(regex, nil);
-  STAssertTrue([regex matchesString:@"foobar"], nil);
-  STAssertTrue([regex matchesString:@"foobydoo spambar"], nil);
-  STAssertFalse([regex matchesString:@"zzfoobarzz"], nil);
-  STAssertFalse([regex matchesString:@"zzfoobydoo spambarzz"], nil);
-  STAssertFalse([regex matchesString:@"abcdef"], nil);
-  STAssertFalse([regex matchesString:@""], nil);
-  STAssertFalse([regex matchesString:nil], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertTrue([regex matchesString:@"foobar"]);
+  XCTAssertTrue([regex matchesString:@"foobydoo spambar"]);
+  XCTAssertFalse([regex matchesString:@"zzfoobarzz"]);
+  XCTAssertFalse([regex matchesString:@"zzfoobydoo spambarzz"]);
+  XCTAssertFalse([regex matchesString:@"abcdef"]);
+  XCTAssertFalse([regex matchesString:@""]);
+  XCTAssertFalse([regex matchesString:nil]);
   // pattern w/ sub patterns
   regex = [GTMRegex regexWithPattern:@"(foo)(.*)(bar)"];
-  STAssertNotNil(regex, nil);
-  STAssertTrue([regex matchesString:@"foobar"], nil);
-  STAssertTrue([regex matchesString:@"foobydoo spambar"], nil);
-  STAssertFalse([regex matchesString:@"zzfoobarzz"], nil);
-  STAssertFalse([regex matchesString:@"zzfoobydoo spambarzz"], nil);
-  STAssertFalse([regex matchesString:@"abcdef"], nil);
-  STAssertFalse([regex matchesString:@""], nil);
-  STAssertFalse([regex matchesString:nil], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertTrue([regex matchesString:@"foobar"]);
+  XCTAssertTrue([regex matchesString:@"foobydoo spambar"]);
+  XCTAssertFalse([regex matchesString:@"zzfoobarzz"]);
+  XCTAssertFalse([regex matchesString:@"zzfoobydoo spambarzz"]);
+  XCTAssertFalse([regex matchesString:@"abcdef"]);
+  XCTAssertFalse([regex matchesString:@""]);
+  XCTAssertFalse([regex matchesString:nil]);
 }
 
 - (void)testSubPatternsOfString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNotNil(regex, nil);
-  STAssertEquals((NSUInteger)5, [regex subPatternCount], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqual((NSUInteger)5, [regex subPatternCount]);
   NSArray *subPatterns = [regex subPatternsOfString:@"foooooobaz"];
-  STAssertNotNil(subPatterns, nil);
-  STAssertEquals((NSUInteger)6, [subPatterns count], nil);
-  STAssertEqualStrings(@"foooooobaz", [subPatterns objectAtIndex:0], nil);
-  STAssertEqualStrings(@"foooooo", [subPatterns objectAtIndex:1], nil);
-  STAssertEqualStrings(@"ooooo", [subPatterns objectAtIndex:2], nil);
-  STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:3], nil);
-  STAssertEqualObjects([NSNull null], [subPatterns objectAtIndex:4], nil);
-  STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:5], nil);
+  XCTAssertNotNil(subPatterns);
+  XCTAssertEqual((NSUInteger)6, [subPatterns count]);
+  XCTAssertEqualStrings(@"foooooobaz", [subPatterns objectAtIndex:0]);
+  XCTAssertEqualStrings(@"foooooo", [subPatterns objectAtIndex:1]);
+  XCTAssertEqualStrings(@"ooooo", [subPatterns objectAtIndex:2]);
+  XCTAssertEqualStrings(@"baz", [subPatterns objectAtIndex:3]);
+  XCTAssertEqualObjects([NSNull null], [subPatterns objectAtIndex:4]);
+  XCTAssertEqualStrings(@"baz", [subPatterns objectAtIndex:5]);
 
   // not there
   subPatterns = [regex subPatternsOfString:@"aaa"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
 
   // not extra stuff on either end
   subPatterns = [regex subPatternsOfString:@"ZZZfoooooobaz"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
   subPatterns = [regex subPatternsOfString:@"foooooobazZZZ"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
   subPatterns = [regex subPatternsOfString:@"ZZZfoooooobazZZZ"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
 }
 
 - (void)testFirstSubStringMatchedInString {
   // simple pattern
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo.*bar"];
-  STAssertNotNil(regex, nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobar"],
-                       @"foobar", nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobydoo spambar"],
-                       @"foobydoo spambar", nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobarzz"],
-                       @"foobar", nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobydoo spambarzz"],
-                       @"foobydoo spambar", nil);
-  STAssertNil([regex firstSubStringMatchedInString:@"abcdef"], nil);
-  STAssertNil([regex firstSubStringMatchedInString:@""], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"foobar"],
+                        @"foobar");
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"foobydoo spambar"],
+                        @"foobydoo spambar");
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobarzz"],
+                        @"foobar");
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobydoo spambarzz"],
+                        @"foobydoo spambar");
+  XCTAssertNil([regex firstSubStringMatchedInString:@"abcdef"]);
+  XCTAssertNil([regex firstSubStringMatchedInString:@""]);
   // pattern w/ sub patterns
   regex = [GTMRegex regexWithPattern:@"(foo)(.*)(bar)"];
-  STAssertNotNil(regex, nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobar"],
-                       @"foobar", nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"foobydoo spambar"],
-                       @"foobydoo spambar", nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobarzz"],
-                       @"foobar", nil);
-  STAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobydoo spambarzz"],
-                       @"foobydoo spambar", nil);
-  STAssertNil([regex firstSubStringMatchedInString:@"abcdef"], nil);
-  STAssertNil([regex firstSubStringMatchedInString:@""], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"foobar"],
+                        @"foobar");
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"foobydoo spambar"],
+                        @"foobydoo spambar");
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobarzz"],
+                        @"foobar");
+  XCTAssertEqualStrings([regex firstSubStringMatchedInString:@"zzfoobydoo spambarzz"],
+                        @"foobydoo spambar");
+  XCTAssertNil([regex firstSubStringMatchedInString:@"abcdef"]);
+  XCTAssertNil([regex firstSubStringMatchedInString:@""]);
 }
 
 - (void)testMatchesSubStringInString {
   // simple pattern
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo.*bar"];
-  STAssertNotNil(regex, nil);
-  STAssertTrue([regex matchesSubStringInString:@"foobar"], nil);
-  STAssertTrue([regex matchesSubStringInString:@"foobydoo spambar"], nil);
-  STAssertTrue([regex matchesSubStringInString:@"zzfoobarzz"], nil);
-  STAssertTrue([regex matchesSubStringInString:@"zzfoobydoo spambarzz"], nil);
-  STAssertFalse([regex matchesSubStringInString:@"abcdef"], nil);
-  STAssertFalse([regex matchesSubStringInString:@""], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertTrue([regex matchesSubStringInString:@"foobar"]);
+  XCTAssertTrue([regex matchesSubStringInString:@"foobydoo spambar"]);
+  XCTAssertTrue([regex matchesSubStringInString:@"zzfoobarzz"]);
+  XCTAssertTrue([regex matchesSubStringInString:@"zzfoobydoo spambarzz"]);
+  XCTAssertFalse([regex matchesSubStringInString:@"abcdef"]);
+  XCTAssertFalse([regex matchesSubStringInString:@""]);
   // pattern w/ sub patterns
   regex = [GTMRegex regexWithPattern:@"(foo)(.*)(bar)"];
-  STAssertNotNil(regex, nil);
-  STAssertTrue([regex matchesSubStringInString:@"foobar"], nil);
-  STAssertTrue([regex matchesSubStringInString:@"foobydoo spambar"], nil);
-  STAssertTrue([regex matchesSubStringInString:@"zzfoobarzz"], nil);
-  STAssertTrue([regex matchesSubStringInString:@"zzfoobydoo spambarzz"], nil);
-  STAssertFalse([regex matchesSubStringInString:@"abcdef"], nil);
-  STAssertFalse([regex matchesSubStringInString:@""], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertTrue([regex matchesSubStringInString:@"foobar"]);
+  XCTAssertTrue([regex matchesSubStringInString:@"foobydoo spambar"]);
+  XCTAssertTrue([regex matchesSubStringInString:@"zzfoobarzz"]);
+  XCTAssertTrue([regex matchesSubStringInString:@"zzfoobydoo spambarzz"]);
+  XCTAssertFalse([regex matchesSubStringInString:@"abcdef"]);
+  XCTAssertFalse([regex matchesSubStringInString:@""]);
 }
 
 - (void)testSegmentEnumeratorForString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
-  STAssertNotNil(regex, nil);
-  
+  XCTAssertNotNil(regex);
+
   // test odd input
   NSEnumerator *enumerator = [regex segmentEnumeratorForString:@""];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   enumerator = [regex segmentEnumeratorForString:nil];
-  STAssertNil(enumerator, nil);
-  
+  XCTAssertNil(enumerator);
+
   // on w/ the normal tests
   enumerator = [regex segmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "a"
   GTMRegexStringSegment *seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "b"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"b", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"b");
   // "fooobaar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"fooobaar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"fooobaar");
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "zz"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"zz", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"zz");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test no match
   enumerator = [regex segmentEnumeratorForString:@"aaa"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test only match
   enumerator = [regex segmentEnumeratorForString:@"foobar"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // now test the saved sub segments
   regex = [GTMRegex regexWithPattern:@"(foo)((bar)|(baz))"];
-  STAssertNotNil(regex, nil);
-  STAssertEquals((NSUInteger)4, [regex subPatternCount], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqual((NSUInteger)4, [regex subPatternCount]);
   enumerator = [regex segmentEnumeratorForString:@"foobarxxfoobaz"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"bar", nil);
-  STAssertEqualStrings([seg subPatternString:3], @"bar", nil);
-  STAssertNil([seg subPatternString:4], nil); // nothing matched "(baz)"
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"bar");
+  XCTAssertEqualStrings([seg subPatternString:3], @"bar");
+  XCTAssertNil([seg subPatternString:4]); // nothing matched "(baz)"
+  XCTAssertNil([seg subPatternString:5]);
   // "xx"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"xx", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"xx", nil);
-  STAssertNil([seg subPatternString:1], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"xx");
+  XCTAssertEqualStrings([seg subPatternString:0], @"xx");
+  XCTAssertNil([seg subPatternString:1]);
   // "foobaz"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"baz", nil);
-  STAssertNil([seg subPatternString:3], nil); // (nothing matched "(bar)"
-  STAssertEqualStrings([seg subPatternString:4], @"baz", nil);
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"baz");
+  XCTAssertNil([seg subPatternString:3]); // (nothing matched "(bar)"
+  XCTAssertEqualStrings([seg subPatternString:4], @"baz");
+  XCTAssertNil([seg subPatternString:5]);
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test all objects
   regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   NSArray *allSegments = [enumerator allObjects];
-  STAssertNotNil(allSegments, nil);
-  STAssertEquals((NSUInteger)6, [allSegments count], nil);
+  XCTAssertNotNil(allSegments);
+  XCTAssertEqual((NSUInteger)6, [allSegments count]);
 
   // test we are getting the flags right for newline
   regex = [GTMRegex regexWithPattern:@"^a"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:@"aa\naa"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "a\n"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a\n", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a\n");
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test we are getting the flags right for newline, part 2
   regex = [GTMRegex regexWithPattern:@"^a*$"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:@"aa\naa\nbb\naa"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // "\n"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\n", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\n");
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // "\nbb\n"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"\nbb\n", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"\nbb\n");
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // make sure the enum cleans up if not walked to the end
   regex = [GTMRegex regexWithPattern:@"b+"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex segmentEnumeratorForString:@"aabbcc"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // and done w/o walking the rest
 }
 
 - (void)testMatchSegmentEnumeratorForString {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
 
   // test odd input
   NSEnumerator *enumerator = [regex matchSegmentEnumeratorForString:@""];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   enumerator = [regex matchSegmentEnumeratorForString:nil];
-  STAssertNil(enumerator, nil);
-  
+  XCTAssertNil(enumerator);
+
   // on w/ the normal tests
   enumerator = [regex matchSegmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "a" - skipped
   // "foobar"
   GTMRegexStringSegment *seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "b" - skipped
   // "fooobaar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"fooobaar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"fooobaar");
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "zz" - skipped
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test no match
   enumerator = [regex matchSegmentEnumeratorForString:@"aaa"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil); // should have gotten nothing
+  XCTAssertNil(seg); // should have gotten nothing
 
   // test only match
   enumerator = [regex matchSegmentEnumeratorForString:@"foobar"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // now test the saved sub segments
   regex = [GTMRegex regexWithPattern:@"(foo)((bar)|(baz))"];
-  STAssertNotNil(regex, nil);
-  STAssertEquals((NSUInteger)4, [regex subPatternCount], nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqual((NSUInteger)4, [regex subPatternCount]);
   enumerator = [regex matchSegmentEnumeratorForString:@"foobarxxfoobaz"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"bar", nil);
-  STAssertEqualStrings([seg subPatternString:3], @"bar", nil);
-  STAssertNil([seg subPatternString:4], nil); // nothing matched "(baz)"
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"bar");
+  XCTAssertEqualStrings([seg subPatternString:3], @"bar");
+  XCTAssertNil([seg subPatternString:4]); // nothing matched "(baz)"
+  XCTAssertNil([seg subPatternString:5]);
   // "xx" - skipped
   // "foobaz"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"baz", nil);
-  STAssertNil([seg subPatternString:3], nil); // (nothing matched "(bar)"
-  STAssertEqualStrings([seg subPatternString:4], @"baz", nil);
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"baz");
+  XCTAssertNil([seg subPatternString:3]); // (nothing matched "(bar)"
+  XCTAssertEqualStrings([seg subPatternString:4], @"baz");
+  XCTAssertNil([seg subPatternString:5]);
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test all objects
   regex = [GTMRegex regexWithPattern:@"foo+ba+r"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex matchSegmentEnumeratorForString:@"afoobarbfooobaarfoobarzz"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   NSArray *allSegments = [enumerator allObjects];
-  STAssertNotNil(allSegments, nil);
-  STAssertEquals((NSUInteger)3, [allSegments count], nil);
-  
+  XCTAssertNotNil(allSegments);
+  XCTAssertEqual((NSUInteger)3, [allSegments count]);
+
   // test we are getting the flags right for newline
   regex = [GTMRegex regexWithPattern:@"^a"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex matchSegmentEnumeratorForString:@"aa\naa"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "a\n" - skipped
   // "a"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "a" - skipped
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test we are getting the flags right for newline, part 2
   regex = [GTMRegex regexWithPattern:@"^a*$"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   enumerator = [regex matchSegmentEnumeratorForString:@"aa\naa\nbb\naa"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // "\n" - skipped
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // "\nbb\n" - skipped
   // "aa"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aa");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 }
 
 - (void)testStringByReplacingMatchesInStringWithReplacement {
   GTMRegex *regex = [GTMRegex regexWithPattern:@"(foo)(.*)(bar)"];
-  STAssertNotNil(regex, nil);
+  XCTAssertNotNil(regex);
   // the basics
-  STAssertEqualStrings(@"weeZbarZbydoo spamZfooZdoggies",
-                       [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
-                                               withReplacement:@"Z\\3Z\\2Z\\1Z"],
-                       nil);
+  XCTAssertEqualStrings(@"weeZbarZbydoo spamZfooZdoggies",
+                        [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
+                                                withReplacement:@"Z\\3Z\\2Z\\1Z"]);
   // nil/empty replacement
-  STAssertEqualStrings(@"weedoggies",
-                       [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
-                                               withReplacement:nil],
-                       nil);
-  STAssertEqualStrings(@"weedoggies",
-                       [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
-                                               withReplacement:@""],
-                       nil);
-  STAssertEqualStrings(@"",
-                       [regex stringByReplacingMatchesInString:@""
-                                               withReplacement:@"abc"],
-                       nil);
-  STAssertNil([regex stringByReplacingMatchesInString:nil
-                                      withReplacement:@"abc"],
-              nil);
+  XCTAssertEqualStrings(@"weedoggies",
+                        [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
+                                                withReplacement:nil]);
+  XCTAssertEqualStrings(@"weedoggies",
+                        [regex stringByReplacingMatchesInString:@"weefoobydoo spambardoggies"
+                                                withReplacement:@""]);
+  XCTAssertEqualStrings(@"",
+                        [regex stringByReplacingMatchesInString:@""
+                                                withReplacement:@"abc"]);
+  XCTAssertNil([regex stringByReplacingMatchesInString:nil
+                                       withReplacement:@"abc"]);
   // use optional and invale subexpression parts to confirm that works
   regex = [GTMRegex regexWithPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNotNil(regex, nil);
-  STAssertEqualStrings(@"aaa baz bar bar foo baz aaa",
-                       [regex stringByReplacingMatchesInString:@"aaa foooooobaz fooobar bar foo baz aaa"
-                                               withReplacement:@"\\4\\5"],
-                       nil);
-  STAssertEqualStrings(@"aaa ZZZ ZZZ bar foo baz aaa",
-                       [regex stringByReplacingMatchesInString:@"aaa foooooobaz fooobar bar foo baz aaa"
-                                               withReplacement:@"Z\\10Z\\12Z"],
-                       nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqualStrings(@"aaa baz bar bar foo baz aaa",
+                        [regex stringByReplacingMatchesInString:@"aaa foooooobaz fooobar bar foo baz aaa"
+                                                withReplacement:@"\\4\\5"]);
+  XCTAssertEqualStrings(@"aaa ZZZ ZZZ bar foo baz aaa",
+                        [regex stringByReplacingMatchesInString:@"aaa foooooobaz fooobar bar foo baz aaa"
+                                                withReplacement:@"Z\\10Z\\12Z"]);
   // test slashes in replacement that aren't part of the subpattern reference
   regex = [GTMRegex regexWithPattern:@"a+"];
-  STAssertNotNil(regex, nil);
-  STAssertEqualStrings(@"z\\\\0 \\\\a \\\\\\\\0z",
-                       [regex stringByReplacingMatchesInString:@"zaz"
-                                               withReplacement:@"\\\\0 \\\\\\0 \\\\\\\\0"],
-                       nil);
-  STAssertEqualStrings(@"z\\\\a \\\\\\\\0 \\\\\\\\az",
-                       [regex stringByReplacingMatchesInString:@"zaz"
-                                               withReplacement:@"\\\\\\0 \\\\\\\\0 \\\\\\\\\\0"],
-                       nil);
-  STAssertEqualStrings(@"z\\\\\\\\0 \\\\\\\\a \\\\\\\\\\\\0z",
-                       [regex stringByReplacingMatchesInString:@"zaz"
-                                               withReplacement:@"\\\\\\\\0 \\\\\\\\\\0 \\\\\\\\\\\\0"],
-                       nil);
+  XCTAssertNotNil(regex);
+  XCTAssertEqualStrings(@"z\\\\0 \\\\a \\\\\\\\0z",
+                        [regex stringByReplacingMatchesInString:@"zaz"
+                                                withReplacement:@"\\\\0 \\\\\\0 \\\\\\\\0"]);
+  XCTAssertEqualStrings(@"z\\\\a \\\\\\\\0 \\\\\\\\az",
+                        [regex stringByReplacingMatchesInString:@"zaz"
+                                                withReplacement:@"\\\\\\0 \\\\\\\\0 \\\\\\\\\\0"]);
+  XCTAssertEqualStrings(@"z\\\\\\\\0 \\\\\\\\a \\\\\\\\\\\\0z",
+                        [regex stringByReplacingMatchesInString:@"zaz"
+                                                withReplacement:@"\\\\\\\\0 \\\\\\\\\\0 \\\\\\\\\\\\0"]);
 }
 
 - (void)testDescriptions {
   // default options
   GTMRegex *regex = [GTMRegex regexWithPattern:@"a+"];
-  STAssertNotNil(regex, nil);
-  STAssertGreaterThan([[regex description] length], (NSUInteger)10,
-                      @"failed to get a reasonable description for regex");
+  XCTAssertNotNil(regex);
+  XCTAssertGreaterThan([[regex description] length], (NSUInteger)10,
+                       @"failed to get a reasonable description for regex");
   // enumerator
   NSEnumerator *enumerator = [regex segmentEnumeratorForString:@"aaabbbccc"];
-  STAssertNotNil(enumerator, nil);
-  STAssertGreaterThan([[enumerator description] length], (NSUInteger)10,
-                      @"failed to get a reasonable description for regex enumerator");
+  XCTAssertNotNil(enumerator);
+  XCTAssertGreaterThan([[enumerator description] length], (NSUInteger)10,
+                       @"failed to get a reasonable description for regex enumerator");
   // string segment
   GTMRegexStringSegment *seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertGreaterThan([[seg description] length], (NSUInteger)10,
-                      @"failed to get a reasonable description for regex string segment");
+  XCTAssertNotNil(seg);
+  XCTAssertGreaterThan([[seg description] length], (NSUInteger)10,
+                       @"failed to get a reasonable description for regex string segment");
   // regex w/ other options
   regex = [GTMRegex regexWithPattern:@"a+"
                              options:(kGTMRegexOptionIgnoreCase | kGTMRegexOptionSupressNewlineSupport)];
-  STAssertNotNil(regex, nil);
-  STAssertGreaterThan([[regex description] length], (NSUInteger)10,
-                      @"failed to get a reasonable description for regex w/ options");
+  XCTAssertNotNil(regex);
+  XCTAssertGreaterThan([[regex description] length], (NSUInteger)10,
+                       @"failed to get a reasonable description for regex w/ options");
 }
 
 @end
@@ -913,333 +897,324 @@
 
 - (void)testMatchesPattern {
   // simple pattern
-  STAssertTrue([@"foobar" gtm_matchesPattern:@"foo.*bar"], nil);
-  STAssertTrue([@"foobydoo spambar" gtm_matchesPattern:@"foo.*bar"], nil);
-  STAssertFalse([@"zzfoobarzz" gtm_matchesPattern:@"foo.*bar"], nil);
-  STAssertFalse([@"zzfoobydoo spambarzz" gtm_matchesPattern:@"foo.*bar"], nil);
-  STAssertFalse([@"abcdef" gtm_matchesPattern:@"foo.*bar"], nil);
-  STAssertFalse([@"" gtm_matchesPattern:@"foo.*bar"], nil);
+  XCTAssertTrue([@"foobar" gtm_matchesPattern:@"foo.*bar"]);
+  XCTAssertTrue([@"foobydoo spambar" gtm_matchesPattern:@"foo.*bar"]);
+  XCTAssertFalse([@"zzfoobarzz" gtm_matchesPattern:@"foo.*bar"]);
+  XCTAssertFalse([@"zzfoobydoo spambarzz" gtm_matchesPattern:@"foo.*bar"]);
+  XCTAssertFalse([@"abcdef" gtm_matchesPattern:@"foo.*bar"]);
+  XCTAssertFalse([@"" gtm_matchesPattern:@"foo.*bar"]);
   // pattern w/ sub patterns
-  STAssertTrue([@"foobar" gtm_matchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertTrue([@"foobydoo spambar" gtm_matchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertFalse([@"zzfoobarzz" gtm_matchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertFalse([@"zzfoobydoo spambarzz" gtm_matchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertFalse([@"abcdef" gtm_matchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertFalse([@"" gtm_matchesPattern:@"(foo)(.*)(bar)"], nil);
+  XCTAssertTrue([@"foobar" gtm_matchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertTrue([@"foobydoo spambar" gtm_matchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertFalse([@"zzfoobarzz" gtm_matchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertFalse([@"zzfoobydoo spambarzz" gtm_matchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertFalse([@"abcdef" gtm_matchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertFalse([@"" gtm_matchesPattern:@"(foo)(.*)(bar)"]);
 }
 
 - (void)testSubPatternsOfPattern {
   NSArray *subPatterns = [@"foooooobaz" gtm_subPatternsOfPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNotNil(subPatterns, nil);
-  STAssertEquals((NSUInteger)6, [subPatterns count], nil);
-  STAssertEqualStrings(@"foooooobaz", [subPatterns objectAtIndex:0], nil);
-  STAssertEqualStrings(@"foooooo", [subPatterns objectAtIndex:1], nil);
-  STAssertEqualStrings(@"ooooo", [subPatterns objectAtIndex:2], nil);
-  STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:3], nil);
-  STAssertEqualObjects([NSNull null], [subPatterns objectAtIndex:4], nil);
-  STAssertEqualStrings(@"baz", [subPatterns objectAtIndex:5], nil);
+  XCTAssertNotNil(subPatterns);
+  XCTAssertEqual((NSUInteger)6, [subPatterns count]);
+  XCTAssertEqualStrings(@"foooooobaz", [subPatterns objectAtIndex:0]);
+  XCTAssertEqualStrings(@"foooooo", [subPatterns objectAtIndex:1]);
+  XCTAssertEqualStrings(@"ooooo", [subPatterns objectAtIndex:2]);
+  XCTAssertEqualStrings(@"baz", [subPatterns objectAtIndex:3]);
+  XCTAssertEqualObjects([NSNull null], [subPatterns objectAtIndex:4]);
+  XCTAssertEqualStrings(@"baz", [subPatterns objectAtIndex:5]);
 
   // not there
   subPatterns = [@"aaa" gtm_subPatternsOfPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
 
   // not extra stuff on either end
   subPatterns = [@"ZZZfoooooobaz" gtm_subPatternsOfPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
   subPatterns = [@"foooooobazZZZ" gtm_subPatternsOfPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
   subPatterns = [@"ZZZfoooooobazZZZ" gtm_subPatternsOfPattern:@"(fo(o+))((bar)|(baz))"];
-  STAssertNil(subPatterns, nil);
+  XCTAssertNil(subPatterns);
 }
 
 - (void)testFirstSubStringMatchedByPattern {
   // simple pattern
-  STAssertEqualStrings([@"foobar" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
-                       @"foobar", nil);
-  STAssertEqualStrings([@"foobydoo spambar" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
-                       @"foobydoo spambar", nil);
-  STAssertEqualStrings([@"zzfoobarzz" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
-                       @"foobar", nil);
-  STAssertEqualStrings([@"zzfoobydoo spambarzz" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
-                       @"foobydoo spambar", nil);
-  STAssertNil([@"abcdef" gtm_firstSubStringMatchedByPattern:@"foo.*bar"], nil);
-  STAssertNil([@"" gtm_firstSubStringMatchedByPattern:@"foo.*bar"], nil);
+  XCTAssertEqualStrings([@"foobar" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
+                        @"foobar");
+  XCTAssertEqualStrings([@"foobydoo spambar" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
+                        @"foobydoo spambar");
+  XCTAssertEqualStrings([@"zzfoobarzz" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
+                        @"foobar");
+  XCTAssertEqualStrings([@"zzfoobydoo spambarzz" gtm_firstSubStringMatchedByPattern:@"foo.*bar"],
+                        @"foobydoo spambar");
+  XCTAssertNil([@"abcdef" gtm_firstSubStringMatchedByPattern:@"foo.*bar"]);
+  XCTAssertNil([@"" gtm_firstSubStringMatchedByPattern:@"foo.*bar"]);
   // pattern w/ sub patterns
-  STAssertEqualStrings([@"foobar" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
-                       @"foobar", nil);
-  STAssertEqualStrings([@"foobydoo spambar" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
-                       @"foobydoo spambar", nil);
-  STAssertEqualStrings([@"zzfoobarzz" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
-                       @"foobar", nil);
-  STAssertEqualStrings([@"zzfoobydoo spambarzz" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
-                       @"foobydoo spambar", nil);
-  STAssertNil([@"abcdef" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertNil([@"" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"], nil);
+  XCTAssertEqualStrings([@"foobar" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
+                        @"foobar");
+  XCTAssertEqualStrings([@"foobydoo spambar" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
+                        @"foobydoo spambar");
+  XCTAssertEqualStrings([@"zzfoobarzz" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
+                        @"foobar");
+  XCTAssertEqualStrings([@"zzfoobydoo spambarzz" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"],
+                        @"foobydoo spambar");
+  XCTAssertNil([@"abcdef" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertNil([@"" gtm_firstSubStringMatchedByPattern:@"(foo)(.*)(bar)"]);
 }
 
 - (void)testSubStringMatchesPattern {
   // simple pattern
-  STAssertTrue([@"foobar" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
-  STAssertTrue([@"foobydoo spambar" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
-  STAssertTrue([@"zzfoobarzz" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
-  STAssertTrue([@"zzfoobydoo spambarzz" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
-  STAssertFalse([@"abcdef" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
-  STAssertFalse([@"" gtm_subStringMatchesPattern:@"foo.*bar"], nil);
+  XCTAssertTrue([@"foobar" gtm_subStringMatchesPattern:@"foo.*bar"]);
+  XCTAssertTrue([@"foobydoo spambar" gtm_subStringMatchesPattern:@"foo.*bar"]);
+  XCTAssertTrue([@"zzfoobarzz" gtm_subStringMatchesPattern:@"foo.*bar"]);
+  XCTAssertTrue([@"zzfoobydoo spambarzz" gtm_subStringMatchesPattern:@"foo.*bar"]);
+  XCTAssertFalse([@"abcdef" gtm_subStringMatchesPattern:@"foo.*bar"]);
+  XCTAssertFalse([@"" gtm_subStringMatchesPattern:@"foo.*bar"]);
   // pattern w/ sub patterns
-  STAssertTrue([@"foobar" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertTrue([@"foobydoo spambar" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertTrue([@"zzfoobarzz" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertTrue([@"zzfoobydoo spambarzz" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertFalse([@"abcdef" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
-  STAssertFalse([@"" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"], nil);
+  XCTAssertTrue([@"foobar" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertTrue([@"foobydoo spambar" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertTrue([@"zzfoobarzz" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertTrue([@"zzfoobydoo spambarzz" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertFalse([@"abcdef" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"]);
+  XCTAssertFalse([@"" gtm_subStringMatchesPattern:@"(foo)(.*)(bar)"]);
 }
 
 - (void)testSegmentEnumeratorForPattern {
   NSEnumerator *enumerator =
     [@"afoobarbfooobaarfoobarzz" gtm_segmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "a"
   GTMRegexStringSegment *seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"a", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"a");
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "b"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"b", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"b");
   // "fooobaar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"fooobaar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"fooobaar");
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "zz"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"zz", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"zz");
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test no match
   enumerator = [@"aaa" gtm_segmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"aaa", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"aaa");
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test only match
   enumerator = [@"foobar" gtm_segmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // now test the saved sub segments
   enumerator =
     [@"foobarxxfoobaz" gtm_segmentEnumeratorForPattern:@"(foo)((bar)|(baz))"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"bar", nil);
-  STAssertEqualStrings([seg subPatternString:3], @"bar", nil);
-  STAssertNil([seg subPatternString:4], nil); // nothing matched "(baz)"
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"bar");
+  XCTAssertEqualStrings([seg subPatternString:3], @"bar");
+  XCTAssertNil([seg subPatternString:4]); // nothing matched "(baz)"
+  XCTAssertNil([seg subPatternString:5]);
   // "xx"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertFalse([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"xx", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"xx", nil);
-  STAssertNil([seg subPatternString:1], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertFalse([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"xx");
+  XCTAssertEqualStrings([seg subPatternString:0], @"xx");
+  XCTAssertNil([seg subPatternString:1]);
   // "foobaz"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"baz", nil);
-  STAssertNil([seg subPatternString:3], nil); // (nothing matched "(bar)"
-  STAssertEqualStrings([seg subPatternString:4], @"baz", nil);
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"baz");
+  XCTAssertNil([seg subPatternString:3]); // (nothing matched "(bar)"
+  XCTAssertEqualStrings([seg subPatternString:4], @"baz");
+  XCTAssertNil([seg subPatternString:5]);
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test all objects
   enumerator = [@"afoobarbfooobaarfoobarzz" gtm_segmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   NSArray *allSegments = [enumerator allObjects];
-  STAssertNotNil(allSegments, nil);
-  STAssertEquals((NSUInteger)6, [allSegments count], nil);
+  XCTAssertNotNil(allSegments);
+  XCTAssertEqual((NSUInteger)6, [allSegments count]);
 }
 
 - (void)testMatchSegmentEnumeratorForPattern {
   NSEnumerator *enumerator =
     [@"afoobarbfooobaarfoobarzz" gtm_matchSegmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "a" - skipped
   // "foobar"
   GTMRegexStringSegment *seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "b" - skipped
   // "fooobaar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"fooobaar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"fooobaar");
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   // "zz" - skipped
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test no match
   enumerator = [@"aaa" gtm_matchSegmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test only match
   enumerator = [@"foobar" gtm_matchSegmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // now test the saved sub segments
   enumerator =
     [@"foobarxxfoobaz" gtm_matchSegmentEnumeratorForPattern:@"(foo)((bar)|(baz))"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   // "foobar"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobar", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"bar", nil);
-  STAssertEqualStrings([seg subPatternString:3], @"bar", nil);
-  STAssertNil([seg subPatternString:4], nil); // nothing matched "(baz)"
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobar");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"bar");
+  XCTAssertEqualStrings([seg subPatternString:3], @"bar");
+  XCTAssertNil([seg subPatternString:4]); // nothing matched "(baz)"
+  XCTAssertNil([seg subPatternString:5]);
   // "xx" - skipped
   // "foobaz"
   seg = [enumerator nextObject];
-  STAssertNotNil(seg, nil);
-  STAssertTrue([seg isMatch], nil);
-  STAssertEqualStrings([seg string], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:0], @"foobaz", nil);
-  STAssertEqualStrings([seg subPatternString:1], @"foo", nil);
-  STAssertEqualStrings([seg subPatternString:2], @"baz", nil);
-  STAssertNil([seg subPatternString:3], nil); // (nothing matched "(bar)"
-  STAssertEqualStrings([seg subPatternString:4], @"baz", nil);
-  STAssertNil([seg subPatternString:5], nil);
+  XCTAssertNotNil(seg);
+  XCTAssertTrue([seg isMatch]);
+  XCTAssertEqualStrings([seg string], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:0], @"foobaz");
+  XCTAssertEqualStrings([seg subPatternString:1], @"foo");
+  XCTAssertEqualStrings([seg subPatternString:2], @"baz");
+  XCTAssertNil([seg subPatternString:3]); // (nothing matched "(bar)"
+  XCTAssertEqualStrings([seg subPatternString:4], @"baz");
+  XCTAssertNil([seg subPatternString:5]);
   // (end)
   seg = [enumerator nextObject];
-  STAssertNil(seg, nil);
+  XCTAssertNil(seg);
 
   // test all objects
   enumerator = [@"afoobarbfooobaarfoobarzz" gtm_matchSegmentEnumeratorForPattern:@"foo+ba+r"];
-  STAssertNotNil(enumerator, nil);
+  XCTAssertNotNil(enumerator);
   NSArray *allSegments = [enumerator allObjects];
-  STAssertNotNil(allSegments, nil);
-  STAssertEquals((NSUInteger)3, [allSegments count], nil);
+  XCTAssertNotNil(allSegments);
+  XCTAssertEqual((NSUInteger)3, [allSegments count]);
 }
 
 - (void)testAllSubstringsMatchedByPattern {
   NSArray *segments =
     [@"afoobarbfooobaarfoobarzz" gtm_allSubstringsMatchedByPattern:@"foo+ba+r"];
-  STAssertNotNil(segments, nil);
-  STAssertEquals((NSUInteger)3, [segments count], nil);
-  STAssertEqualStrings([segments objectAtIndex:0], @"foobar", nil);
-  STAssertEqualStrings([segments objectAtIndex:1], @"fooobaar", nil);
-  STAssertEqualStrings([segments objectAtIndex:2], @"foobar", nil);
+  XCTAssertNotNil(segments);
+  XCTAssertEqual((NSUInteger)3, [segments count]);
+  XCTAssertEqualStrings([segments objectAtIndex:0], @"foobar");
+  XCTAssertEqualStrings([segments objectAtIndex:1], @"fooobaar");
+  XCTAssertEqualStrings([segments objectAtIndex:2], @"foobar");
 
   // test no match
   segments = [@"aaa" gtm_allSubstringsMatchedByPattern:@"foo+ba+r"];
-  STAssertNotNil(segments, nil);
-  STAssertEquals((NSUInteger)0, [segments count], nil);
+  XCTAssertNotNil(segments);
+  XCTAssertEqual((NSUInteger)0, [segments count]);
 
   // test only match
   segments = [@"foobar" gtm_allSubstringsMatchedByPattern:@"foo+ba+r"];
-  STAssertNotNil(segments, nil);
-  STAssertEquals((NSUInteger)1, [segments count], nil);
-  STAssertEqualStrings([segments objectAtIndex:0], @"foobar", nil);
+  XCTAssertNotNil(segments);
+  XCTAssertEqual((NSUInteger)1, [segments count]);
+  XCTAssertEqualStrings([segments objectAtIndex:0], @"foobar");
 }
 
 - (void)testStringByReplacingMatchesOfPatternWithReplacement {
   // the basics
-  STAssertEqualStrings(@"weeZbarZbydoo spamZfooZdoggies",
-                       [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
-                                                                            withReplacement:@"Z\\3Z\\2Z\\1Z"],
-                       nil);
+  XCTAssertEqualStrings(@"weeZbarZbydoo spamZfooZdoggies",
+                        [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
+                                                                            withReplacement:@"Z\\3Z\\2Z\\1Z"]);
   // nil/empty replacement
-  STAssertEqualStrings(@"weedoggies",
-                       [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
-                                                                            withReplacement:nil],
-                       nil);
-  STAssertEqualStrings(@"weedoggies",
-                       [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
-                                                                            withReplacement:@""],
-                       nil);
-  STAssertEqualStrings(@"",
-                       [@"" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
-                                               withReplacement:@"abc"],
-                       nil);
+  XCTAssertEqualStrings(@"weedoggies",
+                        [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
+                                                                             withReplacement:nil]);
+  XCTAssertEqualStrings(@"weedoggies",
+                        [@"weefoobydoo spambardoggies" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
+                                                                             withReplacement:@""]);
+  XCTAssertEqualStrings(@"",
+                        [@"" gtm_stringByReplacingMatchesOfPattern:@"(foo)(.*)(bar)"
+                                                   withReplacement:@"abc"]);
   // use optional and invale subexpression parts to confirm that works
-  STAssertEqualStrings(@"aaa baz bar bar foo baz aaa",
-                       [@"aaa foooooobaz fooobar bar foo baz aaa" gtm_stringByReplacingMatchesOfPattern:@"(fo(o+))((bar)|(baz))"
-                                                                                        withReplacement:@"\\4\\5"],
-                       nil);
-  STAssertEqualStrings(@"aaa ZZZ ZZZ bar foo baz aaa",
-                       [@"aaa foooooobaz fooobar bar foo baz aaa" gtm_stringByReplacingMatchesOfPattern:@"(fo(o+))((bar)|(baz))"
-                                                                                        withReplacement:@"Z\\10Z\\12Z"],
-                       nil);
+  XCTAssertEqualStrings(@"aaa baz bar bar foo baz aaa",
+                        [@"aaa foooooobaz fooobar bar foo baz aaa" gtm_stringByReplacingMatchesOfPattern:@"(fo(o+))((bar)|(baz))"
+                                                                                         withReplacement:@"\\4\\5"]);
+  XCTAssertEqualStrings(@"aaa ZZZ ZZZ bar foo baz aaa",
+                        [@"aaa foooooobaz fooobar bar foo baz aaa" gtm_stringByReplacingMatchesOfPattern:@"(fo(o+))((bar)|(baz))"
+                                                                                         withReplacement:@"Z\\10Z\\12Z"]);
   // test slashes in replacement that aren't part of the subpattern reference
-  STAssertEqualStrings(@"z\\\\0 \\\\a \\\\\\\\0z",
-                       [@"zaz" gtm_stringByReplacingMatchesOfPattern:@"a+"
-                                                     withReplacement:@"\\\\0 \\\\\\0 \\\\\\\\0"],
-                       nil);
-  STAssertEqualStrings(@"z\\\\a \\\\\\\\0 \\\\\\\\az",
-                       [@"zaz" gtm_stringByReplacingMatchesOfPattern:@"a+"
-                                                     withReplacement:@"\\\\\\0 \\\\\\\\0 \\\\\\\\\\0"],
-                       nil);
-  STAssertEqualStrings(@"z\\\\\\\\0 \\\\\\\\a \\\\\\\\\\\\0z",
-                       [@"zaz" gtm_stringByReplacingMatchesOfPattern:@"a+"
-                                                     withReplacement:@"\\\\\\\\0 \\\\\\\\\\0 \\\\\\\\\\\\0"],
-                       nil);
+  XCTAssertEqualStrings(@"z\\\\0 \\\\a \\\\\\\\0z",
+                        [@"zaz" gtm_stringByReplacingMatchesOfPattern:@"a+"
+                                                      withReplacement:@"\\\\0 \\\\\\0 \\\\\\\\0"]);
+  XCTAssertEqualStrings(@"z\\\\a \\\\\\\\0 \\\\\\\\az",
+                        [@"zaz" gtm_stringByReplacingMatchesOfPattern:@"a+"
+                                                      withReplacement:@"\\\\\\0 \\\\\\\\0 \\\\\\\\\\0"]);
+  XCTAssertEqualStrings(@"z\\\\\\\\0 \\\\\\\\a \\\\\\\\\\\\0z",
+                        [@"zaz" gtm_stringByReplacingMatchesOfPattern:@"a+"
+                                                      withReplacement:@"\\\\\\\\0 \\\\\\\\\\0 \\\\\\\\\\\\0"]);
 }
 
 @end

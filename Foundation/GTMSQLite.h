@@ -92,12 +92,6 @@
 //      or ranges between single UniChars.
 //
 
-//  SQLite is preinstalled on 10.4 only. As long as we're using the OS version
-//  of the library, limit ourself to Tiger+
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_4
-#error SQLite support is Tiger or later
-#endif
-
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 

@@ -22,33 +22,6 @@
 /// A few useful methods for dealing with paths.
 @interface NSFileManager (GMFileManagerPathAdditions)
 
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-
-/// For the Unix-y at heart, this is "mkdir -p".  It tries to create
-/// the directory specified by |path|, and any intervening directories that
-/// are needed.  Each directory that is created is created with |attributes|
-/// (see other NSFileManager doco for the details on |attributes|).
-///
-/// If you are building for 10.5 or later, you should just use the new api:
-///  createDirectoryAtPath:withIntermediateDirectories:attributes:error:
-///
-/// Also if you need more control over the creation of paths and their
-/// attributes, look into using GTMPath.
-///
-/// Args:
-///   path - the path of the directory to create.
-///   attributes - these are defined in the "Constants" section of Apple's
-///                NSFileManager doco
-///
-/// Returns:
-///   YES if |path| exists or was able to be created successfully
-///   NO otherwise
-///
-- (BOOL)gtm_createFullPathToDirectory:(NSString *)path
-                           attributes:(NSDictionary *)attributes;
-
-#endif  // GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-
 /// Return an the paths for all resources in |directoryPath| that have the
 /// |extension| file extension.
 ///

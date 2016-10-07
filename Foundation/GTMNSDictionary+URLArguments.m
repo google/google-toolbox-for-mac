@@ -38,7 +38,7 @@ GTM_METHOD_CHECK(NSString, gtm_stringByUnescapingFromURLArgument);
   NSString* component;
   // Use reverse order so that the first occurrence of a key replaces
   // those subsequent.
-  GTM_FOREACH_ENUMEREE(component, [components reverseObjectEnumerator]) {
+  for (component in [components reverseObjectEnumerator]) {
     if ([component length] == 0)
       continue;
     NSRange pos = [component rangeOfString:@"="];
@@ -65,7 +65,7 @@ GTM_METHOD_CHECK(NSString, gtm_stringByUnescapingFromURLArgument);
 - (NSString *)gtm_httpArgumentsString {
   NSMutableArray* arguments = [NSMutableArray arrayWithCapacity:[self count]];
   NSString* key;
-  GTM_FOREACH_KEY(key, self) {
+  for (key in self) {
     [arguments addObject:[NSString stringWithFormat:@"%@=%@",
                           [key gtm_stringByEscapingForURLArgument],
                           [[[self objectForKey:key] description] gtm_stringByEscapingForURLArgument]]];

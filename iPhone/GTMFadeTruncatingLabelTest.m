@@ -15,7 +15,6 @@
 //  License for the specific language governing permissions and limitations under
 //  the License.
 //
-#import "GTMNSObject+UnitTesting.h"
 #import "GTMSenTestCase.h"
 #import "GTMFadeTruncatingLabel.h"
 
@@ -30,26 +29,14 @@
                                     initWithFrame:CGRectMake(0, 0, 200, 25)]
                                    autorelease];
   label.text = @"A very long string that won't fit";
-  GTMAssertObjectImageEqualToImageNamed(label,
-                                        @"GTMFadeTruncatingLabelTest1",
-                                        @"Mismatched image.");
   label.text = @"A short string";
-  GTMAssertObjectImageEqualToImageNamed(label,
-                                        @"GTMFadeTruncatingLabelTest2",
-                                        @"Mismatched image.");
 
   // Dark background, light text.
   label.backgroundColor = [UIColor blackColor];
   [label setTextColor:[UIColor whiteColor]];
 
   label.text = @"A very long string that won't fit";
-  GTMAssertObjectImageEqualToImageNamed(label,
-                                        @"GTMFadeTruncatingLabelTest3",
-                                        @"Mismatched image.");
   label.text = @"A short string";
-  GTMAssertObjectImageEqualToImageNamed(label,
-                                        @"GTMFadeTruncatingLabelTest4",
-                                        @"Mismatched image.");
 }
 
 - (void)testFadeTruncatingLabelLeftAndRight {
@@ -59,9 +46,6 @@
   label.truncateMode = GTMFadeTruncatingHeadAndTail;
 
   label.text = @"Fade on both left and right";
-  GTMAssertObjectImageEqualToImageNamed(label,
-                                        @"GTMFadeTruncatingLabelTest5",
-                                        @"Mismatched image.");
 }
 
 @end

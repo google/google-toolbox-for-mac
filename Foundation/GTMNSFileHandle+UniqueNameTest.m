@@ -28,69 +28,63 @@
   NSFileHandle *handle
     = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:nil
                                               finalPath:nil];
-  STAssertNil(handle, nil);
+  XCTAssertNil(handle);
 
   // Try and create a file where we shouldn't be able to.
   NSString *path = nil;
   handle = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:@"/System/HappyXXX.txt"
                                                    finalPath:&path];
-  STAssertNil(handle, nil);
-  STAssertNil(path, nil);
+  XCTAssertNil(handle);
+  XCTAssertNil(path);
 
   NSFileManager *fm = [NSFileManager defaultManager];
   NSString *tempDir
     = [fm gtm_createTemporaryDirectoryBasedOn:@"GTMNSFileHandle_UniqueNameTestXXXXXX"];
-  STAssertNotNil(tempDir, nil);
+  XCTAssertNotNil(tempDir);
   BOOL isDirectory = NO;
-  STAssertTrue([fm fileExistsAtPath:tempDir isDirectory:&isDirectory]
-               && isDirectory, nil);
+  XCTAssertTrue([fm fileExistsAtPath:tempDir isDirectory:&isDirectory] && isDirectory);
 
   // Test with extension
   handle = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:@"HappyXXX.txt"
                                                  inDirectory:tempDir
                                                    finalPath:&path];
-  STAssertNotNil(handle, nil);
-  STAssertEqualObjects([path pathExtension], @"txt", nil);
-  STAssertTrue([fm fileExistsAtPath:path], nil);
+  XCTAssertNotNil(handle);
+  XCTAssertEqualObjects([path pathExtension], @"txt");
+  XCTAssertTrue([fm fileExistsAtPath:path]);
 
   // Test without extension
   handle = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:@"HappyXXX"
                                                  inDirectory:tempDir
                                                    finalPath:&path];
-  STAssertNotNil(handle, nil);
-  STAssertEqualObjects([path pathExtension], @"", nil);
-  STAssertTrue([fm fileExistsAtPath:path], nil);
+  XCTAssertNotNil(handle);
+  XCTAssertEqualObjects([path pathExtension], @"");
+  XCTAssertTrue([fm fileExistsAtPath:path]);
 
   // Test passing in same name twice
   NSString *fullPath = [tempDir stringByAppendingPathComponent:@"HappyXXX"];
   NSString *newPath = nil;
   handle = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:fullPath
                                                    finalPath:&newPath];
-  STAssertNotNil(handle, nil);
-  STAssertNotNil(newPath, nil);
-  STAssertNotEqualObjects(path, newPath, nil);
-  STAssertTrue([fm fileExistsAtPath:newPath], nil);
+  XCTAssertNotNil(handle);
+  XCTAssertNotNil(newPath);
+  XCTAssertNotEqualObjects(path, newPath);
+  XCTAssertTrue([fm fileExistsAtPath:newPath]);
 
   // Test passing in same name twice with no template
   fullPath = [tempDir stringByAppendingPathComponent:@"Sad"];
   newPath = nil;
   handle = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:fullPath
                                                    finalPath:&newPath];
-  STAssertNotNil(handle, nil);
-  STAssertNotNil(newPath, nil);
+  XCTAssertNotNil(handle);
+  XCTAssertNotNil(newPath);
 
   newPath = nil;
   handle = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:fullPath
                                                    finalPath:&newPath];
-  STAssertNil(handle, nil);
-  STAssertNil(newPath, nil);
+  XCTAssertNil(handle);
+  XCTAssertNil(newPath);
 
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-  [fm removeFileAtPath:tempDir handler:nil];
-#else //  MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
   [fm removeItemAtPath:tempDir error:nil];
-#endif
-
 }
 
 - (void)testFileHandleWithUniqueNameBasedOnInDirectorySearchMaskFinalPath {
@@ -101,21 +95,17 @@
                                             inDirectory:NSCachesDirectory
                                              domainMask:NSUserDomainMask
                                               finalPath:&path];
-  STAssertNil(handle, nil);
-  STAssertNil(path, nil);
+  XCTAssertNil(handle);
+  XCTAssertNil(path);
 
   handle  = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:@"HappyXXX.txt"
                                                   inDirectory:NSCachesDirectory
                                                    domainMask:NSUserDomainMask
                                                     finalPath:&path];
-  STAssertNotNil(handle, nil);
-  STAssertNotNil(path, nil);
-  STAssertTrue([fm fileExistsAtPath:path], nil);
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-  [fm removeFileAtPath:path handler:nil];
-#else //  MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
+  XCTAssertNotNil(handle);
+  XCTAssertNotNil(path);
+  XCTAssertTrue([fm fileExistsAtPath:path]);
   [fm removeItemAtPath:path error:nil];
-#endif
 }
 
 @end
@@ -129,7 +119,7 @@
   NSFileManager *fm = [NSFileManager defaultManager];
   NSString *path
     = [fm gtm_createDirectoryWithUniqueNameBasedOn:@"/System/HappyXXX.txt"];
-  STAssertNil(path, nil);
+  XCTAssertNil(path);
 }
 
 - (void)testCreateDirectoryWithUniqueNameBasedOnInDirectorySearchMask {
@@ -137,20 +127,16 @@
   NSString *path = [fm gtm_createDirectoryWithUniqueNameBasedOn:nil
                                                     inDirectory:NSCachesDirectory
                                                      domainMask:NSUserDomainMask];
-  STAssertNil(path, nil);
+  XCTAssertNil(path);
 
   path = [fm gtm_createDirectoryWithUniqueNameBasedOn:@"HappyXXX.txt"
                                           inDirectory:NSCachesDirectory
                                            domainMask:NSUserDomainMask];
-  STAssertNotNil(path, nil);
+  XCTAssertNotNil(path);
   BOOL isDirectory = NO;
-  STAssertTrue([fm fileExistsAtPath:path isDirectory:&isDirectory]
-               && isDirectory, nil);
-#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5)
-  [fm removeFileAtPath:path handler:nil];
-#else //  MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
-  [fm removeItemAtPath:path error:nil];
-#endif
+  XCTAssertTrue([fm fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory);
+  NSError *error;
+  XCTAssertTrue([fm removeItemAtPath:path error:&error], "%@", error);
 }
 
 @end

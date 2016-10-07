@@ -18,7 +18,6 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMStringEncoding.h"
-#import "GTMUnitTestDevLog.h"
 
 @interface GTMStringEncodingTest : GTMTestCase
 @end
@@ -29,22 +28,31 @@
 - (void)testEmptyInputs {
   GTMStringEncoding *coder = [GTMStringEncoding stringEncodingWithString:@"01"];
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
-  STAssertEqualStrings([coder encode:[NSData data]], @"", nil);
-  [GTMUnitTestDevLog expectString:@"Empty input"];
-  STAssertEqualObjects([coder encodeString:@""], @"", nil);
-  STAssertEqualObjects([coder decode:@""], [NSData data], nil);
-  STAssertEqualStrings([coder stringByDecoding:@""], @"", nil);
+  NSError *error = nil;
+  XCTAssertEqualStrings([coder encode:[NSData data] error:&error], @"");
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualObjects([coder encodeString:@"" error:&error], @"");
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualObjects([coder decode:@"" error:&error], [NSData data]);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder stringByDecoding:@"" error:&error], @"");
+  XCTAssertNil(error);
 }
 
 // Invalid inputs should result in nil outputs.
 - (void)testInvalidInputs {
   GTMStringEncoding *coder = [GTMStringEncoding stringEncodingWithString:@"01"];
+  NSError *error = nil;
 
-  [GTMUnitTestDevLog expectString:@"unable to convert buffer to ASCII"];
-  STAssertNil([coder decode:nil], nil);
-  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 0"];
-  STAssertNil([coder decode:@"banana"], nil);
+  XCTAssertNil([coder decode:nil error:&error]);
+  XCTAssertEqual([error code], GTMStringEncodingErrorUnableToConverToAscii);
+  XCTAssertNil([coder decode:@"banana" error:&error]);
+  XCTAssertEqual([error code], GTMStringEncodingErrorUnknownCharacter);
+  XCTAssertEqualObjects([[error userInfo] objectForKey:GTMStringEncodingBadCharacterIndexKey],
+                        [NSNumber numberWithUnsignedInteger:0]);
 }
 
 // Ignored inputs should be silently ignored.
@@ -54,27 +62,42 @@
 
   char aa = 0xaa;
   NSData *aaData = [NSData dataWithBytes:&aa length:sizeof(aa)];
-  STAssertEqualObjects([coder decode:@"10101010"], aaData, nil);
+  NSError *error = nil;
+  XCTAssertEqualObjects([coder decode:@"10101010" error:&error], aaData);
+  XCTAssertNil(error);
+  error = nil;
 
   // Inputs with ignored characters
-  STAssertEqualObjects([coder decode:@"1010 1010"], aaData, nil);
-  STAssertEqualObjects([coder decode:@"1010-1010"], aaData, nil);
-  STAssertEqualObjects([coder decode:@"1010\n1010"], aaData, nil);
+  XCTAssertEqualObjects([coder decode:@"1010 1010" error:&error], aaData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualObjects([coder decode:@"1010-1010" error:&error], aaData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualObjects([coder decode:@"1010\n1010" error:&error], aaData);
+  XCTAssertNil(error);
+  error = nil;
 
   // Invalid inputs
-  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 4"];
-  STAssertNil([coder decode:@"1010+1010"], nil);
+  XCTAssertNil([coder decode:@"1010+1010" error:&error]);
+  XCTAssertEqual([error code], GTMStringEncodingErrorUnknownCharacter);
+  XCTAssertEqualObjects([[error userInfo] objectForKey:GTMStringEncodingBadCharacterIndexKey],
+                        [NSNumber numberWithUnsignedInteger:4]);
 }
 
 #define ASSERT_ENCODE_DECODE_STRING(coder, decoded, encoded) do { \
-  STAssertEqualStrings([coder encodeString:decoded], encoded, nil); \
-  STAssertEqualStrings([coder stringByDecoding:encoded], decoded, nil); \
+  XCTAssertEqualStrings([coder encodeString:decoded error:&error], encoded); \
+  XCTAssertNil(error); \
+  error = nil; \
+  XCTAssertEqualStrings([coder stringByDecoding:encoded error:&error], decoded); \
+  XCTAssertNil(error); \
+  error = nil; \
 } while (0)
 
 - (void)testBinary {
   GTMStringEncoding *coder = [GTMStringEncoding binaryStringEncoding];
+  NSError *error = nil;
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"01100110");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"0110011001101111");
@@ -122,15 +145,18 @@
   NSData *allValuesData = [NSData dataWithBytes:&allValuesBytes
                                          length:sizeof(allValuesBytes)];
 
-  STAssertEqualObjects([coder decode:allValues], allValuesData, nil);
-  STAssertEqualStrings([coder encode:allValuesData], allValues, nil);
+  XCTAssertEqualObjects([coder decode:allValues error:&error], allValuesData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:allValuesData error:&error], allValues);
+  XCTAssertNil(error);
 }
 
 - (void)testBase64 {
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding rfc4648Base64StringEncoding];
+  NSError *error = nil;
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"Zg==");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"Zm8=");
@@ -153,8 +179,11 @@
   NSData *allValuesData = [NSData dataWithBytes:&allValuesBytes
                                          length:sizeof(allValuesBytes)];
 
-  STAssertEqualObjects([coder decode:allValues], allValuesData, nil);
-  STAssertEqualStrings([coder encode:allValuesData], allValues, nil);
+  XCTAssertEqualObjects([coder decode:allValues error:&error], allValuesData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:allValuesData error:&error], allValues);
+  XCTAssertNil(error);
 }
 
 - (void)testBase64Websafe {
@@ -162,7 +191,7 @@
   GTMStringEncoding *coder =
       [GTMStringEncoding rfc4648Base64WebsafeStringEncoding];
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
+  NSError *error = nil;
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"Zg==");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"Zm8=");
@@ -185,15 +214,18 @@
   NSData *allValuesData = [NSData dataWithBytes:&allValuesBytes
                                          length:sizeof(allValuesBytes)];
 
-  STAssertEqualObjects([coder decode:allValues], allValuesData, nil);
-  STAssertEqualStrings([coder encode:allValuesData], allValues, nil);
+  XCTAssertEqualObjects([coder decode:allValues error:&error], allValuesData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:allValuesData error:&error], allValues);
+  XCTAssertNil(error);
 }
 
 - (void)testBase32 {
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding rfc4648Base32StringEncoding];
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
+  NSError *error = nil;
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"MY======");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"MZXQ====");
@@ -217,15 +249,18 @@
   NSData *allValuesData = [NSData dataWithBytes:&allValuesBytes
                                          length:sizeof(allValuesBytes)];
 
-  STAssertEqualObjects([coder decode:allValues], allValuesData, nil);
-  STAssertEqualStrings([coder encode:allValuesData], allValues, nil);
+  XCTAssertEqualObjects([coder decode:allValues error:&error], allValuesData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:allValuesData error:&error], allValues);
+  XCTAssertNil(error);
 }
 
 - (void)testBase32Hex {
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding rfc4648Base32HexStringEncoding];
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
+  NSError *error = nil;
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"CO======");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"CPNG====");
@@ -249,15 +284,18 @@
   NSData *allValuesData = [NSData dataWithBytes:&allValuesBytes
                                          length:sizeof(allValuesBytes)];
 
-  STAssertEqualObjects([coder decode:allValues], allValuesData, nil);
-  STAssertEqualStrings([coder encode:allValuesData], allValues, nil);
+  XCTAssertEqualObjects([coder decode:allValues error:&error], allValuesData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:allValuesData error:&error], allValues);
+  XCTAssertNil(error);
 }
 
 - (void)testHex {
   // RFC4648 test vectors
   GTMStringEncoding *coder = [GTMStringEncoding hexStringEncoding];
 
-  [GTMUnitTestDevLog expectString:@"Empty input"];
+  NSError *error = nil;
   ASSERT_ENCODE_DECODE_STRING(coder, @"", @"");
   ASSERT_ENCODE_DECODE_STRING(coder, @"f", @"66");
   ASSERT_ENCODE_DECODE_STRING(coder, @"fo", @"666F");
@@ -282,28 +320,39 @@
   NSData *allValuesData = [NSData dataWithBytes:&allValuesBytes
                                          length:sizeof(allValuesBytes)];
 
-  STAssertEqualObjects([coder decode:allValues], allValuesData, nil);
-  STAssertEqualStrings([coder encode:allValuesData], allValues, nil);
+  XCTAssertEqualObjects([coder decode:allValues error:&error], allValuesData);
+  XCTAssertNil(error);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:allValuesData error:&error], allValues);
+  XCTAssertNil(error);
+  error = nil;
 
   // Lower case
-  STAssertEqualObjects([coder decode:[allValues lowercaseString]],
-                       allValuesData, nil);
+  XCTAssertEqualObjects([coder decode:[allValues lowercaseString] error:&error],
+                        allValuesData);
+  XCTAssertNil(error);
+  error = nil;
 
   // Extra tests from GTMNSData+HexTest.m
   NSString *testString = @"1C2F0032F40123456789ABCDEF";
   char testBytes[] = { 0x1c, 0x2f, 0x00, 0x32, 0xf4, 0x01, 0x23,
                        0x45, 0x67, 0x89, 0xab, 0xcd, 0xef };
   NSData *testData = [NSData dataWithBytes:testBytes length:sizeof(testBytes)];
-  STAssertEqualStrings([coder encode:testData], testString, nil);
-  STAssertEqualObjects([coder decode:testString], testData, nil);
+  error = nil;
+  XCTAssertEqualStrings([coder encode:testData error:&error], testString);
+  XCTAssertEqualObjects([coder decode:testString error:&error], testData);
 
   // Invalid inputs
-  [GTMUnitTestDevLog expectString:@"Incomplete trailing data"];
-  STAssertNil([coder decode:@"1c2f003"], nil);
-  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 7"];
-  STAssertNil([coder decode:@"1c2f00ft"], nil);
-  [GTMUnitTestDevLog expectString:@"Unexpected data in input pos 4"];
-  STAssertNil([coder decode:@"abcd<C3><A9>f"], nil);
+  XCTAssertNil([coder decode:@"1c2f003" error:&error]);
+  XCTAssertEqual([error code], GTMStringEncodingErrorIncompleteTrailingData);
+  XCTAssertNil([coder decode:@"1c2f00ft" error:&error]);
+  XCTAssertEqual([error code], GTMStringEncodingErrorUnknownCharacter);
+  XCTAssertEqualObjects([[error userInfo] objectForKey:GTMStringEncodingBadCharacterIndexKey],
+                        [NSNumber numberWithUnsignedInteger:7]);
+  XCTAssertNil([coder decode:@"abcd<C3><A9>f" error:&error]);
+  XCTAssertEqual([error code], GTMStringEncodingErrorUnknownCharacter);
+  XCTAssertEqualObjects([[error userInfo] objectForKey:GTMStringEncodingBadCharacterIndexKey],
+                        [NSNumber numberWithUnsignedInteger:4]);
 }
 
 @end
