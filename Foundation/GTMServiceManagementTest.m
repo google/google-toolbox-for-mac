@@ -23,7 +23,6 @@
 #import "GTMSenTestCase.h"
 #import <servers/bootstrap.h>
 
-#define STANDARD_JOB_LABEL "com.apple.launchctl.Background"
 #define OUR_JOB_LABEL "com.google.gtm.GTMServiceManagementTest.job"
 #define BAD_JOB_LABEL "com.google.gtm.GTMServiceManagementTest.badjob"
 #define TEST_HARNESS_LABEL "com.google.gtm.GTMServiceManagementTestHarness"
@@ -58,68 +57,87 @@ static NSString const *kGTMSocketName
                            nil];
   CFErrorRef error = NULL;
   launch_data_t launchDict = GTMLaunchDataCreateFromCFType(topDict, &error);
-  STAssertNotNULL(launchDict, nil);
-  STAssertNULL(error, @"Error: %@", error);
+  XCTAssertNotNULL(launchDict);
+  XCTAssertNULL(error, @"Error: %@", error);
   NSDictionary *nsDict
     = GTMCFAutorelease(GTMCFTypeCreateFromLaunchData(launchDict,
                                                      NO,
                                                      &error));
-  STAssertNotNil(nsDict, nil);
-  STAssertNULL(error, @"Error: %@", error);
-  STAssertEqualObjects(nsDict, topDict, @"");
+  XCTAssertNotNil(nsDict);
+  XCTAssertNULL(error, @"Error: %@", error);
+  XCTAssertEqualObjects(nsDict, topDict, @"");
 
   launch_data_free(launchDict);
 
   // Test a bad type
   NSURL *url = [NSURL URLWithString:@"http://www.google.com"];
-  STAssertNotNil(url, nil);
+  XCTAssertNotNil(url);
   launchDict = GTMLaunchDataCreateFromCFType(url, &error);
-  STAssertNULL(launchDict, nil);
-  STAssertNotNULL(error, nil);
-  STAssertEqualObjects((id)CFErrorGetDomain(error),
-                       (id)kCFErrorDomainPOSIX, nil);
-  STAssertEquals(CFErrorGetCode(error), (CFIndex)EINVAL, nil);
-  CFRelease(error);
+  XCTAssertNULL(launchDict);
+  XCTAssertNotNULL(error);
+  XCTAssertEqualObjects((id)CFErrorGetDomain(error),
+                        (id)kCFErrorDomainPOSIX);
+  XCTAssertEqual(CFErrorGetCode(error), (CFIndex)EINVAL);
+  if (error) {
+    CFRelease(error);
+  }
+
 
   CFTypeRef cfType = GTMCFTypeCreateFromLaunchData(NULL, YES, &error);
-  STAssertNULL(cfType, nil);
-  STAssertNotNULL(error, nil);
-  CFRelease(error);
+  XCTAssertNULL(cfType);
+  XCTAssertNotNULL(error);
+  if (error) {
+    CFRelease(error);
+  }
 }
 
 - (void)testJobDictionaries {
   NSDictionary *jobs = GTMCFAutorelease(GTMSMCopyAllJobDictionaries());
-  STAssertNotNil(jobs, nil);
-  // A job that should always be around
+  XCTAssertNotNil(jobs);
+
+  // Grab an existing job
+  NSString *jobName = [[jobs allKeys] objectAtIndex:0];
   NSDictionary *job
-    = GTMCFAutorelease(GTMSMJobCopyDictionary(CFSTR(STANDARD_JOB_LABEL)));
-  STAssertNotNil(job, nil);
+    = GTMCFAutorelease(GTMSMJobCopyDictionary((CFStringRef)jobName));
+  XCTAssertNotNil(job);
 
   // A job that should never be around
   CFTypeRef type = GTMSMJobCopyDictionary(CFSTR(BAD_JOB_LABEL));
-  STAssertNULL(type, nil);
+  XCTAssertNULL(type);
 }
 
 - (void)testLaunching {
   CFErrorRef error = NULL;
   Boolean isGood = GTMSMJobSubmit(NULL, &error);
-  STAssertFalse(isGood, nil);
-  STAssertNotNULL(error, nil);
-  CFRelease(error);
+  XCTAssertFalse(isGood);
+  XCTAssertNotNULL(error);
+  if (error) {
+    CFRelease(error);
+  }
+
 
   NSDictionary *empty = [NSDictionary dictionary];
   isGood = GTMSMJobSubmit((CFDictionaryRef)empty, &error);
-  STAssertFalse(isGood, nil);
-  STAssertNotNULL(error, nil);
-  CFRelease(error);
+  XCTAssertFalse(isGood);
+  XCTAssertNotNULL(error);
+  if (error) {
+    CFRelease(error);
+  }
+
+  // Grab an existing job
+  NSDictionary *jobs = GTMCFAutorelease(GTMSMCopyAllJobDictionaries());
+  XCTAssertNotNil(jobs);
+  NSString *jobName = [[jobs allKeys] objectAtIndex:0];
 
   NSDictionary *alreadyThere
-    = [NSDictionary dictionaryWithObject:@STANDARD_JOB_LABEL
+    = [NSDictionary dictionaryWithObject:jobName
                                   forKey:@LAUNCH_JOBKEY_LABEL];
   isGood = GTMSMJobSubmit((CFDictionaryRef)alreadyThere, &error);
-  STAssertFalse(isGood, nil);
-  STAssertEquals([(NSError *)error code], (NSInteger)EEXIST, nil);
-  CFRelease(error);
+  XCTAssertFalse(isGood);
+  XCTAssertEqual([(NSError *)error code], (NSInteger)EEXIST);
+  if (error) {
+    CFRelease(error);
+  }
 
   NSDictionary *goodJob
     = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -127,26 +145,20 @@ static NSString const *kGTMSocketName
        @"/bin/test", @LAUNCH_JOBKEY_PROGRAM,
        nil];
   isGood = GTMSMJobSubmit((CFDictionaryRef)goodJob, &error);
-  STAssertTrue(isGood, nil);
-  STAssertNULL(error, nil);
+  XCTAssertTrue(isGood);
+  XCTAssertNULL(error);
 
   isGood = GTMSMJobRemove(CFSTR(OUR_JOB_LABEL), &error);
-  STAssertTrue(isGood,
-               @"You may need to run launchctl remove %s", OUR_JOB_LABEL);
-  STAssertNULL(error, nil);
+  XCTAssertTrue(isGood,
+                @"You may need to run launchctl remove %s", OUR_JOB_LABEL);
+  XCTAssertNULL(error);
 
   isGood = GTMSMJobRemove(CFSTR(OUR_JOB_LABEL), &error);
-  STAssertFalse(isGood, nil);
-  STAssertNotNULL(error, nil);
-  CFRelease(error);
-}
-
-- (void)testCopyExports {
-  CFDictionaryRef exports = GTMCopyLaunchdExports();
-  STAssertNotNULL(exports, nil);
-  NSString *user = [(NSDictionary *)exports objectForKey:@"USER"];
-  STAssertEqualObjects(user, NSUserName(), nil);
-  CFRelease(exports);
+  XCTAssertFalse(isGood);
+  XCTAssertNotNULL(error);
+  if (error) {
+    CFRelease(error);
+  }
 }
 
 - (void)testCheckin {
@@ -154,16 +166,19 @@ static NSString const *kGTMSocketName
   // Can't check ourselves in
   NSDictionary *badTest
     = GTMCFAutorelease(GTMSMCopyJobCheckInDictionary(&error));
-  STAssertNil(badTest, nil);
-  STAssertNotNULL(error, nil);
-  CFRelease(error);
+  XCTAssertNil(badTest);
+  XCTAssertNotNULL(error);
+  if (error) {
+    CFRelease(error);
+  }
+
 
   NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
-  STAssertNotNil(testBundle, nil);
+  XCTAssertNotNil(testBundle);
   NSString *testHarnessPath
     = [testBundle pathForResource:@"GTMServiceManagementTestingHarness"
                            ofType:nil];
-  STAssertNotNil(testHarnessPath, nil);
+  XCTAssertNotNil(testHarnessPath);
   NSDictionary *machServices
     = [NSDictionary dictionaryWithObjectsAndKeys:
         [NSNumber numberWithBool:YES], @GTM_MACH_PORT_NAME,
@@ -195,22 +210,7 @@ static NSString const *kGTMSocketName
   GTMSMJobRemove(CFSTR(TEST_HARNESS_LABEL), NULL);
 
   BOOL isGood = GTMSMJobSubmit((CFDictionaryRef)job, &error);
-  STAssertTrue(isGood, @"Error %@", error);
-
-  NSDictionary* exports = GTMCFAutorelease(GTMCopyLaunchdExports());
-  STAssertNotNULL(exports, nil);
-  NSString *socketPath = [exports objectForKey:kGTMSocketKey];
-  STAssertNotNULL(socketPath, nil);
-  STAssertEqualObjects([socketPath lastPathComponent], kGTMSocketName, nil);
-
-  mach_port_t sp = 0;
-  kern_return_t rt = bootstrap_look_up(bootstrap_port,
-                                       (char*)GTM_MACH_PORT_NAME,
-                                       &sp);
-  STAssertNotEquals(sp, (mach_port_t)0, nil);
-  STAssertEquals(rt, KERN_SUCCESS, nil);
-  isGood = GTMSMJobRemove(CFSTR(TEST_HARNESS_LABEL), &error);
-  STAssertTrue(isGood, @"Error %@", error);
+  XCTAssertTrue(isGood, @"Error %@", error);
 }
 
 @end

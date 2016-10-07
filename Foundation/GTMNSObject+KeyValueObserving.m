@@ -25,11 +25,13 @@
 
 // This code is based on code by Michael Ash.
 // See comment in header.
-#import "GTMDefines.h"
 #import "GTMNSObject+KeyValueObserving.h"
+
+#import <libkern/OSAtomic.h>
+#include <objc/runtime.h>
+
 #import "GTMDefines.h"
 #import "GTMDebugSelectorValidation.h"
-#import "GTMObjC2Runtime.h"
 #import "GTMMethodCheck.h"
 
 // A singleton that works as a dispatch center for KVO
@@ -172,9 +174,9 @@ static char* GTMKeyValueObservingHelperContext
     // and the other will set things up so that the failing thread
     // gets the shared center
     GTMKeyValueObservingCenter *newCenter = [[self alloc] init];
-    if(!objc_atomicCompareAndSwapGlobalBarrier(nil,
-                                               newCenter,
-                                               (void *)&center)) {
+    if(!OSAtomicCompareAndSwapPtrBarrier(NULL,
+                                         newCenter,
+                                         (void *)&center)) {
       [newCenter release];  // COV_NF_LINE no guarantee we'll hit this line
     }
   }
@@ -252,7 +254,7 @@ static char* GTMKeyValueObservingHelperContext
   @synchronized(self) {
 
     NSString *helperKey;
-    GTM_FOREACH_OBJECT(helperKey, [observerHelpers_ allKeys]) {
+    for (helperKey in [observerHelpers_ allKeys]) {
       if ([helperKey hasPrefix:key]) {
         [allValidHelperKeys addObject:helperKey];
       }

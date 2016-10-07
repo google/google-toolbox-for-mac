@@ -20,8 +20,6 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
-#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
-
 #import "GTMFoundationUnitTestingUtilities.h"
 
 @interface GTMNSThread_BlocksTest : GTMTestCase {
@@ -56,8 +54,8 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertEqualObjects(runThread, currentThread, nil);
-  STAssertTrue([context shouldStop], nil);
+  XCTAssertEqualObjects(runThread, currentThread);
+  XCTAssertTrue([context shouldStop]);
 
   // Block with waiting runs immediately as well.
   runThread = nil;
@@ -66,8 +64,8 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertEqualObjects(runThread, currentThread, nil);
-  STAssertTrue([context shouldStop], nil);
+  XCTAssertEqualObjects(runThread, currentThread);
+  XCTAssertTrue([context shouldStop]);
 
   // Block without waiting requires a runloop spin.
   runThread = nil;
@@ -76,10 +74,10 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertTrue([[NSRunLoop currentRunLoop]
-                    gtm_runUpToSixtySecondsWithContext:context], nil);
-  STAssertEqualObjects(runThread, currentThread, nil);
-  STAssertTrue([context shouldStop], nil);
+  XCTAssertTrue([[NSRunLoop currentRunLoop]
+                 gtm_runUpToSixtySecondsWithContext:context]);
+  XCTAssertEqualObjects(runThread, currentThread);
+  XCTAssertTrue([context shouldStop]);
 }
 
 - (void)testPerformBlockInBackground {
@@ -90,52 +88,52 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertTrue([[NSRunLoop currentRunLoop]
-                    gtm_runUpToSixtySecondsWithContext:context], nil);
-  STAssertNotNil(runThread, nil);
-  STAssertNotEqualObjects(runThread, [NSThread currentThread], nil);
+  XCTAssertTrue([[NSRunLoop currentRunLoop]
+                 gtm_runUpToSixtySecondsWithContext:context]);
+  XCTAssertNotNil(runThread);
+  XCTAssertNotEqualObjects(runThread, [NSThread currentThread]);
 }
 
 - (void)testWorkerThreadBasics {
   // Unstarted worker isn't running.
   GTMSimpleWorkerThread *worker = [[GTMSimpleWorkerThread alloc] init];
-  STAssertFalse([worker isExecuting], nil);
-  STAssertFalse([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
 
   // Unstarted worker can be stopped without error.
   [worker stop];
-  STAssertFalse([worker isExecuting], nil);
-  STAssertTrue([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertTrue([worker isFinished]);
 
   // And can be stopped again
   [worker stop];
-  STAssertFalse([worker isExecuting], nil);
-  STAssertTrue([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertTrue([worker isFinished]);
 
   // A thread we start can be stopped with correct state.
   worker = [[GTMSimpleWorkerThread alloc] init];
-  STAssertFalse([worker isExecuting], nil);
-  STAssertFalse([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
   [worker start];
-  STAssertTrue([worker isExecuting], nil);
-  STAssertFalse([worker isFinished], nil);
+  XCTAssertTrue([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
   [worker stop];
-  STAssertFalse([worker isExecuting], nil);
-  STAssertTrue([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertTrue([worker isFinished]);
 
   // A cancel is also honored
   worker = [[GTMSimpleWorkerThread alloc] init];
-  STAssertFalse([worker isExecuting], nil);
-  STAssertFalse([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
   [worker start];
-  STAssertTrue([worker isExecuting], nil);
-  STAssertFalse([worker isFinished], nil);
+  XCTAssertTrue([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
   [worker cancel];
   // And after some time we're done. We're generous here, this needs to
   // exceed the worker thread's runloop timeout.
   sleep(5);
-  STAssertFalse([worker isExecuting], nil);
-  STAssertTrue([worker isFinished], nil);
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertTrue([worker isFinished]);
 }
 
 - (void)testWorkerThreadStopTiming {
@@ -146,14 +144,14 @@
   [workerThread_ gtm_performBlock:^{
     [threadLock lock];
     [threadLock unlockWithCondition:1];
-    sleep(10);
+    [NSThread sleepForTimeInterval:.25];
   }];
   [threadLock lockWhenCondition:1];
   [threadLock unlock];
   [workerThread_ stop];
-  STAssertFalse([workerThread_ isExecuting], nil);
-  STAssertTrue([workerThread_ isFinished], nil);
-  STAssertEqualsWithAccuracy(-[start timeIntervalSinceNow], 10.0, 2.0, nil);
+  XCTAssertFalse([workerThread_ isExecuting]);
+  XCTAssertTrue([workerThread_ isFinished]);
+  XCTAssertEqualWithAccuracy(-[start timeIntervalSinceNow], 0.25, 0.25);
 }
 
 - (void)testPerformBlockOnWorkerThread {
@@ -168,10 +166,10 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertTrue([[NSRunLoop currentRunLoop]
-                    gtm_runUpToSixtySecondsWithContext:context], nil);
-  STAssertNotNil(runThread, nil);
-  STAssertEqualObjects(runThread, workerThread_, nil);
+  XCTAssertTrue([[NSRunLoop currentRunLoop]
+                 gtm_runUpToSixtySecondsWithContext:context]);
+  XCTAssertNotNil(runThread);
+  XCTAssertEqualObjects(runThread, workerThread_);
 
   // Other thread no wait.
   runThread = nil;
@@ -180,10 +178,10 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertTrue([[NSRunLoop currentRunLoop]
-                    gtm_runUpToSixtySecondsWithContext:context], nil);
-  STAssertNotNil(runThread, nil);
-  STAssertEqualObjects(runThread, workerThread_, nil);
+  XCTAssertTrue([[NSRunLoop currentRunLoop]
+                 gtm_runUpToSixtySecondsWithContext:context]);
+  XCTAssertNotNil(runThread);
+  XCTAssertEqualObjects(runThread, workerThread_);
 
   // Waiting requires no runloop spin
   runThread = nil;
@@ -192,9 +190,9 @@
     runThread = [NSThread currentThread];
     [context setShouldStop:YES];
   }];
-  STAssertTrue([context shouldStop], nil);
-  STAssertNotNil(runThread, nil);
-  STAssertEqualObjects(runThread, workerThread_, nil);
+  XCTAssertTrue([context shouldStop]);
+  XCTAssertNotNil(runThread);
+  XCTAssertEqualObjects(runThread, workerThread_);
 }
 
 - (void)testExitingBlockIsExecuting {
@@ -208,10 +206,10 @@
   [threadLock lockWhenCondition:1];
   [threadLock unlock];
   // Give the pthread_exit() a bit of time
-  sleep(5);
+  [NSThread sleepForTimeInterval:.25];
   // Did we notice the thread died? Does [... isExecuting] clean up?
-  STAssertFalse([workerThread_ isExecuting], nil);
-  STAssertTrue([workerThread_ isFinished], nil);
+  XCTAssertFalse([workerThread_ isExecuting]);
+  XCTAssertTrue([workerThread_ isFinished]);
 }
 
 - (void)testExitingBlockCancel {
@@ -225,12 +223,12 @@
   [threadLock lockWhenCondition:1];
   [threadLock unlock];
   // Give the pthread_exit() a bit of time
-  sleep(5);
+  [NSThread sleepForTimeInterval:.25];
   // Cancel/stop the thread
   [workerThread_ stop];
   // Did we notice the thread died? Did we clean up?
-  STAssertFalse([workerThread_ isExecuting], nil);
-  STAssertTrue([workerThread_ isFinished], nil);
+  XCTAssertFalse([workerThread_ isExecuting]);
+  XCTAssertTrue([workerThread_ isFinished]);
 }
 
 - (void)testStopFromThread {
@@ -245,23 +243,20 @@
   [threadLock lockWhenCondition:1];
   [threadLock unlock];
   // Still need to give the thread a moment to not be executing
-  sleep(5);
-  STAssertFalse([workerThread_ isExecuting], nil);
-  STAssertTrue([workerThread_ isFinished], nil);
+  sleep(1);
+  XCTAssertFalse([workerThread_ isExecuting]);
+  XCTAssertTrue([workerThread_ isFinished]);
 }
 
 - (void)testPThreadName {
   NSString *testName = @"InigoMontoya";
   [workerThread_ setName:testName];
   [workerThread_ gtm_performWaitingUntilDone:NO block:^{
-    STAssertEqualObjects([workerThread_ name], testName, nil);
+    XCTAssertEqualObjects([workerThread_ name], testName);
     char threadName[100];
     pthread_getname_np(pthread_self(), threadName, 100);
-    STAssertEqualObjects([NSString stringWithUTF8String:threadName],
-                         testName, nil);
+    XCTAssertEqualObjects([NSString stringWithUTF8String:threadName], testName);
   }];
 }
 
 @end
-
-#endif  // GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)

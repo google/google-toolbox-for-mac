@@ -56,7 +56,7 @@ static NSString * const kLSSharedFileListLoginItemHidden =
   if (!value || !key || !items) return NSNotFound;
   NSDictionary *item = nil;
   NSInteger found = -1;
-  GTM_FOREACH_OBJECT(item, items) {
+  for (item in items) {
     ++found;
     id itemValue = [item objectForKey:key];
     if (itemValue && [itemValue isEqual:value]) {

@@ -58,7 +58,7 @@
 - (void)checkValues:(NSString *)value
        onController:(GTMUILocalizerTestViewController *)controller {
   // Label
-  STAssertEqualStrings(value, [[controller label] text], nil);
+  XCTAssertEqualStrings(value, [[controller label] text]);
   // Button
   UIControlState allStates[] = { UIControlStateNormal,
                                  UIControlStateHighlighted,
@@ -66,33 +66,29 @@
                                  UIControlStateSelected };
   for (size_t idx = 0; idx < (sizeof(allStates)/sizeof(allStates[0])); ++idx) {
     UIControlState state = allStates[idx];
-    STAssertEqualStrings(value, [[controller button] titleForState:state], nil);
+    XCTAssertEqualStrings(value, [[controller button] titleForState:state]);
   }
   // SegementedControl
   for (NSUInteger i = 0;
        i < [[controller segmentedControl] numberOfSegments];
        ++i) {
-    STAssertEqualStrings(value,
-        [[controller segmentedControl] titleForSegmentAtIndex:i], nil);
+    XCTAssertEqualStrings(value,
+        [[controller segmentedControl] titleForSegmentAtIndex:i]);
   }
   // SearchBar
-  STAssertEqualStrings(value, [[controller searchBar] text], nil);
-  STAssertEqualStrings(value, [[controller searchBar] placeholder], nil);
-  STAssertEqualStrings(value, [[controller searchBar] prompt], nil);
+  XCTAssertEqualStrings(value, [[controller searchBar] text]);
+  XCTAssertEqualStrings(value, [[controller searchBar] placeholder]);
+  XCTAssertEqualStrings(value, [[controller searchBar] prompt]);
 
 // Accessibility label seems to not be working at all. They always are nil.
 // Even when setting those explicitly there, the getter always returns nil.
 // This might be because the gobal accessibility switch is not on during the
 // tests.
 #if 0
-  STAssertEqualStrings(value, [[controller view] accessibilityLabel],
-      nil);
-  STAssertEqualStrings(value, [[controller view] accessibilityHint],
-      nil);
-  STAssertEqualStrings(value, [[controller label] accessibilityLabel],
-      nil);
-  STAssertEqualStrings(value, [[controller label] accessibilityHint],
-      nil);
+  XCTAssertEqualStrings(value, [[controller view] accessibilityLabel]);
+  XCTAssertEqualStrings(value, [[controller view] accessibilityHint]);
+  XCTAssertEqualStrings(value, [[controller label] accessibilityLabel]);
+  XCTAssertEqualStrings(value, [[controller label] accessibilityHint]);
 #endif
 }
 

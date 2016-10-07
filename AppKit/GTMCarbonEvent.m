@@ -343,6 +343,12 @@ const OSType kGTMCarbonFrameworkSignature = 'GTM ';
 
 @implementation GTMCarbonEventHandler
 
+-(void)dealloc {
+  if (eventHandler_) {
+    verify_noerr(RemoveEventHandler(eventHandler_));
+  }
+  [super dealloc];
+}
 // Does our delegate respond to eventHandler:receivedEvent:handler:
 //
 // Returns:
@@ -621,7 +627,7 @@ CantCreateKey:
                                                   data:&keyID];
   if (handled) {
     GTMCarbonHotKey *hotkey;
-    GTM_FOREACH_OBJECT(hotkey, hotkeys_) {
+    for (hotkey in hotkeys_) {
       if ([hotkey matchesHotKeyID:keyID]) {
         EventKind kind = [event eventKind];
         BOOL onKeyDown = [hotkey onKeyDown];

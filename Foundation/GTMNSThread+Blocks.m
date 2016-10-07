@@ -53,17 +53,6 @@
 
 #endif  // NS_BLOCKS_AVAILABLE
 
-#if GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
-
-// Only available 10.6 and later.
-typedef int (*PThreadSetNameNPPTr)(const char*);
-#if !GTM_IPHONE_SDK
-static PThreadSetNameNPPTr gPThreadSetNameNP = NULL;
-#else
-// Defined on iPhone since 3.2
-static PThreadSetNameNPPTr gPThreadSetNameNP = pthread_setname_np;
-#endif // !GTM_IPHONE_SDK
-
 enum {
   kGTMSimpleThreadInitialized = 0,
   kGTMSimpleThreadStarting,
@@ -73,15 +62,6 @@ enum {
 };
 
 @implementation GTMSimpleWorkerThread
-
-#if !GTM_IPHONE_SDK
-+ (void)initialize {
-  if (self == [GTMSimpleWorkerThread class]) {
-    // Resolve pthread_setname_np() on 10.6 and later.
-    gPThreadSetNameNP = dlsym(RTLD_DEFAULT, "pthread_setname_np");
-  }
-}
-#endif // !GTM_IPHONE_SDK
 
 - (id)init {
   if ((self = [super init])) {
@@ -100,12 +80,10 @@ enum {
 }
 
 - (void)setThreadDebuggerName:(NSString *)name {
-  if (gPThreadSetNameNP) {
-    if ([name length]) {
-      gPThreadSetNameNP([name UTF8String]);
-    } else {
-      gPThreadSetNameNP("");
-    }
+  if ([name length]) {
+    pthread_setname_np([name UTF8String]);
+  } else {
+    pthread_setname_np("");
   }
 }
 
@@ -292,5 +270,3 @@ enum {
 }
 
 @end
-
-#endif  // GTM_IPHONE_SDK || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)

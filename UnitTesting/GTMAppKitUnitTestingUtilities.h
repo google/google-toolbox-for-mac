@@ -23,21 +23,6 @@
 // Collection of utilities for unit testing
 @interface GTMAppKitUnitTestingUtilities : NSObject
 
-// Sets up the user interface so that we can run consistent UI unittests on
-// it. This includes setting scroll bar types, setting selection colors
-// setting color spaces etc so that everything is consistent across machines.
-// This should be called in main, before NSApplicationMain is called.
-+ (void)setUpForUIUnitTests;
-
-// Syntactic sugar combining that checks to see if we are running unittests
-// and then calls setUpForUIUnitTests wrapped up in a NSAutoreleasePool so that
-// your main can look like this:
-// int main(int argc, const char *argv[]) {
-//   [UnitTestingUtilities setUpForUIUnitTestsIfBeingTested];
-//   return NSApplicationMain(argc, argv);
-// }
-+ (void)setUpForUIUnitTestsIfBeingTested;
-
 // Check if the screen saver is running. Some unit tests don't work when
 // the screen saver is active.
 + (BOOL)isScreenSaverActive;

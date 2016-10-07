@@ -22,6 +22,30 @@
 #endif
 #import <UIKit/UIKit.h>
 
+#if GTM_ENABLE_TCCSERVICE_ACCESS
+
+// Enable access to AddressBook, Calendar and Photos
+// https://groups.google.com/forum/#!topic/kif-framework/xayP4VVBPyg
+
+__asm(".section __TEXT,__entitlements");
+__asm(".ascii \""
+      "<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n"
+      "<!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" "
+      "\\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">"
+      "<plist version=\\\"1.0\\\">"
+      "<dict>"
+      "<key>com.apple.private.tcc.allow</key>"
+      "<array>"
+      "<string>kTCCServiceAddressBook</string>"
+      "<string>kTCCServiceCalendar</string>"
+      "<string>kTCCServicePhotos</string>"
+      "</array>"
+      "</dict>"
+      "</plist>"
+      "\"");
+
+#endif  // GTM_ENABLE_TCCSERVICE_ACCESS
+
 // Creates an application that runs all tests from classes extending
 // SenTestCase, outputs results and test run time, and terminates right
 // afterwards.
@@ -32,8 +56,8 @@ int main(int argc, char *argv[]) {
 #else
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 #endif
-#if GTM_IPHONE_USE_SENTEST
-  // Is using SenTest, just create a dummy app that can be used as the
+#if GTM_IPHONE_USE_SENTEST || GTM_USING_XCTEST
+  // Is using SenTest or XCTest, just create a dummy app that can be used as the
   // TEST_HOST.
   retVal = UIApplicationMain(argc, argv, nil, nil);
 #else

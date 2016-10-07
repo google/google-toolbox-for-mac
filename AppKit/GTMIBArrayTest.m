@@ -58,16 +58,16 @@
 - (void)testEmpty {
   GTMIBArray *worker = [[[GTMIBArray alloc] init] autorelease];
 
-  STAssertNotNil(worker, nil);
-  STAssertEquals([worker count], (NSUInteger)0, nil);
+  XCTAssertNotNil(worker);
+  XCTAssertEqual([worker count], (NSUInteger)0);
 
   worker = [[[IBArrayTestHelper alloc] initWithObj1:nil
                                                obj2:nil
                                                obj3:nil
                                                obj4:nil
                                                obj5:nil] autorelease];
-  STAssertNotNil(worker, nil);
-  STAssertEquals([worker count], (NSUInteger)0, nil);
+  XCTAssertNotNil(worker);
+  XCTAssertEqual([worker count], (NSUInteger)0);
 }
 
 - (void)testSparse {
@@ -103,17 +103,17 @@
                                           obj3:data[i].obj3
                                           obj4:data[i].obj4
                                           obj5:data[i].obj5] autorelease];
-    STAssertNotNil(worker, @"index %zu", i);
+    XCTAssertNotNil(worker, @"index %zu", i);
     NSUInteger count = 0;
     if (data[i].obj1) ++count;
     if (data[i].obj2) ++count;
     if (data[i].obj3) ++count;
     if (data[i].obj4) ++count;
     if (data[i].obj5) ++count;
-    STAssertEquals([worker count], count, @"index %zu", i);
-    STAssertEqualObjects([worker componentsJoinedByString:@""],
-                         data[i].combined,
-                         @"index %zu", i);
+    XCTAssertEqual([worker count], count, @"index %zu", i);
+    XCTAssertEqualObjects([worker componentsJoinedByString:@""],
+                          data[i].combined,
+                          @"index %zu", i);
   }
 }
 
@@ -184,11 +184,11 @@
 
   for (size_t i = 0; i < sizeof(data) / sizeof(data[0]); ++i) {
     NSArray *worker = data[i].ibArray;
-    STAssertNotNil(worker, @"index %zu", i);
-    STAssertEquals([worker count], data[i].count, @"index %zu", i);
-    STAssertEqualObjects([worker componentsJoinedByString:@""],
-                         data[i].result,
-                         @"index %zu", i);
+    XCTAssertNotNil(worker, @"index %zu", i);
+    XCTAssertEqual([worker count], data[i].count, @"index %zu", i);
+    XCTAssertEqualObjects([worker componentsJoinedByString:@""],
+                          data[i].result,
+                          @"index %zu", i);
   }
 }
 
@@ -201,22 +201,22 @@
                                         obj5:@"e"] autorelease];
 
   NSEnumerator *enumerator = [worker objectEnumerator];
-  STAssertNotNil(enumerator, nil);
-  STAssertEqualObjects([enumerator nextObject], @"a", nil);
-  STAssertEqualObjects([enumerator nextObject], @"b", nil);
-  STAssertEqualObjects([enumerator nextObject], @"c", nil);
-  STAssertEqualObjects([enumerator nextObject], @"d", nil);
-  STAssertEqualObjects([enumerator nextObject], @"e", nil);
-  STAssertNil([enumerator nextObject], nil);
+  XCTAssertNotNil(enumerator);
+  XCTAssertEqualObjects([enumerator nextObject], @"a");
+  XCTAssertEqualObjects([enumerator nextObject], @"b");
+  XCTAssertEqualObjects([enumerator nextObject], @"c");
+  XCTAssertEqualObjects([enumerator nextObject], @"d");
+  XCTAssertEqualObjects([enumerator nextObject], @"e");
+  XCTAssertNil([enumerator nextObject]);
 
   enumerator = [worker reverseObjectEnumerator];
-  STAssertNotNil(enumerator, nil);
-  STAssertEqualObjects([enumerator nextObject], @"e", nil);
-  STAssertEqualObjects([enumerator nextObject], @"d", nil);
-  STAssertEqualObjects([enumerator nextObject], @"c", nil);
-  STAssertEqualObjects([enumerator nextObject], @"b", nil);
-  STAssertEqualObjects([enumerator nextObject], @"a", nil);
-  STAssertNil([enumerator nextObject], nil);
+  XCTAssertNotNil(enumerator);
+  XCTAssertEqualObjects([enumerator nextObject], @"e");
+  XCTAssertEqualObjects([enumerator nextObject], @"d");
+  XCTAssertEqualObjects([enumerator nextObject], @"c");
+  XCTAssertEqualObjects([enumerator nextObject], @"b");
+  XCTAssertEqualObjects([enumerator nextObject], @"a");
+  XCTAssertNil([enumerator nextObject]);
 }
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
@@ -233,22 +233,22 @@
   for (id obj in worker) {
     switch (++idx) {
       case 1:
-        STAssertEqualObjects(obj, @"a", nil);
+        XCTAssertEqualObjects(obj, @"a");
         break;
       case 2:
-        STAssertEqualObjects(obj, @"b", nil);
+        XCTAssertEqualObjects(obj, @"b");
         break;
       case 3:
-        STAssertEqualObjects(obj, @"c", nil);
+        XCTAssertEqualObjects(obj, @"c");
         break;
       case 4:
-        STAssertEqualObjects(obj, @"d", nil);
+        XCTAssertEqualObjects(obj, @"d");
         break;
       case 5:
-        STAssertEqualObjects(obj, @"e", nil);
+        XCTAssertEqualObjects(obj, @"e");
         break;
       default:
-        STFail(@"looping too many times: %zu", idx);
+        XCTFail(@"looping too many times: %ld", (unsigned long)idx);
         break;
     }
   }
@@ -267,14 +267,14 @@
   // Should get back a different object, but with the same contents.
 
   NSArray *aCopy = [[worker copy] autorelease];
-  STAssertNotEquals(aCopy, worker, nil);
-  STAssertEqualObjects(aCopy, worker, nil);
+  XCTAssertNotEqual(aCopy, worker);
+  XCTAssertEqualObjects(aCopy, worker);
 
   NSArray *aMutableCopy = [[worker mutableCopy] autorelease];
-  STAssertNotEquals(aMutableCopy, worker, nil);
-  STAssertNotEquals(aMutableCopy, aCopy, nil);
-  STAssertEqualObjects(aMutableCopy, worker, nil);
-  STAssertEqualObjects(aMutableCopy, aCopy, nil);
+  XCTAssertNotEqual(aMutableCopy, worker);
+  XCTAssertNotEqual(aMutableCopy, aCopy);
+  XCTAssertEqualObjects(aMutableCopy, worker);
+  XCTAssertEqualObjects(aMutableCopy, aCopy);
 }
 
 - (void)testFromNib {
@@ -282,24 +282,24 @@
     [[[GTMIBArrayTestWindowController alloc]
       initWithWindowNibName:@"GTMIBArrayTest"] autorelease];
   NSWindow *window = [controller window];
-  STAssertNotNil(window, nil);
+  XCTAssertNotNil(window);
 
   NSArray *labels = [controller labelsArray];
   NSArray *fields = [controller fieldsArray];
   NSArray *everything = [controller everythingArray];
-  STAssertNotNil(labels, nil);
-  STAssertNotNil(fields, nil);
-  STAssertNotNil(everything, nil);
+  XCTAssertNotNil(labels);
+  XCTAssertNotNil(fields);
+  XCTAssertNotNil(everything);
 
-  STAssertEquals([labels count], (NSUInteger)3, nil);
-  STAssertEquals([fields count], (NSUInteger)3, nil);
-  STAssertEquals([everything count], (NSUInteger)8, nil);
+  XCTAssertEqual([labels count], (NSUInteger)3);
+  XCTAssertEqual([fields count], (NSUInteger)3);
+  XCTAssertEqual([everything count], (NSUInteger)8);
 
   NSSet *labelsSet = [NSSet setWithArray:labels];
   NSSet *fieldsSet = [NSSet setWithArray:fields];
   NSSet *everythingSet = [NSSet setWithArray:everything];
-  STAssertTrue([labelsSet isSubsetOfSet:everythingSet], nil);
-  STAssertTrue([fieldsSet isSubsetOfSet:everythingSet], nil);
+  XCTAssertTrue([labelsSet isSubsetOfSet:everythingSet]);
+  XCTAssertTrue([fieldsSet isSubsetOfSet:everythingSet]);
 }
 
 - (void)testIsEqual {
@@ -316,19 +316,19 @@
                                           obj4:@"i"
                                           obj5:@"j"] autorelease];
 
-  STAssertEquals([ibArray1 hash], [ibArray2 hash], nil);
-  STAssertNotEqualObjects(ibArray1, ibArray2, nil);
+  XCTAssertEqual([ibArray1 hash], [ibArray2 hash]);
+  XCTAssertNotEqualObjects(ibArray1, ibArray2);
 
   NSArray *ibArray1Prime = [[ibArray1 copy] autorelease];
   NSArray *ibArray2Prime = [[ibArray2 copy] autorelease];
 
-  STAssertTrue(ibArray1 != ibArray1Prime, nil);
-  STAssertTrue(ibArray2 != ibArray2Prime, nil);
-  STAssertNotEqualObjects(ibArray1Prime, ibArray2Prime, nil);
-  STAssertEqualObjects(ibArray1, ibArray1Prime, nil);
-  STAssertEqualObjects(ibArray2, ibArray2Prime, nil);
+  XCTAssertTrue(ibArray1 != ibArray1Prime);
+  XCTAssertTrue(ibArray2 != ibArray2Prime);
+  XCTAssertNotEqualObjects(ibArray1Prime, ibArray2Prime);
+  XCTAssertEqualObjects(ibArray1, ibArray1Prime);
+  XCTAssertEqualObjects(ibArray2, ibArray2Prime);
 }
-  
+
 @end
 
 @implementation GTMIBArrayTestWindowController

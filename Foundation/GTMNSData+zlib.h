@@ -33,22 +33,34 @@
 //  Uses the default compression level.
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length;
++ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                             length:(NSUInteger)length
+                              error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of gzipping the payload of |data|.
 //
 //  Uses the default compression level.
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data;
++ (NSData *)gtm_dataByGzippingData:(NSData *)data __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByGzippingData:(NSData *)data
+                             error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of gzipping the bytes using |level| compression level.
 //
 // |level| can be 1-9, any other values will be clipped to that range.
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length
-                   compressionLevel:(int)level;
+                   compressionLevel:(int)level __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                             length:(NSUInteger)length
+                   compressionLevel:(int)level
+                              error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of gzipping the payload of |data| using |level| compression level.
 + (NSData *)gtm_dataByGzippingData:(NSData *)data
-                  compressionLevel:(int)level;
+                  compressionLevel:(int)level __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByGzippingData:(NSData *)data
+                  compressionLevel:(int)level
+                             error:(NSError **)error;
 
 #pragma mark Zlib "Stream" Compression
 
@@ -59,23 +71,35 @@
 //
 //  Uses the default compression level.
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length;
+                              length:(NSUInteger)length __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                               error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of deflating the payload of |data|.
 //
 //  Uses the default compression level.
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data;
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data
+                              error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of deflating the bytes using |level| compression level.
 //
 // |level| can be 1-9, any other values will be clipped to that range.
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
-                    compressionLevel:(int)level;
+                    compressionLevel:(int)level __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                    compressionLevel:(int)level
+                               error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of deflating the payload of |data| using |level| compression level.
 + (NSData *)gtm_dataByDeflatingData:(NSData *)data
-                   compressionLevel:(int)level;
+                   compressionLevel:(int)level __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data
+                   compressionLevel:(int)level
+                              error:(NSError **)error;
 
 #pragma mark Uncompress of Gzip or Zlib
 
@@ -83,13 +107,17 @@
 //
 // The bytes to decompress can be zlib or gzip payloads.
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length;
+                              length:(NSUInteger)length __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                               error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of decompressing the payload of |data|.
 //
 // The data to decompress can be zlib or gzip payloads.
-+ (NSData *)gtm_dataByInflatingData:(NSData *)data;
-
++ (NSData *)gtm_dataByInflatingData:(NSData *)data __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByInflatingData:(NSData *)data
+                              error:(NSError **)error;
 
 #pragma mark "Raw" Compression Support
 
@@ -103,13 +131,18 @@
 //  Uses the default compression level.
 //  *No* header is added to the resulting data.
 + (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length;
+                                 length:(NSUInteger)length __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                                  error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* deflating the payload of |data|.
 //
 //  Uses the default compression level.
 //  *No* header is added to the resulting data.
-+ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data;
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
+                                 error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* deflating the bytes using |level| compression level.
 //
@@ -117,22 +150,50 @@
 //  *No* header is added to the resulting data.
 + (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length
-                       compressionLevel:(int)level;
+                       compressionLevel:(int)level __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                       compressionLevel:(int)level
+                                  error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* deflating the payload of |data| using |level| compression level.
 //  *No* header is added to the resulting data.
 + (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
-                      compressionLevel:(int)level;
+                      compressionLevel:(int)level __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
+                      compressionLevel:(int)level
+                                 error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* decompressing the bytes.
 //
 // The data to decompress, it should *not* have any header (zlib nor gzip).
 + (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length;
+                                 length:(NSUInteger)length __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                                  error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* decompressing the payload of |data|.
 //
 // The data to decompress, it should *not* have any header (zlib nor gzip).
-+ (NSData *)gtm_dataByRawInflatingData:(NSData *)data;
++ (NSData *)gtm_dataByRawInflatingData:(NSData *)data __attribute__((deprecated("Use error variant")));
++ (NSData *)gtm_dataByRawInflatingData:(NSData *)data
+                                 error:(NSError **)error;
 
 @end
+
+FOUNDATION_EXPORT NSString *const GTMNSDataZlibErrorDomain;
+FOUNDATION_EXPORT NSString *const GTMNSDataZlibErrorKey;  // NSNumber
+FOUNDATION_EXPORT NSString *const GTMNSDataZlibRemainingBytesKey;  // NSNumber
+
+typedef NS_ENUM(NSInteger, GTMNSDataZlibError) {
+  GTMNSDataZlibErrorGreaterThan32BitsToCompress = 1024,
+  // An internal zlib error.
+  // GTMNSDataZlibErrorKey will contain the error value.
+  // NSLocalizedDescriptionKey may contain an error string from zlib.
+  // Look in zlib.h for list of errors.
+  GTMNSDataZlibErrorInternal,
+  // There was left over data in the buffer that was not used.
+  // GTMNSDataZlibRemainingBytesKey will contain number of remaining bytes.
+  GTMNSDataZlibErrorDataRemaining
+};

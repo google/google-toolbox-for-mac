@@ -18,6 +18,9 @@
 
 #import "GTMStringEncoding.h"
 
+NSString *const GTMStringEncodingErrorDomain = @"com.google.GTMStringEncodingErrorDomain";
+NSString *const GTMStringEncodingBadCharacterIndexKey = @"GTMStringEncodingBadCharacterIndexKey";
+
 enum {
   kUnknownChar = -1,
   kPaddingChar = -2,
@@ -174,9 +177,12 @@ GTM_INLINE int lcm(int a, int b) {
 }
 
 - (NSString *)encode:(NSData *)inData {
+  return [self encode:inData error:NULL];
+}
+
+- (NSString *)encode:(NSData *)inData error:(NSError **)error {
   NSUInteger inLen = [inData length];
   if (inLen <= 0) {
-    _GTMDevLog(@"Empty input");
     return @"";
   }
   unsigned char *inBuf = (unsigned char *)[inData bytes];
@@ -214,21 +220,52 @@ GTM_INLINE int lcm(int a, int b) {
       outBuf[outPos++] = paddingChar_;
   }
 
-  _GTMDevAssert(outPos == outLen, @"Underflowed output buffer");
   [outData setLength:outPos];
 
-  return [[[NSString alloc] initWithData:outData
-                                encoding:NSASCIIStringEncoding] autorelease];
+  NSString *value = [[[NSString alloc] initWithData:outData
+                                           encoding:NSASCIIStringEncoding] autorelease];
+  if (!value) {
+    if (error) {
+      *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
+                                   code:GTMStringEncodingErrorUnableToConverToAscii
+                               userInfo:nil];
+
+    }
+  }
+  return value;
 }
 
 - (NSString *)encodeString:(NSString *)inString {
-  return [self encode:[inString dataUsingEncoding:NSUTF8StringEncoding]];
+  return [self encodeString:inString error:NULL];
+}
+
+- (NSString *)encodeString:(NSString *)inString error:(NSError **)error {
+  NSData *data = [inString dataUsingEncoding:NSUTF8StringEncoding];
+  if (!data) {
+    if (error) {
+      *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
+                                   code:GTMStringEncodingErrorUnableToConverToUTF8
+                               userInfo:nil];
+
+    }
+    return nil;
+  }
+  return [self encode:data error:error];
 }
 
 - (NSData *)decode:(NSString *)inString {
+  return [self decode:inString error:NULL];
+}
+
+- (NSData *)decode:(NSString *)inString error:(NSError **)error {
   char *inBuf = (char *)[inString cStringUsingEncoding:NSASCIIStringEncoding];
   if (!inBuf) {
-    _GTMDevLog(@"unable to convert buffer to ASCII");
+    if (error) {
+      *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
+                                   code:GTMStringEncodingErrorUnableToConverToAscii
+                               userInfo:nil];
+
+    }
     return nil;
   }
   NSUInteger inLen = strlen(inBuf);
@@ -249,12 +286,27 @@ GTM_INLINE int lcm(int a, int b) {
       case kPaddingChar:
         expectPad = YES;
         break;
-      case kUnknownChar:
-        _GTMDevLog(@"Unexpected data in input pos %lu", (unsigned long)i);
+      case kUnknownChar: {
+        if (error) {
+          NSDictionary *userInfo =
+              [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInteger:i]
+                                          forKey:GTMStringEncodingBadCharacterIndexKey];
+          *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
+                                       code:GTMStringEncodingErrorUnknownCharacter
+                                   userInfo:userInfo];
+        }
         return nil;
+      }
       default:
         if (expectPad) {
-          _GTMDevLog(@"Expected further padding characters");
+          if (error) {
+            NSDictionary *userInfo =
+                [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInteger:i]
+                                            forKey:GTMStringEncodingBadCharacterIndexKey];
+            *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
+                                         code:GTMStringEncodingErrorExpectedPadding
+                                     userInfo:userInfo];
+          }
           return nil;
         }
         buffer <<= shift_;
@@ -269,21 +321,33 @@ GTM_INLINE int lcm(int a, int b) {
   }
 
   if (bitsLeft && buffer & ((1 << bitsLeft) - 1)) {
-    _GTMDevLog(@"Incomplete trailing data");
+    if (error) {
+      *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
+                                   code:GTMStringEncodingErrorIncompleteTrailingData
+                               userInfo:nil];
+
+    }
     return nil;
   }
 
   // Shorten buffer if needed due to padding chars
-  _GTMDevAssert(outPos <= outLen, @"Overflowed buffer");
   [outData setLength:outPos];
 
   return outData;
 }
 
 - (NSString *)stringByDecoding:(NSString *)inString {
-  NSData *ret = [self decode:inString];
-  return [[[NSString alloc] initWithData:ret
-                                encoding:NSUTF8StringEncoding] autorelease];
+  return [self stringByDecoding:inString error:NULL];
+}
+
+- (NSString *)stringByDecoding:(NSString *)inString error:(NSError **)error {
+  NSData *ret = [self decode:inString error:error];
+  NSString *value = nil;
+  if (ret) {
+    value = [[[NSString alloc] initWithData:ret
+                                   encoding:NSUTF8StringEncoding] autorelease];
+  }
+  return value;
 }
 
 @end

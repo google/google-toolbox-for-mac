@@ -86,27 +86,27 @@ struct {
     BOOL goodObject = [scanner gtm_scanJSONObjectString:&object];
     if (testStrings[i].resultString_) {
       if (testStrings[i].isObject_) {
-        STAssertEqualStrings(testStrings[i].resultString_,
-                             object, @"Test String: %@",
-                             testStrings[i].testString_);
-        STAssertNil(array, @"Test String: %@", testStrings[i].testString_);
-        STAssertTrue(goodObject, @"Test String: %@",
-                     testStrings[i].testString_);
-        STAssertFalse(goodArray, @"Test String: %@",
+        XCTAssertEqualStrings(testStrings[i].resultString_,
+                              object, @"Test String: %@",
+                              testStrings[i].testString_);
+        XCTAssertNil(array, @"Test String: %@", testStrings[i].testString_);
+        XCTAssertTrue(goodObject, @"Test String: %@",
                       testStrings[i].testString_);
+        XCTAssertFalse(goodArray, @"Test String: %@",
+                       testStrings[i].testString_);
       } else {
-        STAssertEqualStrings(testStrings[i].resultString_, array,
-                             @"Test String: %@", testStrings[i].testString_);
-        STAssertNil(object, @"Test String: %@", testStrings[i].testString_);
-        STAssertTrue(goodArray, @"Test String: %@", testStrings[i].testString_);
-        STAssertFalse(goodObject, @"Test String: %@",
-                      testStrings[i].testString_);
+        XCTAssertEqualStrings(testStrings[i].resultString_, array,
+                              @"Test String: %@", testStrings[i].testString_);
+        XCTAssertNil(object, @"Test String: %@", testStrings[i].testString_);
+        XCTAssertTrue(goodArray, @"Test String: %@", testStrings[i].testString_);
+        XCTAssertFalse(goodObject, @"Test String: %@",
+                       testStrings[i].testString_);
       }
     } else {
-      STAssertNil(object, @"Test String: %@", testStrings[i].testString_);
-      STAssertNil(array, @"Test String: %@", testStrings[i].testString_);
-      STAssertFalse(goodArray, @"Test String: %@", testStrings[i].testString_);
-      STAssertFalse(goodObject, @"Test String: %@", testStrings[i].testString_);
+      XCTAssertNil(object, @"Test String: %@", testStrings[i].testString_);
+      XCTAssertNil(array, @"Test String: %@", testStrings[i].testString_);
+      XCTAssertFalse(goodArray, @"Test String: %@", testStrings[i].testString_);
+      XCTAssertFalse(goodObject, @"Test String: %@", testStrings[i].testString_);
     }
   }
 }
@@ -117,13 +117,13 @@ struct {
   NSScanner *scanner = [NSScanner scannerWithString:testString];
   [scanner setCharactersToBeSkipped:alphaSet];
   NSString *array = nil;
-  STAssertTrue([scanner gtm_scanJSONArrayString:&array], nil);
-  STAssertEqualStrings(array, @"[]", nil);
+  XCTAssertTrue([scanner gtm_scanJSONArrayString:&array]);
+  XCTAssertEqualStrings(array, @"[]");
   NSString *nextValue = nil;
-  STAssertTrue([scanner scanString:@":," intoString:&nextValue], nil);
-  STAssertEqualStrings(@":,", nextValue, nil);
+  XCTAssertTrue([scanner scanString:@":," intoString:&nextValue]);
+  XCTAssertEqualStrings(@":,", nextValue);
   scanner = [NSScanner scannerWithString:testString];
-  STAssertFalse([scanner gtm_scanJSONArrayString:&array], nil);
+  XCTAssertFalse([scanner gtm_scanJSONArrayString:&array]);
 }
 
 @end

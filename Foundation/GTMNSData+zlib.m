@@ -20,11 +20,11 @@
 #import <zlib.h>
 #import "GTMDefines.h"
 
-// Export a nonsense symbol to suppress a libtool warning when this is linked alone in a static lib.
-__attribute__((visibility("default"))) char GTMNSDataZLibExportToSuppressLibToolWarning = 0;
-
-
 #define kChunkSize 1024
+
+NSString *const GTMNSDataZlibErrorDomain = @"com.google.GTMNSDataZlibErrorDomain";
+NSString *const GTMNSDataZlibErrorKey = @"GTMNSDataZlibErrorKey";
+NSString *const GTMNSDataZlibRemainingBytesKey = @"GTMNSDataZlibRemainingBytesKey";
 
 typedef enum {
   CompressionModeZlib,
@@ -36,10 +36,12 @@ typedef enum {
 + (NSData *)gtm_dataByCompressingBytes:(const void *)bytes
                                 length:(NSUInteger)length
                       compressionLevel:(int)level
-                                  mode:(CompressionMode)mode;
+                                  mode:(CompressionMode)mode
+                                 error:(NSError **)error;
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
-                           isRawData:(BOOL)isRawData;
+                           isRawData:(BOOL)isRawData
+                               error:(NSError **)error;
 @end
 
 @implementation NSData (GTMZlibAdditionsPrivate)
@@ -47,7 +49,8 @@ typedef enum {
 + (NSData *)gtm_dataByCompressingBytes:(const void *)bytes
                                 length:(NSUInteger)length
                       compressionLevel:(int)level
-                                  mode:(CompressionMode)mode {
+                                  mode:(CompressionMode)mode
+                                 error:(NSError **)error {
   if (!bytes || !length) {
     return nil;
   }
@@ -55,6 +58,11 @@ typedef enum {
 #if defined(__LP64__) && __LP64__
   // Don't support > 32bit length for 64 bit, see note in header.
   if (length > UINT_MAX) {
+    if (error) {
+      *error = [NSError errorWithDomain:GTMNSDataZlibErrorDomain
+                                   code:GTMNSDataZlibErrorGreaterThan32BitsToCompress
+                               userInfo:nil];
+    }
     return nil;
   }
 #endif
@@ -90,8 +98,13 @@ typedef enum {
   if ((retCode = deflateInit2(&strm, level, Z_DEFLATED, windowBits,
                               memLevel, Z_DEFAULT_STRATEGY)) != Z_OK) {
     // COV_NF_START - no real way to force this in a unittest (we guard all args)
-    _GTMDevLog(@"Failed to init for deflate w/ level %d, error %d",
-               level, retCode);
+    if (error) {
+      NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:retCode]
+                                                           forKey:GTMNSDataZlibErrorKey];
+      *error = [NSError errorWithDomain:GTMNSDataZlibErrorDomain
+                                   code:GTMNSDataZlibErrorInternal
+                               userInfo:userInfo];
+    }
     return nil;
     // COV_NF_END
   }
@@ -115,8 +128,13 @@ typedef enum {
       // (in inflate, we can feed bogus/truncated data to test, but an error
       // here would be some internal issue w/in zlib, and there isn't any real
       // way to test it)
-      _GTMDevLog(@"Error trying to deflate some of the payload, error %d",
-                 retCode);
+      if (error) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:retCode]
+                                                             forKey:GTMNSDataZlibErrorKey];
+        *error = [NSError errorWithDomain:GTMNSDataZlibErrorDomain
+                                     code:GTMNSDataZlibErrorInternal
+                                 userInfo:userInfo];
+      }
       deflateEnd(&strm);
       return nil;
       // COV_NF_END
@@ -145,7 +163,8 @@ typedef enum {
 
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
-                           isRawData:(BOOL)isRawData {
+                           isRawData:(BOOL)isRawData
+                               error:(NSError **)error {
   if (!bytes || !length) {
     return nil;
   }
@@ -174,7 +193,13 @@ typedef enum {
   int retCode;
   if ((retCode = inflateInit2(&strm, windowBits)) != Z_OK) {
     // COV_NF_START - no real way to force this in a unittest (we guard all args)
-    _GTMDevLog(@"Failed to init for inflate, error %d", retCode);
+    if (error) {
+      NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:retCode]
+                                                           forKey:GTMNSDataZlibErrorKey];
+      *error = [NSError errorWithDomain:GTMNSDataZlibErrorDomain
+                                   code:GTMNSDataZlibErrorInternal
+                               userInfo:userInfo];
+    }
     return nil;
     // COV_NF_END
   }
@@ -190,8 +215,20 @@ typedef enum {
     strm.next_out = output;
     retCode = inflate(&strm, Z_NO_FLUSH);
     if ((retCode != Z_OK) && (retCode != Z_STREAM_END)) {
-      _GTMDevLog(@"Error trying to inflate some of the payload, error %d: %s",
-                 retCode, strm.msg);
+      if (error) {
+        NSMutableDictionary *userInfo =
+            [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:retCode]
+                                               forKey:GTMNSDataZlibErrorKey];
+        if (strm.msg) {
+          NSString *message = [NSString stringWithUTF8String:strm.msg];
+          if (message) {
+            [userInfo setObject:message forKey:NSLocalizedDescriptionKey];
+          }
+        }
+        *error = [NSError errorWithDomain:GTMNSDataZlibErrorDomain
+                                     code:GTMNSDataZlibErrorInternal
+                                 userInfo:userInfo];
+      }
       inflateEnd(&strm);
       return nil;
     }
@@ -206,8 +243,14 @@ typedef enum {
   // make sure there wasn't more data tacked onto the end of a valid compressed
   // stream.
   if (strm.avail_in != 0) {
-    _GTMDevLog(@"thought we finished inflate w/o using all input, %u bytes left",
-               strm.avail_in);
+    if (error) {
+      NSDictionary *userInfo =
+          [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedInt:strm.avail_in]
+                                      forKey:GTMNSDataZlibRemainingBytesKey];
+      *error = [NSError errorWithDomain:GTMNSDataZlibErrorDomain
+                                   code:GTMNSDataZlibErrorDataRemaining
+                               userInfo:userInfo];
+    }
     result = nil;
   }
   // the only way out of the loop was by hitting the end of the stream
@@ -228,69 +271,135 @@ typedef enum {
 
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length {
+  return [self gtm_dataByGzippingBytes:bytes length:length error:NULL];
+} // gtm_dataByGzippingBytes:length:
+
++ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                             length:(NSUInteger)length
+                              error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:Z_DEFAULT_COMPRESSION
-                                     mode:CompressionModeGzip];
-} // gtm_dataByGzippingBytes:length:
+                                     mode:CompressionModeGzip
+                                    error:error];
+} // gtm_dataByGzippingBytes:length:error:
 
 + (NSData *)gtm_dataByGzippingData:(NSData *)data {
+  return [self gtm_dataByGzippingData:data error:NULL];
+} // gtm_dataByGzippingData:
+
++ (NSData *)gtm_dataByGzippingData:(NSData *)data error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
                          compressionLevel:Z_DEFAULT_COMPRESSION
-                                     mode:CompressionModeGzip];
-} // gtm_dataByGzippingData:
+                                     mode:CompressionModeGzip
+                                    error:error];
+} // gtm_dataByGzippingData:error:
 
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length
                    compressionLevel:(int)level {
+  return [self gtm_dataByGzippingBytes:bytes
+                                length:length
+                      compressionLevel:level
+                                 error:NULL];
+} // gtm_dataByGzippingBytes:length:level:
+
++ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                             length:(NSUInteger)length
+                   compressionLevel:(int)level
+                              error:(NSError **)error{
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:level
-                                     mode:CompressionModeGzip];
-} // gtm_dataByGzippingBytes:length:level:
+                                     mode:CompressionModeGzip
+                                    error:error];
+} // gtm_dataByGzippingBytes:length:level:error
 
 + (NSData *)gtm_dataByGzippingData:(NSData *)data
                   compressionLevel:(int)level {
+  return [self gtm_dataByGzippingData:data
+                     compressionLevel:level
+                                error:NULL];
+} // gtm_dataByGzippingData:level:
+
++ (NSData *)gtm_dataByGzippingData:(NSData *)data
+                  compressionLevel:(int)level
+                             error:(NSError **)error{
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
                          compressionLevel:level
-                                     mode:CompressionModeGzip];
-} // gtm_dataByGzippingData:level:
+                                     mode:CompressionModeGzip
+                                    error:error];
+} // gtm_dataByGzippingData:level:error
 
 #pragma mark -
 
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
                               length:(NSUInteger)length {
+  return [self gtm_dataByDeflatingBytes:bytes
+                                 length:length
+                                  error:NULL];
+} // gtm_dataByDeflatingBytes:length:
+
++ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                               error:(NSError **)error{
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:Z_DEFAULT_COMPRESSION
-                                     mode:CompressionModeZlib];
-} // gtm_dataByDeflatingBytes:length:
+                                     mode:CompressionModeZlib
+                                    error:error];
+} // gtm_dataByDeflatingBytes:length:error
 
 + (NSData *)gtm_dataByDeflatingData:(NSData *)data {
+  return [self gtm_dataByDeflatingData:data error:NULL];
+} // gtm_dataByDeflatingData:
+
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
                          compressionLevel:Z_DEFAULT_COMPRESSION
-                                     mode:CompressionModeZlib];
+                                     mode:CompressionModeZlib
+                                    error:error];
 } // gtm_dataByDeflatingData:
 
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
                     compressionLevel:(int)level {
+  return [self gtm_dataByDeflatingBytes:bytes
+                                 length:length
+                       compressionLevel:level
+                                  error:NULL];
+} // gtm_dataByDeflatingBytes:length:level:
+
++ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                    compressionLevel:(int)level
+                               error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:level
-                                     mode:CompressionModeZlib];
-} // gtm_dataByDeflatingBytes:length:level:
+                                     mode:CompressionModeZlib
+                                    error:error];
+} // gtm_dataByDeflatingBytes:length:level:error:
 
 + (NSData *)gtm_dataByDeflatingData:(NSData *)data
                    compressionLevel:(int)level {
+  return [self gtm_dataByDeflatingData:data
+                      compressionLevel:level
+                                 error:NULL];
+} // gtm_dataByDeflatingData:level:
+
++ (NSData *)gtm_dataByDeflatingData:(NSData *)data
+                   compressionLevel:(int)level
+                              error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
                          compressionLevel:level
-                                     mode:CompressionModeZlib];
-} // gtm_dataByDeflatingData:level:
+                                     mode:CompressionModeZlib
+                                    error:error];
+} // gtm_dataByDeflatingData:level:error:
 
 #pragma mark -
 
@@ -298,60 +407,125 @@ typedef enum {
                               length:(NSUInteger)length {
   return [self gtm_dataByInflatingBytes:bytes
                                  length:length
-                              isRawData:NO];
+                                  error:NULL];
 } // gtm_dataByInflatingBytes:length:
 
++ (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
+                              length:(NSUInteger)length
+                               error:(NSError **)error {
+  return [self gtm_dataByInflatingBytes:bytes
+                                 length:length
+                              isRawData:NO
+                                  error:error];
+} // gtm_dataByInflatingBytes:length:error:
+
 + (NSData *)gtm_dataByInflatingData:(NSData *)data {
+  return [self gtm_dataByInflatingData:data error:NULL];
+} // gtm_dataByInflatingData:
+
++ (NSData *)gtm_dataByInflatingData:(NSData *)data
+                              error:(NSError **)error {
   return [self gtm_dataByInflatingBytes:[data bytes]
                                  length:[data length]
-                              isRawData:NO];
+                              isRawData:NO
+                                  error:error];
 } // gtm_dataByInflatingData:
 
 #pragma mark -
 
 + (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length {
+  return [self gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                    length:(NSUInteger)length
+                                     error:NULL];
+} // gtm_dataByRawDeflatingBytes:length:
+
++ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                                  error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:Z_DEFAULT_COMPRESSION
-                                     mode:CompressionModeRaw];
-} // gtm_dataByRawDeflatingBytes:length:
+                                     mode:CompressionModeRaw
+                                    error:error];
+} // gtm_dataByRawDeflatingBytes:length:error:
 
 + (NSData *)gtm_dataByRawDeflatingData:(NSData *)data {
+  return [self gtm_dataByRawDeflatingData:data error:NULL];
+} // gtm_dataByRawDeflatingData:
+
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
                          compressionLevel:Z_DEFAULT_COMPRESSION
-                                     mode:CompressionModeRaw];
-} // gtm_dataByRawDeflatingData:
+                                     mode:CompressionModeRaw
+                                    error:error];
+} // gtm_dataByRawDeflatingData:error:
 
 + (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length
                        compressionLevel:(int)level {
+  return [self gtm_dataByRawDeflatingBytes:bytes
+                                    length:length
+                          compressionLevel:level
+                                     error:NULL];
+} // gtm_dataByRawDeflatingBytes:length:compressionLevel:
+
++ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                       compressionLevel:(int)level
+                                  error:(NSError **)error{
   return [self gtm_dataByCompressingBytes:bytes
                                    length:length
                          compressionLevel:level
-                                     mode:CompressionModeRaw];
-} // gtm_dataByRawDeflatingBytes:length:compressionLevel:
+                                     mode:CompressionModeRaw
+                                    error:error];
+} // gtm_dataByRawDeflatingBytes:length:compressionLevel:error:
 
 + (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
                       compressionLevel:(int)level {
+  return [self gtm_dataByRawDeflatingData:data
+                         compressionLevel:level
+                                    error:NULL];
+} // gtm_dataByRawDeflatingData:compressionLevel:
+
++ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
+                      compressionLevel:(int)level
+                                 error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
                          compressionLevel:level
-                                     mode:CompressionModeRaw];
-} // gtm_dataByRawDeflatingData:compressionLevel:
+                                     mode:CompressionModeRaw
+                                    error:error];
+} // gtm_dataByRawDeflatingData:compressionLevel:error:
 
 + (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length {
   return [self gtm_dataByInflatingBytes:bytes
                                  length:length
-                              isRawData:YES];
+                                  error:NULL];
 } // gtm_dataByRawInflatingBytes:length:
 
++ (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
+                                 length:(NSUInteger)length
+                                  error:(NSError **)error{
+  return [self gtm_dataByInflatingBytes:bytes
+                                 length:length
+                              isRawData:YES
+                                  error:error];
+} // gtm_dataByRawInflatingBytes:length:error:
+
 + (NSData *)gtm_dataByRawInflatingData:(NSData *)data {
+  return [self gtm_dataByRawInflatingData:data
+                                    error:NULL];
+} // gtm_dataByRawInflatingData:
+
++ (NSData *)gtm_dataByRawInflatingData:(NSData *)data
+                                 error:(NSError **)error {
   return [self gtm_dataByInflatingBytes:[data bytes]
                                  length:[data length]
-                              isRawData:YES];
-} // gtm_dataByRawInflatingData:
+                              isRawData:YES
+                                  error:error];
+} // gtm_dataByRawInflatingData:error:
 
 @end

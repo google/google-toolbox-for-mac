@@ -39,8 +39,8 @@
   context_ = [GTMUnitTestingBooleanRunLoopContext context];
   [[NSRunLoop currentRunLoop] gtm_runUpToSixtySecondsWithContext:context_];
   [anim stopAnimation];
-  STAssertTrue([context_ shouldStop], @"Animation value never got set");
-  STAssertTrue(shouldStartHit_, @"animationShouldStart not called");
+  XCTAssertTrue([context_ shouldStop], @"Animation value never got set");
+  XCTAssertTrue(shouldStartHit_, @"animationShouldStart not called");
 }
 
 - (BOOL)animationShouldStart:(NSAnimation*)animation {

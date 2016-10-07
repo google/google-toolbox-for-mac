@@ -29,34 +29,34 @@
   GTMURLBuilder *URLBuilder = [[[GTMURLBuilder alloc]
       initWithString:@"http://google.com:8080/pathA/pathB?param=val"]
       autorelease];
-  STAssertEqualStrings(@"http://google.com:8080/pathA/pathB?param=val",
-                      [URLBuilder URLString], nil);
-  STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
+  XCTAssertEqualStrings(@"http://google.com:8080/pathA/pathB?param=val",
+                        [URLBuilder URLString]);
+  XCTAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"]);
   URLBuilder = [GTMURLBuilder builderWithString:
       @"http://google.com:8080/pathA/pathB?param=val"];
-  STAssertEqualStrings(@"http://google.com:8080/pathA/pathB?param=val",
-                      [URLBuilder URLString], nil);
-  STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
+  XCTAssertEqualStrings(@"http://google.com:8080/pathA/pathB?param=val",
+                        [URLBuilder URLString]);
+  XCTAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"]);
 
   URLBuilder = [GTMURLBuilder builderWithString:
                 @"http://google.com:8080/path%3AA/pathB?param=val"];
-  STAssertEqualStrings(@"http://google.com:8080/path%3AA/pathB?param=val",
-                       [URLBuilder URLString], nil);
-  STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
+  XCTAssertEqualStrings(@"http://google.com:8080/path%3AA/pathB?param=val",
+                        [URLBuilder URLString]);
+  XCTAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"]);
 
   URLBuilder = [GTMURLBuilder builderWithString:
                 @"http://google.com:8080/pathA/pathB%2F?param=val"];
-  STAssertEqualStrings(@"http://google.com:8080/pathA/pathB%2F?param=val",
-                       [URLBuilder URLString], nil);
-  STAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"], nil);
+  XCTAssertEqualStrings(@"http://google.com:8080/pathA/pathB%2F?param=val",
+                        [URLBuilder URLString]);
+  XCTAssertEqualStrings(@"val", [URLBuilder valueForParameter:@"param"]);
 }
 
 - (void)testMailToHandling {
   GTMURLBuilder *URLBuilder =
       [GTMURLBuilder builderWithString:@"mailto:ytmapp-ios@google.com"];
   [URLBuilder setValue:@"blah" forParameter:@"subject"];
-  STAssertEqualStrings(@"mailto:ytmapp-ios@google.com?subject=blah",
-                      [URLBuilder URLString], nil);
+  XCTAssertEqualStrings(@"mailto:ytmapp-ios@google.com?subject=blah",
+                        [URLBuilder URLString]);
 }
 
 - (void)testIsEqualTo {
@@ -66,12 +66,12 @@
       [GTMURLBuilder builderWithString:@"http://google.com/pathA/pathB"];
   [URLBuilderB setValue:@"d" forParameter:@"c"];
   [URLBuilderB setValue:@"b" forParameter:@"a"];
-  STAssertTrue([URLBuilderA isEqual:URLBuilderB], nil);
+  XCTAssertTrue([URLBuilderA isEqual:URLBuilderB]);
   [URLBuilderB setValue:@"c" forParameter:@"a"];
-  STAssertFalse([URLBuilderA isEqual:URLBuilderB], nil);
+  XCTAssertFalse([URLBuilderA isEqual:URLBuilderB]);
   [URLBuilderB setValue:@"b" forParameter:@"a"];
   [URLBuilderB setValue:@"f" forParameter:@"e"];
-  STAssertFalse([URLBuilderA isEqual:URLBuilderB], nil);
+  XCTAssertFalse([URLBuilderA isEqual:URLBuilderB]);
 }
 
 - (void)testSetParameters {
@@ -83,7 +83,7 @@
       [NSDictionary dictionaryWithObjectsAndKeys:@"a", @"p1", @"b", @"p2", nil];
   [URLBuilderA setParameters:params];
   [URLBuilderA setValue:@"x" forParameter:@"p1"];
-  STAssertTrue([URLBuilderA isEqual:URLBuilderB], nil);
+  XCTAssertTrue([URLBuilderA isEqual:URLBuilderB]);
 }
 
 - (void)testReplaceParameters {
@@ -95,17 +95,17 @@
       [NSDictionary dictionaryWithObjectsAndKeys:@"a", @"p1", @"b", @"p2", nil];
   [URLBuilderA setParameters:params];
   [URLBuilderA setValue:@"x" forParameter:@"p1"];
-  STAssertTrue([URLBuilderA isEqual:URLBuilderB], nil);
+  XCTAssertTrue([URLBuilderA isEqual:URLBuilderB]);
 }
 
 - (void)testURLPathParsing {
   GTMURLBuilder *URLBuilder =
       [GTMURLBuilder builderWithString:@"http://google.com/"];
-  STAssertEqualStrings(@"http://google.com/", [URLBuilder URLString], nil);
+  XCTAssertEqualStrings(@"http://google.com/", [URLBuilder URLString]);
   URLBuilder = [GTMURLBuilder builderWithString:@"http://google.com/pA/pB"];
-  STAssertEqualStrings(@"http://google.com/pA/pB", [URLBuilder URLString], nil);
+  XCTAssertEqualStrings(@"http://google.com/pA/pB", [URLBuilder URLString]);
   URLBuilder = [GTMURLBuilder builderWithString:@"http://google.com/p%3AA/pB"];
-  STAssertEqualStrings(@"http://google.com/p%3AA/pB", [URLBuilder URLString], nil);
+  XCTAssertEqualStrings(@"http://google.com/p%3AA/pB", [URLBuilder URLString]);
 }
 
 @end

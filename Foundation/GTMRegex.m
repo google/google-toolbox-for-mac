@@ -133,7 +133,7 @@ static NSString *const kReplacementPattern =
 - (id)initWithPattern:(NSString *)pattern
               options:(GTMRegexOptions)options
             withError:(NSError **)outErrorOrNULL {
-  
+
   self = [super init];
   if (!self) return nil;
 
@@ -275,7 +275,7 @@ static NSString *const kReplacementPattern =
 
 - (NSString *)firstSubStringMatchedInString:(NSString *)str {
   NSString *result = nil;
-  
+
   regmatch_t regMatch;
   const char *utf8Str = [str UTF8String];
   if ([self runRegexOnUTF8:utf8Str
@@ -380,7 +380,7 @@ static NSString *const kReplacementPattern =
       } else {
         // spin over the split up replacement
         GTMRegexStringSegment *replacementSegment = nil;
-        GTM_FOREACH_OBJECT(replacementSegment, replacements) {
+        for (replacementSegment in replacements) {
           if (![replacementSegment isMatch]) {
             // not a match, raw text to put in
             [result appendString:[replacementSegment string]];
@@ -687,14 +687,14 @@ static NSString *const kReplacementPattern =
     return nil;
 
   // pick off when it wasn't found
-  if ((regMatches_[patternIndex].rm_so == -1) && 
+  if ((regMatches_[patternIndex].rm_so == -1) &&
       (regMatches_[patternIndex].rm_eo == -1))
     return nil;
 
   // fetch the string
-  const char *base = (const char*)[utf8StrBuf_ bytes] 
+  const char *base = (const char*)[utf8StrBuf_ bytes]
     + regMatches_[patternIndex].rm_so;
-  regoff_t len = regMatches_[patternIndex].rm_eo 
+  regoff_t len = regMatches_[patternIndex].rm_eo
     - regMatches_[patternIndex].rm_so;
   return [[[NSString alloc] initWithBytes:base
                                    length:(NSUInteger)len
@@ -707,7 +707,7 @@ static NSString *const kReplacementPattern =
       [self class], self, (isMatch_ ? "YES" : "NO")];
   for (NSUInteger x = 0; x <= numRegMatches_; ++x) {
     int length = (int)(regMatches_[x].rm_eo - regMatches_[x].rm_so);
-    const char* string 
+    const char* string
       = (((const char*)[utf8StrBuf_ bytes]) + regMatches_[x].rm_so);
     if (x == 0) {
       [result appendFormat:@" \"%.*s\"", length , string];

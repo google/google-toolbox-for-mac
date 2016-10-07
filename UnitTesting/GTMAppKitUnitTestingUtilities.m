@@ -17,67 +17,11 @@
 //
 
 #import "GTMAppKitUnitTestingUtilities.h"
-#import <AppKit/AppKit.h>
-#include <signal.h>
-#include <unistd.h>
 #import "GTMDefines.h"
-
-// The Users profile before we change it on them
-static CMProfileRef gGTMCurrentColorProfile = NULL;
-
-// Compares two color profiles
-static BOOL GTMAreCMProfilesEqual(CMProfileRef a, CMProfileRef b);
-// Stores the user's color profile away, and changes over to generic.
-static void GTMSetColorProfileToGenericRGB();
-// Restores the users profile.
-static void GTMRestoreColorProfile(void);
-// Signal handler to try and restore users profile.
-static void GTMHandleCrashSignal(int signalNumber);
 
 static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
 
 @implementation GTMAppKitUnitTestingUtilities
-
-// Sets up the user interface so that we can run consistent UI unittests on it.
-+ (void)setUpForUIUnitTests {
-  // Give some names to undocumented defaults values
-  const NSInteger MediumFontSmoothing = 2;
-  const NSInteger BlueTintedAppearance = 1;
-
-  // This sets up some basic values that we want as our defaults for doing pixel
-  // based user interface tests. These defaults only apply to the unit test app,
-  // except or the color profile which will be set system wide, and then
-  // restored when the tests complete.
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  // Scroll arrows together bottom
-  [defaults setObject:@"DoubleMax" forKey:@"AppleScrollBarVariant"];
-  // Smallest font size to CG should perform antialiasing on
-  [defaults setInteger:4 forKey:@"AppleAntiAliasingThreshold"];
-  // Type of smoothing
-  [defaults setInteger:MediumFontSmoothing forKey:@"AppleFontSmoothing"];
-  // Blue aqua
-  [defaults setInteger:BlueTintedAppearance forKey:@"AppleAquaColorVariant"];
-  // Standard highlight colors
-  [defaults setObject:@"0.709800 0.835300 1.000000"
-               forKey:@"AppleHighlightColor"];
-  [defaults setObject:@"0.500000 0.500000 0.500000"
-               forKey:@"AppleOtherHighlightColor"];
-  // Use english plz
-  [defaults setObject:[NSArray arrayWithObject:@"en"] forKey:@"AppleLanguages"];
-  // How fast should we draw sheets. This speeds up the sheet tests considerably
-  [defaults setFloat:.001f forKey:@"NSWindowResizeTime"];
-  // Switch over the screen profile to "generic rgb". This installs an
-  // atexit handler to return our profile back when we are done.
-  GTMSetColorProfileToGenericRGB();
-}
-
-+ (void)setUpForUIUnitTestsIfBeingTested {
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  if ([GTMFoundationUnitTestingUtilities areWeBeingUnitTested]) {
-    [self setUpForUIUnitTests];
-  }
-  [pool drain];
-}
 
 + (BOOL)isScreenSaverActive {
   BOOL answer = NO;
@@ -149,108 +93,6 @@ CantWorkWithScreenSaver:
 }
 
 @end
-
-BOOL GTMAreCMProfilesEqual(CMProfileRef a, CMProfileRef b) {
-  BOOL equal = YES;
-  if (a != b) {
-    CMProfileMD5 aMD5;
-    CMProfileMD5 bMD5;
-    CMError aMD5Err = CMGetProfileMD5(a, aMD5);
-    CMError bMD5Err = CMGetProfileMD5(b, bMD5);
-    equal = (!aMD5Err &&
-             !bMD5Err &&
-             !memcmp(aMD5, bMD5, sizeof(CMProfileMD5))) ? YES : NO;
-  }
-  return equal;
-}
-
-void GTMRestoreColorProfile(void) {
-  if (gGTMCurrentColorProfile) {
-    CGDirectDisplayID displayID = CGMainDisplayID();
-    CMError error = CMSetProfileByAVID((UInt32)displayID,
-                                       gGTMCurrentColorProfile);
-    CMCloseProfile(gGTMCurrentColorProfile);
-    if (error) {
-      // COV_NF_START
-      // No way to force this case in a unittest.
-      _GTMDevLog(@"Failed to restore previous color profile! "
-                 @"You may need to open System Preferences : Displays : Color "
-                 @"and manually restore your color settings. (Error: %ld)",
-                 (long)error);
-      // COV_NF_END
-    } else {
-      _GTMDevLog(@"Color profile restored");
-    }
-    gGTMCurrentColorProfile = NULL;
-  }
-}
-
-void GTMHandleCrashSignal(int signalNumber) {
-  // Going down in flames, might as well try to restore the color profile
-  // anyways.
-  GTMRestoreColorProfile();
-  // Go ahead and exit with the signal value relayed just incase.
-  _exit(signalNumber + 128);
-}
-
-void GTMSetColorProfileToGenericRGB(void) {
-  NSColorSpace *genericSpace = [NSColorSpace genericRGBColorSpace];
-  CMProfileRef genericProfile = (CMProfileRef)[genericSpace colorSyncProfile];
-  CMProfileRef previousProfile;
-  CGDirectDisplayID displayID = CGMainDisplayID();
-  CMError error = CMGetProfileByAVID((UInt32)displayID, &previousProfile);
-  if (error) {
-    // COV_NF_START
-    // No way to force this case in a unittest.
-    _GTMDevLog(@"Failed to get current color profile. "
-               "I will not be able to restore your current profile, thus I'm "
-               "not changing it. Many unit tests may fail as a result. (Error: %li)",
-          (long)error);
-    return;
-    // COV_NF_END
-  }
-  if (GTMAreCMProfilesEqual(genericProfile, previousProfile)) {
-    CMCloseProfile(previousProfile);
-    return;
-  }
-  CFStringRef previousProfileName;
-  CFStringRef genericProfileName;
-  CMCopyProfileDescriptionString(previousProfile, &previousProfileName);
-  CMCopyProfileDescriptionString(genericProfile, &genericProfileName);
-
-  _GTMDevLog(@"Temporarily changing your system color profile from \"%@\" to \"%@\".",
-             previousProfileName, genericProfileName);
-  _GTMDevLog(@"This allows the pixel-based unit-tests to have consistent color "
-             "values across all machines.");
-  _GTMDevLog(@"The colors on your screen will change for the duration of the testing.");
-
-
-  if ((error = CMSetProfileByAVID((UInt32)displayID, genericProfile))) {
-    // COV_NF_START
-    // No way to force this case in a unittest.
-    _GTMDevLog(@"Failed to set color profile to \"%@\"! Many unit tests will fail as "
-               "a result.  (Error: %li)", genericProfileName, (long)error);
-    // COV_NF_END
-  } else {
-    gGTMCurrentColorProfile = previousProfile;
-    atexit(GTMRestoreColorProfile);
-    // WebKit DRT and Chrome TestShell both use this trick. If the test is
-    // already crashing, might as well try restoring the color profile, and if
-    // it fails, it is no worse than crashing without having tried.
-    signal(SIGILL, GTMHandleCrashSignal);
-    signal(SIGTRAP, GTMHandleCrashSignal);
-    signal(SIGEMT, GTMHandleCrashSignal);
-    signal(SIGFPE, GTMHandleCrashSignal);
-    signal(SIGBUS, GTMHandleCrashSignal);
-    signal(SIGSEGV, GTMHandleCrashSignal);
-    signal(SIGSYS, GTMHandleCrashSignal);
-    signal(SIGPIPE, GTMHandleCrashSignal);
-    signal(SIGXCPU, GTMHandleCrashSignal);
-    signal(SIGXFSZ, GTMHandleCrashSignal);
-  }
-  CFRelease(previousProfileName);
-  CFRelease(genericProfileName);
-}
 
 // Returns a virtual key code for a given charCode. Handles all of the
 // NS*FunctionKeys as well.

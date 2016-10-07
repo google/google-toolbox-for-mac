@@ -142,7 +142,7 @@
   // which is usually the default items, if the toolbar supports customization
   // there is no way to fetch those possible items to tweak their contents.
   NSToolbarItem *item;
-  GTM_FOREACH_OBJECT(item, [toolbar items]) {
+  for (item in [toolbar items]) {
     NSString *label = [item label];
     if (label) {
       label = [self localizedStringForString:label];
@@ -195,7 +195,7 @@
     if (recursive) {
       NSArray *subviews = [view subviews];
       NSView *subview = nil;
-      GTM_FOREACH_OBJECT(subview, subviews) {
+      for (subview in subviews) {
         [self localizeObject:subview recursively:recursive];
       }
     }
@@ -260,7 +260,7 @@
     id cell = [matrix prototype];
     [self localizeObject:cell recursively:recursive];
     // Process the cells
-    GTM_FOREACH_OBJECT(cell, [matrix cells]) {
+    for (cell in [matrix cells]) {
       [self localizeObject:cell recursively:recursive];
       // The tooltip isn't on a cell, so we do it via the matrix.
       NSString *toolTip = [matrix toolTipForCell:cell];
@@ -276,7 +276,7 @@
     NSTableView *tableView = (NSTableView *)view;
     NSArray *columns = [tableView tableColumns];
     NSTableColumn *column = nil;
-    GTM_FOREACH_OBJECT(column, columns) {
+    for (column in columns) {
       [self localizeObject:[column headerCell] recursively:recursive];
     }
   }
@@ -301,7 +301,7 @@
       NSMutableArray *localizedValues = [NSMutableArray array];
       BOOL replaceValues = NO;
       NSString *value;
-      GTM_FOREACH_OBJECT(value, [combobox objectValues]) {
+      for (value in [combobox objectValues]) {
         NSString *localizedValue = nil;
         if ([value isKindOfClass:[NSString class]]) {
           localizedValue = [self localizedStringForString:value];
@@ -330,7 +330,7 @@
     }
     NSArray *menuItems = [menu itemArray];
     NSMenuItem *menuItem = nil;
-    GTM_FOREACH_OBJECT(menuItem, menuItems) {
+    for (menuItem in menuItems) {
       title = [menuItem title];
       localizedTitle = [self localizedStringForString:title];
       if (localizedTitle) {
@@ -369,7 +369,7 @@
     };
     Class stringClass = [NSString class];
     NSString *exposedBinding;
-    GTM_FOREACH_OBJECT(exposedBinding, exposedBindings) {
+    for (exposedBinding in exposedBindings) {
       NSDictionary *bindingInfo = [object infoForBinding:exposedBinding];
       if (bindingInfo) {
         id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];

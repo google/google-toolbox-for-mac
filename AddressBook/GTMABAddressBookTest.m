@@ -37,6 +37,24 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
 
 
 @implementation GTMABAddressBookTest
+
+#if GTM_IPHONE_SDK
+
+// On iOS we need to check if we have access to the Address Book before running any tests.
+// See
+// third_party/objective_c/google_toolbox_for_mac/UnitTesting/GTMIPhoneUnitTestMain.m
+// for a way this can be provided via entitlements.
+
++ (void)setUp {
+  [super setUp];
+  ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
+  if(status != kABAuthorizationStatusAuthorized) {
+    [NSException raise:NSInternalInconsistencyException format:@"Don't have Address Book Access"];
+  }
+}
+
+#endif  // GTM_IPHONE_SDK
+
 - (void)setUp {
   // Create a book forcing it out of it's autorelease pool.
   // I force it out of the release pool, so that we will see any errors
@@ -45,17 +63,17 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   book_ = [[GTMABAddressBook addressBook] retain];
   [pool release];
-  STAssertNotNil(book_, nil);
+  XCTAssertNotNil(book_);
   NSArray *people
     = [book_ peopleWithCompositeNameWithPrefix:kGTMABTestFirstName];
   GTMABPerson *person;
-  GTM_FOREACH_OBJECT(person, people) {
+  for (person in people) {
     [book_ removeRecord:person];
   }
   NSArray *groups
     = [book_ groupsWithCompositeNameWithPrefix:kGTMABTestGroupName];
   GTMABGroup *group;
-  GTM_FOREACH_OBJECT(group, groups) {
+  for (group in groups) {
     [book_ removeRecord:group];
   }
   [book_ save];
@@ -66,340 +84,339 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
 }
 
 - (void)testGenericAddressBook {
-  STAssertEqualObjects([GTMABAddressBook localizedLabel:(NSString *)kABHomeLabel],
-                       @"home",
-                       nil);
-  STAssertThrows([GTMABRecord recordWithRecord:nil], nil);
+  XCTAssertEqualObjects([GTMABAddressBook localizedLabel:(NSString *)kABHomeLabel],
+                        @"home");
+  XCTAssertThrows([GTMABRecord recordWithRecord:nil]);
 }
 
 - (void)testAddingAndRemovingPerson {
   // Create a person
   GTMABPerson *person = [GTMABPerson personWithFirstName:kGTMABTestFirstName
                                                 lastName:kGTMABTestLastName];
-  STAssertNotNil(person, nil);
+  XCTAssertNotNil(person);
 
   // Add person
   NSArray *people = [book_ people];
-  STAssertFalse([people containsObject:person], nil);
-  STAssertTrue([book_ addRecord:person], nil);
+  XCTAssertFalse([people containsObject:person]);
+  XCTAssertTrue([book_ addRecord:person]);
 #if GTM_IPHONE_SDK && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_3_2)
-  // Normally this next line would be STAssertTrue, however due to
+  // Normally this next line would be XCTAssertTrue, however due to
   // Radar 6200638: ABAddressBookHasUnsavedChanges doesn't work
   // We will check to make sure it stays broken ;-)
-  STAssertFalse([book_ hasUnsavedChanges], nil);
+  XCTAssertFalse([book_ hasUnsavedChanges]);
 #else  // GTM_IPHONE_SDK
-  STAssertTrue([book_ hasUnsavedChanges], nil);
+  XCTAssertTrue([book_ hasUnsavedChanges]);
 #endif  // GTM_IPHONE_SDK
 
   people = [book_ people];
-  STAssertNotNil(people, nil);
+  XCTAssertNotNil(people);
 #if GTM_IPHONE_SDK
-  // Normally this next line would be STAssertTrue, however due to
+  // Normally this next line would be XCTAssertTrue, however due to
   // Radar 6200703: ABAddressBookAddRecord doesn't add an item to the people
   //                array until it's saved
   // We will check to make sure it stays broken ;-)
-  STAssertFalse([people containsObject:person], nil);
+  XCTAssertFalse([people containsObject:person]);
 #else  // GTM_IPHONE_SDK
-  STAssertTrue([people containsObject:person], nil);
+  XCTAssertTrue([people containsObject:person]);
 #endif  // GTM_IPHONE_SDK
 
   // Save book_
-  STAssertTrue([book_ save], nil);
+  XCTAssertTrue([book_ save]);
   people = [book_ people];
-  STAssertNotNil(people, nil);
-  STAssertTrue([people containsObject:person], nil);
+  XCTAssertNotNil(people);
+  XCTAssertTrue([people containsObject:person]);
   people = [book_ peopleWithCompositeNameWithPrefix:kGTMABTestFirstName];
-  STAssertEqualObjects([people objectAtIndex:0], person, nil);
+  XCTAssertEqualObjects([people objectAtIndex:0], person);
 
   GTMABRecordID recordID = [person recordID];
-  STAssertNotEquals(recordID, kGTMABRecordInvalidID, nil);
+  XCTAssertNotEqual(recordID, kGTMABRecordInvalidID);
 
   GTMABRecord *record = [book_ personForId:recordID];
-  STAssertEqualObjects(record, person, nil);
+  XCTAssertEqualObjects(record, person);
 
   // Remove person
-  STAssertTrue([book_ removeRecord:person], nil);
+  XCTAssertTrue([book_ removeRecord:person]);
   people = [book_ peopleWithCompositeNameWithPrefix:kGTMABTestFirstName];
-  STAssertEquals([people count], (NSUInteger)0, nil);
+  XCTAssertEqual([people count], (NSUInteger)0);
 
 #if GTM_IPHONE_SDK && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_3_2)
-  // Normally this next line would be STAssertTrue, however due to
+  // Normally this next line would be XCTAssertTrue, however due to
   // Radar 6200638: ABAddressBookHasUnsavedChanges doesn't work
   // We will check to make sure it stays broken ;-)
-  STAssertFalse([book_ hasUnsavedChanges], nil);
+  XCTAssertFalse([book_ hasUnsavedChanges]);
 #else  // GTM_IPHONE_SDK
-  STAssertTrue([book_ hasUnsavedChanges], nil);
+  XCTAssertTrue([book_ hasUnsavedChanges]);
 #endif  // GTM_IPHONE_SDK
   people = [book_ people];
-  STAssertFalse([people containsObject:person], nil);
+  XCTAssertFalse([people containsObject:person]);
 
   // Save Book
-  STAssertTrue([book_ save], nil);
+  XCTAssertTrue([book_ save]);
   people = [book_ people];
-  STAssertFalse([book_ hasUnsavedChanges], nil);
-  STAssertFalse([people containsObject:person], nil);
+  XCTAssertFalse([book_ hasUnsavedChanges]);
+  XCTAssertFalse([people containsObject:person]);
   record = [book_ personForId:recordID];
-  STAssertNil(record, nil);
+  XCTAssertNil(record);
 
   // Bogus data
-  STAssertFalse([book_ addRecord:nil], nil);
-  STAssertFalse([book_ removeRecord:nil], nil);
+  XCTAssertFalse([book_ addRecord:nil]);
+  XCTAssertFalse([book_ removeRecord:nil]);
 
-  STAssertNotNULL([book_ addressBookRef], nil);
+  XCTAssertNotNULL([book_ addressBookRef]);
 
 }
 
 - (void)testAddingAndRemovingGroup {
   // Create a group
   GTMABGroup *group = [GTMABGroup groupNamed:kGTMABTestGroupName];
-  STAssertNotNil(group, nil);
+  XCTAssertNotNil(group);
 
   // Add group
   NSArray *groups = [book_ groups];
-  STAssertFalse([groups containsObject:group], nil);
-  STAssertTrue([book_ addRecord:group], nil);
+  XCTAssertFalse([groups containsObject:group]);
+  XCTAssertTrue([book_ addRecord:group]);
 #if GTM_IPHONE_SDK && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_3_2)
-  // Normally this next line would be STAssertTrue, however due to
+  // Normally this next line would be XCTAssertTrue, however due to
   // Radar 6200638: ABAddressBookHasUnsavedChanges doesn't work
   // We will check to make sure it stays broken ;-)
-  STAssertFalse([book_ hasUnsavedChanges], nil);
+  XCTAssertFalse([book_ hasUnsavedChanges]);
 #else  // GTM_IPHONE_SDK
-  STAssertTrue([book_ hasUnsavedChanges], nil);
+  XCTAssertTrue([book_ hasUnsavedChanges]);
 #endif  // GTM_IPHONE_SDK
 
   groups = [book_ groups];
-  STAssertNotNil(groups, nil);
+  XCTAssertNotNil(groups);
 #if GTM_IPHONE_SDK
-  // Normally this next line would be STAssertTrue, however due to
+  // Normally this next line would be XCTAssertTrue, however due to
   // Radar 6200703: ABAddressBookAddRecord doesn't add an item to the groups
   //                array until it's saved
   // We will check to make sure it stays broken ;-)
-  STAssertFalse([groups containsObject:group], nil);
+  XCTAssertFalse([groups containsObject:group]);
 #else  // GTM_IPHONE_SDK
-  STAssertTrue([groups containsObject:group], nil);
+  XCTAssertTrue([groups containsObject:group]);
 #endif  // GTM_IPHONE_SDK
 
   // Save book_
-  STAssertTrue([book_ save], nil);
+  XCTAssertTrue([book_ save]);
   groups = [book_ groups];
-  STAssertNotNil(groups, nil);
-  STAssertTrue([groups containsObject:group], nil);
+  XCTAssertNotNil(groups);
+  XCTAssertTrue([groups containsObject:group]);
   groups = [book_ groupsWithCompositeNameWithPrefix:kGTMABTestGroupName];
-  STAssertEqualObjects([groups objectAtIndex:0], group, nil);
+  XCTAssertEqualObjects([groups objectAtIndex:0], group);
 
   GTMABRecordID recordID = [group recordID];
-  STAssertNotEquals(recordID, kGTMABRecordInvalidID, nil);
+  XCTAssertNotEqual(recordID, kGTMABRecordInvalidID);
 
   GTMABRecord *record = [book_ groupForId:recordID];
-  STAssertEqualObjects(record, group, nil);
+  XCTAssertEqualObjects(record, group);
 
   // Remove group
-  STAssertTrue([book_ removeRecord:group], nil);
+  XCTAssertTrue([book_ removeRecord:group]);
 
 #if GTM_IPHONE_SDK && (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_3_2)
-  // Normally this next line would be STAssertTrue, however due to
+  // Normally this next line would be XCTAssertTrue, however due to
   // Radar 6200638: ABAddressBookHasUnsavedChanges doesn't work
   // We will check to make sure it stays broken ;-)
-  STAssertFalse([book_ hasUnsavedChanges], nil);
+  XCTAssertFalse([book_ hasUnsavedChanges]);
 #else  // GTM_IPHONE_SDK
-  STAssertTrue([book_ hasUnsavedChanges], nil);
+  XCTAssertTrue([book_ hasUnsavedChanges]);
 #endif  // GTM_IPHONE_SDK
   groups = [book_ groups];
-  STAssertFalse([groups containsObject:group], nil);
+  XCTAssertFalse([groups containsObject:group]);
 
   // Save Book
-  STAssertTrue([book_ save], nil);
+  XCTAssertTrue([book_ save]);
   groups = [book_ groups];
-  STAssertFalse([book_ hasUnsavedChanges], nil);
-  STAssertFalse([groups containsObject:group], nil);
+  XCTAssertFalse([book_ hasUnsavedChanges]);
+  XCTAssertFalse([groups containsObject:group]);
   groups = [book_ groupsWithCompositeNameWithPrefix:kGTMABTestGroupName];
-  STAssertEquals([groups count], (NSUInteger)0, nil);
+  XCTAssertEqual([groups count], (NSUInteger)0);
   record = [book_ groupForId:recordID];
-  STAssertNil(record, nil);
+  XCTAssertNil(record);
 }
 
 - (void)testPerson {
   GTMABPerson *person = [[[GTMABPerson alloc] initWithRecord:nil] autorelease];
-  STAssertNil(person, nil);
+  XCTAssertNil(person);
   person = [GTMABPerson personWithFirstName:kGTMABTestFirstName
                                    lastName:nil];
-  STAssertNotNil(person, nil);
-  STAssertEqualObjects([person compositeName], kGTMABTestFirstName, nil);
+  XCTAssertNotNil(person);
+  XCTAssertEqualObjects([person compositeName], kGTMABTestFirstName);
   NSString *firstName = [person valueForProperty:kGTMABPersonFirstNameProperty];
-  STAssertEqualObjects(firstName, kGTMABTestFirstName, nil);
+  XCTAssertEqualObjects(firstName, kGTMABTestFirstName);
   NSString *lastName = [person valueForProperty:kGTMABPersonLastNameProperty];
-  STAssertNil(lastName, nil);
-  STAssertTrue([person removeValueForProperty:kGTMABPersonFirstNameProperty], nil);
-  STAssertFalse([person removeValueForProperty:kGTMABPersonFirstNameProperty], nil);
-  STAssertFalse([person removeValueForProperty:kGTMABPersonLastNameProperty], nil);
-  STAssertFalse([person setValue:nil forProperty:kGTMABPersonFirstNameProperty], nil);
-  STAssertFalse([person setValue:[NSNumber numberWithInt:1]
-                     forProperty:kGTMABPersonFirstNameProperty], nil);
-  STAssertFalse([person setValue:@"Bart"
-                     forProperty:kGTMABPersonBirthdayProperty], nil);
+  XCTAssertNil(lastName);
+  XCTAssertTrue([person removeValueForProperty:kGTMABPersonFirstNameProperty]);
+  XCTAssertFalse([person removeValueForProperty:kGTMABPersonFirstNameProperty]);
+  XCTAssertFalse([person removeValueForProperty:kGTMABPersonLastNameProperty]);
+  XCTAssertFalse([person setValue:nil forProperty:kGTMABPersonFirstNameProperty]);
+  XCTAssertFalse([person setValue:[NSNumber numberWithInt:1]
+                      forProperty:kGTMABPersonFirstNameProperty]);
+  XCTAssertFalse([person setValue:@"Bart"
+                      forProperty:kGTMABPersonBirthdayProperty]);
 
   GTMABPropertyType property
     = [GTMABPerson typeOfProperty:kGTMABPersonLastNameProperty];
-  STAssertEquals(property, (GTMABPropertyType)kGTMABStringPropertyType, nil);
+  XCTAssertEqual(property, (GTMABPropertyType)kGTMABStringPropertyType);
 
   NSString *string
     = [GTMABPerson localizedPropertyName:kGTMABPersonLastNameProperty];
-  STAssertEqualObjects(string, @"Last", nil);
+  XCTAssertEqualObjects(string, @"Last");
 
   string = [GTMABPerson localizedPropertyName:kGTMABRecordInvalidID];
 #if GTM_IPHONE_SDK
-  STAssertEqualObjects(string, kGTMABUnknownPropertyName, nil);
+  XCTAssertEqualObjects(string, kGTMABUnknownPropertyName);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(string, kGTMABRecordInvalidID, nil);
+  XCTAssertEqualObjects(string, kGTMABRecordInvalidID);
 #endif  // GTM_IPHONE_SDK
   string = [person description];
-  STAssertNotNil(string, nil);
+  XCTAssertNotNil(string);
 
   GTMABPersonCompositeNameFormat format = [GTMABPerson compositeNameFormat];
-  STAssertTrue(format == kABPersonCompositeNameFormatFirstNameFirst ||
-               format == kABPersonCompositeNameFormatLastNameFirst, nil);
+  XCTAssertTrue(format == kABPersonCompositeNameFormatFirstNameFirst ||
+                format == kABPersonCompositeNameFormatLastNameFirst);
 
   NSData *data = [person imageData];
-  STAssertNil(data, nil);
-  STAssertTrue([person setImageData:nil], nil);
+  XCTAssertNil(data);
+  XCTAssertTrue([person setImageData:nil]);
   data = [person imageData];
-  STAssertNil(data, nil);
+  XCTAssertNil(data);
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   NSString *phonePath = [bundle pathForResource:@"phone" ofType:@"png"];
-  STAssertNotNil(phonePath, nil);
+  XCTAssertNotNil(phonePath);
   GTMABImage *image
     = [[[GTMABImage alloc] initWithContentsOfFile:phonePath] autorelease];
-  STAssertNotNil(image, nil);
+  XCTAssertNotNil(image);
 #if GTM_IPHONE_SDK
   data = UIImagePNGRepresentation(image);
 #else  // GTM_IPHONE_SDK
   data = [image TIFFRepresentation];
 #endif  // GTM_IPHONE_SDK
-  STAssertTrue([person setImageData:data], nil);
+  XCTAssertTrue([person setImageData:data]);
   NSData *data2 = [person imageData];
-  STAssertEqualObjects(data, data2, nil);
-  STAssertTrue([person setImageData:nil], nil);
+  XCTAssertEqualObjects(data, data2);
+  XCTAssertTrue([person setImageData:nil]);
   data = [person imageData];
-  STAssertNil(data, nil);
+  XCTAssertNil(data);
 
-  STAssertTrue([person setImage:image], nil);
+  XCTAssertTrue([person setImage:image]);
   GTMABImage *image2 = [person image];
-  STAssertNotNil(image2, nil);
+  XCTAssertNotNil(image2);
 #if GTM_IPHONE_SDK
-  STAssertEqualObjects(UIImagePNGRepresentation(image),
-                       UIImagePNGRepresentation(image2), nil);
+  XCTAssertEqualObjects(UIImagePNGRepresentation(image),
+                        UIImagePNGRepresentation(image2));
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects([image TIFFRepresentation],
-                       [image2 TIFFRepresentation], nil);
+  XCTAssertEqualObjects([image TIFFRepresentation],
+                        [image2 TIFFRepresentation]);
 #endif  // GTM_IPHONE_SDK
 
   person = [GTMABPerson personWithFirstName:kGTMABTestFirstName
                                    lastName:kGTMABTestLastName];
 
   data = [NSData dataWithBytes:"a" length:1];
-  STAssertFalse([person setImageData:data], nil);
+  XCTAssertFalse([person setImageData:data]);
 
   GTMABMutableMultiValue *value
     = [GTMABMutableMultiValue valueWithPropertyType:kGTMABStringPropertyType];
-  STAssertNotNil(value, nil);
-  STAssertNotEquals([value addValue:@"222-222-2222"
+  XCTAssertNotNil(value);
+  XCTAssertNotEqual([value addValue:@"222-222-2222"
                           withLabel:(CFStringRef)kABHomeLabel],
-                    kGTMABMultiValueInvalidIdentifier, nil);
-  STAssertNotEquals([value addValue:@"333-333-3333"
+                    kGTMABMultiValueInvalidIdentifier);
+  XCTAssertNotEqual([value addValue:@"333-333-3333"
                           withLabel:(CFStringRef)kABWorkLabel],
-                    kGTMABMultiValueInvalidIdentifier, nil);
-  STAssertTrue([person setValue:value
-                    forProperty:kGTMABPersonPhoneProperty], nil);
+                    kGTMABMultiValueInvalidIdentifier);
+  XCTAssertTrue([person setValue:value
+                     forProperty:kGTMABPersonPhoneProperty]);
   id value2 = [person valueForProperty:kGTMABPersonPhoneProperty];
-  STAssertNotNil(value2, nil);
-  STAssertEqualObjects(value, value2, nil);
-  STAssertEquals([value hash], [value2 hash], nil);
-  STAssertNotEquals([person hash], (NSUInteger)0, nil);
+  XCTAssertNotNil(value2);
+  XCTAssertEqualObjects(value, value2);
+  XCTAssertEqual([value hash], [value2 hash]);
+  XCTAssertNotEqual([person hash], (NSUInteger)0);
 }
 
 - (void)testGroup {
   GTMABGroup *group = [[[GTMABGroup alloc] initWithRecord:nil] autorelease];
-  STAssertNil(group, nil);
+  XCTAssertNil(group);
   group = [GTMABGroup groupNamed:kGTMABTestGroupName];
-  STAssertNotNil(group, nil);
-  STAssertEqualObjects([group compositeName], kGTMABTestGroupName, nil);
+  XCTAssertNotNil(group);
+  XCTAssertEqualObjects([group compositeName], kGTMABTestGroupName);
   NSString *name = [group valueForProperty:kABGroupNameProperty];
-  STAssertEqualObjects(name, kGTMABTestGroupName, nil);
+  XCTAssertEqualObjects(name, kGTMABTestGroupName);
   NSString *lastName = [group valueForProperty:kGTMABPersonLastNameProperty];
-  STAssertNil(lastName, nil);
-  STAssertTrue([group removeValueForProperty:kABGroupNameProperty], nil);
-  STAssertFalse([group removeValueForProperty:kABGroupNameProperty], nil);
-  STAssertFalse([group removeValueForProperty:kGTMABPersonLastNameProperty], nil);
-  STAssertFalse([group setValue:nil forProperty:kABGroupNameProperty], nil);
-  STAssertFalse([group setValue:[NSNumber numberWithInt:1]
-                    forProperty:kABGroupNameProperty], nil);
-  STAssertFalse([group setValue:@"Bart"
-                    forProperty:kGTMABPersonBirthdayProperty], nil);
+  XCTAssertNil(lastName);
+  XCTAssertTrue([group removeValueForProperty:kABGroupNameProperty]);
+  XCTAssertFalse([group removeValueForProperty:kABGroupNameProperty]);
+  XCTAssertFalse([group removeValueForProperty:kGTMABPersonLastNameProperty]);
+  XCTAssertFalse([group setValue:nil forProperty:kABGroupNameProperty]);
+  XCTAssertFalse([group setValue:[NSNumber numberWithInt:1]
+                     forProperty:kABGroupNameProperty]);
+  XCTAssertFalse([group setValue:@"Bart"
+                     forProperty:kGTMABPersonBirthdayProperty]);
 
   ABPropertyType property = [GTMABGroup typeOfProperty:kABGroupNameProperty];
-  STAssertEquals(property, (ABPropertyType)kGTMABStringPropertyType, nil);
+  XCTAssertEqual(property, (ABPropertyType)kGTMABStringPropertyType);
 
   property = [GTMABGroup typeOfProperty:kGTMABPersonLastNameProperty];
-  STAssertEquals(property, (ABPropertyType)kGTMABInvalidPropertyType, nil);
+  XCTAssertEqual(property, (ABPropertyType)kGTMABInvalidPropertyType);
 
   NSString *string = [GTMABGroup localizedPropertyName:kABGroupNameProperty];
-  STAssertEqualObjects(string, @"Name", nil);
+  XCTAssertEqualObjects(string, @"Name");
 
   string = [GTMABGroup localizedPropertyName:kGTMABPersonLastNameProperty];
-  STAssertEqualObjects(string, kGTMABUnknownPropertyName, nil);
+  XCTAssertEqualObjects(string, kGTMABUnknownPropertyName);
 
   string = [GTMABGroup localizedPropertyName:kGTMABRecordInvalidID];
-  STAssertEqualObjects(string, kGTMABUnknownPropertyName, nil);
+  XCTAssertEqualObjects(string, kGTMABUnknownPropertyName);
 
   string = [group description];
-  STAssertNotNil(string, nil);
+  XCTAssertNotNil(string);
 
   // Adding and removing members
   group = [GTMABGroup groupNamed:kGTMABTestGroupName];
   NSArray *members = [group members];
-  STAssertEquals([members count], (NSUInteger)0, @"Members: %@", members);
+  XCTAssertEqual([members count], (NSUInteger)0, @"Members: %@", members);
 
-  STAssertFalse([group addMember:nil], nil);
+  XCTAssertFalse([group addMember:nil]);
 
   members = [group members];
-  STAssertEquals([members count], (NSUInteger)0, @"Members: %@", members);
+  XCTAssertEqual([members count], (NSUInteger)0, @"Members: %@", members);
 
   GTMABPerson *person = [GTMABPerson personWithFirstName:kGTMABTestFirstName
                                                 lastName:kGTMABTestLastName];
-  STAssertNotNil(person, nil);
-  STAssertTrue([book_ addRecord:person], nil);
-  STAssertTrue([book_ save], nil);
-  STAssertTrue([book_ addRecord:group], nil);
-  STAssertTrue([book_ save], nil);
-  STAssertTrue([group addMember:person], nil);
-  STAssertTrue([book_ save], nil);
+  XCTAssertNotNil(person);
+  XCTAssertTrue([book_ addRecord:person]);
+  XCTAssertTrue([book_ save]);
+  XCTAssertTrue([book_ addRecord:group]);
+  XCTAssertTrue([book_ save]);
+  XCTAssertTrue([group addMember:person]);
+  XCTAssertTrue([book_ save]);
   members = [group members];
-  STAssertEquals([members count], (NSUInteger)1, @"Members: %@", members);
-  STAssertTrue([group removeMember:person], nil);
-  STAssertFalse([group removeMember:person], nil);
-  STAssertFalse([group removeMember:nil], nil);
-  STAssertTrue([book_ removeRecord:group], nil);
-  STAssertTrue([book_ removeRecord:person], nil);
-  STAssertTrue([book_ save], nil);
+  XCTAssertEqual([members count], (NSUInteger)1, @"Members: %@", members);
+  XCTAssertTrue([group removeMember:person]);
+  XCTAssertFalse([group removeMember:person]);
+  XCTAssertFalse([group removeMember:nil]);
+  XCTAssertTrue([book_ removeRecord:group]);
+  XCTAssertTrue([book_ removeRecord:person]);
+  XCTAssertTrue([book_ save]);
 }
 
 
 - (void)testMultiValues {
-  STAssertThrows([[GTMABMultiValue alloc] init], nil);
-  STAssertThrows([[GTMABMutableMultiValue alloc] init], nil);
+  XCTAssertThrows([[GTMABMultiValue alloc] init]);
+  XCTAssertThrows([[GTMABMutableMultiValue alloc] init]);
   GTMABMultiValue *value = [[GTMABMultiValue alloc] initWithMultiValue:nil];
-  STAssertNil(value, nil);
+  XCTAssertNil(value);
   GTMABMutableMultiValue *mutValue
     = [GTMABMutableMultiValue valueWithPropertyType:kGTMABInvalidPropertyType];
-  STAssertNil(mutValue, nil);
+  XCTAssertNil(mutValue);
   mutValue
     = [[[GTMABMutableMultiValue alloc]
         initWithMutableMultiValue:nil] autorelease];
-  STAssertNil(mutValue, nil);
+  XCTAssertNil(mutValue);
   mutValue
     = [[[GTMABMutableMultiValue alloc]
         initWithMultiValue:nil] autorelease];
-  STAssertNil(mutValue, nil);
+  XCTAssertNil(mutValue);
 #if GTM_IPHONE_SDK
   // Only the IPhone version actually allows you to check types of a multivalue
   // before you stick anything in it
@@ -417,154 +434,154 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   };
   for (size_t i = 0; i < sizeof(types) / sizeof(GTMABPropertyType); ++i) {
     mutValue = [GTMABMutableMultiValue valueWithPropertyType:types[i]];
-    STAssertNotNil(mutValue, nil);
+    XCTAssertNotNil(mutValue);
     // Oddly the Apple APIs allow you to create a mutable multi value with
     // either a property type of kABFooPropertyType or kABMultiFooPropertyType
     // and apparently you get back basically the same thing. However if you
     // ask a type that you created with kABMultiFooPropertyType for it's type
     // it returns just kABFooPropertyType.
-    STAssertEquals([mutValue propertyType],
-                   (GTMABPropertyType)(types[i] & ~kABMultiValueMask), nil);
+    XCTAssertEqual([mutValue propertyType],
+                   (GTMABPropertyType)(types[i] & ~kABMultiValueMask));
   }
 #endif  // GTM_IPHONE_SDK
   mutValue
     = [GTMABMutableMultiValue valueWithPropertyType:kGTMABStringPropertyType];
-  STAssertNotNil(mutValue, nil);
+  XCTAssertNotNil(mutValue);
   value = [[mutValue copy] autorelease];
-  STAssertEqualObjects([value class], [GTMABMultiValue class], nil);
+  XCTAssertEqualObjects([value class], [GTMABMultiValue class]);
   mutValue = [[value mutableCopy] autorelease];
-  STAssertEqualObjects([mutValue class], [GTMABMutableMultiValue class], nil);
-  STAssertEquals([mutValue count], (NSUInteger)0, nil);
-  STAssertNil([mutValue valueAtIndex:0], nil);
-  STAssertNil([mutValue labelAtIndex:0], nil);
+  XCTAssertEqualObjects([mutValue class], [GTMABMutableMultiValue class]);
+  XCTAssertEqual([mutValue count], (NSUInteger)0);
+  XCTAssertNil([mutValue valueAtIndex:0]);
+  XCTAssertNil([mutValue labelAtIndex:0]);
 #if GTM_IPHONE_SDK
-  STAssertEquals([mutValue identifierAtIndex:0],
-                 kGTMABMultiValueInvalidIdentifier, nil);
-  STAssertEquals([mutValue propertyType],
-                 (GTMABPropertyType)kGTMABStringPropertyType, nil);
+  XCTAssertEqual([mutValue identifierAtIndex:0],
+                 kGTMABMultiValueInvalidIdentifier);
+  XCTAssertEqual([mutValue propertyType],
+                 (GTMABPropertyType)kGTMABStringPropertyType);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects([mutValue identifierAtIndex:0],
-                       kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqualObjects([mutValue identifierAtIndex:0],
+                        kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
   GTMABMultiValueIdentifier ident
     = [mutValue addValue:nil withLabel:(CFStringRef)kABHomeLabel];
 #if GTM_IPHONE_SDK
-  STAssertEquals(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqual(ident, kGTMABMultiValueInvalidIdentifier);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
 
   ident = [mutValue addValue:@"val1"
                    withLabel:nil];
 #if GTM_IPHONE_SDK
-  STAssertEquals(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqual(ident, kGTMABMultiValueInvalidIdentifier);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
   ident = [mutValue insertValue:@"val1"
                       withLabel:nil
                         atIndex:0];
 #if GTM_IPHONE_SDK
-  STAssertEquals(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqual(ident, kGTMABMultiValueInvalidIdentifier);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
   ident = [mutValue insertValue:nil
                       withLabel:(CFStringRef)kABHomeLabel
                         atIndex:0];
 #if GTM_IPHONE_SDK
-  STAssertEquals(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqual(ident, kGTMABMultiValueInvalidIdentifier);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqualObjects(ident, kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
   ident = [mutValue addValue:@"val1"
                    withLabel:(CFStringRef)kABHomeLabel];
 #if GTM_IPHONE_SDK
-  STAssertNotEquals(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertNotEqual(ident, kGTMABMultiValueInvalidIdentifier);
 #else  // GTM_IPHONE_SDK
-  STAssertNotEqualObjects(ident, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertNotEqualObjects(ident, kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
   GTMABMultiValueIdentifier identCheck = [mutValue identifierAtIndex:0];
 #if GTM_IPHONE_SDK
-  STAssertEquals(ident, identCheck, nil);
+  XCTAssertEqual(ident, identCheck);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(ident, identCheck, nil);
+  XCTAssertEqualObjects(ident, identCheck);
 #endif  // GTM_IPHONE_SDK
   NSUInteger idx = [mutValue indexForIdentifier:ident];
-  STAssertEquals(idx, (NSUInteger)0, nil);
-  STAssertTrue([mutValue replaceLabelAtIndex:0
-                                   withLabel:(CFStringRef)kABWorkLabel], nil);
-  STAssertFalse([mutValue replaceLabelAtIndex:10
-                                    withLabel:(CFStringRef)kABWorkLabel], nil);
-  STAssertTrue([mutValue replaceValueAtIndex:0
-                                   withValue:@"newVal1"], nil);
-  STAssertFalse([mutValue replaceValueAtIndex:10
-                                    withValue:@"newVal1"], nil);
+  XCTAssertEqual(idx, (NSUInteger)0);
+  XCTAssertTrue([mutValue replaceLabelAtIndex:0
+                                    withLabel:(CFStringRef)kABWorkLabel]);
+  XCTAssertFalse([mutValue replaceLabelAtIndex:10
+                                     withLabel:(CFStringRef)kABWorkLabel]);
+  XCTAssertTrue([mutValue replaceValueAtIndex:0
+                                    withValue:@"newVal1"]);
+  XCTAssertFalse([mutValue replaceValueAtIndex:10
+                                     withValue:@"newVal1"]);
 
-  STAssertEqualObjects([mutValue valueForIdentifier:ident], @"newVal1", nil);
-  STAssertEqualObjects([mutValue labelForIdentifier:ident],
-                       (NSString *)kABWorkLabel, nil);
+  XCTAssertEqualObjects([mutValue valueForIdentifier:ident], @"newVal1");
+  XCTAssertEqualObjects([mutValue labelForIdentifier:ident],
+                        (NSString *)kABWorkLabel);
 
   GTMABMultiValueIdentifier ident2
     = [mutValue insertValue:@"val2"
                   withLabel:(CFStringRef)kABOtherLabel
                     atIndex:0];
-  STAssertNotEquals(ident2, kGTMABMultiValueInvalidIdentifier, nil);
-  STAssertNotEquals(ident2, ident, nil);
+  XCTAssertNotEqual(ident2, kGTMABMultiValueInvalidIdentifier);
+  XCTAssertNotEqual(ident2, ident);
   GTMABMultiValueIdentifier ident3
     = [mutValue insertValue:@"val3"
                   withLabel:(CFStringRef)kGTMABPersonPhoneMainLabel
                     atIndex:10];
 #if GTM_IPHONE_SDK
-  STAssertEquals(ident3, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqual(ident3, kGTMABMultiValueInvalidIdentifier);
 #else  // GTM_IPHONE_SDK
-  STAssertEqualObjects(ident3, kGTMABMultiValueInvalidIdentifier, nil);
+  XCTAssertEqualObjects(ident3, kGTMABMultiValueInvalidIdentifier);
 #endif  // GTM_IPHONE_SDK
   NSUInteger idx3 = [mutValue indexForIdentifier:ident3];
-  STAssertEquals(idx3, (NSUInteger)NSNotFound, nil);
-  STAssertTrue([mutValue removeValueAndLabelAtIndex:1], nil);
-  STAssertFalse([mutValue removeValueAndLabelAtIndex:1], nil);
+  XCTAssertEqual(idx3, (NSUInteger)NSNotFound);
+  XCTAssertTrue([mutValue removeValueAndLabelAtIndex:1]);
+  XCTAssertFalse([mutValue removeValueAndLabelAtIndex:1]);
 
   NSUInteger idx4
     = [mutValue indexForIdentifier:kGTMABMultiValueInvalidIdentifier];
-  STAssertEquals(idx4, (NSUInteger)NSNotFound, nil);
+  XCTAssertEqual(idx4, (NSUInteger)NSNotFound);
 
-  STAssertNotNULL([mutValue multiValueRef], nil);
+  XCTAssertNotNULL([mutValue multiValueRef]);
 
   // Enumerator test
   mutValue
     = [GTMABMutableMultiValue valueWithPropertyType:kGTMABIntegerPropertyType];
-  STAssertNotNil(mutValue, nil);
+  XCTAssertNotNil(mutValue);
   for (int i = 0; i < 100; i++) {
     NSString *label = [NSString stringWithFormat:@"label %d", i];
     NSNumber *val = [NSNumber numberWithInt:i];
-    STAssertNotEquals([mutValue addValue:val
+    XCTAssertNotEqual([mutValue addValue:val
                                withLabel:(CFStringRef)label],
-                      kGTMABMultiValueInvalidIdentifier, nil);
+                      kGTMABMultiValueInvalidIdentifier);
   }
   int count = 0;
   NSString *label;
-  GTM_FOREACH_ENUMEREE(label, [mutValue labelEnumerator]) {
+  for (label in [mutValue labelEnumerator]) {
     NSString *testLabel = [NSString stringWithFormat:@"label %d", count++];
-    STAssertEqualObjects(label, testLabel, nil);
+    XCTAssertEqualObjects(label, testLabel);
   }
   count = 0;
   value = [[mutValue copy] autorelease];
   NSNumber *val;
-  GTM_FOREACH_ENUMEREE(val, [value valueEnumerator]) {
-    STAssertEqualObjects(val, [NSNumber numberWithInt:count++], nil);
+  for (val in [value valueEnumerator]) {
+    XCTAssertEqualObjects(val, [NSNumber numberWithInt:count++]);
   }
 
   // Test messing with the values while we're enumerating them
   NSEnumerator *labelEnum = [mutValue labelEnumerator];
   NSEnumerator *valueEnum = [mutValue valueEnumerator];
-  STAssertNotNil(labelEnum, nil);
-  STAssertNotNil(valueEnum, nil);
-  STAssertNotNil([labelEnum nextObject], nil);
-  STAssertNotNil([valueEnum nextObject], nil);
-  STAssertTrue([mutValue removeValueAndLabelAtIndex:0], nil);
-  STAssertThrows([labelEnum nextObject], nil);
-  STAssertThrows([valueEnum nextObject], nil);
+  XCTAssertNotNil(labelEnum);
+  XCTAssertNotNil(valueEnum);
+  XCTAssertNotNil([labelEnum nextObject]);
+  XCTAssertNotNil([valueEnum nextObject]);
+  XCTAssertTrue([mutValue removeValueAndLabelAtIndex:0]);
+  XCTAssertThrows([labelEnum nextObject]);
+  XCTAssertThrows([valueEnum nextObject]);
 
   // Test messing with the values while we're fast enumerating them
   // Should throw an exception on the second access.
@@ -572,23 +589,27 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   // Start at one because we removed index 0 above.
   count = 1;
   @try {
-    GTM_FOREACH_ENUMEREE(label, [mutValue labelEnumerator]) {
+    for (label in [mutValue labelEnumerator]) {
       NSString *testLabel = [NSString stringWithFormat:@"label %d", count++];
-      STAssertEqualObjects(label, testLabel, nil);
-      STAssertTrue([mutValue removeValueAndLabelAtIndex:50], nil);
+      XCTAssertEqualObjects(label, testLabel);
+      XCTAssertTrue([mutValue removeValueAndLabelAtIndex:50]);
     }
   } @catch(NSException *e) {
-    STAssertEqualObjects([e name], NSGenericException, @"Got %@ instead", e);
-    STAssertEquals(count, 2,
+    XCTAssertEqualObjects([e name], NSGenericException, @"Got %@ instead", e);
+    XCTAssertEqual(count, 2,
                    @"Should have caught it on the second access");
     exceptionThrown = YES;
   }  // COV_NF_LINE - because we always catch, this brace doesn't get exec'd
-  STAssertTrue(exceptionThrown, @"We should have thrown an exception"
+  XCTAssertTrue(exceptionThrown, @"We should have thrown an exception"
                @" because the values under the enumerator were modified");
 
 }
 
 #if GTM_IPHONE_SDK
+
+#if (!defined(__LP64__) || !__LP64__)
+// This test does not work on LP64 because refcounts are magic and don't work the
+// same as on i386.
 - (void)testRadar6208390 {
   GTMABPropertyType types[] = {
     kGTMABStringPropertyType,
@@ -599,14 +620,10 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
   };
   for (size_t j = 0; j < sizeof(types) / sizeof(ABPropertyType); ++j) {
     ABPropertyType type = types[j];
-#if GTM_IPHONE_SDK
     ABMultiValueRef ref = ABMultiValueCreateMutable(type);
-#else  // GTM_IPHONE_SDK
-    ABMutableMultiValueRef ref = ABMultiValueCreateMutable();
-#endif  // GTM_IPHONE_SDK
-    STAssertNotNULL(ref, nil);
+    XCTAssertNotNULL(ref);
     NSString *label = [[NSString alloc] initWithString:@"label"];
-    STAssertNotNil(label, nil);
+    XCTAssertNotNil(label);
     id val = nil;
     if (type == kGTMABDictionaryPropertyType) {
       val = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"1", nil];
@@ -618,27 +635,26 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
     } else if (type == kGTMABDateTimePropertyType) {
       val = [[NSDate alloc] init];
     }
-    STAssertNotNil(val,
-                   @"Testing type %d, %@", type, val);
+    XCTAssertNotNil(val, @"Testing type %d, %@", type, val);
     NSUInteger firstRetainCount = [val retainCount];
-    STAssertNotEquals(firstRetainCount,
+    XCTAssertNotEqual(firstRetainCount,
                       (NSUInteger)0,
                       @"Testing type %d, %@", type, val);
 
     GTMABMultiValueIdentifier identifier;
-    STAssertTrue(ABMultiValueAddValueAndLabel(ref,
-                                              val,
-                                              (CFStringRef)label,
-                                              &identifier),
-                 @"Testing type %d, %@", type, val);
+    XCTAssertTrue(ABMultiValueAddValueAndLabel(ref,
+                                               val,
+                                               (CFStringRef)label,
+                                               &identifier),
+                  @"Testing type %d, %@", type, val);
     NSUInteger secondRetainCount = [val retainCount];
-    STAssertEquals(firstRetainCount + 1,
+    XCTAssertEqual(firstRetainCount + 1,
                    secondRetainCount,
                    @"Testing type %d, %@", type, val);
     [label release];
     [val release];
     NSUInteger thirdRetainCount = [val retainCount];
-    STAssertEquals(firstRetainCount,
+    XCTAssertEqual(firstRetainCount,
                    thirdRetainCount,
                    @"Testing type %d, %@", type, val);
 
@@ -653,13 +669,13 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
       if (type == kGTMABIntegerPropertyType
           || type == kGTMABRealPropertyType) {
         // We are verifying that yes indeed 6208390 is still broken
-        STAssertEquals(fourthRetainCount,
+        XCTAssertEqual(fourthRetainCount,
                        thirdRetainCount,
                        @"Testing type %d, %@. If you see this error it may "
                        @"be time to update the code to change retain behaviors"
                        @"with this os version", type, val);
       } else {
-        STAssertEquals(fourthRetainCount,
+        XCTAssertEqual(fourthRetainCount,
                        thirdRetainCount + 1,
                        @"Testing type %d, %@", type, val);
         [val release];
@@ -670,6 +686,8 @@ static NSString *const kGTMABTestGroupName = @"GTMABAddressBookTestGroupName";
     CFRelease(ref);
   }
 }
+
+#endif  // (!defined(__LP64__) || !__LP64__)
 
 // Globals used by testRadar6240394.
 static GTMABPropertyID gGTMTestID;
@@ -685,9 +703,9 @@ void __attribute__((constructor))SetUpIDForTestRadar6240394(void) {
   // As of iPhone SDK 2.1, the property IDs aren't initialized until
   // ABAddressBookCreate is actually called. They will return zero until
   // then. Logged as radar 6240394.
-  STAssertEquals(gGTMTestID, 0, @"If this isn't zero, Apple has fixed 6240394");
+  XCTAssertEqual(gGTMTestID, 0, @"If this isn't zero, Apple has fixed 6240394");
   (void)ABAddressBookCreate();
-  STAssertEquals(*gGTMTestIDPtr, kGTMABPersonLastNameProperty,
+  XCTAssertEqual(*gGTMTestIDPtr, kGTMABPersonLastNameProperty,
                  @"If this doesn't work, something else has broken");
 }
 

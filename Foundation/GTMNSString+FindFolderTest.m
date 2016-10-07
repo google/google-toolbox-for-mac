@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -32,20 +32,20 @@
                                                      inDomain:kUserDomain
                                                      doCreate:NO];
   NSString *realPrefsPath = [@"~/Library/Preferences" stringByExpandingTildeInPath];
-  STAssertEqualObjects(realPrefsPath, prefsPath, @"Found incorrect prefs path");
+  XCTAssertEqualObjects(realPrefsPath, prefsPath, @"Found incorrect prefs path");
 
-  
+
   // test the subfolder method; it should return nil if we pass NO and the
   // subfolder doesn't already exist
-  
+
   NSString *googCacheNoCreatePath = [NSString gtm_stringWithPathForFolder:kCachedDataFolderType
                                                             subfolderName:@"GTMUnitTestDuzntExist"
                                                                  inDomain:kUserDomain
                                                                  doCreate:NO];
-  STAssertNil(googCacheNoCreatePath, @"Should not exist: %@", googCacheNoCreatePath);
+  XCTAssertNil(googCacheNoCreatePath, @"Should not exist: %@", googCacheNoCreatePath);
 
   // test creating ~/Library/Cache/GTMUnitTestCreated
-  
+
   NSString *folderName = @"GTMUnitTestCreated";
   NSString *gtmCachePath = [NSString gtm_stringWithPathForFolder:kCachedDataFolderType
                                                    subfolderName:folderName
@@ -55,28 +55,28 @@
                                                     inDomain:kUserDomain
                                                     doCreate:NO];
   NSString *testPathAppended = [testPath stringByAppendingPathComponent:folderName];
-  STAssertEqualObjects(gtmCachePath, testPathAppended, @"Unexpected path name");
-  
+  XCTAssertEqualObjects(gtmCachePath, testPathAppended, @"Unexpected path name");
+
   NSFileManager* fileMgr = [NSFileManager defaultManager];
   BOOL isDir = NO;
   BOOL pathExists = [fileMgr fileExistsAtPath:gtmCachePath isDirectory:&isDir] && isDir;
-  STAssertTrue(pathExists, @"Path %@ is not existing like it should", gtmCachePath);
+  XCTAssertTrue(pathExists, @"Path %@ is not existing like it should", gtmCachePath);
 
   // test finding it again w/o having to create it
   NSString *gtmCachePath2 = [NSString gtm_stringWithPathForFolder:kCachedDataFolderType
                                                     subfolderName:folderName
                                                          inDomain:kUserDomain
                                                          doCreate:NO];
-  STAssertEqualObjects(gtmCachePath2, gtmCachePath, nil);
-  
+  XCTAssertEqualObjects(gtmCachePath2, gtmCachePath);
+
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   BOOL didRemove = [fileMgr removeItemAtPath:gtmCachePath error:&error];
-  STAssertTrue(didRemove, @"Error removing %@ (%@)", gtmCachePath, error);  
+  XCTAssertTrue(didRemove, @"Error removing %@ (%@)", gtmCachePath, error);
 #else
   BOOL didRemove = [fileMgr removeFileAtPath:gtmCachePath
                                      handler:nil];
-  STAssertTrue(didRemove, @"Error removing %@", gtmCachePath);  
+  XCTAssertTrue(didRemove, @"Error removing %@", gtmCachePath);
 #endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 }
 

@@ -43,7 +43,6 @@ Pod::Spec.new do |s|
         'DebugUtils/GTMDebugThreadValidation.h',
         'DebugUtils/GTMMethodCheck.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"
   end
 
   s.subspec 'GeometryUtils' do |sp|
@@ -57,7 +56,6 @@ Pod::Spec.new do |s|
         'Foundation/GTMNSObject+KeyValueObserving.{h,m}',
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/DebugUtils', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"
   end
 
   s.subspec 'Logger' do |sp|
@@ -75,12 +73,6 @@ Pod::Spec.new do |s|
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
-  s.subspec 'Runtime' do |sp|
-    sp.source_files = 'Foundation/GTMObjC2Runtime.{h,m}'
-    sp.requires_arc = 'Foundation/GTMObjC2Runtime.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-  end
-
   # We cannot add a target for Foundation/GTMSQLite.{h,m}.
   # sqlite3.h is not a modular header, and so cannot be imported
   # in a modulemap, which CocoaPods does by default when it
@@ -89,7 +81,6 @@ Pod::Spec.new do |s|
   s.subspec 'StackTrace' do |sp|
     sp.source_files = 'Foundation/GTMStackTrace.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"
   end
 
   s.subspec 'StringEncoding' do |sp|
@@ -100,7 +91,6 @@ Pod::Spec.new do |s|
   s.subspec 'SystemVersion' do |sp|
     sp.source_files = 'Foundation/GTMSystemVersion.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"
   end
 
   s.subspec 'URLBuilder' do |sp|
@@ -156,14 +146,12 @@ Pod::Spec.new do |s|
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
-
   s.subspec 'iPhone' do |sp|
     sp.platform = :ios, '5.0'
     sp.source_files =
         'iPhone/GTMFadeTruncatingLabel.{h,m}',
         'iPhone/GTMUIImage+Resize.{h,m}',
         'iPhone/GTMUILocalizer.{h,m}',
-        'iPhone/GTMUIView+SubtreeDescription.{h,m}'
     sp.requires_arc = 'iPhone/GTMUIImage+Resize.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
@@ -182,24 +170,15 @@ Pod::Spec.new do |s|
     sp.requires_arc = 'iPhone/GTMUIFont+LineHeight.{h,m}'
   end
 
-
   s.subspec 'UnitTesting' do |sp|
     sp.platform = :ios, '5.0'
-    sp.requires_arc = 'UnitTesting/GTMDevLogUnitTestingBridge.m'
     sp.source_files =
-        'UnitTesting/GTMCALayer+UnitTesting.{h,m}',
-        'UnitTesting/GTMDevLogUnitTestingBridge.m',
         'UnitTesting/GTMFoundationUnitTestingUtilities.{h,m}',
-        'UnitTesting/GTMNSObject+UnitTesting.{h,m}',
         'UnitTesting/GTMSenTestCase.{h,m}',
         'UnitTesting/GTMTestTimer.h',
-        'UnitTesting/GTMUIKit+UnitTesting.{h,m}',
-        'UnitTesting/GTMUnitTestDevLog.{h,m}'
-    sp.requires_arc = 'UnitTesting/GTMDevLogUnitTestingBridge.m'
     sp.frameworks = 'CoreGraphics', 'QuartzCore'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/Regex', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Runtime', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/SystemVersion', "#{s.version}"
   end
 

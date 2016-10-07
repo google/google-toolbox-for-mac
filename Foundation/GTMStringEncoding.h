@@ -78,11 +78,35 @@
 - (void)setPaddingChar:(char)c;
 
 // Encode a raw binary buffer to a 7-bit ASCII string.
-- (NSString *)encode:(NSData *)data;
-- (NSString *)encodeString:(NSString *)string;
+- (NSString *)encode:(NSData *)data __attribute__((deprecated("Use encode:error:")));
+- (NSString *)encodeString:(NSString *)string __attribute__((deprecated("Use encodeString:error:")));
+
+- (NSString *)encode:(NSData *)data error:(NSError **)error;
+- (NSString *)encodeString:(NSString *)string error:(NSError **)error;
 
 // Decode a 7-bit ASCII string to a raw binary buffer.
-- (NSData *)decode:(NSString *)string;
-- (NSString *)stringByDecoding:(NSString *)string;
+- (NSData *)decode:(NSString *)string __attribute__((deprecated("Use decode:error:")));
+- (NSString *)stringByDecoding:(NSString *)string __attribute__((deprecated("Use stringByDecoding:error:")));
+
+- (NSData *)decode:(NSString *)string error:(NSError **)error;
+- (NSString *)stringByDecoding:(NSString *)string error:(NSError **)error;
 
 @end
+
+FOUNDATION_EXPORT NSString *const GTMStringEncodingErrorDomain;
+FOUNDATION_EXPORT NSString *const GTMStringEncodingBadCharacterIndexKey;  // NSNumber
+
+typedef NS_ENUM(NSInteger, GTMStringEncodingError) {
+  // Unable to convert a buffer to NSASCIIStringEncoding.
+  GTMStringEncodingErrorUnableToConverToAscii = 1024,
+  // Unable to convert a buffer to NSUTF8StringEncoding.
+  GTMStringEncodingErrorUnableToConverToUTF8,
+  // Encountered a bad character.
+  // GTMStringEncodingBadCharacterIndexKey will have the index of the character.
+  GTMStringEncodingErrorUnknownCharacter,
+  // The data had a padding character in the middle of the data. Padding characters
+  // can only be at the end.
+  GTMStringEncodingErrorExpectedPadding,
+  // There is unexpected data at the end of the data that could not be decoded.
+  GTMStringEncodingErrorIncompleteTrailingData,
+};

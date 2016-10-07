@@ -29,58 +29,6 @@
 #include <Availability.h>
 #endif  // TARGET_OS_IPHONE
 
-// Not all MAC_OS_X_VERSION_10_X macros defined in past SDKs
-#ifndef MAC_OS_X_VERSION_10_5
-  #define MAC_OS_X_VERSION_10_5 1050
-#endif
-#ifndef MAC_OS_X_VERSION_10_6
-  #define MAC_OS_X_VERSION_10_6 1060
-#endif
-#ifndef MAC_OS_X_VERSION_10_7
-  #define MAC_OS_X_VERSION_10_7 1070
-#endif
-#ifndef MAC_OS_X_VERSION_10_8
-  #define MAC_OS_X_VERSION_10_8 1080
-#endif
-#ifndef MAC_OS_X_VERSION_10_9
-  #define MAC_OS_X_VERSION_10_9 1090
-#endif
-
-// Not all __IPHONE_X macros defined in past SDKs
-#ifndef __IPHONE_3_0
-  #define __IPHONE_3_0 30000
-#endif
-#ifndef __IPHONE_3_1
-  #define __IPHONE_3_1 30100
-#endif
-#ifndef __IPHONE_3_2
-  #define __IPHONE_3_2 30200
-#endif
-#ifndef __IPHONE_4_0
-  #define __IPHONE_4_0 40000
-#endif
-#ifndef __IPHONE_4_3
-  #define __IPHONE_4_3 40300
-#endif
-#ifndef __IPHONE_5_0
-  #define __IPHONE_5_0 50000
-#endif
-#ifndef __IPHONE_5_1
-  #define __IPHONE_5_1 50100
-#endif
-#ifndef __IPHONE_6_0
-  #define __IPHONE_6_0 60000
-#endif
-#ifndef __IPHONE_6_1
-  #define __IPHONE_6_1 60100
-#endif
-#ifndef __IPHONE_7_0
-  #define __IPHONE_7_0 70000
-#endif
-#ifndef __IPHONE_7_1
-  #define __IPHONE_7_1 70100
-#endif
-
 // ----------------------------------------------------------------------------
 // CPP symbols that can be overridden in a prefix to control how the toolbox
 // is compiled.
@@ -262,7 +210,9 @@
   #define GTM_IPHONE_SIMULATOR 0
   #define GTM_IPHONE_DEVICE 0
   #define GTM_IPHONE_USE_SENTEST 0
-  #define GTM_USING_XCTEST 0
+  #ifndef GTM_USING_XCTEST
+    #define GTM_USING_XCTEST 0
+  #endif
 #endif
 
 // Some of our own availability macros
@@ -279,41 +229,6 @@
 #ifndef GTM_SUPPORT_GC
   #define GTM_SUPPORT_GC 0
 #endif
-
-// To simplify support for 64bit (and Leopard in general), we provide the type
-// defines for non Leopard SDKs
-#if !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
- // NSInteger/NSUInteger and Max/Mins
-  #ifndef NSINTEGER_DEFINED
-    #if (defined(__LP64__) && __LP64__) || NS_BUILD_32_LIKE_64
-      typedef long NSInteger;
-      typedef unsigned long NSUInteger;
-    #else
-      typedef int NSInteger;
-      typedef unsigned int NSUInteger;
-    #endif
-    #define NSIntegerMax    LONG_MAX
-    #define NSIntegerMin    LONG_MIN
-    #define NSUIntegerMax   ULONG_MAX
-    #define NSINTEGER_DEFINED 1
-  #endif  // NSINTEGER_DEFINED
-  // CGFloat
-  #ifndef CGFLOAT_DEFINED
-    #if defined(__LP64__) && __LP64__
-      // This really is an untested path (64bit on Tiger?)
-      typedef double CGFloat;
-      #define CGFLOAT_MIN DBL_MIN
-      #define CGFLOAT_MAX DBL_MAX
-      #define CGFLOAT_IS_DOUBLE 1
-    #else /* !defined(__LP64__) || !__LP64__ */
-      typedef float CGFloat;
-      #define CGFLOAT_MIN FLT_MIN
-      #define CGFLOAT_MAX FLT_MAX
-      #define CGFLOAT_IS_DOUBLE 0
-    #endif /* !defined(__LP64__) || !__LP64__ */
-    #define CGFLOAT_DEFINED 1
-  #endif // CGFLOAT_DEFINED
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
 
 // Some support for advanced clang static analysis functionality
 #ifndef NS_RETURNS_RETAINED
@@ -372,26 +287,6 @@
   #endif
 #endif
 
-// Defined on 10.6 and above.
-#ifndef NS_FORMAT_ARGUMENT
-  #define NS_FORMAT_ARGUMENT(A)
-#endif
-
-// Defined on 10.6 and above.
-#ifndef NS_FORMAT_FUNCTION
-  #define NS_FORMAT_FUNCTION(F,A)
-#endif
-
-// Defined on 10.6 and above.
-#ifndef CF_FORMAT_ARGUMENT
-  #define CF_FORMAT_ARGUMENT(A)
-#endif
-
-// Defined on 10.6 and above.
-#ifndef CF_FORMAT_FUNCTION
-  #define CF_FORMAT_FUNCTION(F,A)
-#endif
-
 #ifndef GTM_NONNULL
   #if defined(__has_attribute)
     #if __has_attribute(nonnull)
@@ -435,10 +330,6 @@
 
 #ifdef __OBJC__
 
-// Declared here so that it can easily be used for logging tracking if
-// necessary. See GTMUnitTestDevLog.h for details.
-@class NSString;
-GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 // Macro to allow you to create NSStrings out of other macros.
 // #define FOO foo
@@ -473,20 +364,6 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 
 
 // ============================================================================
 
-// To simplify support for both Leopard and Snow Leopard we declare
-// the Snow Leopard protocols that we need here.
-#if !defined(GTM_10_6_PROTOCOLS_DEFINED) && !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-#define GTM_10_6_PROTOCOLS_DEFINED 1
-@protocol NSConnectionDelegate
-@end
-@protocol NSAnimationDelegate
-@end
-@protocol NSImageDelegate
-@end
-@protocol NSTabViewDelegate
-@end
-#endif  // !defined(GTM_10_6_PROTOCOLS_DEFINED) && !(MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-
 // GTM_SEL_STRING is for specifying selector (usually property) names to KVC
 // or KVO methods.
 // In debug it will generate warnings for undeclared selectors if
@@ -501,13 +378,7 @@ GTM_EXTERN void _GTMUnitTestDevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 
 #endif  // GTM_SEL_STRING
 
 #ifndef GTM_WEAK
-  #if defined(__OBJC_GC__)
-    // In -fobjc-gc mode, __weak means "a reference not visible to the gargabe
-    // collector".  __weak references are set to zero when their pointee is
-    // collected.  __weak is not needed to prevent cycles because cycles
-    // are cleaned up fine by the garbage collector.
-    #define GTM_WEAK __weak
-  #elif __has_feature(objc_arc_weak)
+#if __has_feature(objc_arc_weak)
     // With ARC enabled, __weak means a reference that isn't implicitly
     // retained.  __weak objects are accessed through runtime functions, so
     // they are zeroed out, but this requires OS X 10.7+.
