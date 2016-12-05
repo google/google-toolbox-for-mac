@@ -1,5 +1,5 @@
 //
-//  GTMAddressBookTest.m
+//  GTMABAddressBookTest.m
 //
 //  Copyright 2008 Google Inc.
 //
