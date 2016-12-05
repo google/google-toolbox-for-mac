@@ -56,9 +56,8 @@ int main(int argc, char *argv[]) {
 #else
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 #endif
-#if GTM_IPHONE_USE_SENTEST || GTM_USING_XCTEST
-  // Is using SenTest or XCTest, just create a dummy app that can be used as the
-  // TEST_HOST.
+#if GTM_USING_XCTEST
+  // Is using XCTest, just create a dummy app that can be used as the TEST_HOST.
   retVal = UIApplicationMain(argc, argv, nil, nil);
 #else
   retVal = UIApplicationMain(argc, argv, nil, @"GTMIPhoneUnitTestDelegate");
