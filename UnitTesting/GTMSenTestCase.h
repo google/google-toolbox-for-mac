@@ -61,29 +61,12 @@
   #endif // GTM_USING_XCTEST
   // We don't support our built in testing on MacOS since its always had sentest.
 #elif GTM_IPHONE_SDK
-  #if GTM_IPHONE_USE_SENTEST
-    #import <SenTestingKit/SenTestingKit.h>
-  #elif GTM_USING_XCTEST
+  #if GTM_USING_XCTEST
     #import <XCTest/XCTest.h>
   #else
     #import <Foundation/Foundation.h>
-    #ifdef __cplusplus
-      extern "C" {
-    #endif
-
-    #if defined __clang__
-    // gcc and gcc-llvm do not allow you to use STAssert(blah, nil) with nil
-    // as a description if you have the NS_FORMAT_FUNCTION on.
-    // clang however will not compile without warnings if you don't have it.
-    NSString *STComposeString(NSString *, ...) NS_FORMAT_FUNCTION(1, 2);
-    #else
-    NSString *STComposeString(NSString *, ...);
-    #endif  // __clang__
-
-    #ifdef __cplusplus
-    }
-    #endif
-  #endif  // GTM_IPHONE_USE_SENTEST
+    GTM_EXTERN NSString *STComposeString(NSString *, ...) NS_FORMAT_FUNCTION(1, 2);
+  #endif  // GTM_USING_XCTEST
 #endif  // GTM_MACOS_SDK
 
 #if GTM_USING_XCTEST
@@ -729,7 +712,7 @@ do { \
 } while (0)
 
 #endif  // GTM_USING_XCTEST
-#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
+#if GTM_IPHONE_SDK && !GTM_USING_XCTEST
 // When not using the Xcode provided version, define everything ourselves.
 
 // SENTE_BEGIN
@@ -1289,7 +1272,7 @@ GTM_EXTERN NSString *const SenTestFailureException;
 GTM_EXTERN NSString *const SenTestFilenameKey;
 GTM_EXTERN NSString *const SenTestLineNumberKey;
 
-#endif // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
+#endif // GTM_IPHONE_SDK && !GTM_USING_XCTEST
 
 // All unittest cases in GTM should inherit from GTMTestCase. It makes sure
 // to set up our logging system correctly to verify logging calls.

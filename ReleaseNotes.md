@@ -28,9 +28,8 @@ Changes since 1.6.0<br>
   has forced GTM into this model. By default the SDK will be set to the most
   recent SDK installed.
 
-- Initial support for using the Xcode provided OCUnit/XCTest for unittesting on iOS.
-  Define GTM_IPHONE_USE_SENTEST or GTM_USING_XCTEST to 1 to use this.
-  GTM_IPHONE_USE_SENTEST is going to be deprecated shortly.
+- Initial support for using the Xcode provided XCTest for unittesting on iOS.
+  Define GTM_USING_XCTEST to 1 to use this.
 
 - Removed support for Garbage Collection, leaving just the shell for other code
   that might have depended on some of the constants/method GTM provided.

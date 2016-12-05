@@ -25,7 +25,7 @@
 #import <UIKit/UIKit.h>
 #endif  // GTM_IPHONE_SDK
 
-#if GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST && !GTM_USING_XCTEST
+#if GTM_IPHONE_SDK && !GTM_USING_XCTEST
 #import <stdarg.h>
 
 @interface NSException (GTMSenTestPrivateAdditions)
@@ -392,7 +392,7 @@ static NSInteger MethodSort(id a, id b, void *context) {
 
 @end
 
-#endif  // GTM_IPHONE_SDK && !GTM_IPHONE_USE_SENTEST
+#endif  // GTM_IPHONE_SDK && !GTM_USING_XCTEST
 
 @implementation GTMTestCase
 
