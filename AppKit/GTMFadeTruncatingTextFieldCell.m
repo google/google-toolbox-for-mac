@@ -169,7 +169,7 @@
                  width, NSMaxXEdge);
   }
 
-  // Draw non-gradient part without transparency layer, as light text on a dark 
+  // Draw non-gradient part without transparency layer, as light text on a dark
   // background looks bad with a gradient layer.
   [NSGraphicsContext saveGraphicsState];
   if ([self drawsBackground]) {

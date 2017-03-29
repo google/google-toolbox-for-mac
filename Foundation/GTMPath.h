@@ -53,12 +53,12 @@
 //
 //   GTMPath *library = [GTMPath pathWithFullPath:@"/Users/bob/Library"];
 //   ...
-//   
+//
 //
 // 4. This sample creates a directory hierarchy, where each level has its own
 //    mode. Notice that the return value from these -create* methods is the
 //    GTMPath that was just created. This allows these creation calls to be
-//    chained together enabling easy creation of directory hierarchies. 
+//    chained together enabling easy creation of directory hierarchies.
 //    This is one of the big benefits of this class.
 //
 //   GTMPath *tmp = [GTMPath pathWithFullPath:@"/tmp"];
@@ -81,7 +81,7 @@
 - (id)initWithFullPath:(NSString *)fullPath;
 
 // Returns the name of this GTMPath instance. This is not the full path. It is
-// just the component name of this GTMPath instance. This is equivalent to 
+// just the component name of this GTMPath instance. This is equivalent to
 // the Unix basename(3) function.
 - (NSString *)name;
 
@@ -100,7 +100,7 @@
 // instance. See -[NSFileManager fileAttributesAtPath:...] for details.
 - (NSDictionary *)attributes;
 
-// Returns a string representation of the absolute path represented by this 
+// Returns a string representation of the absolute path represented by this
 // GTMPath instance.
 - (NSString *)fullPath;
 
@@ -109,19 +109,19 @@
 
 // Methods for creating files and directories inside a GTMPath instance. These
 // methods are only allowed to be called on GTMPath instances that represent
-// directories. See the NSFileManager documentation for details about the 
+// directories. See the NSFileManager documentation for details about the
 // |attributes| parameters.
 @interface GTMPath (GTMPathGeneration)
 
-// Creates a new directory with the specified mode or attributes inside the 
-// current GTMPath instance. If the creation is successful, a GTMPath for the 
+// Creates a new directory with the specified mode or attributes inside the
+// current GTMPath instance. If the creation is successful, a GTMPath for the
 // newly created directory is returned. Otherwise, nil is returned.
 - (GTMPath *)createDirectoryName:(NSString *)name mode:(mode_t)mode;
 - (GTMPath *)createDirectoryName:(NSString *)name
                       attributes:(NSDictionary *)attributes;
 
-// Creates a new file with the specified mode or attributes inside the 
-// current GTMPath instance. If the creation is successful, a GTMPath for the 
+// Creates a new file with the specified mode or attributes inside the
+// current GTMPath instance. If the creation is successful, a GTMPath for the
 // newly created file is returned. Otherwise, nil is returned. |data| is the
 // data to put in the file when created.
 - (GTMPath *)createFileName:(NSString *)name mode:(mode_t)mode;

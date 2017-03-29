@@ -19,8 +19,8 @@
 
 #include <Foundation/Foundation.h>
 
-void GTMCGContextAddRoundRect(CGContextRef context, 
-                              CGRect rect, 
+void GTMCGContextAddRoundRect(CGContextRef context,
+                              CGRect rect,
                               CGFloat radius) {
   if (!CGRectIsEmpty(rect)) {
     if (radius > 0.0) {
@@ -29,17 +29,17 @@ void GTMCGContextAddRoundRect(CGContextRef context,
 
       CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
       CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
-      CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), 
+      CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect),
                                         CGRectGetMinY(rect));
-      
+
       CGContextMoveToPoint(context, CGRectGetMidX(rect), CGRectGetMaxY(rect));
-      CGContextAddArcToPoint(context, topLeft.x, topLeft.y, rect.origin.x, 
+      CGContextAddArcToPoint(context, topLeft.x, topLeft.y, rect.origin.x,
                              rect.origin.y, radius);
-      CGContextAddArcToPoint(context, rect.origin.x, rect.origin.y, 
+      CGContextAddArcToPoint(context, rect.origin.x, rect.origin.y,
                              bottomRight.x, bottomRight.y, radius);
-      CGContextAddArcToPoint(context, bottomRight.x, bottomRight.y, 
+      CGContextAddArcToPoint(context, bottomRight.x, bottomRight.y,
                              topRight.x, topRight.y, radius);
-      CGContextAddArcToPoint(context, topRight.x, topRight.y, 
+      CGContextAddArcToPoint(context, topRight.x, topRight.y,
                              topLeft.x, topLeft.y, radius);
       CGContextAddLineToPoint(context, CGRectGetMidX(rect), CGRectGetMaxY(rect));
     } else {
@@ -48,8 +48,8 @@ void GTMCGContextAddRoundRect(CGContextRef context,
   }
 }
 
-void GTMCGPathAddRoundRect(CGMutablePathRef path, 
-                           const CGAffineTransform *m, 
+void GTMCGPathAddRoundRect(CGMutablePathRef path,
+                           const CGAffineTransform *m,
                            CGRect rect,
                            CGFloat radius) {
   if (!CGRectIsEmpty(rect)) {
@@ -59,17 +59,17 @@ void GTMCGPathAddRoundRect(CGMutablePathRef path,
 
       CGPoint topLeft = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
       CGPoint topRight = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
-      CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect), 
+      CGPoint bottomRight = CGPointMake(CGRectGetMaxX(rect),
                                         CGRectGetMinY(rect));
-      
+
       CGPathMoveToPoint(path, m, CGRectGetMidX(rect), CGRectGetMaxY(rect));
-      CGPathAddArcToPoint(path, m, topLeft.x, topLeft.y, 
+      CGPathAddArcToPoint(path, m, topLeft.x, topLeft.y,
                           rect.origin.x, rect.origin.y, radius);
-      CGPathAddArcToPoint(path, m, rect.origin.x, rect.origin.y, 
+      CGPathAddArcToPoint(path, m, rect.origin.x, rect.origin.y,
                           bottomRight.x, bottomRight.y, radius);
-      CGPathAddArcToPoint(path, m, bottomRight.x, bottomRight.y, 
+      CGPathAddArcToPoint(path, m, bottomRight.x, bottomRight.y,
                           topRight.x, topRight.y, radius);
-      CGPathAddArcToPoint(path, m, topRight.x, topRight.y, 
+      CGPathAddArcToPoint(path, m, topRight.x, topRight.y,
                           topLeft.x, topLeft.y, radius);
       CGPathAddLineToPoint(path, m, CGRectGetMidX(rect), CGRectGetMaxY(rect));
     } else {

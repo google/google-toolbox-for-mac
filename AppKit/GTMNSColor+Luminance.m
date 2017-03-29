@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -46,7 +46,7 @@ static const CGFloat kGTMLuminanceDarkCutoff = 0.6;
 @implementation NSColor (GTMLuminance)
 
 - (NSColor *)labColor {
-  return [self colorUsingColorSpace:[NSColorSpace gtm_labColorSpace]];    
+  return [self colorUsingColorSpace:[NSColorSpace gtm_labColorSpace]];
 }
 
 - (CGFloat)gtm_luminance {
@@ -67,7 +67,7 @@ static const CGFloat kGTMLuminanceDarkCutoff = 0.6;
     CGFloat clipping = lab[0] - 100;
     CGFloat desaturation = (50.0 - clipping) / 50.0;
     saturation = MIN(saturation, desaturation);
-  } 
+  }
   lab[1] *= saturation;
   lab[2] *= saturation;
   return [NSColor colorWithColorSpace:[NSColorSpace gtm_labColorSpace]
@@ -137,7 +137,7 @@ const CGFloat kDefaultFade = 0.3;
   if (fade) {
     CGFloat luminance = [color gtm_luminance];
     color = [color gtm_colorByAdjustingLuminance:
-               kDefaultFade * (1.0 - luminance) 
+               kDefaultFade * (1.0 - luminance)
                                       saturation:kDefaultFade];
   }
   return color;

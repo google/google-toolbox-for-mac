@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -49,7 +49,7 @@ typedef struct GTMRingBufferPair GTMRingBufferPair;
 // along all the messages.
 //
 @interface GTMLoggerRingBufferWriter : NSObject <GTMLogWriter> {
- @private  
+ @private
   id<GTMLogWriter> writer_;
   GTMRingBufferPair *buffer_;
   NSUInteger capacity_;
@@ -57,12 +57,12 @@ typedef struct GTMRingBufferPair GTMRingBufferPair;
   NSUInteger totalLogged_;  // This > 0 and |nextIndex_| == 0 means we've wrapped.
 }
 
-// Returns an autoreleased ring buffer writer.  If |writer| is nil, 
+// Returns an autoreleased ring buffer writer.  If |writer| is nil,
 // then nil is returned.
 + (id)ringBufferWriterWithCapacity:(NSUInteger)capacity
                             writer:(id<GTMLogWriter>)loggerWriter;
 
-// Designated initializer.  If |writer| is nil, then nil is returned.  
+// Designated initializer.  If |writer| is nil, then nil is returned.
 // If you just use -init, nil will be returned.
 - (id)initWithCapacity:(NSUInteger)capacity
                 writer:(id<GTMLogWriter>)loggerWriter;

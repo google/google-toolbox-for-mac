@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -23,48 +23,48 @@
 
 @implementation NSFileManager (GTMFileManagerCarbonAdditions)
 
-- (NSData *)gtm_aliasDataForPath:(NSString *)path { 
+- (NSData *)gtm_aliasDataForPath:(NSString *)path {
   NSData *data = nil;
   FSRef ref;
   AliasHandle alias = NULL;
 
   require_quiet([path length], CantUseParams);
-  require_noerr(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation], 
-                              &ref, NULL), CantMakeRef); 
+  require_noerr(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation],
+                              &ref, NULL), CantMakeRef);
   require_noerr(FSNewAlias(NULL, &ref, &alias), CantMakeAlias);
 
   Size length = GetAliasSize(alias);
   data = [NSData dataWithBytes:*alias length:length];
-  
+
   DisposeHandle((Handle)alias);
 
-CantMakeAlias:  
+CantMakeAlias:
 CantMakeRef:
 CantUseParams:
-  return data; 
-} 
+  return data;
+}
 
 - (NSString *)gtm_pathFromAliasData:(NSData *)data {
   return [self gtm_pathFromAliasData:data resolve:YES withUI:YES];
-} 
+}
 
-- (NSString *)gtm_pathFromAliasData:(NSData *)data 
-                            resolve:(BOOL)resolve 
+- (NSString *)gtm_pathFromAliasData:(NSData *)data
+                            resolve:(BOOL)resolve
                              withUI:(BOOL)withUI {
   NSString *path = nil;
   require_quiet(data, CantUseParams);
-  
+
   AliasHandle alias;
   const void *bytes = [data bytes];
   NSUInteger length = [data length];
   require_noerr(PtrToHand(bytes, (Handle *)&alias, length), CantMakeHandle);
-  
+
   FSRef ref;
   Boolean wasChanged;
   // we don't use a require here because it is quite legitimate for an alias
   // resolve to fail.
 
-  if (resolve) { 
+  if (resolve) {
     OSStatus err
       = FSResolveAliasWithMountFlags(NULL, alias, &ref, &wasChanged,
                                      withUI ? kResolveAliasFileNoUI : 0);
@@ -91,7 +91,7 @@ CantUseParams:
   fsRef = (FSRef*)[fsRefData mutableBytes];
   Boolean isDir = FALSE;
   const UInt8 *filePath = (const UInt8 *)[path fileSystemRepresentation];
-  require_noerr_action(FSPathMakeRef(filePath, fsRef, &isDir), 
+  require_noerr_action(FSPathMakeRef(filePath, fsRef, &isDir),
                        CantMakeRef, fsRef = NULL);
 CantMakeRef:
 CantAllocateFSRef:
@@ -102,15 +102,15 @@ CantUseParams:
 - (NSString *)gtm_pathFromFSRef:(FSRef *)fsRef {
   NSString *nsPath = nil;
   require_quiet(fsRef, CantUseParams);
-  
+
   char path[MAXPATHLEN];
   require_noerr(FSRefMakePath(fsRef, (UInt8 *)path, MAXPATHLEN), CantMakePath);
   nsPath = [self stringWithFileSystemRepresentation:path length:strlen(path)];
   nsPath = [nsPath stringByStandardizingPath];
-  
+
 CantMakePath:
 CantUseParams:
   return nsPath;
-}  
+}
 
 @end

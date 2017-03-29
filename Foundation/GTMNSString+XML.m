@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -102,14 +102,14 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
   // it doesn't do anything about the chars that are actually invalid per the
   // xml spec.
   //
-  
+
   // we can't use the CF call here because it leaves the invalid chars
   // in the string.
   NSUInteger length = [src length];
   if (!length) {
     return src;
   }
-  
+
   NSMutableString *finalString = [NSMutableString string];
 
   // this block is common between GTMNSString+HTML and GTMNSString+XML but
@@ -127,14 +127,14 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
     [src getCharacters:[data mutableBytes]];
     buffer = [data bytes];
   }
-  
+
   const UniChar *goodRun = buffer;
   NSUInteger goodRunLength = 0;
-  
+
   for (NSUInteger i = 0; i < length; ++i) {
-    
+
     GTMXMLCharMode cMode = XMLModeForUnichar(buffer[i]);
-    
+
     // valid chars go as is, and if we aren't doing entities, then
     // everything goes as is.
     if ((cMode == kGTMXMLCharModeValid) ||
@@ -143,30 +143,30 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
       goodRunLength += 1;
     } else {
       // it's something we have to encode or something invalid
-      
+
       // start by adding what we already collected (if anything)
       if (goodRunLength) {
-        CFStringAppendCharacters((CFMutableStringRef)finalString, 
-                                 goodRun, 
+        CFStringAppendCharacters((CFMutableStringRef)finalString,
+                                 goodRun,
                                  goodRunLength);
         goodRunLength = 0;
       }
-      
+
       // if it wasn't invalid, add the encoded version
       if (cMode != kGTMXMLCharModeInvalid) {
         // add this encoded
         [finalString appendString:gXMLEntityList[cMode]];
       }
-      
+
       // update goodRun to point to the next UniChar
       goodRun = buffer + i + 1;
     }
   }
-  
+
   // anything left to add?
   if (goodRunLength) {
-    CFStringAppendCharacters((CFMutableStringRef)finalString, 
-                             goodRun, 
+    CFStringAppendCharacters((CFMutableStringRef)finalString,
+                             goodRun,
                              goodRunLength);
   }
   return finalString;
