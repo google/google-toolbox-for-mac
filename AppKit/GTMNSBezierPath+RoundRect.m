@@ -9,9 +9,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -50,7 +50,7 @@
   if (radius > 0.0) {
     // Clamp radius to be no larger than half the rect's width or height.
     radius = MIN(radius, 0.5 * MIN(rect.size.width, rect.size.height));
-    
+
     [self gtm_appendBezierPathWithRoundRect:rect
                         topLeftCornerRadius:radius
                        topRightCornerRadius:radius
@@ -74,12 +74,12 @@
   radiusTR = MAX(0, radiusTR);
   radiusBL = MAX(0, radiusBL);
   radiusBR = MAX(0, radiusBR);
-  
+
   if (!NSIsEmptyRect(rect)) {
     NSPoint topLeft = NSMakePoint(NSMinX(rect), NSMaxY(rect));
     NSPoint topRight = NSMakePoint(NSMaxX(rect), NSMaxY(rect));
     NSPoint bottomRight = NSMakePoint(NSMaxX(rect), NSMinY(rect));
-    
+
     [self moveToPoint:NSMakePoint(NSMidX(rect), NSMaxY(rect))];
     [self appendBezierPathWithArcFromPoint:topLeft
                                    toPoint:rect.origin

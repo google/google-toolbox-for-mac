@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -74,7 +74,7 @@ static CFSocketRef gRunLoopSocket = NULL;
                                                    action_,
                                                    @encode(int),
                                                    NULL);
-    
+
     // We're handling this signal via kqueue, so turn off the usual signal
     // handling.
     signal(signo_, SIG_IGN);
@@ -101,7 +101,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
   struct kevent event;
-  
+
   if (kevent(gSignalKQueueFileDescriptor, NULL, 0, &event, 1, NULL) == -1) {
     _GTMDevLog(@"could not pick up kqueue event.  Errno %d", errno);  // COV_NF_LINE
   } else {
@@ -115,7 +115,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
 // Cribbed from Advanced Mac OS X Programming
 - (void)addFileDescriptorMonitor:(int)fd {
   CFSocketContext context = { 0, NULL, NULL, NULL, NULL };
-  
+
   gRunLoopSocket = CFSocketCreateWithNative(kCFAllocatorDefault,
                                             fd,
                                             kCFSocketReadCallBack,
@@ -125,25 +125,25 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
     _GTMDevLog(@"could not CFSocketCreateWithNative");  // COV_NF_LINE
     goto bailout;   // COV_NF_LINE
   }
-  
+
   CFRunLoopSourceRef rls;
   rls = CFSocketCreateRunLoopSource(NULL, gRunLoopSocket, 0);
   if (rls == NULL) {
     _GTMDevLog(@"could not create a run loop source");  // COV_NF_LINE
     goto bailout;  // COV_NF_LINE
   }
-  
+
   CFRunLoopAddSource(CFRunLoopGetCurrent(), rls,
                      kCFRunLoopDefaultMode);
   CFRelease(rls);
-  
+
  bailout:
   return;
-  
+
 }
 
 - (void)registerWithKQueue {
-  
+
   // Make sure we have our kqueue.
   if (gSignalKQueueFileDescriptor == 0) {
     gSignalKQueueFileDescriptor = kqueue();
@@ -156,7 +156,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
     // Add the kqueue file descriptor to the runloop.
     [self addFileDescriptorMonitor:gSignalKQueueFileDescriptor];
   }
-  
+
   // Add a new event for the signal.
   struct kevent filter;
   EV_SET(&filter, signo_, EVFILT_SIGNAL, EV_ADD | EV_ENABLE | EV_CLEAR,
@@ -166,7 +166,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   if (kevent(gSignalKQueueFileDescriptor, &filter, 1, NULL, 0, &noWait) != 0) {
     _GTMDevLog(@"could not add event for signal %d.  Errno %d", signo_, errno);  // COV_NF_LINE
   }
-  
+
 }
 
 - (void)invalidate {
@@ -181,7 +181,7 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
   if (kevent(gSignalKQueueFileDescriptor, &filter, 1, NULL, 0, &noWait) != 0) {
     _GTMDevLog(@"could not remove event for signal %d.  Errno %d", signo_, errno);  // COV_NF_LINE
   }
-  
+
   // Set action_ to nil so that if invalidate is called on us twice,
   // nothing happens.
   action_ = nil;

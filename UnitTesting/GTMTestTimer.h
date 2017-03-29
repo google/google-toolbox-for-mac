@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -90,7 +90,7 @@ GTM_INLINE double GTMTestTimerGetNanoseconds(GTMTestTimer *t) {
   if (t->running_) {
     total += mach_absolute_time() - t->start_;
   }
-  return (double)(total * t->time_base_info_.numer 
+  return (double)(total * t->time_base_info_.numer
                   / t->time_base_info_.denom);
 }
 
@@ -116,10 +116,10 @@ GTM_INLINE double GTMTestTimerGetMicroseconds(GTMTestTimer *t) {
 // GTMTestTimerGetSeconds()/GTMTestTimerGetIterations() gives you an average
 // of all your splits.
 GTM_INLINE NSUInteger GTMTestTimerGetIterations(GTMTestTimer *t) {
-  return t->iterations_; 
+  return t->iterations_;
 }
 
 // Returns true if the timer is running.
-GTM_INLINE bool GTMTestTimerIsRunning(GTMTestTimer *t) { 
+GTM_INLINE bool GTMTestTimerIsRunning(GTMTestTimer *t) {
   return t->running_;
 }

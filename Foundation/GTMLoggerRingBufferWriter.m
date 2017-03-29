@@ -6,9 +6,9 @@
 //  Licensed under the Apache License, Version 2.0 (the "License"); you may not
 //  use this file except in compliance with the License.  You may obtain a copy
 //  of the License at
-// 
+//
 //  http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 //  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -96,7 +96,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
   if (buffer_) free(buffer_);
 
   [super dealloc];
-  
+
 }  // dealloc
 
 
@@ -129,7 +129,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 
 - (NSUInteger)droppedLogCount {
   NSUInteger droppedCount = 0;
-  
+
   @synchronized(self) {
     if (capacity_ > totalLogged_) {
       droppedCount = 0;
@@ -137,7 +137,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
       droppedCount = totalLogged_ - capacity_;
     }
   }
-  
+
   return droppedCount;
 
 }  // droppedLogCount
@@ -218,9 +218,9 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
 - (void)addMessage:(NSString *)message level:(GTMLoggerLevel)level {
   NSUInteger newIndex = nextIndex_;
   nextIndex_ = (nextIndex_ + 1) % capacity_;
-  
+
   ++totalLogged_;
-  
+
   // Now store the goodies.
   GTMRingBufferPair *pair = buffer_ + newIndex;
   if (pair->logMessage_) {
@@ -231,7 +231,7 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
     pair->logMessage_ = CFStringCreateCopy(kCFAllocatorDefault, (CFStringRef)message);
   }
   pair->level_ = level;
-  
+
 }  // addMessage
 
 
@@ -239,7 +239,7 @@ static void PrintContentsCallback(GTMLoggerRingBufferWriter *rbw,
 - (void)logMessage:(NSString *)message level:(GTMLoggerLevel)level {
   @synchronized(self) {
     [self addMessage:(NSString*)message level:level];
-    
+
     if (level >= kGTMLoggerLevelError) {
       [self dumpContents];
       [self reset];
