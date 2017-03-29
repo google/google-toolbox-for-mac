@@ -18,7 +18,7 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
-#include "GTMDefines.h"
+#import "GTMDefines.h"
 
 GTM_EXTERN_C_BEGIN
 
