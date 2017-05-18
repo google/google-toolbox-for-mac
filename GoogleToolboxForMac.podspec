@@ -14,6 +14,8 @@ Pod::Spec.new do |s|
 
   s.osx.deployment_target = '10.6'
   s.ios.deployment_target = '5.0'
+  s.tvos.deployment_target = '9.0'
+
   s.requires_arc = false
 
   s.subspec 'Defines' do |sp|
@@ -29,12 +31,13 @@ Pod::Spec.new do |s|
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
-
   s.subspec 'AddressBook' do |sp|
     sp.source_files = 'AddressBook/GTMABAddressBook.{h,m}'
     sp.frameworks = 'AddressBook'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
+    sp.platform = :ios
+    sp.platform = :osx
   end
 
   s.subspec 'DebugUtils' do |sp|
