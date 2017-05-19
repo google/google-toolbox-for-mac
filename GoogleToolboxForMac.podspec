@@ -36,8 +36,7 @@ Pod::Spec.new do |s|
     sp.frameworks = 'AddressBook'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.platform = :ios
-    sp.platform = :osx
+    sp.platforms = { :ios => '5.0', :osx => '10.6' }
   end
 
   s.subspec 'DebugUtils' do |sp|
