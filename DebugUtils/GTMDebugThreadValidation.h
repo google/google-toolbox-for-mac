@@ -21,7 +21,7 @@
 
 // GTMCheckCurrentQueue, GTMIsCurrentQueue
 //
-// GTMCheckCurrentQueue takes a target queue and uses _GTMDevAssert to
+// GTMCheckCurrentQueue takes a target queue and uses GTM_DevAssert to
 // report if that is not the currently executing queue.
 //
 // GTMIsCurrentQueue takes a target queue and returns true if the target queue
@@ -30,7 +30,7 @@
 //
 // The dispatch queue must have a label.
 #define GTMCheckCurrentQueue(targetQueue)                    \
-  _GTMDevAssert(GTMIsCurrentQueue(targetQueue),              \
+  GTM_DevAssert(GTMIsCurrentQueue(targetQueue),              \
                 @"Current queue is %s (expected %s)",        \
                 _GTMQueueName(DISPATCH_CURRENT_QUEUE_LABEL), \
                 _GTMQueueName(targetQueue))

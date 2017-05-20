@@ -43,7 +43,7 @@
 
 // Support functions for dealing with casting.
 GTM_INLINE id GTMDynamicCastSupport(Class cls, id object) {
-  _GTMDevAssert(cls, @"Nil Class");
+  GTM_DevAssert(cls, @"Nil Class");
   return [object isKindOfClass:cls] ? object : nil;
 }
 
@@ -51,7 +51,7 @@ GTM_INLINE id GTMStaticCastSupport(Class cls, id object) {
   id value = nil;
   if (object) {
     value = GTMDynamicCastSupport(cls, object);
-    _GTMDevAssert(value, @"Could not cast %@ to class %@", object, cls);
+    GTM_DevAssert(value, @"Could not cast %@ to class %@", object, cls);
   }
   return value;
 }

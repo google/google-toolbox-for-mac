@@ -78,14 +78,14 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
         = [NSDictionary dictionaryWithContentsOfFile:kSystemVersionPlistPath];
       version = [systemVersionPlist objectForKey:@"ProductVersion"];
     }
-    _GTMDevAssert(version, @"Unable to get version");
+    GTM_DevAssert(version, @"Unable to get version");
 
     NSArray *versionInfo = [version componentsSeparatedByString:@"."];
     NSUInteger length = [versionInfo count];
-    _GTMDevAssert(length > 1 && length < 4,
+    GTM_DevAssert(length > 1 && length < 4,
                   @"Unparseable version %@", version);
     sGTMSystemVersionMajor = [[versionInfo objectAtIndex:0] intValue];
-    _GTMDevAssert(sGTMSystemVersionMajor != 0,
+    GTM_DevAssert(sGTMSystemVersionMajor != 0,
                   @"Unknown version for %@", version);
     sGTMSystemVersionMinor = [[versionInfo objectAtIndex:1] intValue];
     if (length == 3) {
@@ -117,7 +117,7 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
       NSDictionary *systemVersionPlist
         = [NSDictionary dictionaryWithContentsOfFile:kSystemVersionPlistPath];
       sBuild = [[systemVersionPlist objectForKey:@"ProductBuildVersion"] retain];
-      _GTMDevAssert(sBuild, @"Unable to get build version");
+      GTM_DevAssert(sBuild, @"Unable to get build version");
     }
   }
   return sBuild;
@@ -205,9 +205,9 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
   // In reading arch(3) you'd thing this would work:
   //
   // const NXArchInfo *localInfo = NXGetLocalArchInfo();
-  // _GTMDevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
+  // GTM_DevAssert(localInfo && localInfo->name, @"Couldn't get NXArchInfo");
   // const NXArchInfo *genericInfo = NXGetArchInfoFromCpuType(localInfo->cputype, 0);
-  // _GTMDevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
+  // GTM_DevAssert(genericInfo && genericInfo->name, @"Couldn't get generic NXArchInfo");
   // extensions[0] = [NSString stringWithFormat:@".%s", genericInfo->name];
   //
   // but on 64bit it returns the same things as on 32bit, so...

@@ -281,7 +281,7 @@ static char* GTMKeyValueObservingHelperContext
                selector:(SEL)selector
                userInfo:(id)userInfo
                 options:(NSKeyValueObservingOptions)options {
-  _GTMDevAssert(observer && [keyPath length] && selector,
+  GTM_DevAssert(observer && [keyPath length] && selector,
                 @"Missing observer, keyPath, or selector");
   GTMKeyValueObservingCenter *center
     = [GTMKeyValueObservingCenter defaultCenter];
@@ -301,7 +301,7 @@ static char* GTMKeyValueObservingHelperContext
 - (void)gtm_removeObserver:(id)observer
                 forKeyPath:(NSString *)keyPath
                   selector:(SEL)selector {
-  _GTMDevAssert(observer && [keyPath length] && selector,
+  GTM_DevAssert(observer && [keyPath length] && selector,
                 @"Missing observer, keyPath, or selector");
   GTMKeyValueObservingCenter *center
     = [GTMKeyValueObservingCenter defaultCenter];

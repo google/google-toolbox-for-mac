@@ -146,7 +146,7 @@ static int ClassSort(const void *a, const void *b) {
   NSMutableData *classData
     = [NSMutableData dataWithLength:sizeof(Class) * count];
   Class *classes = (Class*)[classData mutableBytes];
-  _GTMDevAssert(classes, @"Couldn't allocate class list");
+  GTM_DevAssert(classes, @"Couldn't allocate class list");
   objc_getClassList(classes, count);
 
   // Follow SenTest's lead and sort the classes.  (This may only be a change

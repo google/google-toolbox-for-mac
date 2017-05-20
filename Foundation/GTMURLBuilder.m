@@ -40,16 +40,16 @@
 - (id)init {
   self = [super init];
   [self release];
-  _GTMDevAssert(NO, @"Invalid initialization.");
+  GTM_DevAssert(NO, @"Invalid initialization.");
   return nil;
 }
 
 - (id)initWithString:(NSString *)URLString {
   self = [super init];
   if (self) {
-    _GTMDevAssert(URLString, @"URL must not be nil");
+    GTM_DevAssert(URLString, @"URL must not be nil");
     NSURL *URL = [NSURL URLWithString:URLString];
-    _GTMDevAssert(URL, @"URL is invalid");
+    GTM_DevAssert(URL, @"URL is invalid");
 
     // NSURL does not work with ports.
     baseURLString_ = [URL absoluteString];

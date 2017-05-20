@@ -157,7 +157,7 @@ GTM_INLINE int lcm(int a, int b) {
   char *buf = (char *)[chars cStringUsingEncoding:NSASCIIStringEncoding];
   while (*buf) {
     int c = *buf++;
-    _GTMDevAssert(reverseCharMap_[c] == kUnknownChar,
+    GTM_DevAssert(reverseCharMap_[c] == kUnknownChar,
                   @"Character already mapped");
     reverseCharMap_[c] = kIgnoreChar;
   }

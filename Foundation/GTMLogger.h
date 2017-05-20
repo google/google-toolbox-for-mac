@@ -201,8 +201,8 @@
 // documentation below.
 //
 // NOTE: GTMLogger is application level logging.  By default it does nothing
-// with _GTMDevLog/_GTMDevAssert (see GTMDefines.h).  An application can choose
-// to bridge _GTMDevLog/_GTMDevAssert to GTMLogger by providing macro
+// with _GTMDevLog/GTM_DevAssert (see GTMDefines.h).  An application can choose
+// to bridge _GTMDevLog/GTM_DevAssert to GTMLogger by providing macro
 // definitions in its prefix header (see GTMDefines.h for how one would do
 // that).
 //
