@@ -90,17 +90,17 @@
 #define GTM_UNUSED(x) ((void)(x))
 #endif
 
-// GTM_DevLog & GTM_DevAssert
+// _GTMDevLog & _GTMDevAssert
 //
-// GTM_DevLog & GTM_DevAssert are meant to be a very lightweight shell for
+// _GTMDevLog & _GTMDevAssert are meant to be a very lightweight shell for
 // developer level errors.  This implementation simply macros to NSLog/NSAssert.
 // It is not intended to be a general logging/reporting system.
 //
 // Please see http://code.google.com/p/google-toolbox-for-mac/wiki/DevLogNAssert
 // for a little more background on the usage of these macros.
 //
-//    GTM_DevLog           log some error/problem in debug builds
-//    GTM_DevAssert        assert if condition isn't met w/in a method/function
+//    _GTMDevLog           log some error/problem in debug builds
+//    _GTMDevAssert        assert if condition isn't met w/in a method/function
 //                           in all builds.
 //
 // To replace this system, just provide different macro definitions in your
@@ -110,21 +110,21 @@
 //
 
 // We only define the simple macros if nothing else has defined this.
-#ifndef GTM_DevLog
+#ifndef _GTMDevLog
 
 #ifdef DEBUG
-  #define GTM_DevLog(...) NSLog(__VA_ARGS__)
+  #define _GTMDevLog(...) NSLog(__VA_ARGS__)
 #else
-  #define GTM_DevLog(...) do { } while (0)
+  #define _GTMDevLog(...) do { } while (0)
 #endif
 
-#endif // GTM_DevLog
+#endif // _GTMDevLog
 
-#ifndef GTM_DevAssert
+#ifndef _GTMDevAssert
 // we directly invoke the NSAssert handler so we can pass on the varargs
 // (NSAssert doesn't have a macro we can use that takes varargs)
 #if !defined(NS_BLOCK_ASSERTIONS)
-  #define GTM_DevAssert(condition, ...)                                       \
+  #define _GTMDevAssert(condition, ...)                                       \
     do {                                                                      \
       if (!(condition)) {                                                     \
         [[NSAssertionHandler currentHandler]                                  \
@@ -136,39 +136,39 @@
       }                                                                       \
     } while(0)
 #else // !defined(NS_BLOCK_ASSERTIONS)
-  #define GTM_DevAssert(condition, ...) do { } while (0)
+  #define _GTMDevAssert(condition, ...) do { } while (0)
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 
-#endif // GTM_DevAssert
+#endif // _GTMDevAssert
 
-// GTM_CompileAssert
+// _GTMCompileAssert
 //
 // Note:  Software for current compilers should just use _Static_assert directly
 // instead of this macro.
 //
-// GTM_CompileAssert is an assert that is meant to fire at compile time if you
+// _GTMCompileAssert is an assert that is meant to fire at compile time if you
 // want to check things at compile instead of runtime. For example if you
 // want to check that a wchar is 4 bytes instead of 2 you would use
-// GTM_CompileAssert(sizeof(wchar_t) == 4, wchar_t_is_4_bytes_on_OS_X)
+// _GTMCompileAssert(sizeof(wchar_t) == 4, wchar_t_is_4_bytes_on_OS_X)
 // Note that the second "arg" is not in quotes, and must be a valid processor
 // symbol in it's own right (no spaces, punctuation etc).
 
 // Wrapping this in an #ifndef allows external groups to define their own
 // compile time assert scheme.
-#ifndef GTM_CompileAssert
+#ifndef _GTMCompileAssert
   #if __has_feature(c_static_assert) || __has_extension(c_static_assert)
-    #define GTM_CompileAssert(test, msg) _Static_assert((test), #msg)
+    #define _GTMCompileAssert(test, msg) _Static_assert((test), #msg)
   #else
     // Pre-Xcode 7 support.
     //
     // We got this technique from here:
     // http://unixjunkie.blogspot.com/2007/10/better-compile-time-asserts_29.html
-    #define GTM_CompileAssertSymbolInner(line, msg) GTM_CompileAssert ## line ## __ ## msg
-    #define GTM_CompileAssertSymbol(line, msg) GTM_CompileAssertSymbolInner(line, msg)
-    #define GTM_CompileAssert(test, msg) \
-      typedef char GTM_CompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
+    #define _GTMCompileAssertSymbolInner(line, msg) _GTMCOMPILEASSERT ## line ## __ ## msg
+    #define _GTMCompileAssertSymbol(line, msg) _GTMCompileAssertSymbolInner(line, msg)
+    #define _GTMCompileAssert(test, msg) \
+      typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
   #endif  // __has_feature(c_static_assert) || __has_extension(c_static_assert)
-#endif // GTM_CompileAssert
+#endif // _GTMCompileAssert
 
 // ----------------------------------------------------------------------------
 // CPP symbols defined based on the project settings so the GTM code has
@@ -296,14 +296,14 @@
     #define GTMInvalidateInitializer() \
       do { \
         [self class]; /* Avoid warning of dead store to |self|. */ \
-        GTM_DevAssert(NO, @"Invalid initializer."); \
+        _GTMDevAssert(NO, @"Invalid initializer."); \
         return nil; \
       } while (0)
   #else
     #define GTMInvalidateInitializer() \
       do { \
         [self release]; \
-        GTM_DevAssert(NO, @"Invalid initializer."); \
+        _GTMDevAssert(NO, @"Invalid initializer."); \
         return nil; \
       } while (0)
   #endif

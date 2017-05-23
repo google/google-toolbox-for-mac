@@ -45,7 +45,7 @@ typedef struct {
 GTM_INLINE CFStringEncoding SqliteTextEncodingToCFStringEncoding(int enc) {
   // Default should never happen, but assume UTF 8
   CFStringEncoding encoding = kCFStringEncodingUTF8;
-  GTM_DevAssert(enc == SQLITE_UTF16BE ||
+  _GTMDevAssert(enc == SQLITE_UTF16BE ||
                 enc == SQLITE_UTF16LE,
                 @"Passed in encoding was not a UTF16 encoding");
   switch(enc) {
@@ -518,7 +518,7 @@ static void UpperLower8(sqlite3_context *context, int argc, sqlite3_value **argv
     // COV_NF_END
   }
 
-  GTM_DevAssert(userArgs->textRep == SQLITE_UTF8,
+  _GTMDevAssert(userArgs->textRep == SQLITE_UTF8,
                 @"Received non UTF8 encoding in UpperLower8");
 
   // Worker string, must be mutable for case conversion so order our calls
@@ -662,7 +662,7 @@ static void UpperLower16(sqlite3_context *context,
     // a buffer or NULL are internal; not something we can depend on.
     // When building for Leopard+, CFIndex is a 64-bit type, which is
     // why we cast it to an int when we call the sqlite api.
-    GTM_DevAssert((workerLength * sizeof(UniChar) <= INT_MAX),
+    _GTMDevAssert((workerLength * sizeof(UniChar) <= INT_MAX),
                   @"sqlite methods do not support buffers greater "
                   @"than 32 bit sizes");
     // Direct access to the internal buffer, hand it to sqlite for copy and
@@ -704,14 +704,14 @@ static void UpperLower16(sqlite3_context *context,
       // When building for Leopard+, CFIndex is a 64-bit type, but
       // sqlite3's functions all take ints.  Assert the error for dev
       // builds and cast down.
-      GTM_DevAssert((convertedBytes <= INT_MAX),
+      _GTMDevAssert((convertedBytes <= INT_MAX),
                     @"sqlite methods do not support buffers greater "
                     @"than 32-bit sizes");
       int convertedBytesForSQLite = (int)convertedBytes;
       // Set the result, letting SQLite take ownership and using free() as
       // the destructor. For output since we're copying out the bytes anyway
       // we might as well use the preferred encoding of the original call.
-      GTM_DevAssert(userArgs->textRep == SQLITE_UTF16BE ||
+      _GTMDevAssert(userArgs->textRep == SQLITE_UTF16BE ||
                     userArgs->textRep == SQLITE_UTF16LE,
                     @"Received non UTF8 encoding in UpperLower8");
       switch (userArgs->textRep) {
@@ -742,7 +742,7 @@ static void CollateNeeded(void *userContext, sqlite3 *db, int textRep,
                           const char *name) {
   // Cast
   GTMSQLiteDatabase *gtmdb = (GTMSQLiteDatabase *)userContext;
-  GTM_DevAssert(gtmdb, @"Invalid database parameter from sqlite");
+  _GTMDevAssert(gtmdb, @"Invalid database parameter from sqlite");
 
   // Create space for the collation args
   NSMutableData *collationArgsData =
@@ -813,7 +813,7 @@ static int Collate8(void *userContext, int length1, const void *str1,
                     int length2, const void *str2) {
   // User args
   CollateUserArgs *userArgs = (CollateUserArgs *)userContext;
-  GTM_DevAssert(userArgs, @"Invalid user arguments from sqlite");
+  _GTMDevAssert(userArgs, @"Invalid user arguments from sqlite");
 
   // Sanity and zero-lengths
   if (!(str1 && str2) || (!length1 && !length2)) {
@@ -881,7 +881,7 @@ static int Collate16(void *userContext, int length1, const void *str1,
                      int length2, const void *str2) {
   // User args
   CollateUserArgs *userArgs = (CollateUserArgs *)userContext;
-  GTM_DevAssert(userArgs, @"Invalid user arguments from sqlite");
+  _GTMDevAssert(userArgs, @"Invalid user arguments from sqlite");
 
   // Sanity and zero-lengths
   if (!(str1 && str2) || (!length1 && !length2)) {
@@ -1711,7 +1711,7 @@ static void Glob16(sqlite3_context *context, int argc, sqlite3_value **argv) {
 - (int)bindBlobAtPosition:(int)position data:(NSData *)data {
   if (!statement_ || !data || !position) return SQLITE_MISUSE;
   int blobLength = (int)[data length];
-  GTM_DevAssert((blobLength < INT_MAX),
+  _GTMDevAssert((blobLength < INT_MAX),
                 @"sqlite methods do not support data lengths "
                 @"exceeding 32 bit sizes");
   return [self bindBlobAtPosition:position

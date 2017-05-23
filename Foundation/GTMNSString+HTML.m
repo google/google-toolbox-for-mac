@@ -430,7 +430,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
         [finalString appendString:val->escapeSequence];
       }
       else {
-        GTM_DevAssert(escapeUnicode && buffer[i] > 127, @"Illegal Character");
+        _GTMDevAssert(escapeUnicode && buffer[i] > 127, @"Illegal Character");
         [finalString appendFormat:@"&#%d;", buffer[i]];
       }
     } else {

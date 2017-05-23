@@ -148,10 +148,10 @@ typedef enum {
   } while (retCode == Z_OK);
 
   // if the loop exits, we used all input and the stream ended
-  GTM_DevAssert(strm.avail_in == 0,
+  _GTMDevAssert(strm.avail_in == 0,
                 @"thought we finished deflate w/o using all input, %u bytes left",
                 strm.avail_in);
-  GTM_DevAssert(retCode == Z_STREAM_END,
+  _GTMDevAssert(retCode == Z_STREAM_END,
                 @"thought we finished deflate w/o getting a result of stream end, code %d",
                 retCode);
 
@@ -254,7 +254,7 @@ typedef enum {
     result = nil;
   }
   // the only way out of the loop was by hitting the end of the stream
-  GTM_DevAssert(retCode == Z_STREAM_END,
+  _GTMDevAssert(retCode == Z_STREAM_END,
                 @"thought we finished inflate w/o getting a result of stream end, code %d",
                 retCode);
 
