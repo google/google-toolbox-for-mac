@@ -117,7 +117,7 @@ GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64] = YES
 //                           same selector rendering this mostly useless to us
 
 // C Only Warnings
-GTM_GENERAL_OTHER_CFLAGS = -Wdiv-by-zero -Wbad-function-cast  -Wnested-externs -Wold-style-definition
+GTM_GENERAL_OTHER_CFLAGS = -Wreserved-id-macro -Wdiv-by-zero -Wbad-function-cast  -Wnested-externs -Wold-style-definition
 
 // C++ Only Warnings
 GTM_GENERAL_OTHER_CPLUSPLUSFLAGS = -Wabi -Wctor-dtor-privacy -Wstrict-null-sentinel -Wsign-promo
