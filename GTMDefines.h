@@ -109,6 +109,10 @@
 // been placed in.
 //
 
+// Ignore the "Macro name is a reserved identifier" warning in this section
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreserved-id-macro"
+
 // We only define the simple macros if nothing else has defined this.
 #ifndef _GTMDevLog
 
@@ -169,6 +173,8 @@
       typedef char _GTMCompileAssertSymbol(__LINE__, msg) [ ((test) ? 1 : -1) ]
   #endif  // __has_feature(c_static_assert) || __has_extension(c_static_assert)
 #endif // _GTMCompileAssert
+
+#pragma clang diagnostic pop
 
 // ----------------------------------------------------------------------------
 // CPP symbols defined based on the project settings so the GTM code has
