@@ -54,6 +54,10 @@ typedef NSUInteger GTMRegexOptions;
 
 /// Global contants needed for errors from consuming patterns
 
+// Ignore the "Macro name is a reserved identifier" warning in this section
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreserved-id-macro"
+
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #if GTMREGEX_DEFINE_GLOBALS
@@ -63,6 +67,8 @@ typedef NSUInteger GTMRegexOptions;
 #define _EXTERN GTM_EXTERN
 #define _INITIALIZE_AS(x)
 #endif
+
+#pragma clang diagnostic pop
 
 _EXTERN NSString* kGTMRegexErrorDomain _INITIALIZE_AS(@"com.google.mactoolbox.RegexDomain");
 
