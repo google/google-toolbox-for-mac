@@ -18,6 +18,17 @@ Pod::Spec.new do |s|
 
   s.requires_arc = false
 
+  # Generally developers should use specific subspecs themselves to get the things they
+  # want; but set the default to ensure the testing only code doesn't bundle
+  # into a shipping app. This has come up a few times issues 130, 138. The current
+  # list here is everything that doesn't have a platform requirement and isn't
+  # testing only.
+  s.default_subspecs = 'Defines', 'Core', 'GeometryUtils', 'KVO', 'Logger', 'Regex',
+                       'StringEncoding', 'SystemVersion', 'URLBuilder', 'NSData+zlib',
+                       'NSDictionary+URLArguments', 'NSFileHandle+UniqueName',
+                       'NSScanner+JSON', 'NSString+HTML', 'NSString+URLArguments',
+                       'NSString+XML', 'NSThread+Blocks'
+
   s.subspec 'Defines' do |sp|
     sp.public_header_files = 'GTMDefines.h'
     sp.source_files = 'GTMDefines.h'
