@@ -28,10 +28,10 @@
   FSRef ref;
   AliasHandle alias = NULL;
 
-  require_quiet([path length], CantUseParams);
-  require_noerr(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation],
-                              &ref, NULL), CantMakeRef);
-  require_noerr(FSNewAlias(NULL, &ref, &alias), CantMakeAlias);
+  __Require_Quiet([path length], CantUseParams);
+  __Require_noErr(FSPathMakeRef((UInt8 *)[path fileSystemRepresentation],
+                                &ref, NULL), CantMakeRef);
+  __Require_noErr(FSNewAlias(NULL, &ref, &alias), CantMakeAlias);
 
   Size length = GetAliasSize(alias);
   data = [NSData dataWithBytes:*alias length:length];
@@ -52,12 +52,12 @@ CantUseParams:
                             resolve:(BOOL)resolve
                              withUI:(BOOL)withUI {
   NSString *path = nil;
-  require_quiet(data, CantUseParams);
+  __Require_Quiet(data, CantUseParams);
 
   AliasHandle alias;
   const void *bytes = [data bytes];
   NSUInteger length = [data length];
-  require_noerr(PtrToHand(bytes, (Handle *)&alias, length), CantMakeHandle);
+  __Require_noErr(PtrToHand(bytes, (Handle *)&alias, length), CantMakeHandle);
 
   FSRef ref;
   Boolean wasChanged;
@@ -85,14 +85,14 @@ CantUseParams:
 
 - (FSRef *)gtm_FSRefForPath:(NSString *)path {
   FSRef* fsRef = NULL;
-  require_quiet([path length], CantUseParams);
+  __Require_Quiet([path length], CantUseParams);
   NSMutableData *fsRefData = [NSMutableData dataWithLength:sizeof(FSRef)];
-  require(fsRefData, CantAllocateFSRef);
+  __Require(fsRefData, CantAllocateFSRef);
   fsRef = (FSRef*)[fsRefData mutableBytes];
   Boolean isDir = FALSE;
   const UInt8 *filePath = (const UInt8 *)[path fileSystemRepresentation];
-  require_noerr_action(FSPathMakeRef(filePath, fsRef, &isDir),
-                       CantMakeRef, fsRef = NULL);
+  __Require_noErr_action(FSPathMakeRef(filePath, fsRef, &isDir),
+                         CantMakeRef, fsRef = NULL);
 CantMakeRef:
 CantAllocateFSRef:
 CantUseParams:
@@ -101,10 +101,11 @@ CantUseParams:
 
 - (NSString *)gtm_pathFromFSRef:(FSRef *)fsRef {
   NSString *nsPath = nil;
-  require_quiet(fsRef, CantUseParams);
+  __Require_Quiet(fsRef, CantUseParams);
 
   char path[MAXPATHLEN];
-  require_noerr(FSRefMakePath(fsRef, (UInt8 *)path, MAXPATHLEN), CantMakePath);
+  __Require_noErr(FSRefMakePath(fsRef, (UInt8 *)path, MAXPATHLEN),
+                  CantMakePath);
   nsPath = [self stringWithFileSystemRepresentation:path length:strlen(path)];
   nsPath = [nsPath stringByStandardizingPath];
 

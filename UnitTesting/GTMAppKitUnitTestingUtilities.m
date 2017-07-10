@@ -62,12 +62,12 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
 + (void)postKeyEvent:(NSEventType)type
            character:(CGCharCode)keyChar
            modifiers:(UInt32)cocoaModifiers {
-  require(![self isScreenSaverActive], CantWorkWithScreenSaver);
-  require(type == NSKeyDown || type == NSKeyUp, CantDoEvent);
+  __Require(![self isScreenSaverActive], CantWorkWithScreenSaver);
+  __Require(type == NSKeyDown || type == NSKeyUp, CantDoEvent);
   CGKeyCode code = GTMKeyCodeForCharCode(keyChar);
-  verify(code != 256);
+  __Verify(code != 256);
   CGEventRef event = CGEventCreateKeyboardEvent(NULL, code, type == NSKeyDown);
-  require(event, CantCreateEvent);
+  __Require(event, CantCreateEvent);
   CGEventSetFlags(event, cocoaModifiers);
   CGEventPost(kCGSessionEventTap, event);
   CFRelease(event);

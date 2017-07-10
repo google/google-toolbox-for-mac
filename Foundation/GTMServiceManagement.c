@@ -88,9 +88,9 @@ static bool IsOsYosemiteOrGreater() {
 #else
   SInt32 version_major;
   SInt32 version_minor;
-  require_noerr(Gestalt(gestaltSystemVersionMajor, &version_major),
+  __Require_noErr(Gestalt(gestaltSystemVersionMajor, &version_major),
       failedGestalt);
-  require_noerr(Gestalt(gestaltSystemVersionMinor, &version_minor),
+  __Require_noErr(Gestalt(gestaltSystemVersionMinor, &version_minor),
       failedGestalt);
   return version_major > 10 || (version_major == 10 && version_minor >= 10);
   failedGestalt:
