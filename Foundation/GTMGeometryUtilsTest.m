@@ -125,7 +125,7 @@
     NSRect result = GTMNSScaleRectangleToSize(rect, tests[i].size_,
                                               GTMScaleProportionally);
     XCTAssertTrue(NSEqualRects(result, GTMNSRectOfSize(tests[i].newSize_)),
-                  @"failed on test %zd", i);
+                  @"failed on test %zu", i);
   }
 
   NSRect result = GTMNSScaleRectangleToSize(NSZeroRect, tests[0].size_,
@@ -288,7 +288,7 @@
     CGRect result = GTMCGScaleRectangleToSize(rect, tests[i].size_,
                                               GTMScaleProportionally);
     XCTAssertTrue(CGRectEqualToRect(result, GTMCGRectOfSize(tests[i].newSize_)),
-                  @"failed on test %zd", i);
+                  @"failed on test %zu", i);
   }
 
   CGRect result = GTMCGScaleRectangleToSize(CGRectZero, tests[0].size_,
