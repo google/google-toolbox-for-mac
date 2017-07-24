@@ -152,7 +152,7 @@ GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
       break;
 
     default:
-      _GTMDevAssert(false, @"Invalid orientation %zd", orientation);
+      _GTMDevAssert(false, @"Invalid orientation %ld", (long)orientation);
       return nil;
   }
 
