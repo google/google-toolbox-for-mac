@@ -134,7 +134,6 @@
 		8BFE6E9A1282371200B5C894 /* GTMPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FD945D0E1D30F80005867E /* GTMPathTest.m */; };
 		8BFE6E9B1282371200B5C894 /* GTMRegexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */; };
 		8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };
-		8BFE6E9D1282371200B5C894 /* GTMSignalHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41A6F810E02EC3600788A6C /* GTMSignalHandlerTest.m */; };
 		8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F95B567D0F46208E0051A6F1 /* GTMSQLiteTest.m */; };
 		8BFE6E9F1282371200B5C894 /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */; };
 		8BFE6EA01282371200B5C894 /* GTMStringEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1B9B8610FECD870084EE4B /* GTMStringEncodingTest.m */; };
@@ -1285,7 +1284,6 @@
 				8BFE6E9A1282371200B5C894 /* GTMPathTest.m in Sources */,
 				8BFE6E9B1282371200B5C894 /* GTMRegexTest.m in Sources */,
 				8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */,
-				8BFE6E9D1282371200B5C894 /* GTMSignalHandlerTest.m in Sources */,
 				8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */,
 				8BFE6E9F1282371200B5C894 /* GTMStackTraceTest.m in Sources */,
 				8BFE6EA01282371200B5C894 /* GTMStringEncodingTest.m in Sources */,
