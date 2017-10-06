@@ -91,7 +91,7 @@ CantUseParams:
   fsRef = (FSRef*)[fsRefData mutableBytes];
   Boolean isDir = FALSE;
   const UInt8 *filePath = (const UInt8 *)[path fileSystemRepresentation];
-  __Require_noErr_action(FSPathMakeRef(filePath, fsRef, &isDir),
+  __Require_noErr_Action(FSPathMakeRef(filePath, fsRef, &isDir),
                          CantMakeRef, fsRef = NULL);
 CantMakeRef:
 CantAllocateFSRef:
