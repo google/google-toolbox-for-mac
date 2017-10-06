@@ -30,10 +30,10 @@
 // and this method returns immediately.
 // If self is the current thread, the block will be performed immediately, and
 // then this method will return.
-- (void)gtm_performBlock:(void (^)())block;
+- (void)gtm_performBlock:(void (^)(void))block;
 
-- (void)gtm_performWaitingUntilDone:(BOOL)waitDone block:(void (^)())block;
-+ (void)gtm_performBlockInBackground:(void (^)())block;
+- (void)gtm_performWaitingUntilDone:(BOOL)waitDone block:(void (^)(void))block;
++ (void)gtm_performBlockInBackground:(void (^)(void))block;
 @end
 
 #endif  // NS_BLOCKS_AVAILABLE
