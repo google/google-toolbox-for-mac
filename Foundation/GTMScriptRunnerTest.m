@@ -218,6 +218,11 @@
   // Account for the shell level.
   [currVars setObject:@"1" forKey:@"SHLVL"];
 
+  // Xcode inserts DYLD_FRAMEWORK_PATH and DYLD_LIBRARY_PATH when running XCTests,
+  // but that doesn't get passed on when running the script.
+  [currVars removeObjectForKey:@"DYLD_FRAMEWORK_PATH"];
+  [currVars removeObjectForKey:@"DYLD_LIBRARY_PATH"];
+
   output = [sr run:@"/usr/bin/env | /usr/bin/sort" standardError:&error];
   NSArray *lineArray = [output componentsSeparatedByString:@"\n"];
   XCTAssertEqual([lineArray count], [currVars count],
