@@ -100,7 +100,9 @@ typedef struct {
   if (!wasGood) {
     _GTMDevLog(@"Error in [%@ %@]: %@",
                [self class], NSStringFromSelector(_cmd), cfError);
-    CFRelease(cfError);
+    if (cfError) {
+      CFRelease(cfError);
+    }
   }
 #else  // GTM_IPHONE_SDK
   bool wasGood = ABSave(addressBook_);
