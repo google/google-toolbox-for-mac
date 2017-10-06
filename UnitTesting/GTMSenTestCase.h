@@ -71,6 +71,9 @@
 
 #if GTM_USING_XCTEST
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreserved-id-macro"
+
 #define _XCExceptionFormatString @"throwing \"%@\""
 #define _XCUnknownExceptionString @"throwing an unknown exception"
 #if (defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0) || (GTM_MACOS_SDK == 1)
@@ -80,6 +83,8 @@
 #else
 #define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(expression, format)
 #endif  // defined defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+
+#pragma clang diagnostic pop
 
 // Generates a failure when a1 != noErr
 //  Args:
