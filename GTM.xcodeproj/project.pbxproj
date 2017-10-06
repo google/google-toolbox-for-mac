@@ -1086,7 +1086,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 			};
 			buildConfigurationList = 1DEB918108733D990010E9CD /* Build configuration list for PBXProject "GTM" */;
 			compatibilityVersion = "Xcode 3.1";
@@ -1428,10 +1428,30 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4CC9F3F148E5E2500B7D68C /* DebugMacOSX.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "GTM_USING_XCTEST=1";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
@@ -1444,6 +1464,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "GTM-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GTM;
 				PRODUCT_NAME = GoogleToolboxForMac;
 			};
 			name = Debug;
@@ -1457,6 +1478,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-AddressBook";
 			};
 			name = Debug;
@@ -1471,6 +1493,7 @@
 					"$(DEVELOPER_SDK_DIR)/../Library/Frameworks",
 				);
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-AppKit";
 				TEST_HOST = "\"$(BUILT_PRODUCTS_DIR)/GTMUIUnitTestingHarness.app/Contents/MacOS/GTMUIUnitTestingHarness\"";
 			};
@@ -1486,6 +1509,7 @@
 				);
 				GTM_NO_DEBUG_FRAMEWORKS = YES;
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-Foundation";
 			};
 			name = Debug;
@@ -1499,6 +1523,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-UnitTesting";
 			};
 			name = Debug;
@@ -1514,6 +1539,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = UnitTesting/GTMUIUnitTestingHarness/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GTMUIUnitTestingHarness;
 				PRODUCT_NAME = GTMUIUnitTestingHarness;
 			};
 			name = Debug;
@@ -1522,6 +1548,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F4CC9F40148E5E2500B7D68C /* ReleaseMacOSX.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_SHADOW = YES;
 				GTM_EXTRA_WARNING_OVERRIDE_CFLAGS = "-Wno-unused-parameter";
 				GTM_HOST_GCC_PREPROCESSOR_DEFINITIONS = "GTM_USING_XCTEST=1";
@@ -1538,6 +1582,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "GTM-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GTM;
 				PRODUCT_NAME = GoogleToolboxForMac;
 			};
 			name = Release;
@@ -1551,6 +1596,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-AddressBook";
 			};
 			name = Release;
@@ -1565,6 +1611,7 @@
 					"$(DEVELOPER_SDK_DIR)/../Library/Frameworks",
 				);
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-AppKit";
 				TEST_HOST = "\"$(BUILT_PRODUCTS_DIR)/GTMUIUnitTestingHarness.app/Contents/MacOS/GTMUIUnitTestingHarness\"";
 			};
@@ -1580,6 +1627,7 @@
 				);
 				GTM_NO_DEBUG_FRAMEWORKS = YES;
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-Foundation";
 			};
 			name = Release;
@@ -1593,6 +1641,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.google.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "UnitTest-UnitTesting";
 			};
 			name = Release;
@@ -1608,6 +1657,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = UnitTesting/GTMUIUnitTestingHarness/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GTMUIUnitTestingHarness;
 				PRODUCT_NAME = GTMUIUnitTestingHarness;
 			};
 			name = Release;
