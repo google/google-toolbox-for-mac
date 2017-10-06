@@ -75,7 +75,6 @@
 		8B82CF461D9C2373007182AA /* GTMRegexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047930DAE928A00C2D1CA /* GTMRegexTest.m */; };
 		8B82CF471D9C2373007182AA /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EF8AD60EBFF814008DD6DA /* GTMStackTraceTest.m */; };
 		8B82CF481D9C2373007182AA /* GTMSystemVersionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC04A710DAF144700C2D1CA /* GTMSystemVersionTest.m */; };
-		8B82CF491D9C2373007182AA /* GTMURLBuilderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9B793F14FE99F3004A993A /* GTMURLBuilderTest.m */; };
 		8B82CF4A1D9C2373007182AA /* GTMUILocalizerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 169E1E2D1459AAE100E6F562 /* GTMUILocalizerTest.m */; };
 		8B82CF4B1D9C2373007182AA /* GTMUILocalizerTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = 169E1E2E1459AAE100E6F562 /* GTMUILocalizerTest.xib */; };
 		8B82CF4C1D9C2385007182AA /* GTMFadeTruncatingLabelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */; };
@@ -728,7 +727,6 @@
 				8B82CF361D9C2373007182AA /* GTMGeometryUtilsTest.m in Sources */,
 				8B82CF441D9C2373007182AA /* GTMNSString+XMLTest.m in Sources */,
 				8B82CF431D9C2373007182AA /* GTMNSString+URLArgumentsTest.m in Sources */,
-				8B82CF491D9C2373007182AA /* GTMURLBuilderTest.m in Sources */,
 				8B82CF4E1D9C2385007182AA /* GTMUIImage+ResizeTest.m in Sources */,
 				8B82CF371D9C2373007182AA /* GTMLightweightProxyTest.m in Sources */,
 				8B82CF4C1D9C2385007182AA /* GTMFadeTruncatingLabelTest.m in Sources */,
@@ -775,6 +773,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GTM_HOST_OTHER_LDFLAGS = "-ObjC -lz -read_only_relocs suppress";
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -787,6 +786,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GTM_HOST_OTHER_LDFLAGS = "-ObjC -lz -read_only_relocs suppress";
 				INFOPLIST_FILE = "UnitTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
