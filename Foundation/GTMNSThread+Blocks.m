@@ -25,11 +25,11 @@
 
 @implementation NSThread (GTMBlocksAdditions)
 
-+ (void)gtm_runBlockOnCurrentThread:(void (^)())block {
++ (void)gtm_runBlockOnCurrentThread:(void (^)(void))block {
   block();
 }
 
-- (void)gtm_performBlock:(void (^)())block {
+- (void)gtm_performBlock:(void (^)(void))block {
   if ([[NSThread currentThread] isEqual:self]) {
     block();
   } else {
@@ -37,14 +37,14 @@
   }
 }
 
-- (void)gtm_performWaitingUntilDone:(BOOL)waitDone block:(void (^)())block {
+- (void)gtm_performWaitingUntilDone:(BOOL)waitDone block:(void (^)(void))block {
   [NSThread performSelector:@selector(gtm_runBlockOnCurrentThread:)
                    onThread:self
                  withObject:[[block copy] autorelease]
               waitUntilDone:waitDone];
 }
 
-+ (void)gtm_performBlockInBackground:(void (^)())block {
++ (void)gtm_performBlockInBackground:(void (^)(void))block {
   [NSThread performSelectorInBackground:@selector(gtm_runBlockOnCurrentThread:)
                              withObject:[[block copy] autorelease]];
 }
