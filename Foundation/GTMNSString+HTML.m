@@ -486,12 +486,14 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
           NSScanner *scanner = [NSScanner scannerWithString:hexSequence];
           unsigned value;
           if ([scanner scanHexInt:&value] &&
-              value < USHRT_MAX &&
+              value < INT_MAX &&
               value > 0
               && [scanner scanLocation] == length - 4) {
-            unichar uchar = (unichar)value;
-            NSString *charString = [NSString stringWithCharacters:&uchar length:1];
-            [finalString replaceCharactersInRange:escapeRange withString:charString];
+            value = NSSwapHostIntToLittle(value);
+            NSString *charString = [[NSString alloc] initWithBytes:&value length:sizeof(value) encoding:NSUTF32LittleEndianStringEncoding];
+            if (charString) {
+              [finalString replaceCharactersInRange:escapeRange withString:charString];
+            }
           }
 
         } else {
@@ -500,12 +502,14 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
           NSScanner *scanner = [NSScanner scannerWithString:numberSequence];
           int value;
           if ([scanner scanInt:&value] &&
-              value < USHRT_MAX &&
+              value < INT_MAX &&
               value > 0
               && [scanner scanLocation] == length - 3) {
-            unichar uchar = (unichar)value;
-            NSString *charString = [NSString stringWithCharacters:&uchar length:1];
-            [finalString replaceCharactersInRange:escapeRange withString:charString];
+            value = NSSwapHostIntToLittle(value);
+            NSString *charString = [[NSString alloc] initWithBytes:&value length:sizeof(value) encoding:NSUTF32LittleEndianStringEncoding];
+            if (charString) {
+              [finalString replaceCharactersInRange:escapeRange withString:charString];
+            }
           }
         }
       } else {
