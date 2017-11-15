@@ -226,8 +226,11 @@
   XCTAssertEqualObjects([@"&lt;this &amp; that&gt;" gtm_stringByUnescapingFromHTML],
                         @"<this & that>", @"HTML unescaping failed");
 
-  XCTAssertEqualObjects([@"&#128077;" gtm_stringByUnescapingFromHTML],
-                        @"👍", @"HTML unescaping failed");
+  XCTAssertEqualObjects([@"&#x10437;" gtm_stringByUnescapingFromHTML],
+                        @"𐐷", @"HTML unescaping failed");
+
+  XCTAssertEqualObjects([@"&#66615;" gtm_stringByUnescapingFromHTML],
+                        @"𐐷", @"HTML unescaping failed");
 
 } // testStringByUnescapingHTML
 
