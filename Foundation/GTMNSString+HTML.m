@@ -486,29 +486,46 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
           NSScanner *scanner = [NSScanner scannerWithString:hexSequence];
           unsigned value;
           if ([scanner scanHexInt:&value] &&
-              value < INT_MAX &&
               value > 0
               && [scanner scanLocation] == length - 4) {
-            value = NSSwapHostIntToLittle(value);
-            NSString *charString = [[NSString alloc] initWithBytes:&value length:sizeof(value) encoding:NSUTF32LittleEndianStringEncoding];
-            if (charString) {
+            if (value < USHRT_MAX) {
+              unichar uchar = (unichar)value;
+              NSString *charString = [NSString stringWithCharacters:&uchar length:1];
               [finalString replaceCharactersInRange:escapeRange withString:charString];
+            } else if (value >= 0x10000 && value <= 0x10FFFF) {
+              // code points in unicode supplementary planes
+              int subtractedValue = value - 0x10000;
+              unichar uchars[2];
+              uchars[0] = 0xD800 + (subtractedValue >> 10);
+              uchars[1] = 0xDC00 + (subtractedValue & 0x3FF);
+              NSString *charString = [NSString stringWithCharacters:uchars length:2];
+              if (charString) {
+                [finalString replaceCharactersInRange:escapeRange withString:charString];
+              }
             }
           }
-
         } else {
           // Decimal Sequences &#123;
           NSString *numberSequence = [escapeString substringWithRange:NSMakeRange(2, length - 3)];
           NSScanner *scanner = [NSScanner scannerWithString:numberSequence];
           int value;
           if ([scanner scanInt:&value] &&
-              value < INT_MAX &&
               value > 0
               && [scanner scanLocation] == length - 3) {
-            value = NSSwapHostIntToLittle(value);
-            NSString *charString = [[NSString alloc] initWithBytes:&value length:sizeof(value) encoding:NSUTF32LittleEndianStringEncoding];
-            if (charString) {
+            if (value < USHRT_MAX) {
+              unichar uchar = (unichar)value;
+              NSString *charString = [NSString stringWithCharacters:&uchar length:1];
               [finalString replaceCharactersInRange:escapeRange withString:charString];
+            } else if (value >= 0x10000 && value <= 0x10FFFF) {
+              // code points in unicode supplementary planes
+              int subtractedValue = value - 0x10000;
+              unichar uchars[2];
+              uchars[0] = 0xD800 + (subtractedValue >> 10);
+              uchars[1] = 0xDC00 + (subtractedValue & 0x3FF);
+              NSString *charString = [NSString stringWithCharacters:uchars length:2];
+              if (charString) {
+                [finalString replaceCharactersInRange:escapeRange withString:charString];
+              }
             }
           }
         }
