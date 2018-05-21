@@ -91,7 +91,7 @@
 
 }
 
-#ifdef GTM_MACOS_SDK
+#if GTM_MACOS_SDK
 - (void)testMacOSVersion {
   SInt32 major = -1;
   SInt32 minor = -1;
@@ -116,4 +116,5 @@
   }
 }
 #endif
+
 @end
