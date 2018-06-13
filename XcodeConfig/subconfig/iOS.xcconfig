@@ -19,5 +19,5 @@
 
 // Set default SDK.
 SDKROOT = iphoneos
-
+GTM_PLATFORM_OTHER_LDFLAGS = -ObjC
 // Use IPHONEOS_DEPLOYMENT_TARGET to set the min iOS version you will require.
