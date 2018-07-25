@@ -196,7 +196,7 @@ GTM_INLINE int lcm(int a, int b) {
   unsigned char *outBuf = (unsigned char *)[outData mutableBytes];
   NSUInteger outPos = 0;
 
-  int buffer = inBuf[inPos++];
+  unsigned int buffer = inBuf[inPos++];
   int bitsLeft = 8;
   while (bitsLeft > 0 || inPos < inLen) {
     if (bitsLeft < shift_) {
@@ -275,7 +275,7 @@ GTM_INLINE int lcm(int a, int b) {
   unsigned char *outBuf = (unsigned char *)[outData mutableBytes];
   NSUInteger outPos = 0;
 
-  int buffer = 0;
+  unsigned int buffer = 0;
   int bitsLeft = 0;
   BOOL expectPad = NO;
   for (NSUInteger i = 0; i < inLen; i++) {
