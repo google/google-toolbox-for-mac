@@ -42,14 +42,6 @@ Pod::Spec.new do |s|
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
-  s.subspec 'AddressBook' do |sp|
-    sp.source_files = 'AddressBook/GTMABAddressBook.{h,m}'
-    sp.frameworks = 'AddressBook'
-    sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.platforms = { :ios => '5.0', :osx => '10.6' }
-  end
-
   s.subspec 'DebugUtils' do |sp|
     sp.source_files =
         'DebugUtils/GTMDebugSelectorValidation.{h,m}',
