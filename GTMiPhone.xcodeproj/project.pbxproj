@@ -18,7 +18,6 @@
 		8B7651D81D9C872F00DB2C59 /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D61D9C872C00DB2C59 /* GTMLogger+ASL.m */; };
 		8B7651D91D9C873200DB2C59 /* GTMLogger+ASLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D71D9C872C00DB2C59 /* GTMLogger+ASLTest.m */; };
 		8B7651E11D9C89B800DB2C59 /* GTMRoundedRectPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651E01D9C89B800DB2C59 /* GTMRoundedRectPath.m */; };
-		8B82CEFF1D9C1C3B007182AA /* GTMABAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */; };
 		8B82CF001D9C1C3B007182AA /* GTMDebugThreadValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE839870E89C74A00C611B0 /* GTMDebugThreadValidation.m */; };
 		8B82CF011D9C1C3B007182AA /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0479D0DAE928A00C2D1CA /* GTMMethodCheck.m */; };
 		8B82CF021D9C1C3B007182AA /* GTMStringEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC768910FEF61D0006FABE /* GTMStringEncoding.m */; };
@@ -50,10 +49,6 @@
 		8B82CF2C1D9C1CC5007182AA /* GTMStringEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC768A10FEF61D0006FABE /* GTMStringEncodingTest.m */; };
 		8B82CF2E1D9C1DD4007182AA /* libGTM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B82CEF61D9C17DE007182AA /* libGTM.a */; };
 		8B82CF2F1D9C1E49007182AA /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */; };
-		8B82CF301D9C22F7007182AA /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */; };
-		8B82CF311D9C22F7007182AA /* GTMABAddressBookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */; };
-		8B82CF321D9C2309007182AA /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */; };
-		8B82CF331D9C231A007182AA /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C50FB0F764001BE894 /* phone.png */; };
 		8B82CF341D9C231F007182AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8B82CF351D9C2353007182AA /* GTMMethodCheckTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0479E0DAE928A00C2D1CA /* GTMMethodCheckTest.m */; };
 		8B82CF361D9C2373007182AA /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */; };
@@ -92,8 +87,6 @@
 		8BF753DB1D9DB3080010A295 /* GTMSQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF753DA1D9DB3080010A295 /* GTMSQLite.m */; };
 		8BF753DD1D9DB30E0010A295 /* GTMSQLiteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF753DC1D9DB30E0010A295 /* GTMSQLiteTest.m */; };
 		8BF753DF1D9DB3740010A295 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF753DE1D9DB3740010A295 /* libsqlite3.tbd */; };
-		8BFE15C70FB0F764001BE894 /* GTMABAddressBook.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */; };
-		8BFE15C90FB0F764001BE894 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFE15C50FB0F764001BE894 /* phone.png */; };
 		F4746721129703600022C1FB /* GTMSenTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4746720129703600022C1FB /* GTMSenTestCaseTest.m */; };
 /* End PBXBuildFile section */
 
@@ -149,7 +142,6 @@
 		8B3AA8F10E032FC7007E31B5 /* GTMNSString+URLArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+URLArguments.m"; sourceTree = "<group>"; };
 		8B3AA8F20E032FC7007E31B5 /* GTMNSString+URLArgumentsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+URLArgumentsTest.m"; sourceTree = "<group>"; };
 		8B3AA9330E0336AC007E31B5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		8B6C18710F3769D200E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
 		8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObserving.m"; sourceTree = "<group>"; };
 		8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObservingTest.m"; sourceTree = "<group>"; };
@@ -210,11 +202,6 @@
 		8BF753DA1D9DB3080010A295 /* GTMSQLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSQLite.m; sourceTree = "<group>"; };
 		8BF753DC1D9DB30E0010A295 /* GTMSQLiteTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSQLiteTest.m; sourceTree = "<group>"; };
 		8BF753DE1D9DB3740010A295 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		8BFE15C00FB0F764001BE894 /* GTMABAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMABAddressBook.h; sourceTree = "<group>"; };
-		8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBook.m; sourceTree = "<group>"; };
-		8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GTMABAddressBook.strings; sourceTree = "<group>"; };
-		8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMABAddressBookTest.m; sourceTree = "<group>"; };
-		8BFE15C50FB0F764001BE894 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
 		9340CF9C140550CE0026DDC9 /* GTMFadeTruncatingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFadeTruncatingLabel.h; sourceTree = "<group>"; };
 		9340CF9D140550CE0026DDC9 /* GTMFadeTruncatingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingLabel.m; sourceTree = "<group>"; };
 		9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingLabelTest.m; sourceTree = "<group>"; };
@@ -270,7 +257,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BF753DF1D9DB3740010A295 /* libsqlite3.tbd in Frameworks */,
-				8B82CF321D9C2309007182AA /* AddressBook.framework in Frameworks */,
 				8B82CF661D9C3366007182AA /* XCTest.framework in Frameworks */,
 				8B82CF341D9C231F007182AA /* UIKit.framework in Frameworks */,
 				8B82CF511D9C239A007182AA /* Security.framework in Frameworks */,
@@ -296,7 +282,6 @@
 			isa = PBXGroup;
 			children = (
 				8BC047750DAE926E00C2D1CA /* GTMDefines.h */,
-				8BFE15BF0FB0F764001BE894 /* AddressBook */,
 				8BC0479A0DAE928A00C2D1CA /* DebugUtils */,
 				8BC047760DAE928A00C2D1CA /* Foundation */,
 				8BA5F4060E75669000798036 /* iPhone */,
@@ -316,7 +301,6 @@
 				8B82CEEE1D9C1559007182AA /* XCTest.framework */,
 				23220A05152C9E980060CB7D /* Security.framework */,
 				8B3AA9330E0336AC007E31B5 /* CFNetwork.framework */,
-				8B5A9E1F0E71CB6C005DA441 /* AddressBook.framework */,
 				8B308BCD0DAD0B8400183556 /* QuartzCore.framework */,
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -503,26 +487,6 @@
 			path = Project;
 			sourceTree = "<group>";
 		};
-		8BFE15BF0FB0F764001BE894 /* AddressBook */ = {
-			isa = PBXGroup;
-			children = (
-				8BFE15C00FB0F764001BE894 /* GTMABAddressBook.h */,
-				8BFE15C10FB0F764001BE894 /* GTMABAddressBook.m */,
-				8BFE15C20FB0F764001BE894 /* GTMABAddressBook.strings */,
-				8BFE15C30FB0F764001BE894 /* GTMABAddressBookTest.m */,
-				8BFE15C40FB0F764001BE894 /* TestData */,
-			);
-			path = AddressBook;
-			sourceTree = "<group>";
-		};
-		8BFE15C40FB0F764001BE894 /* TestData */ = {
-			isa = PBXGroup;
-			children = (
-				8BFE15C50FB0F764001BE894 /* phone.png */,
-			);
-			path = TestData;
-			sourceTree = "<group>";
-		};
 		F435E49F0DC8F5290069CDE8 /* TestData */ = {
 			isa = PBXGroup;
 			children = (
@@ -629,8 +593,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFE15C70FB0F764001BE894 /* GTMABAddressBook.strings in Resources */,
-				8BFE15C90FB0F764001BE894 /* phone.png in Resources */,
 				64D0F5DF0FD3E68400506CC7 /* GTMUIImage+Resize_50x100.png in Resources */,
 				64D0F5E60FD3E68400506CC7 /* GTMUIImage+Resize_100x50.png in Resources */,
 				64D0F5ED0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png in Resources */,
@@ -642,8 +604,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B82CF331D9C231A007182AA /* phone.png in Resources */,
-				8B82CF301D9C22F7007182AA /* GTMABAddressBook.strings in Resources */,
 				8B82CF5B1D9C25E0007182AA /* GTMUIImage+Resize_50x100.png in Resources */,
 				8B82CF5A1D9C25E0007182AA /* GTMUIImage+Resize_100x50.png in Resources */,
 				8B82CF4B1D9C2373007182AA /* GTMUILocalizerTest.xib in Resources */,
@@ -696,7 +656,6 @@
 				8B82CF101D9C1C3B007182AA /* GTMNSString+URLArguments.m in Sources */,
 				8B82CF091D9C1C3B007182AA /* GTMNSDictionary+URLArguments.m in Sources */,
 				8B82CF061D9C1C3B007182AA /* GTMLoggerRingBufferWriter.m in Sources */,
-				8B82CEFF1D9C1C3B007182AA /* GTMABAddressBook.m in Sources */,
 				8B82CF071D9C1C3B007182AA /* GTMNSArray+Merge.m in Sources */,
 				8B82CF131D9C1C3B007182AA /* GTMRegex.m in Sources */,
 				8B82CF0A1D9C1C3B007182AA /* GTMNSFileManager+Path.m in Sources */,
@@ -718,7 +677,6 @@
 				8B82CF4D1D9C2385007182AA /* GTMUIFont+LineHeightTest.m in Sources */,
 				8B82CF381D9C2373007182AA /* GTMLoggerTest.m in Sources */,
 				8B82CF3A1D9C2373007182AA /* GTMNSArray+MergeTest.m in Sources */,
-				8B82CF311D9C22F7007182AA /* GTMABAddressBookTest.m in Sources */,
 				8B82CF2F1D9C1E49007182AA /* GTMSenTestCase.m in Sources */,
 				8B82CF4A1D9C2373007182AA /* GTMUILocalizerTest.m in Sources */,
 				8BF753DD1D9DB30E0010A295 /* GTMSQLiteTest.m in Sources */,
