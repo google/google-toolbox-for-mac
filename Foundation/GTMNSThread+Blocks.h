@@ -40,13 +40,5 @@
 
 // A simple thread that does nothing but handle performBlock and
 // performSelector calls.
-@interface GTMSimpleWorkerThread : NSThread {
- @private
-  CFRunLoopRef runLoop_;
-  NSConditionLock *runLock_;
-}
-
-// Will stop the thread, blocking till the thread exits.
-- (void)stop;
-
+@interface GTMSimpleWorkerThread : NSThread
 @end
