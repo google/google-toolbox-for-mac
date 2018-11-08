@@ -17,10 +17,13 @@
 //
 
 #import <pthread.h>
+
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
 static const NSTimeInterval kTestTimeout = 5;
+static const int kThreadMethodCounter = 5;
+static const int kThreadMethoduSleep = 10000;
 
 @interface GTMNSThread_BlocksTest : GTMTestCase {
  @private
@@ -59,7 +62,8 @@ static const NSTimeInterval kTestTimeout = 5;
 
   // Block without waiting requires a runloop spin.
   runThread = nil;
-  XCTestExpectation *expectation = [self expectationWithDescription:@"BlockRan"];
+  XCTestExpectation *expectation =
+      [self expectationWithDescription:@"BlockRan"];
   [currentThread gtm_performWaitingUntilDone:NO block:^{
     runThread = [NSThread currentThread];
     [expectation fulfill];
@@ -69,7 +73,8 @@ static const NSTimeInterval kTestTimeout = 5;
 }
 
 - (void)testPerformBlockInBackground {
-  XCTestExpectation *expectation = [self expectationWithDescription:@"BlockRan"];
+  XCTestExpectation *expectation =
+      [self expectationWithDescription:@"BlockRan"];
   __block NSThread *runThread = nil;
   [NSThread gtm_performBlockInBackground:^{
     runThread = [NSThread currentThread];
@@ -102,7 +107,8 @@ static const NSTimeInterval kTestTimeout = 5;
   worker = [[GTMSimpleWorkerThread alloc] init];
   XCTAssertFalse([worker isExecuting]);
   XCTAssertFalse([worker isFinished]);
-  XCTestExpectation *blockPerformed = [self expectationWithDescription:@"BlockIsRunning"];
+  XCTestExpectation *blockPerformed =
+      [self expectationWithDescription:@"BlockIsRunning"];
   [worker start];
   [workerThread_ gtm_performWaitingUntilDone:YES block:^{
     [blockPerformed fulfill];
@@ -112,10 +118,13 @@ static const NSTimeInterval kTestTimeout = 5;
   XCTAssertFalse([worker isCancelled]);
   XCTAssertFalse([worker isFinished]);
   NSPredicate *predicate =
-      [NSPredicate predicateWithBlock:^BOOL(id workerThread, NSDictionary<NSString *,id> *options) {
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
     return (BOOL)(![workerThread isExecuting]);
   }];
-  [self expectationForPredicate:predicate evaluatedWithObject:worker handler:NULL];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:worker
+                        handler:NULL];
 
   [worker cancel];
   [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
@@ -129,7 +138,8 @@ static const NSTimeInterval kTestTimeout = 5;
   __block NSThread *runThread = nil;
 
   // Runs on the other thread
-  XCTestExpectation *expectation = [self expectationWithDescription:@"BlockRan"];
+  XCTestExpectation *expectation =
+      [self expectationWithDescription:@"BlockRan"];
   [workerThread_ gtm_performBlock:^{
     runThread = [NSThread currentThread];
     [expectation fulfill];
@@ -163,27 +173,144 @@ static const NSTimeInterval kTestTimeout = 5;
      pthread_exit(NULL);
   }];
   NSPredicate *predicate =
-      [NSPredicate predicateWithBlock:^BOOL(id workerThread, NSDictionary<NSString *,id> *options) {
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
     return (BOOL)(![workerThread isExecuting]);
   }];
-  [self expectationForPredicate:predicate evaluatedWithObject:workerThread_ handler:NULL];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:workerThread_
+                        handler:NULL];
   [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertTrue([workerThread_ isFinished]);
 }
-
-
 
 - (void)testCancelFromThread {
   [workerThread_ gtm_performWaitingUntilDone:NO block:^{
     [workerThread_ cancel];
   }];
   NSPredicate *predicate =
-      [NSPredicate predicateWithBlock:^BOOL(id workerThread, NSDictionary<NSString *,id> *options) {
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
     return (BOOL)(![workerThread isExecuting]);
   }];
-  [self expectationForPredicate:predicate evaluatedWithObject:workerThread_ handler:NULL];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:workerThread_
+                        handler:NULL];
   [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertTrue([workerThread_ isFinished]);
+}
+
+- (void)testNestedCancelFromThread {
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+      [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+        [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+          [workerThread_ cancel];
+        }];
+      }];
+    }];
+  }];
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
+    return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:workerThread_
+                        handler:NULL];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  XCTAssertTrue([workerThread_ isFinished]);
+}
+
+- (void)testCancelFromOtherThread {
+  // Show that cancel actually cancels before all blocks are executed.
+  __block int counter = 0;
+  for (int i = 0; i < kThreadMethodCounter; i++) {
+    [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+      sleep(1);
+      ++counter;
+    }];
+  }
+  [workerThread_ cancel];
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
+    return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:workerThread_
+                        handler:NULL];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  XCTAssertTrue([workerThread_ isFinished]);
+  XCTAssertNotEqual(counter, kThreadMethodCounter);
+}
+
+- (void)testStopFromThread {
+  // Show that stop forces all blocks to be executed.
+  __block int counter = 0;
+  for (int i = 0; i < kThreadMethodCounter; i++) {
+    [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+      usleep(kThreadMethoduSleep);
+      ++counter;
+    }];
+  }
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    [workerThread_ stop];
+  }];
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
+      return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:workerThread_
+                        handler:NULL];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  XCTAssertTrue([workerThread_ isFinished]);
+  XCTAssertEqual(counter, kThreadMethodCounter);
+}
+
+- (void)testNestedStopFromThread {
+  __block int counter = 0;
+  for (int i = 0; i < kThreadMethodCounter; i++) {
+    [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+      usleep(kThreadMethoduSleep);
+      ++counter;
+    }];
+  }
+  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+    [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+      [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+        [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+          [workerThread_ stop];
+        }];
+      }];
+    }];
+  }];
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread,
+                                            NSDictionary<NSString *,id> *opts) {
+    return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate
+            evaluatedWithObject:workerThread_
+                        handler:NULL];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  XCTAssertTrue([workerThread_ isFinished]);
+  XCTAssertEqual(counter, kThreadMethodCounter);
+}
+
+- (void)testStopFromOtherThread {
+  __block int counter = 0;
+  for (int i = 0; i < kThreadMethodCounter; i++) {
+    [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+      usleep(kThreadMethoduSleep);
+      ++counter;
+    }];
+  }
+  [workerThread_ stop];
+  XCTAssertTrue([workerThread_ isFinished]);
+  XCTAssertEqual(counter, kThreadMethodCounter);
 }
 
 - (void)testPThreadName {

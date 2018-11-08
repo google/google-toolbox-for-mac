@@ -53,33 +53,18 @@
 
 #endif  // NS_BLOCKS_AVAILABLE
 
-@implementation GTMSimpleWorkerThread {
-  NSLock *sourceLock_;
-  CFRunLoopSourceRef source_;  // Protected by sourceLock_
-  CFRunLoopRef cfRunLoop_;
-}
-
-static void RunLoopContextEmptyFunc(void *info) {
-  // Empty because the source is used solely for signalling.
-  // The documentation for CFRunLoopSourceContext does not
-  // make it clear if you can have a null perform method.
-}
+@implementation GTMSimpleWorkerThread
 
 - (void)main {
   NSRunLoop *nsRunLoop = [NSRunLoop currentRunLoop];
-  {  // Braces are just to denote what is protected by sourceLock_
-    [sourceLock_ lock];
-    cfRunLoop_ = [nsRunLoop getCFRunLoop];
-    CFRetain(cfRunLoop_);
-    CFRunLoopSourceContext context = {0};
-    context.perform = RunLoopContextEmptyFunc;
-    source_ = CFRunLoopSourceCreate(NULL, 0, &context);
-    CFRunLoopAddSource(cfRunLoop_, source_, kCFRunLoopCommonModes);
-    [sourceLock_ unlock];
-  }
+  // According to the NSRunLoop docs, a port must be added to the
+  // runloop to keep the loop alive, otherwise when you call
+  // runMode:beforeDate: it will immediately return with NO. We never
+  // send anything over this port, it's only here to keep the run loop
+  // looping.
+  [nsRunLoop addPort:[NSPort port] forMode:NSDefaultRunLoopMode];
   while (true) {
-    BOOL cancelled = [self isCancelled];
-    if (cancelled) {
+    if (self.isCancelled) {
       break;
     }
     BOOL ranLoop = [nsRunLoop runMode:NSDefaultRunLoopMode
@@ -90,38 +75,39 @@ static void RunLoopContextEmptyFunc(void *info) {
   }
 }
 
-- (void)dealloc {
-  if (cfRunLoop_) {
-    CFRelease(cfRunLoop_);
-  }
-  if (source_) {
-    CFRelease(source_);
-  }
-  [super dealloc];
-}
-
-- (void)start {
-  // Protect lock in case we are "started" twice in different threads.
-  // NSThread has no documentation regarding the safety of this, so
-  // making safe by default.
-  @synchronized (self) {
-    if (sourceLock_) {
-      return;
-    }
-    sourceLock_ = [[NSLock alloc] init];
-  }
-  [super start];
-}
-
 - (void)cancel {
   [super cancel];
-  {  // Braces are just to denote what is protected by sourceLock_
-    [sourceLock_ lock];
-    if (source_) {
-      CFRunLoopSourceSignal(source_);
-      CFRunLoopWakeUp(cfRunLoop_);
+  if (![[NSThread currentThread] isEqual:self]) {
+    // This call just forces the runloop in main to spin allowing main to see
+    // that the isCancelled flag has been set. Note that this is only really
+    // needed if there are no blocks/selectors in the queue for the thread. If
+    // there are other items to be processed in the queue, the next one will be
+    // executed and then the "cancel" will be seen in main, and it will exit
+    // (and the other blocks will be dropped).
+    [self performSelector:@selector(class)
+                 onThread:self
+               withObject:nil
+            waitUntilDone:NO];
+  }
+}
+
+- (void)stop {
+  if ([[NSThread currentThread] isEqual:self]) {
+    [super cancel];
+  } else {
+    // This call forces the runloop in main to spin allowing main to see that
+    // the isCancelled flag has been set. Note that we explicitly want to send
+    // it to the thread to process so it is added to the end of the queue of
+    // blocks to be processed. 'stop' guarantees that all items in the queue
+    // will be processed before it ends.
+    [self performSelector:@selector(cancel)
+                 onThread:self
+               withObject:nil
+            waitUntilDone:YES];
+    while (![self isFinished] || [self isExecuting]) {
+      // Spin until the thread is really done.
+      usleep(10);
     }
-    [sourceLock_ unlock];
   }
 }
 
