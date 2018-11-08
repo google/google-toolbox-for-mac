@@ -20,7 +20,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
-#import "GTMFoundationUnitTestingUtilities.h"
+static const NSTimeInterval kTestTimeout = 5;
 
 @interface GTMNSThread_BlocksTest : GTMTestCase {
  @private
@@ -36,60 +36,46 @@
 }
 
 - (void)tearDown {
-  [workerThread_ stop];
+  [workerThread_ cancel];
   [workerThread_ release];
 }
 
 - (void)testPerformBlockOnCurrentThread {
   NSThread *currentThread = [NSThread currentThread];
-
-  GTMUnitTestingBooleanRunLoopContext *context =
-      [GTMUnitTestingBooleanRunLoopContext context];
   __block NSThread *runThread = nil;
 
   // Straight block runs right away (no runloop spin)
-  runThread = nil;
-  [context setShouldStop:NO];
   [currentThread gtm_performBlock:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
   }];
   XCTAssertEqualObjects(runThread, currentThread);
-  XCTAssertTrue([context shouldStop]);
 
   // Block with waiting runs immediately as well.
   runThread = nil;
-  [context setShouldStop:NO];
   [currentThread gtm_performWaitingUntilDone:YES block:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
   }];
   XCTAssertEqualObjects(runThread, currentThread);
-  XCTAssertTrue([context shouldStop]);
 
   // Block without waiting requires a runloop spin.
   runThread = nil;
-  [context setShouldStop:NO];
+  XCTestExpectation *expectation = [self expectationWithDescription:@"BlockRan"];
   [currentThread gtm_performWaitingUntilDone:NO block:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
+    [expectation fulfill];
   }];
-  XCTAssertTrue([[NSRunLoop currentRunLoop]
-                 gtm_runUpToSixtySecondsWithContext:context]);
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertEqualObjects(runThread, currentThread);
-  XCTAssertTrue([context shouldStop]);
 }
 
 - (void)testPerformBlockInBackground {
-  GTMUnitTestingBooleanRunLoopContext *context =
-      [GTMUnitTestingBooleanRunLoopContext context];
+  XCTestExpectation *expectation = [self expectationWithDescription:@"BlockRan"];
   __block NSThread *runThread = nil;
   [NSThread gtm_performBlockInBackground:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
+    [expectation fulfill];
   }];
-  XCTAssertTrue([[NSRunLoop currentRunLoop]
-                 gtm_runUpToSixtySecondsWithContext:context]);
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertNotNil(runThread);
   XCTAssertNotEqualObjects(runThread, [NSThread currentThread]);
 }
@@ -100,151 +86,103 @@
   XCTAssertFalse([worker isExecuting]);
   XCTAssertFalse([worker isFinished]);
 
-  // Unstarted worker can be stopped without error.
-  [worker stop];
-  XCTAssertFalse([worker isExecuting]);
-  XCTAssertTrue([worker isFinished]);
 
-  // And can be stopped again
-  [worker stop];
-  XCTAssertFalse([worker isExecuting]);
-  XCTAssertTrue([worker isFinished]);
-
-  // A thread we start can be stopped with correct state.
-  worker = [[GTMSimpleWorkerThread alloc] init];
-  XCTAssertFalse([worker isExecuting]);
-  XCTAssertFalse([worker isFinished]);
-  [worker start];
-  XCTAssertTrue([worker isExecuting]);
-  XCTAssertFalse([worker isFinished]);
-  [worker stop];
-  XCTAssertFalse([worker isExecuting]);
-  XCTAssertTrue([worker isFinished]);
-
-  // A cancel is also honored
-  worker = [[GTMSimpleWorkerThread alloc] init];
-  XCTAssertFalse([worker isExecuting]);
-  XCTAssertFalse([worker isFinished]);
-  [worker start];
-  XCTAssertTrue([worker isExecuting]);
-  XCTAssertFalse([worker isFinished]);
+  // Unstarted worker can be cancelled without error.
   [worker cancel];
-  // And after some time we're done. We're generous here, this needs to
-  // exceed the worker thread's runloop timeout.
-  sleep(5);
   XCTAssertFalse([worker isExecuting]);
-  XCTAssertTrue([worker isFinished]);
-}
+  XCTAssertFalse([worker isFinished]);
 
-- (void)testWorkerThreadStopTiming {
-  // Throw a sleep and make sure that we stop as soon as we can.
-  NSDate *start = [NSDate date];
-  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
-                                    autorelease];
-  [workerThread_ gtm_performBlock:^{
-    [threadLock lock];
-    [threadLock unlockWithCondition:1];
-    [NSThread sleepForTimeInterval:.25];
+  // And can be cancelled again
+  [worker cancel];
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
+  [worker release];
+
+  // A thread we start can be cancelled with correct state.
+  worker = [[GTMSimpleWorkerThread alloc] init];
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertFalse([worker isFinished]);
+  XCTestExpectation *blockPerformed = [self expectationWithDescription:@"BlockIsRunning"];
+  [worker start];
+  [workerThread_ gtm_performWaitingUntilDone:YES block:^{
+    [blockPerformed fulfill];
   }];
-  [threadLock lockWhenCondition:1];
-  [threadLock unlock];
-  [workerThread_ stop];
-  XCTAssertFalse([workerThread_ isExecuting]);
-  XCTAssertTrue([workerThread_ isFinished]);
-  XCTAssertEqualWithAccuracy(-[start timeIntervalSinceNow], 0.25, 0.25);
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  XCTAssertTrue([worker isExecuting]);
+  XCTAssertFalse([worker isCancelled]);
+  XCTAssertFalse([worker isFinished]);
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread, NSDictionary<NSString *,id> *options) {
+    return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate evaluatedWithObject:worker handler:NULL];
+
+  [worker cancel];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  XCTAssertFalse([worker isExecuting]);
+  XCTAssertTrue([worker isCancelled]);
+  XCTAssertTrue([worker isFinished]);
+  [worker release];
 }
 
 - (void)testPerformBlockOnWorkerThread {
-  GTMUnitTestingBooleanRunLoopContext *context =
-      [GTMUnitTestingBooleanRunLoopContext context];
   __block NSThread *runThread = nil;
 
   // Runs on the other thread
-  runThread = nil;
-  [context setShouldStop:NO];
+  XCTestExpectation *expectation = [self expectationWithDescription:@"BlockRan"];
   [workerThread_ gtm_performBlock:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
+    [expectation fulfill];
   }];
-  XCTAssertTrue([[NSRunLoop currentRunLoop]
-                 gtm_runUpToSixtySecondsWithContext:context]);
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertNotNil(runThread);
   XCTAssertEqualObjects(runThread, workerThread_);
 
   // Other thread no wait.
   runThread = nil;
-  [context setShouldStop:NO];
+  expectation = [self expectationWithDescription:@"BlockRan2"];
   [workerThread_ gtm_performWaitingUntilDone:NO block:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
+    [expectation fulfill];
   }];
-  XCTAssertTrue([[NSRunLoop currentRunLoop]
-                 gtm_runUpToSixtySecondsWithContext:context]);
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertNotNil(runThread);
   XCTAssertEqualObjects(runThread, workerThread_);
 
   // Waiting requires no runloop spin
   runThread = nil;
-  [context setShouldStop:NO];
   [workerThread_ gtm_performWaitingUntilDone:YES block:^{
     runThread = [NSThread currentThread];
-    [context setShouldStop:YES];
   }];
-  XCTAssertTrue([context shouldStop]);
   XCTAssertNotNil(runThread);
   XCTAssertEqualObjects(runThread, workerThread_);
 }
 
-- (void)testExitingBlockIsExecuting {
-  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
-                                    autorelease];
+- (void)testExitingBlock {
   [workerThread_ gtm_performWaitingUntilDone:NO block:^{
-    [threadLock lock];
-    [threadLock unlockWithCondition:1];
-    pthread_exit(NULL);
+     pthread_exit(NULL);
   }];
-  [threadLock lockWhenCondition:1];
-  [threadLock unlock];
-  // Give the pthread_exit() a bit of time
-  [NSThread sleepForTimeInterval:.25];
-  // Did we notice the thread died? Does [... isExecuting] clean up?
-  XCTAssertFalse([workerThread_ isExecuting]);
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread, NSDictionary<NSString *,id> *options) {
+    return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate evaluatedWithObject:workerThread_ handler:NULL];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertTrue([workerThread_ isFinished]);
 }
 
-- (void)testExitingBlockCancel {
-  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
-                                    autorelease];
-  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
-    [threadLock lock];
-    [threadLock unlockWithCondition:1];
-    pthread_exit(NULL);
-  }];
-  [threadLock lockWhenCondition:1];
-  [threadLock unlock];
-  // Give the pthread_exit() a bit of time
-  [NSThread sleepForTimeInterval:.25];
-  // Cancel/stop the thread
-  [workerThread_ stop];
-  // Did we notice the thread died? Did we clean up?
-  XCTAssertFalse([workerThread_ isExecuting]);
-  XCTAssertTrue([workerThread_ isFinished]);
-}
 
-- (void)testStopFromThread {
-  NSConditionLock *threadLock = [[[NSConditionLock alloc] initWithCondition:0]
-                                    autorelease];
+
+- (void)testCancelFromThread {
   [workerThread_ gtm_performWaitingUntilDone:NO block:^{
-    [threadLock lock];
-    [workerThread_ stop];  // Shold not block.
-    [threadLock unlockWithCondition:1];
+    [workerThread_ cancel];
   }];
-  // Block should complete before the stop occurs.
-  [threadLock lockWhenCondition:1];
-  [threadLock unlock];
-  // Still need to give the thread a moment to not be executing
-  sleep(1);
-  XCTAssertFalse([workerThread_ isExecuting]);
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id workerThread, NSDictionary<NSString *,id> *options) {
+    return (BOOL)(![workerThread isExecuting]);
+  }];
+  [self expectationForPredicate:predicate evaluatedWithObject:workerThread_ handler:NULL];
+  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertTrue([workerThread_ isFinished]);
 }
 
