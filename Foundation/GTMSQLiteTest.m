@@ -629,9 +629,6 @@ static void TestUpperLower16Impl(sqlite3_context *context,
 
   XCTAssertEqual(err, [db lastErrorCode],
                  @"lastErrorCode API did not match what last API returned!");
-  // Calling lastErrorCode resets API error, so the next string will not indicate any error
-  XCTAssertEqualStrings(@"unknown error", [db lastErrorString],
-                        @"lastErrorString API did not match expected string!");
 
   oneRow = [statement resultStringAtPosition:0];
   XCTAssertEqualStrings(oneRow, @"a2", @"a did not come second!");
