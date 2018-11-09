@@ -20,6 +20,10 @@
 #import "GTMRegex.h"
 #import "GTMDefines.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMRegex
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 // This is the pattern to use for walking replacement text when doing
 // substitutions.
 //
@@ -796,3 +800,5 @@ static NSString *const kReplacementPattern =
 }
 
 @end
+
+#pragma clang diagnostic push

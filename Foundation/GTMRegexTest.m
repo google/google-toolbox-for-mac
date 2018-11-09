@@ -26,6 +26,10 @@
 // libregex, we just want to test our wrapper.
 //
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMRegex
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMRegexTest : GTMTestCase
 @end
 
@@ -1218,3 +1222,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop
