@@ -47,4 +47,5 @@
 // returns immediately.
 // Note that "stop" will set the isCancelled on the thread.
 - (void)stop;
+
 @end
