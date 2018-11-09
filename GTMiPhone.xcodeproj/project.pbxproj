@@ -177,7 +177,6 @@
 		8BC0478A0DAE928A00C2D1CA /* GTMNSString+XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+XML.h"; sourceTree = "<group>"; };
 		8BC0478B0DAE928A00C2D1CA /* GTMNSString+XML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+XML.m"; sourceTree = "<group>"; };
 		8BC0478C0DAE928A00C2D1CA /* GTMNSString+XMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+XMLTest.m"; sourceTree = "<group>"; };
-		8BC047900DAE928A00C2D1CA /* GTMObjectSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMObjectSingleton.h; sourceTree = "<group>"; };
 		8BC047910DAE928A00C2D1CA /* GTMRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMRegex.h; sourceTree = "<group>"; };
 		8BC047920DAE928A00C2D1CA /* GTMRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMRegex.m; sourceTree = "<group>"; };
 		8BC047930DAE928A00C2D1CA /* GTMRegexTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMRegexTest.m; sourceTree = "<group>"; };
@@ -400,7 +399,6 @@
 				8B6FF391151A664600B0642B /* GTMNSThread+Blocks.h */,
 				8B6FF392151A664600B0642B /* GTMNSThread+Blocks.m */,
 				8B6FF393151A664600B0642B /* GTMNSThread+BlocksTest.m */,
-				8BC047900DAE928A00C2D1CA /* GTMObjectSingleton.h */,
 				8BC047910DAE928A00C2D1CA /* GTMRegex.h */,
 				8BC047920DAE928A00C2D1CA /* GTMRegex.m */,
 				8BC047930DAE928A00C2D1CA /* GTMRegexTest.m */,
