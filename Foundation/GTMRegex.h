@@ -117,6 +117,9 @@ _EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError
 //                             withReplacement:@"<i>\\1</i><b>\\2</b>"];
 //   ....
 //
+
+// Use NSRegularExpression instead
+NS_DEPRECATED(10_0, 10_7, 1_0, 4_0)
 @interface GTMRegex : NSObject {
  @private
   NSString *pattern_;
