@@ -25,7 +25,6 @@
 		8B82CF041D9C1C3B007182AA /* GTMLightweightProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711580ECDFF0400B9B276 /* GTMLightweightProxy.m */; };
 		8B82CF051D9C1C3B007182AA /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA30E7559C7004FB565 /* GTMLogger.m */; };
 		8B82CF061D9C1C3B007182AA /* GTMLoggerRingBufferWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFB20E755B4D004FB565 /* GTMLoggerRingBufferWriter.m */; };
-		8B82CF071D9C1C3B007182AA /* GTMNSArray+Merge.m in Sources */ = {isa = PBXBuildFile; fileRef = 629446180EDE177A009295EA /* GTMNSArray+Merge.m */; };
 		8B82CF081D9C1C3B007182AA /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */; };
 		8B82CF091D9C1C3B007182AA /* GTMNSDictionary+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFCB0E755C94004FB565 /* GTMNSDictionary+URLArguments.m */; };
 		8B82CF0A1D9C1C3B007182AA /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047850DAE928A00C2D1CA /* GTMNSFileManager+Path.m */; };
@@ -55,7 +54,6 @@
 		8B82CF371D9C2373007182AA /* GTMLightweightProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711590ECDFF0400B9B276 /* GTMLightweightProxyTest.m */; };
 		8B82CF381D9C2373007182AA /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA40E7559C7004FB565 /* GTMLoggerTest.m */; };
 		8B82CF391D9C2373007182AA /* GTMLoggerRingBufferWriterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFB30E755B4D004FB565 /* GTMLoggerRingBufferWriterTest.m */; };
-		8B82CF3A1D9C2373007182AA /* GTMNSArray+MergeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */; };
 		8B82CF3B1D9C2373007182AA /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */; };
 		8B82CF3C1D9C2373007182AA /* GTMNSDictionary+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFCC0E755C94004FB565 /* GTMNSDictionary+URLArgumentsTest.m */; };
 		8B82CF3D1D9C2373007182AA /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047860DAE928A00C2D1CA /* GTMNSFileManager+PathTest.m */; };
@@ -116,9 +114,6 @@
 		1D6058910D05DD3D006BFB54 /* GTMiPhoneTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMiPhoneTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		23220A05152C9E980060CB7D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		629446170EDE177A009295EA /* GTMNSArray+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSArray+Merge.h"; sourceTree = "<group>"; };
-		629446180EDE177A009295EA /* GTMNSArray+Merge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSArray+Merge.m"; sourceTree = "<group>"; };
-		629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSArray+MergeTest.m"; sourceTree = "<group>"; };
 		64D0F5C50FD3E65C00506CC7 /* GTMUIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIImage+Resize.h"; sourceTree = "<group>"; };
 		64D0F5C60FD3E65C00506CC7 /* GTMUIImage+ResizeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIImage+ResizeTest.m"; sourceTree = "<group>"; };
 		64D0F5C70FD3E65C00506CC7 /* GTMUIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIImage+Resize.m"; sourceTree = "<group>"; };
@@ -363,9 +358,6 @@
 				F418AFB10E755B4D004FB565 /* GTMLoggerRingBufferWriter.h */,
 				F418AFB20E755B4D004FB565 /* GTMLoggerRingBufferWriter.m */,
 				F418AFB30E755B4D004FB565 /* GTMLoggerRingBufferWriterTest.m */,
-				629446170EDE177A009295EA /* GTMNSArray+Merge.h */,
-				629446180EDE177A009295EA /* GTMNSArray+Merge.m */,
-				629446190EDE177A009295EA /* GTMNSArray+MergeTest.m */,
 				8BC0477E0DAE928A00C2D1CA /* GTMNSData+zlib.h */,
 				8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */,
 				8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */,
@@ -654,7 +646,6 @@
 				8B82CF101D9C1C3B007182AA /* GTMNSString+URLArguments.m in Sources */,
 				8B82CF091D9C1C3B007182AA /* GTMNSDictionary+URLArguments.m in Sources */,
 				8B82CF061D9C1C3B007182AA /* GTMLoggerRingBufferWriter.m in Sources */,
-				8B82CF071D9C1C3B007182AA /* GTMNSArray+Merge.m in Sources */,
 				8B82CF131D9C1C3B007182AA /* GTMRegex.m in Sources */,
 				8B82CF0A1D9C1C3B007182AA /* GTMNSFileManager+Path.m in Sources */,
 				8B82CF001D9C1C3B007182AA /* GTMDebugThreadValidation.m in Sources */,
@@ -674,7 +665,6 @@
 				8B82CF2C1D9C1CC5007182AA /* GTMStringEncodingTest.m in Sources */,
 				8B82CF4D1D9C2385007182AA /* GTMUIFont+LineHeightTest.m in Sources */,
 				8B82CF381D9C2373007182AA /* GTMLoggerTest.m in Sources */,
-				8B82CF3A1D9C2373007182AA /* GTMNSArray+MergeTest.m in Sources */,
 				8B82CF2F1D9C1E49007182AA /* GTMSenTestCase.m in Sources */,
 				8B82CF4A1D9C2373007182AA /* GTMUILocalizerTest.m in Sources */,
 				8BF753DD1D9DB30E0010A295 /* GTMSQLiteTest.m in Sources */,
