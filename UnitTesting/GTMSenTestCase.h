@@ -57,6 +57,7 @@
   #if GTM_USING_XCTEST
     #import <XCTest/XCTest.h>
   #else
+    #warning "SenTestingKit is deprecated. Please move to XCTest."
     #import <SenTestingKit/SenTestingKit.h>
   #endif // GTM_USING_XCTEST
   // We don't support our built in testing on MacOS since its always had sentest.
@@ -65,6 +66,7 @@
     #import <XCTest/XCTest.h>
   #else
     #import <Foundation/Foundation.h>
+    NS_DEPRECATED(10.4, 10.8, 1.0, 7.0, "Please move to XCTest")
     GTM_EXTERN NSString *STComposeString(NSString *, ...) NS_FORMAT_FUNCTION(1, 2);
   #endif  // GTM_USING_XCTEST
 #endif  // GTM_MACOS_SDK
@@ -1266,6 +1268,7 @@ do { \
 + (NSArray *)testInvocations;
 @end
 
+NS_CLASS_DEPRECATED(10.4, 10.8, 1.0, 7.0, "Please move to XCTest")
 @interface SenTestCase : NSObject<SenTestCase> {
  @private
   NSInvocation *invocation_;
@@ -1285,6 +1288,7 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 #if GTM_USING_XCTEST
 @interface GTMTestCase : XCTestCase
 #else
+NS_CLASS_DEPRECATED(10.4, 10.8, 1.0, 7.0, "Please move to XCTest version of GTMTestCase")
 @interface GTMTestCase : SenTestCase
 #endif
 
