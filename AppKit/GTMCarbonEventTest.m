@@ -40,7 +40,7 @@
 
 @interface GTMCarbonEventDispatcherHandlerTest : GTMTestCase {
  @private
-  GTMUnitTestingBooleanRunLoopContext *hotKeyHit_;
+  XCTestExpectation *hotKeyHitExpectation_;
 }
 @end
 
@@ -257,15 +257,6 @@ extern EventTargetRef GetApplicationEventTarget(void);
 
 @implementation GTMCarbonEventDispatcherHandlerTest
 
-- (void)setUp {
-  hotKeyHit_ = [[GTMUnitTestingBooleanRunLoopContext alloc] init];
-}
-
-- (void)tearDown {
-  [hotKeyHit_ release];
-  hotKeyHit_ = nil;
-}
-
 - (void)testEventHandler {
   GTMCarbonEventDispatcherHandler *dispatcher
     = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
@@ -274,12 +265,12 @@ extern EventTargetRef GetApplicationEventTarget(void);
 
 - (void)hitHotKey:(GTMCarbonHotKey *)key {
   XCTAssertEqualObjects([key userInfo], self);
-  [hotKeyHit_ setShouldStop:YES];
+  [hotKeyHitExpectation_ fulfill];
 }
 
 - (void)hitExceptionalHotKey:(GTMCarbonHotKey *)key {
   XCTAssertEqualObjects([key userInfo], self);
-  [hotKeyHit_ setShouldStop:YES];
+  [hotKeyHitExpectation_ fulfill];
   [NSException raise:@"foo" format:@"bar"];
 }
 
@@ -309,11 +300,12 @@ extern EventTargetRef GetApplicationEventTarget(void);
     XCTAssertNotNil(hotKey, @"Unable to create hotkey");
 
     // Post the hotkey combo to the event queue. If everything is working
-    // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
-    // us.  We run the event loop for a set amount of time waiting for this to
-    // happen.
+    // correctly hitHotKey: should get called, and hotKeyHitExpecatation_ will
+    // be set for us. We run the event loop for a set amount of time waiting for
+    // this to happen.
+    hotKeyHitExpectation_ = [self expectationWithDescription:@"hotKey"];
     [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    XCTAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_]);
+    [self waitForExpectationsWithTimeout:60 handler:NULL];
     [dispatcher unregisterHotKey:hotKey];
   }
 }
@@ -338,11 +330,12 @@ extern EventTargetRef GetApplicationEventTarget(void);
     XCTAssertNotNil(hotKey, @"Unable to create hotkey");
 
     // Post the hotkey combo to the event queue. If everything is working
-    // correctly hitHotKey: should get called, and hotKeyHit_ will be set for
-    // us.  We run the event loop for a set amount of time waiting for this to
-    // happen.
+    // correctly hitHotKey: should get called, and hotKeyHitExpecatation_ will
+    // be set for us. We run the event loop for a set amount of time waiting for
+    // this to happen.
+    hotKeyHitExpectation_ = [self expectationWithDescription:@"hotKey"];
     [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    XCTAssertTrue([NSApp gtm_runUpToSixtySecondsWithContext:hotKeyHit_]);
+    [self waitForExpectationsWithTimeout:60 handler:NULL];
     [dispatcher unregisterHotKey:hotKey];
   }
 }
