@@ -18,38 +18,37 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMKeyValueAnimation.h"
-#import "GTMFoundationUnitTestingUtilities.h"
 
 @interface GTMKeyValueAnimationTest : GTMTestCase <NSAnimationDelegate> {
  @private
-  GTMUnitTestingBooleanRunLoopContext *context_;
-  BOOL shouldStartHit_;
+  XCTestExpectation *oggleExpectation_;
+  XCTestExpectation *shouldStartExpectation_;
 }
 @end
 
 @implementation GTMKeyValueAnimationTest
 
 - (void)testAnimation {
-  shouldStartHit_ = NO;
   GTMKeyValueAnimation *anim =
     [[[GTMKeyValueAnimation alloc] initWithTarget:self
                                           keyPath:@"oggle"] autorelease];
+  oggleExpectation_ = [self expectationWithDescription:@"oggle"];
+  // We are going to get called multiple times.
+  oggleExpectation_.assertForOverFulfill = NO;
+  shouldStartExpectation_ = [self expectationWithDescription:@"shouldStart"];
   [anim setDelegate:self];
   [anim startAnimation];
-  context_ = [GTMUnitTestingBooleanRunLoopContext context];
-  [[NSRunLoop currentRunLoop] gtm_runUpToSixtySecondsWithContext:context_];
+  [self waitForExpectationsWithTimeout:60 handler:NULL];
   [anim stopAnimation];
-  XCTAssertTrue([context_ shouldStop], @"Animation value never got set");
-  XCTAssertTrue(shouldStartHit_, @"animationShouldStart not called");
 }
 
 - (BOOL)animationShouldStart:(NSAnimation*)animation {
-  shouldStartHit_ = YES;
+  [shouldStartExpectation_ fulfill];
   return YES;
 }
 
 - (void)setOggle:(CGFloat)oggle {
-  [context_ setShouldStop:YES];
+  [oggleExpectation_ fulfill];
 }
 
 @end
