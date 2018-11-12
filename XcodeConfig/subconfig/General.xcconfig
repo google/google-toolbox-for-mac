@@ -107,6 +107,7 @@ GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64] = YES
 //           in the iPhoneSDK making us unable to turn this warning on.
 // -Wstrict-prototypes - breaks the GTM_METHOD_CHECK macro
 // -Wcast-align - causes a whole pile of problems buildng with iPhoneSDK
+// -Wreserved-id-macro - causes a lot of problems with xctest framework.
 
 // Objective C warnings
 // http://gcc.gnu.org/onlinedocs/gcc/Objective_002dC-and-Objective_002dC_002b_002b-Dialect-Options.html
@@ -117,7 +118,7 @@ GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64] = YES
 //                           same selector rendering this mostly useless to us
 
 // C Only Warnings
-GTM_GENERAL_OTHER_CFLAGS = -Wreserved-id-macro -Wdiv-by-zero -Wbad-function-cast  -Wnested-externs -Wold-style-definition
+GTM_GENERAL_OTHER_CFLAGS = -Wdiv-by-zero -Wbad-function-cast  -Wnested-externs -Wold-style-definition
 
 // C++ Only Warnings
 GTM_GENERAL_OTHER_CPLUSPLUSFLAGS = -Wabi -Wctor-dtor-privacy -Wstrict-null-sentinel -Wsign-promo
