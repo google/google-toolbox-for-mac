@@ -20,6 +20,10 @@
 #import "GTMNSDictionary+URLArguments.h"
 #import "GTMDefines.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMNSDictionary+URLArguments
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMNSDictionary_URLArgumentsTest : GTMTestCase
 @end
 
@@ -85,3 +89,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop

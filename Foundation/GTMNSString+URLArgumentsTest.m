@@ -19,6 +19,10 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSString+URLArguments.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMNSString+URLArguments
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMNSString_URLArgumentsTest : GTMTestCase
 @end
 
@@ -92,3 +96,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop
