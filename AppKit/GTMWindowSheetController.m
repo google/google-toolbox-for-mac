@@ -186,7 +186,7 @@ willPositionSheet:(NSWindow*)sheet
 - (NSArray*)viewsWithAttachedSheets {
   NSMutableArray* views = [NSMutableArray array];
   NSValue* key;
-  GTM_FOREACH_KEY(key, sheets_) {
+  for (key in sheets_) {
     [views addObject:[key nonretainedObjectValue]];
   }
 
@@ -570,7 +570,7 @@ willPositionSheet:(NSWindow*)sheet
 
 - (void)systemRequestsVisibilityForWindow:(NSWindow*)window {
   NSValue* key;
-  GTM_FOREACH_KEY(key, sheets_) {
+  for (key in sheets_) {
     GTMWSCSheetInfo* sheetInfo = [sheets_ objectForKey:key];
     if (sheetInfo->overlayWindow_ == window) {
       NSView* view = [key nonretainedObjectValue];
