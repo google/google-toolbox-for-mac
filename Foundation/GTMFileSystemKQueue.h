@@ -45,6 +45,7 @@ typedef unsigned int GTMFileSystemKQueueEvents;
 // delivery, so keep that in mind when you're using this class.  This class
 // explicitly does not handle arbitrary runloops and threading.
 //
+NS_CLASS_DEPRECATED(10_2, 10_6, 2_0, 4_0, "Use libdispatch with DISPATCH_SOURCE_TYPE_VNODE source.")
 @interface GTMFileSystemKQueue : NSObject {
  @private
   NSString *path_;
