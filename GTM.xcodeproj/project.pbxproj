@@ -75,8 +75,6 @@
 		8B7DCE1B0DFF39850017E983 /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */; };
 		8B82CEEB1D9B4DA1007182AA /* GTMFoundationUnitTestingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B17FD13117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m */; };
 		8B8B10F90EEB8B9E00E543D0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
-		8B8EC87D0EF17C270044D13F /* GTMNSFileManager+Carbon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B8EC87B0EF17C270044D13F /* GTMNSFileManager+Carbon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8B8EC87E0EF17C270044D13F /* GTMNSFileManager+Carbon.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8EC87C0EF17C270044D13F /* GTMNSFileManager+Carbon.m */; };
 		8BA983C81D9AE7E6009724B5 /* GTMUnitTestingTest.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA983C51D9AE7E6009724B5 /* GTMUnitTestingTest.nib */; };
 		8BAA9E380F7C19D500DF4F12 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BAA9E360F7C19D500DF4F12 /* MainMenu.xib */; };
 		8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */; };
@@ -108,7 +106,6 @@
 		8BFE6E891282371200B5C894 /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */; };
 		8BFE6E8B1282371200B5C894 /* GTMNSDictionary+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C3745E0DD8D85B00E97817 /* GTMNSDictionary+URLArgumentsTest.m */; };
 		8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
-		8BFE6E8E1282371200B5C894 /* GTMNSFileManager+CarbonTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8EC87F0EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m */; };
 		8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
 		8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
 		8BFE6E921282371200B5C894 /* GTMNSScanner+JSONTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */; };
@@ -301,9 +298,6 @@
 		8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDebugThreadValidation.h; sourceTree = "<group>"; };
 		8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDebugThreadValidation.m; sourceTree = "<group>"; };
 		8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSenTestCase.m; sourceTree = "<group>"; };
-		8B8EC87B0EF17C270044D13F /* GTMNSFileManager+Carbon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileManager+Carbon.h"; sourceTree = "<group>"; };
-		8B8EC87C0EF17C270044D13F /* GTMNSFileManager+Carbon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+Carbon.m"; sourceTree = "<group>"; };
-		8B8EC87F0EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileManager+CarbonTest.m"; sourceTree = "<group>"; };
 		8BA983C51D9AE7E6009724B5 /* GTMUnitTestingTest.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = GTMUnitTestingTest.nib; sourceTree = "<group>"; };
 		8BAA9E370F7C19D500DF4F12 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = UnitTesting/GTMUIUnitTestingHarness/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		8BBD1F8A1519258A003152F0 /* GTMNSThread+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSThread+Blocks.h"; sourceTree = "<group>"; };
@@ -689,9 +683,6 @@
 				8B29078411F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.h */,
 				8B29078511F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m */,
 				8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */,
-				8B8EC87B0EF17C270044D13F /* GTMNSFileManager+Carbon.h */,
-				8B8EC87C0EF17C270044D13F /* GTMNSFileManager+Carbon.m */,
-				8B8EC87F0EF17C2F0044D13F /* GTMNSFileManager+CarbonTest.m */,
 				F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */,
 				F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */,
 				F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */,
@@ -838,7 +829,6 @@
 				F41711350ECDFBD500B9B276 /* GTMLightweightProxy.h in Headers */,
 				8B3E292F0EEB53F8000681D8 /* GTMCarbonEvent.h in Headers */,
 				F49FA8440EEF2AB700077669 /* GTMFileSystemKQueue.h in Headers */,
-				8B8EC87D0EF17C270044D13F /* GTMNSFileManager+Carbon.h in Headers */,
 				8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */,
 				7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */,
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
@@ -1141,7 +1131,6 @@
 				8BFE6E891282371200B5C894 /* GTMNSData+zlibTest.m in Sources */,
 				8BFE6E8B1282371200B5C894 /* GTMNSDictionary+URLArgumentsTest.m in Sources */,
 				8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
-				8BFE6E8E1282371200B5C894 /* GTMNSFileManager+CarbonTest.m in Sources */,
 				8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */,
 				8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 				8BFE6E921282371200B5C894 /* GTMNSScanner+JSONTest.m in Sources */,
@@ -1189,7 +1178,6 @@
 				F41711360ECDFBD500B9B276 /* GTMLightweightProxy.m in Sources */,
 				8B3E292E0EEB53F8000681D8 /* GTMCarbonEvent.m in Sources */,
 				F49FA8450EEF2AB700077669 /* GTMFileSystemKQueue.m in Sources */,
-				8B8EC87E0EF17C270044D13F /* GTMNSFileManager+Carbon.m in Sources */,
 				8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
 				7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */,
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
