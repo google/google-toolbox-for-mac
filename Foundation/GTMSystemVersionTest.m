@@ -19,6 +19,10 @@
 #import "GTMSenTestCase.h"
 #import "GTMSystemVersion.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMSystemVersion
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMSystemVersionTest : GTMTestCase
 @end
 
@@ -118,3 +122,5 @@
 #endif
 
 @end
+
+#pragma clang diagnostic pop
