@@ -36,7 +36,7 @@
   NSDictionary *bindingOptions = [bindingInfo objectForKey:NSOptionsKey];
   XCTAssertNotNil(bindingOptions);
   NSString *key = nil;
-  GTM_FOREACH_KEY(key, bindingOptions) {
+  for(key in bindingOptions) {
     id value = [bindingOptions objectForKey:key];
     if ([value isKindOfClass:[NSString class]]) {
       XCTAssertFalse([value hasPrefix:@"^"],
