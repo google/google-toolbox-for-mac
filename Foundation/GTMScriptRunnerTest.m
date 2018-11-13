@@ -199,35 +199,12 @@
   [sr setEnvironment:newEnv];
   output = [sr run:@"/usr/bin/env | wc -l" standardError:&error];
   XCTAssertEqual([output intValue], numVars + 1,
-                 @"should have one more env var now. StdErr %@", error);
+      @"should have one more env var now. StdErr %@", error);
 
   [sr setEnvironment:nil];
   output = [sr run:@"/usr/bin/env | wc -l" standardError:&error];
   XCTAssertEqual([output intValue], numVars,
-                 @"should be back down to %d vars. StdErr:%@", numVars, error);
-
-  NSMutableDictionary *currVars
-    = [[[[NSProcessInfo processInfo] environment] mutableCopy] autorelease];
-
-  // When debugging a release build _ was not in the processInfo environment
-  // causing the assert below to fail. Not sure why, but it appeared
-  // to be harmless, and easy to account for.
-  [currVars setObject:@"/usr/bin/env" forKey:@"_"];
-  [sr setEnvironment:currVars];
-
-  // Account for the shell level.
-  [currVars setObject:@"1" forKey:@"SHLVL"];
-
-  // Xcode inserts DYLD_FRAMEWORK_PATH and DYLD_LIBRARY_PATH when running XCTests,
-  // but that doesn't get passed on when running the script.
-  [currVars removeObjectForKey:@"DYLD_FRAMEWORK_PATH"];
-  [currVars removeObjectForKey:@"DYLD_LIBRARY_PATH"];
-
-  output = [sr run:@"/usr/bin/env | /usr/bin/sort" standardError:&error];
-  NSArray *lineArray = [output componentsSeparatedByString:@"\n"];
-  XCTAssertEqual([lineArray count], [currVars count],
-                  @"StdErr:%@\nCurrentEnvironment:\n%@\nExpected environment:\n%@",
-                  error, output, currVars);
+       @"should be back down to %d vars. StdErr:%@", numVars, error);
 }
 
 - (void)testDescription {
