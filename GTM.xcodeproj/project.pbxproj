@@ -25,6 +25,7 @@
 		8B07C60F1D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
 		8B07C6101D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
 		8B07C6111D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
+		8B0D4638219A4E5D00B6D4A7 /* GTMSignalHandlerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41A6F810E02EC3600788A6C /* GTMSignalHandlerTest.m */; };
 		8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */; };
 		8B158ADE10A8C42000C93125 /* GTMNSAnimation+Duration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B17FD15117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B17FD13117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m */; };
@@ -1146,6 +1147,7 @@
 				8BFE6E821282371200B5C894 /* GTMLogger+ASLTest.m in Sources */,
 				8BFE6E831282371200B5C894 /* GTMLoggerRingBufferWriterTest.m in Sources */,
 				8BFE6E841282371200B5C894 /* GTMLoggerTest.m in Sources */,
+				8B0D4638219A4E5D00B6D4A7 /* GTMSignalHandlerTest.m in Sources */,
 				8BFE6E891282371200B5C894 /* GTMNSData+zlibTest.m in Sources */,
 				8BFE6E8B1282371200B5C894 /* GTMNSDictionary+URLArgumentsTest.m in Sources */,
 				8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */,

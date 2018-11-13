@@ -23,7 +23,7 @@
 //
 // This is a very simple, easy-to-use class for registering handlers that get
 // called when a specific signal is delivered.  Also handy for ignoring
-// inconvenient signals.  Ignoring SIGKILL is not support for what should be
+// inconvenient signals.  Ignoring SIGKILL is not supported for what should be
 // obvious reasons.  You can pass nil for target & action to ignore the signal.
 //
 // Example of how to catch SIGABRT and SIGTERM while ignring SIGWINCH:
@@ -53,16 +53,15 @@
 //
 // Multiple handlers for the same signal is NOT supported.
 //
-// kqueue() is used to handle the signals, and the default runloop for the first
-// signal handler is used for signal delivery, so keep that in mind when you're
-// using this class.  This class explicitly does not handle arbitrary runloops
-// and threading.
-//
+// libdispatch is used to handle the signals. NB that sending a signal
+// from dispatch_get_main_queue will not get caught in a CFRunLoop based run
+// loop.
+// https://openradar.appspot.com/radar?id=5030997057863680
+
+NS_DEPRECATED(10_0, 10_6, 1_0, 4_0, "Use a DISPATCH_SOURCE_TYPE_SIGNAL dispatch source.")
 @interface GTMSignalHandler : NSObject {
  @private
-  int signo_;
-  GTM_WEAK id target_;
-  SEL action_;
+  dispatch_source_t signalSource_;
 }
 
 // Returns a retained signal handler object that will invoke |handler| on the

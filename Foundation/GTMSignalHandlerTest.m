@@ -18,47 +18,41 @@
 
 #import "GTMSenTestCase.h"
 #import "GTMSignalHandler.h"
-#import "GTMFoundationUnitTestingUtilities.h"
+
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMRegex
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @interface GTMSignalHandlerTest : GTMTestCase
 @end
 
-@interface SignalCounter : NSObject<GTMUnitTestingRunLoopContext> {
- @public
+@interface SignalCounter : NSObject {
   int signalCount_;
   int lastSeenSignal_;
-  BOOL shouldStop_;
 }
 - (int)count;
 - (int)lastSeen;
 - (void)countSignal:(int)signo;
 + (id)signalCounter;
-- (void)resetShouldStop;
 @end // SignalCounter
 
 @implementation SignalCounter
 + (id)signalCounter {
   return [[[self alloc] init] autorelease];
 }
+
 - (int)count {
   return signalCount_;
 }
+
 - (int)lastSeen {
   return lastSeenSignal_;
 }
+
 // Count the number of times this signal handler has fired.
 - (void)countSignal:(int)signo {
   signalCount_++;
   lastSeenSignal_ = signo;
-  shouldStop_ = YES;
-}
-
-- (BOOL)shouldStop {
-  return shouldStop_;
-}
-
-- (void)resetShouldStop {
-  shouldStop_ = NO;
 }
 
 @end
@@ -85,7 +79,18 @@
 }
 
 - (void)testSingleHandler {
+  // SIGIO and SIGWINCH were chosen for this test because LLDB does not trap
+  // them which allows you to run this test under the debugger.
+  // If you need to use other signals and the debugger is getting annoying
+  // https://stackoverflow.com/questions/11984051/how-to-tell-lldb-debugger-not-to-handle-sigbus
   SignalCounter *counter = [SignalCounter signalCounter];
+
+  // Raising our signals off of a background queue becuase raising them
+  // off of dispatch_main_queue does not work with a CFRunLoop.
+  // https://openradar.appspot.com/radar?id=5030997057863680
+  dispatch_queue_t raiseQueue =
+      dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  const int deltaT = 5000000;
   XCTAssertNotNil(counter);
 
   GTMSignalHandler *handler = [[[GTMSignalHandler alloc]
@@ -94,64 +99,81 @@
                                          action:@selector(countSignal:)]
                                autorelease];
   XCTAssertNotNil(handler);
-  raise(SIGWINCH);
 
-  NSRunLoop *rl = [NSRunLoop currentRunLoop];
-  [rl gtm_runUpToSixtySecondsWithContext:counter];
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.lastSeen == %d", SIGWINCH]
+            evaluatedWithObject:counter handler:NULL];
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.count == 1"]
+            evaluatedWithObject:counter handler:NULL];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, deltaT), raiseQueue, ^{
+    // Using dispatch_after to make sure our signal is sent AFTER the runloop
+    // is being spun in waitForExpectationsWithTimeout.
+    raise(SIGWINCH);
+  });
+  [self waitForExpectationsWithTimeout:5 handler:NULL];
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.lastSeen == %d", SIGWINCH]
+            evaluatedWithObject:counter handler:NULL];
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.count == 2"]
+            evaluatedWithObject:counter handler:NULL];
 
-  XCTAssertEqual([counter count], 1);
-  XCTAssertEqual([counter lastSeen], SIGWINCH);
-  [counter resetShouldStop];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, deltaT), raiseQueue, ^{
+    raise(SIGWINCH);
+  });
+  [self waitForExpectationsWithTimeout:5 handler:NULL];
 
-  raise(SIGWINCH);
-  [rl gtm_runUpToSixtySecondsWithContext:counter];
-
-  XCTAssertEqual([counter count], 2);
-  XCTAssertEqual([counter lastSeen], SIGWINCH);
-  [counter resetShouldStop];
-
-  // create a second one to make sure we're seding data where we want
+  // create a second one to make sure we're sending data where we want
   SignalCounter *counter2 = [SignalCounter signalCounter];
   XCTAssertNotNil(counter2);
-  [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
-                                     target:counter2
-                                     action:@selector(countSignal:)] autorelease];
+  [[[GTMSignalHandler alloc] initWithSignal:SIGIO
+      target:counter2
+      action:@selector(countSignal:)] autorelease];
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.lastSeen == %d", SIGIO]
+            evaluatedWithObject:counter2 handler:NULL];
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.count == 1"]
+            evaluatedWithObject:counter2 handler:NULL];
 
-  raise(SIGUSR1);
-  [rl gtm_runUpToSixtySecondsWithContext:counter2];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, deltaT), raiseQueue, ^{
+    raise(SIGIO);
+  });
+  [self waitForExpectationsWithTimeout:5 handler:NULL];
 
   XCTAssertEqual([counter count], 2);
   XCTAssertEqual([counter lastSeen], SIGWINCH);
-  XCTAssertEqual([counter2 count], 1);
-  XCTAssertEqual([counter2 lastSeen], SIGUSR1);
 
   [handler invalidate];
 
   // The signal is still ignored (so we shouldn't die), but the
   // the handler method should not get called.
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.lastSeen == %d", SIGWINCH]
+            evaluatedWithObject:counter handler:NULL].inverted = YES;
+  [self expectationForPredicate:
+      [NSPredicate predicateWithFormat:@"self.count == 2"]
+            evaluatedWithObject:counter handler:NULL].inverted = YES;
   raise(SIGWINCH);
-  [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
-
-  XCTAssertEqual([counter count], 2);
-  XCTAssertEqual([counter lastSeen], SIGWINCH);
-  XCTAssertEqual([counter2 count], 1);
-  XCTAssertEqual([counter2 lastSeen], SIGUSR1);
-
+  [self waitForExpectationsWithTimeout:.2 handler:NULL];
 }
 
 - (void)testIgnore {
   SignalCounter *counter = [SignalCounter signalCounter];
   XCTAssertNotNil(counter);
 
-  [[[GTMSignalHandler alloc] initWithSignal:SIGUSR1
+  [[[GTMSignalHandler alloc] initWithSignal:SIGIO
                                      target:counter
                                      action:NULL] autorelease];
 
-  raise(SIGUSR1);
-  NSRunLoop *rl = [NSRunLoop currentRunLoop];
-  [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.2]];
-  XCTAssertEqual([counter count], 0);
-
+  [self expectationForPredicate:
+       [NSPredicate predicateWithFormat:@"self.count == 0"]
+            evaluatedWithObject:counter handler:NULL].inverted = YES;
+  raise(SIGIO);
+  [self waitForExpectationsWithTimeout:.2 handler:NULL];
 }
 
 @end
+
+#pragma clang diagnostic pop
