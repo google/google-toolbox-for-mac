@@ -20,6 +20,7 @@
 #import "GTMDefines.h"
 
 // A class for getting information about what system we are running on
+NS_DEPRECATED(10_0, 10_10, 1_0, 8_0, "Use NSProcessInfo.operatingSystemVersion.")
 @interface GTMSystemVersion : NSObject
 
 // Returns the current system version major.minor.bugFix
