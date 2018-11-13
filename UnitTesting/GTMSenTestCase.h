@@ -1282,9 +1282,7 @@ GTM_EXTERN NSString *const SenTestLineNumberKey;
 
 #endif // GTM_IPHONE_SDK && !GTM_USING_XCTEST
 
-// All unittest cases in GTM should inherit from GTMTestCase. It makes sure
-// to set up our logging system correctly to verify logging calls.
-// See GTMUnitTestDevLog.h for details
+// All unittest cases in GTM should inherit from GTMTestCase.
 #if GTM_USING_XCTEST
 @interface GTMTestCase : XCTestCase
 #else
