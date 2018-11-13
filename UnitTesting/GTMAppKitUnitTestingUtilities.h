@@ -72,9 +72,9 @@
 // YES.
 - (BOOL)gtm_runUntilDate:(NSDate *)date
                  context:(id<GTMUnitTestingRunLoopContext>)context
-    NS_DEPRECATED(10.4, 10.8, 1.0, 7.0, "Please move to XCTestExpectations");
+    NS_DEPRECATED(10_4, 10_8, 1_0, 7_0, "Please move to XCTestExpectations");
 
 // Calls -gtm_runUntilDate:context: with the timeout date set to 60 seconds.
 - (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context
-    NS_DEPRECATED(10.4, 10.8, 1.0, 7.0, "Please move to XCTestExpectations");
+    NS_DEPRECATED(10_4, 10_8, 1_0, 7_0, "Please move to XCTestExpectations");
 @end
