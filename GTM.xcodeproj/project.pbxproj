@@ -116,7 +116,6 @@
 		8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
 		8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C372AE0DD8A8D700E97817 /* GTMNSString+URLArgumentsTest.m */; };
 		8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
-		8BFE6E9A1282371200B5C894 /* GTMPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FD945D0E1D30F80005867E /* GTMPathTest.m */; };
 		8BFE6E9B1282371200B5C894 /* GTMRegexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */; };
 		8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };
 		8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F95B567D0F46208E0051A6F1 /* GTMSQLiteTest.m */; };
@@ -186,8 +185,6 @@
 		F98681970E2C20C800CEE8BF /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = F98681680E2C1E3A00CEE8BF /* GTMLogger+ASL.m */; };
 		F99161B50F0B151400213D3B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F99161B40F0B151400213D3B /* libsqlite3.dylib */; };
 		F99163270F14100F00213D3B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F99161B40F0B151400213D3B /* libsqlite3.dylib */; };
-		F9FD94630E1D31280005867E /* GTMPath.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FD945C0E1D30F80005867E /* GTMPath.m */; };
-		F9FD94CD0E1D50450005867E /* GTMPath.h in Headers */ = {isa = PBXBuildFile; fileRef = F9FD945E0E1D30F80005867E /* GTMPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -414,9 +411,6 @@
 		F98681680E2C1E3A00CEE8BF /* GTMLogger+ASL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMLogger+ASL.m"; sourceTree = "<group>"; };
 		F98681950E2C20C100CEE8BF /* GTMLogger+ASLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMLogger+ASLTest.m"; sourceTree = "<group>"; };
 		F99161B40F0B151400213D3B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
-		F9FD945C0E1D30F80005867E /* GTMPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMPath.m; sourceTree = "<group>"; };
-		F9FD945D0E1D30F80005867E /* GTMPathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMPathTest.m; sourceTree = "<group>"; };
-		F9FD945E0E1D30F80005867E /* GTMPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMPath.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,9 +713,6 @@
 				F43E4E5E0D4E5EC90041161F /* GTMNSData+zlib.h */,
 				F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */,
 				F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */,
-				F9FD945E0E1D30F80005867E /* GTMPath.h */,
-				F9FD945C0E1D30F80005867E /* GTMPath.m */,
-				F9FD945D0E1D30F80005867E /* GTMPathTest.m */,
 				F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */,
 				F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */,
 				F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */,
@@ -828,7 +819,6 @@
 				33C372A60DD8A88500E97817 /* GTMNSString+URLArguments.h in Headers */,
 				33C374380DD8D44800E97817 /* GTMNSDictionary+URLArguments.h in Headers */,
 				F41A6F820E02EC3600788A6C /* GTMSignalHandler.h in Headers */,
-				F9FD94CD0E1D50450005867E /* GTMPath.h in Headers */,
 				F42597790E23FE3A003BEA3E /* GTMNSString+FindFolder.h in Headers */,
 				F92B9FA80E2E64B900A2FE61 /* GTMLogger.h in Headers */,
 				F92B9FA90E2E64BC00A2FE61 /* GTMLogger+ASL.h in Headers */,
@@ -1149,7 +1139,6 @@
 				8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */,
 				8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */,
 				8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */,
-				8BFE6E9A1282371200B5C894 /* GTMPathTest.m in Sources */,
 				8BFE6E9B1282371200B5C894 /* GTMRegexTest.m in Sources */,
 				8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */,
 				8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */,
@@ -1179,7 +1168,6 @@
 				33C374390DD8D44800E97817 /* GTMNSDictionary+URLArguments.m in Sources */,
 				8B7DCBBD0DFF0F5D0017E983 /* GTMMethodCheck.m in Sources */,
 				F41A6F830E02EC3600788A6C /* GTMSignalHandler.m in Sources */,
-				F9FD94630E1D31280005867E /* GTMPath.m in Sources */,
 				F425977A0E23FE3A003BEA3E /* GTMNSString+FindFolder.m in Sources */,
 				F98680C30E2C163D00CEE8BF /* GTMLogger.m in Sources */,
 				F98681970E2C20C800CEE8BF /* GTMLogger+ASL.m in Sources */,
