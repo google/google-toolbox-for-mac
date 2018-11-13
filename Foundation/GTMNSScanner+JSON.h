@@ -23,16 +23,12 @@
 
 // Grabs the first JSON Object (dictionary) that it finds and returns it
 // in jsonString. We don't parse the json, we just return the first valid JSON
-// dictionary we find. There are several other JSON parser packages that
-// will actually parse the json for you. We recommend json-framework
-// http://code.google.com/p/json-framework/
-- (BOOL)gtm_scanJSONObjectString:(NSString **)jsonString;
+// dictionary we find. Please use NSJSONSerialization instead.
+- (BOOL)gtm_scanJSONObjectString:(NSString **)jsonString NS_DEPRECATED(10_0, 10_7, 2_0, 5_0, "Use NSJSONSerialization instead");
 
 // Grabs the first JSON Array (array) that it finds and returns it
 // in jsonString. We don't parse the json, we just return the first valid JSON
-// array we find. There are several other JSON parser packages that
-// will actually parse the json for you. We recommend json-framework
-// http://code.google.com/p/json-framework/
-- (BOOL)gtm_scanJSONArrayString:(NSString**)jsonString;
+// array we find. Please use NSJSONSerialization instead.
+- (BOOL)gtm_scanJSONArrayString:(NSString**)jsonString NS_DEPRECATED(10_0, 10_7, 2_0, 5_0, "Use NSJSONSerialization instead");
 
 @end

@@ -19,6 +19,10 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSScanner+JSON.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMNSScanner+JSON
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMNSScanner_JSONTest : GTMTestCase
 @end
 
@@ -127,3 +131,5 @@ struct {
 }
 
 @end
+
+#pragma clang diagnostic pop
