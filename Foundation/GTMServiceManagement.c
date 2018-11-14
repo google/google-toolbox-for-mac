@@ -49,6 +49,10 @@
 #include <sys/sysctl.h>
 #endif
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMServiceManagement
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 typedef struct {
   CFMutableDictionaryRef dict;
   bool convert_non_standard_objects;
@@ -786,5 +790,7 @@ CFDictionaryRef GTMSMCopyAllJobDictionaries(void) {
   }
   return dict;
 }
+
+#pragma clang diagnostic pop
 
 #endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4

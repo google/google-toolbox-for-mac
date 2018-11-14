@@ -18,6 +18,10 @@
 
 #include "GTMServiceManagement.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMServiceManagement
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 int main(int argc, const char** argv) {
 #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   CFErrorRef error = NULL;
@@ -30,3 +34,5 @@ int main(int argc, const char** argv) {
 #endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   return 0;
 }
+
+#pragma clang diagnostic pop
