@@ -489,7 +489,7 @@ willPositionSheet:(NSWindow*)sheet
 
 - (NSRect)screenFrameOfView:(NSView*)view {
   NSRect viewFrame = [view convertRect:[view bounds] toView:nil];
-  viewFrame.origin = [[view window] convertBaseToScreen:viewFrame.origin];
+  viewFrame = [[view window] convertRectToScreen:viewFrame];
   return viewFrame;
 }
 
