@@ -96,6 +96,10 @@ static CFSocketRef gRunLoopSocket = NULL;
   return path_;
 }
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMFileSystemKQueue
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 // Cribbed from Advanced Mac OS X Programming.
 static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
                            CFDataRef address, const void *data, void *info) {
@@ -135,6 +139,8 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
 
   [pool drain];
 }
+
+#pragma clang diagnostic pop
 
 // Cribbed from Advanced Mac OS X Programming
 - (void)addFileDescriptorMonitor:(int)fd {

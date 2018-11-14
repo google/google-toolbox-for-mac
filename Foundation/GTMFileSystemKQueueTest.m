@@ -20,6 +20,10 @@
 #import "GTMFileSystemKQueue.h"
 
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMFileSystemKQueue
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 // Private methods of GTMFileSystemKQueue we use for some tests
 @interface GTMFileSystemKQueue (PrivateMethods)
 - (void)unregisterWithKQueue;
@@ -508,3 +512,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop
