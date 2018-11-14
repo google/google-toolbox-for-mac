@@ -33,6 +33,10 @@ static NSString const *kGTMSocketKey
 static NSString const *kGTMSocketName
   = @"GTMServiceManagementTesting";
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMServiceManagement
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMServiceManagementTest : GTMTestCase
 @end
 
@@ -214,5 +218,7 @@ static NSString const *kGTMSocketName
 }
 
 @end
+
+#pragma clang diagnostic pop
 
 #endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
