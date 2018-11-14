@@ -21,7 +21,7 @@
 #import "GTMSenTestCase.h"
 #import "GTMNSThread+Blocks.h"
 
-static const NSTimeInterval kTestTimeout = 5;
+static const NSTimeInterval kTestTimeout = 10;
 static const int kThreadMethodCounter = 5;
 static const int kThreadMethoduSleep = 10000;
 
