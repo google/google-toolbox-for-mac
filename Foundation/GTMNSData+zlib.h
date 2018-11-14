@@ -32,7 +32,7 @@
 //
 //  Uses the default compression level.
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length;
+                             length:(NSUInteger)length __attribute__((deprecated("Use error variant")));
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length
                               error:(NSError **)error;

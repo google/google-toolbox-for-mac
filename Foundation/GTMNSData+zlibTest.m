@@ -431,12 +431,16 @@ static BOOL HasGzipHeader(NSData *data) {
   // w/ *Bytes apis, default level
   NSError *error = nil;
   NSData *gzipped = [NSData gtm_dataByGzippingBytes:[data bytes]
-                                             length:[data length]];
+                                             length:[data length]
+                                              error:&error];
   XCTAssertNotNil(gzipped, @"failed to gzip data block");
   XCTAssertGreaterThan([gzipped length],
                        (NSUInteger)0, @"failed to gzip data block");
   XCTAssertTrue(HasGzipHeader(gzipped),
                 @"doesn't have gzip header on gzipped data");
+  XCTAssertNil(error);
+  error = nil;
+
   NSData *dataPrime = [NSData gtm_dataByInflatingBytes:[gzipped bytes]
                                                 length:[gzipped length]
                                                  error:&error];
