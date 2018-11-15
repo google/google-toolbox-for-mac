@@ -316,7 +316,7 @@ static const int kThreadMethoduSleep = 10000;
 - (void)testPThreadName {
   NSString *testName = @"InigoMontoya";
   [workerThread_ setName:testName];
-  [workerThread_ gtm_performWaitingUntilDone:NO block:^{
+  [workerThread_ gtm_performWaitingUntilDone:YES block:^{
     XCTAssertEqualObjects([workerThread_ name], testName);
     char threadName[100];
     pthread_getname_np(pthread_self(), threadName, 100);
