@@ -23,6 +23,10 @@
 #import "GTMNSDictionary+URLArguments.h"
 #import "GTMNSString+URLArguments.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMURLBuilder
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation GTMURLBuilder
 
 @synthesize baseURLString = baseURLString_;
@@ -136,3 +140,5 @@
 }
 
 @end
+
+#pragma clang diagnostic push

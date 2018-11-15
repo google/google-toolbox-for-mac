@@ -18,6 +18,10 @@
 
 #import "GTMSystemVersion.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMSystemVersion.h
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 #import <objc/message.h>
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10 && \
     MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_8
@@ -285,3 +289,5 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
 }
 
 @end
+
+#pragma clang diagnostic pop

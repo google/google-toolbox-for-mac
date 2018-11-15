@@ -22,6 +22,10 @@
 #import <dispatch/dispatch.h>
 #import "GTMDebugSelectorValidation.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMSignalHandler
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 // Simplifying assumption: No more than one handler for a particular signal is
 // alive at a time.  When the second signal is registered, kqueue just updates
 // the info about the first signal, which makes -dealloc time complicated (what
@@ -98,3 +102,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop
