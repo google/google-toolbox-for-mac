@@ -130,14 +130,6 @@ willPositionSheet:(NSWindow*)sheet
   return self;
 }
 
-- (void)finalize {
-  _GTMDevAssert([sheets_ count] == 0,
-                @"Finalizing a controller with sheets still active!");
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-  [super finalize];
-}
-
 - (void)dealloc {
   _GTMDevAssert([sheets_ count] == 0,
                 @"Deallocing a controller with sheets still active!");

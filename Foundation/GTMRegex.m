@@ -23,6 +23,7 @@
 #pragma clang diagnostic push
 // Ignore all of the deprecation warnings for GTMRegex
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
 // This is the pattern to use for walking replacement text when doing
 // substitutions.

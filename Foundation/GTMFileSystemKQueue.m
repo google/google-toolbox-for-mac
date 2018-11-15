@@ -22,6 +22,10 @@
 #import "GTMDebugSelectorValidation.h"
 #import "GTMTypeCasting.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMFileSystemKQueue
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 // File descriptor for the kqueue that will hold all of our file system events.
 static int gFileSystemKQueueFileDescriptor = 0;
 
@@ -274,3 +278,5 @@ static void SocketCallBack(CFSocketRef socketref, CFSocketCallBackType type,
 }
 
 @end
+
+#pragma clang diagnostic pop
