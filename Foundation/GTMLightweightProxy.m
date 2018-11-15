@@ -93,11 +93,10 @@
 // Checks the represented object's selectors to allow clients of the proxy to
 // do respondsToSelector: tests.
 - (BOOL)respondsToSelector:(SEL)selector {
-  if ([super respondsToSelector:selector] ||
-      selector == @selector(initWithRepresentedObject:) ||
+  if (selector == @selector(initWithRepresentedObject:) ||
       selector == @selector(representedObject) ||
-      selector == @selector(setRepresentedObject:))
-  {
+      selector == @selector(setRepresentedObject:) ||
+      [super respondsToSelector:selector]) {
     return YES;
   }
 
