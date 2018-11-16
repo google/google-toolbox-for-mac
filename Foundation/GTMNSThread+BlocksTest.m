@@ -223,12 +223,12 @@ static const int kThreadMethoduSleep = 10000;
 }
 
 - (void)testCancelFromOtherThread {
-  // Show that cancel actually cancels before all blocks are executed.
-  __block int counter = 0;
+  // Cancel will kill the thread at same point.
+  // It may or may not complete all the blocks.
+  // There is no guarantee made (unlike stop).
   for (int i = 0; i < kThreadMethodCounter; i++) {
     [workerThread_ gtm_performWaitingUntilDone:NO block:^{
-      sleep(1);
-      ++counter;
+      usleep(kThreadMethoduSleep);
     }];
   }
   [workerThread_ cancel];
@@ -242,7 +242,6 @@ static const int kThreadMethoduSleep = 10000;
                         handler:NULL];
   [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
   XCTAssertTrue([workerThread_ isFinished]);
-  XCTAssertNotEqual(counter, kThreadMethodCounter);
 }
 
 - (void)testStopFromThread {
