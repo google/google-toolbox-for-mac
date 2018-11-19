@@ -43,5 +43,3 @@ GTM_CONFIGURATION_GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1
 
 // Turns on stack protection on debug builds for Leopard and above
 GTM_CONFIGURATION_OTHER_CFLAGS = -fstack-protector -fstack-protector-all
-// Stack protection doesn't exist on Tiger
-GTM_CONFIGURATION_OTHER_CFLAGS[sdk=macosx10.4*] =

@@ -276,11 +276,8 @@
 		8B5B4ABE15BF31050081A96C /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8B5B4AC015BF31050081A96C /* General.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = General.xcconfig; sourceTree = "<group>"; };
 		8B5B4AC115BF31050081A96C /* GTMMerge.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GTMMerge.xcconfig; sourceTree = "<group>"; };
-		8B5B4ACA15BF31050081A96C /* LeopardOrLater.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LeopardOrLater.xcconfig; sourceTree = "<group>"; };
 		8B5B4ACC15BF31050081A96C /* MacOSX.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacOSX.xcconfig; sourceTree = "<group>"; };
 		8B5B4ACD15BF31050081A96C /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		8B5B4ACE15BF31050081A96C /* SnowLeopardOrLater.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = SnowLeopardOrLater.xcconfig; sourceTree = "<group>"; };
-		8B5B4ACF15BF31050081A96C /* TigerOrLater.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = TigerOrLater.xcconfig; sourceTree = "<group>"; };
 		8B5B4AD015BF31050081A96C /* Unittest.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Unittest.xcconfig; sourceTree = "<group>"; };
 		8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTrace.m; sourceTree = "<group>"; };
 		8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
@@ -350,10 +347,8 @@
 		F47A79850D746EE9002302AB /* GTMScriptRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMScriptRunner.h; sourceTree = "<group>"; };
 		F47A79860D746EE9002302AB /* GTMScriptRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMScriptRunner.m; sourceTree = "<group>"; };
 		F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMScriptRunnerTest.m; sourceTree = "<group>"; };
-		F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugTigerOrLater.xcconfig; sourceTree = "<group>"; };
 		F48FE2420D197F9A009257D2 /* DebugUnittest.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugUnittest.xcconfig; sourceTree = "<group>"; };
 		F48FE2430D197F9A009257D2 /* LoadableBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LoadableBundle.xcconfig; sourceTree = "<group>"; };
-		F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseTigerOrLater.xcconfig; sourceTree = "<group>"; };
 		F48FE2450D197F9A009257D2 /* ReleaseUnittest.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseUnittest.xcconfig; sourceTree = "<group>"; };
 		F48FE2460D197F9A009257D2 /* SharedLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = SharedLibrary.xcconfig; sourceTree = "<group>"; };
 		F48FE2470D197F9A009257D2 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
@@ -549,11 +544,8 @@
 				8B5B4ABE15BF31050081A96C /* Debug.xcconfig */,
 				8B5B4AC015BF31050081A96C /* General.xcconfig */,
 				8B5B4AC115BF31050081A96C /* GTMMerge.xcconfig */,
-				8B5B4ACA15BF31050081A96C /* LeopardOrLater.xcconfig */,
 				8B5B4ACC15BF31050081A96C /* MacOSX.xcconfig */,
 				8B5B4ACD15BF31050081A96C /* Release.xcconfig */,
-				8B5B4ACE15BF31050081A96C /* SnowLeopardOrLater.xcconfig */,
-				8B5B4ACF15BF31050081A96C /* TigerOrLater.xcconfig */,
 				8B5B4AD015BF31050081A96C /* Unittest.xcconfig */,
 			);
 			path = subconfig;
@@ -746,9 +738,7 @@
 			isa = PBXGroup;
 			children = (
 				F4CC9F3F148E5E2500B7D68C /* DebugMacOSX.xcconfig */,
-				F48FE2410D197F9A009257D2 /* DebugTigerOrLater.xcconfig */,
 				F4CC9F40148E5E2500B7D68C /* ReleaseMacOSX.xcconfig */,
-				F48FE2440D197F9A009257D2 /* ReleaseTigerOrLater.xcconfig */,
 			);
 			path = Project;
 			sourceTree = "<group>";
