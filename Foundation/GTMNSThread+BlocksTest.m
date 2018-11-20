@@ -312,36 +312,4 @@ static const int kThreadMethoduSleep = 10000;
   XCTAssertEqual(counter, kThreadMethodCounter);
 }
 
-- (void)testPThreadName {
-  NSString *testName = @"InigoMontoya";
-  [workerThread_ setName:testName];
-  // There is actually a race between setting the thread name in NSThread and it
-  // being visible in the thread itself. A thread's name can only be set from
-  // inside the thread (pthread_setname) so we are assuming that NSThread has
-  // some internal wiring to kick the runloop and update the value for the
-  // thread on the thread itself.
-  // If we run our "check" block too soon, we will check the value on the
-  // thread before it's been set.
-  // Therefore we loop over it with some sleep to give the thread a chance
-  // to update it's internals.
-  [workerThread_ gtm_performWaitingUntilDone:YES block:^{
-    XCTAssertEqualObjects([workerThread_ name], testName);
-  }];
-  __block BOOL finished = NO;
-  for (int i = 0; i < 100; i++) {
-    [workerThread_ gtm_performWaitingUntilDone:YES block:^{
-      char threadName[100];
-      pthread_getname_np(pthread_self(), threadName, 100);
-      NSString *nsThreadName = [NSString stringWithUTF8String:threadName];
-      finished = ([testName compare:nsThreadName] == NSOrderedSame);
-    }];
-    if (finished) {
-      break;
-    } else {
-      usleep(kThreadMethoduSleep);
-    }
-  }
-  XCTAssertTrue(finished, @"pthread name did not change to %@", testName);
-}
-
 @end
