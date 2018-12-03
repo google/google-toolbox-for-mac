@@ -28,6 +28,12 @@
 #import <UIKit/UIKit.h>
 #import "GTMSenTestCase.h"
 
+#pragma clang diagnostic push
+#if !GTM_USING_XCTEST
+// Turn off the deprecated warning when GTMTestCase is still based on SenTest.
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif  // !GTM_USING_XCTEST
+
 @interface UIApplication (GTMIPhoneUnitTestDelegate)
 
 // SPI that we need to exit cleanly with a value.
@@ -255,3 +261,5 @@ static int ClassSort(const void *a, const void *b) {
 }
 
 @end
+
+#pragma clang diagnostic pop
