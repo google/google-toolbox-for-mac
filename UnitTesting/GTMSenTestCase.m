@@ -28,6 +28,9 @@
 #if GTM_IPHONE_SDK && !GTM_USING_XCTEST
 #import <stdarg.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 @interface NSException (GTMSenTestPrivateAdditions)
 + (NSException *)failureInFile:(NSString *)filename
                         atLine:(int)lineNumber
@@ -392,7 +395,15 @@ static NSInteger MethodSort(id a, id b, void *context) {
 
 @end
 
+#pragma clang diagnostic pop
+
 #endif  // GTM_IPHONE_SDK && !GTM_USING_XCTEST
+
+#pragma clang diagnostic push
+#if !GTM_USING_XCTEST
+// Turn off the deprecated warning when GTMTestCase is still based on SenTest.
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+#endif  // !GTM_USING_XCTEST
 
 @implementation GTMTestCase
 
@@ -410,3 +421,5 @@ static NSInteger MethodSort(id a, id b, void *context) {
 }
 
 @end
+
+#pragma clang diagnostic pop
