@@ -212,6 +212,13 @@
 			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
 			remoteInfo = GTM;
 		};
+		F44F5A3421BFFF180005C797 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B45A2890DA49B99001148C5;
+			remoteInfo = UIUnitTestingHarness;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -926,6 +933,7 @@
 			);
 			dependencies = (
 				F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */,
+				F44F5A3521BFFF180005C797 /* PBXTargetDependency */,
 			);
 			name = "UnitTest-AppKit";
 			productName = "UnitTest-AppKit";
@@ -940,6 +948,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
 				LastUpgradeCheck = 1010;
+				TargetAttributes = {
+					F48FE2630D198C1E009257D2 = {
+						TestTargetID = 8B45A2890DA49B99001148C5;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB918108733D990010E9CD /* Build configuration list for PBXProject "GTM" */;
 			compatibilityVersion = "Xcode 3.1";
@@ -1210,6 +1223,11 @@
 			isa = PBXTargetDependency;
 			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
 			targetProxy = F42E08780D199AA600D5DDE0 /* PBXContainerItemProxy */;
+		};
+		F44F5A3521BFFF180005C797 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */;
+			targetProxy = F44F5A3421BFFF180005C797 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
