@@ -25,6 +25,3 @@
 
 //  Bundles should not have their external symbols stripped.
 STRIP_STYLE = non-global
-
-// Bundles need to be position independent
-GCC_DYNAMIC_NO_PIC = NO

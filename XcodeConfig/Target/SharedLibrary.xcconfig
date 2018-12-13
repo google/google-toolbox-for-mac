@@ -22,8 +22,5 @@
 //  the License.
 //
 
-// Dynamic libs need to be position independent
-GCC_DYNAMIC_NO_PIC = NO
-
 // Dynamic libs should not have their external symbols stripped.
 STRIP_STYLE = non-global
