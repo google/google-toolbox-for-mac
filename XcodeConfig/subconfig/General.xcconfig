@@ -48,9 +48,6 @@ GCC_ENABLE_OBJC_EXCEPTIONS = YES
 // not sure why apple defaults this on, but it's pretty risky
 ALWAYS_SEARCH_USER_PATHS = NO
 
-// Turn on position dependent code for most cases (overridden where appropriate)
-GCC_DYNAMIC_NO_PIC = YES
-
 // For ObjC++ we want C++ cdtors called
 GCC_OBJC_CALL_CXX_CDTORS = YES
 
