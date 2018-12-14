@@ -121,6 +121,7 @@
 		64D0F5DB0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_100x100.png"; path = "TestData/GTMUIImage+Resize_100x100.png"; sourceTree = "<group>"; };
 		67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIPhoneUnitTestDelegate.h; sourceTree = "<group>"; };
 		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
+		8B27B5CA21C3305800D64F87 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = StaticLibrary.xcconfig; path = XcodeConfig/Target/StaticLibrary.xcconfig; sourceTree = SOURCE_ROOT; };
 		8B2908AF11F8E7070064F50F /* GTMNSFileHandle+UniqueName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileHandle+UniqueName.h"; sourceTree = "<group>"; };
 		8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueName.m"; sourceTree = "<group>"; };
 		8B2908B111F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueNameTest.m"; sourceTree = "<group>"; };
@@ -310,6 +311,14 @@
 			name = TestData;
 			sourceTree = "<group>";
 		};
+		8B27B5C921C3301D00D64F87 /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				8B27B5CA21C3305800D64F87 /* StaticLibrary.xcconfig */,
+			);
+			path = Target;
+			sourceTree = "<group>";
+		};
 		8BA5F4060E75669000798036 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,6 +451,7 @@
 		8BC049840DAEC59100C2D1CA /* XcodeConfig */ = {
 			isa = PBXGroup;
 			children = (
+				8B27B5C921C3301D00D64F87 /* Target */,
 				F418AF910E755893004FB565 /* xcconfigs-readme.txt */,
 				8BC04F020DB15A5300C2D1CA /* Project */,
 				8BC0498E0DAEC59100C2D1CA /* subconfig */,
@@ -688,7 +698,7 @@
 /* Begin XCBuildConfiguration section */
 		8B82CEFD1D9C17DE007182AA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */;
+			baseConfigurationReference = 8B27B5CA21C3305800D64F87 /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
 				"ARCHS[sdk=iphonesimulator*]" = "$(ARCHS_STANDARD)";
@@ -699,7 +709,7 @@
 		};
 		8B82CEFE1D9C17DE007182AA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */;
+			baseConfigurationReference = 8B27B5CA21C3305800D64F87 /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				PRODUCT_NAME = GTM;
@@ -708,7 +718,7 @@
 		};
 		8B82CF2A1D9C1C7D007182AA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */;
+			baseConfigurationReference = 8B82CF581D9C24D9007182AA /* Unittest.xcconfig */;
 			buildSettings = {
 				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
 				"ARCHS[sdk=iphonesimulator*]" = "$(ARCHS_STANDARD)";
@@ -724,7 +734,7 @@
 		};
 		8B82CF2B1D9C1C7D007182AA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */;
+			baseConfigurationReference = 8B82CF581D9C24D9007182AA /* Unittest.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
