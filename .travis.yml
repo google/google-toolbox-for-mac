@@ -4,9 +4,7 @@ env:
   - MODE=OSX CFG=Debug
   - MODE=OSX CFG=Release
   - MODE=iOS CFG=Debug
-  # iOS Release is currently failing with linker errors before even running
-  # the tests.
-  #- MODE=iOS CFG=Release
+  - MODE=iOS CFG=Release
 script:
   - ./.travis.sh "${MODE}" "${CFG}"
 notifications:
