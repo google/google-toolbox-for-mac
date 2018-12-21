@@ -57,6 +57,9 @@
 		8B45A2AC0DA49C47001148C5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B45A2A80DA49C47001148C5 /* main.m */; };
 		8B45A2B30DA49CA9001148C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		8B4D78080E40AFFA00EFEDD8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B45A1990DA46AAA001148C5 /* QuartzCore.framework */; };
+		8B5769A721CD77D600D924D3 /* GTMTimeUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B5769A521CD77D600D924D3 /* GTMTimeUtils.h */; };
+		8B5769A821CD77D600D924D3 /* GTMTimeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769A621CD77D600D924D3 /* GTMTimeUtils.m */; };
+		8B5769AB21CD7ACF00D924D3 /* GTMTimeUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769A921CD798000D924D3 /* GTMTimeUtilsTest.m */; };
 		8B61FDC00E4CDB8000FF9C21 /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */; };
 		8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */; };
@@ -278,6 +281,9 @@
 		8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTMUIUnitTestingHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B45A2A70DA49C47001148C5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B45A2A80DA49C47001148C5 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8B5769A521CD77D600D924D3 /* GTMTimeUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTMTimeUtils.h; sourceTree = "<group>"; };
+		8B5769A621CD77D600D924D3 /* GTMTimeUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTMTimeUtils.m; sourceTree = "<group>"; };
+		8B5769A921CD798000D924D3 /* GTMTimeUtilsTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTMTimeUtilsTest.m; sourceTree = "<group>"; };
 		8B5B4ABC15BF31050081A96C /* CodeCoverage.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CodeCoverage.xcconfig; sourceTree = "<group>"; };
 		8B5B4ABD15BF31050081A96C /* CodeCoverageStatic.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CodeCoverageStatic.xcconfig; sourceTree = "<group>"; };
 		8B5B4ABE15BF31050081A96C /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -719,6 +725,9 @@
 				F48FE2920D198D24009257D2 /* GTMSystemVersion.h */,
 				F48FE2930D198D24009257D2 /* GTMSystemVersion.m */,
 				F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */,
+				8B5769A521CD77D600D924D3 /* GTMTimeUtils.h */,
+				8B5769A621CD77D600D924D3 /* GTMTimeUtils.m */,
+				8B5769A921CD798000D924D3 /* GTMTimeUtilsTest.m */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -787,6 +796,7 @@
 				F93207DE0F4B82DB005F37EA /* GTMSQLite.h in Headers */,
 				F42E094C0D199BBF00D5DDE0 /* GTMGeometryUtils.h in Headers */,
 				F42E094F0D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.h in Headers */,
+				8B5769A721CD77D600D924D3 /* GTMTimeUtils.h in Headers */,
 				F42E09510D199BBF00D5DDE0 /* GTMNSString+HTML.h in Headers */,
 				F42E09540D199BBF00D5DDE0 /* GTMSystemVersion.h in Headers */,
 				F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */,
@@ -1122,6 +1132,7 @@
 				8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 				8BFE6E921282371200B5C894 /* GTMNSScanner+JSONTest.m in Sources */,
 				8BFE6E941282371200B5C894 /* GTMNSString+FindFolderTest.m in Sources */,
+				8B5769AB21CD7ACF00D924D3 /* GTMTimeUtilsTest.m in Sources */,
 				8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */,
 				8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */,
 				8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */,
@@ -1154,6 +1165,7 @@
 				33C374390DD8D44800E97817 /* GTMNSDictionary+URLArguments.m in Sources */,
 				8B7DCBBD0DFF0F5D0017E983 /* GTMMethodCheck.m in Sources */,
 				F41A6F830E02EC3600788A6C /* GTMSignalHandler.m in Sources */,
+				8B5769A821CD77D600D924D3 /* GTMTimeUtils.m in Sources */,
 				F425977A0E23FE3A003BEA3E /* GTMNSString+FindFolder.m in Sources */,
 				F98680C30E2C163D00CEE8BF /* GTMLogger.m in Sources */,
 				F98681970E2C20C800CEE8BF /* GTMLogger+ASL.m in Sources */,

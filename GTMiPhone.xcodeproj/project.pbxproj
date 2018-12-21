@@ -14,6 +14,8 @@
 		64D0F5ED0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D0F5DB0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png */; };
 		67A7820C0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */; };
 		8B2C72EB1D9EBBA10027BD14 /* GTMTestTimerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2C72EA1D9EBBA10027BD14 /* GTMTestTimerTest.m */; };
+		8B5769B121CD7C8300D924D3 /* GTMTimeUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769AD21CD7C7600D924D3 /* GTMTimeUtilsTest.m */; };
+		8B5769B221CD7C8600D924D3 /* GTMTimeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769AC21CD7C7600D924D3 /* GTMTimeUtils.m */; };
 		8B7651D81D9C872F00DB2C59 /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D61D9C872C00DB2C59 /* GTMLogger+ASL.m */; };
 		8B7651D91D9C873200DB2C59 /* GTMLogger+ASLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D71D9C872C00DB2C59 /* GTMLogger+ASLTest.m */; };
 		8B7651E11D9C89B800DB2C59 /* GTMRoundedRectPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651E01D9C89B800DB2C59 /* GTMRoundedRectPath.m */; };
@@ -135,6 +137,9 @@
 		8B3AA8F10E032FC7007E31B5 /* GTMNSString+URLArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+URLArguments.m"; sourceTree = "<group>"; };
 		8B3AA8F20E032FC7007E31B5 /* GTMNSString+URLArgumentsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+URLArgumentsTest.m"; sourceTree = "<group>"; };
 		8B3AA9330E0336AC007E31B5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		8B5769AC21CD7C7600D924D3 /* GTMTimeUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTimeUtils.m; sourceTree = "<group>"; };
+		8B5769AD21CD7C7600D924D3 /* GTMTimeUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTimeUtilsTest.m; sourceTree = "<group>"; };
+		8B5769AE21CD7C7600D924D3 /* GTMTimeUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTimeUtils.h; sourceTree = "<group>"; };
 		8B6C18710F3769D200E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
 		8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObserving.m"; sourceTree = "<group>"; };
 		8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObservingTest.m"; sourceTree = "<group>"; };
@@ -346,6 +351,9 @@
 		8BC047760DAE928A00C2D1CA /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				8B5769AE21CD7C7600D924D3 /* GTMTimeUtils.h */,
+				8B5769AC21CD7C7600D924D3 /* GTMTimeUtils.m */,
+				8B5769AD21CD7C7600D924D3 /* GTMTimeUtilsTest.m */,
 				0BBC768810FEF61D0006FABE /* GTMStringEncoding.h */,
 				0BBC768910FEF61D0006FABE /* GTMStringEncoding.m */,
 				0BBC768A10FEF61D0006FABE /* GTMStringEncodingTest.m */,
@@ -627,6 +635,7 @@
 				8BF753DB1D9DB3080010A295 /* GTMSQLite.m in Sources */,
 				8B82CF0C1D9C1C3B007182AA /* GTMNSNumber+64Bit.m in Sources */,
 				8B82CF041D9C1C3B007182AA /* GTMLightweightProxy.m in Sources */,
+				8B5769B221CD7C8600D924D3 /* GTMTimeUtils.m in Sources */,
 				8B82CF0B1D9C1C3B007182AA /* GTMNSFileHandle+UniqueName.m in Sources */,
 				8B7651E11D9C89B800DB2C59 /* GTMRoundedRectPath.m in Sources */,
 				8B82CF021D9C1C3B007182AA /* GTMStringEncoding.m in Sources */,
@@ -666,6 +675,7 @@
 				8B82CF391D9C2373007182AA /* GTMLoggerRingBufferWriterTest.m in Sources */,
 				8B7651D91D9C873200DB2C59 /* GTMLogger+ASLTest.m in Sources */,
 				8B82CF351D9C2353007182AA /* GTMMethodCheckTest.m in Sources */,
+				8B5769B121CD7C8300D924D3 /* GTMTimeUtilsTest.m in Sources */,
 				8B82CF481D9C2373007182AA /* GTMSystemVersionTest.m in Sources */,
 				8B82CF2C1D9C1CC5007182AA /* GTMStringEncodingTest.m in Sources */,
 				8B82CF4D1D9C2385007182AA /* GTMUIFont+LineHeightTest.m in Sources */,
