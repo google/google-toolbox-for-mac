@@ -16,11 +16,13 @@
 //  the License.
 //
 
-#import "GTMScriptRunner.h"
-#import "GTMDefines.h"
 #import <unistd.h>
 #import <fcntl.h>
 #import <sys/select.h>
+#import <sys/time.h>  // Must be include for select() if using modules.
+
+#import "GTMScriptRunner.h"
+#import "GTMDefines.h"
 
 static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
