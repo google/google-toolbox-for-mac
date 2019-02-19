@@ -407,6 +407,17 @@
 }
 
 - (void)localizeAccessibility:(id)object {
+#if defined(MAC_OS_X_VERSION_10_10) && \
+    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10
+  id<NSAccessibility> accessible = object;
+  if ([accessible conformsToProtocol:@protocol(NSAccessibility)]) {
+    NSString* help = [accessible accessibilityHelp];
+    NSString* localizedHelp = [self localizedStringForString:help];
+    if (localizedHelp) {
+      [accessible setAccessibilityHelp:localizedHelp];
+    }
+  }
+#else
   NSArray *supportedAttrs = [object accessibilityAttributeNames];
   if ([supportedAttrs containsObject:NSAccessibilityHelpAttribute]) {
     NSString *accessibilityHelp
@@ -420,6 +431,7 @@
       }
     }
   }
+#endif
 
   // We cannot do the same thing with NSAccessibilityDescriptionAttribute; see
   // the links in the header file for more details.
