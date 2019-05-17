@@ -153,6 +153,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TimeUtils' do |sp|
     sp.source_files = 'Foundation/GTMTimeUtils.{h,m}'
+    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'iPhone' do |sp|
