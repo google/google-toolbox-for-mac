@@ -350,6 +350,22 @@
 })
 #endif  // XCTAssertNotEqualCStrings
 
+/*!
+ * @define XCTAssertAsserts(expression, ...)
+ * Generates a failure when ((\a expression) does not assert.
+ * If NS_BLOCK_ASSERTIONS is enabled, this test will always pass.
+ * @param expression An expression.
+ * @param ... An optional supplementary description of the failure. A literal NSString, optionally
+              with string format specifiers. This parameter can be completely omitted.
+ */
+#ifndef NS_BLOCK_ASSERTIONS
+	#define XCTAssertAsserts(expression, ...) \
+		_XCTPrimitiveAssertThrowsSpecificNamed(self, expression, @#expression, NSException, \
+																					 NSInternalInconsistencyException, __VA_ARGS__)
+#else
+	#define XCTAssertAsserts(expression, ...)
+#endif
+
 #else  // GTM_USING_XCTEST
 
 // Generates a failure when a1 != noErr
