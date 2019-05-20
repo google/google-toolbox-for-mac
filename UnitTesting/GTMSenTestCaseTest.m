@@ -80,3 +80,18 @@ static int gZzCheckCalls_ = 0;
 }
 
 @end
+
+@interface GTMSenTestCase  : GTMTestCase
+@end
+
+@implementation GTMSenTestCase
+- (void)funcThatAsserts {
+	NSAssert(nil, @"Should be nil");
+}
+
+- (void)testXCTAssertAsserts {
+	XCTAssertAsserts([self funcThatAsserts]);
+}
+
+@end
+
