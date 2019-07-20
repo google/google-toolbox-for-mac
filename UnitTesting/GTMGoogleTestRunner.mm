@@ -86,7 +86,8 @@ class GoogleTestPrinter : public EmptyTestEventListener {
 
   virtual void OnTestPartResult(const TestPartResult &test_part_result) {
     if (!test_part_result.passed()) {
-      NSString *file = @(test_part_result.file_name());
+      const char *file_name = test_part_result.file_name();
+      NSString *file = @(file_name ? file_name : "<file name unavailable>");
       int line = test_part_result.line_number();
       NSString *summary = @(test_part_result.summary());
 
