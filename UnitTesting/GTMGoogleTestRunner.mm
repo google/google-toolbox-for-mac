@@ -58,7 +58,7 @@
 #import <XCTest/XCTest.h>
 #import <objc/runtime.h>
 
-#include "testing/base/public/gunit.h"
+#include "third_party/gtest/include/gtest/gtest.h"
 
 using ::testing::EmptyTestEventListener;
 using ::testing::TestCase;
