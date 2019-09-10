@@ -175,7 +175,10 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
   Method method = class_getInstanceMethod(cls, @selector(runGoogleTest));
   IMP implementation = method_getImplementation(method);
   const char *encoding = method_getTypeEncoding(method);
-  if (!class_addMethod(cls, selector, implementation, encoding)) {
+  // We may be called more than once for the same testName. Check before adding new method to avoid
+  // failure from adding multiple methods with the same name.
+  if (!class_getInstanceMethod(cls, selector) &&
+      !class_addMethod(cls, selector, implementation, encoding)) {
     // If we can't add a method, we should blow up here.
     [NSException raise:NSInternalInconsistencyException
                 format:@"Unable to add %@ to %@.", testName, cls];
