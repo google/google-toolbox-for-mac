@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode10.1
+osx_image: xcode11
 env:
   - MODE=OSX CFG=Debug
   - MODE=OSX CFG=Release
