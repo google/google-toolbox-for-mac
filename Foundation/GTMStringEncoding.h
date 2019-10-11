@@ -78,15 +78,19 @@
 - (void)setPaddingChar:(char)c;
 
 // Encode a raw binary buffer to a 7-bit ASCII string.
-- (NSString *)encode:(NSData *)data __attribute__((deprecated("Use encode:error:")));
-- (NSString *)encodeString:(NSString *)string __attribute__((deprecated("Use encodeString:error:")));
+- (NSString *)encode:(NSData *)data __attribute__((deprecated("Use encode:error:")))
+    NS_SWIFT_UNAVAILABLE("Use encode:error: mapped to encode(_ data:) throws");
+- (NSString *)encodeString:(NSString *)string __attribute__((deprecated("Use encodeString:error:")))
+    NS_SWIFT_UNAVAILABLE("Use encode:error: mapped to encode(_ string:) throws");
 
 - (NSString *)encode:(NSData *)data error:(NSError **)error;
 - (NSString *)encodeString:(NSString *)string error:(NSError **)error;
 
 // Decode a 7-bit ASCII string to a raw binary buffer.
-- (NSData *)decode:(NSString *)string __attribute__((deprecated("Use decode:error:")));
-- (NSString *)stringByDecoding:(NSString *)string __attribute__((deprecated("Use stringByDecoding:error:")));
+- (NSData *)decode:(NSString *)string __attribute__((deprecated("Use decode:error:")))
+    NS_SWIFT_UNAVAILABLE("Use decode:error: mapped to decode(_ string:) throws");
+- (NSString *)stringByDecoding:(NSString *)string __attribute__((deprecated("Use stringByDecoding:error:")))
+    NS_SWIFT_UNAVAILABLE("Use stringByDecoding:error: mapped to string(byDecoding string:) throws");
 
 - (NSData *)decode:(NSString *)string error:(NSError **)error;
 - (NSString *)stringByDecoding:(NSString *)string error:(NSError **)error;
