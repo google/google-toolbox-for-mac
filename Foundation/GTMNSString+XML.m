@@ -19,10 +19,6 @@
 #import "GTMDefines.h"
 #import "GTMNSString+XML.h"
 
-// Export a nonsense symbol to suppress a libtool warning when this is linked alone in a static lib.
-__attribute__((visibility("default")))
-    char NSString_GTMNSStringXMLAdditionsExportToSuppressLibToolWarning = 0;
-
 enum {
   kGTMXMLCharModeEncodeQUOT  = 0,
   kGTMXMLCharModeEncodeAMP   = 1,

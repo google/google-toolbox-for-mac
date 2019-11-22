@@ -20,11 +20,6 @@
 #import "GTMDefines.h"
 #import "GTMNSString+HTML.h"
 
-// Export a nonsense symbol to suppress a libtool warning when this is linked
-// alone in a static lib.
-__attribute__((visibility("default")))
-    char GTMNSString_HTMLExportToSuppressLibToolWarning = 0;
-
 typedef struct {
   NSString *escapeSequence;
   unichar uchar;
