@@ -20,11 +20,6 @@
 
 #import <Availability.h>
 
-// Export a nonsense symbol to suppress a libtool warning when this is linked
-// alone in a static lib.
-__attribute__((visibility("default")))
-    char GTMUIFont_LineHeightExportToSuppressLibToolWarning = 0;
-
 @implementation UIFont (GTMLineHeight)
 - (CGFloat)gtm_lineHeight {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0

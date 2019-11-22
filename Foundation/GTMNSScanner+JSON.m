@@ -19,11 +19,6 @@
 #import "GTMDefines.h"
 #import "GTMNSScanner+JSON.h"
 
-// Export a nonsense symbol to suppress a libtool warning when this is linked
-// alone in a static lib.
-__attribute__((visibility("default")))
-    char NSScanner_GTMNSScannerJSONAdditionsExportToSuppressLibToolWarning = 0;
-
 @implementation NSScanner (GTMNSScannerJSONAdditions)
 
 - (BOOL)gtm_scanJSONString:(NSString **)jsonString
