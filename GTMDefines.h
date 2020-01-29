@@ -105,7 +105,7 @@
 //
 // To replace this system, just provide different macro definitions in your
 // prefix header.  Remember, any implementation you provide *must* be thread
-// safe since this could be called by anything in what ever situtation it has
+// safe since this could be called by anything in what ever situation it has
 // been placed in.
 //
 
