@@ -19,9 +19,6 @@
 		7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */; };
 		7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */; };
-		8207B89B0FEA7A9E008A527B /* GTMWindowSheetController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8207B8970FEA7A98008A527B /* GTMWindowSheetController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8207B89C0FEA7AA1008A527B /* GTMWindowSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8207B8980FEA7A98008A527B /* GTMWindowSheetController.m */; };
-		8207B89D0FEA7AA6008A527B /* GTMWindowSheetControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */; };
 		8B07C60F1D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
 		8B07C6101D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
 		8B07C6111D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
@@ -244,9 +241,6 @@
 		7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFadeTruncatingTextFieldCell.h; sourceTree = "<group>"; };
 		7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingTextFieldCell.m; sourceTree = "<group>"; };
 		7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingTextFieldCellTest.m; sourceTree = "<group>"; };
-		8207B8970FEA7A98008A527B /* GTMWindowSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMWindowSheetController.h; sourceTree = "<group>"; };
-		8207B8980FEA7A98008A527B /* GTMWindowSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMWindowSheetController.m; sourceTree = "<group>"; };
-		8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMWindowSheetControllerTest.m; sourceTree = "<group>"; };
 		8B07C60D1D99B01D0054728B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSAnimation+Duration.h"; sourceTree = "<group>"; };
 		8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSAnimation+Duration.m"; sourceTree = "<group>"; };
@@ -636,9 +630,6 @@
 				8B409BC50F94405A00DF540E /* GTMUILocalizerTest.m */,
 				8B409E8B0F952C2C00DF540E /* GTMUILocalizerTestWindow.xib */,
 				8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */,
-				8207B8970FEA7A98008A527B /* GTMWindowSheetController.h */,
-				8207B8980FEA7A98008A527B /* GTMWindowSheetController.m */,
-				8207B8990FEA7A98008A527B /* GTMWindowSheetControllerTest.m */,
 				F435E4840DC8F3DC0069CDE8 /* TestData */,
 			);
 			path = AppKit;
@@ -825,7 +816,6 @@
 				7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */,
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
 				8BD35B910FB22980009058F5 /* GTMNSScanner+JSON.h in Headers */,
-				8207B89B0FEA7A9E008A527B /* GTMWindowSheetController.h in Headers */,
 				F43C7A571021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h in Headers */,
 				7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */,
 				F4C6248B109753960069CADD /* GTMIBArray.h in Headers */,
@@ -1179,7 +1169,6 @@
 				7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */,
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
 				8BD35B920FB22980009058F5 /* GTMNSScanner+JSON.m in Sources */,
-				8207B89C0FEA7AA1008A527B /* GTMWindowSheetController.m in Sources */,
 				F43C7A581021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m in Sources */,
 				7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */,
 				F4C6248C109753960069CADD /* GTMIBArray.m in Sources */,
@@ -1203,7 +1192,6 @@
 				8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
 				8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */,
 				8B409BC60F94405A00DF540E /* GTMUILocalizerTest.m in Sources */,
-				8207B89D0FEA7AA6008A527B /* GTMWindowSheetControllerTest.m in Sources */,
 				F42E2C69102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m in Sources */,
 				7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */,
 				F4C62489109753960069CADD /* GTMIBArrayTest.m in Sources */,
