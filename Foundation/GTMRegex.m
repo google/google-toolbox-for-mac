@@ -355,7 +355,7 @@ static NSString *const kReplacementPattern =
     // literal backslashes followed by our backreference.  Think of it as a "an
     // odd number of slashes that comes after a non-backslash character."  There
     // is no way to rexpress this in re_format(7) extended expressions.  Instead
-    // we look for a non-blackslash or string start followed by an optional even
+    // we look for a non-backslash or string start followed by an optional even
     // number of slashes followed by the backreference; and use the special
     // flag; so after each match, we restart claiming it's the start of the
     // string.  (the problem match w/o this flag is a substition of "\2\1")
