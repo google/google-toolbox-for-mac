@@ -133,13 +133,14 @@ static CFLocaleRef gCurrentLocale = NULL;
 - (id)initWithPath:(NSString *)path
    withCFAdditions:(BOOL)additions
               utf8:(BOOL)useUTF8
+             flags:(int)flags
          errorCode:(int *)err {
   int rc = SQLITE_INTERNAL;
 
   if ((self = [super init])) {
     path_ = [path copy];
     if (useUTF8) {
-      rc = sqlite3_open([path_ fileSystemRepresentation], &db_);
+      rc = sqlite3_open_v2([path_ fileSystemRepresentation], &db_, flags, NULL);
     } else {
       CFStringEncoding cfEncoding;
 #if TARGET_RT_BIG_ENDIAN
@@ -183,6 +184,17 @@ static CFLocaleRef gCurrentLocale = NULL;
   }
 
   return self;
+}
+
+- (id)initWithPath:(NSString *)path
+   withCFAdditions:(BOOL)additions
+              utf8:(BOOL)useUTF8
+         errorCode:(int *)err {
+  return [self initWithPath:path
+            withCFAdditions:additions
+                       utf8:useUTF8
+                      flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE
+                  errorCode:err];
 }
 
 - (id)initInMemoryWithCFAdditions:(BOOL)additions
