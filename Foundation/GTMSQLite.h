@@ -122,6 +122,29 @@
 //
 + (NSString *)sqliteVersionString;
 
+//  Open a database instance on a file-based database.
+//
+//  Args:
+//    path:  Path to the database. If it does not exist, an empty database will be created only if
+//           the SQLITE_OPEN_CREATE flag is specified.
+//    withCFAdditions: If true, the SQLite database will include CFString
+//                     based string functions and collation sequences. See
+//                     the class header for information on these differences
+//                     and performance impact.
+//    utf8:  If true, the path argument is interpreted as UTF-8. If false, it's interpreted as
+//           UTF-16 in the native byte order.
+//    flags: The SQLite flags to use when opening a DB file (e.g. SQLITE_OPEN_READWRITE). This
+//           argument is ignored if utf8 is false.
+//    err:   Result code from SQLite. If nil is returned by this function
+//           check the result code for the error. If NULL no result code is
+//           reported.
+//
+- (id)initWithPath:(NSString *)path
+   withCFAdditions:(BOOL)additions
+              utf8:(BOOL)useUTF8
+             flags:(int)flags
+         errorCode:(int *)err;
+
 //  Create and open a database instance on a file-based database.
 //
 //  Args:
@@ -131,6 +154,8 @@
 //                     based string functions and collation sequences. See
 //                     the class header for information on these differences
 //                     and performance impact.
+//    utf8: If true, the path argument is interpreted as UTF-8. If false, it's interpreted as
+//          UTF-16 in the native byte order.
 //    err:  Result code from SQLite. If nil is returned by this function
 //          check the result code for the error. If NULL no result code is
 //          reported.
