@@ -47,7 +47,7 @@ GTM_INLINE CFStringEncoding SqliteTextEncodingToCFStringEncoding(int enc) {
   CFStringEncoding encoding = kCFStringEncodingUTF8;
   _GTMDevAssert(enc == SQLITE_UTF16BE ||
                 enc == SQLITE_UTF16LE,
-                @"Passed in encoding was not a UTF16 encoding");
+                @"Passed in encoding was not a UTF16 encoding: %d", enc);
   switch(enc) {
     case SQLITE_UTF16BE:
       encoding = kCFStringEncodingUTF16BE;
@@ -531,7 +531,8 @@ static void UpperLower8(sqlite3_context *context, int argc, sqlite3_value **argv
   }
 
   _GTMDevAssert(userArgs->textRep == SQLITE_UTF8,
-                @"Received non UTF8 encoding in UpperLower8");
+                @"Received non UTF8 encoding in UpperLower8: %d",
+                userArgs->textRep);
 
   // Worker string, must be mutable for case conversion so order our calls
   // to only copy once
@@ -725,7 +726,8 @@ static void UpperLower16(sqlite3_context *context,
       // we might as well use the preferred encoding of the original call.
       _GTMDevAssert(userArgs->textRep == SQLITE_UTF16BE ||
                     userArgs->textRep == SQLITE_UTF16LE,
-                    @"Received non UTF8 encoding in UpperLower8");
+                    @"Received non UTF16 encoding in UpperLower16: %d",
+                    userArgs->textRep);
       switch (userArgs->textRep) {
       case SQLITE_UTF16BE:
         sqlite3_result_text16be(context, returnBuffer,
