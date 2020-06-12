@@ -231,7 +231,7 @@ static CFLocaleRef gCurrentLocale = NULL;
   int rc = SQLITE_OK;
   // Install our custom functions for improved text handling
   // UPPER/LOWER
-  const struct {
+  static const struct {
     const char           *sqlName;
     UpperLowerUserArgs   userArgs;
     void                 *function;
@@ -263,7 +263,7 @@ static CFLocaleRef gCurrentLocale = NULL;
   }
 
   // Fixed collation sequences
-  const struct {
+  static const struct {
     const char           *sqlName;
     CollateUserArgs      userArgs;
     void                 *function;
@@ -288,7 +288,7 @@ static CFLocaleRef gCurrentLocale = NULL;
   }
 
   // Install handler for dynamic collation sequences
-  const struct {
+  static const struct {
     const char          *sqlName;
     int                 numArgs;
     int                 textRep;
@@ -335,7 +335,7 @@ static CFLocaleRef gCurrentLocale = NULL;
   }
 
   // Start GLOB just non-literal but case-sensitive (same as SQLite defaults)
-  const struct {
+  static const struct {
     const char          *sqlName;
     int                 textRep;
     void                *function;

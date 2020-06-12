@@ -425,7 +425,7 @@ static void TestUpperLower16Impl(sqlite3_context *context,
                                                   errorCode:&err]
       autorelease];
 
-  const struct {
+  static const struct {
     const char           *sqlName;
     UpperLowerUserArgs   userArgs;
     void                 *function;
