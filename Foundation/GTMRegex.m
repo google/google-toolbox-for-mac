@@ -652,11 +652,15 @@ static NSString *const kReplacementPattern =
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@<%p> { regex=\"%@\", allSegments=%s, string=\"%.20s...\" }",
+  // `[utf8StrBuf_ bytes]` won't be null terminated, must manually ensure we
+  // don't ask for more bytes then there are.
+  NSUInteger len = (int)[utf8StrBuf_ length];
+  return [NSString stringWithFormat:@"%@<%p> { regex=\"%@\", allSegments=%s, string=\"%.*s%s\" }",
     [self class], self,
     regex_,
     (allSegments_ ? "YES" : "NO"),
-    [utf8StrBuf_ bytes]];
+    (int)(MIN(len, 20)), [utf8StrBuf_ bytes],
+    (len > 20 ? "..." : "")];
 }
 
 @end
