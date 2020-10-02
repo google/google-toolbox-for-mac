@@ -885,6 +885,15 @@
   XCTAssertNotNil(seg);
   XCTAssertGreaterThan([[seg description] length], (NSUInteger)10,
                        @"failed to get a reasonable description for regex string segment");
+
+  // Truncation on the input string (and handling sort lengths)
+  enumerator = [regex segmentEnumeratorForString:@"aaabbbccc"];
+  XCTAssertNotNil(enumerator);
+  XCTAssertTrue([[enumerator description] hasSuffix:@", string=\"aaabbbccc\" }"]);
+  enumerator = [regex segmentEnumeratorForString:@"aaabbbcccdddeeefffggghhh"];
+  XCTAssertNotNil(enumerator);
+  XCTAssertTrue([[enumerator description] hasSuffix:@", string=\"aaabbbcccdddeeefffgg...\" }"]);
+
   // regex w/ other options
   regex = [GTMRegex regexWithPattern:@"a+"
                              options:(kGTMRegexOptionIgnoreCase | kGTMRegexOptionSupressNewlineSupport)];
