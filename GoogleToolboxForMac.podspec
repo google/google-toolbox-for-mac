@@ -157,7 +157,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'iPhone' do |sp|
-    sp.platform = :ios, '5.0'
+    sp.platform = :ios, '9.0'
     sp.source_files =
         'iPhone/GTMFadeTruncatingLabel.{h,m}',
         'iPhone/GTMUIImage+Resize.{h,m}',
@@ -167,7 +167,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'RoundedRectPath' do |sp|
-    sp.platform = :ios, '5.0'
+    sp.platform = :ios, '9.0'
     sp.source_files = 'iPhone/GTMRoundedRectPath.{h,m}'
     sp.requires_arc = 'iPhone/GTMRoundedRectPath.{h,m}'
     sp.frameworks = 'CoreGraphics'
@@ -175,13 +175,13 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'UIFont+LineHeight' do |sp|
-    sp.platform = :ios, '5.0'
+    sp.platform = :ios, '9.0'
     sp.source_files = 'iPhone/GTMUIFont+LineHeight.{h,m}'
     sp.requires_arc = 'iPhone/GTMUIFont+LineHeight.{h,m}'
   end
 
   s.subspec 'UnitTesting' do |sp|
-    sp.platform = :ios, '5.0'
+    sp.platform = :ios, '9.0'
     sp.source_files =
         'UnitTesting/GTMFoundationUnitTestingUtilities.{h,m}',
         'UnitTesting/GTMSenTestCase.{h,m}',
@@ -193,7 +193,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'UnitTestingAppLib' do |sp|
-    sp.platform = :ios, '5.0'
+    sp.platform = :ios, '9.0'
     sp.source_files =
         'UnitTesting/GTMCodeCoverageApp.h',
         'UnitTesting/GTMIPhoneUnitTestDelegate.{h,m}'
