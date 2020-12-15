@@ -659,7 +659,7 @@ static NSString *const kReplacementPattern =
     [self class], self,
     regex_,
     (allSegments_ ? "YES" : "NO"),
-    (int)(MIN(len, 20)), [utf8StrBuf_ bytes],
+    (int)(MIN(len, 20)), (const char *)[utf8StrBuf_ bytes],
     (len > 20 ? "..." : "")];
 }
 
