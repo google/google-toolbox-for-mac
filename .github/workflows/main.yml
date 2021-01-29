@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  macOS:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        MODE: ["Debug", "Release"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and Test
+      run:  |
+        # Have to skip some tests that aren't working on newer OSes.
+        xcodebuild \
+          -project GTM.xcodeproj \
+          -scheme GTM \
+          -configuration ${{ matrix.MODE }} \
+          -skip-testing UnitTest-Foundation/GTMServiceManagementTest \
+          -skip-testing UnitTest-AppKit/GTMCarbonEventDispatcherHandlerTest \
+          build test
+
+  iOS:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        MODE: ["Debug", "Release"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and Test
+      run:  |
+        xcodebuild \
+          -project GTMiPhone.xcodeproj \
+          -scheme GTMiPhone \
+          -configuration ${{ matrix.MODE }} \
+          -destination "platform=iOS Simulator,name=iPhone 8,OS=latest" \
+          build test
