@@ -16,7 +16,6 @@
 //  the License.
 //
 
-#define GTMREGEX_DEFINE_GLOBALS 1
 #import "GTMRegex.h"
 #import "GTMDefines.h"
 

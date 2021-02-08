@@ -58,16 +58,6 @@ typedef NSUInteger GTMRegexOptions;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
 
-#undef _EXTERN
-#undef _INITIALIZE_AS
-#if GTMREGEX_DEFINE_GLOBALS
-#define _EXTERN
-#define _INITIALIZE_AS(x) =x
-#else
-#define _EXTERN GTM_EXTERN
-#define _INITIALIZE_AS(x)
-#endif
-
 #pragma clang diagnostic pop
 
 GTM_EXTERN NSString* kGTMRegexErrorDomain;
