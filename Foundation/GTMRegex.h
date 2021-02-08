@@ -70,15 +70,15 @@ typedef NSUInteger GTMRegexOptions;
 
 #pragma clang diagnostic pop
 
-_EXTERN NSString* kGTMRegexErrorDomain _INITIALIZE_AS(@"com.google.mactoolbox.RegexDomain");
+GTM_EXTERN NSString *const kGTMRegexErrorDomain;
 
 enum {
   kGTMRegexPatternParseFailedError = -100
 };
 
 // Keys for the userInfo from a kGTMRegexErrorDomain/kGTMRegexPatternParseFailedError error
-_EXTERN NSString* kGTMRegexPatternErrorPattern _INITIALIZE_AS(@"pattern");
-_EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError");
+GTM_EXTERN NSString *const kGTMRegexPatternErrorPattern;
+GTM_EXTERN NSString *const kGTMRegexPatternErrorErrorString;
 
 /// Class for doing Extended Regex operations w/ libregex (see re_format(7)).
 //
