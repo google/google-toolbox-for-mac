@@ -25,6 +25,10 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
+NSString *const kGTMRegexErrorDomain = @"com.google.mactoolbox.RegexDomain";
+NSString *const kGTMRegexPatternErrorPattern = @"pattern";
+NSString *const kGTMRegexPatternErrorErrorString = @"patternError";
+
 // This is the pattern to use for walking replacement text when doing
 // substitutions.
 //
