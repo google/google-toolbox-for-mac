@@ -58,17 +58,27 @@ typedef NSUInteger GTMRegexOptions;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#if GTMREGEX_DEFINE_GLOBALS
+#define _EXTERN
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN GTM_EXTERN
+#define _INITIALIZE_AS(x)
+#endif
+
 #pragma clang diagnostic pop
 
-GTM_EXTERN NSString *const kGTMRegexErrorDomain;
+_EXTERN NSString* kGTMRegexErrorDomain _INITIALIZE_AS(@"com.google.mactoolbox.RegexDomain");
 
 enum {
   kGTMRegexPatternParseFailedError = -100
 };
 
 // Keys for the userInfo from a kGTMRegexErrorDomain/kGTMRegexPatternParseFailedError error
-GTM_EXTERN NSString *const kGTMRegexPatternErrorPattern;
-GTM_EXTERN NSString *const kGTMRegexPatternErrorErrorString;
+_EXTERN NSString* kGTMRegexPatternErrorPattern _INITIALIZE_AS(@"pattern");
+_EXTERN NSString* kGTMRegexPatternErrorErrorString _INITIALIZE_AS(@"patternError");
 
 /// Class for doing Extended Regex operations w/ libregex (see re_format(7)).
 //
