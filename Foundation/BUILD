@@ -1,9 +1,38 @@
 load("@rules_cc//cc:defs.bzl", "objc_library")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_build_test")
 
-exports_files([
-    "GTMLocalizedString.h",
-    "GTMLogger.h"
-])
+ios_build_test(
+    name = "iOSBuildTest",
+    minimum_os_version = "12.0",
+    targets = [
+        ":LocalizedString",
+        ":GeometryUtils", 
+        ":KVO",
+        ":Logger",
+        ":Regex",
+        ":StackTrace",
+        ":StringEncoding",
+        ":SystemVersion",
+        ":URLBuilder",
+        ":NSData_zlib",
+        ":NSDictionary_URLArguments",
+        ":NSFileHandle_UniqueName",
+        ":NSScanner_JSON",
+        ":NSString_HTML",
+        ":NSString_URLArguments",
+        ":NSString_XML",
+        ":NSThread_Blocks",
+        ":TimeUtils"
+    ],
+)
+
+objc_library(
+    name = "LocalizedString",
+    hdrs = [
+        "GTMLocalizedString.h",
+    ],
+    visibility = ["//visibility:public"]
+)
 
 objc_library(
     name = "GeometryUtils",
@@ -30,7 +59,7 @@ objc_library(
         "GTMNSObject+KeyValueObserving.m",
     ],
     deps = [
-        "//:Core",
+        "//:Defines",
         "//DebugUtils:DebugUtils"
     ],
     copts = ["-IDebugUtils"],
@@ -115,15 +144,15 @@ objc_library(
         "GTMURLBuilder.m"
     ],
     deps = [
-        "//:Core",
         "//:Defines",
-        ":NSDictionary+URLArguments",
-        ":NSString+URLArguments"
+        ":NSDictionary_URLArguments",
+        ":NSString_URLArguments",
+        ":Logger"
     ]
 )
 
 objc_library(
-    name = "NSData+zlib",
+    name = "NSData_zlib",
     hdrs = [
         "GTMNSData+zlib.h",
     ],
@@ -137,7 +166,7 @@ objc_library(
 )
 
 objc_library(
-    name = "NSDictionary+URLArguments",
+    name = "NSDictionary_URLArguments",
     hdrs = [
         "GTMNSDictionary+URLArguments.h",
     ],
@@ -148,12 +177,12 @@ objc_library(
     deps = [
         "//:Defines",
         "//DebugUtils:DebugUtils",
-        ":NSString+URLArguments"
+        ":NSString_URLArguments"
     ]
 )
 
 objc_library(
-    name = "NSFileHandle+UniqueName",
+    name = "NSFileHandle_UniqueName",
     hdrs = [
         "GTMNSFileHandle+UniqueName.h",
     ],
@@ -166,7 +195,7 @@ objc_library(
 )
 
 objc_library(
-    name = "NSScanner+JSON",
+    name = "NSScanner_JSON",
     hdrs = [
         "GTMNSScanner+JSON.h",
     ],
@@ -179,7 +208,7 @@ objc_library(
 )
 
 objc_library(
-    name = "NSString+HTML",
+    name = "NSString_HTML",
     hdrs = [
         "GTMNSString+HTML.h",
     ],
@@ -187,12 +216,12 @@ objc_library(
         "GTMNSString+HTML.m",
     ],
     deps = [
-        "//:Core"
+        "//:Defines"
     ],
 )
 
 objc_library(
-    name = "NSString+URLArguments",
+    name = "NSString_URLArguments",
     hdrs = [
         "GTMNSString+URLArguments.h",
     ],
@@ -202,7 +231,7 @@ objc_library(
 )
 
 objc_library(
-    name = "NSString+XML",
+    name = "NSString_XML",
     hdrs = [
         "GTMNSString+XML.h",
     ],
@@ -215,7 +244,7 @@ objc_library(
 )
 
 objc_library(
-    name = "NSThread+Blocks",
+    name = "NSThread_Blocks",
     hdrs = [
         "GTMNSThread+Blocks.h",
     ],

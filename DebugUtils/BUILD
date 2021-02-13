@@ -1,8 +1,12 @@
 load("@rules_cc//cc:defs.bzl", "objc_library")
 
-exports_files([
-    "GTMTypeCasting.h"
-])
+objc_library(
+    name = "TypeCasting",
+    hdrs = [
+        "GTMTypeCasting.h",
+    ],
+    visibility = ["//visibility:public"]
+)
 
 objc_library(
     name = "DebugUtils",
