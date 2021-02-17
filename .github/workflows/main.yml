@@ -42,3 +42,11 @@ jobs:
           -configuration ${{ matrix.MODE }} \
           -destination "platform=iOS Simulator,name=iPhone 8,OS=latest" \
           build test
+    - name: Build and Test (Bazel)
+      run:  |
+        go get github.com/bazelbuild/bazelisk
+        mode="dbg"
+        if [ "${{ matrix.MODE }}" = "Release" ]; then
+          mode="opt"
+        fi
+        bazelisk test //... --apple_platform_type=ios -c $mode
