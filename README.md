@@ -25,7 +25,7 @@ http_archive(
     urls = [
         "https://github.com/google/google-toolbox-for-mac/archive/%s.zip" % GTM_GIT_SHA
     ],
-    strip_prefix = "google-toolbox-for-mac/%s" % GTM_GIT_SHA
+    strip_prefix = "google-toolbox-for-mac-%s" % GTM_GIT_SHA
 )
 
 load(
