@@ -24,6 +24,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -37,6 +38,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -50,6 +52,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -65,7 +68,8 @@ objc_library(
     ],
     sdk_frameworks = [
         "CoreGraphics"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -76,4 +80,5 @@ objc_library(
     srcs = [
         "GTMUIFont+LineHeight.m"
     ],
+    visibility = ["//visibility:public"],
 )

@@ -19,7 +19,8 @@ objc_library(
     ],
     deps = [
         "//:Defines",
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -32,7 +33,8 @@ objc_library(
     ],
     deps = [
         "//:Defines",
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -45,7 +47,8 @@ objc_library(
     ],
     deps = [
         "//:Defines",
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -62,5 +65,6 @@ objc_library(
         ":TestTimer",
         ":SenTestCase",
         ":FoundationUnitTestingUtilities"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )

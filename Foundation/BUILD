@@ -31,7 +31,7 @@ objc_library(
     hdrs = [
         "GTMLocalizedString.h",
     ],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -47,7 +47,8 @@ objc_library(
     ],
     sdk_frameworks = [
         "CoreGraphics"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -65,7 +66,8 @@ objc_library(
     copts = ["-IDebugUtils"],
     sdk_frameworks = [
         "CoreGraphics"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -78,7 +80,8 @@ objc_library(
     ],
     deps = [
         "//:Defines"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -92,7 +95,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -105,7 +108,8 @@ objc_library(
     ],
     deps = [
         "//:Defines"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -118,7 +122,8 @@ objc_library(
     ],
     deps = [
         "//:Defines"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -132,7 +137,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -148,7 +153,8 @@ objc_library(
         ":NSDictionary_URLArguments",
         ":NSString_URLArguments",
         ":Logger"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -162,7 +168,8 @@ objc_library(
     deps = [
         "//:Defines"
     ],
-    sdk_dylibs = ["libz"]
+    sdk_dylibs = ["libz"],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -178,7 +185,8 @@ objc_library(
         "//:Defines",
         "//DebugUtils:DebugUtils",
         ":NSString_URLArguments"
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -192,6 +200,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -205,6 +214,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -218,6 +228,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -227,7 +238,8 @@ objc_library(
     ],
     srcs = [
         "GTMNSString+URLArguments.m",
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -241,6 +253,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -254,6 +267,7 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -267,4 +281,5 @@ objc_library(
     deps = [
         "//:Defines"
     ],
+    visibility = ["//visibility:public"],
 )
