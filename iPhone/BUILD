@@ -9,7 +9,7 @@ ios_build_test(
         ":UIImage_Resize",
         ":FadeTruncatingLabel",
         ":RoundedRectPath",
-        ":UIFont_LineHeight"
+        ":UIFont_LineHeight",
     ],
 )
 
@@ -21,10 +21,10 @@ objc_library(
     non_arc_srcs = [
         "GTMUILocalizer.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -35,10 +35,10 @@ objc_library(
     non_arc_srcs = [
         "GTMUIImage+Resize.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -49,36 +49,36 @@ objc_library(
     non_arc_srcs = [
         "GTMFadeTruncatingLabel.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "RoundedRectPath",
+    srcs = [
+        "GTMRoundedRectPath.m",
+    ],
     hdrs = [
         "GTMRoundedRectPath.h",
     ],
-    srcs = [
-        "GTMRoundedRectPath.m"
-    ],
-    deps = [
-        "//:Defines"
-    ],
     sdk_frameworks = [
-        "CoreGraphics"
+        "CoreGraphics",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "UIFont_LineHeight",
-        hdrs = [
-        "GTMUIFont+LineHeight.h",
-    ],
     srcs = [
-        "GTMUIFont+LineHeight.m"
+        "GTMUIFont+LineHeight.m",
+    ],
+    hdrs = [
+        "GTMUIFont+LineHeight.h",
     ],
     visibility = ["//visibility:public"],
 )

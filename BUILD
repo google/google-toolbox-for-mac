@@ -9,7 +9,6 @@ ios_build_test(
     ],
 )
 
-
 objc_library(
     name = "Defines",
     hdrs = ["GTMDefines.h"],
