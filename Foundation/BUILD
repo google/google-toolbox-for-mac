@@ -6,7 +6,7 @@ ios_build_test(
     minimum_os_version = "12.0",
     targets = [
         ":LocalizedString",
-        ":GeometryUtils", 
+        ":GeometryUtils",
         ":KVO",
         ":Logger",
         ":Regex",
@@ -22,7 +22,7 @@ ios_build_test(
         ":NSString_URLArguments",
         ":NSString_XML",
         ":NSThread_Blocks",
-        ":TimeUtils"
+        ":TimeUtils",
     ],
 )
 
@@ -36,19 +36,19 @@ objc_library(
 
 objc_library(
     name = "GeometryUtils",
-    hdrs = [
-        "GTMGeometryUtils.h",
-    ],
     srcs = [
         "GTMGeometryUtils.m",
     ],
-    deps = [
-        "//:Defines"
+    hdrs = [
+        "GTMGeometryUtils.h",
     ],
     sdk_frameworks = [
-        "CoreGraphics"
+        "CoreGraphics",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -56,18 +56,18 @@ objc_library(
     hdrs = [
         "GTMNSObject+KeyValueObserving.h",
     ],
+    copts = ["-IDebugUtils"],
     non_arc_srcs = [
         "GTMNSObject+KeyValueObserving.m",
     ],
-    deps = [
-        "//:Defines",
-        "//DebugUtils:DebugUtils"
-    ],
-    copts = ["-IDebugUtils"],
     sdk_frameworks = [
-        "CoreGraphics"
+        "CoreGraphics",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+        "//DebugUtils",
+    ],
 )
 
 objc_library(
@@ -78,10 +78,10 @@ objc_library(
     non_arc_srcs = [
         "GTMLogger.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -92,10 +92,10 @@ objc_library(
     non_arc_srcs = [
         "GTMRegex.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -106,10 +106,10 @@ objc_library(
     non_arc_srcs = [
         "GTMStackTrace.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -120,10 +120,10 @@ objc_library(
     non_arc_srcs = [
         "GTMStringEncoding.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -134,59 +134,59 @@ objc_library(
     non_arc_srcs = [
         "GTMSystemVersion.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "URLBuilder",
     hdrs = [
-        "GTMURLBuilder.h"
+        "GTMURLBuilder.h",
     ],
     non_arc_srcs = [
-        "GTMURLBuilder.m"
-    ],
-    deps = [
-        "//:Defines",
-        ":NSDictionary_URLArguments",
-        ":NSString_URLArguments",
-        ":Logger"
+        "GTMURLBuilder.m",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        ":Logger",
+        ":NSDictionary_URLArguments",
+        ":NSString_URLArguments",
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "NSData_zlib",
-    hdrs = [
-        "GTMNSData+zlib.h",
-    ],
     srcs = [
         "GTMNSData+zlib.m",
     ],
-    deps = [
-        "//:Defines"
+    hdrs = [
+        "GTMNSData+zlib.h",
     ],
     sdk_dylibs = ["libz"],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "NSDictionary_URLArguments",
-    hdrs = [
-        "GTMNSDictionary+URLArguments.h",
-    ],
     srcs = [
         "GTMNSDictionary+URLArguments.m",
     ],
-    copts = ["-IDebugUtils"],
-    deps = [
-        "//:Defines",
-        "//DebugUtils:DebugUtils",
-        ":NSString_URLArguments"
+    hdrs = [
+        "GTMNSDictionary+URLArguments.h",
     ],
+    copts = ["-IDebugUtils"],
     visibility = ["//visibility:public"],
+    deps = [
+        ":NSString_URLArguments",
+        "//:Defines",
+        "//DebugUtils",
+    ],
 )
 
 objc_library(
@@ -197,63 +197,63 @@ objc_library(
     non_arc_srcs = [
         "GTMNSFileHandle+UniqueName.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "NSScanner_JSON",
-    hdrs = [
-        "GTMNSScanner+JSON.h",
-    ],
     srcs = [
         "GTMNSScanner+JSON.m",
     ],
-    deps = [
-        "//:Defines"
+    hdrs = [
+        "GTMNSScanner+JSON.h",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "NSString_HTML",
-    hdrs = [
-        "GTMNSString+HTML.h",
-    ],
     srcs = [
         "GTMNSString+HTML.m",
     ],
-    deps = [
-        "//:Defines"
+    hdrs = [
+        "GTMNSString+HTML.h",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "NSString_URLArguments",
-    hdrs = [
-        "GTMNSString+URLArguments.h",
-    ],
     srcs = [
         "GTMNSString+URLArguments.m",
+    ],
+    hdrs = [
+        "GTMNSString+URLArguments.h",
     ],
     visibility = ["//visibility:public"],
 )
 
 objc_library(
     name = "NSString_XML",
-    hdrs = [
-        "GTMNSString+XML.h",
-    ],
     srcs = [
         "GTMNSString+XML.m",
     ],
-    deps = [
-        "//:Defines"
+    hdrs = [
+        "GTMNSString+XML.h",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
@@ -264,22 +264,22 @@ objc_library(
     non_arc_srcs = [
         "GTMNSThread+Blocks.m",
     ],
-    deps = [
-        "//:Defines"
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )
 
 objc_library(
     name = "TimeUtils",
-    hdrs = [
-        "GTMTimeUtils.h",
-    ],
     srcs = [
         "GTMTimeUtils.m",
     ],
-    deps = [
-        "//:Defines"
+    hdrs = [
+        "GTMTimeUtils.h",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )

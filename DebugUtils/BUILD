@@ -5,7 +5,7 @@ objc_library(
     hdrs = [
         "GTMTypeCasting.h",
     ],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -13,13 +13,13 @@ objc_library(
     hdrs = [
         "GTMDebugSelectorValidation.h",
         "GTMDebugThreadValidation.h",
-        "GTMMethodCheck.h"
-    ],
-    deps = [
-        "//:Defines"
+        "GTMMethodCheck.h",
     ],
     copts = [
-        "-IDebugUtils"
+        "-IDebugUtils",
     ],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:Defines",
+    ],
 )

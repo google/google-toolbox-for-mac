@@ -8,7 +8,7 @@ ios_build_test(
         ":TestTimer",
         ":SenTestCase",
         ":FoundationUnitTestingUtilities",
-        ":UnitTestingAppLib"
+        ":UnitTestingAppLib",
     ],
 )
 
@@ -17,10 +17,10 @@ objc_library(
     hdrs = [
         "GTMTestTimer.h",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//:Defines",
     ],
-    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -31,10 +31,10 @@ objc_library(
     non_arc_srcs = [
         "GTMSenTestCase.m",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//:Defines",
     ],
-    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -45,26 +45,26 @@ objc_library(
     non_arc_srcs = [
         "GTMFoundationUnitTestingUtilities.m",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "//:Defines",
     ],
-    visibility = ["//visibility:public"],
 )
 
 objc_library(
     name = "UnitTestingAppLib",
     hdrs = [
         "GTMCodeCoverageApp.h",
-        "GTMIPhoneUnitTestDelegate.h"
+        "GTMIPhoneUnitTestDelegate.h",
     ],
     non_arc_srcs = [
-        "GTMIPhoneUnitTestDelegate.m"
-    ],
-    deps = [
-        "//:Defines",
-        ":TestTimer",
-        ":SenTestCase",
-        ":FoundationUnitTestingUtilities"
+        "GTMIPhoneUnitTestDelegate.m",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        ":FoundationUnitTestingUtilities",
+        ":SenTestCase",
+        ":TestTimer",
+        "//:Defines",
+    ],
 )
