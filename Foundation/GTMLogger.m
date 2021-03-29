@@ -171,6 +171,7 @@ static GTMLogger *gSharedLogger = nil;
   // Unlikely, but |writer_| may be an NSFileHandle, which can throw
   @try {
     [formatter_ release];
+    [self notifyFilterBeforeDetachIfNeeded];
     [filter_ release];
     [writer_ release];
   }
@@ -229,6 +230,7 @@ static GTMLogger *gSharedLogger = nil;
 
 - (void)setFilter:(id<GTMLogFilter>)filter {
   @synchronized(self) {
+    [self notifyFilterBeforeDetachIfNeeded];
     [filter_ autorelease];
     filter_ = nil;
     if (filter == nil) {
@@ -241,7 +243,22 @@ static GTMLogger *gSharedLogger = nil;
     } else {
       filter_ = [filter retain];
     }
+    [self notifyFilterAfterAttachIfNeeded];
   }
+}
+
+- (void)notifyFilterBeforeDetachIfNeeded {
+  if (![filter_ respondsToSelector:@selector(willDetachFromLogger)]) {
+    return;
+  }
+  [filter_ willDetachFromLogger];
+}
+
+- (void)notifyFilterAfterAttachIfNeeded {
+  if (![filter_ respondsToSelector:@selector(didAttachToLogger)]) {
+    return;
+  }
+  [filter_ didAttachToLogger];
 }
 
 - (void)logDebug:(NSString *)fmt, ... {
@@ -505,18 +522,6 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 - (id)init {
   self = [super init];
   if (self) {
-    // Keep a reference to standardUserDefaults, avoiding a crash if client code calls
-    // "NSUserDefaults resetStandardUserDefaults" which releases it from memory. We are still
-    // notified of changes through our instance. Note: resetStandardUserDefaults does not actually
-    // clear settings:
-    // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html#//apple_ref/occ/clm/NSUserDefaults/resetStandardUserDefaults
-    // and so should only be called in test code if necessary.
-    userDefaults_ = [[NSUserDefaults standardUserDefaults] retain];
-    [userDefaults_ addObserver:self
-                    forKeyPath:kVerboseLoggingKey
-                       options:NSKeyValueObservingOptionNew
-                       context:nil];
-
     verboseLoggingEnabled_ = IsVerboseLoggingEnabled(userDefaults_);
   }
 
@@ -524,8 +529,13 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 }
 
 - (void)dealloc {
-  [userDefaults_ removeObserver:self forKeyPath:kVerboseLoggingKey];
-  [userDefaults_ release];
+  _GTMDevAssert(!userDefaults_,
+                @"The user defaults instance is still retained, which means "
+                @"there was a missing `willDetachFromLogger` call. It is "
+                @"important to balance the `didAttachToLogger` call with a "
+                @"`willDetachFromLogger` call because those methods "
+                @"register/unregister the `GTMLogLevelFilter` instance as an "
+                @"observer of the user defaults instance.");
 
   [super dealloc];
 }
@@ -558,6 +568,57 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
   }
 
   return allow;
+}
+
+- (void)didAttachToLogger {
+  [self startObservingUserDefaultsIfNeeded];
+}
+
+- (void)willDetachFromLogger {
+  // Unregistration needs to happen earlier than dealloc to avoid the following
+  // race condition:
+  // 1. [Thread A] A GTMLogLevelFilter instance is initialized. It starts to
+  //               observe NSUserDefaults.
+  // 2. [Thread A] The instance is released and is starting to be deallocated.
+  //               Its dealloc has not been executed yet, so the instance is
+  //               still registered as an observer.
+  // 3. [Thread B] A user defaults value is modified. NSUserDefaults prepares to
+  //               notify observers by retaining its observers. The
+  //               GTMLogLevelFilter instance is successfully “retained” even
+  //               though it is being deallocated.
+  // 4. [Thread A] The instance finishes deallocation.
+  // 5. [Thread B] NSUserDefaults finishes notifying observers by releasing the
+  //               observers it previously retained. This causes a crash because
+  //               the GTMLogLevelFilter instance has already been deallocated.
+  [self stopObservingUserDefaultsIfNeeded];
+}
+
+- (void)startObservingUserDefaultsIfNeeded {
+  if (userDefaults_) {
+    return;
+  }
+
+  // Keep a reference to standardUserDefaults, avoiding a crash if client code calls
+  // "NSUserDefaults resetStandardUserDefaults" which releases it from memory. We are still
+  // notified of changes through our instance. Note: resetStandardUserDefaults does not actually
+  // clear settings:
+  // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html#//apple_ref/occ/clm/NSUserDefaults/resetStandardUserDefaults
+  // and so should only be called in test code if necessary.
+  userDefaults_ = [[NSUserDefaults standardUserDefaults] retain];
+  [userDefaults_ addObserver:self
+                  forKeyPath:kVerboseLoggingKey
+                     options:NSKeyValueObservingOptionInitial
+                     context:nil];
+}
+
+- (void)stopObservingUserDefaultsIfNeeded {
+  if (!userDefaults_) {
+    return;
+  }
+
+  [userDefaults_ removeObserver:self forKeyPath:kVerboseLoggingKey];
+  [userDefaults_ release];
+  userDefaults_ = nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
