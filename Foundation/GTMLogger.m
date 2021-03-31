@@ -517,12 +517,18 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 }
 // COV_NF_END
 
+@interface GTMLogLevelFilter ()
+
+@property (atomic) BOOL verboseLoggingEnabled;
+
+@end
+
 @implementation GTMLogLevelFilter
 
 - (id)init {
   self = [super init];
   if (self) {
-    verboseLoggingEnabled_ = IsVerboseLoggingEnabled(userDefaults_);
+    self.verboseLoggingEnabled = IsVerboseLoggingEnabled(userDefaults_);
   }
 
   return self;
@@ -554,7 +560,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
       allow = NO;
       break;
     case kGTMLoggerLevelInfo:
-      allow = verboseLoggingEnabled_;
+      allow = self.verboseLoggingEnabled;
       break;
     case kGTMLoggerLevelError:
       allow = YES;
@@ -627,7 +633,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
                        context:(void *)context
 {
   if([keyPath isEqual:kVerboseLoggingKey]) {
-    verboseLoggingEnabled_ = IsVerboseLoggingEnabled(userDefaults_);
+    self.verboseLoggingEnabled = IsVerboseLoggingEnabled(userDefaults_);
   }
 }
 
