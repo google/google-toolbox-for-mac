@@ -40,7 +40,7 @@
 #if GTM_IPHONE_SDK
   XCTAssertTrue(major >= 2 && minor >= 0 && bugFix >= 0);
 #else
-  XCTAssertTrue(major >= 10 && minor >= 3 && bugFix >= 0);
+  XCTAssertTrue(major >= 10 && minor >= 0 && bugFix >= 0);
   BOOL isPanther = (major == 10) && (minor == 3);
   BOOL isTiger = (major == 10) && (minor == 4);
   BOOL isLeopard = (major == 10) && (minor == 5);
