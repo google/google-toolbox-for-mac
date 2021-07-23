@@ -110,7 +110,7 @@
       [versionPlistContents objectForKey:@"ProductVersion"];
   XCTAssertNotNil(version);
   NSArray *pieces = [version componentsSeparatedByString:@"."];
-  XCTAssertTrue([pieces count] > 2);
+  XCTAssertTrue([pieces count] >= 2);
   XCTAssertEqual(major, (SInt32)[[pieces objectAtIndex:0] integerValue]);
   XCTAssertEqual(minor, [[pieces objectAtIndex:1] integerValue]);
   if ([pieces count] > 2) {
