@@ -119,10 +119,12 @@
   return [[self URL] absoluteString];
 }
 
-- (BOOL)isEqual:(GTMURLBuilder *)URLBuilder {
-  if (!URLBuilder) {
+- (BOOL)isEqual:(id)object {
+  if (![object isKindOfClass:[GTMURLBuilder class]]) {
     return NO;
   }
+
+  GTMURLBuilder *URLBuilder = (GTMURLBuilder *)object;
 
   if (!([[self baseURLString] isEqualToString:[URLBuilder baseURLString]])) {
     return NO;
