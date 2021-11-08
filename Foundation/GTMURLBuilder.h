@@ -68,6 +68,6 @@ __deprecated_msg("GTMURLBuilder is obsolete; update your app to use NSURLCompone
 
 // Case-sensitive comparison of the URL. Also protocol and host are compared
 // as case-sensitive strings. The order of URL parameters is ignored.
-- (BOOL)isEqual:(GTMURLBuilder *)URLBuilder;
+- (BOOL)isEqual:(id)URLBuilder;
 
 @end
