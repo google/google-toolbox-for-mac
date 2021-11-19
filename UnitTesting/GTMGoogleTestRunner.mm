@@ -54,11 +54,26 @@
 // multiple times.
 // If you have state that you need maintained across tests (not normally a
 // great idea anyhow), using SetUp*, Teardown* is not going to work for you.
+//
+// Also note that if you are using Bazel/Tulsi that clicking on the tests in
+// Xcode is not going to jump to the code. Unfortunately Bazel compiles relative
+// paths into the tests, and Xcode requires full paths.
 
 #import <XCTest/XCTest.h>
 #import <objc/runtime.h>
 
 #include "third_party/gtest/include/gtest/gtest.h"
+
+// This is a SPI for dealing with skipped tests.
+@interface XCTSkippedTestContext : NSObject
+
+- (id)initWithExplanation:(NSString *)explanation
+      evaluatedExpression:(NSString *)evaluatedExpression
+                  message:(NSString*)message
+        sourceCodeContext:(XCTSourceCodeContext*)sourceCodeContext;
+
+@end
+
 
 using ::testing::EmptyTestEventListener;
 using ::testing::TestCase;
@@ -69,6 +84,27 @@ using ::testing::TestPartResult;
 using ::testing::TestResult;
 using ::testing::UnitTest;
 
+// GTMGoogleTestRunner is a XCTestCase that makes a sub test suite populated
+// with all of the GoogleTest unit tests.
+@interface GTMGoogleTestRunner : XCTestCase {
+  NSString *testName_;
+}
+
+// We need Xcode 11.4 or better to support test skipping.
+#define IS_XCODE_11_4_OR_BETTER (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130400 \
+    || __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
+
+#if IS_XCODE_11_4_OR_BETTER
+
+// If a test has been skipped this will be set with an exception describing
+// the skipped test.
+@property (nonatomic) _XCTSkipFailureException *skipException;
+#endif
+
+// The name for a test is the GoogleTest name which is "TestCase.Test"
+- (id)initWithName:(NSString *)testName;
+@end
+
 namespace {
 
 // A gtest printer that takes care of reporting gtest results via the
@@ -77,7 +113,7 @@ namespace {
 // This will handle fatal and non-fatal gtests properly.
 class GoogleTestPrinter : public EmptyTestEventListener {
  public:
-  GoogleTestPrinter(XCTestCase *test_case) : test_case_(test_case) {}
+  GoogleTestPrinter(GTMGoogleTestRunner *test_case) : test_case_(test_case) {}
 
   virtual ~GoogleTestPrinter() {}
 
@@ -93,6 +129,33 @@ class GoogleTestPrinter : public EmptyTestEventListener {
       NSString *oneLineSummary =
           [summary stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
       BOOL expected = test_part_result.nonfatally_failed();
+#if IS_XCODE_11_4_OR_BETTER
+      if (test_part_result.skipped()) {
+        // Test skipping works differently than other test failures in XCTest in
+        // that it is done via exceptions. We can't throw the exception from
+        // here though because it will be caught by the GUnit test
+        // infrastructure and reported as an error. So we record all of the data
+        // we need, and then throw the exception in -runGoogleTest once we are
+        // above the GUnit exception handling code.
+        XCTSourceCodeLocation *location =
+            [[XCTSourceCodeLocation alloc] initWithFilePath:file
+                                                 lineNumber:line];
+        XCTSourceCodeContext *codeContext =
+            [[XCTSourceCodeContext alloc] initWithLocation:location];
+        XCTSkippedTestContext *skippedContext =
+            [[XCTSkippedTestContext alloc] initWithExplanation:oneLineSummary
+                                           evaluatedExpression:nil
+                                                       message:nil
+                                             sourceCodeContext:codeContext];
+        NSDictionary *userInfo =
+            @{@"XCTestErrorUserInfoKeySkippedTestContext" : skippedContext};
+        test_case_.skipException =
+            [[_XCTSkipFailureException alloc] initWithName:@"_XCTSkipFailureException"
+                                                    reason:@"Test skipped"
+                                                  userInfo:userInfo];
+        return;
+      }
+#endif
       [test_case_ recordFailureWithDescription:oneLineSummary
                                         inFile:file
                                         atLine:line
@@ -101,7 +164,7 @@ class GoogleTestPrinter : public EmptyTestEventListener {
   }
 
  private:
-  XCTestCase *test_case_;
+  GTMGoogleTestRunner *test_case_;
 };
 
 NSString *SelectorNameFromGTestName(NSString *testName) {
@@ -113,15 +176,6 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 
 }  // namespace
 
-// GTMGoogleTestRunner is a GTMTestCase that makes a sub test suite populated
-// with all of the GoogleTest unit tests.
-@interface GTMGoogleTestRunner : XCTestCase {
-  NSString *testName_;
-}
-
-// The name for a test is the GoogleTest name which is "TestCase.Test"
-- (id)initWithName:(NSString *)testName;
-@end
 
 @implementation GTMGoogleTestRunner
 
@@ -224,6 +278,13 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 
   // Remove the listener that we added.
   listeners.Release(&printer);
+
+  // If there was a test skip, skipException will be set.
+  NSException *exception = self.skipException;
+  if (exception) {
+    self.skipException = nil;
+    @throw exception;
+  }
 }
 
 @end
