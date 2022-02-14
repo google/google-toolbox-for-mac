@@ -130,6 +130,9 @@ class GoogleTestPrinter : public EmptyTestEventListener {
           [summary stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
       BOOL expected = test_part_result.nonfatally_failed();
 #if IS_XCODE_11_4_OR_BETTER
+      XCTSourceCodeLocation *location = [[XCTSourceCodeLocation alloc] initWithFilePath:file lineNumber:line];
+      XCTSourceCodeContext *codeContext = [[XCTSourceCodeContext alloc] initWithLocation:location];
+
       if (test_part_result.skipped()) {
         // Test skipping works differently than other test failures in XCTest in
         // that it is done via exceptions. We can't throw the exception from
@@ -137,29 +140,28 @@ class GoogleTestPrinter : public EmptyTestEventListener {
         // infrastructure and reported as an error. So we record all of the data
         // we need, and then throw the exception in -runGoogleTest once we are
         // above the GUnit exception handling code.
-        XCTSourceCodeLocation *location =
-            [[XCTSourceCodeLocation alloc] initWithFilePath:file
-                                                 lineNumber:line];
-        XCTSourceCodeContext *codeContext =
-            [[XCTSourceCodeContext alloc] initWithLocation:location];
-        XCTSkippedTestContext *skippedContext =
-            [[XCTSkippedTestContext alloc] initWithExplanation:oneLineSummary
-                                           evaluatedExpression:nil
-                                                       message:nil
-                                             sourceCodeContext:codeContext];
-        NSDictionary *userInfo =
-            @{@"XCTestErrorUserInfoKeySkippedTestContext" : skippedContext};
-        test_case_.skipException =
-            [[_XCTSkipFailureException alloc] initWithName:@"_XCTSkipFailureException"
-                                                    reason:@"Test skipped"
-                                                  userInfo:userInfo];
+        XCTSkippedTestContext *skippedContext = [[XCTSkippedTestContext alloc] initWithExplanation:oneLineSummary
+                                                                               evaluatedExpression:nil
+                                                                                           message:nil
+                                                                                 sourceCodeContext:codeContext];
+        NSDictionary *userInfo = @{@"XCTestErrorUserInfoKeySkippedTestContext" : skippedContext};
+        test_case_.skipException = [[_XCTSkipFailureException alloc] initWithName:@"_XCTSkipFailureException"
+                                                                           reason:@"Test skipped"
+                                                                         userInfo:userInfo];
         return;
+      } else {
+        XCTIssue *issue =
+            [[XCTIssue alloc] initWithType:expected ? XCTIssueTypeAssertionFailure : XCTIssueTypeUncaughtException
+                        compactDescription:oneLineSummary
+                       detailedDescription:summary
+                         sourceCodeContext:codeContext
+                           associatedError:nil
+                               attachments:@[]];
+        [test_case_ recordIssue:issue];
       }
+#else  // IS_XCODE_11_4_OR_BETTER
+      [test_case_ recordFailureWithDescription:oneLineSummary inFile:file atLine:line expected:expected];
 #endif
-      [test_case_ recordFailureWithDescription:oneLineSummary
-                                        inFile:file
-                                        atLine:line
-                                      expected:expected];
     }
   }
 
