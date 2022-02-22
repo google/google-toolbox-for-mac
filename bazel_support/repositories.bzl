@@ -23,16 +23,13 @@ def google_toolbox_for_mac_rules_dependencies():
     _maybe(
         http_archive,
         name = "rules_cc",
-        # Latest 08-10-20
-        urls = ["https://github.com/bazelbuild/rules_cc/archive/1477dbab59b401daa94acedbeaefe79bf9112167.tar.gz"],
-        sha256 = "b87996d308549fc3933f57a786004ef65b44b83fd63f1b0303a4bbc3fd26bbaf",
-        strip_prefix = "rules_cc-1477dbab59b401daa94acedbeaefe79bf9112167/",
+        urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.1/rules_cc-0.0.1.tar.gz"],
+        sha256 = "4dccbfd22c0def164c8f47458bd50e0c7148f3d92002cdb459c2a96a68498241",
     )
 
     _maybe(
         http_archive,
         name = "build_bazel_rules_apple",
-        # Latest 2-11-21
-        urls = ["https://github.com/bazelbuild/rules_apple/archive/c909dd759627f40e0fbd17112ba5e7b753755906.tar.gz"],
-        strip_prefix = "rules_apple-c909dd759627f40e0fbd17112ba5e7b753755906/",
+        sha256 = "a5f00fd89eff67291f6cd3efdc8fad30f4727e6ebb90718f3f05bbf3c3dd5ed7",
+        url = "https://github.com/bazelbuild/rules_apple/releases/download/0.33.0/rules_apple.0.33.0.tar.gz",
     )
