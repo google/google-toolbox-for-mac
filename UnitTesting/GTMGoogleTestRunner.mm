@@ -94,6 +94,10 @@ using ::testing::UnitTest;
 #define IS_XCODE_11_4_OR_BETTER (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130400 \
     || __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
 
+// We need Xcode 11.4 or better to support XCTIssue.
+#define IS_XCODE_12_0_OR_BETTER (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130700 \
+    || __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
+
 #if IS_XCODE_11_4_OR_BETTER
 
 // If a test has been skipped this will be set with an exception describing
@@ -118,8 +122,11 @@ class GoogleTestPrinter : public EmptyTestEventListener {
   virtual ~GoogleTestPrinter() {}
 
   virtual void OnTestPartResult(const TestPartResult &test_part_result) {
-    if (!test_part_result.passed()) {
-      const char *file_name = test_part_result.file_name();
+    if (test_part_result.passed()) {
+      return;
+    }
+
+    const char *file_name = test_part_result.file_name();
       NSString *file = @(file_name ? file_name : "<file name unavailable>");
       int line = test_part_result.line_number();
       NSString *summary = @(test_part_result.summary());
@@ -150,6 +157,7 @@ class GoogleTestPrinter : public EmptyTestEventListener {
                                                                          userInfo:userInfo];
         return;
       } else {
+#if IS_XCODE_12_0_OR_BETTER
         XCTIssue *issue =
             [[XCTIssue alloc] initWithType:expected ? XCTIssueTypeAssertionFailure : XCTIssueTypeUncaughtException
                         compactDescription:oneLineSummary
@@ -158,11 +166,13 @@ class GoogleTestPrinter : public EmptyTestEventListener {
                            associatedError:nil
                                attachments:@[]];
         [test_case_ recordIssue:issue];
+        return;
+#endif // IS_XCODE_12_0_OR_BETTER
       }
+
 #else  // IS_XCODE_11_4_OR_BETTER
       [test_case_ recordFailureWithDescription:oneLineSummary inFile:file atLine:line expected:expected];
 #endif
-    }
   }
 
  private:
