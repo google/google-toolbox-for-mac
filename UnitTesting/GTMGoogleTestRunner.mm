@@ -69,11 +69,10 @@
 
 - (id)initWithExplanation:(NSString *)explanation
       evaluatedExpression:(NSString *)evaluatedExpression
-                  message:(NSString*)message
-        sourceCodeContext:(XCTSourceCodeContext*)sourceCodeContext;
+                  message:(NSString *)message
+        sourceCodeContext:(XCTSourceCodeContext *)sourceCodeContext;
 
 @end
-
 
 using ::testing::EmptyTestEventListener;
 using ::testing::TestCase;
@@ -91,18 +90,20 @@ using ::testing::UnitTest;
 }
 
 // We need Xcode 11.4 or better to support test skipping.
-#define IS_XCODE_11_4_OR_BETTER (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130400 \
-    || __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
+#define IS_XCODE_11_4_OR_BETTER                 \
+  (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130400 || \
+   __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
 
 // We need Xcode 11.4 or better to support XCTIssue.
-#define IS_XCODE_12_0_OR_BETTER (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130700 \
-    || __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
+#define IS_XCODE_12_0_OR_BETTER                 \
+  (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130700 || \
+   __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
 
 #if IS_XCODE_11_4_OR_BETTER
 
 // If a test has been skipped this will be set with an exception describing
 // the skipped test.
-@property (nonatomic) _XCTSkipFailureException *skipException;
+@property(nonatomic) _XCTSkipFailureException *skipException;
 #endif
 
 // The name for a test is the GoogleTest name which is "TestCase.Test"
@@ -127,51 +128,60 @@ class GoogleTestPrinter : public EmptyTestEventListener {
     }
 
     const char *file_name = test_part_result.file_name();
-      NSString *file = @(file_name ? file_name : "<file name unavailable>");
-      int line = test_part_result.line_number();
-      NSString *summary = @(test_part_result.summary());
+    NSString *file = @(file_name ? file_name : "<file name unavailable>");
+    int line = test_part_result.line_number();
+    NSString *summary = @(test_part_result.summary());
 
-      // gtest likes to give multi-line summaries. These don't look good in
-      // the Xcode UI, so we clean them up.
-      NSString *oneLineSummary =
-          [summary stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-      BOOL expected = test_part_result.nonfatally_failed();
+    // gtest likes to give multi-line summaries. These don't look good in
+    // the Xcode UI, so we clean them up.
+    NSString *oneLineSummary =
+        [summary stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    BOOL expected = test_part_result.nonfatally_failed();
 #if IS_XCODE_11_4_OR_BETTER
-      XCTSourceCodeLocation *location = [[XCTSourceCodeLocation alloc] initWithFilePath:file lineNumber:line];
-      XCTSourceCodeContext *codeContext = [[XCTSourceCodeContext alloc] initWithLocation:location];
+    XCTSourceCodeLocation *location =
+        [[XCTSourceCodeLocation alloc] initWithFilePath:file lineNumber:line];
+    XCTSourceCodeContext *codeContext =
+        [[XCTSourceCodeContext alloc] initWithLocation:location];
 
-      if (test_part_result.skipped()) {
-        // Test skipping works differently than other test failures in XCTest in
-        // that it is done via exceptions. We can't throw the exception from
-        // here though because it will be caught by the GUnit test
-        // infrastructure and reported as an error. So we record all of the data
-        // we need, and then throw the exception in -runGoogleTest once we are
-        // above the GUnit exception handling code.
-        XCTSkippedTestContext *skippedContext = [[XCTSkippedTestContext alloc] initWithExplanation:oneLineSummary
-                                                                               evaluatedExpression:nil
-                                                                                           message:nil
-                                                                                 sourceCodeContext:codeContext];
-        NSDictionary *userInfo = @{@"XCTestErrorUserInfoKeySkippedTestContext" : skippedContext};
-        test_case_.skipException = [[_XCTSkipFailureException alloc] initWithName:@"_XCTSkipFailureException"
-                                                                           reason:@"Test skipped"
-                                                                         userInfo:userInfo];
-        return;
-      } else {
+    if (test_part_result.skipped()) {
+      // Test skipping works differently than other test failures in XCTest in
+      // that it is done via exceptions. We can't throw the exception from
+      // here though because it will be caught by the GUnit test
+      // infrastructure and reported as an error. So we record all of the data
+      // we need, and then throw the exception in -runGoogleTest once we are
+      // above the GUnit exception handling code.
+      XCTSkippedTestContext *skippedContext =
+          [[XCTSkippedTestContext alloc] initWithExplanation:oneLineSummary
+                                         evaluatedExpression:nil
+                                                     message:nil
+                                           sourceCodeContext:codeContext];
+      NSDictionary *userInfo =
+          @{@"XCTestErrorUserInfoKeySkippedTestContext" : skippedContext};
+      test_case_.skipException = [[_XCTSkipFailureException alloc]
+          initWithName:@"_XCTSkipFailureException"
+                reason:@"Test skipped"
+              userInfo:userInfo];
+      return;
+    } else {
 #if IS_XCODE_12_0_OR_BETTER
-        XCTIssue *issue =
-            [[XCTIssue alloc] initWithType:expected ? XCTIssueTypeAssertionFailure : XCTIssueTypeUncaughtException
-                        compactDescription:oneLineSummary
-                       detailedDescription:summary
-                         sourceCodeContext:codeContext
-                           associatedError:nil
-                               attachments:@[]];
-        [test_case_ recordIssue:issue];
-        return;
-#endif // IS_XCODE_12_0_OR_BETTER
-      }
+      XCTIssue *issue = [[XCTIssue alloc]
+                 initWithType:expected ? XCTIssueTypeAssertionFailure
+                                       : XCTIssueTypeUncaughtException
+           compactDescription:oneLineSummary
+          detailedDescription:summary
+            sourceCodeContext:codeContext
+              associatedError:nil
+                  attachments:@[]];
+      [test_case_ recordIssue:issue];
+      return;
+#endif  // IS_XCODE_12_0_OR_BETTER
+    }
 
 #else  // IS_XCODE_11_4_OR_BETTER
-      [test_case_ recordFailureWithDescription:oneLineSummary inFile:file atLine:line expected:expected];
+    [test_case_ recordFailureWithDescription:oneLineSummary
+                                      inFile:file
+                                      atLine:line
+                                    expected:expected];
 #endif
   }
 
@@ -181,9 +191,8 @@ class GoogleTestPrinter : public EmptyTestEventListener {
 
 NSString *SelectorNameFromGTestName(NSString *testName) {
   NSRange dot = [testName rangeOfString:@"."];
-  return [NSString stringWithFormat:@"%@::%@",
-          [testName substringToIndex:dot.location],
-          [testName substringFromIndex:dot.location + 1]];
+  return [NSString stringWithFormat:@"%@::%@", [testName substringToIndex:dot.location],
+                                    [testName substringFromIndex:dot.location + 1]];
 }
 
 }  // namespace
@@ -198,7 +207,7 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
     int argc = (int)arguments.count;
     char **argv = static_cast<char **>(alloca((sizeof(char *) * (argc + 1))));
     for (int index = 0; index < argc; index++) {
-      argv[index] = const_cast<char *> ([arguments[index] UTF8String]);
+      argv[index] = const_cast<char *>([arguments[index] UTF8String]);
     }
     argv[argc] = NULL;
 
@@ -220,8 +229,7 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
     [result addTest:subSuite];
     for (int j = 0; j < total_test_count; ++j) {
       const TestInfo *test_info = test_case->GetTestInfo(j);
-      NSString *testName = [NSString stringWithFormat:@"%s.%s",
-                            test_case->name(), test_info->name()];
+      NSString *testName = [NSString stringWithFormat:@"%s.%s", test_case->name(), test_info->name()];
       XCTestCase *xcTest = [[self alloc] initWithName:testName];
       [subSuite addTest:xcTest];
     }
@@ -243,11 +251,9 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
   const char *encoding = method_getTypeEncoding(method);
   // We may be called more than once for the same testName. Check before adding new method to avoid
   // failure from adding multiple methods with the same name.
-  if (!class_getInstanceMethod(cls, selector) &&
-      !class_addMethod(cls, selector, implementation, encoding)) {
+  if (!class_getInstanceMethod(cls, selector) && !class_addMethod(cls, selector, implementation, encoding)) {
     // If we can't add a method, we should blow up here.
-    [NSException raise:NSInternalInconsistencyException
-                format:@"Unable to add %@ to %@.", testName, cls];
+    [NSException raise:NSInternalInconsistencyException format:@"Unable to add %@ to %@.", testName, cls];
   }
   if ((self = [super initWithSelector:selector])) {
     testName_ = testName;
@@ -258,16 +264,15 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 - (NSString *)name {
   // An XCTest name must be "-[foo bar]" or it won't be parsed properly.
   NSRange dot = [testName_ rangeOfString:@"."];
-  return [NSString stringWithFormat:@"-[%@ %@]",
-          [testName_ substringToIndex:dot.location],
-          [testName_ substringFromIndex:dot.location + 1]];
+  return [NSString stringWithFormat:@"-[%@ %@]", [testName_ substringToIndex:dot.location],
+                                    [testName_ substringFromIndex:dot.location + 1]];
 }
 
 - (void)runGoogleTest {
   [GTMGoogleTestRunner initGoogleTest];
 
   // Gets hold of the event listener list.
-  TestEventListeners& listeners = UnitTest::GetInstance()->listeners();
+  TestEventListeners &listeners = UnitTest::GetInstance()->listeners();
 
   // Adds a listener to the end.
   GoogleTestPrinter printer = GoogleTestPrinter(self);
