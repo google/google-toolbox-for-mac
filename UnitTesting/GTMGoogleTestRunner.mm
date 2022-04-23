@@ -229,7 +229,8 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
     [result addTest:subSuite];
     for (int j = 0; j < total_test_count; ++j) {
       const TestInfo *test_info = test_case->GetTestInfo(j);
-      NSString *testName = [NSString stringWithFormat:@"%s.%s", test_case->name(), test_info->name()];
+      NSString *testName = [NSString
+          stringWithFormat:@"%s.%s", test_case->name(), test_info->name()];
       XCTestCase *xcTest = [[self alloc] initWithName:testName];
       [subSuite addTest:xcTest];
     }
@@ -251,9 +252,11 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
   const char *encoding = method_getTypeEncoding(method);
   // We may be called more than once for the same testName. Check before adding new method to avoid
   // failure from adding multiple methods with the same name.
-  if (!class_getInstanceMethod(cls, selector) && !class_addMethod(cls, selector, implementation, encoding)) {
+  if (!class_getInstanceMethod(cls, selector) &&
+      !class_addMethod(cls, selector, implementation, encoding)) {
     // If we can't add a method, we should blow up here.
-    [NSException raise:NSInternalInconsistencyException format:@"Unable to add %@ to %@.", testName, cls];
+    [NSException raise:NSInternalInconsistencyException
+                format:@"Unable to add %@ to %@.", testName, cls];
   }
   if ((self = [super initWithSelector:selector])) {
     testName_ = testName;
@@ -264,8 +267,9 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 - (NSString *)name {
   // An XCTest name must be "-[foo bar]" or it won't be parsed properly.
   NSRange dot = [testName_ rangeOfString:@"."];
-  return [NSString stringWithFormat:@"-[%@ %@]", [testName_ substringToIndex:dot.location],
-                                    [testName_ substringFromIndex:dot.location + 1]];
+  return [NSString
+      stringWithFormat:@"-[%@ %@]", [testName_ substringToIndex:dot.location],
+                       [testName_ substringFromIndex:dot.location + 1]];
 }
 
 - (void)runGoogleTest {
