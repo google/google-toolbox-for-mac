@@ -321,21 +321,31 @@ GTM_PARAM_TEMPLATE_DEFN(EventHotKeyID)
 
 UInt32 GTMCocoaToCarbonKeyModifiers(NSUInteger inCocoaModifiers) {
   UInt32 carbModifiers = 0;
-  if (inCocoaModifiers & NSAlphaShiftKeyMask) carbModifiers |= alphaLock;
-  if (inCocoaModifiers & NSShiftKeyMask) carbModifiers |= shiftKey;
-  if (inCocoaModifiers & NSControlKeyMask) carbModifiers |= controlKey;
-  if (inCocoaModifiers & NSAlternateKeyMask) carbModifiers |= optionKey;
-  if (inCocoaModifiers & NSCommandKeyMask) carbModifiers |= cmdKey;
+  if (inCocoaModifiers & NSEventModifierFlagCapsLock)
+    carbModifiers |= alphaLock;
+  if (inCocoaModifiers & NSEventModifierFlagShift)
+    carbModifiers |= shiftKey;
+  if (inCocoaModifiers & NSEventModifierFlagControl)
+    carbModifiers |= controlKey;
+  if (inCocoaModifiers & NSEventModifierFlagOption)
+    carbModifiers |= optionKey;
+  if (inCocoaModifiers & NSEventModifierFlagCommand)
+    carbModifiers |= cmdKey;
   return carbModifiers;
 }
 
 NSUInteger GTMCarbonToCocoaKeyModifiers(UInt32 inCarbonModifiers) {
   NSUInteger nsModifiers = 0;
-  if (inCarbonModifiers & alphaLock) nsModifiers |= NSAlphaShiftKeyMask;
-  if (inCarbonModifiers & shiftKey) nsModifiers |= NSShiftKeyMask;
-  if (inCarbonModifiers & controlKey) nsModifiers |= NSControlKeyMask;
-  if (inCarbonModifiers & optionKey) nsModifiers |= NSAlternateKeyMask;
-  if (inCarbonModifiers & cmdKey) nsModifiers |= NSCommandKeyMask;
+  if (inCarbonModifiers & alphaLock)
+    nsModifiers |= NSEventModifierFlagCapsLock;
+  if (inCarbonModifiers & shiftKey)
+    nsModifiers |= NSEventModifierFlagShift;
+  if (inCarbonModifiers & controlKey)
+    nsModifiers |= NSEventModifierFlagControl;
+  if (inCarbonModifiers & optionKey)
+    nsModifiers |= NSEventModifierFlagOption;
+  if (inCarbonModifiers & cmdKey)
+    nsModifiers |= NSEventModifierFlagCommand;
   return nsModifiers;
 }
 

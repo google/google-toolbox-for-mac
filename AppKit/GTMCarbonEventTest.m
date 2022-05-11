@@ -345,11 +345,11 @@ extern EventTargetRef GetApplicationEventTarget(void);
     NSUInteger cocoaKey_;
     UInt32 carbonKey_;
   } keyMap[] = {
-    { NSAlphaShiftKeyMask, alphaLock},
-    { NSShiftKeyMask, shiftKey},
-    { NSControlKeyMask, controlKey},
-    { NSAlternateKeyMask, optionKey},
-    { NSCommandKeyMask, cmdKey},
+      {NSEventModifierFlagCapsLock, alphaLock},
+      {NSEventModifierFlagShift, shiftKey},
+      {NSEventModifierFlagControl, controlKey},
+      {NSEventModifierFlagOption, optionKey},
+      {NSEventModifierFlagCommand, cmdKey},
   };
   size_t combos = pow(2, sizeof(keyMap) / sizeof(keyMap[0]));
   for (size_t i = 0; i < combos; i++) {
