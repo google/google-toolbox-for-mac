@@ -12,9 +12,13 @@ Pod::Spec.new do |s|
       to developers working on iOS or OS X projects.
                        DESC
 
-  s.osx.deployment_target = '10.7'
-  s.ios.deployment_target = '9.0'
-  s.tvos.deployment_target = '9.0'
+  osx_deployment_target = '10.7'
+  ios_deployment_target = '9.0'
+  tvos_deployment_target = '9.0'
+
+  s.osx.deployment_target = osx_deployment_target
+  s.ios.deployment_target = ios_deployment_target
+  s.tvos.deployment_target = tvos_deployment_target
 
   s.requires_arc = false
 
@@ -157,7 +161,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'iPhone' do |sp|
-    sp.platform = :ios, '9.0'
+    sp.platform = :ios, ios_deployment_target
     sp.source_files =
         'iPhone/GTMFadeTruncatingLabel.{h,m}',
         'iPhone/GTMUIImage+Resize.{h,m}',
@@ -167,7 +171,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'RoundedRectPath' do |sp|
-    sp.platform = :ios, '9.0'
+    sp.platform = :ios, ios_deployment_target
     sp.source_files = 'iPhone/GTMRoundedRectPath.{h,m}'
     sp.requires_arc = 'iPhone/GTMRoundedRectPath.{h,m}'
     sp.frameworks = 'CoreGraphics'
@@ -175,13 +179,13 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'UIFont+LineHeight' do |sp|
-    sp.platform = :ios, '9.0'
+    sp.platform = :ios, ios_deployment_target
     sp.source_files = 'iPhone/GTMUIFont+LineHeight.{h,m}'
     sp.requires_arc = 'iPhone/GTMUIFont+LineHeight.{h,m}'
   end
 
   s.subspec 'UnitTesting' do |sp|
-    sp.platform = :ios, '9.0'
+    sp.platform = :ios, ios_deployment_target
     sp.source_files =
         'UnitTesting/GTMFoundationUnitTestingUtilities.{h,m}',
         'UnitTesting/GTMSenTestCase.{h,m}',
@@ -193,7 +197,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'UnitTestingAppLib' do |sp|
-    sp.platform = :ios, '9.0'
+    sp.platform = :ios, ios_deployment_target
     sp.source_files =
         'UnitTesting/GTMCodeCoverageApp.h',
         'UnitTesting/GTMIPhoneUnitTestDelegate.{h,m}'
