@@ -599,8 +599,8 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
       NSButton *button = (NSButton *)view;
       // -[NSButton sizeToFit] gives much worse results than IB's Size to Fit
       // option for standard push buttons.
-      if (([button bezelStyle] == NSRoundedBezelStyle) &&
-          ([[button cell] controlSize] == NSRegularControlSize)) {
+      if (([button bezelStyle] == NSBezelStyleRounded) &&
+          ([[button cell] controlSize] == NSControlSizeRegular)) {
         // This is the amount of padding IB adds over a sizeToFit, empirically
         // determined.
         const CGFloat kExtraPaddingAmount = 12.0;
@@ -612,8 +612,8 @@ static NSSize SizeToFit(NSView *view, NSPoint offset) {
         if (NSWidth(newFrame) < kMinButtonWidth) {
           newFrame.size.width = kMinButtonWidth;
         }
-      } else if ([button bezelStyle] == NSTexturedRoundedBezelStyle &&
-                 [[button cell] controlSize] == NSRegularControlSize) {
+      } else if ([button bezelStyle] == NSBezelStyleTexturedRounded &&
+                 [[button cell] controlSize] == NSControlSizeRegular) {
         // The round textured style needs to have a little extra padding,
         // otherwise the baseline of the text sinks by a few pixels.
         const CGFloat kExtraPaddingAmount = 4.0;

@@ -50,8 +50,7 @@
 
   if ([self drawsBackground]) {
     [[self backgroundColor] set];
-    NSRectFillUsingOperation(backgroundRect,
-                             NSCompositeSourceOver);
+    NSRectFillUsingOperation(backgroundRect, NSCompositingOperationSourceOver);
   }
 
   [NSGraphicsContext saveGraphicsState];
@@ -174,7 +173,8 @@
   [NSGraphicsContext saveGraphicsState];
   if ([self drawsBackground]) {
     [[self backgroundColor] set];
-    NSRectFillUsingOperation(solidBackgroundPart, NSCompositeSourceOver);
+    NSRectFillUsingOperation(solidBackgroundPart,
+                             NSCompositingOperationSourceOver);
   }
   // We draw the text ourselves because [super drawInteriorWithFrame:inView:]
   // doesn't draw correctly if the cell draws its own background.
