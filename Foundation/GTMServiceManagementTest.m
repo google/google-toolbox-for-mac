@@ -18,8 +18,6 @@
 
 #import "GTMServiceManagement.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
-
 #import "GTMSenTestCase.h"
 #import <servers/bootstrap.h>
 
@@ -220,5 +218,3 @@ static NSString const *kGTMSocketName
 @end
 
 #pragma clang diagnostic pop
-
-#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4

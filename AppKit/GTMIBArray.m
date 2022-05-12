@@ -96,8 +96,6 @@
   return [realArray_ reverseObjectEnumerator];
 }
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
-
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
                                   objects:(id *)stackbuf
                                     count:(NSUInteger)len {
@@ -106,8 +104,6 @@
                                          objects:stackbuf
                                            count:len];
 }
-
-#endif  // MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 
 // ----------------------------------------------------------------------------
 // Directly relay the copy methods, again, for any extra efficency.

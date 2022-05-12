@@ -239,12 +239,6 @@ static const UInt32 kTestParameterValue = 'bam ';
 
 @end
 
-#if (MAC_OS_X_VERSION_MAX_ALLOWED == MAC_OS_X_VERSION_10_5)
-// Accidentally marked as !LP64 in the 10.5sdk, it's back in the 10.6 sdk.
-// If you remove this decl, please remove it from GTMCarbonEvent.m as well.
-extern EventTargetRef GetApplicationEventTarget(void);
-#endif  // (MAC_OS_X_VERSION_MAX_ALLOWED == MAC_OS_X_VERSION_10_5)
-
 @implementation GTMCarbonEventApplicationEventHandlerTest
 
 - (void)testEventHandler {

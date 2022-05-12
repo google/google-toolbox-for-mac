@@ -96,27 +96,17 @@
 
   // make sure the files aren't in the way of the test
   NSFileManager *fm = [NSFileManager defaultManager];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   [fm removeItemAtPath:testPath_ error:&error];
   [fm removeItemAtPath:testPath2_ error:&error];
-#else
-  [fm removeFileAtPath:testPath_ handler:nil];
-  [fm removeFileAtPath:testPath2_ handler:nil];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 }
 
 - (void)tearDown {
   // make sure we clean up the files from a failed test
   NSFileManager *fm = [NSFileManager defaultManager];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   [fm removeItemAtPath:testPath_ error:&error];
   [fm removeItemAtPath:testPath2_ error:&error];
-#else
-  [fm removeFileAtPath:testPath_ handler:nil];
-  [fm removeFileAtPath:testPath2_ handler:nil];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   [testPath_ release];
   testPath_ = nil;
@@ -220,12 +210,8 @@
 
   // Close and delete
   [testFH closeFile];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   XCTAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
-#else
-  XCTAssertTrue([fm removeFileAtPath:testPath_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   [self spinForEvents:helper];
   XCTAssertEqual([helper totals], 2);
@@ -285,12 +271,8 @@
 
   // Close and delete
   [testFH closeFile];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   XCTAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
-#else
-  XCTAssertTrue([fm removeFileAtPath:testPath_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Recreate
   XCTAssertTrue([fm createFileAtPath:testPath_ contents:nil attributes:nil]);
@@ -313,11 +295,7 @@
 
   // Close and delete
   [testFH closeFile];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   XCTAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
-#else
-  XCTAssertTrue([fm removeFileAtPath:testPath_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Spin the runloop for a second so that the helper callbacks fire
   [self spinForEvents:helper];
@@ -383,13 +361,9 @@
   XCTAssertEqual([helper2 totals], 1);
 
   // Move it and create the file again
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   XCTAssertTrue([fm moveItemAtPath:testPath_ toPath:testPath2_ error:&error],
                 @"Error: %@", error);
-#else
-  XCTAssertTrue([fm movePath:testPath_ toPath:testPath2_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   XCTAssertTrue([fm createFileAtPath:testPath_ contents:nil attributes:nil]);
   NSFileHandle *testFHPrime
@@ -420,11 +394,7 @@
 
   // and now close old
   [testFH closeFile];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   XCTAssertTrue([fm removeItemAtPath:testPath2_ error:&error], @"Err: %@", error);
-#else
-  XCTAssertTrue([fm removeFileAtPath:testPath2_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Spin the runloop for a second so that the helper callbacks fire
   [self spinForEvents:helper];
@@ -433,11 +403,7 @@
 
   // and now close new
   [testFHPrime closeFile];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   XCTAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
-#else
-  XCTAssertTrue([fm removeFileAtPath:testPath_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Spin the runloop for a second so that the helper callbacks fire
   [self spinForEvents:helper];
@@ -493,12 +459,8 @@
   [testFH writeData:[@"doh!" dataUsingEncoding:NSUnicodeStringEncoding]];
   // Close and delete
   [testFH closeFile];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   XCTAssertTrue([fm removeItemAtPath:testPath_ error:&error], @"Err: %@", error);
-#else
-  XCTAssertTrue([fm removeFileAtPath:testPath_ handler:nil]);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
   // Now destroy the queue, with events outstanding from the CFSocket, but
   // unconsumed.

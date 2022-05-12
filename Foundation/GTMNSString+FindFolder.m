@@ -66,7 +66,6 @@
       NSDictionary* attrs = nil;
       BOOL createdSubDir = NO;
       // create the subdirectory with the parent folder's attributes
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
       NSError *error = nil;
       attrs = [fileMgr attributesOfItemAtPath:parentFolderPath error:&error];
       if (error) {
@@ -80,11 +79,6 @@
       if (error) {
         _GTMDevLog(@"Error %@ creating directory at %@", error, subdirPath);
       }
-#else
-      attrs = [fileMgr fileAttributesAtPath:parentFolderPath traverseLink:YES];
-      createdSubDir = [fileMgr createDirectoryAtPath:subdirPath
-                                          attributes:attrs];
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
       if (createdSubDir) {
         resultPath = subdirPath;
       }

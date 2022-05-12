@@ -174,8 +174,6 @@ static NSUInteger gTestPass = 0;
   }
 }
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 - (void)testSizeToFitFixedHeightTextField {
   struct {
     const char *name;
@@ -236,8 +234,6 @@ static NSUInteger gTestPass = 0;
       NSEqualRects([textField bounds], NSIntegralRect([textField bounds])));
   [textField release];
 }
-
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 @end
 

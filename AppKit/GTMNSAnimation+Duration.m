@@ -70,8 +70,6 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
 
 @end
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 @implementation NSAnimationContext (GTMNSAnimationDurationAdditions)
 
 - (void)gtm_setDuration:(NSTimeInterval)duration
@@ -91,5 +89,3 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
 }
 
 @end
-
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5

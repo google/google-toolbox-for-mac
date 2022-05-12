@@ -19,8 +19,6 @@
 #import "GTMDefines.h"
 #import <Cocoa/Cocoa.h>
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 enum {
   GTMColorationBaseHighlight,
   GTMColorationBaseMidtone,
@@ -61,5 +59,3 @@ typedef NSUInteger GTMColorationUse;
 // Returns a color that is legible on this color. (Nothing to do with textColor)
 - (NSColor *)gtm_legibleTextColor;
 @end
-
-#endif

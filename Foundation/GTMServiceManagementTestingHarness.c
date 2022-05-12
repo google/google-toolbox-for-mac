@@ -23,7 +23,6 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 int main(int argc, const char** argv) {
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   CFErrorRef error = NULL;
   CFDictionaryRef dict = GTMSMCopyJobCheckInDictionary(&error);
   if (!dict) {
@@ -31,7 +30,6 @@ int main(int argc, const char** argv) {
   } else {
     CFRelease(dict);
   }
-#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
   return 0;
 }
 
