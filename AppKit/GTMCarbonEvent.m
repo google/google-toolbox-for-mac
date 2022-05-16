@@ -21,6 +21,11 @@
 #import "GTMDebugSelectorValidation.h"
 #import "GTMTypeCasting.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for DebugAssert used by
+// the "Verify" macros.
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 // Wrapper for all the info we need about a hotkey that we can store in a
 // Foundation storage class.
 @interface GTMCarbonHotKey (GTMCarbonHotKeyPrivate)
@@ -771,5 +776,4 @@ CantCreateKey:
 
 @end
 
-
-
+#pragma clang diagnostic pop

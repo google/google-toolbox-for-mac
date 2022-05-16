@@ -23,8 +23,7 @@
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
 #import <objc/message.h>
-#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10 && \
-    MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_8
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #endif
@@ -52,104 +51,62 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
 @implementation GTMSystemVersion
 + (void)initialize {
   if (self == [GTMSystemVersion class]) {
-    // Gestalt is the recommended way of getting the OS version (despite a
-    // comment to the contrary in the 10.4 headers and docs; see
-    // <http://lists.apple.com/archives/carbon-dev/2007/Aug/msg00089.html>).
-    // The iPhone doesn't have Gestalt though, so use the plist there.
-#if GTM_MACOS_SDK
-  #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_8
-    __Require_noErr(Gestalt(gestaltSystemVersionMajor,
-                            &sGTMSystemVersionMajor), failedGestalt);
-    __Require_noErr(Gestalt(gestaltSystemVersionMinor,
-                            &sGTMSystemVersionMinor), failedGestalt);
-    __Require_noErr(Gestalt(gestaltSystemVersionBugFix,
-                            &sGTMSystemVersionBugFix), failedGestalt);
+#if GTM_MACOS_SDK && (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10)
+    NSProcessInfo *processInfo = [NSProcessInfo processInfo];
+    if ([processInfo respondsToSelector:@selector(operatingSystemVersion)]) {
+      NSOperatingSystemVersion osVersion = [processInfo operatingSystemVersion];
+      sGTMSystemVersionMajor = (SInt32)osVersion.majorVersion;
+      sGTMSystemVersionMinor = (SInt32)osVersion.minorVersion;
+      sGTMSystemVersionBugFix = (SInt32)osVersion.patchVersion;
+    } else {
+      // Gestalt() is deprected in 10.8, and the recommended replacement is sysctl.
+      // https://developer.apple.com/library/mac/releasenotes/General/CarbonCoreDeprecations/index.html#//apple_ref/doc/uid/TP40012224-CH1-SW16
+      // We will use the Darwin version to extract the OS version.
+      // NOTE: this only has to up until 10.10, as at that point, the
+      // selector test will pass.
+      const int kBufferSize = 128;
+      char buffer[kBufferSize];
+      size_t bufferSize = kBufferSize;
+      int ctl_name[] = {CTL_KERN, KERN_OSRELEASE};
+      int result = sysctl(ctl_name, 2, buffer, &bufferSize, NULL, 0);
+      _GTMDevAssert(result == 0,
+                    @"sysctl failed to rertieve the OS version. Error: %d",
+                    errno);
+      if (result != 0) {
+        return;
+      }
+      buffer[kBufferSize - 1] = 0;  // Paranoid.
 
-    return;
-
-  failedGestalt:
-    ;
-  #elif MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
-    // Gestalt() is deprected in 10.8, and the recommended replacement is sysctl.
-    // https://developer.apple.com/library/mac/releasenotes/General/CarbonCoreDeprecations/index.html#//apple_ref/doc/uid/TP40012224-CH1-SW16
-    // We will use the Darwin version to extract the OS version.
-    const int kBufferSize = 128;
-    char buffer[kBufferSize];
-    size_t bufferSize = kBufferSize;
-    int ctl_name[] = {CTL_KERN, KERN_OSRELEASE};
-    int result = sysctl(ctl_name, 2, buffer, &bufferSize, NULL, 0);
-    _GTMDevAssert(result == 0,
-                  @"sysctl failed to rertieve the OS version. Error: %d",
-                  errno);
-    if (result != 0) {
-      return;
+      // The buffer now contains a string of the form XX.YY.ZZ, where
+      // XX is the major kernel version component and YY is the +1 fixlevel
+      // version of the OS.
+      SInt32 rawMinor;
+      SInt32 rawBugfix;
+      int numScanned = sscanf(buffer, "%d.%d", &rawMinor, &rawBugfix);
+      _GTMDevAssert(numScanned >= 1,
+                    @"sysctl failed to parse the OS version: %s",
+                    buffer);
+      if (numScanned < 1) {
+        return;
+      }
+      _GTMDevAssert(rawMinor > 4, @"Unexpected raw version: %s", buffer);
+      if (rawMinor <= 4) {
+        return;
+      }
+      sGTMSystemVersionMajor = 10;
+      sGTMSystemVersionMinor = rawMinor - 4;
+      // Note that Beta versions of the OS may have the bugfix missing or set to 0
+      if (numScanned > 1 && rawBugfix > 0) {
+        sGTMSystemVersionBugFix = rawBugfix - 1;
+      }
     }
-    buffer[kBufferSize - 1] = 0;  // Paranoid.
-
-    // The buffer now contains a string of the form XX.YY.ZZ, where
-    // XX is the major kernel version component and YY is the +1 fixlevel
-    // version of the OS.
-    SInt32 rawMinor;
-    SInt32 rawBugfix;
-    int numScanned = sscanf(buffer, "%d.%d", &rawMinor, &rawBugfix);
-    _GTMDevAssert(numScanned >= 1,
-                  @"sysctl failed to parse the OS version: %s",
-                  buffer);
-    if (numScanned < 1) {
-      return;
-    }
-    _GTMDevAssert(rawMinor > 4, @"Unexpected raw version: %s", buffer);
-    if (rawMinor <= 4) {
-      return;
-    }
-    sGTMSystemVersionMajor = 10;
-    sGTMSystemVersionMinor = rawMinor - 4;
-    // Note that Beta versions of the OS may have the bugfix missing or set to 0
-    if (numScanned > 1 && rawBugfix > 0) {
-      sGTMSystemVersionBugFix = rawBugfix - 1;
-    }
-  #else  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10
+#else
     NSOperatingSystemVersion osVersion =
         [[NSProcessInfo processInfo] operatingSystemVersion];
     sGTMSystemVersionMajor = (SInt32)osVersion.majorVersion;
     sGTMSystemVersionMinor = (SInt32)osVersion.minorVersion;
     sGTMSystemVersionBugFix = (SInt32)osVersion.patchVersion;
-  #endif
-#else // GTM_MACOS_SDK
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSString *version = nil;
-
-    // The intent is for this file to be Foundation level, so don't directly
-    // call out to UIDevice, but try to get it at runtime before falling back
-    // to the plist.  The problem with using the plist on the Simulator is that
-    // the path will be on the host system, and give us a MacOS (10.x.y)
-    // version number instead of an iOS version number.
-    Class uideviceClass = NSClassFromString(@"UIDevice");
-    if (uideviceClass) {
-      id currentDevice = ((id (*)(id, SEL))objc_msgSend)(uideviceClass, @selector(currentDevice));
-      version = [currentDevice performSelector:@selector(systemVersion)];
-    }
-    if (!version) {
-      // Fall back to the info in the Plist.
-      NSDictionary *systemVersionPlist
-        = [NSDictionary dictionaryWithContentsOfFile:kSystemVersionPlistPath];
-      version = [systemVersionPlist objectForKey:@"ProductVersion"];
-    }
-    _GTMDevAssert(version, @"Unable to get version");
-
-    NSArray *versionInfo = [version componentsSeparatedByString:@"."];
-    NSUInteger length = [versionInfo count];
-    _GTMDevAssert(length > 1 && length < 4,
-                  @"Unparseable version %@", version);
-    sGTMSystemVersionMajor = [[versionInfo objectAtIndex:0] intValue];
-    _GTMDevAssert(sGTMSystemVersionMajor != 0,
-                  @"Unknown version for %@", version);
-    sGTMSystemVersionMinor = [[versionInfo objectAtIndex:1] intValue];
-    if (length == 3) {
-      sGTMSystemVersionBugFix = [[versionInfo objectAtIndex:2] intValue];
-    }
-    [pool release];
-#endif // GTM_MACOS_SDK
+#endif
   }
 }
 
@@ -214,41 +171,6 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
                     options:NSNumericSearch | NSCaseInsensitiveSearch];
   return result == NSOrderedSame;
 }
-
-#if GTM_MACOS_SDK
-+ (BOOL)isPanther {
-  return NO;
-}
-
-+ (BOOL)isTiger {
-  return NO;
-}
-
-+ (BOOL)isLeopard {
-  return NO;
-}
-
-+ (BOOL)isSnowLeopard {
-  return NO;
-}
-
-+ (BOOL)isPantherOrGreater {
-  return YES;
-}
-
-+ (BOOL)isTigerOrGreater {
-  return YES;
-}
-
-+ (BOOL)isLeopardOrGreater {
-  return YES;
-}
-
-+ (BOOL)isSnowLeopardOrGreater {
-  return YES;
-}
-
-#endif // GTM_MACOS_SDK
 
 + (NSString *)runtimeArchitecture {
   NSString *architecture = nil;
