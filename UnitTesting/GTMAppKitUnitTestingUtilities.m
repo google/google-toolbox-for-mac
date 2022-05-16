@@ -23,26 +23,6 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
 
 @implementation GTMAppKitUnitTestingUtilities
 
-+ (BOOL)isScreenSaverActive {
-  BOOL answer = NO;
-  ProcessSerialNumber psn;
-  if (GetFrontProcess(&psn) == noErr) {
-    CFDictionaryRef cfProcessInfo
-      = ProcessInformationCopyDictionary(&psn,
-                                         kProcessDictionaryIncludeAllInformationMask);
-    NSDictionary *processInfo = GTMCFAutorelease(cfProcessInfo);
-
-    NSString *bundlePath = [processInfo objectForKey:@"BundlePath"];
-    // ScreenSaverEngine is the frontmost app if the screen saver is actually
-    // running Security Agent is the frontmost app if the "enter password"
-    // dialog is showing
-    NSString *bundleName = [bundlePath lastPathComponent];
-    answer = ([bundleName isEqualToString:@"ScreenSaverEngine.app"]
-              || [bundleName isEqualToString:@"SecurityAgent.app"]);
-  }
-  return answer;
-}
-
 // Allows for posting either a keydown or a keyup with all the modifiers being
 // applied. Passing a 'g' with NSKeyDown and NSShiftKeyMask
 // generates two events (a shift key key down and a 'g' key keydown). Make sure
@@ -62,7 +42,6 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
 + (void)postKeyEvent:(NSEventType)type
            character:(CGCharCode)keyChar
            modifiers:(UInt32)cocoaModifiers {
-  __Require(![self isScreenSaverActive], CantWorkWithScreenSaver);
   __Require(type == NSKeyDown || type == NSKeyUp, CantDoEvent);
   CGKeyCode code = GTMKeyCodeForCharCode(keyChar);
   __Verify(code != 256);
@@ -73,7 +52,6 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
   CFRelease(event);
 CantCreateEvent:
 CantDoEvent:
-CantWorkWithScreenSaver:
   return;
 }
 

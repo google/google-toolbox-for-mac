@@ -269,69 +269,59 @@ static const UInt32 kTestParameterValue = 'bam ';
 }
 
 - (void)testRegisterHotKeyModifiersTargetActionWhenPressed {
+  GTMCarbonEventDispatcherHandler *dispatcher
+    = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
+  XCTAssertNotNil(dispatcher, @"Unable to acquire singleton");
+  UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
+                    | NSAlternateKeyMask | NSCommandKeyMask);
+  XCTAssertNil([dispatcher registerHotKey:0x5
+                                modifiers:keyMods
+                                   target:nil
+                                   action:nil
+                                 userInfo:nil
+                              whenPressed:YES],
+                @"Shouldn't have created hotkey");
+  GTMCarbonHotKey *hotKey = [dispatcher registerHotKey:0x5
+                                             modifiers:keyMods
+                                                target:self
+                                                action:@selector(hitHotKey:)
+                                              userInfo:self
+                                           whenPressed:YES];
+  XCTAssertNotNil(hotKey, @"Unable to create hotkey");
 
-  // This test can't be run if the screen saver is active because the security
-  // agent blocks us from sending events via remote operations
-  if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
-    GTMCarbonEventDispatcherHandler *dispatcher
-      = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
-    XCTAssertNotNil(dispatcher, @"Unable to acquire singleton");
-    UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
-                      | NSAlternateKeyMask | NSCommandKeyMask);
-    XCTAssertNil([dispatcher registerHotKey:0x5
-                                  modifiers:keyMods
-                                     target:nil
-                                     action:nil
-                                   userInfo:nil
-                                whenPressed:YES],
-                  @"Shouldn't have created hotkey");
-    GTMCarbonHotKey *hotKey = [dispatcher registerHotKey:0x5
-                                               modifiers:keyMods
-                                                  target:self
-                                                  action:@selector(hitHotKey:)
-                                                userInfo:self
-                                             whenPressed:YES];
-    XCTAssertNotNil(hotKey, @"Unable to create hotkey");
-
-    // Post the hotkey combo to the event queue. If everything is working
-    // correctly hitHotKey: should get called, and hotKeyHitExpecatation_ will
-    // be set for us. We run the event loop for a set amount of time waiting for
-    // this to happen.
-    hotKeyHitExpectation_ = [self expectationWithDescription:@"hotKey"];
-    [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    [self waitForExpectationsWithTimeout:60 handler:NULL];
-    [dispatcher unregisterHotKey:hotKey];
-  }
+  // Post the hotkey combo to the event queue. If everything is working
+  // correctly hitHotKey: should get called, and hotKeyHitExpecatation_ will
+  // be set for us. We run the event loop for a set amount of time waiting for
+  // this to happen.
+  hotKeyHitExpectation_ = [self expectationWithDescription:@"hotKey"];
+  [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
+  [self waitForExpectationsWithTimeout:60 handler:NULL];
+  [dispatcher unregisterHotKey:hotKey];
 }
 
 - (void)testRegisterHotKeyModifiersTargetActionWhenPressedException {
+  GTMCarbonEventDispatcherHandler *dispatcher
+    = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
+  XCTAssertNotNil(dispatcher, @"Unable to acquire singleton");
+  UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
+                    | NSAlternateKeyMask | NSCommandKeyMask);
+  GTMCarbonHotKey *hotKey
+    = [dispatcher registerHotKey:0x5
+                       modifiers:keyMods
+                          target:self
+                          action:@selector(hitExceptionalHotKey:)
+                        userInfo:self
+                     whenPressed:YES];
+  XCTAssertNotNil(hotKey, @"Unable to create hotkey");
 
-  // This test can't be run if the screen saver is active because the security
-  // agent blocks us from sending events via remote operations
-  if (![GTMAppKitUnitTestingUtilities isScreenSaverActive]) {
-    GTMCarbonEventDispatcherHandler *dispatcher
-      = [GTMCarbonEventDispatcherHandler sharedEventDispatcherHandler];
-    XCTAssertNotNil(dispatcher, @"Unable to acquire singleton");
-    UInt32 keyMods = (NSShiftKeyMask | NSControlKeyMask
-                      | NSAlternateKeyMask | NSCommandKeyMask);
-    GTMCarbonHotKey *hotKey
-      = [dispatcher registerHotKey:0x5
-                         modifiers:keyMods
-                            target:self
-                            action:@selector(hitExceptionalHotKey:)
-                          userInfo:self
-                       whenPressed:YES];
-    XCTAssertNotNil(hotKey, @"Unable to create hotkey");
-
-    // Post the hotkey combo to the event queue. If everything is working
-    // correctly hitHotKey: should get called, and hotKeyHitExpecatation_ will
-    // be set for us. We run the event loop for a set amount of time waiting for
-    // this to happen.
-    hotKeyHitExpectation_ = [self expectationWithDescription:@"hotKey"];
-    [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
-    [self waitForExpectationsWithTimeout:60 handler:NULL];
-    [dispatcher unregisterHotKey:hotKey];
-  }
+  // Post the hotkey combo to the event queue. If everything is working
+  // correctly hitHotKey: should get called, and hotKeyHitExpecatation_ will
+  // be set for us. We run the event loop for a set amount of time waiting for
+  // this to happen.
+  hotKeyHitExpectation_ = [self expectationWithDescription:@"hotKey"];
+  [GTMAppKitUnitTestingUtilities postTypeCharacterEvent:'g' modifiers:keyMods];
+  [self waitForExpectationsWithTimeout:60 handler:NULL];
+  [dispatcher unregisterHotKey:hotKey];
 }
 
 - (void)testKeyModifiers {
