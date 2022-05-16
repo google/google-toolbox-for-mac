@@ -17,8 +17,6 @@
 
 #import "GTMFadeTruncatingTextFieldCell.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 @implementation GTMFadeTruncatingTextFieldCell
 - (void)awakeFromNib {
   // Force to clipping
@@ -233,5 +231,3 @@
 }
 
 @end
-
-#endif

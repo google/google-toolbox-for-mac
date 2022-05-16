@@ -18,8 +18,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 #import "GTMSenTestCase.h"
 #import "GTMNSColor+Luminance.h"
 
@@ -62,5 +60,3 @@
 }
 
 @end
-
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5

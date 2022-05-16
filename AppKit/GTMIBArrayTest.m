@@ -219,8 +219,6 @@
   XCTAssertNil([enumerator nextObject]);
 }
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
-
 - (void)testFastEnumeration {
   GTMIBArray *worker =
     [[[IBArrayTestHelper alloc] initWithObj1:@"a"
@@ -253,8 +251,6 @@
     }
   }
 }
-
-#endif  // MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 
 - (void)testCopy {
   GTMIBArray *worker =

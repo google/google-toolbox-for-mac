@@ -18,8 +18,6 @@
 
 #include "GTMDefines.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
-
 #include <launch.h>
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -69,5 +67,3 @@ CFTypeRef GTMCFTypeCreateFromLaunchData(launch_data_t ldata,
                                         CFErrorRef *error) __OSX_AVAILABLE_BUT_DEPRECATED_MSG(__MAC_10_6, __MAC_10_10, __IPHONE_3_0, __IPHONE_8_0, "Replace with XPC.");
 
 GTM_EXTERN_C_END
-
-#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4

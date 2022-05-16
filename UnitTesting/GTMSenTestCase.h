@@ -78,13 +78,6 @@
 
 #define _XCExceptionFormatString @"throwing \"%@\""
 #define _XCUnknownExceptionString @"throwing an unknown exception"
-#if (defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0) || (GTM_MACOS_SDK == 1)
-// They changed the call to _XCTRegisterFailure in iOS 8. Once we no longer need to support
-// the iOS 7 SDK, we can remove this.
-#define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(self, expression, format)
-#else
-#define _GTMXCRegisterFailure(expression, format...) _XCTRegisterFailure(expression, format)
-#endif  // defined defined(__IPHONE_8_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 
 #pragma clang diagnostic pop
 
@@ -112,7 +105,7 @@
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) != noErr) failed%@", @#a1, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertNoErr
@@ -143,7 +136,7 @@
   } \
   if (_failure) { \
      NSString *_expression = [NSString stringWithFormat:@"((%@) != (%@)) failed %@", @#a1, @#a2, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif // XCTAssertErr
@@ -172,7 +165,7 @@
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) != NULL) failed%@", @#a1, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertNotNULL
@@ -201,7 +194,7 @@
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) == NULL) failed%@", @#a1, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertNULL
@@ -241,7 +234,7 @@
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"([(%@) compare:(%@)] == NSOrderedSame) failed: %@", @#a1, @#a2, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertEqualStrings
@@ -281,7 +274,7 @@
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"([(%@) compare:(%@)] != NSOrderedSame) failed: %@", @#a1, @#a2, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertNotEqualStrings
@@ -314,7 +307,7 @@
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%@) vs. (%@) failed: %@", \
         GTM_NSSTRINGIFY(a1), GTM_NSSTRINGIFY(a2), _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertEqualCStrings
@@ -345,7 +338,7 @@
   } \
   if (_failure) { \
     NSString *_expression = [NSString stringWithFormat:@"((%s) != (%s) failed%@", @#a1, @#a2, _failure]; \
-    _GTMXCRegisterFailure(_expression, format); \
+    _XCTRegisterFailure(self, _expression, format); \
   } \
 })
 #endif  // XCTAssertNotEqualCStrings

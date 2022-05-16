@@ -69,10 +69,8 @@
     Class class = [NSWindowController class];
     if ([owner isKindOfClass:class] && ![owner isMemberOfClass:class]) {
       newBundle = [NSBundle bundleForClass:[owner class]];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     } else if ([owner isKindOfClass:[NSViewController class]]) {
       newBundle = [(NSViewController *)owner nibBundle];
-#endif
     }
     if (!newBundle) {
       newBundle = [NSBundle mainBundle];
@@ -101,11 +99,9 @@
     if ([object isKindOfClass:[NSWindowController class]]) {
       NSWindow *window = [object window];
       [self localizeWindow:window recursively:recursive];
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     } else if ([object isKindOfClass:[NSViewController class]]) {
         NSView *view = [object view];
         [self localizeView:view recursively:recursive];
-#endif
     } else if ([object isKindOfClass:[NSMenu class]]) {
       [self localizeMenu:(NSMenu *)object recursively:recursive];
     } else if ([object isKindOfClass:[NSWindow class]]) {

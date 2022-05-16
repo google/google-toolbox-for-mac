@@ -18,6 +18,7 @@
 
 
 #import <AppKit/AppKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "GTMDefines.h"
 
 // Given a "normal" duration for an animation, return what it should be based
@@ -58,10 +59,6 @@ extern const NSUInteger kGTMLeftMouseUpAndKeyDownMask;
               eventMask:(NSUInteger)eventMask;
 @end
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
-#import <QuartzCore/QuartzCore.h>
-
 @interface NSAnimationContext (GTMNSAnimationDurationAdditions)
 
 // Sets the duration by taking the duration passed in and calling
@@ -79,5 +76,3 @@ extern const NSUInteger kGTMLeftMouseUpAndKeyDownMask;
 - (void)gtm_setDuration:(CFTimeInterval)duration
               eventMask:(NSUInteger)events;
 @end
-
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5

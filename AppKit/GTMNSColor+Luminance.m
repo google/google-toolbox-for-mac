@@ -18,8 +18,6 @@
 
 #import "GTMDefines.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-
 #import "GTMNSColor+Luminance.h"
 
 static const CGFloat kGTMLuminanceDarkCutoff = 0.6;
@@ -152,4 +150,3 @@ const CGFloat kDefaultFade = 0.3;
 }
 
 @end
-#endif // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5

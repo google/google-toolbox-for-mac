@@ -231,11 +231,7 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
 }
 
 + (BOOL)isSnowLeopard {
-#if defined(__MAC_10_7) && __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_7
   return NO;
-#else
-  return sGTMSystemVersionMajor == 10 && sGTMSystemVersionMinor == 6;
-#endif
 }
 
 + (BOOL)isPantherOrGreater {

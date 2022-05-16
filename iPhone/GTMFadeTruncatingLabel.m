@@ -50,10 +50,6 @@
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-  // |sizeWithFont:| is deprecated in iOS 7, replaced by |sizeWithAttributes:|
-  CGSize size = [self.text sizeWithFont:self.font];
-#else
   CGSize size = CGSizeZero;
   if (self.font) {
     size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
@@ -61,7 +57,6 @@
     // height to preserve the behavior of sizeWithFont:.
     size = CGSizeMake(ceil(size.width), ceil(size.height));
   }
-#endif
   if (size.width > requestedRect.size.width) {
     UIImage* image = [[self class]
         getLinearGradient:requestedRect
@@ -73,15 +68,6 @@
   if (self.shadowColor) {
     CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
                                      self.shadowOffset.height);
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-    // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
-    // replaced by |drawInRect:withAttributes:|
-    CGContextSetFillColorWithColor(context, self.shadowColor.CGColor);
-    [self.text drawInRect:shadowRect
-                 withFont:self.font
-            lineBreakMode:self.lineBreakMode
-                alignment:self.textAlignment];
-#else
     if (self.font) {
       NSMutableParagraphStyle* textStyle =
           [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
@@ -95,7 +81,6 @@
       [self.text drawInRect:shadowRect
              withAttributes:attributes];
     }
-#endif
   }
 
   // We check for nilness of shadowColor above, but there's no need to do so
@@ -109,29 +94,19 @@
   // (NOTE(bgoodwin): interesting side-note. These docs also say setting
   // textColor to nil will result in an exception. In my testing, that did not
   // happen.)
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-  // |drawInRect:withFont:lineBreakMode:alignment:| is deprecated in iOS 7,
-  // replaced by |drawInRect:withAttributes:|
-  CGContextSetFillColorWithColor(context, self.textColor.CGColor);
-  [self.text drawInRect:requestedRect
-               withFont:self.font
-          lineBreakMode:self.lineBreakMode
-              alignment:self.textAlignment];
-#else
-    if (self.font) {
-      NSMutableParagraphStyle* textStyle =
-          [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-      textStyle.lineBreakMode = self.lineBreakMode;
-      textStyle.alignment = self.textAlignment;
-      NSDictionary* attributes = @{
-          NSFontAttributeName:self.font,
-          NSParagraphStyleAttributeName:textStyle,
-          NSForegroundColorAttributeName:self.textColor
-      };
-      [self.text drawInRect:requestedRect
-             withAttributes:attributes];
-    }
-#endif
+  if (self.font) {
+    NSMutableParagraphStyle* textStyle =
+        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    textStyle.lineBreakMode = self.lineBreakMode;
+    textStyle.alignment = self.textAlignment;
+    NSDictionary* attributes = @{
+        NSFontAttributeName:self.font,
+        NSParagraphStyleAttributeName:textStyle,
+        NSForegroundColorAttributeName:self.textColor
+    };
+    [self.text drawInRect:requestedRect
+           withAttributes:attributes];
+  }
   CGContextRestoreGState(context);
 }
 

@@ -66,13 +66,11 @@
   XCTAssertTrue([proxy respondsToSelector:@selector(returnYes)],
                 @"Claims not to respond to returnYes");
   // ... but not to made up selectors.
-#if !(__IPHONE_OS_VERSION_MIN_REQUIRED == __IPHONE_3_2 || __IPHONE_OS_VERSION_MIN_REQUIRED == __IPHONE_4_0)
   // Exceptions thrown by - (void)doesNotRecognizeSelector:(SEL)aSelector
   // does not get caught on iOS 3.2 and greater.
   // http://openradar.appspot.com/radar?id=420401
   XCTAssertThrows([proxy someMadeUpMethod],
                   @"Calling a bogus method should throw");
-#endif
 
   // Check that callthrough works.
   XCTAssertTrue([proxy returnYes],
@@ -92,14 +90,12 @@
                     @" silently");
 
   // ... even when they are made up.
-#if !(__IPHONE_OS_VERSION_MIN_REQUIRED == __IPHONE_3_2 || __IPHONE_OS_VERSION_MIN_REQUIRED == __IPHONE_4_0)
   // Exceptions thrown by - (void)doesNotRecognizeSelector:(SEL)aSelector
   // does not get caught on iOS 3.2 and greater.
   // http://openradar.appspot.com/radar?id=420401
 
   XCTAssertNoThrow([proxy someMadeUpMethod],
                    @"Calling a bogus method on a nilled proxy should not throw");
-#endif
 
 }
 

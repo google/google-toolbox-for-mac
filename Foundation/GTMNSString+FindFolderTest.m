@@ -69,15 +69,9 @@
                                                          doCreate:NO];
   XCTAssertEqualObjects(gtmCachePath2, gtmCachePath);
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSError *error = nil;
   BOOL didRemove = [fileMgr removeItemAtPath:gtmCachePath error:&error];
   XCTAssertTrue(didRemove, @"Error removing %@ (%@)", gtmCachePath, error);
-#else
-  BOOL didRemove = [fileMgr removeFileAtPath:gtmCachePath
-                                     handler:nil];
-  XCTAssertTrue(didRemove, @"Error removing %@", gtmCachePath);
-#endif  // MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 }
 
 @end

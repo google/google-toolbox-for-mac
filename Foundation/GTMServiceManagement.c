@@ -35,8 +35,6 @@
 
 #include "GTMServiceManagement.h"
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
-
 #include <CoreServices/CoreServices.h>
 #include <paths.h>
 #include <unistd.h>
@@ -792,5 +790,3 @@ CFDictionaryRef GTMSMCopyAllJobDictionaries(void) {
 }
 
 #pragma clang diagnostic pop
-
-#endif //  if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_4
