@@ -22,11 +22,9 @@ jobs:
             -project GTM.xcodeproj \
             -scheme GTM \
             -configuration ${{ matrix.MODE }} \
-            -skip-testing UnitTest-Foundation/GTMServiceManagementTest \
             -skip-testing UnitTest-AppKit/GTMCarbonEventDispatcherHandlerTest \
             build test \
           | xcpretty
-
   iOS:
     runs-on: macos-latest
     strategy:
