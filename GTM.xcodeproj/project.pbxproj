@@ -13,7 +13,6 @@
 		33C372A70DD8A88500E97817 /* GTMNSString+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C372A50DD8A88500E97817 /* GTMNSString+URLArguments.m */; };
 		33C374380DD8D44800E97817 /* GTMNSDictionary+URLArguments.h in Headers */ = {isa = PBXBuildFile; fileRef = 33C374360DD8D44800E97817 /* GTMNSDictionary+URLArguments.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		33C374390DD8D44800E97817 /* GTMNSDictionary+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C374370DD8D44800E97817 /* GTMNSDictionary+URLArguments.m */; };
-		444B3B7719F6D24000B9191E /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444B3B7619F6D24000B9191E /* CoreServices.framework */; };
 		7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */; };
 		7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */; };
@@ -47,9 +46,6 @@
 		8B409E8C0F952C2C00DF540E /* GTMUILocalizerTestWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B409E8B0F952C2C00DF540E /* GTMUILocalizerTestWindow.xib */; };
 		8B409E9A0F952CE600DF540E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B409E990F952CE600DF540E /* Localizable.strings */; };
 		8B409F060F95341E00DF540E /* GTMUILocalizerTestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */; };
-		8B414E881226FB1000D0064F /* GTMServiceManagement.c in Sources */ = {isa = PBXBuildFile; fileRef = 8B414E861226FB1000D0064F /* GTMServiceManagement.c */; };
-		8B414E891226FB1000D0064F /* GTMServiceManagement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B414E871226FB1000D0064F /* GTMServiceManagement.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8B414E8B1226FB1800D0064F /* GTMServiceManagementTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B414E8A1226FB1800D0064F /* GTMServiceManagementTest.m */; };
 		8B45A03A0DA46A2A001148C5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		8B45A19A0DA46AAA001148C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B45A1990DA46AAA001148C5 /* QuartzCore.framework */; };
 		8B45A2040DA46DF6001148C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
@@ -88,10 +84,6 @@
 		8BBD1F8F1519271A003152F0 /* GTMNSThread+BlocksTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBD1F8E1519271A003152F0 /* GTMNSThread+BlocksTest.m */; };
 		8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */; };
 		8BC04CD80DB003D800C2D1CA /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BC85150127A18D50046E0FB /* GTMServiceManagement.c in Sources */ = {isa = PBXBuildFile; fileRef = 8B414E861226FB1000D0064F /* GTMServiceManagement.c */; };
-		8BC851D4127A19020046E0FB /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC851D3127A19020046E0FB /* CoreFoundation.framework */; };
-		8BC85202127A19370046E0FB /* GTMServiceManagementTestingHarness.c in Sources */ = {isa = PBXBuildFile; fileRef = 8BC85201127A19370046E0FB /* GTMServiceManagementTestingHarness.c */; };
-		8BC8520E127A19B60046E0FB /* GTMServiceManagementTestingHarness in Resources */ = {isa = PBXBuildFile; fileRef = 8BC85131127A18AE0046E0FB /* GTMServiceManagementTestingHarness */; };
 		8BD35B910FB22980009058F5 /* GTMNSScanner+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BD35B920FB22980009058F5 /* GTMNSScanner+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */; };
 		8BF2368F13CF67CB00F3FD82 /* GTMKeyValueAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF2368D13CF67CB00F3FD82 /* GTMKeyValueAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -191,13 +183,6 @@
 			remoteGlobalIDString = F42E086C0D199A5B00D5DDE0;
 			remoteInfo = GTM;
 		};
-		8BC8514E127A18B60046E0FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8BC85130127A18AE0046E0FB;
-			remoteInfo = GTMServiceManagementHarness;
-		};
 		F42E08760D199A9B00D5DDE0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -269,9 +254,6 @@
 		8B409E8B0F952C2C00DF540E /* GTMUILocalizerTestWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerTestWindow.xib; sourceTree = "<group>"; };
 		8B409E970F952CD700DF540E /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B409F050F95341E00DF540E /* GTMUILocalizerTestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerTestView.xib; sourceTree = "<group>"; };
-		8B414E861226FB1000D0064F /* GTMServiceManagement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GTMServiceManagement.c; sourceTree = "<group>"; };
-		8B414E871226FB1000D0064F /* GTMServiceManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMServiceManagement.h; sourceTree = "<group>"; };
-		8B414E8A1226FB1800D0064F /* GTMServiceManagementTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMServiceManagementTest.m; sourceTree = "<group>"; };
 		8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMLocalizedStringTest.m; sourceTree = "<group>"; };
 		8B45A0280DA4696C001148C5 /* UnitTest-UnitTesting.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTest-UnitTesting.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B45A1990DA46AAA001148C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
@@ -305,9 +287,7 @@
 		8BBD1F8B1519258A003152F0 /* GTMNSThread+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSThread+Blocks.m"; sourceTree = "<group>"; };
 		8BBD1F8E1519271A003152F0 /* GTMNSThread+BlocksTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSThread+BlocksTest.m"; sourceTree = "<group>"; };
 		8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
-		8BC85131127A18AE0046E0FB /* GTMServiceManagementTestingHarness */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GTMServiceManagementTestingHarness; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC851D3127A19020046E0FB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
-		8BC85201127A19370046E0FB /* GTMServiceManagementTestingHarness.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GTMServiceManagementTestingHarness.c; sourceTree = "<group>"; };
 		8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSScanner+JSON.h"; sourceTree = "<group>"; };
 		8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+JSON.m"; sourceTree = "<group>"; };
 		8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+JSONTest.m"; sourceTree = "<group>"; };
@@ -428,15 +408,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8BC8512F127A18AE0046E0FB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				444B3B7719F6D24000B9191E /* CoreServices.framework in Frameworks */,
-				8BC851D4127A19020046E0FB /* CoreFoundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F42E081C0D19987200D5DDE0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -483,7 +454,6 @@
 				F42E086D0D199A5B00D5DDE0 /* GoogleToolboxForMac.framework */,
 				8B45A0280DA4696C001148C5 /* UnitTest-UnitTesting.xctest */,
 				8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */,
-				8BC85131127A18AE0046E0FB /* GTMServiceManagementTestingHarness */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -700,10 +670,6 @@
 				F47A79850D746EE9002302AB /* GTMScriptRunner.h */,
 				F47A79860D746EE9002302AB /* GTMScriptRunner.m */,
 				F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */,
-				8B414E871226FB1000D0064F /* GTMServiceManagement.h */,
-				8B414E861226FB1000D0064F /* GTMServiceManagement.c */,
-				8BC85201127A19370046E0FB /* GTMServiceManagementTestingHarness.c */,
-				8B414E8A1226FB1800D0064F /* GTMServiceManagementTest.m */,
 				F41A6F7F0E02EC3600788A6C /* GTMSignalHandler.h */,
 				F41A6F800E02EC3600788A6C /* GTMSignalHandler.m */,
 				F41A6F810E02EC3600788A6C /* GTMSignalHandlerTest.m */,
@@ -823,7 +789,6 @@
 				8BF2555310F65B56000490C8 /* GTMTypeCasting.h in Headers */,
 				8B21DE56117E5CB7000E004F /* GTMLocalizedString.h in Headers */,
 				8B29080A11F8E1670064F50F /* GTMNSFileHandle+UniqueName.h in Headers */,
-				8B414E891226FB1000D0064F /* GTMServiceManagement.h in Headers */,
 				8BBD1F8C1519258A003152F0 /* GTMNSThread+Blocks.h in Headers */,
 				8BF2368F13CF67CB00F3FD82 /* GTMKeyValueAnimation.h in Headers */,
 			);
@@ -867,22 +832,6 @@
 			productReference = 8B45A28A0DA49B99001148C5 /* GTMUIUnitTestingHarness.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8BC85130127A18AE0046E0FB /* GTMServiceManagementTestingHarness */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8BC85153127A18F30046E0FB /* Build configuration list for PBXNativeTarget "GTMServiceManagementTestingHarness" */;
-			buildPhases = (
-				8BC8512E127A18AE0046E0FB /* Sources */,
-				8BC8512F127A18AE0046E0FB /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = GTMServiceManagementTestingHarness;
-			productName = GTMServiceManagementHarness;
-			productReference = 8BC85131127A18AE0046E0FB /* GTMServiceManagementTestingHarness */;
-			productType = "com.apple.product-type.tool";
-		};
 		F42E08110D19987200D5DDE0 /* UnitTest-Foundation */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F42E081E0D19987200D5DDE0 /* Build configuration list for PBXNativeTarget "UnitTest-Foundation" */;
@@ -894,7 +843,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8BC8514F127A18B60046E0FB /* PBXTargetDependency */,
 				F42E08790D199AA600D5DDE0 /* PBXTargetDependency */,
 			);
 			name = "UnitTest-Foundation";
@@ -989,7 +937,6 @@
 				F48FE2630D198C1E009257D2 /* UnitTest-AppKit */,
 				F42E08110D19987200D5DDE0 /* UnitTest-Foundation */,
 				8B45A0270DA4696C001148C5 /* UnitTest-UnitTesting */,
-				8BC85130127A18AE0046E0FB /* GTMServiceManagementTestingHarness */,
 				8B45A2890DA49B99001148C5 /* UIUnitTestingHarness */,
 			);
 		};
@@ -1017,7 +964,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BC8520E127A19B60046E0FB /* GTMServiceManagementTestingHarness in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,15 +1033,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8BC8512E127A18AE0046E0FB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8BC85150127A18D50046E0FB /* GTMServiceManagement.c in Sources */,
-				8BC85202127A19370046E0FB /* GTMServiceManagementTestingHarness.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F42E08160D19987200D5DDE0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1105,7 +1042,6 @@
 				8B7DCE1A0DFF39850017E983 /* GTMSenTestCase.m in Sources */,
 				8B17FD15117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */,
 				8B29078711F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
-				8B414E8B1226FB1800D0064F /* GTMServiceManagementTest.m in Sources */,
 				8BFE6E7D1282371200B5C894 /* GTMFileSystemKQueueTest.m in Sources */,
 				8BFE6E7F1282371200B5C894 /* GTMGeometryUtilsTest.m in Sources */,
 				8BFE6E801282371200B5C894 /* GTMLightweightProxyTest.m in Sources */,
@@ -1174,7 +1110,6 @@
 				8B158A9B10A8C31100C93125 /* GTMNSAnimation+Duration.m in Sources */,
 				0B1B9B8810FECD870084EE4B /* GTMStringEncoding.m in Sources */,
 				8B29080911F8E1630064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
-				8B414E881226FB1000D0064F /* GTMServiceManagement.c in Sources */,
 				8BF2369013CF67CB00F3FD82 /* GTMKeyValueAnimation.m in Sources */,
 				8BBD1F8D1519258A003152F0 /* GTMNSThread+Blocks.m in Sources */,
 			);
@@ -1207,11 +1142,6 @@
 			isa = PBXTargetDependency;
 			target = F42E086C0D199A5B00D5DDE0 /* GTM */;
 			targetProxy = 8B7DCBA30DFF0EFB0017E983 /* PBXContainerItemProxy */;
-		};
-		8BC8514F127A18B60046E0FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8BC85130127A18AE0046E0FB /* GTMServiceManagementTestingHarness */;
-			targetProxy = 8BC8514E127A18B60046E0FB /* PBXContainerItemProxy */;
 		};
 		F42E08770D199A9B00D5DDE0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1355,14 +1285,6 @@
 			};
 			name = Debug;
 		};
-		F4CC9F2F148E5DEB00B7D68C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				PRODUCT_NAME = GTMServiceManagementTestingHarness;
-			};
-			name = Debug;
-		};
 		F4CC9F30148E5DEB00B7D68C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1468,14 +1390,6 @@
 			};
 			name = Release;
 		};
-		F4CC9F3A148E5DF700B7D68C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				PRODUCT_NAME = GTMServiceManagementTestingHarness;
-			};
-			name = Release;
-		};
 		F4CC9F3B148E5DF700B7D68C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1512,15 +1426,6 @@
 			buildConfigurations = (
 				F4CC9F30148E5DEB00B7D68C /* Debug */,
 				F4CC9F3B148E5DF700B7D68C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		8BC85153127A18F30046E0FB /* Build configuration list for PBXNativeTarget "GTMServiceManagementTestingHarness" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				F4CC9F2F148E5DEB00B7D68C /* Debug */,
-				F4CC9F3A148E5DF700B7D68C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
