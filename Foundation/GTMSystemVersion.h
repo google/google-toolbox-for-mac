@@ -74,7 +74,5 @@ NS_DEPRECATED(10_0, 10_10, 1_0, 8_0, "Use NSProcessInfo.operatingSystemVersion."
 // TODO: Should probably break iPhone up into iPhone_ARM and iPhone_Simulator
 //       but haven't found a need yet.
 GTM_EXTERN NSString *const kGTMArch_iPhone;
-GTM_EXTERN NSString *const kGTMArch_ppc;
-GTM_EXTERN NSString *const kGTMArch_ppc64;
 GTM_EXTERN NSString *const kGTMArch_x86_64;
 GTM_EXTERN NSString *const kGTMArch_i386;

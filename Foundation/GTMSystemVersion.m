@@ -44,8 +44,6 @@ static SInt32 sGTMSystemVersionBugFix = 0;
 static NSString *sBuild = nil;
 
 NSString *const kGTMArch_iPhone = @"iPhone";
-NSString *const kGTMArch_ppc = @"ppc";
-NSString *const kGTMArch_ppc64 = @"ppc64";
 NSString *const kGTMArch_x86_64 = @"x86_64";
 NSString *const kGTMArch_i386 = @"i386";
 
@@ -266,19 +264,11 @@ static NSString *const kSystemVersionPlistPath = @"/System/Library/CoreServices/
   // extensions[0] = [NSString stringWithFormat:@".%s", genericInfo->name];
   //
   // but on 64bit it returns the same things as on 32bit, so...
-#if __POWERPC__
-#if __LP64__
-  architecture = kGTMArch_ppc64;
-#else // !__LP64__
-  architecture = kGTMArch_ppc;
-#endif // __LP64__
-#else // !__POWERPC__
 #if __LP64__
   architecture = kGTMArch_x86_64;
 #else // !__LP64__
   architecture = kGTMArch_i386;
 #endif // __LP64__
-#endif // !__POWERPC__
 
 #endif // GTM_IPHONE_SDK
   return architecture;
