@@ -19,12 +19,13 @@ jobs:
       run:  |
         # Have to skip some tests that aren't working on newer OSes.
         xcodebuild \
-          -project GTM.xcodeproj \
-          -scheme GTM \
-          -configuration ${{ matrix.MODE }} \
-          -skip-testing UnitTest-Foundation/GTMServiceManagementTest \
-          -skip-testing UnitTest-AppKit/GTMCarbonEventDispatcherHandlerTest \
-          build test
+            -project GTM.xcodeproj \
+            -scheme GTM \
+            -configuration ${{ matrix.MODE }} \
+            -skip-testing UnitTest-Foundation/GTMServiceManagementTest \
+            -skip-testing UnitTest-AppKit/GTMCarbonEventDispatcherHandlerTest \
+            build test \
+          | xcpretty
 
   iOS:
     runs-on: macos-latest
@@ -37,11 +38,12 @@ jobs:
     - name: Build and Test
       run:  |
         xcodebuild \
-          -project GTMiPhone.xcodeproj \
-          -scheme GTMiPhone \
-          -configuration ${{ matrix.MODE }} \
-          -destination "platform=iOS Simulator,name=iPhone 8,OS=latest" \
-          build test
+            -project GTMiPhone.xcodeproj \
+            -scheme GTMiPhone \
+            -configuration ${{ matrix.MODE }} \
+            -destination "platform=iOS Simulator,name=iPhone 8,OS=latest" \
+            build test \
+          | xcpretty
   bazel:
     runs-on: macos-latest
     strategy:
