@@ -39,32 +39,6 @@ NS_DEPRECATED(10_0, 10_10, 1_0, 8_0, "Use NSProcessInfo.operatingSystemVersion."
 + (BOOL)isBuildGreaterThanOrEqualTo:(NSString*)build;
 + (BOOL)isBuildEqualTo:(NSString *)build;
 
-#if GTM_MACOS_SDK
-// Returns YES if running on 10.3, NO otherwise.
-+ (BOOL)isPanther;
-
-// Returns YES if running on 10.4, NO otherwise.
-+ (BOOL)isTiger;
-
-// Returns YES if running on 10.5, NO otherwise.
-+ (BOOL)isLeopard;
-
-// Returns YES if running on 10.6, NO otherwise.
-+ (BOOL)isSnowLeopard;
-
-// Returns a YES/NO if the system is 10.3 or better
-+ (BOOL)isPantherOrGreater;
-
-// Returns a YES/NO if the system is 10.4 or better
-+ (BOOL)isTigerOrGreater;
-
-// Returns a YES/NO if the system is 10.5 or better
-+ (BOOL)isLeopardOrGreater;
-
-// Returns a YES/NO if the system is 10.6 or better
-+ (BOOL)isSnowLeopardOrGreater;
-#endif  // GTM_MACOS_SDK
-
 // Returns one of the achitecture strings below. Note that this is the
 // architecture that we are currently running as, not the hardware architecture.
 + (NSString *)runtimeArchitecture;

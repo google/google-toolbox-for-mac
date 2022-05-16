@@ -41,25 +41,6 @@
   XCTAssertTrue(major >= 2 && minor >= 0 && bugFix >= 0);
 #else
   XCTAssertTrue(major >= 10 && minor >= 0 && bugFix >= 0);
-  BOOL isPanther = (major == 10) && (minor == 3);
-  BOOL isTiger = (major == 10) && (minor == 4);
-  BOOL isLeopard = (major == 10) && (minor == 5);
-  BOOL isSnowLeopard = (major == 10) && (minor == 6);
-
-  BOOL isLater = (major > 10) || ((major == 10) && (minor > 6));
-  XCTAssertEqual([GTMSystemVersion isPanther], isPanther);
-  XCTAssertEqual([GTMSystemVersion isPantherOrGreater],
-                 (BOOL)(isPanther || isTiger
-                        || isLeopard || isSnowLeopard || isLater));
-  XCTAssertEqual([GTMSystemVersion isTiger], isTiger);
-  XCTAssertEqual([GTMSystemVersion isTigerOrGreater],
-                 (BOOL)(isTiger || isLeopard || isSnowLeopard || isLater));
-  XCTAssertEqual([GTMSystemVersion isLeopard], isLeopard);
-  XCTAssertEqual([GTMSystemVersion isLeopardOrGreater],
-                 (BOOL)(isLeopard || isSnowLeopard || isLater));
-  XCTAssertEqual([GTMSystemVersion isSnowLeopard], isSnowLeopard);
-  XCTAssertEqual([GTMSystemVersion isSnowLeopardOrGreater],
-                 (BOOL)(isSnowLeopard || isLater));
 #endif
 }
 

@@ -19,6 +19,11 @@
 #import "GTMAppKitUnitTestingUtilities.h"
 #import "GTMDefines.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for DebugAssert used by
+// the "Require" macros.
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode);
 
 @implementation GTMAppKitUnitTestingUtilities
@@ -144,3 +149,5 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode) {
 }
 
 @end
+
+#pragma clang diagnostic pop
