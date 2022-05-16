@@ -23,10 +23,6 @@
 // Collection of utilities for unit testing
 @interface GTMAppKitUnitTestingUtilities : NSObject
 
-// Check if the screen saver is running. Some unit tests don't work when
-// the screen saver is active.
-+ (BOOL)isScreenSaverActive;
-
 // Allows for posting either a keydown or a keyup with all the modifiers being
 // applied. Passing a 'g' with NSKeyDown and NSShiftKeyMask
 // generates two events (a shift key key down and a 'g' key keydown). Make sure
