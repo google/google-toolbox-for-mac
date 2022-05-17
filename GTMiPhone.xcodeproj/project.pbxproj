@@ -109,8 +109,6 @@
 		64D0F5CD0FD3E68400506CC7 /* GTMUIImage+Resize_50x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_50x100.png"; path = "TestData/GTMUIImage+Resize_50x100.png"; sourceTree = "<group>"; };
 		64D0F5D40FD3E68400506CC7 /* GTMUIImage+Resize_100x50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_100x50.png"; path = "TestData/GTMUIImage+Resize_100x50.png"; sourceTree = "<group>"; };
 		64D0F5DB0FD3E68400506CC7 /* GTMUIImage+Resize_100x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GTMUIImage+Resize_100x100.png"; path = "TestData/GTMUIImage+Resize_100x100.png"; sourceTree = "<group>"; };
-		67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIPhoneUnitTestDelegate.h; sourceTree = "<group>"; };
-		67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestDelegate.m; sourceTree = "<group>"; };
 		8B27B5CA21C3305800D64F87 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = StaticLibrary.xcconfig; path = XcodeConfig/Target/StaticLibrary.xcconfig; sourceTree = SOURCE_ROOT; };
 		8B2908AF11F8E7070064F50F /* GTMNSFileHandle+UniqueName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileHandle+UniqueName.h"; sourceTree = "<group>"; };
 		8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueName.m"; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 		8BC0479C0DAE928A00C2D1CA /* GTMMethodCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMMethodCheck.h; sourceTree = "<group>"; };
 		8BC0479D0DAE928A00C2D1CA /* GTMMethodCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMethodCheck.m; sourceTree = "<group>"; };
 		8BC0479E0DAE928A00C2D1CA /* GTMMethodCheckTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMethodCheckTest.m; sourceTree = "<group>"; };
-		8BC047DD0DAE928A00C2D1CA /* GTMIPhoneUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMIPhoneUnitTestMain.m; sourceTree = "<group>"; };
 		8BC047F60DAE928A00C2D1CA /* GTMSenTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase.h; sourceTree = "<group>"; };
 		8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSenTestCase.m; sourceTree = "<group>"; };
 		8BC0498F0DAEC59100C2D1CA /* CodeCoverage.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = CodeCoverage.xcconfig; sourceTree = "<group>"; };
@@ -416,9 +413,6 @@
 			children = (
 				8B6FF398151A670100B0642B /* GTMFoundationUnitTestingUtilities.h */,
 				8B6FF399151A670100B0642B /* GTMFoundationUnitTestingUtilities.m */,
-				67A7820A0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.h */,
-				67A7820B0E00927400EBF506 /* GTMIPhoneUnitTestDelegate.m */,
-				8BC047DD0DAE928A00C2D1CA /* GTMIPhoneUnitTestMain.m */,
 				8BC047F60DAE928A00C2D1CA /* GTMSenTestCase.h */,
 				8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */,
 				F4746720129703600022C1FB /* GTMSenTestCaseTest.m */,
