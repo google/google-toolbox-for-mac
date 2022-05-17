@@ -37,8 +37,6 @@ extern void __gcov_flush();
   __gcov_flush();
 }
 
-#if GTM_USING_XCTEST
-
 + (void)load {
   // Using defines and strings so that we don't have to link in
   // XCTest here.
@@ -54,8 +52,6 @@ extern void __gcov_flush();
   observers = [NSString stringWithFormat:@"%@,%@", observers, className];
   [defaults setValue:observers forKey:GTMXCTestObserverClassKey];
 }
-
-#endif  // GTM_USING_XCTEST
 
 @end
 

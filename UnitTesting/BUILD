@@ -20,22 +20,6 @@ objc_library(
     hdrs = [
         "GTMSenTestCase.h",
     ],
-    defines = ["GTM_USING_XCTEST=1"],
-    non_arc_srcs = [
-        "GTMSenTestCase.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
-objc_library(
-    name = "SenTestCase_Legacy",
-    testonly = 1,
-    hdrs = [
-        "GTMSenTestCase.h",
-    ],
     non_arc_srcs = [
         "GTMSenTestCase.m",
     ],
@@ -60,25 +44,6 @@ objc_library(
     ],
 )
 
-objc_library(
-    name = "UnitTestingAppLib",
-    testonly = 1,
-    hdrs = [
-        "GTMCodeCoverageApp.h",
-        "GTMIPhoneUnitTestDelegate.h",
-    ],
-    non_arc_srcs = [
-        "GTMIPhoneUnitTestDelegate.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":FoundationUnitTestingUtilities",
-        ":SenTestCase_Legacy",
-        ":TestTimer",
-        "//:Defines",
-    ],
-)
-
 ios_build_test(
     name = "iOSBuildTest",
     minimum_os_version = "12.0",
@@ -86,7 +51,6 @@ ios_build_test(
         ":TestTimer",
         ":SenTestCase",
         ":FoundationUnitTestingUtilities",
-        ":UnitTestingAppLib",
     ],
 )
 

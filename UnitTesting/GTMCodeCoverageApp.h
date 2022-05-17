@@ -29,12 +29,6 @@
 #define GTM_IS_COVERAGE_BUILD 0
 #endif
 
-// If you are using this with XCTest (as opposed to SenTestingKit)
-// make sure to define GTM_USING_XCTEST.
-#ifndef GTM_USING_XCTEST
-#define GTM_USING_XCTEST 0
-#endif
-
 // NOTE: As of Xcode 6, Apple made XCTestObserver and XCTestLog deprecated without
 // having a replacement. Things still seem to work, but there doesn't seem to be a
 // different way yet to hook when the tests finish.
