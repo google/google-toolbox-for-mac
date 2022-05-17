@@ -26,11 +26,7 @@
 + (BOOL)areWeBeingUnitTested {
   BOOL answer = NO;
   Class testProbeClass;
-#if GTM_USING_XCTEST
   testProbeClass = NSClassFromString(@"XCTestProbe");
-#else
-  testProbeClass = NSClassFromString(@"SenTestProbe");
-#endif
   if (testProbeClass != Nil) {
     // Doing this little dance so we don't actually have to link
     // SenTestingKit in

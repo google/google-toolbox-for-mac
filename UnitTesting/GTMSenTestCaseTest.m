@@ -18,13 +18,6 @@
 
 #import "GTMDefines.h"
 
-// This test currently executes under XCTest and under the GTM SenTest replacement.
-#if !GTM_USING_XCTEST
-#define XCTAssertFalse STAssertFalse
-#define XCTAssertEqual STAssertEquals
-#define XCTAssertTrue STAssertTrue
-#endif  // !GTM_USING_XCTEST
-
 #import "GTMSenTestCase.h"
 
 // These make use of the fact that methods are run in alphebetical order
