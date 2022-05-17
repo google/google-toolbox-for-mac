@@ -196,13 +196,4 @@ Pod::Spec.new do |s|
     sp.dependency 'GoogleToolboxForMac/SystemVersion', "#{s.version}"
   end
 
-  s.subspec 'UnitTestingAppLib' do |sp|
-    sp.platform = :ios, ios_deployment_target
-    sp.source_files =
-        'UnitTesting/GTMCodeCoverageApp.h',
-        'UnitTesting/GTMIPhoneUnitTestDelegate.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/UnitTesting', "#{s.version}"
-  end
-
 end
