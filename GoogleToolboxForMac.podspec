@@ -192,8 +192,6 @@ Pod::Spec.new do |s|
         'UnitTesting/GTMTestTimer.h',
     sp.frameworks = 'CoreGraphics', 'QuartzCore'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Regex', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/SystemVersion', "#{s.version}"
   end
 
   s.subspec 'UnitTestingAppLib' do |sp|
