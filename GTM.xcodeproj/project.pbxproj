@@ -104,7 +104,6 @@
 		8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
 		8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C372AE0DD8A8D700E97817 /* GTMNSString+URLArgumentsTest.m */; };
 		8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
-		8BFE6E9B1282371200B5C894 /* GTMRegexTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */; };
 		8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };
 		8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F95B567D0F46208E0051A6F1 /* GTMSQLiteTest.m */; };
 		8BFE6E9F1282371200B5C894 /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */; };
@@ -135,8 +134,6 @@
 		F42E2C84102B14B0004DF054 /* GTMUILocalizerAndLayoutTweakerTest1.xib in Resources */ = {isa = PBXBuildFile; fileRef = F42E2C83102B14B0004DF054 /* GTMUILocalizerAndLayoutTweakerTest1.xib */; };
 		F42E2D08102B2283004DF054 /* GTMUILocalizerAndLayoutTweakerTest2.xib in Resources */ = {isa = PBXBuildFile; fileRef = F42E2D07102B2283004DF054 /* GTMUILocalizerAndLayoutTweakerTest2.xib */; };
 		F431221D0DD4E3B800F45252 /* GTMStackTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = F431221A0DD4E3B800F45252 /* GTMStackTrace.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F437F55D0D50BC0A00F5C3A4 /* GTMRegex.h in Headers */ = {isa = PBXBuildFile; fileRef = F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F437F55E0D50BC0A00F5C3A4 /* GTMRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */; };
 		F43C7A571021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h in Headers */ = {isa = PBXBuildFile; fileRef = F43C7A551021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F43C7A581021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m in Sources */ = {isa = PBXBuildFile; fileRef = F43C7A561021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m */; };
 		F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */ = {isa = PBXBuildFile; fileRef = F43E4C250D4E361D0041161F /* GTMNSString+XML.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -308,9 +305,6 @@
 		F42E2D07102B2283004DF054 /* GTMUILocalizerAndLayoutTweakerTest2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerAndLayoutTweakerTest2.xib; sourceTree = "<group>"; };
 		F431221A0DD4E3B800F45252 /* GTMStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMStackTrace.h; sourceTree = "<group>"; };
 		F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTraceTest.m; sourceTree = "<group>"; };
-		F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMRegex.h; sourceTree = "<group>"; };
-		F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMRegex.m; sourceTree = "<group>"; };
-		F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMRegexTest.m; sourceTree = "<group>"; };
 		F43C7A551021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUILocalizerAndLayoutTweaker.h; sourceTree = "<group>"; };
 		F43C7A561021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUILocalizerAndLayoutTweaker.m; sourceTree = "<group>"; };
 		F43E4C250D4E361D0041161F /* GTMNSString+XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+XML.h"; sourceTree = "<group>"; };
@@ -649,9 +643,6 @@
 				F43E4E5E0D4E5EC90041161F /* GTMNSData+zlib.h */,
 				F43E4E5F0D4E5EC90041161F /* GTMNSData+zlib.m */,
 				F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */,
-				F437F55A0D50BC0A00F5C3A4 /* GTMRegex.h */,
-				F437F55B0D50BC0A00F5C3A4 /* GTMRegex.m */,
-				F437F55C0D50BC0A00F5C3A4 /* GTMRegexTest.m */,
 				F47A79850D746EE9002302AB /* GTMScriptRunner.h */,
 				F47A79860D746EE9002302AB /* GTMScriptRunner.m */,
 				F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */,
@@ -741,7 +732,6 @@
 				F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */,
 				F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */,
 				F43E4E610D4E5EC90041161F /* GTMNSData+zlib.h in Headers */,
-				F437F55D0D50BC0A00F5C3A4 /* GTMRegex.h in Headers */,
 				F47A79880D746EE9002302AB /* GTMScriptRunner.h in Headers */,
 				F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */,
 				F424F75F0D9AF019000B87EF /* GTMDefines.h in Headers */,
@@ -1039,7 +1029,6 @@
 				8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */,
 				8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */,
 				8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */,
-				8BFE6E9B1282371200B5C894 /* GTMRegexTest.m in Sources */,
 				8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */,
 				8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */,
 				8BFE6E9F1282371200B5C894 /* GTMStackTraceTest.m in Sources */,
@@ -1061,7 +1050,6 @@
 				F428FF040D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m in Sources */,
 				F43E4C290D4E361D0041161F /* GTMNSString+XML.m in Sources */,
 				F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */,
-				F437F55E0D50BC0A00F5C3A4 /* GTMRegex.m in Sources */,
 				F47A79890D746EE9002302AB /* GTMScriptRunner.m in Sources */,
 				F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */,
 				33C372A70DD8A88500E97817 /* GTMNSString+URLArguments.m in Sources */,

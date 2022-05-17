@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   # into a shipping app. This has come up a few times issues 130, 138. The current
   # list here is everything that doesn't have a platform requirement and isn't
   # testing only.
-  s.default_subspecs = 'Defines', 'Core', 'GeometryUtils', 'KVO', 'Logger', 'Regex',
+  s.default_subspecs = 'Defines', 'Core', 'GeometryUtils', 'KVO', 'Logger',
                        'StringEncoding', 'SystemVersion', 'URLBuilder', 'NSData+zlib',
                        'NSDictionary+URLArguments', 'NSFileHandle+UniqueName',
                        'NSScanner+JSON', 'NSString+HTML', 'NSString+URLArguments',
@@ -76,11 +76,6 @@ Pod::Spec.new do |s|
   # asl.h is not a modular header, and so cannot be imported
   # in a modulemap, which CocoaPods does by default when it
   # creates frameworks.
-
-  s.subspec 'Regex' do |sp|
-    sp.source_files = 'Foundation/GTMRegex.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-  end
 
   # We cannot add a target for Foundation/GTMSQLite.{h,m}.
   # sqlite3.h is not a modular header, and so cannot be imported

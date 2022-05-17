@@ -61,20 +61,6 @@ objc_library(
 )
 
 objc_library(
-    name = "Regex",
-    hdrs = [
-        "GTMRegex.h",
-    ],
-    non_arc_srcs = [
-        "GTMRegex.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
-objc_library(
     name = "StackTrace",
     hdrs = [
         "GTMStackTrace.h",
@@ -268,7 +254,6 @@ ios_build_test(
         ":GeometryUtils",
         ":KVO",
         ":Logger",
-        ":Regex",
         ":StackTrace",
         ":StringEncoding",
         ":SystemVersion",
@@ -293,7 +278,6 @@ macos_build_test(
         ":GeometryUtils",
         ":KVO",
         ":Logger",
-        ":Regex",
         ":StackTrace",
         ":StringEncoding",
         ":SystemVersion",
