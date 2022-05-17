@@ -236,21 +236,24 @@
 }
 
 - (void)testImageByRotating {
-  UIImage *actual = nil;
   UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
   XCTAssertNotNil(landscapeImage, @"Unable to read image.");
 
   // Rotate 90 degrees.
-  actual = [landscapeImage gtm_imageByRotating:UIImageOrientationRight];
+  UIImage *actual = [landscapeImage gtm_imageByRotating:UIImageOrientationRight];
+  XCTAssertNotNil(actual);
 
   // Rotate 180 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationDown];
+  XCTAssertNotNil(actual);
 
   // Rotate 270 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationLeft];
+  XCTAssertNotNil(actual);
 
   // Rotate 360 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationUp];
+  XCTAssertNotNil(actual);
 }
 
 @end
