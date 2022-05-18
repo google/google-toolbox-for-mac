@@ -29,28 +29,12 @@ objc_library(
     ],
 )
 
-objc_library(
-    name = "FoundationUnitTestingUtilities",
-    testonly = 1,
-    hdrs = [
-        "GTMFoundationUnitTestingUtilities.h",
-    ],
-    non_arc_srcs = [
-        "GTMFoundationUnitTestingUtilities.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
 ios_build_test(
     name = "iOSBuildTest",
     minimum_os_version = "12.0",
     targets = [
         ":TestTimer",
         ":SenTestCase",
-        ":FoundationUnitTestingUtilities",
     ],
 )
 
@@ -60,6 +44,5 @@ macos_build_test(
     targets = [
         ":TestTimer",
         ":SenTestCase",
-        ":FoundationUnitTestingUtilities",
     ],
 )
