@@ -169,14 +169,21 @@ Pod::Spec.new do |s|
     sp.requires_arc = 'iPhone/GTMUIFont+LineHeight.{h,m}'
   end
 
+  # TODO: This should probably be split into individual supsecs.
   s.subspec 'UnitTesting' do |sp|
-    sp.platform = :ios, ios_deployment_target
     sp.source_files =
         'UnitTesting/GTMFoundationUnitTestingUtilities.{h,m}',
         'UnitTesting/GTMSenTestCase.{h,m}',
         'UnitTesting/GTMTestTimer.h',
     sp.frameworks = 'CoreGraphics', 'QuartzCore'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
+    # Enable GTMSenTestCase.h to find <XCTest/XCTest.h>
+    sp.pod_target_xcconfig = {
+      'ENABLE_TESTING_SEARCH_PATHS'=>'YES',
+    }
+    sp.user_target_xcconfig = {
+      'ENABLE_TESTING_SEARCH_PATHS'=>'YES',
+    }
   end
 
 end
