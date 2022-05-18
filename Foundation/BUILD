@@ -89,20 +89,6 @@ objc_library(
 )
 
 objc_library(
-    name = "SystemVersion",
-    hdrs = [
-        "GTMSystemVersion.h",
-    ],
-    non_arc_srcs = [
-        "GTMSystemVersion.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
-objc_library(
     name = "URLBuilder",
     hdrs = [
         "GTMURLBuilder.h",
@@ -158,20 +144,6 @@ objc_library(
     ],
     non_arc_srcs = [
         "GTMNSFileHandle+UniqueName.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
-objc_library(
-    name = "NSScanner_JSON",
-    srcs = [
-        "GTMNSScanner+JSON.m",
-    ],
-    hdrs = [
-        "GTMNSScanner+JSON.h",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -256,12 +228,10 @@ ios_build_test(
         ":Logger",
         ":StackTrace",
         ":StringEncoding",
-        ":SystemVersion",
         ":URLBuilder",
         ":NSData_zlib",
         ":NSDictionary_URLArguments",
         ":NSFileHandle_UniqueName",
-        ":NSScanner_JSON",
         ":NSString_HTML",
         ":NSString_URLArguments",
         ":NSString_XML",
@@ -280,12 +250,10 @@ macos_build_test(
         ":Logger",
         ":StackTrace",
         ":StringEncoding",
-        ":SystemVersion",
         ":URLBuilder",
         ":NSData_zlib",
         ":NSDictionary_URLArguments",
         ":NSFileHandle_UniqueName",
-        ":NSScanner_JSON",
         ":NSString_HTML",
         ":NSString_URLArguments",
         ":NSString_XML",
