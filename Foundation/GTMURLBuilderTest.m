@@ -20,6 +20,10 @@
 
 #import "GTMSenTestCase.h"
 
+#pragma clang diagnostic push
+// Ignore all of the deprecation warnings for GTMURLBuilder
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @interface GTMURLBuilderTest : GTMTestCase
 @end
 
@@ -109,3 +113,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop
