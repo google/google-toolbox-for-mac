@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   # list here is everything that doesn't have a platform requirement and isn't
   # testing only.
   s.default_subspecs = 'Defines', 'Core', 'GeometryUtils', 'KVO', 'Logger',
-                       'StringEncoding', 'SystemVersion', 'URLBuilder', 'NSData+zlib',
+                       'StringEncoding', 'URLBuilder', 'NSData+zlib',
                        'NSDictionary+URLArguments', 'NSFileHandle+UniqueName',
                        'NSString+HTML', 'NSString+URLArguments',
                        'NSString+XML', 'NSThread+Blocks'
@@ -89,11 +89,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'StringEncoding' do |sp|
     sp.source_files = 'Foundation/GTMStringEncoding.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-  end
-
-  s.subspec 'SystemVersion' do |sp|
-    sp.source_files = 'Foundation/GTMSystemVersion.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 

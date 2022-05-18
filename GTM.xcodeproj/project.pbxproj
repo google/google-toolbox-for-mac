@@ -105,7 +105,6 @@
 		8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F95B567D0F46208E0051A6F1 /* GTMSQLiteTest.m */; };
 		8BFE6E9F1282371200B5C894 /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */; };
 		8BFE6EA01282371200B5C894 /* GTMStringEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1B9B8610FECD870084EE4B /* GTMStringEncodingTest.m */; };
-		8BFE6EA11282371200B5C894 /* GTMSystemVersionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */; };
 		F413908F0D75F63C00F72B31 /* GTMNSFileManager+Path.h in Headers */ = {isa = PBXBuildFile; fileRef = F413908C0D75F63C00F72B31 /* GTMNSFileManager+Path.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908D0D75F63C00F72B31 /* GTMNSFileManager+Path.m */; };
 		F41711350ECDFBD500B9B276 /* GTMLightweightProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F41711320ECDFBD500B9B276 /* GTMLightweightProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -123,8 +122,6 @@
 		F42E09500D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2820D198D0E009257D2 /* GTMNSBezierPath+RoundRect.m */; };
 		F42E09510D199BBF00D5DDE0 /* GTMNSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F42E09520D199BBF00D5DDE0 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */; };
-		F42E09540D199BBF00D5DDE0 /* GTMSystemVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = F48FE2920D198D24009257D2 /* GTMSystemVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F42E09550D199BBF00D5DDE0 /* GTMSystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2930D198D24009257D2 /* GTMSystemVersion.m */; };
 		F42E095E0D199BD600D5DDE0 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		F42E09AE0D19A62F00D5DDE0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		F42E2C69102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F42E2C68102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m */; };
@@ -329,10 +326,7 @@
 		F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
 		F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTMLTest.m"; sourceTree = "<group>"; };
-		F48FE2920D198D24009257D2 /* GTMSystemVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSystemVersion.h; sourceTree = "<group>"; };
-		F48FE2930D198D24009257D2 /* GTMSystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersion.m; sourceTree = "<group>"; };
 		F48FE29F0D198D36009257D2 /* GTMSenTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase.h; sourceTree = "<group>"; };
-		F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSystemVersionTest.m; sourceTree = "<group>"; };
 		F493E3581146CD97005F994E /* GTMUILocalizerAndLayoutTweakerTest7.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerAndLayoutTweakerTest7.xib; sourceTree = "<group>"; };
 		F4C0B9C2108E27EE002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerAndLayoutTweakerTest5.xib; sourceTree = "<group>"; };
 		F4C62483109753960069CADD /* GTMIBArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMIBArray.h; sourceTree = "<group>"; };
@@ -640,9 +634,6 @@
 				8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */,
 				F431221A0DD4E3B800F45252 /* GTMStackTrace.h */,
 				F431221B0DD4E3B800F45252 /* GTMStackTraceTest.m */,
-				F48FE2920D198D24009257D2 /* GTMSystemVersion.h */,
-				F48FE2930D198D24009257D2 /* GTMSystemVersion.m */,
-				F48FE2E10D198E4C009257D2 /* GTMSystemVersionTest.m */,
 				8B5769A521CD77D600D924D3 /* GTMTimeUtils.h */,
 				8B5769A621CD77D600D924D3 /* GTMTimeUtils.m */,
 				8B5769A921CD798000D924D3 /* GTMTimeUtilsTest.m */,
@@ -719,7 +710,6 @@
 				F42E094F0D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.h in Headers */,
 				8B5769A721CD77D600D924D3 /* GTMTimeUtils.h in Headers */,
 				F42E09510D199BBF00D5DDE0 /* GTMNSString+HTML.h in Headers */,
-				F42E09540D199BBF00D5DDE0 /* GTMSystemVersion.h in Headers */,
 				F428FF030D48E55E00382ED1 /* GTMNSBezierPath+CGPath.h in Headers */,
 				F43E4C280D4E361D0041161F /* GTMNSString+XML.h in Headers */,
 				F43E4E610D4E5EC90041161F /* GTMNSData+zlib.h in Headers */,
@@ -1022,7 +1012,6 @@
 				8BFE6E9E1282371200B5C894 /* GTMSQLiteTest.m in Sources */,
 				8BFE6E9F1282371200B5C894 /* GTMStackTraceTest.m in Sources */,
 				8BFE6EA01282371200B5C894 /* GTMStringEncodingTest.m in Sources */,
-				8BFE6EA11282371200B5C894 /* GTMSystemVersionTest.m in Sources */,
 				8BBD1F8F1519271A003152F0 /* GTMNSThread+BlocksTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1035,7 +1024,6 @@
 				F42E094D0D199BBF00D5DDE0 /* GTMGeometryUtils.m in Sources */,
 				F42E09500D199BBF00D5DDE0 /* GTMNSBezierPath+RoundRect.m in Sources */,
 				F42E09520D199BBF00D5DDE0 /* GTMNSString+HTML.m in Sources */,
-				F42E09550D199BBF00D5DDE0 /* GTMSystemVersion.m in Sources */,
 				F428FF040D48E55E00382ED1 /* GTMNSBezierPath+CGPath.m in Sources */,
 				F43E4C290D4E361D0041161F /* GTMNSString+XML.m in Sources */,
 				F43E4E620D4E5EC90041161F /* GTMNSData+zlib.m in Sources */,

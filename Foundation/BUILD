@@ -89,20 +89,6 @@ objc_library(
 )
 
 objc_library(
-    name = "SystemVersion",
-    hdrs = [
-        "GTMSystemVersion.h",
-    ],
-    non_arc_srcs = [
-        "GTMSystemVersion.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
-objc_library(
     name = "URLBuilder",
     hdrs = [
         "GTMURLBuilder.h",
@@ -242,7 +228,6 @@ ios_build_test(
         ":Logger",
         ":StackTrace",
         ":StringEncoding",
-        ":SystemVersion",
         ":URLBuilder",
         ":NSData_zlib",
         ":NSDictionary_URLArguments",
@@ -265,7 +250,6 @@ macos_build_test(
         ":Logger",
         ":StackTrace",
         ":StringEncoding",
-        ":SystemVersion",
         ":URLBuilder",
         ":NSData_zlib",
         ":NSDictionary_URLArguments",
