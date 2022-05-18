@@ -18,6 +18,7 @@ jobs:
     - name: Build and Test
       run:  |
         # Have to skip some tests that aren't working on newer OSes.
+        set -o pipefail
         xcodebuild \
             -project GTM.xcodeproj \
             -scheme GTM \
@@ -35,6 +36,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build and Test
       run:  |
+        set -o pipefail
         xcodebuild \
             -project GTMiPhone.xcodeproj \
             -scheme GTMiPhone \
