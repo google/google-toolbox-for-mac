@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.default_subspecs = 'Defines', 'Core', 'GeometryUtils', 'KVO', 'Logger',
                        'StringEncoding', 'SystemVersion', 'URLBuilder', 'NSData+zlib',
                        'NSDictionary+URLArguments', 'NSFileHandle+UniqueName',
-                       'NSScanner+JSON', 'NSString+HTML', 'NSString+URLArguments',
+                       'NSString+HTML', 'NSString+URLArguments',
                        'NSString+XML', 'NSThread+Blocks'
 
   s.subspec 'Defines' do |sp|
@@ -123,11 +123,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'NSFileHandle+UniqueName' do |sp|
     sp.source_files = 'Foundation/GTMNSFileHandle+UniqueName.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-  end
-
-  s.subspec 'NSScanner+JSON' do |sp|
-    sp.source_files = 'Foundation/GTMNSScanner+JSON.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 

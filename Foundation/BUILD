@@ -166,20 +166,6 @@ objc_library(
 )
 
 objc_library(
-    name = "NSScanner_JSON",
-    srcs = [
-        "GTMNSScanner+JSON.m",
-    ],
-    hdrs = [
-        "GTMNSScanner+JSON.h",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
-)
-
-objc_library(
     name = "NSString_HTML",
     srcs = [
         "GTMNSString+HTML.m",
@@ -261,7 +247,6 @@ ios_build_test(
         ":NSData_zlib",
         ":NSDictionary_URLArguments",
         ":NSFileHandle_UniqueName",
-        ":NSScanner_JSON",
         ":NSString_HTML",
         ":NSString_URLArguments",
         ":NSString_XML",
@@ -285,7 +270,6 @@ macos_build_test(
         ":NSData_zlib",
         ":NSDictionary_URLArguments",
         ":NSFileHandle_UniqueName",
-        ":NSScanner_JSON",
         ":NSString_HTML",
         ":NSString_URLArguments",
         ":NSString_XML",

@@ -83,8 +83,6 @@
 		8BBD1F8F1519271A003152F0 /* GTMNSThread+BlocksTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBD1F8E1519271A003152F0 /* GTMNSThread+BlocksTest.m */; };
 		8BC046B90DAE8C4B00C2D1CA /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */; };
 		8BC04CD80DB003D800C2D1CA /* GTMMethodCheck.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BD35B910FB22980009058F5 /* GTMNSScanner+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BD35B920FB22980009058F5 /* GTMNSScanner+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */; };
 		8BF2368F13CF67CB00F3FD82 /* GTMKeyValueAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF2368D13CF67CB00F3FD82 /* GTMKeyValueAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BF2369013CF67CB00F3FD82 /* GTMKeyValueAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2368E13CF67CB00F3FD82 /* GTMKeyValueAnimation.m */; };
 		8BF2369213CF694C00F3FD82 /* GTMKeyValueAnimationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF2369113CF694C00F3FD82 /* GTMKeyValueAnimationTest.m */; };
@@ -100,7 +98,6 @@
 		8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
 		8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
 		8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
-		8BFE6E921282371200B5C894 /* GTMNSScanner+JSONTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */; };
 		8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
 		8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C372AE0DD8A8D700E97817 /* GTMNSString+URLArgumentsTest.m */; };
 		8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
@@ -279,9 +276,6 @@
 		8BBD1F8E1519271A003152F0 /* GTMNSThread+BlocksTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSThread+BlocksTest.m"; sourceTree = "<group>"; };
 		8BC046B80DAE8C4B00C2D1CA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		8BC851D3127A19020046E0FB /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
-		8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSScanner+JSON.h"; sourceTree = "<group>"; };
-		8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+JSON.m"; sourceTree = "<group>"; };
-		8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSScanner+JSONTest.m"; sourceTree = "<group>"; };
 		8BF2368D13CF67CB00F3FD82 /* GTMKeyValueAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMKeyValueAnimation.h; sourceTree = "<group>"; };
 		8BF2368E13CF67CB00F3FD82 /* GTMKeyValueAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMKeyValueAnimation.m; sourceTree = "<group>"; };
 		8BF2369113CF694C00F3FD82 /* GTMKeyValueAnimationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMKeyValueAnimationTest.m; sourceTree = "<group>"; };
@@ -625,9 +619,6 @@
 				8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */,
 				8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */,
 				8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */,
-				8BD35B8E0FB22980009058F5 /* GTMNSScanner+JSON.h */,
-				8BD35B8F0FB22980009058F5 /* GTMNSScanner+JSON.m */,
-				8BD35B900FB22980009058F5 /* GTMNSScanner+JSONTest.m */,
 				F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */,
 				F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */,
 				F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */,
@@ -751,7 +742,6 @@
 				8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */,
 				7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */,
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
-				8BD35B910FB22980009058F5 /* GTMNSScanner+JSON.h in Headers */,
 				F43C7A571021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.h in Headers */,
 				7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */,
 				F4C6248B109753960069CADD /* GTMIBArray.h in Headers */,
@@ -1024,7 +1014,6 @@
 				8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */,
 				8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 				8B1C42CC2738F926003F74F2 /* GTMURLBuilderTest.m in Sources */,
-				8BFE6E921282371200B5C894 /* GTMNSScanner+JSONTest.m in Sources */,
 				8B5769AB21CD7ACF00D924D3 /* GTMTimeUtilsTest.m in Sources */,
 				8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */,
 				8BFE6E971282371200B5C894 /* GTMNSString+URLArgumentsTest.m in Sources */,
@@ -1067,7 +1056,6 @@
 				8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
 				7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */,
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
-				8BD35B920FB22980009058F5 /* GTMNSScanner+JSON.m in Sources */,
 				F43C7A581021FAA300ABF03C /* GTMUILocalizerAndLayoutTweaker.m in Sources */,
 				7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */,
 				F4C6248C109753960069CADD /* GTMIBArray.m in Sources */,
