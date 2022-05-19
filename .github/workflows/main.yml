@@ -56,3 +56,17 @@ jobs:
       run:  |
         go get github.com/bazelbuild/bazelisk
         bazelisk test --build_tests_only -c "${{ matrix.MODE }}" //...
+  pod-lib-lint:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Can't shard by platform because of https://github.com/CocoaPods/CocoaPods/issues/11358
+        CONFIGURATION: ["Debug", "Release"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Pod lib lint
+      run:  |
+        pod lib lint --verbose \
+          --configuration=${{ matrix.CONFIGURATION }} \
+          GoogleToolboxForMac.podspec

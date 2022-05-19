@@ -170,13 +170,20 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'UnitTesting' do |sp|
-    sp.platform = :ios, ios_deployment_target
-    sp.source_files =
-        'UnitTesting/GTMFoundationUnitTestingUtilities.{h,m}',
-        'UnitTesting/GTMSenTestCase.{h,m}',
-        'UnitTesting/GTMTestTimer.h',
-    sp.frameworks = 'CoreGraphics', 'QuartzCore'
+    sp.source_files = 'UnitTesting/GTMSenTestCase.{h,m}'
+    sp.frameworks = 'XCTest'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
+    # Enable GTMSenTestCase.h to find <XCTest/XCTest.h>
+    sp.pod_target_xcconfig = {
+      'ENABLE_TESTING_SEARCH_PATHS'=>'YES',
+    }
+    sp.user_target_xcconfig = {
+      'ENABLE_TESTING_SEARCH_PATHS'=>'YES',
+    }
+  end
+
+  s.subspec 'TestTimer' do |sp|
+    sp.source_files = 'UnitTesting/GTMTestTimer.h'
   end
 
 end
