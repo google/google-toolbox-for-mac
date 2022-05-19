@@ -120,34 +120,4 @@ static CGKeyCode GTMKeyCodeForCharCode(CGCharCode charCode) {
   return outCode;
 }
 
-@implementation NSApplication (GTMUnitTestingRunAdditions)
-
-- (BOOL)gtm_runUntilDate:(NSDate *)date
-                 context:(id<GTMUnitTestingRunLoopContext>)context {
-  BOOL contextShouldStop = NO;
-  while (1) {
-    contextShouldStop = [context shouldStop];
-    if (contextShouldStop) break;
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSEvent *event = [NSApp nextEventMatchingMask:NSAnyEventMask
-                                         untilDate:date
-                                            inMode:NSDefaultRunLoopMode
-                                           dequeue:YES];
-    if (!event) {
-      [pool drain];
-      break;
-    }
-    [NSApp sendEvent:event];
-    [pool drain];
-  }
-  return contextShouldStop;
-}
-
-- (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context {
-  return [self gtm_runUntilDate:[NSDate dateWithTimeIntervalSinceNow:60]
-                        context:context];
-}
-
-@end
-
 #pragma clang diagnostic pop

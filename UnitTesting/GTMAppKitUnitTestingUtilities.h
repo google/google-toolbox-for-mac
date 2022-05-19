@@ -18,8 +18,6 @@
 
 #import <AppKit/AppKit.h>
 
-#import "GTMFoundationUnitTestingUtilities.h"
-
 // Collection of utilities for unit testing
 @interface GTMAppKitUnitTestingUtilities : NSObject
 
@@ -56,21 +54,4 @@
 + (void)postTypeCharacterEvent:(CGCharCode)keyChar
                      modifiers:(UInt32)cocoaModifiers;
 
-@end
-
-// Some category methods to simplify spinning the runloops in such a way as
-// to make tests less flaky, but have them complete as fast as possible.
-@interface NSApplication (GTMUnitTestingRunAdditions)
-// Has NSApplication call nextEventMatchingMask repeatedly until
-// [context shouldStop] returns YES or it returns nil because the current date
-// is greater than |date|.
-// Return YES if the runloop was stopped because [context shouldStop] returned
-// YES.
-- (BOOL)gtm_runUntilDate:(NSDate *)date
-                 context:(id<GTMUnitTestingRunLoopContext>)context
-    NS_DEPRECATED(10_4, 10_8, 1_0, 7_0, "Please move to XCTestExpectations");
-
-// Calls -gtm_runUntilDate:context: with the timeout date set to 60 seconds.
-- (BOOL)gtm_runUpToSixtySecondsWithContext:(id<GTMUnitTestingRunLoopContext>)context
-    NS_DEPRECATED(10_4, 10_8, 1_0, 7_0, "Please move to XCTestExpectations");
 @end
