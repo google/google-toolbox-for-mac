@@ -28,9 +28,8 @@ Pod::Spec.new do |s|
   # list here is everything that doesn't have a platform requirement and isn't
   # testing only.
   s.default_subspecs = 'Defines', 'Core', 'GeometryUtils', 'KVO', 'Logger',
-                       'StringEncoding', 'URLBuilder', 'NSData+zlib',
-                       'NSDictionary+URLArguments', 'NSFileHandle+UniqueName',
-                       'NSString+HTML', 'NSString+URLArguments',
+                       'StringEncoding', 'NSData+zlib',
+                       'NSFileHandle+UniqueName', 'NSString+HTML',
                        'NSString+XML', 'NSThread+Blocks'
 
   s.subspec 'Defines' do |sp|
@@ -92,28 +91,11 @@ Pod::Spec.new do |s|
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
-  s.subspec 'URLBuilder' do |sp|
-    sp.source_files = 'Foundation/GTMURLBuilder.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/NSDictionary+URLArguments', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/NSString+URLArguments', "#{s.version}"
-  end
-
-
   s.subspec 'NSData+zlib' do |sp|
     sp.source_files = 'Foundation/GTMNSData+zlib.{h,m}'
     sp.requires_arc = 'Foundation/GTMNSData+zlib.{h,m}'
     sp.libraries = 'z'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-  end
-
-  s.subspec 'NSDictionary+URLArguments' do |sp|
-    sp.source_files = 'Foundation/GTMNSDictionary+URLArguments.{h,m}'
-    sp.requires_arc = 'Foundation/GTMNSDictionary+URLArguments.{h,m}'
-    sp.dependency 'GoogleToolboxForMac/DebugUtils', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
-    sp.dependency 'GoogleToolboxForMac/NSString+URLArguments', "#{s.version}"
   end
 
   s.subspec 'NSFileHandle+UniqueName' do |sp|
@@ -124,10 +106,6 @@ Pod::Spec.new do |s|
   s.subspec 'NSString+HTML' do |sp|
     sp.source_files = 'Foundation/GTMNSString+HTML.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
-  end
-
-  s.subspec 'NSString+URLArguments' do |sp|
-    sp.source_files = 'Foundation/GTMNSString+URLArguments.{h,m}'
   end
 
   s.subspec 'NSString+XML' do |sp|
