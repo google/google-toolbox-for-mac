@@ -58,15 +58,9 @@
 		8B61FDC00E4CDB8000FF9C21 /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */; };
 		8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */; };
-		8B6F32160DA34C830052CA40 /* GTMMethodCheckTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31F10DA347720052CA40 /* GTMMethodCheckTest.m */; };
 		8B6F4B630E8856CA00425D9F /* GTMDebugThreadValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B6F4B640E8856CA00425D9F /* GTMDebugThreadValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */; };
 		8B7DCBA50DFF0EFF0017E983 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E086D0D199A5B00D5DDE0 /* GoogleToolboxForMac.framework */; };
-		8B7DCBBD0DFF0F5D0017E983 /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */; };
-		8B7DCBC10DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */; };
-		8B7DCBC20DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */; };
-		8B7DCBC30DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */; };
-		8B7DCBC40DFF0F800017E983 /* GTMMethodCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */; };
 		8B7DCE190DFF39850017E983 /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */; };
 		8B7DCE1A0DFF39850017E983 /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */; };
 		8B7DCE1B0DFF39850017E983 /* GTMSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7DCE180DFF39850017E983 /* GTMSenTestCase.m */; };
@@ -260,8 +254,6 @@
 		8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSObject+KeyValueObserving.h"; sourceTree = "<group>"; };
 		8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObserving.m"; sourceTree = "<group>"; };
 		8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSObject+KeyValueObservingTest.m"; sourceTree = "<group>"; };
-		8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMethodCheck.m; sourceTree = "<group>"; };
-		8B6F31F10DA347720052CA40 /* GTMMethodCheckTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMMethodCheckTest.m; sourceTree = "<group>"; };
 		8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMMethodCheck.h; sourceTree = "<group>"; };
 		8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDebugThreadValidation.h; sourceTree = "<group>"; };
 		8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMDebugThreadValidation.m; sourceTree = "<group>"; };
@@ -688,9 +680,7 @@
 			children = (
 				8BF2555110F65B56000490C8 /* GTMTypeCasting.h */,
 				F4FF22770D9D4835003880AC /* GTMDebugSelectorValidation.h */,
-				8B6F31EF0DA347720052CA40 /* GTMMethodCheck.m */,
 				8B6F31F40DA3489B0052CA40 /* GTMMethodCheck.h */,
-				8B6F31F10DA347720052CA40 /* GTMMethodCheckTest.m */,
 				8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */,
 				8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */,
 			);
@@ -966,7 +956,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B45A21A0DA46E1D001148C5 /* GTMGeometryUtils.m in Sources */,
-				8B7DCBC30DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCE1B0DFF39850017E983 /* GTMSenTestCase.m in Sources */,
 				8B35901B0E8191750041E21C /* GTMTestTimerTest.m in Sources */,
 				F47466661296F19E0022C1FB /* GTMSenTestCaseTest.m in Sources */,
@@ -979,7 +968,6 @@
 			files = (
 				8B45A2AC0DA49C47001148C5 /* main.m in Sources */,
 				8B82CEEB1D9B4DA1007182AA /* GTMFoundationUnitTestingUtilities.m in Sources */,
-				8B7DCBC40DFF0F800017E983 /* GTMMethodCheck.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -987,8 +975,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B6F32160DA34C830052CA40 /* GTMMethodCheckTest.m in Sources */,
-				8B7DCBC20DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCE1A0DFF39850017E983 /* GTMSenTestCase.m in Sources */,
 				8B17FD15117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */,
 				8B29078711F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.m in Sources */,
@@ -1031,7 +1017,6 @@
 				F41390900D75F63C00F72B31 /* GTMNSFileManager+Path.m in Sources */,
 				33C372A70DD8A88500E97817 /* GTMNSString+URLArguments.m in Sources */,
 				33C374390DD8D44800E97817 /* GTMNSDictionary+URLArguments.m in Sources */,
-				8B7DCBBD0DFF0F5D0017E983 /* GTMMethodCheck.m in Sources */,
 				8B5769A821CD77D600D924D3 /* GTMTimeUtils.m in Sources */,
 				F98680C30E2C163D00CEE8BF /* GTMLogger.m in Sources */,
 				F98681970E2C20C800CEE8BF /* GTMLogger+ASL.m in Sources */,
@@ -1059,7 +1044,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B7DCBC10DFF0F7F0017E983 /* GTMMethodCheck.m in Sources */,
 				8B7DCE190DFF39850017E983 /* GTMSenTestCase.m in Sources */,
 				8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */,
 				8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */,
