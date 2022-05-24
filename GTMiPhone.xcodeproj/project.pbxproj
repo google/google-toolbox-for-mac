@@ -57,7 +57,6 @@
 		8B82CF471D9C2373007182AA /* GTMStackTraceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EF8AD60EBFF814008DD6DA /* GTMStackTraceTest.m */; };
 		8B82CF4A1D9C2373007182AA /* GTMUILocalizerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 169E1E2D1459AAE100E6F562 /* GTMUILocalizerTest.m */; };
 		8B82CF4B1D9C2373007182AA /* GTMUILocalizerTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = 169E1E2E1459AAE100E6F562 /* GTMUILocalizerTest.xib */; };
-		8B82CF4C1D9C2385007182AA /* GTMFadeTruncatingLabelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */; };
 		8B82CF4D1D9C2385007182AA /* GTMUIFont+LineHeightTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */; };
 		8B82CF4E1D9C2385007182AA /* GTMUIImage+ResizeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D0F5C60FD3E65C00506CC7 /* GTMUIImage+ResizeTest.m */; };
 		8B82CF501D9C2385007182AA /* GTMSenTestCaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4746720129703600022C1FB /* GTMSenTestCaseTest.m */; };
@@ -168,7 +167,6 @@
 		8BF753DE1D9DB3740010A295 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		9340CF9C140550CE0026DDC9 /* GTMFadeTruncatingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFadeTruncatingLabel.h; sourceTree = "<group>"; };
 		9340CF9D140550CE0026DDC9 /* GTMFadeTruncatingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingLabel.m; sourceTree = "<group>"; };
-		9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingLabelTest.m; sourceTree = "<group>"; };
 		BE9B793D14FE99F3004A993A /* GTMURLBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTMURLBuilder.h; sourceTree = "<group>"; };
 		BE9B793E14FE99F3004A993A /* GTMURLBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTMURLBuilder.m; sourceTree = "<group>"; };
 		BE9B793F14FE99F3004A993A /* GTMURLBuilderTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTMURLBuilderTest.m; sourceTree = "<group>"; };
@@ -292,7 +290,6 @@
 				169E1E2E1459AAE100E6F562 /* GTMUILocalizerTest.xib */,
 				9340CF9C140550CE0026DDC9 /* GTMFadeTruncatingLabel.h */,
 				9340CF9D140550CE0026DDC9 /* GTMFadeTruncatingLabel.m */,
-				9340CF9E140550CE0026DDC9 /* GTMFadeTruncatingLabelTest.m */,
 				F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */,
 				F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */,
 				F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */,
@@ -587,7 +584,6 @@
 				8B82CF431D9C2373007182AA /* GTMNSString+URLArgumentsTest.m in Sources */,
 				8B82CF4E1D9C2385007182AA /* GTMUIImage+ResizeTest.m in Sources */,
 				8B82CF371D9C2373007182AA /* GTMLightweightProxyTest.m in Sources */,
-				8B82CF4C1D9C2385007182AA /* GTMFadeTruncatingLabelTest.m in Sources */,
 				8B82CF3B1D9C2373007182AA /* GTMNSData+zlibTest.m in Sources */,
 				8B82CF3E1D9C2373007182AA /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
 				8B82CF501D9C2385007182AA /* GTMSenTestCaseTest.m in Sources */,

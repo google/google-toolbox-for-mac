@@ -15,7 +15,6 @@
 		33C374390DD8D44800E97817 /* GTMNSDictionary+URLArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 33C374370DD8D44800E97817 /* GTMNSDictionary+URLArguments.m */; };
 		7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */; };
-		7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */; };
 		7F97DB32104EBCA0004DDDEE /* GTMFadeTruncatingTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F97DB33104EBCA3004DDDEE /* GTMFadeTruncatingTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */; };
 		8B07C60F1D99B01D0054728B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B07C60D1D99B01D0054728B /* XCTest.framework */; };
@@ -76,7 +75,6 @@
 		8BAA9E380F7C19D500DF4F12 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BAA9E360F7C19D500DF4F12 /* MainMenu.xib */; };
 		8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */; };
 		8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */; };
-		8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */; };
 		8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
 		8BBD1F8C1519258A003152F0 /* GTMNSThread+Blocks.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BBD1F8A1519258A003152F0 /* GTMNSThread+Blocks.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BBD1F8D1519258A003152F0 /* GTMNSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBD1F8B1519258A003152F0 /* GTMNSThread+Blocks.m */; };
@@ -210,7 +208,6 @@
 		7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSColor+LuminanceTest.m"; sourceTree = "<group>"; };
 		7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMFadeTruncatingTextFieldCell.h; sourceTree = "<group>"; };
 		7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingTextFieldCell.m; sourceTree = "<group>"; };
-		7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMFadeTruncatingTextFieldCellTest.m; sourceTree = "<group>"; };
 		8B07C60D1D99B01D0054728B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8B158A5F10A8BE4500C93125 /* GTMNSAnimation+Duration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSAnimation+Duration.h"; sourceTree = "<group>"; };
 		8B158A6010A8BE4500C93125 /* GTMNSAnimation+Duration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSAnimation+Duration.m"; sourceTree = "<group>"; };
@@ -322,7 +319,6 @@
 		F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMGeometryUtilsTest.m; sourceTree = "<group>"; };
 		F48FE2810D198D0E009257D2 /* GTMNSBezierPath+RoundRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSBezierPath+RoundRect.h"; sourceTree = "<group>"; };
 		F48FE2820D198D0E009257D2 /* GTMNSBezierPath+RoundRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+RoundRect.m"; sourceTree = "<group>"; };
-		F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSBezierPath+RoundRectTest.m"; sourceTree = "<group>"; };
 		F48FE28E0D198D24009257D2 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
 		F48FE28F0D198D24009257D2 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
 		F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTMLTest.m"; sourceTree = "<group>"; };
@@ -533,7 +529,6 @@
 				8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */,
 				7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */,
 				7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */,
-				7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */,
 				F4C62483109753960069CADD /* GTMIBArray.h */,
 				F4C62484109753960069CADD /* GTMIBArray.m */,
 				F4C62485109753960069CADD /* GTMIBArrayTest.h */,
@@ -549,7 +544,6 @@
 				F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */,
 				F48FE2810D198D0E009257D2 /* GTMNSBezierPath+RoundRect.h */,
 				F48FE2820D198D0E009257D2 /* GTMNSBezierPath+RoundRect.m */,
-				F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */,
 				7F511DF30F4B0378009F41B6 /* GTMNSColor+Luminance.h */,
 				7F511DF40F4B0378009F41B6 /* GTMNSColor+Luminance.m */,
 				7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */,
@@ -1063,11 +1057,9 @@
 				8B7DCE190DFF39850017E983 /* GTMSenTestCase.m in Sources */,
 				8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */,
 				8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */,
-				8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
 				8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */,
 				8B409BC60F94405A00DF540E /* GTMUILocalizerTest.m in Sources */,
 				F42E2C69102B1261004DF054 /* GTMUILocalizerAndLayoutTweakerTest.m in Sources */,
-				7F97DB31104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m in Sources */,
 				F4C62489109753960069CADD /* GTMIBArrayTest.m in Sources */,
 				8B17FD16117638D500E7A908 /* GTMFoundationUnitTestingUtilities.m in Sources */,
 				8B17FD1A117638F400E7A908 /* GTMAppKitUnitTestingUtilities.m in Sources */,
