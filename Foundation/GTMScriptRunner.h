@@ -60,9 +60,6 @@
 // are associated with the specified interpreter.  The default interpreter
 // (returned from +runner is "/bin/sh").
 + (GTMScriptRunner *)runner;
-+ (GTMScriptRunner *)runnerWithBash;
-+ (GTMScriptRunner *)runnerWithPerl;
-+ (GTMScriptRunner *)runnerWithPython;
 
 // Returns an autoreleased GTMScriptRunner instance associated with the specified
 // interpreter, and the given args.  The specified args are the arguments that

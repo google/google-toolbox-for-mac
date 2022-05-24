@@ -36,18 +36,6 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
   return [[[self alloc] init] autorelease];
 }
 
-+ (GTMScriptRunner *)runnerWithBash {
-  return [self runnerWithInterpreter:@"/bin/bash"];
-}
-
-+ (GTMScriptRunner *)runnerWithPerl {
-  return [self runnerWithInterpreter:@"/usr/bin/perl"];
-}
-
-+ (GTMScriptRunner *)runnerWithPython {
-  return [self runnerWithInterpreter:@"/usr/bin/python"];
-}
-
 + (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp {
   return [self runnerWithInterpreter:interp withArgs:nil];
 }

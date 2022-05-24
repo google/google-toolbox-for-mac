@@ -24,7 +24,6 @@
 @interface GTMScriptRunnerTest : GTMTestCase {
  @private
   NSString *shScript_;
-  NSString *perlScript_;
   NSString *shOutputScript_;
 }
 @end
@@ -45,16 +44,6 @@
    @"echo $i\n"
    writeToFile:shScript_ atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
-  perlScript_ = [NSString stringWithFormat:@"/tmp/script_runner_unittest_%d_%d_pl", geteuid(), getpid()];
-  [@"#!/usr/bin/perl\n"
-   @"use strict;\n"
-   @"my $i = 1;\n"
-   @"if (defined $ARGV[0]) {\n"
-   @"  $i = $ARGV[0];\n"
-   @"}\n"
-   @"print \"$i\n\"\n"
-   writeToFile:perlScript_ atomically:YES encoding:NSUTF8StringEncoding error:nil];
-
   shOutputScript_ = [NSString stringWithFormat:@"/tmp/script_runner_unittest_err_%d_%d_sh", geteuid(), getpid()];
   [@"#!/bin/sh\n"
    @"if [ \"err\" = \"$1\" ]; then\n"
@@ -70,10 +59,6 @@
   if (path) {
     unlink(path);
   }
-  path = [perlScript_ fileSystemRepresentation];
-  if (path) {
-    unlink(path);
-  }
   path = [shOutputScript_ fileSystemRepresentation];
   if (path) {
     unlink(path);
@@ -82,11 +67,6 @@
 
 - (void)testShCommands {
   GTMScriptRunner *sr = [GTMScriptRunner runner];
-  [self helperTestBourneShellUsingScriptRunner:sr];
-}
-
-- (void)testBashCommands {
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithBash];
   [self helperTestBourneShellUsingScriptRunner:sr];
 }
 
@@ -116,66 +96,6 @@
   // Simple expression with sine and cosine functions
   output = [sr run:@"scale=3;s(0)+c(0)\n"];
   XCTAssertEqualObjects(output, @"1.000", @"output should equal '1.000'");
-}
-
-- (void)testPerlCommands {
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithPerl];
-  XCTAssertNotNil(sr, @"Script runner must not be nil");
-  NSString *output = nil;
-
-  // Simple print
-  output = [sr run:@"print 'hi'"];
-  XCTAssertEqualObjects(output, @"hi", @"output should equal 'hi'");
-
-  // Simple print x4
-  output = [sr run:@"print 'A'x4"];
-  XCTAssertEqualObjects(output, @"AAAA", @"output should equal 'AAAA'");
-
-  // Simple perl-y stuff
-  output = [sr run:@"my $i=0; until ($i++==41){} print $i"];
-  XCTAssertEqualObjects(output, @"42", @"output should equal '42'");
-}
-
-- (void)testPythonCommands {
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithPython];
-  XCTAssertNotNil(sr, @"Script runner must not be nil");
-  NSString *output = nil;
-
-  // Simple print
-  output = [sr run:@"print 'hi'"];
-  XCTAssertEqualObjects(output, @"hi", @"output should equal 'hi'");
-
-  // Simple python expression
-  output = [sr run:@"print '-'.join(['a', 'b', 'c'])"];
-  XCTAssertEqualObjects(output, @"a-b-c", @"output should equal 'a-b-c'");
-}
-
-- (void)testBashScript {
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithBash];
-  XCTAssertNotNil(sr, @"Script runner must not be nil");
-  NSString *output = nil;
-
-  // Simple sh script
-  output = [sr runScript:shScript_];
-  XCTAssertEqualObjects(output, @"1", @"output should equal '1'");
-
-  // Simple sh script with 1 command line argument
-  output = [sr runScript:shScript_ withArgs:[NSArray arrayWithObject:@"2"]];
-  XCTAssertEqualObjects(output, @"2", @"output should equal '2'");
-}
-
-- (void)testPerlScript {
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithPerl];
-  XCTAssertNotNil(sr, @"Script runner must not be nil");
-  NSString *output = nil;
-
-  // Simple Perl script
-  output = [sr runScript:perlScript_];
-  XCTAssertEqualObjects(output, @"1", @"output should equal '1'");
-
-  // Simple perl script with 1 command line argument
-  output = [sr runScript:perlScript_ withArgs:[NSArray arrayWithObject:@"2"]];
-  XCTAssertEqualObjects(output, @"2", @"output should equal '2'");
 }
 
 - (void)testEnvironment {
@@ -218,7 +138,7 @@
 - (void)testRunCommandOutputHandling {
   // Test whitespace trimming & stdout vs. stderr w/ run command api
 
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithBash];
+  GTMScriptRunner *sr = [GTMScriptRunner runner];
   XCTAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil;
   NSString *err = nil;
@@ -356,7 +276,19 @@
   // These tests cover the issues found in
   //   http://code.google.com/p/google-toolbox-for-mac/issues/detail?id=25
 
-  GTMScriptRunner *sr = [GTMScriptRunner runnerWithPython];
+  GTMScriptRunner *sr = nil;
+
+  NSArray<NSString *> *paths = @[
+    @"/usr/bin/python3",
+    @"/usr/bin/python",
+  ];
+  NSFileManager *fm = [NSFileManager defaultManager];
+  for (NSString *path in paths) {
+    if ([fm fileExistsAtPath:path]) {
+      sr = [GTMScriptRunner runnerWithInterpreter:path];
+      break;
+    }
+  }
   XCTAssertNotNil(sr, @"Script runner must not be nil");
   NSString *output = nil, *err = nil, *cmd = nil;
 
@@ -366,7 +298,7 @@
     @"for x in [%@]:\n" \
     @"  to_where = x[0]\n" \
     @"  how_many = int(x[1:])\n" \
-    @"  for x in xrange(0, how_many):\n" \
+    @"  for x in range(0, how_many):\n" \
     @"    if to_where in [ 'o', 'b' ]:\n" \
     @"      sys.stdout.write(block)\n" \
     @"    if to_where in [ 'e', 'b' ]:\n" \
