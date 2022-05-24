@@ -22,7 +22,7 @@
 @class GTMUILocalizer;
 
 // In addition to the information here, please see the project's documentation
-// (http://code.google.com/p/google-toolbox-for-mac/wiki/UILocalization) for
+// (https://github.com/google/google-toolbox-for-mac/blob/main/Docs/UILocalization.md) for
 // more information and examples.
 
 // This object will run a GTMUILocalizer on the given object, and then run
