@@ -19,17 +19,9 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import "GTMFoundationUnitTestingUtilities.h"
 
 int main(int argc, char *argv[]) {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-  // Give ourselves a max of 10 minutes for the tests.  Sometimes (in automated
-  // builds) the unittesting bundle fails to load which causes the app to keep
-  // running forever.  This will force it to exit after a certain amount of time
-  // instead of hanging running forever.
-  [GTMFoundationUnitTestingUtilities installTestingTimeout:10*60.0];
-
   int result = NSApplicationMain(argc,  (const char **) argv);
   [pool drain];
   return result;

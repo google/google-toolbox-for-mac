@@ -89,23 +89,6 @@ objc_library(
 )
 
 objc_library(
-    name = "URLBuilder",
-    hdrs = [
-        "GTMURLBuilder.h",
-    ],
-    non_arc_srcs = [
-        "GTMURLBuilder.m",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":Logger",
-        ":NSDictionary_URLArguments",
-        ":NSString_URLArguments",
-        "//:Defines",
-    ],
-)
-
-objc_library(
     name = "NSData_zlib",
     srcs = [
         "GTMNSData+zlib.m",
@@ -117,23 +100,6 @@ objc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:Defines",
-    ],
-)
-
-objc_library(
-    name = "NSDictionary_URLArguments",
-    srcs = [
-        "GTMNSDictionary+URLArguments.m",
-    ],
-    hdrs = [
-        "GTMNSDictionary+URLArguments.h",
-    ],
-    copts = ["-IDebugUtils"],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":NSString_URLArguments",
-        "//:Defines",
-        "//DebugUtils",
     ],
 )
 
@@ -163,17 +129,6 @@ objc_library(
     deps = [
         "//:Defines",
     ],
-)
-
-objc_library(
-    name = "NSString_URLArguments",
-    srcs = [
-        "GTMNSString+URLArguments.m",
-    ],
-    hdrs = [
-        "GTMNSString+URLArguments.h",
-    ],
-    visibility = ["//visibility:public"],
 )
 
 objc_library(
@@ -228,12 +183,9 @@ ios_build_test(
         ":Logger",
         ":StackTrace",
         ":StringEncoding",
-        ":URLBuilder",
         ":NSData_zlib",
-        ":NSDictionary_URLArguments",
         ":NSFileHandle_UniqueName",
         ":NSString_HTML",
-        ":NSString_URLArguments",
         ":NSString_XML",
         ":NSThread_Blocks",
         ":TimeUtils",
@@ -250,12 +202,9 @@ macos_build_test(
         ":Logger",
         ":StackTrace",
         ":StringEncoding",
-        ":URLBuilder",
         ":NSData_zlib",
-        ":NSDictionary_URLArguments",
         ":NSFileHandle_UniqueName",
         ":NSString_HTML",
-        ":NSString_URLArguments",
         ":NSString_XML",
         ":NSThread_Blocks",
         ":TimeUtils",
