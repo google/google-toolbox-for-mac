@@ -290,7 +290,7 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
 
   // Since there is no way of running a single GoogleTest directly, we use the
   // filter mechanism in GoogleTest to simulate it for us.
-  ::testing::GTEST_FLAG(filter) = [testName_ UTF8String];
+  GTEST_FLAG_SET(filter, [testName_ UTF8String]);
 
   // Intentionally ignore return value of RUN_ALL_TESTS. We will be printing
   // the output appropriately, and there is no reason to mark this test as
