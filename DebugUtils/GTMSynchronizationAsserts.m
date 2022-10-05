@@ -43,8 +43,8 @@
     NSUInteger numberOfSyncingFunctions = functionNamesCounter.count;
 
     if (!allowRecursive) {
-      BOOL isTopLevelSyncScope = (numberOfSyncingFunctions == 0);
-      NSArray *stack = [NSThread callStackSymbols];
+      BOOL __unused isTopLevelSyncScope = (numberOfSyncingFunctions == 0);
+      NSArray *__unused stack = [NSThread callStackSymbols];
       _GTMDevAssert(isTopLevelSyncScope,
                     @"*** Recursive sync on %@ at %s; previous sync at %@\n%@",
                     [object class], functionName, functionNamesCounter.allObjects,
@@ -67,8 +67,8 @@
   NSMutableDictionary *counters = threadDict[threadKey];
   NSCountedSet *functionNamesCounter = counters[_objectKey];
   NSString *functionNameStr = @(_functionName);
-  NSUInteger numberOfSyncsByThisFunction = [functionNamesCounter countForObject:functionNameStr];
-  NSArray *stack = [NSThread callStackSymbols];
+  NSUInteger __unused numberOfSyncsByThisFunction = [functionNamesCounter countForObject:functionNameStr];
+  NSArray *__unused stack = [NSThread callStackSymbols];
   _GTMDevAssert(numberOfSyncsByThisFunction > 0, @"Sync not found on %@ at %s\n%@",
                 [_objectKey.nonretainedObjectValue class], _functionName,
                 [stack subarrayWithRange:NSMakeRange(1, stack.count - 1)]);
