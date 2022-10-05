@@ -44,7 +44,9 @@
 
     if (!allowRecursive) {
       BOOL isTopLevelSyncScope = (numberOfSyncingFunctions == 0);
+      (void)isTopLevelSyncScope;  // Fixes -Wunused-variable warning
       NSArray *stack = [NSThread callStackSymbols];
+      (void)stack;  // Fixes -Wunused-variable warning
       _GTMDevAssert(isTopLevelSyncScope,
                     @"*** Recursive sync on %@ at %s; previous sync at %@\n%@",
                     [object class], functionName, functionNamesCounter.allObjects,
@@ -68,7 +70,9 @@
   NSCountedSet *functionNamesCounter = counters[_objectKey];
   NSString *functionNameStr = @(_functionName);
   NSUInteger numberOfSyncsByThisFunction = [functionNamesCounter countForObject:functionNameStr];
+  (void)numberOfSyncsByThisFunction;  // Fixes -Wunused-variable warning
   NSArray *stack = [NSThread callStackSymbols];
+  (void)stack;  // Fixes -Wunused-variable warning
   _GTMDevAssert(numberOfSyncsByThisFunction > 0, @"Sync not found on %@ at %s\n%@",
                 [_objectKey.nonretainedObjectValue class], _functionName,
                 [stack subarrayWithRange:NSMakeRange(1, stack.count - 1)]);
