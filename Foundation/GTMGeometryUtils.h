@@ -20,10 +20,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GTMDefines.h"
-#if GTM_IPHONE_SDK
 #import <CoreGraphics/CoreGraphics.h>
-#endif //  GTM_IPHONE_SDK
+
+#import "GTMDefines.h"
 
 #ifdef __cplusplus
 extern "C" {
