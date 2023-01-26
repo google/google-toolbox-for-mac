@@ -47,8 +47,8 @@ static GTMLogger *gSharedLogger = nil;
     if (gSharedLogger == nil) {
       gSharedLogger = [[self standardLogger] retain];
     }
+    return [[gSharedLogger retain] autorelease];
   }
-  return [[gSharedLogger retain] autorelease];
 }
 
 + (void)setSharedLogger:(GTMLogger *)logger {
