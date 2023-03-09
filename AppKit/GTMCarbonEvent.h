@@ -36,35 +36,35 @@
 //  Returns:
 //    Autoreleased GTMCarbonEvent
 //
-+ (id)eventWithClass:(UInt32)inClass kind:(UInt32)kind;
++ (instancetype)eventWithClass:(UInt32)inClass kind:(UInt32)kind;
 
 //  Create an event based on |event|. Retains |event|.
 //
 //  Returns:
 //    Autoreleased GTMCarbonEvent
 //
-+ (id)eventWithEvent:(EventRef)event;
++ (instancetype)eventWithEvent:(EventRef)event;
 
 //  Create an event based on the event currently being handled.
 //
 //  Returns:
 //    Autoreleased GTMCarbonEvent
 //
-+ (id)currentEvent;
++ (instancetype)currentEvent;
 
 //  Create an event of class |inClass| and kind |inKind|
 //
 //  Returns:
 //    GTMCarbonEvent
 //
-- (id)initWithClass:(UInt32)inClass kind:(UInt32)kind;
+- (instancetype)initWithClass:(UInt32)inClass kind:(UInt32)kind;
 
 //  Create an event based on |event|. Retains |event|.
 //
 //  Returns:
 //    GTMCarbonEvent
 //
-- (id)initWithEvent:(EventRef)event;
+- (instancetype)initWithEvent:(EventRef)event;
 
 //  Get the event's class.
 //
