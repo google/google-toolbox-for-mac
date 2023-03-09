@@ -30,7 +30,7 @@
   truncateMode_ = GTMFadeTruncatingTail;
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
     // Use clip as a default value.

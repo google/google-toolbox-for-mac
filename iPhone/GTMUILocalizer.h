@@ -64,7 +64,7 @@
 @property(nonatomic, assign) IBOutlet id otherObjectToLocalize;
 @property(nonatomic, assign) IBOutlet id yetAnotherObjectToLocalize;
 
-- (id)initWithBundle:(NSBundle *)bundle;
+- (instancetype)initWithBundle:(NSBundle *)bundle;
 
 // Localize |object|. If |recursive| is true, it will attempt
 // to localize objects owned/referenced by |object|.
