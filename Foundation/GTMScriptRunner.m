@@ -32,27 +32,27 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 
 @implementation GTMScriptRunner
 
-+ (GTMScriptRunner *)runner {
++ (instancetype)runner {
   return [[[self alloc] init] autorelease];
 }
 
-+ (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp {
++ (instancetype)runnerWithInterpreter:(NSString *)interp {
   return [self runnerWithInterpreter:interp withArgs:nil];
 }
 
-+ (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp withArgs:(NSArray *)args {
++ (instancetype)runnerWithInterpreter:(NSString *)interp withArgs:(NSArray *)args {
   return [[[self alloc] initWithInterpreter:interp withArgs:args] autorelease];
 }
 
-- (id)init {
+- (instancetype)init {
   return [self initWithInterpreter:nil];
 }
 
-- (id)initWithInterpreter:(NSString *)interp {
+- (instancetype)initWithInterpreter:(NSString *)interp {
   return [self initWithInterpreter:interp withArgs:nil];
 }
 
-- (id)initWithInterpreter:(NSString *)interp withArgs:(NSArray *)args {
+- (instancetype)initWithInterpreter:(NSString *)interp withArgs:(NSArray *)args {
   if ((self = [super init])) {
     trimsWhitespace_ = YES;
     interpreter_ = [interp copy];

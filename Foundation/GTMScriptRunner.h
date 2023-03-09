@@ -59,7 +59,7 @@
 // Convenience methods for returning autoreleased GTMScriptRunner instances, that
 // are associated with the specified interpreter.  The default interpreter
 // (returned from +runner is "/bin/sh").
-+ (GTMScriptRunner *)runner;
++ (instancetype)runner;
 
 // Returns an autoreleased GTMScriptRunner instance associated with the specified
 // interpreter, and the given args.  The specified args are the arguments that
@@ -69,16 +69,16 @@
 //   [GTMScriptRunner runnerWithInterpreter:@"/usr/bin/perl"
 //                                withArgs:[NSArray arrayWithObject:@"-w"]];
 //
-+ (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp;
-+ (GTMScriptRunner *)runnerWithInterpreter:(NSString *)interp
-                                  withArgs:(NSArray *)args;
++ (instancetype)runnerWithInterpreter:(NSString *)interp;
++ (instancetype)runnerWithInterpreter:(NSString *)interp
+                             withArgs:(NSArray *)args;
 
 // Returns a GTMScriptRunner associated with |interp|
-- (id)initWithInterpreter:(NSString *)interp;
+- (instancetype)initWithInterpreter:(NSString *)interp;
 
 // Returns a GTMScriptRunner associated with |interp| and |args| applied to the
 // specified interpreter.  This method is the designated initializer.
-- (id)initWithInterpreter:(NSString *)interp withArgs:(NSArray *)args;
+- (instancetype)initWithInterpreter:(NSString *)interp withArgs:(NSArray *)args;
 
 // Runs the specified command string by sending it through the interpreter's
 // standard input.  The standard output is returned.  The standard error is
