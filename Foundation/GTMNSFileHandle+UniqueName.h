@@ -27,8 +27,8 @@
 // template is "MyAppXXXXXX.txt".
 // If |path| is not nil, it will contain the derived path for the file.
 // The file descriptor wrapped by the NSFileHandle will be closed on dealloc.
-+ (id)gtm_fileHandleForTemporaryFileBasedOn:(NSString *)nameTemplate
-                                  finalPath:(NSString **)path;
++ (instancetype)gtm_fileHandleForTemporaryFileBasedOn:(NSString *)nameTemplate
+                                            finalPath:(NSString **)path;
 
 // Return an opened read/write file handle with mode 0600 based on a template.
 // The template should be similar to the template passed to mkstemp.
@@ -36,22 +36,22 @@
 // template is "/Applications/MyAppXXXXXX.txt".
 // If |path| is not nil, it will contain the derived path for the file.
 // The file descriptor wrapped by the NSFileHandle will be closed on dealloc.
-+ (id)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)pathTemplate
-                                finalPath:(NSString **)path;
++ (instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)pathTemplate
+                                          finalPath:(NSString **)path;
 
 // Same as fileHandleWithUniqueNameBasedOn:finalName: but splits up the
 // template from the directory.
-+ (id)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
-                              inDirectory:(NSString *)directory
-                                finalPath:(NSString **)path;
++ (instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
+                                        inDirectory:(NSString *)directory
+                                          finalPath:(NSString **)path;
 
 
 // Same as fileHandleWithUniqueNameBasedOn:inDirectory:finalName: but finds
 // the directory using the |directory| and |mask| arguments.
-+ (id)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
-                              inDirectory:(NSSearchPathDirectory)directory
-                               domainMask:(NSSearchPathDomainMask)mask
-                                finalPath:(NSString **)path;
++ (instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
+                                        inDirectory:(NSSearchPathDirectory)directory
+                                         domainMask:(NSSearchPathDomainMask)mask
+                                          finalPath:(NSString **)path;
 @end
 
 @interface NSFileManager (GTMFileManagerUniqueNameAdditions)
