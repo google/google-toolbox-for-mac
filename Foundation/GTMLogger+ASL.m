@@ -22,7 +22,7 @@
 
 @implementation GTMLogger (GTMLoggerASLAdditions)
 
-+ (id)standardLoggerWithASL {
++ (instancetype)standardLoggerWithASL {
   id me = [self standardLogger];
   [me setWriter:[[[GTMLogASLWriter alloc] init] autorelease]];
   [me setFormatter:[[[GTMLogASLFormatter alloc] init] autorelease]];
@@ -34,19 +34,20 @@
 
 @implementation GTMLogASLWriter
 
-+ (id)aslWriter {
++ (instancetype)aslWriter {
   return [[[self alloc] initWithClientClass:nil facility:nil] autorelease];
 }
 
-+ (id)aslWriterWithFacility:(NSString *)facility {
++ (instancetype)aslWriterWithFacility:(NSString *)facility {
   return [[[self alloc] initWithClientClass:nil facility:facility] autorelease];
 }
 
-- (id)init {
+- (instancetype)init {
   return [self initWithClientClass:nil facility:nil];
 }
 
-- (id)initWithClientClass:(Class)clientClass facility:(NSString *)facility {
+- (instancetype)initWithClientClass:(Class)clientClass
+                           facility:(NSString *)facility {
   if ((self = [super init])) {
     aslClientClass_ = clientClass;
     if (aslClientClass_ == nil) {
@@ -135,11 +136,11 @@
 
 @implementation GTMLoggerASLClient
 
-- (id)init {
+- (instancetype)init {
   return [self initWithFacility:nil];
 }
 
-- (id)initWithFacility:(NSString *)facility {
+- (instancetype)initWithFacility:(NSString *)facility {
   if ((self = [super init])) {
     client_ = asl_open(NULL, [facility UTF8String], 0);
     if (client_ == NULL) {

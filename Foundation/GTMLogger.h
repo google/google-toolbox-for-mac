@@ -221,7 +221,7 @@
 // use this method to get a GTMLogger instance, unless they explicitly want
 // their own instance to configure for their own needs. This is the only method
 // that returns a shared instance; all the rest return new GTMLogger instances.
-+ (id)sharedLogger;
++ (instancetype)sharedLogger;
 
 // Sets the shared logger instance to |logger|. Future calls to +sharedLogger
 // will return |logger| instead.
@@ -233,39 +233,39 @@
 
 // Returns a new autoreleased GTMLogger instance that will log to stdout, using
 // the GTMLogStandardFormatter, and the GTMLogLevelFilter filter.
-+ (id)standardLogger;
++ (instancetype)standardLogger;
 
 // Same as +standardLogger, but logs to stderr.
-+ (id)standardLoggerWithStderr;
++ (instancetype)standardLoggerWithStderr;
 
 // Same as +standardLogger but levels >= kGTMLoggerLevelError are routed to
 // stderr, everything else goes to stdout.
-+ (id)standardLoggerWithStdoutAndStderr;
++ (instancetype)standardLoggerWithStdoutAndStderr;
 
 // Returns a new standard GTMLogger instance with a log writer that will
 // write to the file at |path|, and will use the GTMLogStandardFormatter and
 // GTMLogLevelFilter classes. If |path| does not exist, it will be created.
-+ (id)standardLoggerWithPath:(NSString *)path;
++ (instancetype)standardLoggerWithPath:(NSString *)path;
 
 // Returns an autoreleased GTMLogger instance that will use the specified
 // |writer|, |formatter|, and |filter|.
-+ (id)loggerWithWriter:(id<GTMLogWriter>)writer
-             formatter:(id<GTMLogFormatter>)formatter
-                filter:(id<GTMLogFilter>)filter;
++ (instancetype)loggerWithWriter:(id<GTMLogWriter>)writer
+                       formatter:(id<GTMLogFormatter>)formatter
+                          filter:(id<GTMLogFilter>)filter;
 
 // Returns an autoreleased GTMLogger instance that logs to stdout, with the
 // basic formatter, and no filter. The returned logger differs from the logger
 // returned by +standardLogger because this one does not do any filtering and
 // does not do any special log formatting; this is the difference between a
 // "regular" logger and a "standard" logger.
-+ (id)logger;
++ (instancetype)logger;
 
 // Designated initializer. This method returns a GTMLogger initialized with the
 // specified |writer|, |formatter|, and |filter|. See the setter methods below
 // for what values will be used if nil is passed for a parameter.
-- (id)initWithWriter:(id<GTMLogWriter>)writer
-           formatter:(id<GTMLogFormatter>)formatter
-              filter:(id<GTMLogFilter>)filter;
+- (instancetype)initWithWriter:(id<GTMLogWriter>)writer
+                     formatter:(id<GTMLogFormatter>)formatter
+                        filter:(id<GTMLogFilter>)filter;
 
 //
 // Logging  methods
@@ -370,7 +370,7 @@ typedef enum {
 @interface NSFileHandle (GTMFileHandleLogWriter) <GTMLogWriter>
 // Opens the file at |path| in append mode, and creates the file with |mode|
 // if it didn't previously exist.
-+ (id)fileHandleForLoggingAtPath:(NSString *)path mode:(mode_t)mode;
++ (instancetype)fileHandleForLoggingAtPath:(NSString *)path mode:(mode_t)mode;
 @end  // NSFileHandle
 
 
@@ -499,7 +499,7 @@ typedef enum {
 @interface GTMLogMininumLevelFilter : GTMLogAllowedLevelFilter
 
 // Designated initializer, logs at levels < |level| will be filtered.
-- (id)initWithMinimumLevel:(GTMLoggerLevel)level;
+- (instancetype)initWithMinimumLevel:(GTMLoggerLevel)level;
 
 @end
 
@@ -509,7 +509,7 @@ typedef enum {
 @interface GTMLogMaximumLevelFilter : GTMLogAllowedLevelFilter
 
 // Designated initializer, logs at levels > |level| will be filtered.
-- (id)initWithMaximumLevel:(GTMLoggerLevel)level;
+- (instancetype)initWithMaximumLevel:(GTMLoggerLevel)level;
 
 @end
 

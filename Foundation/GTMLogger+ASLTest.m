@@ -29,7 +29,7 @@ static NSMutableArray *gDummyLog;  // weak
 
 @implementation DummyASLClient
 
-- (id)initWithFacility:(NSString *)facility {
+- (instancetype)initWithFacility:(NSString *)facility {
   if ((self = [super initWithFacility:facility])) {
     facility_ = [facility copy];
   }
