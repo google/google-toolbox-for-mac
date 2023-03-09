@@ -71,12 +71,12 @@
   NSString* keyPath_;
 }
 
-- (id)initWithObserver:(id)observer
-                object:(id)target
-               keyPath:(NSString *)keyPath
-              selector:(SEL)selector
-              userInfo:(id)userInfo
-               options:(NSKeyValueObservingOptions)options;
+- (instancetype)initWithObserver:(id)observer
+                          object:(id)target
+                         keyPath:(NSString *)keyPath
+                        selector:(SEL)selector
+                        userInfo:(id)userInfo
+                         options:(NSKeyValueObservingOptions)options;
 - (void)deregister;
 
 @end
