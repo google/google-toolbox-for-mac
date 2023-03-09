@@ -33,17 +33,17 @@
 }
 
 // Create a new, autoreleased GTMStringEncoding object with a standard encoding.
-+ (id)binaryStringEncoding;
-+ (id)hexStringEncoding;
-+ (id)rfc4648Base32StringEncoding;
-+ (id)rfc4648Base32HexStringEncoding;
-+ (id)crockfordBase32StringEncoding;
-+ (id)rfc4648Base64StringEncoding;
-+ (id)rfc4648Base64WebsafeStringEncoding;
++ (instancetype)binaryStringEncoding;
++ (instancetype)hexStringEncoding;
++ (instancetype)rfc4648Base32StringEncoding;
++ (instancetype)rfc4648Base32HexStringEncoding;
++ (instancetype)crockfordBase32StringEncoding;
++ (instancetype)rfc4648Base64StringEncoding;
++ (instancetype)rfc4648Base64WebsafeStringEncoding;
 
 // Create a new, autoreleased GTMStringEncoding object with the given string,
 // as described below.
-+ (id)stringEncodingWithString:(NSString *)string;
++ (instancetype)stringEncodingWithString:(NSString *)string;
 
 // Initialize a new GTMStringEncoding object with the string.
 //
@@ -53,7 +53,7 @@
 // These characters are the canonical set emitted during encoding.
 // If the characters have alternatives (e.g. case, easily transposed) then use
 // addDecodeSynonyms: to configure them.
-- (id)initWithString:(NSString *)string;
+- (instancetype)initWithString:(NSString *)string;
 
 // Add decoding synonyms as specified in the synonyms argument.
 //
