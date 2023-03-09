@@ -59,13 +59,13 @@ typedef struct GTMRingBufferPair GTMRingBufferPair;
 
 // Returns an autoreleased ring buffer writer.  If |writer| is nil,
 // then nil is returned.
-+ (id)ringBufferWriterWithCapacity:(NSUInteger)capacity
-                            writer:(id<GTMLogWriter>)loggerWriter;
++ (instancetype)ringBufferWriterWithCapacity:(NSUInteger)capacity
+                                      writer:(id<GTMLogWriter>)loggerWriter;
 
 // Designated initializer.  If |writer| is nil, then nil is returned.
 // If you just use -init, nil will be returned.
-- (id)initWithCapacity:(NSUInteger)capacity
-                writer:(id<GTMLogWriter>)loggerWriter;
+- (instancetype)initWithCapacity:(NSUInteger)capacity
+                          writer:(id<GTMLogWriter>)loggerWriter;
 
 // How many messages will be logged before older messages get dropped
 // on the floor.

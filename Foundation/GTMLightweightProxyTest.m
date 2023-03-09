@@ -20,7 +20,7 @@
 #import "GTMLightweightProxy.h"
 
 @interface GTMLightweightProxy (GTMLightweightProxyTest)
-- (id)init;
+- (instancetype)init;
 @end
 
 @interface GTMLightweightProxyTest : GTMTestCase

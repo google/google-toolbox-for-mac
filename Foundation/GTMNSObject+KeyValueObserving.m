@@ -44,7 +44,7 @@
   NSMutableDictionary *observerHelpers_;
 }
 
-+ (id)defaultCenter;
++ (instancetype)defaultCenter;
 
 - (void)addObserver:(id)observer
            ofObject:(id)target
@@ -71,19 +71,21 @@
   NSString* keyPath_;
 }
 
-- (id)initWithObserver:(id)observer
-                object:(id)target
-               keyPath:(NSString *)keyPath
-              selector:(SEL)selector
-              userInfo:(id)userInfo
-               options:(NSKeyValueObservingOptions)options;
+- (instancetype)initWithObserver:(id)observer
+                          object:(id)target
+                         keyPath:(NSString *)keyPath
+                        selector:(SEL)selector
+                        userInfo:(id)userInfo
+                         options:(NSKeyValueObservingOptions)options;
 - (void)deregister;
 
 @end
 
 @interface GTMKeyValueChangeNotification ()
-- (id)initWithKeyPath:(NSString *)keyPath ofObject:(id)object
-             userInfo:(id)userInfo change:(NSDictionary *)change;
+- (instancetype)initWithKeyPath:(NSString *)keyPath
+                       ofObject:(id)object
+                       userInfo:(id)userInfo
+                         change:(NSDictionary *)change;
 @end
 
 @implementation GTMKeyValueObservingHelper
@@ -94,12 +96,12 @@ static char GTMKeyValueObservingHelperContextData;
 static char* GTMKeyValueObservingHelperContext
   = &GTMKeyValueObservingHelperContextData;
 
-- (id)initWithObserver:(id)observer
-                object:(id)target
-               keyPath:(NSString *)keyPath
-              selector:(SEL)selector
-              userInfo:(id)userInfo
-               options:(NSKeyValueObservingOptions)options {
+- (instancetype)initWithObserver:(id)observer
+                          object:(id)target
+                         keyPath:(NSString *)keyPath
+                        selector:(SEL)selector
+                        userInfo:(id)userInfo
+                         options:(NSKeyValueObservingOptions)options {
   if((self = [super init])) {
     observer_ = observer;
     selector_ = selector;
@@ -166,7 +168,7 @@ static char* GTMKeyValueObservingHelperContext
 
 @implementation GTMKeyValueObservingCenter
 
-+ (id)defaultCenter {
++ (instancetype)defaultCenter {
   static GTMKeyValueObservingCenter *center = nil;
   if(!center) {
     // do a bit of clever atomic setting to make this thread safe
@@ -183,7 +185,7 @@ static char* GTMKeyValueObservingHelperContext
   return center;
 }
 
-- (id)init {
+- (instancetype)init {
   if((self = [super init])) {
     observerHelpers_ = [[NSMutableDictionary alloc] init];
   }
@@ -330,8 +332,10 @@ static char* GTMKeyValueObservingHelperContext
 
 @implementation GTMKeyValueChangeNotification
 
-- (id)initWithKeyPath:(NSString *)keyPath ofObject:(id)object
-             userInfo:(id)userInfo change:(NSDictionary *)change {
+- (instancetype)initWithKeyPath:(NSString *)keyPath
+                       ofObject:(id)object
+                       userInfo:(id)userInfo
+                         change:(NSDictionary *)change {
   if ((self = [super init])) {
     keyPath_ = [keyPath copy];
     object_ = [object retain];
@@ -349,7 +353,7 @@ static char* GTMKeyValueObservingHelperContext
   [super dealloc];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
   return [[[self class] allocWithZone:zone] initWithKeyPath:keyPath_
                                                    ofObject:object_
                                                    userInfo:userInfo_

@@ -78,7 +78,7 @@
  @private
   NSBundle *bundle_;
 }
-- (id)initWithBundle:(NSBundle *)bundle;
+- (instancetype)initWithBundle:(NSBundle *)bundle;
 
 // Localize |object|. If |recursive| is true, it will attempt
 // to localize objects owned/referenced by |object|.

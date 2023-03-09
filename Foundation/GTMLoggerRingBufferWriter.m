@@ -49,8 +49,8 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 
 @implementation GTMLoggerRingBufferWriter
 
-+ (id)ringBufferWriterWithCapacity:(NSUInteger)capacity
-                            writer:(id<GTMLogWriter>)writer {
++ (instancetype)ringBufferWriterWithCapacity:(NSUInteger)capacity
+                                      writer:(id<GTMLogWriter>)writer {
   GTMLoggerRingBufferWriter *rbw =
     [[[self alloc] initWithCapacity:capacity
                             writer:writer] autorelease];
@@ -59,8 +59,8 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 }  // ringBufferWriterWithCapacity
 
 
-- (id)initWithCapacity:(NSUInteger)capacity
-                writer:(id<GTMLogWriter>)writer {
+- (instancetype)initWithCapacity:(NSUInteger)capacity
+                          writer:(id<GTMLogWriter>)writer {
   if ((self = [super init])) {
     writer_ = [writer retain];
     capacity_ = capacity;
@@ -84,7 +84,7 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 }  // initWithCapacity
 
 
-- (id)init {
+- (instancetype)init {
   return [self initWithCapacity:0 writer:nil];
 }  // init
 

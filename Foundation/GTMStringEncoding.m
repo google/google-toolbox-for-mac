@@ -29,18 +29,18 @@ enum {
 
 @implementation GTMStringEncoding
 
-+ (id)binaryStringEncoding {
++ (instancetype)binaryStringEncoding {
   return [self stringEncodingWithString:@"01"];
 }
 
-+ (id)hexStringEncoding {
++ (instancetype)hexStringEncoding {
   GTMStringEncoding *ret = [self stringEncodingWithString:
       @"0123456789ABCDEF"];
   [ret addDecodeSynonyms:@"AaBbCcDdEeFf"];
   return ret;
 }
 
-+ (id)rfc4648Base32StringEncoding {
++ (instancetype)rfc4648Base32StringEncoding {
   GTMStringEncoding *ret = [self stringEncodingWithString:
       @"ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"];
   [ret setPaddingChar:'='];
@@ -48,7 +48,7 @@ enum {
   return ret;
 }
 
-+ (id)rfc4648Base32HexStringEncoding {
++ (instancetype)rfc4648Base32HexStringEncoding {
   GTMStringEncoding *ret = [self stringEncodingWithString:
       @"0123456789ABCDEFGHIJKLMNOPQRSTUV"];
   [ret setPaddingChar:'='];
@@ -56,7 +56,7 @@ enum {
   return ret;
 }
 
-+ (id)crockfordBase32StringEncoding {
++ (instancetype)crockfordBase32StringEncoding {
   GTMStringEncoding *ret = [self stringEncodingWithString:
       @"0123456789ABCDEFGHJKMNPQRSTVWXYZ"];
   [ret addDecodeSynonyms:
@@ -64,7 +64,7 @@ enum {
   return ret;
 }
 
-+ (id)rfc4648Base64StringEncoding {
++ (instancetype)rfc4648Base64StringEncoding {
   GTMStringEncoding *ret = [self stringEncodingWithString:
       @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"];
   [ret setPaddingChar:'='];
@@ -72,7 +72,7 @@ enum {
   return ret;
 }
 
-+ (id)rfc4648Base64WebsafeStringEncoding {
++ (instancetype)rfc4648Base64WebsafeStringEncoding {
   GTMStringEncoding *ret = [self stringEncodingWithString:
       @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"];
   [ret setPaddingChar:'='];
@@ -91,11 +91,11 @@ GTM_INLINE int lcm(int a, int b) {
   }
 }
 
-+ (id)stringEncodingWithString:(NSString *)string {
++ (instancetype)stringEncodingWithString:(NSString *)string {
   return [[[self alloc] initWithString:string] autorelease];
 }
 
-- (id)initWithString:(NSString *)string {
+- (instancetype)initWithString:(NSString *)string {
   if ((self = [super init])) {
     charMapData_ = [[string dataUsingEncoding:NSASCIIStringEncoding] retain];
     if (!charMapData_) {

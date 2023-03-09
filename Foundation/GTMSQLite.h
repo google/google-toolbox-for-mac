@@ -139,11 +139,11 @@
 //           check the result code for the error. If NULL no result code is
 //           reported.
 //
-- (id)initWithPath:(NSString *)path
-   withCFAdditions:(BOOL)additions
-              utf8:(BOOL)useUTF8
-             flags:(int)flags
-         errorCode:(int *)err;
+- (instancetype)initWithPath:(NSString *)path
+             withCFAdditions:(BOOL)additions
+                        utf8:(BOOL)useUTF8
+                       flags:(int)flags
+                   errorCode:(int *)err;
 
 //  Create and open a database instance on a file-based database.
 //
@@ -160,10 +160,10 @@
 //          check the result code for the error. If NULL no result code is
 //          reported.
 //
-- (id)initWithPath:(NSString *)path
-   withCFAdditions:(BOOL)additions
-              utf8:(BOOL)useUTF8
-         errorCode:(int *)err;
+- (instancetype)initWithPath:(NSString *)path
+             withCFAdditions:(BOOL)additions
+                        utf8:(BOOL)useUTF8
+                   errorCode:(int *)err;
 
 //  Create and open a memory-based database. Memory-based databases
 //  cannot be shared amongst threads, and each instance is unique. See
@@ -171,9 +171,9 @@
 //
 //  For argument details see [... initWithPath:withCFAdditions:errorCode:]
 //
-- (id)initInMemoryWithCFAdditions:(BOOL)additions
-                             utf8:(BOOL)useUTF8
-                        errorCode:(int *)err;
+- (instancetype)initInMemoryWithCFAdditions:(BOOL)additions
+                                       utf8:(BOOL)useUTF8
+                                  errorCode:(int *)err;
 
 //  Get the underlying SQLite database handle. In general you should
 //  never do this, if you do use this be careful with how you compose
@@ -364,9 +364,9 @@
 //  Returns:
 //    Autoreleased GTMSQLiteStatement
 //
-+ (id)statementWithSQL:(NSString *)sql
-            inDatabase:(GTMSQLiteDatabase *)gtmdb
-             errorCode:(int *)err;
++ (instancetype)statementWithSQL:(NSString *)sql
+                      inDatabase:(GTMSQLiteDatabase *)gtmdb
+                       errorCode:(int *)err;
 
 //  Designated initializer, create a prepared statement. Positional and named
 //  parameters are supported, see the SQLite documentation.
@@ -387,9 +387,9 @@
 //          check the result code for the error. If NULL no result code is
 //          reported.
 //
-- (id)initWithSQL:(NSString *)sql
-       inDatabase:(GTMSQLiteDatabase *)gtmdb
-        errorCode:(int *)err;
+- (instancetype)initWithSQL:(NSString *)sql
+                 inDatabase:(GTMSQLiteDatabase *)gtmdb
+                  errorCode:(int *)err;
 
 //  Get the underlying SQLite statement handle. In general you should never
 //  do this, if you do use this be careful with how you compose and

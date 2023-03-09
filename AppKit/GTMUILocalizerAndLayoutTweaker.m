@@ -55,7 +55,7 @@ static const CGFloat kWrapperStringSlop = 0.9;
 @end
 
 @implementation GTMBreakRecordingTypeSetter
-- (id)init {
+- (instancetype)init {
   if ((self = [super init])) {
     array_ = [[NSMutableArray alloc] init];
   }

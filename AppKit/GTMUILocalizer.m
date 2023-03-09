@@ -35,7 +35,7 @@
 @end
 
 @implementation GTMUILocalizer
-- (id)initWithBundle:(NSBundle *)bundle {
+- (instancetype)initWithBundle:(NSBundle *)bundle {
   if ((self = [super init])) {
     bundle_ = [bundle retain];
   }

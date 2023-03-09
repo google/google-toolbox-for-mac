@@ -21,13 +21,13 @@
 
 @implementation GTMLightweightProxy
 
-- (id)initWithRepresentedObject:(id)object {
+- (instancetype)initWithRepresentedObject:(id)object {
   // it's weak, we don't retain
   representedObject_ = object;
   return self;
 }
 
-- (id)init {
+- (instancetype)init {
   return [self initWithRepresentedObject:nil];
 }
 

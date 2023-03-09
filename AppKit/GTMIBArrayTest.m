@@ -25,13 +25,13 @@
 @end
 
 @interface IBArrayTestHelper : GTMIBArray
-- (id)initWithObj1:(id)obj1 obj2:(id)obj2 obj3:(id)obj3
-              obj4:(id)obj4 obj5:(id)obj5;
+- (instancetype)initWithObj1:(id)obj1 obj2:(id)obj2 obj3:(id)obj3
+                        obj4:(id)obj4 obj5:(id)obj5;
 @end
 
 @implementation IBArrayTestHelper
-- (id)initWithObj1:(id)obj1 obj2:(id)obj2 obj3:(id)obj3
-              obj4:(id)obj4 obj5:(id)obj5 {
+- (instancetype)initWithObj1:(id)obj1 obj2:(id)obj2 obj3:(id)obj3
+                        obj4:(id)obj4 obj5:(id)obj5 {
   if ((self = [super init])) {
     object1_ = [obj1 retain];
     object2_ = [obj2 retain];

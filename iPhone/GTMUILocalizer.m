@@ -35,7 +35,7 @@
 @synthesize otherObjectToLocalize = otherObjectToLocalize_;
 @synthesize yetAnotherObjectToLocalize = yetAnotherObjectToLocalize_;
 
-- (id)initWithBundle:(NSBundle *)bundle {
+- (instancetype)initWithBundle:(NSBundle *)bundle {
   if ((self = [super init])) {
     bundle_ = [bundle retain];
   }

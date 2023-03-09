@@ -20,7 +20,7 @@
 
 @implementation GTMKeyValueAnimation
 
-- (id)initWithTarget:(id)target keyPath:(NSString*)keyPath {
+- (instancetype)initWithTarget:(id)target keyPath:(NSString*)keyPath {
   if ((self = [super init])) {
     target_ = [target retain];
     keyPath_ = [keyPath copy];

@@ -43,7 +43,7 @@
 @synthesize segmentedControl = segmentedControl_;
 @synthesize searchBar = searchBar_;
 
-- (id)init {
+- (instancetype)init {
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   return [self initWithNibName:@"GTMUILocalizerTest" bundle:bundle];
 }

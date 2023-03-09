@@ -36,7 +36,7 @@
 }
 
 // Initializes the object to represent |object|.
-- (id)initWithRepresentedObject:(id)object;
+- (instancetype)initWithRepresentedObject:(id)object;
 
 // Gets the object that the proxy represents.
 - (id)representedObject;

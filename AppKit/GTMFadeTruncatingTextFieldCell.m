@@ -23,7 +23,7 @@
   [self setLineBreakMode:NSLineBreakByClipping];
 }
 
-- (id)initTextCell:(NSString *)aString {
+- (instancetype)initTextCell:(NSString *)aString {
   self = [super initTextCell:aString];
   if (self) {
     // Force to clipping

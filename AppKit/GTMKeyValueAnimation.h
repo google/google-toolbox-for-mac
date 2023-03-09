@@ -29,7 +29,7 @@
   NSString *keyPath_;
 }
 
-- (id)initWithTarget:(id)target keyPath:(NSString*)keyPath;
+- (instancetype)initWithTarget:(id)target keyPath:(NSString*)keyPath;
 - (id)target;
 - (NSString *)keyPath;
 

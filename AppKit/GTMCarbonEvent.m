@@ -39,11 +39,11 @@
 //    whenPressed - do we do it on key down or key up?
 //  Returns:
 //    a hotkey record, or nil on failure
-- (id)initWithHotKey:(EventHotKeyID)keyID
-              target:(id)target
-              action:(SEL)selector
-            userInfo:(id)userInfo
-         whenPressed:(BOOL)onKeyDown;
+- (instancetype)initWithHotKey:(EventHotKeyID)keyID
+                        target:(id)target
+                        action:(SEL)selector
+                      userInfo:(id)userInfo
+                   whenPressed:(BOOL)onKeyDown;
 
 // Does this record match key |keyID|
 //  Arguments:
@@ -67,7 +67,7 @@
 //  Returns:
 //    Autoreleased GTMCarbonEvent
 //
-+ (id)eventWithClass:(UInt32)inClass kind:(UInt32)kind {
++ (instancetype)eventWithClass:(UInt32)inClass kind:(UInt32)kind {
   return [[[self alloc] initWithClass:inClass kind:kind] autorelease];
 }
 
@@ -77,7 +77,7 @@
 //  Returns:
 //    Autoreleased GTMCarbonEvent
 //
-+ (id)eventWithEvent:(EventRef)event {
++ (instancetype)eventWithEvent:(EventRef)event {
   return [[[self alloc] initWithEvent:event] autorelease];
 }
 
@@ -87,7 +87,7 @@
 //  Returns:
 //    Autoreleased GTMCarbonEvent
 //
-+ (id)currentEvent {
++ (instancetype)currentEvent {
   return [self eventWithEvent:GetCurrentEvent()];
 }
 
@@ -97,7 +97,7 @@
 //  Returns:
 //    GTMCarbonEvent
 //
-- (id)initWithClass:(UInt32)inClass kind:(UInt32)kind {
+- (instancetype)initWithClass:(UInt32)inClass kind:(UInt32)kind {
   if ((self = [super init])) {
     __Verify_noErr(CreateEvent(kCFAllocatorDefault, inClass, kind,
                                0, kEventAttributeNone, &event_));
@@ -111,7 +111,7 @@
 //  Returns:
 //    GTMCarbonEvent
 //
-- (id)initWithEvent:(EventRef)event {
+- (instancetype)initWithEvent:(EventRef)event {
   if ((self = [super init])) {
     if (event) {
       event_ = RetainEvent(event);
@@ -128,7 +128,7 @@
 //    zone - the zone to copy to
 //  Returns:
 //    the copied event. nil on failure
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
   GTMCarbonEvent *carbonEvent = nil;
   EventRef newEvent = CopyEvent([self event]);
   if (newEvent) {
@@ -479,7 +479,7 @@ static OSStatus EventHandler(EventHandlerCallRef inHandler,
 //
 // Returns:
 //   the delegate
-- (id)delegate {
+- (instancetype)delegate {
   return delegate_;
 }
 
@@ -542,7 +542,7 @@ static OSStatus EventHandler(EventHandlerCallRef inHandler,
 // to keep track of the hotkeys and commands that we handle.
 //  Returns:
 //    GTMCarbonApplication or nil on failure
-- (id)init {
+- (instancetype)init {
   if ((self = [super init])) {
     static EventTypeSpec events[] = {
       { kEventClassKeyboard, kEventHotKeyPressed },
@@ -691,11 +691,11 @@ CantCreateKey:
 //    whenPressed - do we do it on key down or key up?
 //  Returns:
 //    a hotkey record, or nil on failure
-- (id)initWithHotKey:(EventHotKeyID)keyID
-              target:(id)target
-              action:(SEL)selector
-            userInfo:(id)userInfo
-         whenPressed:(BOOL)onKeyDown {
+- (instancetype)initWithHotKey:(EventHotKeyID)keyID
+                        target:(id)target
+                        action:(SEL)selector
+                      userInfo:(id)userInfo
+                   whenPressed:(BOOL)onKeyDown {
   if ((self = [super init])) {
     if(!target || !selector) {
       [self release];

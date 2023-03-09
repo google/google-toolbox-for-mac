@@ -130,11 +130,11 @@ static CFLocaleRef gCurrentLocale = NULL;
   return [NSString stringWithUTF8String:sqlite3_libversion()];
 }
 
-- (id)initWithPath:(NSString *)path
-   withCFAdditions:(BOOL)additions
-              utf8:(BOOL)useUTF8
-             flags:(int)flags
-         errorCode:(int *)err {
+- (instancetype)initWithPath:(NSString *)path
+             withCFAdditions:(BOOL)additions
+                        utf8:(BOOL)useUTF8
+                       flags:(int)flags
+                   errorCode:(int *)err {
   int rc = SQLITE_INTERNAL;
 
   if ((self = [super init])) {
@@ -186,10 +186,10 @@ static CFLocaleRef gCurrentLocale = NULL;
   return self;
 }
 
-- (id)initWithPath:(NSString *)path
-   withCFAdditions:(BOOL)additions
-              utf8:(BOOL)useUTF8
-         errorCode:(int *)err {
+- (instancetype)initWithPath:(NSString *)path
+             withCFAdditions:(BOOL)additions
+                        utf8:(BOOL)useUTF8
+                   errorCode:(int *)err {
   return [self initWithPath:path
             withCFAdditions:additions
                        utf8:useUTF8
@@ -197,9 +197,9 @@ static CFLocaleRef gCurrentLocale = NULL;
                   errorCode:err];
 }
 
-- (id)initInMemoryWithCFAdditions:(BOOL)additions
-                             utf8:(BOOL)useUTF8
-                        errorCode:(int *)err {
+- (instancetype)initInMemoryWithCFAdditions:(BOOL)additions
+                                       utf8:(BOOL)useUTF8
+                                  errorCode:(int *)err {
   return [self initWithPath:@":memory:"
             withCFAdditions:additions
                        utf8:useUTF8
@@ -1601,18 +1601,18 @@ static void Glob16(sqlite3_context *context, int argc, sqlite3_value **argv) {
 
 #pragma mark Creation, Access and Finalization
 
-+ (id)statementWithSQL:(NSString *)sql
-            inDatabase:(GTMSQLiteDatabase *)gtmdb
-             errorCode:(int *)err {
++ (instancetype)statementWithSQL:(NSString *)sql
+                      inDatabase:(GTMSQLiteDatabase *)gtmdb
+                       errorCode:(int *)err {
   return [[[GTMSQLiteStatement alloc] initWithSQL:sql
                                        inDatabase:gtmdb
                                         errorCode:err]
             autorelease];
 }
 
-- (id)initWithSQL:(NSString *)sql
-       inDatabase:(GTMSQLiteDatabase *)gtmdb
-        errorCode:(int *)err {
+- (instancetype)initWithSQL:(NSString *)sql
+                 inDatabase:(GTMSQLiteDatabase *)gtmdb
+                  errorCode:(int *)err {
   int rc;
   id obj;
   if ((self = [super init])) {

@@ -29,7 +29,7 @@
 - (void)clear;
 @end
 @implementation ArrayWriter
-- (id)init {
+- (instancetype)init {
   if ((self = [super init])) {
     messages_ = [[NSMutableArray alloc] init];
   }

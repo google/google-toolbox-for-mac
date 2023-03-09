@@ -202,7 +202,7 @@
 @synthesize aSegmented = _aSegmented;
 @synthesize aComboBox = _aComboBox;
 
-- (id)init {
+- (instancetype)init {
   return [self initWithWindowNibName:@"GTMUILocalizerTestWindow"];
 }
 @end
@@ -213,7 +213,7 @@
 @synthesize viewButton = _viewButton;
 @synthesize pollyTextField = _pollyTextField;
 
-- (id)init {
+- (instancetype)init {
   NSBundle *bundle = [NSBundle bundleForClass:[self class]];
   return [self initWithNibName:@"GTMUILocalizerTestView" bundle:bundle];
 }
