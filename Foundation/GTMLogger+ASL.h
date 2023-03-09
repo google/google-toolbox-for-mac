@@ -31,7 +31,7 @@
 
 // Returns a new autoreleased GTMLogger instance that will log to ASL, using
 // the GTMLogASLFormatter, and the GTMLogLevelFilter filter.
-+ (id)standardLoggerWithASL;
++ (instancetype)standardLoggerWithASL;
 
 @end
 
@@ -58,19 +58,20 @@
 
 // Returns an autoreleased GTMLogASLWriter instance that uses an instance of
 // GTMLoggerASLClient and the default ASL facility.
-+ (id)aslWriter;
++ (instancetype)aslWriter;
 
 // Returns an autoreleased GTMLogASLWriter instance that uses an instance of
 // GTMLoggerASLClient and the supplied facility. See asl_open(3) for a
 // discusssion of ASL facility strings.
-+ (id)aslWriterWithFacility:(NSString *)facility;
++ (instancetype)aslWriterWithFacility:(NSString *)facility;
 
 // Designated initializer. Uses instances of the specified |clientClass| to talk
 // to the ASL system. All logs from this method will use |facility| as the ASL
 // log facility. This method is typically only useful for testing. Users
 // should generally NOT use this method to get an instance. Instead, simply use
 // the +aslWriter or +aslWriterWithFacility: methods to obtain an instance.
-- (id)initWithClientClass:(Class)clientClass facility:(NSString *)facility;
+- (instancetype)initWithClientClass:(Class)clientClass
+                           facility:(NSString *)facility;
 
 @end  // GTMLogASLWriter
 
@@ -97,7 +98,7 @@
 }
 
 // Designated initializer, |facility| is supplied to asl_open().
-- (id)initWithFacility:(NSString *)facility;
+- (instancetype)initWithFacility:(NSString *)facility;
 
 // Sends the given string to ASL at the specified ASL log |level|.
 - (void)log:(NSString *)msg level:(int)level;

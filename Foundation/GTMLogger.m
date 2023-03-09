@@ -42,7 +42,7 @@ static GTMLogger *gSharedLogger = nil;
 
 // Returns a pointer to the shared logger instance. If none exists, a standard
 // logger is created and returned.
-+ (id)sharedLogger {
++ (instancetype)sharedLogger {
   @synchronized(self) {
     if (gSharedLogger == nil) {
       gSharedLogger = [[self standardLogger] retain];
@@ -58,7 +58,7 @@ static GTMLogger *gSharedLogger = nil;
   }
 }
 
-+ (id)standardLogger {
++ (instancetype)standardLogger {
   // Don't trust NSFileHandle not to throw
   @try {
     id<GTMLogWriter> writer = [NSFileHandle fileHandleWithStandardOutput];
@@ -75,7 +75,7 @@ static GTMLogger *gSharedLogger = nil;
   return nil;
 }
 
-+ (id)standardLoggerWithStderr {
++ (instancetype)standardLoggerWithStderr {
   // Don't trust NSFileHandle not to throw
   @try {
     id me = [self standardLogger];
@@ -88,7 +88,7 @@ static GTMLogger *gSharedLogger = nil;
   return nil;
 }
 
-+ (id)standardLoggerWithStdoutAndStderr {
++ (instancetype)standardLoggerWithStdoutAndStderr {
   // We're going to take advantage of the GTMLogger to GTMLogWriter adaptor
   // and create a composite logger that an outer "standard" logger can use
   // as a writer. Our inner loggers should apply no formatting since the main
@@ -126,7 +126,7 @@ static GTMLogger *gSharedLogger = nil;
   return nil;
 }
 
-+ (id)standardLoggerWithPath:(NSString *)path {
++ (instancetype)standardLoggerWithPath:(NSString *)path {
   @try {
     NSFileHandle *fh = [NSFileHandle fileHandleForLoggingAtPath:path mode:0644];
     if (fh == nil) return nil;
@@ -140,25 +140,25 @@ static GTMLogger *gSharedLogger = nil;
   return nil;
 }
 
-+ (id)loggerWithWriter:(id<GTMLogWriter>)writer
-             formatter:(id<GTMLogFormatter>)formatter
-                filter:(id<GTMLogFilter>)filter {
++ (instancetype)loggerWithWriter:(id<GTMLogWriter>)writer
+                       formatter:(id<GTMLogFormatter>)formatter
+                          filter:(id<GTMLogFilter>)filter {
   return [[[self alloc] initWithWriter:writer
                              formatter:formatter
                                 filter:filter] autorelease];
 }
 
-+ (id)logger {
++ (instancetype)logger {
   return [[[self alloc] init] autorelease];
 }
 
-- (id)init {
+- (instancetype)init {
   return [self initWithWriter:nil formatter:nil filter:nil];
 }
 
-- (id)initWithWriter:(id<GTMLogWriter>)writer
-           formatter:(id<GTMLogFormatter>)formatter
-              filter:(id<GTMLogFilter>)filter {
+- (instancetype)initWithWriter:(id<GTMLogWriter>)writer
+                     formatter:(id<GTMLogFormatter>)formatter
+                        filter:(id<GTMLogFilter>)filter {
   if ((self = [super init])) {
     [self setWriter:writer];
     [self setFormatter:formatter];
@@ -350,7 +350,7 @@ static GTMLogger *gSharedLogger = nil;
 
 @implementation NSFileHandle (GTMFileHandleLogWriter)
 
-+ (id)fileHandleForLoggingAtPath:(NSString *)path mode:(mode_t)mode {
++ (instancetype)fileHandleForLoggingAtPath:(NSString *)path mode:(mode_t)mode {
   int fd = -1;
   if (path) {
     int flags = O_WRONLY | O_APPEND | O_CREAT;
@@ -454,7 +454,7 @@ static GTMLogger *gSharedLogger = nil;
 
 @implementation GTMLogStandardFormatter
 
-- (id)init {
+- (instancetype)init {
   if ((self = [super init])) {
     dateFormatter_ = [[NSDateFormatter alloc] init];
     [dateFormatter_ setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -525,7 +525,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 
 @implementation GTMLogLevelFilter
 
-- (id)init {
+- (instancetype)init {
   self = [super init];
   if (self) {
     self.verboseLoggingEnabled = IsVerboseLoggingEnabled(userDefaults_);
@@ -652,7 +652,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 @implementation GTMLogAllowedLevelFilter
 
 // Private designated initializer
-- (id)initWithAllowedLevels:(NSIndexSet *)levels {
+- (instancetype)initWithAllowedLevels:(NSIndexSet *)levels {
   self = [super init];
   if (self != nil) {
     allowedLevels_ = [levels retain];
@@ -670,7 +670,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
   return self;
 }
 
-- (id)init {
+- (instancetype)init {
   // Allow all levels in default init
   return [self initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
              NSMakeRange(kGTMLoggerLevelUnknown,
@@ -691,7 +691,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 
 @implementation GTMLogMininumLevelFilter
 
-- (id)initWithMinimumLevel:(GTMLoggerLevel)level {
+- (instancetype)initWithMinimumLevel:(GTMLoggerLevel)level {
   return [super initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
              NSMakeRange(level,
                          (kGTMLoggerLevelAssert - level + 1))]];
@@ -702,7 +702,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 
 @implementation GTMLogMaximumLevelFilter
 
-- (id)initWithMaximumLevel:(GTMLoggerLevel)level {
+- (instancetype)initWithMaximumLevel:(GTMLoggerLevel)level {
   return [super initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
              NSMakeRange(kGTMLoggerLevelUnknown, level + 1)]];
 }
