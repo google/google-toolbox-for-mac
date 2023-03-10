@@ -47,7 +47,10 @@
   GTMStringEncoding *coder = [GTMStringEncoding stringEncodingWithString:@"01"];
   NSError *error = nil;
 
-  XCTAssertNil([coder decode:nil error:&error]);
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
+  XCTAssertNil([coder decode:passNil error:&error]);
   XCTAssertEqual([error code], GTMStringEncodingErrorUnableToConverToAscii);
   XCTAssertNil([coder decode:@"banana" error:&error]);
   XCTAssertEqual([error code], GTMStringEncodingErrorUnknownCharacter);
