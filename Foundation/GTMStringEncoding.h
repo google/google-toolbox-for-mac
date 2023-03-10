@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // A generic class for arbitrary base-2 to 128 string encoding and decoding.
 @interface GTMStringEncoding : NSObject {
  @private
@@ -43,7 +45,7 @@
 
 // Create a new, autoreleased GTMStringEncoding object with the given string,
 // as described below.
-+ (instancetype)stringEncodingWithString:(NSString *)string;
++ (nullable instancetype)stringEncodingWithString:(NSString *)string;
 
 // Initialize a new GTMStringEncoding object with the string.
 //
@@ -53,7 +55,7 @@
 // These characters are the canonical set emitted during encoding.
 // If the characters have alternatives (e.g. case, easily transposed) then use
 // addDecodeSynonyms: to configure them.
-- (instancetype)initWithString:(NSString *)string;
+- (nullable instancetype)initWithString:(NSString *)string;
 
 // Add decoding synonyms as specified in the synonyms argument.
 //
@@ -78,22 +80,22 @@
 - (void)setPaddingChar:(char)c;
 
 // Encode a raw binary buffer to a 7-bit ASCII string.
-- (NSString *)encode:(NSData *)data __attribute__((deprecated("Use encode:error:")))
+- (nullable NSString *)encode:(nullable NSData *)data __attribute__((deprecated("Use encode:error:")))
     NS_SWIFT_UNAVAILABLE("Use encode:error: mapped to encode(_ data:) throws");
-- (NSString *)encodeString:(NSString *)string __attribute__((deprecated("Use encodeString:error:")))
+- (nullable NSString *)encodeString:(nullable NSString *)string __attribute__((deprecated("Use encodeString:error:")))
     NS_SWIFT_UNAVAILABLE("Use encode:error: mapped to encode(_ string:) throws");
 
-- (NSString *)encode:(NSData *)data error:(NSError **)error;
-- (NSString *)encodeString:(NSString *)string error:(NSError **)error;
+- (nullable NSString *)encode:(nullable NSData *)data error:(NSError **)error;
+- (nullable NSString *)encodeString:(nullable NSString *)string error:(NSError **)error;
 
 // Decode a 7-bit ASCII string to a raw binary buffer.
-- (NSData *)decode:(NSString *)string __attribute__((deprecated("Use decode:error:")))
+- (nullable NSData *)decode:(nullable NSString *)string __attribute__((deprecated("Use decode:error:")))
     NS_SWIFT_UNAVAILABLE("Use decode:error: mapped to decode(_ string:) throws");
-- (NSString *)stringByDecoding:(NSString *)string __attribute__((deprecated("Use stringByDecoding:error:")))
+- (nullable NSString *)stringByDecoding:(nullable NSString *)string __attribute__((deprecated("Use stringByDecoding:error:")))
     NS_SWIFT_UNAVAILABLE("Use stringByDecoding:error: mapped to string(byDecoding string:) throws");
 
-- (NSData *)decode:(NSString *)string error:(NSError **)error;
-- (NSString *)stringByDecoding:(NSString *)string error:(NSError **)error;
+- (nullable NSData *)decode:(nullable NSString *)string error:(NSError **)error;
+- (nullable NSString *)stringByDecoding:(nullable NSString *)string error:(NSError **)error;
 
 @end
 
@@ -114,3 +116,5 @@ typedef NS_ENUM(NSInteger, GTMStringEncodingError) {
   // There is unexpected data at the end of the data that could not be decoded.
   GTMStringEncodingErrorIncompleteTrailingData,
 };
+
+NS_ASSUME_NONNULL_END
