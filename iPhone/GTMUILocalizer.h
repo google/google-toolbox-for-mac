@@ -18,6 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // A class for localizing nibs by doing simple string replacement.
 // To use this, make an instance of GTMUILocalizer in your nib. Connect the
 // owner outlet of the your instance to the File Owner of the nib. It expects
@@ -60,9 +62,9 @@
   id yetAnotherObjectToLocalize_;
   NSBundle *bundle_;
 }
-@property(nonatomic, assign) IBOutlet id owner;
-@property(nonatomic, assign) IBOutlet id otherObjectToLocalize;
-@property(nonatomic, assign) IBOutlet id yetAnotherObjectToLocalize;
+@property(nonatomic, assign, nullable) IBOutlet id owner;
+@property(nonatomic, assign, nullable) IBOutlet id otherObjectToLocalize;
+@property(nonatomic, assign, nullable) IBOutlet id yetAnotherObjectToLocalize;
 
 - (instancetype)initWithBundle:(NSBundle *)bundle;
 
@@ -74,8 +76,10 @@
 // way to go about getting localized strings.
 // If |string| does not start with ^ you should return nil.
 // If |string| is nil, you should return nil
-- (NSString *)localizedStringForString:(NSString *)string;
+- (nullable NSString *)localizedStringForString:(nullable NSString *)string;
 
 // Allows subclasses to override how the bundle is picked up
 + (NSBundle *)bundleForOwner:(id)owner;
 @end
+
+NS_ASSUME_NONNULL_END

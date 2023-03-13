@@ -20,6 +20,8 @@
 
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 GTM_EXTERN_C_BEGIN
 
 //  Inscribe a round rectangle inside of rectangle |rect| with a corner radius
@@ -43,7 +45,7 @@ void GTMCGContextAddRoundRect(CGContextRef context,
 //    radius: radius of the corners. |radius| is clamped internally
 //            to be no larger than the smaller of half |rect|'s width or height
 void GTMCGPathAddRoundRect(CGMutablePathRef path,
-                           const CGAffineTransform *m,
+                           const CGAffineTransform * __nullable m,
                            CGRect rect,
                            CGFloat radius);
 
@@ -52,3 +54,5 @@ void GTMCGPathAddRoundRect(CGMutablePathRef path,
 CGPathRef GTMCreateRoundedRectPath(CGRect rect, CGFloat radius);
 
 GTM_EXTERN_C_END
+
+NS_ASSUME_NONNULL_END
