@@ -19,6 +19,7 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 #import <mach/mach_time.h>
+#include <stdlib.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,17 +40,15 @@ typedef struct GTMTestTimer {
 } GTMTestTimer;
 
 // Create a test timer
-GTM_INLINE GTMTestTimer * __nullable GTMTestTimerCreate(void) {
-  GTMTestTimer * __nullable t = (GTMTestTimer *)calloc(sizeof(GTMTestTimer), 1);
-  if (t) {
-    if (mach_timebase_info(&t->time_base_info_) == KERN_SUCCESS) {
-      t->retainCount_ = 1;
-    } else {
-      // COV_NF_START
-      free(t);
-      t = NULL;
-      // COV_NF_END
-    }
+GTM_INLINE GTMTestTimer *GTMTestTimerCreate(void) {
+  GTMTestTimer *t = (GTMTestTimer *)calloc(sizeof(GTMTestTimer), 1);
+  if (t && mach_timebase_info(&t->time_base_info_) == KERN_SUCCESS) {
+    t->retainCount_ = 1;
+  } else {
+    // COV_NF_START
+    if (t) free(t);
+    abort();
+    // COV_NF_END
   }
   return t;
 }
