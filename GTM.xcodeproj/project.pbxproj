@@ -26,8 +26,6 @@
 		8B29080A11F8E1670064F50F /* GTMNSFileHandle+UniqueName.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B29078411F8D1BF0064F50F /* GTMNSFileHandle+UniqueName.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B3590160E8190FA0041E21C /* GTMTestTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3590150E8190FA0041E21C /* GTMTestTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B35901B0E8191750041E21C /* GTMTestTimerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B35901A0E8191750041E21C /* GTMTestTimerTest.m */; };
-		8B3E292E0EEB53F8000681D8 /* GTMCarbonEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E292A0EEB53F3000681D8 /* GTMCarbonEvent.m */; };
-		8B3E292F0EEB53F8000681D8 /* GTMCarbonEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3E292B0EEB53F3000681D8 /* GTMCarbonEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B3E2A3F0EEB564D000681D8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B4099490F93C5CC00DF540E /* GTMUILocalizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B40994A0F93C5CC00DF540E /* GTMUILocalizer.m */; };
@@ -58,7 +56,6 @@
 		8B8B10F90EEB8B9E00E543D0 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E09AD0D19A62F00D5DDE0 /* Carbon.framework */; };
 		8BA983C81D9AE7E6009724B5 /* GTMUnitTestingTest.nib in Resources */ = {isa = PBXBuildFile; fileRef = 8BA983C51D9AE7E6009724B5 /* GTMUnitTestingTest.nib */; };
 		8BAA9E380F7C19D500DF4F12 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BAA9E360F7C19D500DF4F12 /* MainMenu.xib */; };
-		8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */; };
 		8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F428FF010D48E55E00382ED1 /* GTMNSBezierPath+CGPathTest.m */; };
 		8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2830D198D0E009257D2 /* GTMNSBezierPath+RoundRectTest.m */; };
 		8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F511DF50F4B0378009F41B6 /* GTMNSColor+LuminanceTest.m */; };
@@ -199,9 +196,6 @@
 		8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueNameTest.m"; sourceTree = "<group>"; };
 		8B3590150E8190FA0041E21C /* GTMTestTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTestTimer.h; sourceTree = "<group>"; };
 		8B35901A0E8191750041E21C /* GTMTestTimerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTestTimerTest.m; sourceTree = "<group>"; };
-		8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCarbonEventTest.m; sourceTree = "<group>"; };
-		8B3E292A0EEB53F3000681D8 /* GTMCarbonEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMCarbonEvent.m; sourceTree = "<group>"; };
-		8B3E292B0EEB53F3000681D8 /* GTMCarbonEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMCarbonEvent.h; sourceTree = "<group>"; };
 		8B4099490F93C5CC00DF540E /* GTMUILocalizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMUILocalizer.h; sourceTree = "<group>"; };
 		8B40994A0F93C5CC00DF540E /* GTMUILocalizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUILocalizer.m; sourceTree = "<group>"; };
 		8B409BC50F94405A00DF540E /* GTMUILocalizerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMUILocalizerTest.m; sourceTree = "<group>"; };
@@ -495,9 +489,6 @@
 		F48FE26F0D198CBA009257D2 /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
-				8B3E292B0EEB53F3000681D8 /* GTMCarbonEvent.h */,
-				8B3E292A0EEB53F3000681D8 /* GTMCarbonEvent.m */,
-				8B3E29290EEB53F3000681D8 /* GTMCarbonEventTest.m */,
 				7F97DB2D104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.h */,
 				7F97DB2E104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCell.m */,
 				7F97DB2F104EBC8D004DDDEE /* GTMFadeTruncatingTextFieldCellTest.m */,
@@ -679,7 +670,6 @@
 				8B3590160E8190FA0041E21C /* GTMTestTimer.h in Headers */,
 				8B6F4B630E8856CA00425D9F /* GTMDebugThreadValidation.h in Headers */,
 				F41711350ECDFBD500B9B276 /* GTMLightweightProxy.h in Headers */,
-				8B3E292F0EEB53F8000681D8 /* GTMCarbonEvent.h in Headers */,
 				8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */,
 				7F511DF90F4B0378009F41B6 /* GTMNSColor+Luminance.h in Headers */,
 				8B40994B0F93C5CC00DF540E /* GTMUILocalizer.h in Headers */,
@@ -978,7 +968,6 @@
 				8B61FDC00E4CDB8000FF9C21 /* GTMStackTrace.m in Sources */,
 				8B6F4B640E8856CA00425D9F /* GTMDebugThreadValidation.m in Sources */,
 				F41711360ECDFBD500B9B276 /* GTMLightweightProxy.m in Sources */,
-				8B3E292E0EEB53F8000681D8 /* GTMCarbonEvent.m in Sources */,
 				8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */,
 				7F511DFA0F4B0378009F41B6 /* GTMNSColor+Luminance.m in Sources */,
 				8B40994C0F93C5CC00DF540E /* GTMUILocalizer.m in Sources */,
@@ -998,7 +987,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B7DCE190DFF39850017E983 /* GTMSenTestCase.m in Sources */,
-				8BAA9EF20F7C2AB500DF4F12 /* GTMCarbonEventTest.m in Sources */,
 				8BAA9EF70F7C2AB500DF4F12 /* GTMNSBezierPath+CGPathTest.m in Sources */,
 				8BAA9EF80F7C2AB500DF4F12 /* GTMNSBezierPath+RoundRectTest.m in Sources */,
 				8BAA9EFA0F7C2AB500DF4F12 /* GTMNSColor+LuminanceTest.m in Sources */,
