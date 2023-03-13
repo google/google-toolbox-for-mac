@@ -230,7 +230,10 @@
   XCTAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
 
-  XCTAssertNil([sr run:nil standardError:&err]);
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
+  XCTAssertNil([sr run:passNil standardError:&err]);
   XCTAssertNil(err);
 }
 
@@ -239,7 +242,10 @@
   XCTAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
 
-  XCTAssertNil([sr runScript:nil withArgs:nil standardError:&err]);
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
+  XCTAssertNil([sr runScript:passNil withArgs:nil standardError:&err]);
   XCTAssertNil(err);
   XCTAssertNil([sr runScript:@"/path/that/does/not/exists/foo/bar/baz"
                     withArgs:nil standardError:&err]);
@@ -253,7 +259,10 @@
   XCTAssertNotNil(sr, @"Script runner must not be nil");
   NSString *err = nil;
 
-  XCTAssertNil([sr run:nil standardError:&err]);
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
+  XCTAssertNil([sr run:passNil standardError:&err]);
   XCTAssertNil(err);
   XCTAssertNil([sr run:@"ls /" standardError:&err]);
   XCTAssertNil(err);

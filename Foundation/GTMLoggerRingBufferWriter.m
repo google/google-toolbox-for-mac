@@ -83,12 +83,6 @@ typedef void (GTMRingBufferPairCallback)(GTMLoggerRingBufferWriter *rbw,
 
 }  // initWithCapacity
 
-
-- (instancetype)init {
-  return [self initWithCapacity:0 writer:nil];
-}  // init
-
-
 - (void)dealloc {
   [self reset];
 

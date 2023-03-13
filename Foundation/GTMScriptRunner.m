@@ -45,7 +45,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 - (instancetype)init {
-  return [self initWithInterpreter:nil];
+  return [self initWithInterpreter:@"/bin/sh"];
 }
 
 - (instancetype)initWithInterpreter:(NSString *)interp {
@@ -77,7 +77,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 - (NSString *)run:(NSString *)cmds {
-  return [self run:cmds standardError:nil];
+  return [self run:cmds standardError:NULL];
 }
 
 - (NSString *)run:(NSString *)cmds standardError:(NSString **)err {
@@ -259,7 +259,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
 }
 
 - (NSString *)runScript:(NSString *)path withArgs:(NSArray *)args {
-  return [self runScript:path withArgs:args standardError:nil];
+  return [self runScript:path withArgs:args standardError:NULL];
 }
 
 - (NSString *)runScript:(NSString *)path withArgs:(NSArray *)args standardError:(NSString **)err {

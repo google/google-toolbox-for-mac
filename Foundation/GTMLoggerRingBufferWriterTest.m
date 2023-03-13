@@ -129,13 +129,11 @@
                                                      writer:countingWriter_];
   XCTAssertNil(writer);
 
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
   writer = [GTMLoggerRingBufferWriter ringBufferWriterWithCapacity:32
-                                                             writer:nil];
+                                                             writer:passNil];
   XCTAssertNil(writer);
-
-  writer = [[GTMLoggerRingBufferWriter alloc] init];
-  XCTAssertNil(writer);
-
 }  // testCreation
 
 
