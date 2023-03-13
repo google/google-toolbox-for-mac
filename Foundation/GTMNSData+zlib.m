@@ -270,11 +270,6 @@ typedef enum {
 @implementation NSData (GTMZLibAdditions)
 
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length {
-  return [self gtm_dataByGzippingBytes:bytes length:length error:NULL];
-} // gtm_dataByGzippingBytes:length:
-
-+ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length
                               error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:bytes
@@ -283,10 +278,6 @@ typedef enum {
                                      mode:CompressionModeGzip
                                     error:error];
 } // gtm_dataByGzippingBytes:length:error:
-
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data {
-  return [self gtm_dataByGzippingData:data error:NULL];
-} // gtm_dataByGzippingData:
 
 + (NSData *)gtm_dataByGzippingData:(NSData *)data error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
@@ -298,15 +289,6 @@ typedef enum {
 
 + (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
                              length:(NSUInteger)length
-                   compressionLevel:(int)level {
-  return [self gtm_dataByGzippingBytes:bytes
-                                length:length
-                      compressionLevel:level
-                                 error:NULL];
-} // gtm_dataByGzippingBytes:length:level:
-
-+ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length
                    compressionLevel:(int)level
                               error:(NSError **)error{
   return [self gtm_dataByCompressingBytes:bytes
@@ -315,13 +297,6 @@ typedef enum {
                                      mode:CompressionModeGzip
                                     error:error];
 } // gtm_dataByGzippingBytes:length:level:error
-
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data
-                  compressionLevel:(int)level {
-  return [self gtm_dataByGzippingData:data
-                     compressionLevel:level
-                                error:NULL];
-} // gtm_dataByGzippingData:level:
 
 + (NSData *)gtm_dataByGzippingData:(NSData *)data
                   compressionLevel:(int)level
@@ -336,13 +311,6 @@ typedef enum {
 #pragma mark -
 
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length {
-  return [self gtm_dataByDeflatingBytes:bytes
-                                 length:length
-                                  error:NULL];
-} // gtm_dataByDeflatingBytes:length:
-
-+ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
                                error:(NSError **)error{
   return [self gtm_dataByCompressingBytes:bytes
@@ -351,10 +319,6 @@ typedef enum {
                                      mode:CompressionModeZlib
                                     error:error];
 } // gtm_dataByDeflatingBytes:length:error
-
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data {
-  return [self gtm_dataByDeflatingData:data error:NULL];
-} // gtm_dataByDeflatingData:
 
 + (NSData *)gtm_dataByDeflatingData:(NSData *)data error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
@@ -366,15 +330,6 @@ typedef enum {
 
 + (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
-                    compressionLevel:(int)level {
-  return [self gtm_dataByDeflatingBytes:bytes
-                                 length:length
-                       compressionLevel:level
-                                  error:NULL];
-} // gtm_dataByDeflatingBytes:length:level:
-
-+ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length
                     compressionLevel:(int)level
                                error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:bytes
@@ -383,13 +338,6 @@ typedef enum {
                                      mode:CompressionModeZlib
                                     error:error];
 } // gtm_dataByDeflatingBytes:length:level:error:
-
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data
-                   compressionLevel:(int)level {
-  return [self gtm_dataByDeflatingData:data
-                      compressionLevel:level
-                                 error:NULL];
-} // gtm_dataByDeflatingData:level:
 
 + (NSData *)gtm_dataByDeflatingData:(NSData *)data
                    compressionLevel:(int)level
@@ -404,13 +352,6 @@ typedef enum {
 #pragma mark -
 
 + (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length {
-  return [self gtm_dataByInflatingBytes:bytes
-                                 length:length
-                                  error:NULL];
-} // gtm_dataByInflatingBytes:length:
-
-+ (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
                               length:(NSUInteger)length
                                error:(NSError **)error {
   return [self gtm_dataByInflatingBytes:bytes
@@ -418,10 +359,6 @@ typedef enum {
                               isRawData:NO
                                   error:error];
 } // gtm_dataByInflatingBytes:length:error:
-
-+ (NSData *)gtm_dataByInflatingData:(NSData *)data {
-  return [self gtm_dataByInflatingData:data error:NULL];
-} // gtm_dataByInflatingData:
 
 + (NSData *)gtm_dataByInflatingData:(NSData *)data
                               error:(NSError **)error {
@@ -434,13 +371,6 @@ typedef enum {
 #pragma mark -
 
 + (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length {
-  return [self gtm_dataByRawDeflatingBytes:(const void *)bytes
-                                    length:(NSUInteger)length
-                                     error:NULL];
-} // gtm_dataByRawDeflatingBytes:length:
-
-+ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length
                                   error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:bytes
@@ -450,10 +380,6 @@ typedef enum {
                                     error:error];
 } // gtm_dataByRawDeflatingBytes:length:error:
 
-+ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data {
-  return [self gtm_dataByRawDeflatingData:data error:NULL];
-} // gtm_dataByRawDeflatingData:
-
 + (NSData *)gtm_dataByRawDeflatingData:(NSData *)data error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
                                    length:[data length]
@@ -461,15 +387,6 @@ typedef enum {
                                      mode:CompressionModeRaw
                                     error:error];
 } // gtm_dataByRawDeflatingData:error:
-
-+ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length
-                       compressionLevel:(int)level {
-  return [self gtm_dataByRawDeflatingBytes:bytes
-                                    length:length
-                          compressionLevel:level
-                                     error:NULL];
-} // gtm_dataByRawDeflatingBytes:length:compressionLevel:
 
 + (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length
@@ -483,13 +400,6 @@ typedef enum {
 } // gtm_dataByRawDeflatingBytes:length:compressionLevel:error:
 
 + (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
-                      compressionLevel:(int)level {
-  return [self gtm_dataByRawDeflatingData:data
-                         compressionLevel:level
-                                    error:NULL];
-} // gtm_dataByRawDeflatingData:compressionLevel:
-
-+ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
                       compressionLevel:(int)level
                                  error:(NSError **)error {
   return [self gtm_dataByCompressingBytes:[data bytes]
@@ -500,13 +410,6 @@ typedef enum {
 } // gtm_dataByRawDeflatingData:compressionLevel:error:
 
 + (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length {
-  return [self gtm_dataByInflatingBytes:bytes
-                                 length:length
-                                  error:NULL];
-} // gtm_dataByRawInflatingBytes:length:
-
-+ (NSData *)gtm_dataByRawInflatingBytes:(const void *)bytes
                                  length:(NSUInteger)length
                                   error:(NSError **)error{
   return [self gtm_dataByInflatingBytes:bytes
@@ -514,11 +417,6 @@ typedef enum {
                               isRawData:YES
                                   error:error];
 } // gtm_dataByRawInflatingBytes:length:error:
-
-+ (NSData *)gtm_dataByRawInflatingData:(NSData *)data {
-  return [self gtm_dataByRawInflatingData:data
-                                    error:NULL];
-} // gtm_dataByRawInflatingData:
 
 + (NSData *)gtm_dataByRawInflatingData:(NSData *)data
                                  error:(NSError **)error {
