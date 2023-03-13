@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Encapsulates the interaction with an interpreter for running scripts.
 // This class manages the interaction with some command-line interpreter (e.g.,
 // a shell, perl, python) and allows you to run expressions through the
@@ -71,14 +73,15 @@
 //
 + (instancetype)runnerWithInterpreter:(NSString *)interp;
 + (instancetype)runnerWithInterpreter:(NSString *)interp
-                             withArgs:(NSArray *)args;
+                             withArgs:(nullable NSArray *)args;
 
 // Returns a GTMScriptRunner associated with |interp|
 - (instancetype)initWithInterpreter:(NSString *)interp;
 
 // Returns a GTMScriptRunner associated with |interp| and |args| applied to the
 // specified interpreter.  This method is the designated initializer.
-- (instancetype)initWithInterpreter:(NSString *)interp withArgs:(NSArray *)args;
+- (instancetype)initWithInterpreter:(NSString *)interp
+                           withArgs:(nullable NSArray *)args;
 
 // Runs the specified command string by sending it through the interpreter's
 // standard input.  The standard output is returned.  The standard error is
@@ -86,20 +89,23 @@
 - (NSString *)run:(NSString *)cmds;
 // Same as the previous method, except the standard error is returned in |err|
 // if specified.
-- (NSString *)run:(NSString *)cmds standardError:(NSString **)err;
+- (NSString *)run:(NSString *)cmds
+    standardError:(NSString * _Nullable __autoreleasing * _Nullable)err;
 
 // Runs the file at |path| using the interpreter.
 - (NSString *)runScript:(NSString *)path;
 // Runs the file at |path|, passing it |args| as arguments.
-- (NSString *)runScript:(NSString *)path withArgs:(NSArray *)args;
+- (NSString *)runScript:(NSString *)path
+               withArgs:(nullable NSArray *)args;
 // Same as above, except the standard error is returned in |err| if specified.
-- (NSString *)runScript:(NSString *)path withArgs:(NSArray *)args
-          standardError:(NSString **)err;
+- (NSString *)runScript:(NSString *)path
+               withArgs:(nullable NSArray *)args
+          standardError:(NSString * _Nullable __autoreleasing * _Nullable)err;
 
 // Returns the environment dictionary to use for the inferior process that will
 // run the interpreter. A return value of nil means that the interpreter's
 // environment should be erased.
-- (NSDictionary *)environment;
+- (nullable NSDictionary *)environment;
 
 // Sets the environment dictionary to use for the interpreter process. See
 // NSTask's -setEnvironment: documentation for details about the dictionary.
@@ -120,7 +126,7 @@
 // attacker can modify the environment that would then get sent to your scripts.
 // And if your binary is suid, then  you ABSOLUTELY should not do this.
 //
-- (void)setEnvironment:(NSDictionary *)newEnv;
+- (void)setEnvironment:(nullable NSDictionary *)newEnv;
 
 // Sets (and returns) whether or not whitespace is automatically trimmed from
 // the ends of the returned strings.  The default is YES, so trailing newlines
@@ -129,3 +135,5 @@
 - (void)setTrimsWhitespace:(BOOL)trim;
 
 @end
+
+NS_ASSUME_NONNULL_END

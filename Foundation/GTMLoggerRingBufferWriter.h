@@ -19,6 +19,8 @@
 #import "GTMLogger.h"
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef struct GTMRingBufferPair GTMRingBufferPair;
 
 // GTMLoggerRingBufferWriter is a GTMLogWriter that accumulates logged Info
@@ -62,6 +64,8 @@ typedef struct GTMRingBufferPair GTMRingBufferPair;
 + (instancetype)ringBufferWriterWithCapacity:(NSUInteger)capacity
                                       writer:(id<GTMLogWriter>)loggerWriter;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 // Designated initializer.  If |writer| is nil, then nil is returned.
 // If you just use -init, nil will be returned.
 - (instancetype)initWithCapacity:(NSUInteger)capacity
@@ -95,3 +99,5 @@ typedef struct GTMRingBufferPair GTMRingBufferPair;
 - (void)dumpContents;
 
 @end  // GTMLoggerRingBufferWriter
+
+NS_ASSUME_NONNULL_END
