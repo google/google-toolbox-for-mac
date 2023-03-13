@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 //
 // GTMLightweightProxy
 //
@@ -36,12 +38,14 @@
 }
 
 // Initializes the object to represent |object|.
-- (instancetype)initWithRepresentedObject:(id)object;
+- (instancetype)initWithRepresentedObject:(nullable id)object;
 
 // Gets the object that the proxy represents.
-- (id)representedObject;
+- (nullable id)representedObject;
 
 // Changes the proxy to represent |object|
-- (void)setRepresentedObject:(id)object;
+- (void)setRepresentedObject:(nullable id)object;
 
 @end
+
+NS_ASSUME_NONNULL_END

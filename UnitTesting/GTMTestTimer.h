@@ -20,6 +20,8 @@
 #import "GTMDefines.h"
 #import <mach/mach_time.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // GTMTestTimer is done in straight inline C to avoid obj-c calling overhead.
 // It is for doing test timings at very high precision.
 // Test Timers have standard CoreFoundation Retain/Release rules.
@@ -37,8 +39,8 @@ typedef struct GTMTestTimer {
 } GTMTestTimer;
 
 // Create a test timer
-GTM_INLINE GTMTestTimer *GTMTestTimerCreate(void) {
-  GTMTestTimer *t = (GTMTestTimer *)calloc(sizeof(GTMTestTimer), 1);
+GTM_INLINE GTMTestTimer * __nullable GTMTestTimerCreate(void) {
+  GTMTestTimer * __nullable t = (GTMTestTimer *)calloc(sizeof(GTMTestTimer), 1);
   if (t) {
     if (mach_timebase_info(&t->time_base_info_) == KERN_SUCCESS) {
       t->retainCount_ = 1;
@@ -123,3 +125,5 @@ GTM_INLINE NSUInteger GTMTestTimerGetIterations(GTMTestTimer *t) {
 GTM_INLINE bool GTMTestTimerIsRunning(GTMTestTimer *t) {
   return t->running_;
 }
+
+NS_ASSUME_NONNULL_END
