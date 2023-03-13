@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 /// A few useful methods for dealing with paths.
 @interface NSFileManager (GMFileManagerPathAdditions)
@@ -36,13 +37,14 @@
 ///   if |directoryPath| doesn't exist or can't be opened, and returns an empty
 ///   array if |directoryPath| is empty.  ".", "..", and resource forks are never returned.
 ///
-- (NSArray *)gtm_filePathsWithExtension:(NSString *)extension
+- (NSArray *)gtm_filePathsWithExtension:(nullable NSString *)extension
                             inDirectory:(NSString *)directoryPath;
 
 /// Same as -filePathsWithExtension:inDirectory: except |extensions| is an
 /// NSArray of extensions to match.
-///
-- (NSArray *)gtm_filePathsWithExtensions:(NSArray *)extensions
+- (NSArray *)gtm_filePathsWithExtensions:(nullable NSArray *)extensions
                              inDirectory:(NSString *)directoryPath;
 
 @end
+
+NS_ASSUME_NONNULL_END
