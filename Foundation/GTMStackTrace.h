@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -75,9 +77,11 @@ NSString *GTMStackTraceFromException(NSException *e);
 // Returns:
 //   The number of program counters actually added to outPcs.
 //
-NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor outDescs[],
+NSUInteger GTMGetStackAddressDescriptors(struct GTMAddressDescriptor *outDescs,
                                          NSUInteger count);
 
 #ifdef __cplusplus
 }
 #endif
+
+NS_ASSUME_NONNULL_END
