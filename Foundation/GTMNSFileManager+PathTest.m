@@ -57,20 +57,23 @@
   // --------------------------------------------------------------------------
   // test fail cases first
 
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
   // single
-  XCTAssertNil([fm gtm_filePathsWithExtension:nil inDirectory:nil],
+  XCTAssertNil([fm gtm_filePathsWithExtension:nil inDirectory:passNil],
                @"shouldn't have gotten anything for nil dir");
-  XCTAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:nil],
+  XCTAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:passNil],
                @"shouldn't have gotten anything for nil dir");
   XCTAssertNil([fm gtm_filePathsWithExtension:@"txt" inDirectory:bogusPath],
                @"shouldn't have gotten anything for a bogus dir");
   // array
-  XCTAssertNil([fm gtm_filePathsWithExtensions:nil inDirectory:nil],
+  XCTAssertNil([fm gtm_filePathsWithExtensions:nil inDirectory:passNil],
                @"shouldn't have gotten anything for nil dir");
-  XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray array] inDirectory:nil],
+  XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray array] inDirectory:passNil],
                @"shouldn't have gotten anything for nil dir");
   XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
-                                   inDirectory:nil],
+                                   inDirectory:passNil],
                @"shouldn't have gotten anything for nil dir");
   XCTAssertNil([fm gtm_filePathsWithExtensions:[NSArray arrayWithObject:@"txt"]
                                    inDirectory:bogusPath],
