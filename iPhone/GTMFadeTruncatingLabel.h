@@ -18,6 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef enum {
   GTMFadeTruncatingTail = 0x1,
   GTMFadeTruncatingHead = 0x2,
@@ -36,3 +38,5 @@ typedef enum {
                      fadeTail:(BOOL)fadeTail;
 
 @end
+
+NS_ASSUME_NONNULL_END
