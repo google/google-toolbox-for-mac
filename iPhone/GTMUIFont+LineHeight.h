@@ -19,6 +19,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIFont (GTMLineHeight)
 - (CGFloat)gtm_lineHeight;
 @end
+
+NS_ASSUME_NONNULL_END

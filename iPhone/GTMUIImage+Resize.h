@@ -18,6 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIImage (GTMUIImageResizeAdditions)
 
 // Returns an image resized to |targetSize|.
@@ -34,9 +36,9 @@
 // of the receiver that fits in the targetSize, aligned to center of the image.
 //
 // Image interpolation level for resizing is set to kCGInterpolationDefault.
-- (UIImage *)gtm_imageByResizingToSize:(CGSize)targetSize
-                   preserveAspectRatio:(BOOL)preserveAspectRatio
-                             trimToFit:(BOOL)trimToFit;
+- (nullable UIImage *)gtm_imageByResizingToSize:(CGSize)targetSize
+                            preserveAspectRatio:(BOOL)preserveAspectRatio
+                                      trimToFit:(BOOL)trimToFit;
 
 // Returns an image rotated by |orientation| where the current orientation is
 // taken as UIImageOrientationUp. Nil if |orientation| is invalid.
@@ -49,3 +51,5 @@
 - (UIImage *)gtm_imageByRotating:(UIImageOrientation)orientation;
 
 @end
+
+NS_ASSUME_NONNULL_END
