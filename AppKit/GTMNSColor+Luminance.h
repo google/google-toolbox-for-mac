@@ -19,6 +19,8 @@
 #import "GTMDefines.h"
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 enum {
   GTMColorationBaseHighlight,
   GTMColorationBaseMidtone,
@@ -36,7 +38,7 @@ enum {
 typedef NSUInteger GTMColorationUse;
 
 @interface NSColorSpace (GTMNSColorSpaceLuminanceHelpers)
-+ (NSColorSpace *)gtm_labColorSpace;
++ (nullable NSColorSpace *)gtm_labColorSpace;
 @end
 
 @interface NSColor (GTMLuminanceAdditions)
@@ -59,3 +61,5 @@ typedef NSUInteger GTMColorationUse;
 // Returns a color that is legible on this color. (Nothing to do with textColor)
 - (NSColor *)gtm_legibleTextColor;
 @end
+
+NS_ASSUME_NONNULL_END

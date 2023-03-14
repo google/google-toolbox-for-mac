@@ -17,6 +17,8 @@
 
 #import <AppKit/AppKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Simple class for doing key value path animation on a target.
 // The key value path of target will be set to the currentValue
 // (not the currentProgress) of the animation.
@@ -34,3 +36,5 @@
 - (NSString *)keyPath;
 
 @end
+
+NS_ASSUME_NONNULL_END
