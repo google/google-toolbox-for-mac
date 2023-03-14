@@ -176,10 +176,6 @@ GTM_INLINE int lcm(int a, int b) {
   reverseCharMap_[(int)c] = kPaddingChar;
 }
 
-- (NSString *)encode:(NSData *)inData {
-  return [self encode:inData error:NULL];
-}
-
 - (NSString *)encode:(NSData *)inData error:(NSError **)error {
   NSUInteger inLen = [inData length];
   if (inLen <= 0) {
@@ -235,10 +231,6 @@ GTM_INLINE int lcm(int a, int b) {
   return value;
 }
 
-- (NSString *)encodeString:(NSString *)inString {
-  return [self encodeString:inString error:NULL];
-}
-
 - (NSString *)encodeString:(NSString *)inString error:(NSError **)error {
   NSData *data = [inString dataUsingEncoding:NSUTF8StringEncoding];
   if (!data) {
@@ -251,10 +243,6 @@ GTM_INLINE int lcm(int a, int b) {
     return nil;
   }
   return [self encode:data error:error];
-}
-
-- (NSData *)decode:(NSString *)inString {
-  return [self decode:inString error:NULL];
 }
 
 - (NSData *)decode:(NSString *)inString error:(NSError **)error {
@@ -334,10 +322,6 @@ GTM_INLINE int lcm(int a, int b) {
   [outData setLength:outPos];
 
   return outData;
-}
-
-- (NSString *)stringByDecoding:(NSString *)inString {
-  return [self stringByDecoding:inString error:NULL];
 }
 
 - (NSString *)stringByDecoding:(NSString *)inString error:(NSError **)error {
