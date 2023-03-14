@@ -19,6 +19,8 @@
 #import <Cocoa/Cocoa.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GTMUILocalizer;
 
 // In addition to the information here, please see the project's documentation
@@ -122,3 +124,5 @@
 // Return the amount we changed our width by on last tweak.
 - (CGFloat)changedWidth;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/NSNibDeclarations.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // This class allows you to create dynamically sized arrays of objects in your
 // nib.  This saves you from adding a random "large" number of outlets on an
 // object to accommodate a variable number of connections. If you need <= 5
@@ -37,3 +39,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
