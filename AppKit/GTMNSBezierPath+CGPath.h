@@ -18,6 +18,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///  Category for extracting a CGPathRef from a NSBezierPath
 @interface NSBezierPath (GTMBezierPathCGPathAdditions)
 
@@ -31,3 +33,5 @@
 - (CGPathRef)gtm_CGPath;
 
 @end
+
+NS_ASSUME_NONNULL_END

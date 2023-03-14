@@ -18,6 +18,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 typedef enum {
   GTMFadeTruncatingTail,
@@ -40,3 +41,5 @@ typedef enum {
 @property (nonatomic) NSUInteger desiredCharactersToTruncateFromHead;
 
 @end
+
+NS_ASSUME_NONNULL_END

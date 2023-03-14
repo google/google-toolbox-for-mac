@@ -22,6 +22,8 @@
 #import <Cocoa/Cocoa.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///  Category for adding utility functions for creating round rectangles.
 @interface NSBezierPath (GMBezierPathRoundRectAdditions)
 
@@ -71,3 +73,5 @@
                    bottomLeftCornerRadius:(CGFloat)radiusBL
                   bottomRightCornerRadius:(CGFloat)radiusBR;
 @end
+
+NS_ASSUME_NONNULL_END

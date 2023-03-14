@@ -21,6 +21,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Given a "normal" duration for an animation, return what it should be based
 // on the current system state. For example, holding down the shift and/or
 // control keys modifies the normal duration for an animation making it slower.
@@ -76,3 +78,5 @@ extern const NSUInteger kGTMLeftMouseUpAndKeyDownMask;
 - (void)gtm_setDuration:(CFTimeInterval)duration
               eventMask:(NSUInteger)events;
 @end
+
+NS_ASSUME_NONNULL_END
