@@ -67,10 +67,10 @@
 // This is a SPI for dealing with skipped tests.
 @interface XCTSkippedTestContext : NSObject
 
-- (id)initWithExplanation:(NSString *)explanation
-      evaluatedExpression:(NSString *)evaluatedExpression
-                  message:(NSString *)message
-        sourceCodeContext:(XCTSourceCodeContext *)sourceCodeContext;
+- (instancetype)initWithExplanation:(NSString *)explanation
+                evaluatedExpression:(NSString *)evaluatedExpression
+                            message:(NSString *)message
+                  sourceCodeContext:(XCTSourceCodeContext *)sourceCodeContext;
 
 @end
 
@@ -107,7 +107,7 @@ using ::testing::UnitTest;
 #endif
 
 // The name for a test is the GoogleTest name which is "TestCase.Test"
-- (id)initWithName:(NSString *)testName;
+- (instancetype)initWithName:(NSString *)testName;
 @end
 
 namespace {
@@ -215,7 +215,7 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
   });
 }
 
-+ (id)defaultTestSuite {
++ (XCTestSuite *)defaultTestSuite {
   [GTMGoogleTestRunner initGoogleTest];
   XCTestSuite *result = [[XCTestSuite alloc] initWithName:NSStringFromClass(self)];
   UnitTest *test = UnitTest::GetInstance();
@@ -238,7 +238,7 @@ NSString *SelectorNameFromGTestName(NSString *testName) {
   return result;
 }
 
-- (id)initWithName:(NSString *)testName {
+- (instancetype)initWithName:(NSString *)testName {
   // Xcode 6.1 started taking the testName from the selector instead of calling
   // -name.
   // So we will add selectors to GTMGoogleTestRunner.
