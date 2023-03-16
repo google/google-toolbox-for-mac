@@ -20,7 +20,6 @@
 #import <asl.h>
 #import "GTMLogger.h"
 
-
 // GTMLogger (GTMLoggerASLAdditions)
 //
 // Adds a convenience creation method that allows you to get a standard
@@ -31,7 +30,7 @@
 
 // Returns a new autoreleased GTMLogger instance that will log to ASL, using
 // the GTMLogASLFormatter, and the GTMLogLevelFilter filter.
-+ (instancetype)standardLoggerWithASL;
++ (instancetype)standardLoggerWithASL NS_SWIFT_NAME(standardWithASL());
 
 @end
 
