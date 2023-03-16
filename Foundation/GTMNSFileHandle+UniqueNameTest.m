@@ -25,8 +25,11 @@
 @implementation GTMNSFileHandle_UniqueNameTest
 
 - (void)testFileHandleWithUniqueNameBasedOnFinalPath {
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
   NSFileHandle *handle
-    = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:nil
+    = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:passNil
                                               finalPath:nil];
   XCTAssertNil(handle);
 
@@ -90,8 +93,10 @@
 - (void)testFileHandleWithUniqueNameBasedOnInDirectorySearchMaskFinalPath {
   NSFileManager *fm = [NSFileManager defaultManager];
   NSString *path = nil;
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
   NSFileHandle *handle
-    = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:nil
+    = [NSFileHandle gtm_fileHandleWithUniqueNameBasedOn:passNil
                                             inDirectory:NSCachesDirectory
                                              domainMask:NSUserDomainMask
                                               finalPath:&path];
@@ -124,7 +129,9 @@
 
 - (void)testCreateDirectoryWithUniqueNameBasedOnInDirectorySearchMask {
   NSFileManager *fm = [NSFileManager defaultManager];
-  NSString *path = [fm gtm_createDirectoryWithUniqueNameBasedOn:nil
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+  NSString *path = [fm gtm_createDirectoryWithUniqueNameBasedOn:passNil
                                                     inDirectory:NSCachesDirectory
                                                      domainMask:NSUserDomainMask];
   XCTAssertNil(path);
