@@ -19,7 +19,6 @@
 #import "GTMLogger+ASL.h"
 #import "GTMDefines.h"
 
-
 @implementation GTMLogger (GTMLoggerASLAdditions)
 
 + (instancetype)standardLoggerWithASL {

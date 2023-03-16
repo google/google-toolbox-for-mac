@@ -236,16 +236,16 @@
 + (instancetype)standardLogger;
 
 // Same as +standardLogger, but logs to stderr.
-+ (instancetype)standardLoggerWithStderr;
++ (instancetype)standardLoggerWithStderr NS_SWIFT_NAME(standardWithStderr());
 
 // Same as +standardLogger but levels >= kGTMLoggerLevelError are routed to
 // stderr, everything else goes to stdout.
-+ (instancetype)standardLoggerWithStdoutAndStderr;
++ (instancetype)standardLoggerWithStdoutAndStderr NS_SWIFT_NAME(standardWithStdoutAndStderr());
 
 // Returns a new standard GTMLogger instance with a log writer that will
 // write to the file at |path|, and will use the GTMLogStandardFormatter and
 // GTMLogLevelFilter classes. If |path| does not exist, it will be created.
-+ (instancetype)standardLoggerWithPath:(NSString *)path;
++ (instancetype)standardLoggerWithPath:(NSString *)path NS_SWIFT_NAME(standard(path:));
 
 // Returns an autoreleased GTMLogger instance that will use the specified
 // |writer|, |formatter|, and |filter|.
@@ -523,4 +523,3 @@ typedef enum {
                   level:(GTMLoggerLevel)level NS_FORMAT_FUNCTION(2, 0);
 
 @end
-
