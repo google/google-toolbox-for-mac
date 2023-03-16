@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // These are some basic macros for making down-casting safer in Objective C.
 // They are loosely based on the same cast types with similar names in C++.
 // A typical usage would look like this:
@@ -42,12 +44,12 @@
 //
 
 // Support functions for dealing with casting.
-GTM_INLINE id GTMDynamicCastSupport(Class cls, id object) {
+GTM_INLINE _Nullable id GTMDynamicCastSupport(Class cls, _Nullable id object) {
   _GTMDevAssert(cls, @"Nil Class");
   return [object isKindOfClass:cls] ? object : nil;
 }
 
-GTM_INLINE id GTMStaticCastSupport(Class cls, id object) {
+GTM_INLINE _Nullable id GTMStaticCastSupport(Class cls, _Nullable id object) {
   id value = nil;
   if (object) {
     value = GTMDynamicCastSupport(cls, object);
@@ -69,3 +71,5 @@ GTM_INLINE id GTMStaticCastSupport(Class cls, id object) {
   #define GTM_DYNAMIC_CAST(type, object) \
     ((type *) GTMDynamicCastSupport([type class], object))
 #endif
+
+NS_ASSUME_NONNULL_END

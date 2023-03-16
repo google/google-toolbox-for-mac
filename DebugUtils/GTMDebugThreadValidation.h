@@ -19,6 +19,8 @@
 #import "GTMDefines.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // GTMCheckCurrentQueue, GTMIsCurrentQueue
 //
 // GTMCheckCurrentQueue takes a target queue and uses _GTMDevAssert to
@@ -42,3 +44,5 @@
 #define _GTMQueueName(queue)                     \
   (strlen(dispatch_queue_get_label(queue)) > 0 ? \
     dispatch_queue_get_label(queue) : "unnamed")
+
+NS_ASSUME_NONNULL_END

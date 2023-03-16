@@ -20,6 +20,8 @@
 #import <stdio.h>
 #import <sysexits.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// A macro for enforcing debug time checks to make sure all required methods are linked in
 //
 // When using categories, it can be very easy to forget to include the
@@ -67,3 +69,5 @@ __attribute__ ((constructor, visibility("hidden"))) \
 #define GTM_METHOD_CHECK(class, method)
 
 #endif  // DEBUG
+
+NS_ASSUME_NONNULL_END

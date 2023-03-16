@@ -24,6 +24,8 @@
 
 #import "GTMDefines.h"  // For _GTMDevAssert.
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Macros to monitor synchronization blocks in debug builds.
 //
 // These report problems using _GTMDevAssert, which may be defined by the
@@ -106,11 +108,11 @@
   const char *_functionName;  // The function containing the monitored sync block.
 }
 
-- (instancetype)initWithSynchronizationObject:(id)object
+- (instancetype)initWithSynchronizationObject:(nullable id)object
                                allowRecursive:(BOOL)allowRecursive
                                  functionName:(const char *)functionName;
 // Return the names of the functions that hold sync on the object, or nil if none.
-+ (NSArray *)functionsHoldingSynchronizationOnObject:(id)object;
++ (nullable NSArray *)functionsHoldingSynchronizationOnObject:(id)object;
 @end
 
 #else
@@ -122,3 +124,5 @@
   #define GTMCheckNotSynchronized(obj) do { } while (0)
 
 #endif  // DEBUG
+
+NS_ASSUME_NONNULL_END

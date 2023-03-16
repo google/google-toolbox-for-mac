@@ -34,7 +34,9 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
-static void GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(id obj, SEL sel, const char *retType, ...) {
+NS_ASSUME_NONNULL_BEGIN
+
+static void GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(_Nullable id obj, SEL sel, const char * _Nullable retType, ...) {
 
   // verify that the object's selector is implemented with the proper
   // number and type of arguments
@@ -91,6 +93,8 @@ static void GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments(id obj, 
 
 #define GTMAssertSelectorNilOrImplementedWithArguments(obj, sel, ...) \
   GTMAssertSelectorNilOrImplementedWithReturnTypeAndArguments((obj), (sel), "gtm_skip_return_test", __VA_ARGS__)
+
+NS_ASSUME_NONNULL_END
 
 #else // DEBUG
 
