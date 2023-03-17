@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Utilities for NSStrings containing XML
 @interface NSString (GTMNSStringXMLAdditions)
 
@@ -47,3 +49,5 @@
 // The above api is here just incase you need to create XML yourself.
 
 @end
+
+NS_ASSUME_NONNULL_END
