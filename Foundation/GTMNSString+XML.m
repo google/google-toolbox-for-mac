@@ -16,6 +16,8 @@
 //  the License.
 //
 
+#include <stdlib.h>
+
 #import "GTMDefines.h"
 #import "GTMNSString+XML.h"
 
@@ -117,7 +119,9 @@ static NSString *AutoreleasedCloneForXML(NSString *src, BOOL escaping) {
     if (!data) {
       // COV_NF_START  - Memory fail case
       _GTMDevLog(@"couldn't alloc buffer");
-      return nil;
+      // If we can't get enough memory for the buffy copy, odds are finalString
+      // will also run out of memory, so just give up.
+      abort();
       // COV_NF_END
     }
     [src getCharacters:[data mutableBytes]];
