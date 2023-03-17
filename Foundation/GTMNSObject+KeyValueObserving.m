@@ -363,7 +363,7 @@ static char* GTMKeyValueObservingHelperContext
 - (BOOL)isEqual:(id)object {
   return ([keyPath_ isEqualToString:[object keyPath]]
           && [object_ isEqual:[object object]]
-          && [userInfo_ isEqual:[object userInfo]]
+          && (userInfo_ == [object userInfo] || [userInfo_ isEqual:[object userInfo]])
           && [change_ isEqual:[object change]]);
 }
 

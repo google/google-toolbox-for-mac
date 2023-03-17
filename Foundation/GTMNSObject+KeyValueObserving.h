@@ -32,6 +32,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // If you read the articles above you will see that doing KVO correctly
 // is actually pretty tricky, and that Apple's documentation may not be
 // completely clear as to how things should be used. Use the methods below
@@ -45,7 +47,7 @@
 - (void)gtm_addObserver:(id)observer
              forKeyPath:(NSString *)keyPath
                selector:(SEL)selector
-               userInfo:(id)userInfo
+               userInfo:(nullable id)userInfo
                 options:(NSKeyValueObservingOptions)options;
 // Use this instead of [NSObject removeObserver:forKeyPath:]
 - (void)gtm_removeObserver:(id)observer
@@ -69,6 +71,8 @@
 
 - (NSString *)keyPath;
 - (id)object;
-- (id)userInfo;
+- (nullable id)userInfo;
 - (NSDictionary *)change;
 @end
+
+NS_ASSUME_NONNULL_END
