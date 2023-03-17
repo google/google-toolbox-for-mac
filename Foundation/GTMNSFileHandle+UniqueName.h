@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSFileHandle (GTMFileHandleUniqueNameAdditions)
 
 // Creates a read/write temporary file in NSTemporaryDirectory with mode 0600.
@@ -27,8 +29,8 @@
 // template is "MyAppXXXXXX.txt".
 // If |path| is not nil, it will contain the derived path for the file.
 // The file descriptor wrapped by the NSFileHandle will be closed on dealloc.
-+ (instancetype)gtm_fileHandleForTemporaryFileBasedOn:(NSString *)nameTemplate
-                                            finalPath:(NSString **)path;
++ (nullable instancetype)gtm_fileHandleForTemporaryFileBasedOn:(NSString *)nameTemplate
+                                                     finalPath:(NSString * _Nullable * _Nullable)path;
 
 // Return an opened read/write file handle with mode 0600 based on a template.
 // The template should be similar to the template passed to mkstemp.
@@ -36,42 +38,44 @@
 // template is "/Applications/MyAppXXXXXX.txt".
 // If |path| is not nil, it will contain the derived path for the file.
 // The file descriptor wrapped by the NSFileHandle will be closed on dealloc.
-+ (instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)pathTemplate
-                                          finalPath:(NSString **)path;
++ (nullable instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)pathTemplate
+                                                   finalPath:(NSString * _Nullable * _Nullable)path;
 
 // Same as fileHandleWithUniqueNameBasedOn:finalName: but splits up the
 // template from the directory.
-+ (instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
-                                        inDirectory:(NSString *)directory
-                                          finalPath:(NSString **)path;
++ (nullable instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
+                                                 inDirectory:(NSString *)directory
+                                                   finalPath:(NSString * _Nullable * _Nullable)path;
 
 
 // Same as fileHandleWithUniqueNameBasedOn:inDirectory:finalName: but finds
 // the directory using the |directory| and |mask| arguments.
-+ (instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
-                                        inDirectory:(NSSearchPathDirectory)directory
-                                         domainMask:(NSSearchPathDomainMask)mask
-                                          finalPath:(NSString **)path;
++ (nullable instancetype)gtm_fileHandleWithUniqueNameBasedOn:(NSString *)nameTemplate
+                                                 inDirectory:(NSSearchPathDirectory)directory
+                                                  domainMask:(NSSearchPathDomainMask)mask
+                                                   finalPath:(NSString * _Nullable * _Nullable)path;
 @end
 
 @interface NSFileManager (GTMFileManagerUniqueNameAdditions)
 
 // Creates a new directory in NSTemporaryDirectory with mode 0700.
 // The template should be similar to the template passed to mkdtemp.
-- (NSString *)gtm_createTemporaryDirectoryBasedOn:(NSString *)nameTemplate;
+- (nullable NSString *)gtm_createTemporaryDirectoryBasedOn:(NSString *)nameTemplate;
 
 // Return the path to a directory with mode 0700 based on a template.
 // The template should be similar to the template passed to mkdtemp.
-- (NSString *)gtm_createDirectoryWithUniqueNameBasedOn:(NSString *)nameTemplate;
+- (nullable NSString *)gtm_createDirectoryWithUniqueNameBasedOn:(NSString *)nameTemplate;
 
 // Same as createDirectoryWithUniqueNameBasedOn: but splits up the
 // template from the directory.
-- (NSString *)gtm_createDirectoryWithUniqueNameBasedOn:(NSString *)pathTemplate
-                                           inDirectory:(NSString *)directory;
+- (nullable NSString *)gtm_createDirectoryWithUniqueNameBasedOn:(NSString *)pathTemplate
+                                                    inDirectory:(NSString *)directory;
 
 // Same as createDirectoryWithUniqueNameBasedOn:inDirectory: but finds
 // the directory using the |directory| and |mask| arguments.
-- (NSString *)gtm_createDirectoryWithUniqueNameBasedOn:(NSString *)pathTemplate
-                                           inDirectory:(NSSearchPathDirectory)directory
-                                            domainMask:(NSSearchPathDomainMask)mask;
+- (nullable NSString *)gtm_createDirectoryWithUniqueNameBasedOn:(NSString *)pathTemplate
+                                                    inDirectory:(NSSearchPathDirectory)directory
+                                                     domainMask:(NSSearchPathDomainMask)mask;
 @end
+
+NS_ASSUME_NONNULL_END
