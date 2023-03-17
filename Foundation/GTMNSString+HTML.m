@@ -370,14 +370,13 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
   return val;
 }
 
-@implementation NSString (GTMNSStringHTMLAdditions)
-
-- (NSString *)gtm_stringByEscapingHTMLUsingTable:(HTMLEscapeMap*)table
-                                          ofSize:(NSUInteger)size
-                                 escapingUnicode:(BOOL)escapeUnicode {
-  NSUInteger length = [self length];
+static NSString *StringByEscapingHTMLUsingTable(NSString *src,
+                                                HTMLEscapeMap* table,
+                                                NSUInteger tableSize,
+                                                BOOL escapeUnicode) {
+  NSUInteger length = [src length];
   if (!length) {
-    return self;
+    return src;
   }
 
   NSMutableString *finalString = [NSMutableString string];
@@ -385,7 +384,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
 
   // this block is common between GTMNSString+HTML and GTMNSString+XML but
   // it's so short that it isn't really worth trying to share.
-  const unichar *buffer = CFStringGetCharactersPtr((CFStringRef)self);
+  const unichar *buffer = CFStringGetCharactersPtr((CFStringRef)src);
   if (!buffer) {
     // We want this buffer to be autoreleased.
     NSMutableData *data = [NSMutableData dataWithLength:length * sizeof(UniChar)];
@@ -395,7 +394,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
       return nil;
       // COV_NF_END
     }
-    [self getCharacters:[data mutableBytes]];
+    [src getCharacters:[data mutableBytes]];
     buffer = [data bytes];
   }
 
@@ -412,7 +411,7 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
 
   for (NSUInteger i = 0; i < length; ++i) {
     HTMLEscapeMap *val = bsearch(&buffer[i], table,
-                                 size / sizeof(HTMLEscapeMap),
+                                 tableSize / sizeof(HTMLEscapeMap),
                                  sizeof(HTMLEscapeMap), EscapeMapCompare);
     if (val || (escapeUnicode && buffer[i] > 127)) {
       if (buffer2Length) {
@@ -441,16 +440,20 @@ static int EscapeMapCompare(const void *ucharVoid, const void *mapVoid) {
   return finalString;
 }
 
+@implementation NSString (GTMNSStringHTMLAdditions)
+
 - (NSString *)gtm_stringByEscapingForHTML {
-  return [self gtm_stringByEscapingHTMLUsingTable:gUnicodeHTMLEscapeMap
-                                           ofSize:sizeof(gUnicodeHTMLEscapeMap)
-                                  escapingUnicode:NO];
+  return StringByEscapingHTMLUsingTable(self,
+                                        gUnicodeHTMLEscapeMap,
+                                        sizeof(gUnicodeHTMLEscapeMap),
+                                        /*escapingUnicode=*/NO);
 } // gtm_stringByEscapingHTML
 
 - (NSString *)gtm_stringByEscapingForAsciiHTML {
-  return [self gtm_stringByEscapingHTMLUsingTable:gAsciiHTMLEscapeMap
-                                           ofSize:sizeof(gAsciiHTMLEscapeMap)
-                                  escapingUnicode:YES];
+  return StringByEscapingHTMLUsingTable(self,
+                                        gAsciiHTMLEscapeMap,
+                                        sizeof(gAsciiHTMLEscapeMap),
+                                        /*escapingUnicode=*/YES);
 } // gtm_stringByEscapingAsciiHTML
 
 - (NSString *)gtm_stringByUnescapingFromHTML {
