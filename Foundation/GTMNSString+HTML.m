@@ -17,6 +17,8 @@
 //  the License.
 //
 
+#include <stdlib.h>
+
 #import "GTMDefines.h"
 #import "GTMNSString+HTML.h"
 
@@ -391,7 +393,9 @@ static NSString *StringByEscapingHTMLUsingTable(NSString *src,
     if (!data) {
       // COV_NF_START  - Memory fail case
       _GTMDevLog(@"couldn't alloc buffer");
-      return nil;
+      // If we can't get enough memory for the buffer copy, odds are finalString
+      // will also run out of memory, so just give up.
+      abort();
       // COV_NF_END
     }
     [src getCharacters:[data mutableBytes]];
@@ -401,7 +405,9 @@ static NSString *StringByEscapingHTMLUsingTable(NSString *src,
   if (!buffer || !data2) {
     // COV_NF_START
     _GTMDevLog(@"Unable to allocate buffer or data2");
-    return nil;
+    // If we can't get enough memory for the buffer copy, odds are finalString
+    // will also run out of memory, so just give up.
+    abort();
     // COV_NF_END
   }
 
