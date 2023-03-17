@@ -24,6 +24,8 @@
 
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -395,3 +397,5 @@ GTM_INLINE CGFloat GTMNSDistanceBetweenPoints(NSPoint pt1, NSPoint pt2) {
 #ifdef __cplusplus
 }
 #endif
+
+NS_ASSUME_NONNULL_END

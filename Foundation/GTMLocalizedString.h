@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // The NSLocalizedString macros do not have NS_FORMAT_ARGUMENT modifiers put
 // on them which means you get warnings on Snow Leopard with when
 // GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES and you do things like:
@@ -41,7 +43,7 @@
 #endif
 
 GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedString(
-    NSString *key,  NSString *comment) {
+    NSString *key, NSString * _Nullable comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key,
                                                     nil,
                                                     [NSBundle mainBundle],
@@ -50,7 +52,8 @@ GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedString(
 }
 
 GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringFromTable(
-    NSString *key, NSString *tableName, NSString *comment) {
+    NSString *key, NSString * _Nullable tableName,
+    NSString * _Nullable comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key,
                                                     tableName,
                                                     [NSBundle mainBundle],
@@ -59,7 +62,8 @@ GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringFromTable(
 }
 
 GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringFromTableInBundle(
-    NSString *key,  NSString *tableName, NSBundle *bundle, NSString *comment) {
+    NSString *key, NSString * _Nullable tableName, NSBundle *bundle,
+    NSString * _Nullable comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key,
                                                     tableName,
                                                     bundle,
@@ -68,8 +72,8 @@ GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringFromTableInBundle(
 }
 
 GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringWithDefaultValue(
-    NSString *key, NSString *tableName, NSBundle *bundle, NSString *value,
-    NSString *comment) {
+    NSString *key, NSString * _Nullable tableName, NSBundle *bundle,
+    NSString * _Nullable value, NSString * _Nullable comment) {
   return GTMLocalizedStringWithDefaultValueInternal(key,
                                                     tableName,
                                                     bundle,
@@ -77,3 +81,4 @@ GTM_INLINE NS_FORMAT_ARGUMENT(1) NSString *GTMLocalizedStringWithDefaultValue(
                                                     comment);
 }
 
+NS_ASSUME_NONNULL_END

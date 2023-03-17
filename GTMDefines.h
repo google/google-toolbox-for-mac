@@ -29,6 +29,8 @@
 #include <Availability.h>
 #endif  // TARGET_OS_IPHONE
 
+NS_ASSUME_NONNULL_BEGIN
+
 // ----------------------------------------------------------------------------
 // CPP symbols that can be overridden in a prefix to control how the toolbox
 // is compiled.
@@ -369,3 +371,5 @@
 #endif
 
 #endif  // __OBJC__
+
+NS_ASSUME_NONNULL_END

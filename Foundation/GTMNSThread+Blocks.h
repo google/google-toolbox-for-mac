@@ -20,6 +20,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Extension to NSThread to work with blocks.
 
 #if NS_BLOCKS_AVAILABLE
@@ -49,3 +51,5 @@
 - (void)stop;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Return the date that the app was launched.
 NSDate *GTMAppLaunchDate(void);
 
@@ -33,3 +35,4 @@ NSTimeInterval GTMTimeValToNSTimeInterval(struct timeval time);
 struct timeval GTMBootTimeRelativeTo1970(void);
 struct timeval GTMAppLaunchTimeRelativeTo1970(void);
 
+NS_ASSUME_NONNULL_END

@@ -24,6 +24,8 @@
 
 #import <XCTest/XCTest.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreserved-id-macro"
 
@@ -336,3 +338,5 @@
 + (BOOL)isAbstractTestCase;
 
 @end
+
+NS_ASSUME_NONNULL_END
