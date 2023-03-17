@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Helpers for dealing w/ zlib inflate/deflate calls.
 @interface NSData (GTMZLibAdditions)
 
@@ -31,28 +33,28 @@
 /// Return an autoreleased NSData w/ the result of gzipping the bytes.
 //
 //  Uses the default compression level.
-+ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length
-                              error:(NSError **)error;
++ (nullable NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                                      length:(NSUInteger)length
+                                       error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of gzipping the payload of |data|.
 //
 //  Uses the default compression level.
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data
-                             error:(NSError **)error;
++ (nullable NSData *)gtm_dataByGzippingData:(NSData *)data
+                                      error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of gzipping the bytes using |level| compression level.
 //
 // |level| can be 1-9, any other values will be clipped to that range.
-+ (NSData *)gtm_dataByGzippingBytes:(const void *)bytes
-                             length:(NSUInteger)length
-                   compressionLevel:(int)level
-                              error:(NSError **)error;
++ (nullable NSData *)gtm_dataByGzippingBytes:(const void *)bytes
+                                      length:(NSUInteger)length
+                            compressionLevel:(int)level
+                                       error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of gzipping the payload of |data| using |level| compression level.
-+ (NSData *)gtm_dataByGzippingData:(NSData *)data
-                  compressionLevel:(int)level
-                             error:(NSError **)error;
++ (nullable NSData *)gtm_dataByGzippingData:(NSData *)data
+                           compressionLevel:(int)level
+                                      error:(NSError **)error;
 
 #pragma mark Zlib "Stream" Compression
 
@@ -62,43 +64,43 @@
 /// Return an autoreleased NSData w/ the result of deflating the bytes.
 //
 //  Uses the default compression level.
-+ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length
-                               error:(NSError **)error;
++ (nullable NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                                       length:(NSUInteger)length
+                                        error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of deflating the payload of |data|.
 //
 //  Uses the default compression level.
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data
-                              error:(NSError **)error;
++ (nullable NSData *)gtm_dataByDeflatingData:(NSData *)data
+                                       error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of deflating the bytes using |level| compression level.
 //
 // |level| can be 1-9, any other values will be clipped to that range.
-+ (NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length
-                    compressionLevel:(int)level
-                               error:(NSError **)error;
++ (nullable NSData *)gtm_dataByDeflatingBytes:(const void *)bytes
+                                       length:(NSUInteger)length
+                             compressionLevel:(int)level
+                                        error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of deflating the payload of |data| using |level| compression level.
-+ (NSData *)gtm_dataByDeflatingData:(NSData *)data
-                   compressionLevel:(int)level
-                              error:(NSError **)error;
++ (nullable NSData *)gtm_dataByDeflatingData:(NSData *)data
+                            compressionLevel:(int)level
+                                       error:(NSError **)error;
 
 #pragma mark Uncompress of Gzip or Zlib
 
 /// Return an autoreleased NSData w/ the result of decompressing the bytes.
 //
 // The bytes to decompress can be zlib or gzip payloads.
-+ (NSData *)gtm_dataByInflatingBytes:(const void *)bytes
-                              length:(NSUInteger)length
-                               error:(NSError **)error;
++ (nullable NSData *)gtm_dataByInflatingBytes:(const void *)bytes
+                                       length:(NSUInteger)length
+                                        error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of decompressing the payload of |data|.
 //
 // The data to decompress can be zlib or gzip payloads.
-+ (NSData *)gtm_dataByInflatingData:(NSData *)data
-                              error:(NSError **)error;
++ (nullable NSData *)gtm_dataByInflatingData:(NSData *)data
+                                       error:(NSError **)error;
 
 #pragma mark "Raw" Compression Support
 
@@ -111,31 +113,31 @@
 //
 //  Uses the default compression level.
 //  *No* header is added to the resulting data.
-+ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length
-                                  error:(NSError **)error;
++ (nullable NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                          length:(NSUInteger)length
+                                           error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* deflating the payload of |data|.
 //
 //  Uses the default compression level.
 //  *No* header is added to the resulting data.
-+ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
-                                 error:(NSError **)error;
++ (nullable NSData *)gtm_dataByRawDeflatingData:(NSData *)data
+                                          error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* deflating the bytes using |level| compression level.
 //
 // |level| can be 1-9, any other values will be clipped to that range.
 //  *No* header is added to the resulting data.
-+ (NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
-                                 length:(NSUInteger)length
-                       compressionLevel:(int)level
-                                  error:(NSError **)error;
++ (nullable NSData *)gtm_dataByRawDeflatingBytes:(const void *)bytes
+                                          length:(NSUInteger)length
+                                compressionLevel:(int)level
+                                           error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* deflating the payload of |data| using |level| compression level.
 //  *No* header is added to the resulting data.
-+ (NSData *)gtm_dataByRawDeflatingData:(NSData *)data
-                      compressionLevel:(int)level
-                                 error:(NSError **)error;
++ (nullable NSData *)gtm_dataByRawDeflatingData:(NSData *)data
+                               compressionLevel:(int)level
+                                          error:(NSError **)error;
 
 /// Return an autoreleased NSData w/ the result of *raw* decompressing the bytes.
 //
@@ -147,8 +149,8 @@
 /// Return an autoreleased NSData w/ the result of *raw* decompressing the payload of |data|.
 //
 // The data to decompress, it should *not* have any header (zlib nor gzip).
-+ (NSData *)gtm_dataByRawInflatingData:(NSData *)data
-                                 error:(NSError **)error;
++ (nullable NSData *)gtm_dataByRawInflatingData:(NSData *)data
+                                          error:(NSError **)error;
 
 @end
 
@@ -167,3 +169,5 @@ typedef NS_ENUM(NSInteger, GTMNSDataZlibError) {
   // GTMNSDataZlibRemainingBytesKey will contain number of remaining bytes.
   GTMNSDataZlibErrorDataRemaining
 };
+
+NS_ASSUME_NONNULL_END
