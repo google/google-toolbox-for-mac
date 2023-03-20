@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Utilities for NSStrings containing HTML
 @interface NSString (GTMNSStringHTMLAdditions)
 
@@ -61,3 +63,5 @@
 - (NSString *)gtm_stringByUnescapingFromHTML;
 
 @end
+
+NS_ASSUME_NONNULL_END
