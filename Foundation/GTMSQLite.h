@@ -95,6 +95,8 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Wrapper for SQLite with release/retain semantics and CFString convenience features
 @interface GTMSQLiteDatabase : NSObject {
  @protected
@@ -139,11 +141,11 @@
 //           check the result code for the error. If NULL no result code is
 //           reported.
 //
-- (instancetype)initWithPath:(NSString *)path
-             withCFAdditions:(BOOL)additions
-                        utf8:(BOOL)useUTF8
-                       flags:(int)flags
-                   errorCode:(int *)err;
+- (nullable instancetype)initWithPath:(NSString *)path
+                      withCFAdditions:(BOOL)additions
+                                 utf8:(BOOL)useUTF8
+                                flags:(int)flags
+                            errorCode:(nullable int *)err;
 
 //  Create and open a database instance on a file-based database.
 //
@@ -160,10 +162,10 @@
 //          check the result code for the error. If NULL no result code is
 //          reported.
 //
-- (instancetype)initWithPath:(NSString *)path
-             withCFAdditions:(BOOL)additions
-                        utf8:(BOOL)useUTF8
-                   errorCode:(int *)err;
+- (nullable instancetype)initWithPath:(NSString *)path
+                      withCFAdditions:(BOOL)additions
+                                 utf8:(BOOL)useUTF8
+                            errorCode:(nullable int *)err;
 
 //  Create and open a memory-based database. Memory-based databases
 //  cannot be shared amongst threads, and each instance is unique. See
@@ -171,9 +173,9 @@
 //
 //  For argument details see [... initWithPath:withCFAdditions:errorCode:]
 //
-- (instancetype)initInMemoryWithCFAdditions:(BOOL)additions
-                                       utf8:(BOOL)useUTF8
-                                  errorCode:(int *)err;
+- (nullable instancetype)initInMemoryWithCFAdditions:(BOOL)additions
+                                                utf8:(BOOL)useUTF8
+                                           errorCode:(nullable int *)err;
 
 //  Get the underlying SQLite database handle. In general you should
 //  never do this, if you do use this be careful with how you compose
@@ -249,7 +251,7 @@
 //  Returns:
 //    Autoreleased NSString error message
 //
-- (NSString *)lastErrorString;
+- (nullable NSString *)lastErrorString;
 
 //  Obtain a count of rows added, mmodified or deleted by the most recent
 //  statement. See sqlite3_changes() for details and limitations.
@@ -364,9 +366,9 @@
 //  Returns:
 //    Autoreleased GTMSQLiteStatement
 //
-+ (instancetype)statementWithSQL:(NSString *)sql
-                      inDatabase:(GTMSQLiteDatabase *)gtmdb
-                       errorCode:(int *)err;
++ (nullable instancetype)statementWithSQL:(NSString *)sql
+                               inDatabase:(GTMSQLiteDatabase *)gtmdb
+                                errorCode:(nullable int *)err;
 
 //  Designated initializer, create a prepared statement. Positional and named
 //  parameters are supported, see the SQLite documentation.
@@ -387,9 +389,9 @@
 //          check the result code for the error. If NULL no result code is
 //          reported.
 //
-- (instancetype)initWithSQL:(NSString *)sql
-                 inDatabase:(GTMSQLiteDatabase *)gtmdb
-                  errorCode:(int *)err;
+- (nullable instancetype)initWithSQL:(NSString *)sql
+                          inDatabase:(GTMSQLiteDatabase *)gtmdb
+                           errorCode:(nullable int *)err;
 
 //  Get the underlying SQLite statement handle. In general you should never
 //  do this, if you do use this be careful with how you compose and
@@ -439,7 +441,7 @@
 //    Autoreleased string name of the parameter, including any leading
 //    punctuation (see SQLite docs) or nil on error.
 //
-- (NSString *)nameOfParameterAtPosition:(int)position;
+- (nullable NSString *)nameOfParameterAtPosition:(int)position;
 
 //  Bind a NULL at a given position
 //
@@ -574,7 +576,7 @@
 //    Autoreleased NSString column name or nil if no column exists at that
 //    position or error.
 //
-- (NSString *)resultColumnNameAtPosition:(int)position;
+- (nullable NSString *)resultColumnNameAtPosition:(int)position;
 
 //  Get the number of data values in the current row of this statement.
 //  Generally this will be the same as resultColumnCount:, except when row
@@ -606,7 +608,7 @@
 //  Returns:
 //    Autoreleased NSData, nil on error
 //
-- (NSData *)resultBlobDataAtPosition:(int)position;
+- (nullable NSData *)resultBlobDataAtPosition:(int)position;
 
 //  Get the data for a result row blob column as a double
 //
@@ -646,7 +648,7 @@
 //  Returns:
 //    Autoreleased NSNumber value or nil on error
 //
-- (NSNumber *)resultNumberAtPosition:(int)position;
+- (nullable NSNumber *)resultNumberAtPosition:(int)position;
 
 //  Get the data for a result row blob column as an NSString
 //
@@ -656,7 +658,7 @@
 //  Returns:
 //    Autoreleased NSString value or nil on error
 //
-- (NSString *)resultStringAtPosition:(int)position;
+- (nullable NSString *)resultStringAtPosition:(int)position;
 
 //  Get a Foundation object (NSData, NSNumber, NSString, NSNull) for the column,
 //  autodetecting the most appropriate representation.
@@ -667,7 +669,7 @@
 //  Returns:
 //    Autoreleased Foundation type, nil on error
 //
-- (id)resultFoundationObjectAtPosition:(int)position;
+- (nullable id)resultFoundationObjectAtPosition:(int)position;
 
 //  Get an array of Foundation objects for the row in query column order.
 //
@@ -675,7 +677,7 @@
 //    Autoreleased array of Foundation types or nil if there is no
 //    data in the row or error
 //
-- (NSArray *)resultRowArray;
+- (nullable NSArray *)resultRowArray;
 
 //  Get a dictionary of Foundation objects for the row keyed by column name.
 //
@@ -683,7 +685,7 @@
 //    Autoreleased dictionary of Foundation types or nil if there is no
 //    data in the row or error.
 //
-- (NSDictionary *)resultRowDictionary;
+- (nullable NSDictionary *)resultRowDictionary;
 
 #pragma mark Rows
 
@@ -730,3 +732,5 @@
 + (NSString *)quoteAndEscapeString:(NSString *)string;
 
 @end
+
+NS_ASSUME_NONNULL_END
