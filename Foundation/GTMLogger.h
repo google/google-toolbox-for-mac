@@ -52,6 +52,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Predeclaration of used protocols that are declared later in this file.
 @protocol GTMLogWriter, GTMLogFormatter, GTMLogFilter;
 
@@ -224,8 +226,9 @@
 + (instancetype)sharedLogger;
 
 // Sets the shared logger instance to |logger|. Future calls to +sharedLogger
-// will return |logger| instead.
-+ (void)setSharedLogger:(GTMLogger *)logger;
+// will return |logger| instead. Setting to nil causes causes the default
+// to be returned from sharedLogger on the next call.
++ (void)setSharedLogger:(nullable GTMLogger *)logger;
 
 //
 // Creation methods
@@ -249,9 +252,9 @@
 
 // Returns an autoreleased GTMLogger instance that will use the specified
 // |writer|, |formatter|, and |filter|.
-+ (instancetype)loggerWithWriter:(id<GTMLogWriter>)writer
-                       formatter:(id<GTMLogFormatter>)formatter
-                          filter:(id<GTMLogFilter>)filter;
++ (instancetype)loggerWithWriter:(nullable id<GTMLogWriter>)writer
+                       formatter:(nullable id<GTMLogFormatter>)formatter
+                          filter:(nullable id<GTMLogFilter>)filter;
 
 // Returns an autoreleased GTMLogger instance that logs to stdout, with the
 // basic formatter, and no filter. The returned logger differs from the logger
@@ -263,9 +266,9 @@
 // Designated initializer. This method returns a GTMLogger initialized with the
 // specified |writer|, |formatter|, and |filter|. See the setter methods below
 // for what values will be used if nil is passed for a parameter.
-- (instancetype)initWithWriter:(id<GTMLogWriter>)writer
-                     formatter:(id<GTMLogFormatter>)formatter
-                        filter:(id<GTMLogFilter>)filter;
+- (instancetype)initWithWriter:(nullable id<GTMLogWriter>)writer
+                     formatter:(nullable id<GTMLogFormatter>)formatter
+                        filter:(nullable id<GTMLogFilter>)filter;
 
 //
 // Logging  methods
@@ -288,18 +291,18 @@
 // Accessor methods for the log writer. If the log writer is set to nil,
 // [NSFileHandle fileHandleWithStandardOutput] is used.
 - (id<GTMLogWriter>)writer;
-- (void)setWriter:(id<GTMLogWriter>)writer;
+- (void)setWriter:(nullable id<GTMLogWriter>)writer;
 
 // Accessor methods for the log formatter. If the log formatter is set to nil,
 // GTMLogBasicFormatter is used. This formatter will format log messages in a
 // plain printf style.
 - (id<GTMLogFormatter>)formatter;
-- (void)setFormatter:(id<GTMLogFormatter>)formatter;
+- (void)setFormatter:(nullable id<GTMLogFormatter>)formatter;
 
 // Accessor methods for the log filter. If the log filter is set to nil,
 // GTMLogNoFilter is used, which allows all log messages through.
 - (id<GTMLogFilter>)filter;
-- (void)setFilter:(id<GTMLogFilter>)filter;
+- (void)setFilter:(nullable id<GTMLogFilter>)filter;
 
 @end  // GTMLogger
 
@@ -407,7 +410,7 @@ typedef enum {
 @protocol GTMLogFormatter <NSObject>
 // Returns a formatted string using the format specified in |fmt| and the va
 // args specified in |args|.
-- (NSString *)stringForFunc:(NSString *)func
+- (NSString *)stringForFunc:(nullable NSString *)func
                  withFormat:(NSString *)fmt
                      valist:(va_list)args
                       level:(GTMLoggerLevel)level NS_FORMAT_FUNCTION(2, 0);
@@ -420,7 +423,7 @@ typedef enum {
 @interface GTMLogBasicFormatter : NSObject <GTMLogFormatter>
 
 // Helper method for prettying C99 __func__ and GCC __PRETTY_FUNCTION__
-- (NSString *)prettyNameForFunc:(NSString *)func;
+- (NSString *)prettyNameForFunc:(nullable NSString *)func;
 
 @end  // GTMLogBasicFormatter
 
@@ -517,9 +520,11 @@ typedef enum {
 // For subclasses only
 @interface GTMLogger (PrivateMethods)
 
-- (void)logInternalFunc:(const char *)func
+- (void)logInternalFunc:(nullable const char *)func
                  format:(NSString *)fmt
                  valist:(va_list)args
                   level:(GTMLoggerLevel)level NS_FORMAT_FUNCTION(2, 0);
 
 @end
+
+NS_ASSUME_NONNULL_END
