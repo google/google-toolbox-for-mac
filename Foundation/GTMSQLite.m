@@ -1935,7 +1935,11 @@ static void Glob16(sqlite3_context *context, int argc, sqlite3_value **argv) {
 
 + (NSString*)quoteAndEscapeString:(NSString *)string {
   char *quoted = sqlite3_mprintf("'%q'", [string UTF8String]);
-  if (!quoted) return nil;
+  if (!quoted) {
+    // If that close to memory limits, just give up as other things
+    // are likely to fail also.
+    abort();
+  }
   NSString *quotedString = [NSString stringWithUTF8String:quoted];
   sqlite3_free(quoted);
   return quotedString;

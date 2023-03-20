@@ -120,7 +120,9 @@ static NSArray* LikeGlobTestHelper(GTMSQLiteDatabase *db, NSString *sql);
   XCTAssertNotNil(dbNoCFAdditions, @"Failed to create DB");
   XCTAssertEqual(err, SQLITE_OK, @"Failed to create DB");
 
-  err = [dbNoCFAdditions executeSQL:nil];
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+  err = [dbNoCFAdditions executeSQL:passNil];
   XCTAssertEqual(err, SQLITE_MISUSE, @"Nil SQL did not return error");
 
   err = [dbNoCFAdditions executeSQL:@"SELECT UPPER('Fred');"];
@@ -1142,8 +1144,10 @@ static NSArray* LikeGlobTestHelper(GTMSQLiteDatabase *db, NSString *sql) {
 
 - (void)testInitAPI {
   int err;
-  GTMSQLiteStatement *statement = [GTMSQLiteStatement statementWithSQL:nil
-                                                            inDatabase:nil
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+  GTMSQLiteStatement *statement = [GTMSQLiteStatement statementWithSQL:passNil
+                                                            inDatabase:passNil
                                                              errorCode:&err];
   XCTAssertNil(statement, @"Create statement succeeded with nil SQL string");
   XCTAssertEqual(err, SQLITE_MISUSE, @"Err was not SQLITE_MISUSE on nil "
