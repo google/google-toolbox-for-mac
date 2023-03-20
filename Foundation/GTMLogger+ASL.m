@@ -34,15 +34,18 @@
 @implementation GTMLogASLWriter
 
 + (instancetype)aslWriter {
-  return [[[self alloc] initWithClientClass:nil facility:nil] autorelease];
+  return [[[self alloc] initWithClientClass:[GTMLoggerASLClient class]
+                                   facility:nil] autorelease];
 }
 
 + (instancetype)aslWriterWithFacility:(NSString *)facility {
-  return [[[self alloc] initWithClientClass:nil facility:facility] autorelease];
+  return [[[self alloc] initWithClientClass:[GTMLoggerASLClient class]
+                                   facility:facility] autorelease];
 }
 
 - (instancetype)init {
-  return [self initWithClientClass:nil facility:nil];
+  return [self initWithClientClass:[GTMLoggerASLClient class]
+                          facility:nil];
 }
 
 - (instancetype)initWithClientClass:(Class)clientClass
