@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
   const char *_functionName;  // The function containing the monitored sync block.
 }
 
-- (instancetype)initWithSynchronizationObject:(nullable id)object
+- (instancetype)initWithSynchronizationObject:(id)object
                                allowRecursive:(BOOL)allowRecursive
                                  functionName:(const char *)functionName;
 // Return the names of the functions that hold sync on the object, or nil if none.
