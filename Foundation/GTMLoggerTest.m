@@ -476,7 +476,10 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
   XCTAssertTrue([filter filterAllowsMessage:@"" level:kGTMLoggerLevelDebug]);
-  XCTAssertTrue([filter filterAllowsMessage:nil level:kGTMLoggerLevelDebug]);
+
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+  XCTAssertTrue([filter filterAllowsMessage:passNil level:kGTMLoggerLevelDebug]);
 }
 
 - (void)testMinimumFilter {
@@ -540,7 +543,10 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
 - (void)testFileHandleCreation {
   NSFileHandle *fh = nil;
 
-  fh = [NSFileHandle fileHandleForLoggingAtPath:nil mode:0644];
+  // Ensure passing nil doesn't crash, even though it shouldn't be done.
+  id passNil = nil;
+
+  fh = [NSFileHandle fileHandleForLoggingAtPath:passNil mode:0644];
   XCTAssertNil(fh);
 
   fh = [NSFileHandle fileHandleForLoggingAtPath:path_ mode:0644];
