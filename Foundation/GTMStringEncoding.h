@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "GTMDefines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // A generic class for arbitrary base-2 to 128 string encoding and decoding.
 @interface GTMStringEncoding : NSObject {
  @private
@@ -43,7 +45,7 @@
 
 // Create a new, autoreleased GTMStringEncoding object with the given string,
 // as described below.
-+ (instancetype)stringEncodingWithString:(NSString *)string;
++ (nullable instancetype)stringEncodingWithString:(NSString *)string;
 
 // Initialize a new GTMStringEncoding object with the string.
 //
@@ -53,7 +55,7 @@
 // These characters are the canonical set emitted during encoding.
 // If the characters have alternatives (e.g. case, easily transposed) then use
 // addDecodeSynonyms: to configure them.
-- (instancetype)initWithString:(NSString *)string;
+- (nullable instancetype)initWithString:(NSString *)string;
 
 // Add decoding synonyms as specified in the synonyms argument.
 //
@@ -77,11 +79,13 @@
 // Sets the padding character to use during encoding.
 - (void)setPaddingChar:(char)c;
 
-- (NSString *)encode:(NSData *)data error:(NSError **)error;
-- (NSString *)encodeString:(NSString *)string error:(NSError **)error;
+// Encode a raw binary buffer to a 7-bit ASCII string.
+- (nullable NSString *)encode:(NSData *)data error:(NSError **)error;
+- (nullable NSString *)encodeString:(NSString *)string error:(NSError **)error;
 
-- (NSData *)decode:(NSString *)string error:(NSError **)error;
-- (NSString *)stringByDecoding:(NSString *)string error:(NSError **)error;
+// Decode a 7-bit ASCII string to a raw binary buffer.
+- (nullable NSData *)decode:(NSString *)string error:(NSError **)error;
+- (nullable NSString *)stringByDecoding:(NSString *)string error:(NSError **)error;
 
 @end
 
@@ -102,3 +106,5 @@ typedef NS_ENUM(NSInteger, GTMStringEncodingError) {
   // There is unexpected data at the end of the data that could not be decoded.
   GTMStringEncodingErrorIncompleteTrailingData,
 };
+
+NS_ASSUME_NONNULL_END
