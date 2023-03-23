@@ -53,9 +53,6 @@
   CGSize size = CGSizeZero;
   if (self.font) {
     size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
-    // sizeWithAttributes: may return fractional values, so ceil the width and
-    // height to preserve the behavior of sizeWithFont:.
-    size = CGSizeMake(ceil(size.width), ceil(size.height));
   }
   if (size.width > requestedRect.size.width) {
     UIImage* image = [[self class]
