@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Same as the previous method, except the standard error is returned in |err|
 // if specified.
 - (NSString *)run:(NSString *)cmds
-    standardError:(NSString * _Nullable __autoreleasing * _Nullable)err;
+    standardError:(NSString * _Nullable * _Nullable)err;
 
 // Runs the file at |path| using the interpreter.
 - (NSString *)runScript:(NSString *)path;
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Same as above, except the standard error is returned in |err| if specified.
 - (NSString *)runScript:(NSString *)path
                withArgs:(nullable NSArray *)args
-          standardError:(NSString * _Nullable __autoreleasing * _Nullable)err;
+          standardError:(NSString * _Nullable * _Nullable)err;
 
 // Returns the environment dictionary to use for the inferior process that will
 // run the interpreter. A return value of nil means that the interpreter's
