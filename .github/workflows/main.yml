@@ -53,8 +53,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: bazel test
       run:  |
-        go get github.com/bazelbuild/bazelisk
-        bazelisk test --build_tests_only -c "${{ matrix.MODE }}" //...
+        bazel test --build_tests_only -c "${{ matrix.MODE }}" //...
   pod-lib-lint:
     runs-on: macos-latest
     strategy:
