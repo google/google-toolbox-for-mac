@@ -1,0 +1,7 @@
+module(
+    name = "google_toolbox_for_mac",
+    version = "3.0.0",
+    compatibility_level = 0,
+)
+
+bazel_dep(name = "rules_apple", version = "3.1.1", repo_name = "build_bazel_rules_apple")
