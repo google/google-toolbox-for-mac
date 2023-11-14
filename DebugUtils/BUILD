@@ -1,4 +1,3 @@
-load("@rules_cc//cc:defs.bzl", "objc_library")
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_build_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_build_test")
 

@@ -23,6 +23,9 @@ pod 'GoogleToolboxForMac/GeometryUtils'
 GTM can be consumed via Bazel, to do so add the following to your `WORKSPACE` file:
 
 ```WORKSPACE
+# Make sure you've brought in rules_apple per their release snippet
+# https://github.com/bazelbuild/rules_apple/releases
+
 GTM_GIT_SHA = "SOME_SHA"
 http_archive(
     name = "google_toolbox_for_mac",
