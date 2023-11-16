@@ -14,7 +14,7 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build and Test
       run:  |
         # Have to skip some tests that aren't working on newer OSes.
@@ -32,7 +32,7 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build and Test
       run:  |
         set -o pipefail
@@ -50,7 +50,7 @@ jobs:
       matrix:
         MODE: ["dbg", "opt"]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: bazel test
       run:  |
         bazel test --build_tests_only -c "${{ matrix.MODE }}" //...
@@ -62,7 +62,7 @@ jobs:
         # Can't shard by platform because of https://github.com/CocoaPods/CocoaPods/issues/11358
         CONFIGURATION: ["Debug", "Release"]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Pod lib lint
       run:  |
         pod lib lint --verbose \
