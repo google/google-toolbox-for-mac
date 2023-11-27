@@ -59,13 +59,13 @@ struct timeval GTMAppLaunchTimeRelativeTo1970(void) {
   return info.kp_proc.p_starttime;
 }
 
-NSDate *GTMAppLaunchDate() {
+NSDate *GTMAppLaunchDate(void) {
   NSTimeInterval ti =
       GTMTimeValToNSTimeInterval(GTMAppLaunchTimeRelativeTo1970());
   return [NSDate dateWithTimeIntervalSince1970:ti];
 }
 
-NSDate *GTMBootDate() {
+NSDate *GTMBootDate(void) {
   NSTimeInterval ti =
       GTMTimeValToNSTimeInterval(GTMBootTimeRelativeTo1970());
   return [NSDate dateWithTimeIntervalSince1970:ti];

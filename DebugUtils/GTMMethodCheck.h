@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 //    implementation for |method| (either a class method or an instance method).
 #define GTM_METHOD_CHECK_INNER_INNER(class, method, line) \
 __attribute__ ((constructor, visibility("hidden"))) \
-    static void xxGTMMethodCheckMethod ## class ## line () { \
+    static void xxGTMMethodCheckMethod ## class ## line (void) { \
   @autoreleasepool { \
     if (![class instancesRespondToSelector:@selector(method)] \
         && ![class respondsToSelector:@selector(method)]) { \
