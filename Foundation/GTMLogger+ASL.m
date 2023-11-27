@@ -142,6 +142,10 @@
   return [self initWithFacility:nil];
 }
 
+// Disable warnings for the asl_* apis.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (instancetype)initWithFacility:(NSString *)facility {
   if ((self = [super init])) {
     client_ = asl_open(NULL, [facility UTF8String], 0);
@@ -182,5 +186,7 @@
   asl_log(client_, msgOptions_, level, "%s", [msg UTF8String]);
 }
 // COV_NF_END
+
+#pragma clang diagnostic pop
 
 @end  // GTMLoggerASLClient

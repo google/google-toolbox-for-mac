@@ -176,11 +176,14 @@ static char* GTMKeyValueObservingHelperContext
     // and the other will set things up so that the failing thread
     // gets the shared center
     GTMKeyValueObservingCenter *newCenter = [[self alloc] init];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if(!OSAtomicCompareAndSwapPtrBarrier(NULL,
                                          newCenter,
                                          (void *)&center)) {
       [newCenter release];  // COV_NF_LINE no guarantee we'll hit this line
     }
+#pragma clang diagnostic pop
   }
   return center;
 }
