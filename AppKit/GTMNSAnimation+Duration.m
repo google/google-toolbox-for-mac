@@ -18,6 +18,10 @@
 
 #import "GTMNSAnimation+Duration.h"
 
+// Suppress some of the warning for key/mask constants.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 const NSUInteger kGTMLeftMouseUpAndKeyDownMask
   = NSLeftMouseUpMask | NSKeyDownMask;
 
@@ -51,6 +55,8 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
   }
   return duration;
 }
+
+#pragma clang diagnostic pop
 
 @implementation NSAnimation (GTMNSAnimationDurationAdditions)
 
