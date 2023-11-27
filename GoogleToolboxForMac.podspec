@@ -12,9 +12,9 @@ Pod::Spec.new do |s|
       to developers working on iOS or OS X projects.
                        DESC
 
-  osx_deployment_target = '10.10'
-  ios_deployment_target = '9.0'
-  tvos_deployment_target = '9.0'
+  osx_deployment_target = '10.12'
+  ios_deployment_target = '10.0'
+  tvos_deployment_target = '10.0'
 
   s.osx.deployment_target = osx_deployment_target
   s.ios.deployment_target = ios_deployment_target
