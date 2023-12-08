@@ -28,6 +28,7 @@ GTM_EXTERN_C_BEGIN
 //  of |radius|
 //
 //  Args:
+//    context: the context to use
 //    rect: outer rectangle to inscribe into
 //    radius: radius of the corners. |radius| is clamped internally
 //            to be no larger than the smaller of half |rect|'s width or height
@@ -50,8 +51,8 @@ void GTMCGPathAddRoundRect(CGMutablePathRef path,
                            CGFloat radius);
 
 // Allocates a new rounded corner rectangle path.
-// DEPRECATED. Please use one of the above.
-CGPathRef GTMCreateRoundedRectPath(CGRect rect, CGFloat radius);
+CGPathRef GTMCreateRoundedRectPath(CGRect rect, CGFloat radius)
+   __attribute__((deprecated("Use of the the above apis")));
 
 GTM_EXTERN_C_END
 
