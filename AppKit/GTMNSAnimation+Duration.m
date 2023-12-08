@@ -18,12 +18,8 @@
 
 #import "GTMNSAnimation+Duration.h"
 
-// Suppress some of the warning for key/mask constants.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
 const NSUInteger kGTMLeftMouseUpAndKeyDownMask
-  = NSLeftMouseUpMask | NSKeyDownMask;
+  = NSEventMaskLeftMouseUp | NSEventMaskKeyDown;
 
 NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
                                                     NSUInteger eventMask) {
@@ -31,16 +27,16 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
   NSUInteger currentEventMask = NSEventMaskFromType([currentEvent type]);
   if (eventMask & currentEventMask) {
     NSUInteger modifiers = [currentEvent modifierFlags];
-    if (!(modifiers & (NSAlternateKeyMask |
-                       NSCommandKeyMask))) {
-      if (modifiers & NSShiftKeyMask) {
+    if (!(modifiers & (NSEventModifierFlagOption |
+                       NSEventModifierFlagCommand))) {
+      if (modifiers & NSEventModifierFlagShift) {
         // 25 is the ascii code generated for a shift-tab (End-of-message)
         // The shift modifier is ignored if it is applied to a Tab key down/up.
         // Tab and shift-tab are often used for navigating around UI elements,
         // and in the majority of cases slowing down the animations while
         // navigating around UI elements is not desired.
-        BOOL isShiftTab = (currentEventMask & (NSKeyDownMask | NSKeyUpMask))
-          && !(modifiers & NSControlKeyMask)
+        BOOL isShiftTab = (currentEventMask & (NSEventMaskKeyDown | NSEventMaskKeyUp))
+        && !(modifiers & NSEventModifierFlagControl)
           && ([[currentEvent characters] length] == 1)
           && ([[currentEvent characters] characterAtIndex:0] == 25);
         if (!isShiftTab) {
@@ -48,15 +44,13 @@ NSTimeInterval GTMModifyDurationBasedOnCurrentState(NSTimeInterval duration,
         }
       }
       // These are additive, so shift+control returns 10 * duration.
-      if (modifiers & NSControlKeyMask) {
+      if (modifiers & NSEventModifierFlagControl) {
         duration *= 2.0;
       }
     }
   }
   return duration;
 }
-
-#pragma clang diagnostic pop
 
 @implementation NSAnimation (GTMNSAnimationDurationAdditions)
 
