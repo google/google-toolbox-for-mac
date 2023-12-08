@@ -34,7 +34,9 @@ GTM_EXTERN_C_BEGIN
 //            to be no larger than the smaller of half |rect|'s width or height
 void GTMCGContextAddRoundRect(CGContextRef context,
                               CGRect rect,
-                              CGFloat radius);
+                              CGFloat radius)
+  __attribute__((deprecated("This api will be removed in the future as it appears to have no users; if you have need, please report it on the GitHub project immediately.")));
+
 
 //  Adds a path which is a round rectangle inscribed inside of rectangle |rect|
 //  with a corner radius of |radius|
@@ -48,7 +50,8 @@ void GTMCGContextAddRoundRect(CGContextRef context,
 void GTMCGPathAddRoundRect(CGMutablePathRef path,
                            const CGAffineTransform * __nullable m,
                            CGRect rect,
-                           CGFloat radius);
+                           CGFloat radius)
+  __attribute__((deprecated("This api will be removed in the future as it appears to have no users; if you have need, please report it on the GitHub project immediately.")));
 
 // Allocates a new rounded corner rectangle path.
 CGPathRef GTMCreateRoundedRectPath(CGRect rect, CGFloat radius)
