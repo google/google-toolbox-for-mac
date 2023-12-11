@@ -29,6 +29,7 @@
 
 #import <libkern/OSAtomic.h>
 #include <objc/runtime.h>
+#import <stdatomic.h>
 
 #import "GTMDefines.h"
 #import "GTMDebugSelectorValidation.h"
@@ -169,21 +170,17 @@ static char* GTMKeyValueObservingHelperContext
 @implementation GTMKeyValueObservingCenter
 
 + (instancetype)defaultCenter {
-  static GTMKeyValueObservingCenter *center = nil;
+  static _Atomic (GTMKeyValueObservingCenter *)center = nil;
   if(!center) {
     // do a bit of clever atomic setting to make this thread safe
     // if two threads try to set simultaneously, one will fail
     // and the other will set things up so that the failing thread
     // gets the shared center
     GTMKeyValueObservingCenter *newCenter = [[self alloc] init];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if(!OSAtomicCompareAndSwapPtrBarrier(NULL,
-                                         newCenter,
-                                         (void *)&center)) {
+    GTMKeyValueObservingCenter *expected = nil;
+    if (!atomic_compare_exchange_strong(&center, &expected, newCenter)) {
       [newCenter release];  // COV_NF_LINE no guarantee we'll hit this line
     }
-#pragma clang diagnostic pop
   }
   return center;
 }

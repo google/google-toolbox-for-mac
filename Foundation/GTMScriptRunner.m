@@ -227,7 +227,7 @@ static BOOL LaunchNSTaskCatchingExceptions(NSTask *task);
                             autorelease];
   NSString *errString = [[[NSString alloc] initWithData:mutableErr
                                                encoding:NSUTF8StringEncoding]
-                            autorelease];;
+                            autorelease];
   if (trimsWhitespace_) {
     NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     outString = [outString stringByTrimmingCharactersInSet:set];

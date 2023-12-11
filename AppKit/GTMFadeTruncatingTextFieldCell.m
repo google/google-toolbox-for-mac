@@ -180,7 +180,7 @@
   [attributedString drawInRect:offsetTitleRect];
   [NSGraphicsContext restoreGraphicsState];
 
-  NSColor *startColor = [self textColor];;
+  NSColor *startColor = [self textColor];
   NSColor *endColor = [startColor colorWithAlphaComponent:0.0];
   NSGradient *mask = [[NSGradient alloc] initWithStartingColor:startColor
                                                    endingColor:endColor];
