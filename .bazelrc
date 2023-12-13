@@ -1,2 +1,0 @@
-# Remove after Bazel 7.0 is released and bzlmod is enabled by default
-common --enable_bzlmod
