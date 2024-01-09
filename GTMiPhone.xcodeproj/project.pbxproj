@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8B2C72EB1D9EBBA10027BD14 /* GTMTestTimerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2C72EA1D9EBBA10027BD14 /* GTMTestTimerTest.m */; };
 		8B5769B121CD7C8300D924D3 /* GTMTimeUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769AD21CD7C7600D924D3 /* GTMTimeUtilsTest.m */; };
 		8B5769B221CD7C8600D924D3 /* GTMTimeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769AC21CD7C7600D924D3 /* GTMTimeUtils.m */; };
 		8B7651D81D9C872F00DB2C59 /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D61D9C872C00DB2C59 /* GTMLogger+ASL.m */; };
@@ -99,8 +98,6 @@
 		8B2908AF11F8E7070064F50F /* GTMNSFileHandle+UniqueName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSFileHandle+UniqueName.h"; sourceTree = "<group>"; };
 		8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueName.m"; sourceTree = "<group>"; };
 		8B2908B111F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSFileHandle+UniqueNameTest.m"; sourceTree = "<group>"; };
-		8B2C72E91D9EBBA10027BD14 /* GTMTestTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMTestTimer.h; sourceTree = "<group>"; };
-		8B2C72EA1D9EBBA10027BD14 /* GTMTestTimerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTestTimerTest.m; sourceTree = "<group>"; };
 		8B308BCD0DAD0B8400183556 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B3AA9330E0336AC007E31B5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8B5769AC21CD7C7600D924D3 /* GTMTimeUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMTimeUtils.m; sourceTree = "<group>"; };
@@ -358,8 +355,6 @@
 				8BC047F60DAE928A00C2D1CA /* GTMSenTestCase.h */,
 				8BC047F70DAE928A00C2D1CA /* GTMSenTestCase.m */,
 				F4746720129703600022C1FB /* GTMSenTestCaseTest.m */,
-				8B2C72E91D9EBBA10027BD14 /* GTMTestTimer.h */,
-				8B2C72EA1D9EBBA10027BD14 /* GTMTestTimerTest.m */,
 				F435E49F0DC8F5290069CDE8 /* TestData */,
 			);
 			path = UnitTesting;
@@ -551,7 +546,6 @@
 				8B82CF3E1D9C2373007182AA /* GTMNSFileHandle+UniqueNameTest.m in Sources */,
 				8B82CF501D9C2385007182AA /* GTMSenTestCaseTest.m in Sources */,
 				8B82CF471D9C2373007182AA /* GTMStackTraceTest.m in Sources */,
-				8B2C72EB1D9EBBA10027BD14 /* GTMTestTimerTest.m in Sources */,
 				8B82CF401D9C2373007182AA /* GTMNSObject+KeyValueObservingTest.m in Sources */,
 				8B82CF451D9C2373007182AA /* GTMNSThread+BlocksTest.m in Sources */,
 			);
@@ -593,11 +587,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				GTM_HOST_OTHER_LDFLAGS = "-ObjC -lz";
 				INFOPLIST_FILE = "UnitTest-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -611,11 +601,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				GTM_HOST_OTHER_LDFLAGS = "-ObjC -lz";
 				INFOPLIST_FILE = "UnitTest-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
