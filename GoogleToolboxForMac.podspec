@@ -160,8 +160,4 @@ Pod::Spec.new do |s|
     }
   end
 
-  s.subspec 'TestTimer' do |sp|
-    sp.source_files = 'UnitTesting/GTMTestTimer.h'
-  end
-
 end
