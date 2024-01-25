@@ -35,6 +35,9 @@ Pod::Spec.new do |s|
   s.subspec 'Defines' do |sp|
     sp.public_header_files = 'GTMDefines.h'
     sp.source_files = 'GTMDefines.h'
+    sp.resource_bundle = {
+      "GoogleToolboxForMac_Privacy" => "Resources/Base/PrivacyInfo.xcprivacy"
+    }
   end
 
   s.subspec 'Core' do |sp|
@@ -69,9 +72,12 @@ Pod::Spec.new do |s|
   s.subspec 'Logger' do |sp|
     sp.source_files = 'Foundation/GTMLogger.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
+    sp.resource_bundle = {
+      "GoogleToolboxForMac_Logger_Privacy" => "Resources/Logger/PrivacyInfo.xcprivacy"
+    }
   end
 
-  # We cannot add a target for Foundaat/GTMLogger+ASL.{h,m}.
+  # We cannot add a target for Foundation/GTMLogger+ASL.{h,m}.
   # asl.h is not a modular header, and so cannot be imported
   # in a modulemap, which CocoaPods does by default when it
   # creates frameworks.
