@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'GoogleToolboxForMac'
-  s.version          = '4.2.0'
+  s.version          = '4.2.1'
   s.author           = 'Google Inc.'
   s.license          = { :type => 'Apache', :file => 'LICENSE' }
   s.homepage         = 'https://github.com/google/google-toolbox-for-mac'
@@ -11,6 +11,10 @@ Pod::Spec.new do |s|
       A collection of source from different Google projects that may be of use
       to developers working on iOS or OS X projects.
                        DESC
+
+  # Ensure developers won't hit CocoaPods/CocoaPods#11402 with the resource
+  # bundle for the privacy manifest.
+  s.cocoapods_version = '>= 1.12.0'
 
   osx_deployment_target = '10.12'
   ios_deployment_target = '10.0'
