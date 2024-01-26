@@ -61,6 +61,7 @@
 		8BF753DB1D9DB3080010A295 /* GTMSQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF753DA1D9DB3080010A295 /* GTMSQLite.m */; };
 		8BF753DD1D9DB30E0010A295 /* GTMSQLiteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF753DC1D9DB30E0010A295 /* GTMSQLiteTest.m */; };
 		8BF753DF1D9DB3740010A295 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF753DE1D9DB3740010A295 /* libsqlite3.tbd */; };
+		F4A1EEA52B62D38F008B2FC1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F4A1EEA12B62D338008B2FC1 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -168,6 +169,8 @@
 		F4746720129703600022C1FB /* GTMSenTestCaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSenTestCaseTest.m; sourceTree = "<group>"; };
 		F4A0A95E140438B90010B64B /* DebugiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugiOS.xcconfig; sourceTree = "<group>"; };
 		F4A0A95F140438B90010B64B /* ReleaseiOS.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ReleaseiOS.xcconfig; sourceTree = "<group>"; };
+		F4A1EEA12B62D338008B2FC1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F4A1EEA32B62D338008B2FC1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F4E3B3D60EB5EF2400CB713D /* GTMUIFont+LineHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMUIFont+LineHeight.h"; sourceTree = "<group>"; };
 		F4E3B3D70EB5EF2400CB713D /* GTMUIFont+LineHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIFont+LineHeight.m"; sourceTree = "<group>"; };
 		F4E3B3E10EB5EF9A00CB713D /* GTMUIFont+LineHeightTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMUIFont+LineHeightTest.m"; sourceTree = "<group>"; };
@@ -216,6 +219,7 @@
 				8BC0479A0DAE928A00C2D1CA /* DebugUtils */,
 				8BC047760DAE928A00C2D1CA /* Foundation */,
 				8BA5F4060E75669000798036 /* iPhone */,
+				F4A1EE9F2B62D338008B2FC1 /* Resources */,
 				8BC0479F0DAE928A00C2D1CA /* UnitTesting */,
 				8BC049840DAEC59100C2D1CA /* XcodeConfig */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -401,6 +405,31 @@
 			path = TestData;
 			sourceTree = "<group>";
 		};
+		F4A1EE9F2B62D338008B2FC1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1EEA02B62D338008B2FC1 /* Logger */,
+				F4A1EEA22B62D338008B2FC1 /* Base */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F4A1EEA02B62D338008B2FC1 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1EEA12B62D338008B2FC1 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
+		F4A1EEA22B62D338008B2FC1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1EEA32B62D338008B2FC1 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -411,6 +440,7 @@
 				8B82CEF21D9C17DE007182AA /* Sources */,
 				8B82CEF31D9C17DE007182AA /* Frameworks */,
 				8B82CEF41D9C17DE007182AA /* CopyFiles */,
+				F4A1EEA42B62D37E008B2FC1 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -487,6 +517,14 @@
 				8B82CF5A1D9C25E0007182AA /* GTMUIImage+Resize_100x50.png in Resources */,
 				8B82CF4B1D9C2373007182AA /* GTMUILocalizerTest.xib in Resources */,
 				8B82CF591D9C25E0007182AA /* GTMUIImage+Resize_100x100.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4A1EEA42B62D37E008B2FC1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4A1EEA52B62D38F008B2FC1 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -116,6 +116,7 @@
 		F47A79880D746EE9002302AB /* GTMScriptRunner.h in Headers */ = {isa = PBXBuildFile; fileRef = F47A79850D746EE9002302AB /* GTMScriptRunner.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F47A79890D746EE9002302AB /* GTMScriptRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79860D746EE9002302AB /* GTMScriptRunner.m */; };
 		F493E3591146CD97005F994E /* GTMUILocalizerAndLayoutTweakerTest7.xib in Resources */ = {isa = PBXBuildFile; fileRef = F493E3581146CD97005F994E /* GTMUILocalizerAndLayoutTweakerTest7.xib */; };
+		F4A1EEAB2B62D46C008B2FC1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F4A1EEA82B62D462008B2FC1 /* PrivacyInfo.xcprivacy */; };
 		F4C0B9C3108E27EE002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C0B9C2108E27EE002FC8E4 /* GTMUILocalizerAndLayoutTweakerTest5.xib */; };
 		F4C62489109753960069CADD /* GTMIBArrayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C62486109753960069CADD /* GTMIBArrayTest.m */; };
 		F4C6248A109753960069CADD /* GTMIBArrayTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4C62487109753960069CADD /* GTMIBArrayTest.xib */; };
@@ -283,6 +284,8 @@
 		F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTMLTest.m"; sourceTree = "<group>"; };
 		F48FE29F0D198D36009257D2 /* GTMSenTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSenTestCase.h; sourceTree = "<group>"; };
 		F493E3581146CD97005F994E /* GTMUILocalizerAndLayoutTweakerTest7.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GTMUILocalizerAndLayoutTweakerTest7.xib; sourceTree = "<group>"; };
+		F4A1EEA82B62D462008B2FC1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F4A1EEAA2B62D462008B2FC1 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F4BA9E6E2B1548D700CAC68B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F4BA9E6F2B1548D700CAC68B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F4BA9E712B1548E200CAC68B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = UnitTesting/GTMUIUnitTestingHarness/Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -393,6 +396,7 @@
 				F48FE26F0D198CBA009257D2 /* AppKit */,
 				F48FE2720D198CCE009257D2 /* Foundation */,
 				F4FF22760D9D47FB003880AC /* DebugUtils */,
+				F4A1EEA62B62D462008B2FC1 /* Resources */,
 				F48FE2770D198CEA009257D2 /* UnitTesting */,
 				F48FE23E0D197F70009257D2 /* XcodeConfig */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
@@ -601,6 +605,31 @@
 				8B45A2A20DA49C47001148C5 /* GTMUIUnitTestingHarness */,
 			);
 			path = UnitTesting;
+			sourceTree = "<group>";
+		};
+		F4A1EEA62B62D462008B2FC1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1EEA72B62D462008B2FC1 /* Logger */,
+				F4A1EEA92B62D462008B2FC1 /* Base */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F4A1EEA72B62D462008B2FC1 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1EEA82B62D462008B2FC1 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
+		F4A1EEA92B62D462008B2FC1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				F4A1EEAA2B62D462008B2FC1 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		F4CA852B0DAFA92A00B4AB10 /* Project */ = {
@@ -852,6 +881,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4A1EEAB2B62D46C008B2FC1 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
