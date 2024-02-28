@@ -8,12 +8,15 @@ on:
 
 jobs:
   macOS:
-    runs-on: macos-latest
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
         MODE: ["Debug", "Release"]
     steps:
+    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
+    - name: Xcode version
+      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: Build and Test
       run:  |
@@ -26,12 +29,15 @@ jobs:
             build test \
           | xcpretty
   iOS:
-    runs-on: macos-latest
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
         MODE: ["Debug", "Release"]
     steps:
+    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
+    - name: Xcode version
+      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: Build and Test
       run:  |
@@ -40,28 +46,34 @@ jobs:
             -project GTMiPhone.xcodeproj \
             -scheme GTMiPhone \
             -configuration ${{ matrix.MODE }} \
-            -destination "platform=iOS Simulator,name=iPhone 8,OS=latest" \
+            -destination "platform=iOS Simulator,name=iPhone 14,OS=latest" \
             build test \
           | xcpretty
   bazel:
-    runs-on: macos-latest
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
         MODE: ["dbg", "opt"]
     steps:
+    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
+    - name: Xcode version
+      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: bazel test
       run:  |
         bazel test --build_tests_only -c "${{ matrix.MODE }}" //...
   pod-lib-lint:
-    runs-on: macos-latest
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
         # Can't shard by platform because of https://github.com/CocoaPods/CocoaPods/issues/11358
         CONFIGURATION: ["Debug", "Release"]
     steps:
+    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
+    - name: Xcode version
+      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: Pod lib lint
       run:  |
