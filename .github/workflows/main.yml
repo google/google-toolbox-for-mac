@@ -46,7 +46,7 @@ jobs:
             -project GTMiPhone.xcodeproj \
             -scheme GTMiPhone \
             -configuration ${{ matrix.MODE }} \
-            -destination "platform=iOS Simulator,name=iPhone 14,OS=latest" \
+            -destination "platform=iOS Simulator,name=Any iOS Simulator Device" \
             build test \
           | xcpretty
   bazel:
