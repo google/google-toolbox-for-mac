@@ -12,4 +12,4 @@ Toolbox for Mac, please join the
 or submit an
 [issue](https://github.com/google/google-toolbox-for-mac/issues).
 
-**To get started** please read [USING.md](USING.md) for detailed information.
+**To get started** please read [USING.md](USING.md) for detailed information
