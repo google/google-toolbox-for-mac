@@ -36,7 +36,7 @@
                                                      hasAlpha:YES
                                                      isPlanar:NO
                                                colorSpaceName:NSDeviceRGBColorSpace
-                                                 bitmapFormat:NSAlphaFirstBitmapFormat
+                                                 bitmapFormat:NSBitmapFormatAlphaFirst
                                                   bytesPerRow:0
                                                  bitsPerPixel:0] autorelease];
 
@@ -73,7 +73,7 @@
   CGPathRef cgPath = [thePath gtm_CGPath];
   XCTAssertNotNULL(cgPath, @"Nil CGPath");
 
-  CGContextRef cgContext = [nsContext graphicsPort];
+  CGContextRef cgContext = [nsContext CGContext];
   XCTAssertNotNULL(cgContext, @"Nil cgContext");
 
   CGContextAddPath(cgContext, cgPath);
