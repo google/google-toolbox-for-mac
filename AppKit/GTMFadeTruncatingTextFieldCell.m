@@ -42,7 +42,7 @@
   // suboptimal, but since it fades out, that's ok.
   [NSGraphicsContext saveGraphicsState];
   [NSBezierPath clipRect:backgroundRect];
-  CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+  CGContextRef context = [[NSGraphicsContext currentContext] CGContext];
   CGContextBeginTransparencyLayerWithRect(context,
                                           NSRectToCGRect(backgroundRect), 0);
 

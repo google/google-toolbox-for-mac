@@ -36,7 +36,7 @@
                                                      hasAlpha:YES
                                                      isPlanar:NO
                                                colorSpaceName:NSDeviceRGBColorSpace
-                                                 bitmapFormat:NSAlphaFirstBitmapFormat
+                                                 bitmapFormat:NSBitmapFormatAlphaFirst
                                                   bytesPerRow:0
                                                  bitsPerPixel:0] autorelease];
 
