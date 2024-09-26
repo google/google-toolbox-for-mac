@@ -14,9 +14,6 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
-    - name: Xcode version
-      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: Build and Test
       run:  |
@@ -35,9 +32,6 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
-    - name: Xcode version
-      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: Build and Test
       run:  |
@@ -56,9 +50,6 @@ jobs:
       matrix:
         MODE: ["dbg", "opt"]
     steps:
-    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
-    - name: Xcode version
-      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: bazel test
       run:  |
@@ -71,9 +62,6 @@ jobs:
         # Can't shard by platform because of https://github.com/CocoaPods/CocoaPods/issues/11358
         CONFIGURATION: ["Debug", "Release"]
     steps:
-    # The "macos-14" image defaults to 15.0.1, select the newer Xcode.
-    - name: Xcode version
-      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
     - uses: actions/checkout@v4
     - name: Pod lib lint
       run:  |
