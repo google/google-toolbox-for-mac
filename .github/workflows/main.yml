@@ -5,6 +5,11 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  schedule:
+    # Run the first and fifteenth of every month at 5:12 UTC
+    - cron:  '12 4 1,15 * *'
+  # Also allow manual triggering from the github UX to revalidate things.
+  workflow_dispatch:
 
 jobs:
   macOS:
