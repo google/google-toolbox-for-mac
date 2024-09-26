@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'GoogleToolboxForMac'
-  s.version          = '4.2.1'
+  s.version          = '5.0.0'
   s.author           = 'Google Inc.'
   s.license          = { :type => 'Apache', :file => 'LICENSE' }
   s.homepage         = 'https://github.com/google/google-toolbox-for-mac'
@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
   # bundle for the privacy manifest.
   s.cocoapods_version = '>= 1.12.0'
 
-  osx_deployment_target = '10.12'
-  ios_deployment_target = '10.0'
-  tvos_deployment_target = '10.0'
+  osx_deployment_target = '10.15'
+  ios_deployment_target = '13.0'
+  tvos_deployment_target = '13.0'
 
   s.osx.deployment_target = osx_deployment_target
   s.ios.deployment_target = ios_deployment_target
