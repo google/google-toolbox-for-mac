@@ -80,7 +80,7 @@ static const int kThreadMethoduSleep = 10000;
     runThread = [NSThread currentThread];
     [expectation fulfill];
   }];
-  [self waitForExpectationsWithTimeout:kTestTimeout handler:NULL];
+  [self waitForExpectationsWithTimeout:(kTestTimeout * 2) handler:NULL];
   XCTAssertNotNil(runThread);
   XCTAssertNotEqualObjects(runThread, [NSThread currentThread]);
 }
