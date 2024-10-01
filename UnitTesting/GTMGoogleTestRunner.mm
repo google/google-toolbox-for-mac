@@ -89,23 +89,6 @@ using ::testing::UnitTest;
   NSString *testName_;
 }
 
-// We need Xcode 11.4 or better to support test skipping.
-#define IS_XCODE_11_4_OR_BETTER                 \
-  (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130400 || \
-   __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
-
-// We need Xcode 11.4 or better to support XCTIssue.
-#define IS_XCODE_12_0_OR_BETTER                 \
-  (__IPHONE_OS_VERSION_MAX_ALLOWED >= 130700 || \
-   __MAC_OS_X_VERSION_MAX_ALLOWED >= 101504)
-
-#if IS_XCODE_11_4_OR_BETTER
-
-// If a test has been skipped this will be set with an exception describing
-// the skipped test.
-@property(nonatomic) _XCTSkipFailureException *skipException;
-#endif
-
 // The name for a test is the GoogleTest name which is "TestCase.Test"
 - (instancetype)initWithName:(NSString *)testName;
 @end
@@ -137,7 +120,6 @@ class GoogleTestPrinter : public EmptyTestEventListener {
     NSString *oneLineSummary =
         [summary stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     BOOL expected = test_part_result.nonfatally_failed();
-#if IS_XCODE_11_4_OR_BETTER
     XCTSourceCodeLocation *location =
         [[XCTSourceCodeLocation alloc] initWithFilePath:file lineNumber:line];
     XCTSourceCodeContext *codeContext =
@@ -161,9 +143,7 @@ class GoogleTestPrinter : public EmptyTestEventListener {
           initWithName:@"_XCTSkipFailureException"
                 reason:@"Test skipped"
               userInfo:userInfo];
-      return;
     } else {
-#if IS_XCODE_12_0_OR_BETTER
       XCTIssue *issue = [[XCTIssue alloc]
                  initWithType:expected ? XCTIssueTypeAssertionFailure
                                        : XCTIssueTypeUncaughtException
@@ -173,16 +153,7 @@ class GoogleTestPrinter : public EmptyTestEventListener {
               associatedError:nil
                   attachments:@[]];
       [test_case_ recordIssue:issue];
-      return;
-#endif  // IS_XCODE_12_0_OR_BETTER
     }
-
-#else  // IS_XCODE_11_4_OR_BETTER
-    [test_case_ recordFailureWithDescription:oneLineSummary
-                                      inFile:file
-                                      atLine:line
-                                    expected:expected];
-#endif
   }
 
  private:
