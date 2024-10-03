@@ -89,6 +89,10 @@ using ::testing::UnitTest;
   NSString *testName_;
 }
 
+// If a test has been skipped this will be set with an exception describing
+// the skipped test.
+@property(nonatomic) _XCTSkipFailureException *skipException;
+
 // The name for a test is the GoogleTest name which is "TestCase.Test"
 - (instancetype)initWithName:(NSString *)testName;
 @end
