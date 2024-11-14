@@ -478,10 +478,12 @@
 				TargetAttributes = {
 					8B82CEF51D9C17DE007182AA = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					8B82CF211D9C1C7D007182AA = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
@@ -621,7 +623,7 @@
 				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD)";
 				"ARCHS[sdk=iphonesimulator*]" = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "-";
 				DEAD_CODE_STRIPPING = YES;
 				GTM_HOST_OTHER_LDFLAGS = "-ObjC -lz";
 				INFOPLIST_FILE = "UnitTest-Info.plist";
@@ -635,7 +637,7 @@
 			baseConfigurationReference = 8B82CF581D9C24D9007182AA /* Unittest.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "-";
 				DEAD_CODE_STRIPPING = YES;
 				GTM_HOST_OTHER_LDFLAGS = "-ObjC -lz";
 				INFOPLIST_FILE = "UnitTest-Info.plist";
