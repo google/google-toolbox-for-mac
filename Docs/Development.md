@@ -79,7 +79,14 @@ To update the version number and push a release:
 
 1.  Examine what has changed; determine the appropriate new version number.
 
-1.  Update the version number in the `.podspec` file.
+1.  Update the version number.
+
+    Run the `update_version.py` script to update the appropriate files with the
+    new version number, by passing in the new version (must be in X.Y.Z format).
+
+    ```sh
+    ./update_version.py 1.3.1
+    ```
 
     Submit the changes to the repo.
 
@@ -92,8 +99,10 @@ To update the version number and push a release:
     the one you set in the podspec. (GoogleToolboxForMac has a `v` prefix on its
     tags.)
 
-    For the description call out any major changes in the release. Usually a
-    reference to the pull request and a short description is sufficient.
+    For the description call out any major changes in the release. Usually the
+    _Generate release notes_ button in the toolbar is a good starting point and
+    just updating as need for more/less detail (dropping comments about CI,
+    updating the version number, etc.).
 
 1.  Publish the CocoaPod.
 
