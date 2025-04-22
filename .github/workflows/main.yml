@@ -51,9 +51,13 @@ jobs:
         MODE: ["dbg", "opt"]
     steps:
     - uses: actions/checkout@v4
+    - uses: bazel-contrib/setup-bazel@0.14.0
+      with:
+        bazelisk-cache: true
+        repository-cache: true
     - name: bazel test
       run:  |
-        bazel test --build_tests_only -c "${{ matrix.MODE }}" //...
+        bazelisk test --build_tests_only --test_output=errors -c "${{ matrix.MODE }}" //...
   pod-lib-lint:
     runs-on: macos-14
     strategy:
