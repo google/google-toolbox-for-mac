@@ -1,0 +1,46 @@
+name: CocoaPods
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'AppKit'
+      - 'DebugUtils'
+      - 'Foundation'
+      - 'Resources'
+      - 'UnitTesting'
+      - 'iPhone'
+      - '*.podspec'
+      - '.github/workflows/cocoapods.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'AppKit'
+      - 'DebugUtils'
+      - 'Foundation'
+      - 'Resources'
+      - 'UnitTesting'
+      - 'iPhone'
+      - '*.podspec'
+      - '.github/workflows/cocoapods.yml'
+  schedule:
+    # Run the first and fifteenth of every month at 4:13 UTC
+    - cron:  '13 4 1,15 * *'
+  # Also allow manual triggering from the github UX to revalidate things.
+  workflow_dispatch:
+
+jobs:
+  pod-lib-lint:
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        # Can't shard by platform because of https://github.com/CocoaPods/CocoaPods/issues/11358
+        CONFIGURATION: ["Debug", "Release"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Pod lib lint
+      run:  |
+        pod lib lint --verbose \
+          --configuration=${{ matrix.CONFIGURATION }} \
+          GoogleToolboxForMac.podspec
