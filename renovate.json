@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended",
     "schedule:weekly",
+    "group:allNonMajor",
     ":disableDependencyDashboard"
   ],
 }
