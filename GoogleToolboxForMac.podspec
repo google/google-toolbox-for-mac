@@ -75,6 +75,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Logger' do |sp|
     sp.source_files = 'Foundation/GTMLogger.{h,m}'
+    sp.requires_arc = 'Foundation/GTMLogger.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
     sp.resource_bundle = {
       "GoogleToolboxForMac_Logger_Privacy" => "Resources/Logger/PrivacyInfo.xcprivacy"
@@ -98,6 +99,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'StringEncoding' do |sp|
     sp.source_files = 'Foundation/GTMStringEncoding.{h,m}'
+    sp.requires_arc = 'Foundation/GTMStringEncoding.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
