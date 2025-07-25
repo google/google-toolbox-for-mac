@@ -16,6 +16,10 @@
 //  the License.
 //
 
+#if !__has_feature(objc_arc)
+#error "This file needs to be compiled with ARC enabled."
+#endif
+
 #import "GTMStringEncoding.h"
 
 NSString *const GTMStringEncodingErrorDomain = @"com.google.GTMStringEncodingErrorDomain";
@@ -92,22 +96,20 @@ GTM_INLINE int lcm(int a, int b) {
 }
 
 + (instancetype)stringEncodingWithString:(NSString *)string {
-  return [[[self alloc] initWithString:string] autorelease];
+  return [[self alloc] initWithString:string];
 }
 
 - (instancetype)initWithString:(NSString *)string {
   if ((self = [super init])) {
-    charMapData_ = [[string dataUsingEncoding:NSASCIIStringEncoding] retain];
+    charMapData_ = [string dataUsingEncoding:NSASCIIStringEncoding];
     if (!charMapData_) {
       _GTMDevLog(@"Unable to convert string to ASCII");
-      [self release];
       return nil;
     }
     charMap_ = (char *)[charMapData_ bytes];
     NSUInteger length = [charMapData_ length];
     if (length < 2 || length > 128 || length & (length - 1)) {
       _GTMDevLog(@"Length not a power of 2 between 2 and 128");
-      [self release];
       return nil;
     }
 
@@ -115,7 +117,6 @@ GTM_INLINE int lcm(int a, int b) {
     for (unsigned int i = 0; i < length; i++) {
       if (reverseCharMap_[(int)charMap_[i]] != kUnknownChar) {
         _GTMDevLog(@"Duplicate character at pos %d", i);
-        [self release];
         return nil;
       }
       reverseCharMap_[(int)charMap_[i]] = i;
@@ -127,11 +128,6 @@ GTM_INLINE int lcm(int a, int b) {
     padLen_ = lcm(8, shift_) / shift_;
   }
   return self;
-}
-
-- (void)dealloc {
-  [charMapData_ release];
-  [super dealloc];
 }
 
 - (NSString *)description {
@@ -218,8 +214,8 @@ GTM_INLINE int lcm(int a, int b) {
 
   [outData setLength:outPos];
 
-  NSString *value = [[[NSString alloc] initWithData:outData
-                                           encoding:NSASCIIStringEncoding] autorelease];
+  NSString *value = [[NSString alloc] initWithData:outData
+                                         encoding:NSASCIIStringEncoding];
   if (!value) {
     if (error) {
       *error = [NSError errorWithDomain:GTMStringEncodingErrorDomain
@@ -328,8 +324,7 @@ GTM_INLINE int lcm(int a, int b) {
   NSData *ret = [self decode:inString error:error];
   NSString *value = nil;
   if (ret) {
-    value = [[[NSString alloc] initWithData:ret
-                                   encoding:NSUTF8StringEncoding] autorelease];
+    value = [[NSString alloc] initWithData:ret encoding:NSUTF8StringEncoding];
   }
   return value;
 }

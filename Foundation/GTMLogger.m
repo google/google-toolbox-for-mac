@@ -16,6 +16,10 @@
 //  the License.
 //
 
+#if !__has_feature(objc_arc)
+#error "This file needs to be compiled with ARC enabled."
+#endif
+
 #import "GTMLogger.h"
 #import <fcntl.h>
 #import <unistd.h>
@@ -45,16 +49,15 @@ static GTMLogger *gSharedLogger = nil;
 + (instancetype)sharedLogger {
   @synchronized(self) {
     if (gSharedLogger == nil) {
-      gSharedLogger = [[self standardLogger] retain];
+      gSharedLogger = [self standardLogger];
     }
-    return [[gSharedLogger retain] autorelease];
+    return gSharedLogger;
   }
 }
 
 + (void)setSharedLogger:(GTMLogger *)logger {
   @synchronized(self) {
-    [gSharedLogger autorelease];
-    gSharedLogger = [logger retain];
+    gSharedLogger = logger;
   }
 }
 
@@ -62,12 +65,11 @@ static GTMLogger *gSharedLogger = nil;
   // Don't trust NSFileHandle not to throw
   @try {
     id<GTMLogWriter> writer = [NSFileHandle fileHandleWithStandardOutput];
-    id<GTMLogFormatter> fr = [[[GTMLogStandardFormatter alloc] init]
-                                 autorelease];
-    id<GTMLogFilter> filter = [[[GTMLogLevelFilter alloc] init] autorelease];
-    return [[[self alloc] initWithWriter:writer
+    id<GTMLogFormatter> fr = [[GTMLogStandardFormatter alloc] init];
+    id<GTMLogFilter> filter = [[GTMLogLevelFilter alloc] init];
+    return [[self alloc] initWithWriter:writer
                                formatter:fr
-                                  filter:filter] autorelease];
+                                  filter:filter];
   }
   @catch (id e) {
     // Ignored
@@ -97,25 +99,23 @@ static GTMLogger *gSharedLogger = nil;
 
   // Don't trust NSFileHandle not to throw
   @try {
-    GTMLogBasicFormatter *formatter = [[[GTMLogBasicFormatter alloc] init]
-                                          autorelease];
+    GTMLogBasicFormatter *formatter = [[GTMLogBasicFormatter alloc] init];
     GTMLogger *stdoutLogger =
         [self loggerWithWriter:[NSFileHandle fileHandleWithStandardOutput]
                      formatter:formatter
-                        filter:[[[GTMLogMaximumLevelFilter alloc]
+                        filter:[[GTMLogMaximumLevelFilter alloc]
                                   initWithMaximumLevel:kGTMLoggerLevelInfo]
-                                      autorelease]];
+        ];
     GTMLogger *stderrLogger =
         [self loggerWithWriter:[NSFileHandle fileHandleWithStandardError]
                      formatter:formatter
-                        filter:[[[GTMLogMininumLevelFilter alloc]
-                                  initWithMinimumLevel:kGTMLoggerLevelError]
-                                      autorelease]];
+                        filter:[[GTMLogMininumLevelFilter alloc]
+                                  initWithMinimumLevel:kGTMLoggerLevelError]];
     GTMLogger *compositeWriter =
         [self loggerWithWriter:[NSArray arrayWithObjects:
                                    stdoutLogger, stderrLogger, nil]
                      formatter:formatter
-                        filter:[[[GTMLogNoFilter alloc] init] autorelease]];
+                        filter:[[GTMLogNoFilter alloc] init]];
     GTMLogger *outerLogger = [self standardLogger];
     [outerLogger setWriter:compositeWriter];
     return outerLogger;
@@ -143,13 +143,13 @@ static GTMLogger *gSharedLogger = nil;
 + (instancetype)loggerWithWriter:(id<GTMLogWriter>)writer
                        formatter:(id<GTMLogFormatter>)formatter
                           filter:(id<GTMLogFilter>)filter {
-  return [[[self alloc] initWithWriter:writer
+  return [[self alloc] initWithWriter:writer
                              formatter:formatter
-                                filter:filter] autorelease];
+                                filter:filter];
 }
 
 + (instancetype)logger {
-  return [[[self alloc] init] autorelease];
+  return [[self alloc] init];
 }
 
 - (instancetype)init {
@@ -170,46 +170,38 @@ static GTMLogger *gSharedLogger = nil;
 - (void)dealloc {
   // Unlikely, but |writer_| may be an NSFileHandle, which can throw
   @try {
-    [formatter_ release];
     [self notifyFilterBeforeDetachIfNeeded];
-    [filter_ release];
-    [writer_ release];
   }
   @catch (id e) {
     // Ignored
   }
-  [super dealloc];
 }
 
 - (id<GTMLogWriter>)writer {
-  return [[writer_ retain] autorelease];
+  return writer_;
 }
 
 - (void)setWriter:(id<GTMLogWriter>)writer {
   @synchronized(self) {
-    [writer_ autorelease];
     writer_ = nil;
     if (writer == nil) {
       // Try to use stdout, but don't trust NSFileHandle
       @try {
-        writer_ = [[NSFileHandle fileHandleWithStandardOutput] retain];
+        writer_ = [NSFileHandle fileHandleWithStandardOutput];
       }
       @catch (id e) {
         // Leave |writer_| nil
       }
-    } else {
-      writer_ = [writer retain];
     }
   }
 }
 
 - (id<GTMLogFormatter>)formatter {
-  return [[formatter_ retain] autorelease];
+  return formatter_;
 }
 
 - (void)setFormatter:(id<GTMLogFormatter>)formatter {
   @synchronized(self) {
-    [formatter_ autorelease];
     formatter_ = nil;
     if (formatter == nil) {
       @try {
@@ -218,20 +210,17 @@ static GTMLogger *gSharedLogger = nil;
       @catch (id e) {
         // Leave |formatter_| nil
       }
-    } else {
-      formatter_ = [formatter retain];
     }
   }
 }
 
 - (id<GTMLogFilter>)filter {
-  return [[filter_ retain] autorelease];
+  return filter_;
 }
 
 - (void)setFilter:(id<GTMLogFilter>)filter {
   @synchronized(self) {
     [self notifyFilterBeforeDetachIfNeeded];
-    [filter_ autorelease];
     filter_ = nil;
     if (filter == nil) {
       @try {
@@ -240,8 +229,6 @@ static GTMLogger *gSharedLogger = nil;
       @catch (id e) {
         // Leave |filter_| nil
       }
-    } else {
-      filter_ = [filter retain];
     }
     [self notifyFilterAfterAttachIfNeeded];
   }
@@ -357,8 +344,8 @@ static GTMLogger *gSharedLogger = nil;
     fd = open([path fileSystemRepresentation], flags, mode);
   }
   if (fd == -1) return nil;
-  return [[[self alloc] initWithFileDescriptor:fd
-                                closeOnDealloc:YES] autorelease];
+  return [[self alloc] initWithFileDescriptor:fd
+                                closeOnDealloc:YES];
 }
 
 - (void)logMessage:(NSString *)msg level:(GTMLoggerLevel)level {
@@ -446,7 +433,7 @@ static GTMLogger *gSharedLogger = nil;
   // Performance note: We may want to do a quick check here to see if |fmt|
   // contains a '%', and if not, simply return 'fmt'.
   if (!(fmt && args)) return nil;
-  return [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+  return [[NSString alloc] initWithFormat:fmt arguments:args];
 }
 
 @end  // GTMLogBasicFormatter
@@ -462,17 +449,10 @@ static GTMLogger *gSharedLogger = nil;
     pname_ = [[[NSProcessInfo processInfo] processName] copy];
     pid_ = [[NSProcessInfo processInfo] processIdentifier];
     if (!(dateFormatter_ && pname_)) {
-      [self release];
       return nil;
     }
   }
   return self;
-}
-
-- (void)dealloc {
-  [dateFormatter_ release];
-  [pname_ release];
-  [super dealloc];
 }
 
 - (NSString *)stringForFunc:(NSString *)func
@@ -542,8 +522,6 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
                 @"`willDetachFromLogger` call because those methods "
                 @"register/unregister the `GTMLogLevelFilter` instance as an "
                 @"observer of the user defaults instance.");
-
-  [super dealloc];
 }
 
 // In DEBUG builds, log everything. If we're not in a debug build we'll assume
@@ -610,7 +588,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
   // clear settings:
   // https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html#//apple_ref/occ/clm/NSUserDefaults/resetStandardUserDefaults
   // and so should only be called in test code if necessary.
-  userDefaults_ = [[NSUserDefaults standardUserDefaults] retain];
+  userDefaults_ = [NSUserDefaults standardUserDefaults];
   [userDefaults_ addObserver:self
                   forKeyPath:kVerboseLoggingKey
                      options:NSKeyValueObservingOptionInitial
@@ -623,7 +601,6 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
   }
 
   [userDefaults_ removeObserver:self forKeyPath:kVerboseLoggingKey];
-  [userDefaults_ release];
   userDefaults_ = nil;
 }
 
@@ -655,7 +632,6 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 - (instancetype)initWithAllowedLevels:(NSIndexSet *)levels {
   self = [super init];
   if (self != nil) {
-    allowedLevels_ = [levels retain];
     // Cap min/max level
     if (!allowedLevels_ ||
         // NSIndexSet is unsigned so only check the high bound, but need to
@@ -663,7 +639,6 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
         // wraparound.
         ([allowedLevels_ firstIndex] > kGTMLoggerLevelAssert) ||
         ([allowedLevels_ lastIndex] > kGTMLoggerLevelAssert)) {
-      [self release];
       return nil;
     }
   }
@@ -675,11 +650,6 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
   return [self initWithAllowedLevels:[NSIndexSet indexSetWithIndexesInRange:
              NSMakeRange(kGTMLoggerLevelUnknown,
                  (kGTMLoggerLevelAssert - kGTMLoggerLevelUnknown + 1))]];
-}
-
-- (void)dealloc {
-  [allowedLevels_ release];
-  [super dealloc];
 }
 
 - (BOOL)filterAllowsMessage:(NSString *)msg level:(GTMLoggerLevel)level {
