@@ -50,7 +50,7 @@ objc_library(
     hdrs = [
         "GTMLogger.h",
     ],
-    non_arc_srcs = [
+    srcs = [
         "GTMLogger.m",
     ],
     visibility = ["//visibility:public"],
@@ -78,7 +78,7 @@ objc_library(
     hdrs = [
         "GTMStringEncoding.h",
     ],
-    non_arc_srcs = [
+    srcs = [
         "GTMStringEncoding.m",
     ],
     visibility = ["//visibility:public"],
