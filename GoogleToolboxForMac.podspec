@@ -99,6 +99,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'StringEncoding' do |sp|
     sp.source_files = 'Foundation/GTMStringEncoding.{h,m}'
+    sp.requires_arc = 'Foundation/GTMStringEncoding.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
