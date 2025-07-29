@@ -638,6 +638,7 @@ static BOOL IsVerboseLoggingEnabled(NSUserDefaults *userDefaults) {
 - (instancetype)initWithAllowedLevels:(NSIndexSet *)levels {
   self = [super init];
   if (self != nil) {
+    allowedLevels_ = levels;
     // Cap min/max level
     if (!allowedLevels_ ||
         // NSIndexSet is unsigned so only check the high bound, but need to
