@@ -4,24 +4,24 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'AppKit'
-      - 'DebugUtils'
-      - 'Foundation'
-      - 'Resources'
-      - 'UnitTesting'
-      - 'iPhone'
+      - 'AppKit/**'
+      - 'DebugUtils/**'
+      - 'Foundation/**'
+      - 'Resources/**'
+      - 'UnitTesting/**'
+      - 'iPhone/**'
       - '.github/workflows/xcode.yml'
       - '*.xcodeproj/**'
       - 'XcodeConfig/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'AppKit'
-      - 'DebugUtils'
-      - 'Foundation'
-      - 'Resources'
-      - 'UnitTesting'
-      - 'iPhone'
+      - 'AppKit/**'
+      - 'DebugUtils/**'
+      - 'Foundation/**'
+      - 'Resources/**'
+      - 'UnitTesting/**'
+      - 'iPhone/**'
       - '.github/workflows/xcode.yml'
       - '*.xcodeproj/**'
       - 'XcodeConfig/**'

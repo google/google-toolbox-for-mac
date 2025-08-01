@@ -4,12 +4,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'AppKit'
-      - 'DebugUtils'
-      - 'Foundation'
-      - 'Resources'
-      - 'UnitTesting'
-      - 'iPhone'
+      - 'AppKit/**'
+      - 'DebugUtils/**'
+      - 'Foundation/**'
+      - 'Resources/**'
+      - 'UnitTesting/**'
+      - 'iPhone/**'
       - 'BUILD.bazel'
       - 'MODULE.bazel'
       - '.bazelc'
@@ -19,12 +19,12 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - 'AppKit'
-      - 'DebugUtils'
-      - 'Foundation'
-      - 'Resources'
-      - 'UnitTesting'
-      - 'iPhone'
+      - 'AppKit/**'
+      - 'DebugUtils/**'
+      - 'Foundation/**'
+      - 'Resources/**'
+      - 'UnitTesting/**'
+      - 'iPhone/**'
       - 'BUILD.bazel'
       - 'MODULE.bazel'
       - '.bazelc'
