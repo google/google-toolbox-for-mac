@@ -69,9 +69,9 @@
 		8BFE6E7F1282371200B5C894 /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2800D198D0E009257D2 /* GTMGeometryUtilsTest.m */; };
 		8BFE6E801282371200B5C894 /* GTMLightweightProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711340ECDFBD500B9B276 /* GTMLightweightProxyTest.m */; };
 		8BFE6E811282371200B5C894 /* GTMLocalizedStringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B455F5D1193870A00ABD707 /* GTMLocalizedStringTest.m */; };
-		8BFE6E821282371200B5C894 /* GTMLogger+ASLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F98681950E2C20C100CEE8BF /* GTMLogger+ASLTest.m */; };
+		8BFE6E821282371200B5C894 /* GTMLogger+ASLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F98681950E2C20C100CEE8BF /* GTMLogger+ASLTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8BFE6E831282371200B5C894 /* GTMLoggerRingBufferWriterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F95803F80E2FB0760049A088 /* GTMLoggerRingBufferWriterTest.m */; };
-		8BFE6E841282371200B5C894 /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F98680B10E2C15C300CEE8BF /* GTMLoggerTest.m */; };
+		8BFE6E841282371200B5C894 /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F98680B10E2C15C300CEE8BF /* GTMLoggerTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8BFE6E891282371200B5C894 /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */; };
 		8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
 		8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
@@ -133,7 +133,7 @@
 		F95803FA0E2FB08F0049A088 /* GTMLoggerRingBufferWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = F95803F60E2FB0760049A088 /* GTMLoggerRingBufferWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F95B56840F4628B30051A6F1 /* GTMSQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = F95B567C0F46208E0051A6F1 /* GTMSQLite.m */; };
 		F98680C30E2C163D00CEE8BF /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = F98680B00E2C15C300CEE8BF /* GTMLogger.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		F98681970E2C20C800CEE8BF /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = F98681680E2C1E3A00CEE8BF /* GTMLogger+ASL.m */; };
+		F98681970E2C20C800CEE8BF /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = F98681680E2C1E3A00CEE8BF /* GTMLogger+ASL.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		F99161B50F0B151400213D3B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F99161B40F0B151400213D3B /* libsqlite3.dylib */; };
 		F99163270F14100F00213D3B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F99161B40F0B151400213D3B /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
