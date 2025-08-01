@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		8B5769B121CD7C8300D924D3 /* GTMTimeUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769AD21CD7C7600D924D3 /* GTMTimeUtilsTest.m */; };
 		8B5769B221CD7C8600D924D3 /* GTMTimeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769AC21CD7C7600D924D3 /* GTMTimeUtils.m */; };
-		8B7651D81D9C872F00DB2C59 /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D61D9C872C00DB2C59 /* GTMLogger+ASL.m */; };
-		8B7651D91D9C873200DB2C59 /* GTMLogger+ASLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D71D9C872C00DB2C59 /* GTMLogger+ASLTest.m */; };
+		8B7651D81D9C872F00DB2C59 /* GTMLogger+ASL.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D61D9C872C00DB2C59 /* GTMLogger+ASL.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		8B7651D91D9C873200DB2C59 /* GTMLogger+ASLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651D71D9C872C00DB2C59 /* GTMLogger+ASLTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8B7651E11D9C89B800DB2C59 /* GTMRoundedRectPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B7651E01D9C89B800DB2C59 /* GTMRoundedRectPath.m */; };
 		8B82CF001D9C1C3B007182AA /* GTMDebugThreadValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE839870E89C74A00C611B0 /* GTMDebugThreadValidation.m */; };
 		8B82CF021D9C1C3B007182AA /* GTMStringEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC768910FEF61D0006FABE /* GTMStringEncoding.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -36,7 +36,7 @@
 		8B82CF341D9C231F007182AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		8B82CF361D9C2373007182AA /* GTMGeometryUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F439ADEF0DBD3C4000BE9B91 /* GTMGeometryUtilsTest.m */; };
 		8B82CF371D9C2373007182AA /* GTMLightweightProxyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F41711590ECDFF0400B9B276 /* GTMLightweightProxyTest.m */; };
-		8B82CF381D9C2373007182AA /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA40E7559C7004FB565 /* GTMLoggerTest.m */; };
+		8B82CF381D9C2373007182AA /* GTMLoggerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFA40E7559C7004FB565 /* GTMLoggerTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8B82CF391D9C2373007182AA /* GTMLoggerRingBufferWriterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F418AFB30E755B4D004FB565 /* GTMLoggerRingBufferWriterTest.m */; };
 		8B82CF3B1D9C2373007182AA /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */; };
 		8B82CF3D1D9C2373007182AA /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047860DAE928A00C2D1CA /* GTMNSFileManager+PathTest.m */; };

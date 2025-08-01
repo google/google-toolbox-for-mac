@@ -16,6 +16,10 @@
 //  the License.
 //
 
+#if !__has_feature(objc_arc)
+#error "This file needs to be compiled with ARC enabled."
+#endif
+
 #import "GTMLogger+ASL.h"
 #import "GTMDefines.h"
 
@@ -23,8 +27,8 @@
 
 + (instancetype)standardLoggerWithASL {
   id me = [self standardLogger];
-  [me setWriter:[[[GTMLogASLWriter alloc] init] autorelease]];
-  [me setFormatter:[[[GTMLogASLFormatter alloc] init] autorelease]];
+  [me setWriter:[[GTMLogASLWriter alloc] init]];
+  [me setFormatter:[[GTMLogASLFormatter alloc] init]];
   return me;
 }
 
@@ -34,13 +38,13 @@
 @implementation GTMLogASLWriter
 
 + (instancetype)aslWriter {
-  return [[[self alloc] initWithClientClass:[GTMLoggerASLClient class]
-                                   facility:nil] autorelease];
+  return [[self alloc] initWithClientClass:[GTMLoggerASLClient class]
+                                   facility:nil];
 }
 
 + (instancetype)aslWriterWithFacility:(NSString *)facility {
-  return [[[self alloc] initWithClientClass:[GTMLoggerASLClient class]
-                                   facility:facility] autorelease];
+  return [[self alloc] initWithClientClass:[GTMLoggerASLClient class]
+                                   facility:facility];
 }
 
 - (instancetype)init {
@@ -60,11 +64,6 @@
   return self;
 }
 
-- (void)dealloc {
-  [facility_ release];
-  [super dealloc];
-}
-
 - (void)logMessage:(NSString *)msg level:(GTMLoggerLevel)level {
   // Because |facility_| is an argument to asl_open() we must store a separate
   // one for each facility in thread-local storage.
@@ -81,7 +80,7 @@
   // If the ASL client wasn't found (e.g., the first call from this thread),
   // then create it and store it in the thread-local storage dictionary
   if (client == nil) {
-    client = [[[aslClientClass_ alloc] initWithFacility:facility_] autorelease];
+    client = [[aslClientClass_ alloc] initWithFacility:facility_];
     [tls setObject:client forKey:key];
   }
 
@@ -151,7 +150,6 @@
     client_ = asl_open(NULL, [facility UTF8String], 0);
     if (client_ == NULL) {
       // COV_NF_START - no real way to test this
-      [self release];
       return nil;
       // COV_NF_END
     }
@@ -164,7 +162,6 @@
                  ASL_KEY_READ_UID,
                  [[NSString stringWithFormat:@"%d", getuid()] UTF8String]) != 0)) {
       // COV_NF_START - no real way to test this
-      [self release];
       return nil;
       // COV_NF_END
     }
@@ -176,7 +173,6 @@
 - (void)dealloc {
   if (msgOptions_ != NULL) asl_free(msgOptions_);
   if (client_ != NULL) asl_close(client_);
-  [super dealloc];
 }
 
 // We don't test this one line because we don't want to pollute actual system

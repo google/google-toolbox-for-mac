@@ -16,6 +16,10 @@
 //  the License.
 //
 
+#if !__has_feature(objc_arc)
+#error "This file needs to be compiled with ARC enabled."
+#endif
+
 #import "GTMLogger.h"
 #import "GTMSenTestCase.h"
 
@@ -34,10 +38,6 @@
     messages_ = [[NSMutableArray alloc] init];
   }
   return self;
-}
-- (void)dealloc {
-  [messages_ release];
-  [super dealloc];
 }
 - (NSArray *)messages {
   return messages_;
@@ -109,8 +109,8 @@
 @implementation GTMLoggerTest
 
 - (void)setUp {
-  path_ = [[NSTemporaryDirectory() stringByAppendingPathComponent:
-            @"GTMLoggerUnitTest.log"] retain];
+  path_ = [NSTemporaryDirectory() stringByAppendingPathComponent:
+            @"GTMLoggerUnitTest.log"];
   XCTAssertNotNil(path_);
   // Make sure we're cleaned up from the last run
   [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
@@ -119,7 +119,6 @@
 - (void)tearDown {
   XCTAssertNotNil(path_);
   [[NSFileManager defaultManager] removeItemAtPath:path_ error:NULL];
-  [path_ release];
   path_ = nil;
 }
 
@@ -184,8 +183,8 @@
 }
 
 - (void)testLogger {
-  ArrayWriter *writer = [[[ArrayWriter alloc] init] autorelease];
-  IgnoreFilter *filter = [[[IgnoreFilter alloc] init] autorelease];
+  ArrayWriter *writer = [[ArrayWriter alloc] init];
+  IgnoreFilter *filter = [[IgnoreFilter alloc] init];
 
   // We actually only need the array writer instance for this unit test to pass,
   // but we combine that writer with a stdout writer for two reasons:
@@ -231,7 +230,7 @@
   XCTAssertEqualObjects([messages objectAtIndex:3], @"baz");
 
   // Change the formatter to our "dumb formatter"
-  id<GTMLogFormatter> formatter = [[[DumbFormatter alloc] init] autorelease];
+  id<GTMLogFormatter> formatter = [[DumbFormatter alloc] init];
   [logger setFormatter:formatter];
 
   [logger logInfo:@"bleh"];
@@ -247,7 +246,7 @@
 }
 
 - (void)testConvenienceMacros {
-  ArrayWriter *writer = [[[ArrayWriter alloc] init] autorelease];
+  ArrayWriter *writer = [[ArrayWriter alloc] init];
   NSArray *writers = [NSArray arrayWithObjects:writer,
                       [NSFileHandle fileHandleWithStandardOutput], nil];
 
@@ -314,7 +313,7 @@
 }
 
 - (void)testLoggerAdapterWriter {
-  ArrayWriter *writer = [[[ArrayWriter alloc] init] autorelease];
+  ArrayWriter *writer = [[ArrayWriter alloc] init];
   XCTAssertNotNil(writer);
 
   GTMLogger *sublogger = [GTMLogger loggerWithWriter:writer
@@ -359,8 +358,7 @@
 }
 
 - (void)testFunctionPrettifier {
-  GTMLogBasicFormatter *fmtr = [[[GTMLogBasicFormatter alloc] init]
-                                 autorelease];
+  GTMLogBasicFormatter *fmtr = [[GTMLogBasicFormatter alloc] init];
   XCTAssertNotNil(fmtr);
 
   // Nil, empty and whitespace
@@ -387,7 +385,7 @@
 }
 
 - (void)testBasicFormatter {
-  id<GTMLogFormatter> fmtr = [[[GTMLogBasicFormatter alloc] init] autorelease];
+  id<GTMLogFormatter> fmtr = [[GTMLogBasicFormatter alloc] init];
   XCTAssertNotNil(fmtr);
   NSString *msg = nil;
 
@@ -431,7 +429,7 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
 }
 
 - (void)testStandardFormatter {
-  id<GTMLogFormatter> fmtr = [[[GTMLogStandardFormatter alloc] init] autorelease];
+  id<GTMLogFormatter> fmtr = [[GTMLogStandardFormatter alloc] init];
   XCTAssertNotNil(fmtr);
 
   // E.g. 2008-01-04 09:16:26.906 xctest[5567/0xa07d0f60] [lvl=1] (no func) test
@@ -467,7 +465,7 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
 }
 
 - (void)testNoFilter {
-  id<GTMLogFilter> filter = [[[GTMLogNoFilter alloc] init] autorelease];
+  id<GTMLogFilter> filter = [[GTMLogNoFilter alloc] init];
   XCTAssertNotNil(filter);
 
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
@@ -483,9 +481,8 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
 }
 
 - (void)testMinimumFilter {
-  id<GTMLogFilter> filter = [[[GTMLogMininumLevelFilter alloc]
-                                initWithMinimumLevel:kGTMLoggerLevelInfo]
-                                    autorelease];
+  id<GTMLogFilter> filter = [[GTMLogMininumLevelFilter alloc]
+                               initWithMinimumLevel:kGTMLoggerLevelInfo];
   XCTAssertNotNil(filter);
   XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
   XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
@@ -493,8 +490,7 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
-  filter = [[[GTMLogMininumLevelFilter alloc]
-               initWithMinimumLevel:kGTMLoggerLevelDebug] autorelease];
+  filter = [[GTMLogMininumLevelFilter alloc] initWithMinimumLevel:kGTMLoggerLevelDebug];
   XCTAssertNotNil(filter);
   XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
@@ -503,18 +499,15 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
   // Cannot exceed min/max levels filter
-  filter = [[[GTMLogMininumLevelFilter alloc]
-               initWithMinimumLevel:kGTMLoggerLevelAssert + 1] autorelease];
+  filter = [[GTMLogMininumLevelFilter alloc] initWithMinimumLevel:kGTMLoggerLevelAssert + 1];
   XCTAssertNil(filter);
-  filter = [[[GTMLogMininumLevelFilter alloc]
-               initWithMinimumLevel:kGTMLoggerLevelUnknown - 1] autorelease];
+  filter = [[GTMLogMininumLevelFilter alloc] initWithMinimumLevel:kGTMLoggerLevelUnknown - 1];
   XCTAssertNil(filter);
 }
 
 - (void)testMaximumFilter {
-  id<GTMLogFilter> filter = [[[GTMLogMaximumLevelFilter alloc]
-                                initWithMaximumLevel:kGTMLoggerLevelInfo]
-                                    autorelease];
+  id<GTMLogFilter> filter = [[GTMLogMaximumLevelFilter alloc]
+                               initWithMaximumLevel:kGTMLoggerLevelInfo];
   XCTAssertNotNil(filter);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
@@ -522,8 +515,7 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
   XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelError]);
   XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
-  filter = [[[GTMLogMaximumLevelFilter alloc]
-               initWithMaximumLevel:kGTMLoggerLevelDebug] autorelease];
+  filter = [[GTMLogMaximumLevelFilter alloc] initWithMaximumLevel:kGTMLoggerLevelDebug];
   XCTAssertNotNil(filter);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelUnknown]);
   XCTAssertTrue([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelDebug]);
@@ -532,11 +524,9 @@ static BOOL StringMatchesPattern(NSString *str, NSString *pattern) {
   XCTAssertFalse([filter filterAllowsMessage:@"hi" level:kGTMLoggerLevelAssert]);
 
   // Cannot exceed min/max levels filter
-  filter = [[[GTMLogMaximumLevelFilter alloc]
-               initWithMaximumLevel:kGTMLoggerLevelAssert + 1] autorelease];
+  filter = [[GTMLogMaximumLevelFilter alloc] initWithMaximumLevel:kGTMLoggerLevelAssert + 1];
   XCTAssertNil(filter);
-  filter = [[[GTMLogMaximumLevelFilter alloc]
-               initWithMaximumLevel:kGTMLoggerLevelUnknown - 1] autorelease];
+  filter = [[GTMLogMaximumLevelFilter alloc] initWithMaximumLevel:kGTMLoggerLevelUnknown - 1];
   XCTAssertNil(filter);
 }
 
