@@ -1,0 +1,76 @@
+name: SPM
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'AppKit/**'
+      - 'DebugUtils/**'
+      - 'Foundation/**'
+      - 'Resources/**'
+      - 'Sources/**'
+      - 'Tests/**'
+      - 'UnitTesting/**'
+      - 'iPhone/**'
+      - 'BUILD.bazel'
+      - 'MODULE.bazel'
+      - '.bazelc'
+      - '.bazelversion'
+      - '.github/workflows/bazel.yml'
+      - 'bazel_support/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'AppKit/**'
+      - 'DebugUtils/**'
+      - 'Foundation/**'
+      - 'Resources/**'
+      - 'Sources/**'
+      - 'Tests/**'
+      - 'UnitTesting/**'
+      - 'iPhone/**'
+      - 'BUILD.bazel'
+      - 'MODULE.bazel'
+      - '.bazelc'
+      - '.bazelversion'
+      - '.github/workflows/bazel.yml'
+      - 'bazel_support/**'
+  schedule:
+    # Run the first and fifteenth of every month at 4:18 UTC
+    - cron:  '18 4 1,18 * *'
+  # Also allow manual triggering from the github UX to revalidate things.
+  workflow_dispatch:
+
+jobs:
+  spm:
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        MODE: ["Debug", "Release"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: spm build
+        run: |
+          spm_mode=""
+          if [ "$MODE" == "Debug" ]; then
+            spm_mode="debug"
+          elif [ "$MODE" == "Release" ]; then
+            spm_mode="release"
+          else
+            echo "Invalid mode: $MODE"
+            exit 1
+          fi
+          swift build $spm_mode
+          # Remove the xcodeproj so that we can build SPM with xcodebuild.
+          rm -rf *.xcodeproj
+          xcodebuild \
+            -scheme GoogleToolboxForMac-Package \
+            -destination 'generic/platform=iOS' \
+            -configuration $MODE \
+            build
+          xcodebuild \
+            -scheme GoogleToolboxForMac-Package \
+            -destination 'generic/platform=tvOS' \
+            -configuration $MODE \
+            build
