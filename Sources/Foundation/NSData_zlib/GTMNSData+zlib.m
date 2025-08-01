@@ -16,7 +16,11 @@
 //  the License.
 //
 
+#if __has_include("Foundation/GTMNSData+zlib.h")
+#import "Foundation/GTMNSData+zlib.h"
+#else
 #import "GTMNSData+zlib.h"
+#endif
 #import <zlib.h>
 #import "GTMDefines.h"
 

@@ -20,7 +20,11 @@
 #error "This file needs to be compiled with ARC enabled."
 #endif
 
+#if __has_include("Foundation/GTMStringEncoding.h")
+#import "Foundation/GTMStringEncoding.h"
+#else
 #import "GTMStringEncoding.h"
+#endif
 
 NSString *const GTMStringEncodingErrorDomain = @"com.google.GTMStringEncodingErrorDomain";
 NSString *const GTMStringEncodingBadCharacterIndexKey = @"GTMStringEncodingBadCharacterIndexKey";

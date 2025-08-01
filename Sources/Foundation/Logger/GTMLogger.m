@@ -20,7 +20,11 @@
 #error "This file needs to be compiled with ARC enabled."
 #endif
 
+#if __has_include("Foundation/GTMLogger.h")
+#import "Foundation/GTMLogger.h"
+#else
 #import "GTMLogger.h"
+#endif
 #import <fcntl.h>
 #import <unistd.h>
 #import <stdlib.h>
