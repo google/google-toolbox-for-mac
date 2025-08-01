@@ -1,175 +1,76 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_build_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_build_test")
 
-objc_library(
+alias(
     name = "LocalizedString",
-    hdrs = [
-        "GTMLocalizedString.h",
-    ],
+    actual = "//Sources/Foundation/LocalizedString:LocalizedString",
     visibility = ["//visibility:public"],
 )
 
-objc_library(
+alias(
     name = "GeometryUtils",
-    srcs = [
-        "GTMGeometryUtils.m",
-    ],
-    hdrs = [
-        "GTMGeometryUtils.h",
-    ],
-    sdk_frameworks = [
-        "CoreGraphics",
-    ],
+    actual = "//Sources/Foundation/GeometryUtils:GeometryUtils",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "KVO",
-    hdrs = [
-        "GTMNSObject+KeyValueObserving.h",
-    ],
-    copts = ["-IDebugUtils"],
-    non_arc_srcs = [
-        "GTMNSObject+KeyValueObserving.m",
-    ],
-    sdk_frameworks = [
-        "CoreGraphics",
-    ],
+    actual = "//Sources/Foundation/KVO:KVO",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-        "//DebugUtils",
-    ],
 )
 
-objc_library(
+alias(
     name = "Logger",
-    hdrs = [
-        "GTMLogger.h",
-    ],
-    srcs = [
-        "GTMLogger.m",
-    ],
+    actual = "//Sources/Foundation/Logger:Logger",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "StackTrace",
-    hdrs = [
-        "GTMStackTrace.h",
-    ],
-    non_arc_srcs = [
-        "GTMStackTrace.m",
-    ],
+    actual = "//Sources/Foundation/StackTrace:StackTrace",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "StringEncoding",
-    hdrs = [
-        "GTMStringEncoding.h",
-    ],
-    srcs = [
-        "GTMStringEncoding.m",
-    ],
+    actual = "//Sources/Foundation/StringEncoding:StringEncoding",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "NSData_zlib",
-    srcs = [
-        "GTMNSData+zlib.m",
-    ],
-    hdrs = [
-        "GTMNSData+zlib.h",
-    ],
-    sdk_dylibs = ["libz"],
+    actual = "//Sources/Foundation/NSData_zlib:NSData_zlib",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "NSFileHandle_UniqueName",
-    hdrs = [
-        "GTMNSFileHandle+UniqueName.h",
-    ],
-    non_arc_srcs = [
-        "GTMNSFileHandle+UniqueName.m",
-    ],
+    actual = "//Sources/Foundation/NSFileHandle_UniqueName:NSFileHandle_UniqueName",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "NSString_HTML",
-    srcs = [
-        "GTMNSString+HTML.m",
-    ],
-    hdrs = [
-        "GTMNSString+HTML.h",
-    ],
+    actual = "//Sources/Foundation/NSString_HTML:NSString_HTML",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "NSString_XML",
-    srcs = [
-        "GTMNSString+XML.m",
-    ],
-    hdrs = [
-        "GTMNSString+XML.h",
-    ],
+    actual = "//Sources/Foundation/NSString_XML:NSString_XML",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "NSThread_Blocks",
-    hdrs = [
-        "GTMNSThread+Blocks.h",
-    ],
-    non_arc_srcs = [
-        "GTMNSThread+Blocks.m",
-    ],
+    actual = "//Sources/Foundation/NSThread_Blocks:NSThread_Blocks",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
-objc_library(
+alias(
     name = "TimeUtils",
-    srcs = [
-        "GTMTimeUtils.m",
-    ],
-    hdrs = [
-        "GTMTimeUtils.h",
-    ],
+    actual = "//Sources/Foundation/TimeUtils:TimeUtils",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:Defines",
-    ],
 )
 
 ios_build_test(

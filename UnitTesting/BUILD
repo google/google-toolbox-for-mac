@@ -10,6 +10,7 @@ objc_library(
     non_arc_srcs = [
         "GTMSenTestCase.m",
     ],
+    includes = ["."],
     visibility = ["//visibility:public"],
     deps = [
         "//:Defines",
