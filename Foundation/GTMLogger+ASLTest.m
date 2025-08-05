@@ -16,6 +16,10 @@
 //  the License.
 //
 
+#if !__has_feature(objc_arc)
+#error "This file needs to be compiled with ARC enabled."
+#endif
+
 #import "GTMLogger+ASL.h"
 #import "GTMSenTestCase.h"
 
@@ -25,7 +29,7 @@
 }
 @end
 
-static NSMutableArray *gDummyLog;  // weak
+static NSMutableArray *gDummyLog;
 
 @implementation DummyASLClient
 
@@ -34,11 +38,6 @@ static NSMutableArray *gDummyLog;  // weak
     facility_ = [facility copy];
   }
   return self;
-}
-
-- (void)dealloc {
-  [facility_ release];
-  [super dealloc];
 }
 
 - (void)log:(NSString *)msg level:(int)level {
@@ -64,11 +63,10 @@ static NSMutableArray *gDummyLog;  // weak
 }
 
 - (void)testLogWriter {
-  gDummyLog = [[[NSMutableArray alloc] init] autorelease];
-  GTMLogASLWriter *writer = [[[GTMLogASLWriter alloc]
+  gDummyLog = [[NSMutableArray alloc] init];
+  GTMLogASLWriter *writer = [[GTMLogASLWriter alloc]
                               initWithClientClass:[DummyASLClient class]
-                                         facility:nil]
-                             autorelease];
+                                         facility:nil];
 
 
   XCTAssertNotNil(writer);
@@ -97,9 +95,8 @@ static NSMutableArray *gDummyLog;  // weak
   [gDummyLog removeAllObjects];
 
   // Same test with facility
-  writer = [[[GTMLogASLWriter alloc]
-               initWithClientClass:[DummyASLClient class]
-                          facility:@"testfac"] autorelease];
+  writer = [[GTMLogASLWriter alloc] initWithClientClass:[DummyASLClient class]
+                                               facility:@"testfac"];
 
 
   XCTAssertNotNil(writer);
@@ -125,7 +122,6 @@ static NSMutableArray *gDummyLog;  // weak
 - (void)testASLClient {
   GTMLoggerASLClient *client = [[GTMLoggerASLClient alloc] init];
   XCTAssertNotNil(client);
-  [client release];
 }
 
 @end
