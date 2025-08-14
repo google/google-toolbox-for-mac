@@ -87,10 +87,12 @@ GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
 
   // Resize photo. Use UIImage drawing methods because they respect
   // UIImageOrientation as opposed to CGContextDrawImage().
-  UIGraphicsBeginImageContext(targetSize);
-  [self drawInRect:projectTo];
-  UIImage* resizedPhoto = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
+  UIGraphicsImageRenderer *renderer =
+      [[UIGraphicsImageRenderer alloc] initWithSize:targetSize];
+  UIImage *resizedPhoto =
+      [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
+        [self drawInRect:projectTo];
+      }];
   return resizedPhoto;
 }
 
