@@ -39,13 +39,17 @@ on:
 
 jobs:
   bazel:
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
         MODE: ["dbg", "opt"]
     steps:
     - uses: actions/checkout@v4
+    - name: Select Xcode Version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: 'latest-stable'
     - uses: bazel-contrib/setup-bazel@0.15.0
       with:
         bazelisk-cache: true

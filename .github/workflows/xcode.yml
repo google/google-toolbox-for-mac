@@ -33,13 +33,17 @@ on:
 
 jobs:
   macOS:
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
         MODE: ["Debug", "Release"]
     steps:
     - uses: actions/checkout@v4
+    - name: Select Xcode Version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: 'latest-stable'
     - name: Build and Test
       run:  |
         xcodebuild \
@@ -48,18 +52,22 @@ jobs:
             -configuration ${{ matrix.MODE }} \
             build test
   iOS:
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
         MODE: ["Debug", "Release"]
     steps:
     - uses: actions/checkout@v4
+    - name: Select Xcode Version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: 'latest-stable'
     - name: Build and Test
       run:  |
         xcodebuild \
             -project GTMiPhone.xcodeproj \
             -scheme GTMiPhone \
             -configuration ${{ matrix.MODE }} \
-            -destination "platform=iOS Simulator,name=iPhone 14,OS=latest" \
+            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
             build test
