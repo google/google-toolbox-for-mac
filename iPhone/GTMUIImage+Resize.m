@@ -159,7 +159,7 @@ GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
 
   UIGraphicsImageRendererFormat *rendererFormat = [[UIGraphicsImageRendererFormat alloc] init];
   rendererFormat.scale = self.scale;
-  UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:self.size
+  UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:bounds.size
                                                                              format:rendererFormat];
   UIImage *rotatedImage =
       [renderer imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull rendererContext) {
