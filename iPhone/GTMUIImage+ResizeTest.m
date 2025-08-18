@@ -239,21 +239,36 @@
   UIImage *landscapeImage = [self testImageNamed:@"GTMUIImage+Resize_100x50"];
   XCTAssertNotNil(landscapeImage, @"Unable to read image.");
 
+  CGSize size50x100 = CGSizeMake(50, 100);
+  CGSize size100x50 = CGSizeMake(100, 50);
+
   // Rotate 90 degrees.
   UIImage *actual = [landscapeImage gtm_imageByRotating:UIImageOrientationRight];
   XCTAssertNotNil(actual);
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size50x100),
+                @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size50x100),
+                NSStringFromCGSize([actual size]));
 
   // Rotate 180 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationDown];
   XCTAssertNotNil(actual);
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size100x50),
+                @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size100x50),
+                NSStringFromCGSize([actual size]));
 
   // Rotate 270 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationLeft];
   XCTAssertNotNil(actual);
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size50x100),
+                @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size50x100),
+                NSStringFromCGSize([actual size]));
 
   // Rotate 360 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationUp];
   XCTAssertNotNil(actual);
+  XCTAssertTrue(CGSizeEqualToSize([actual size], size100x50),
+                @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size100x50),
+                NSStringFromCGSize([actual size]));
 }
 
 @end
