@@ -3,7 +3,7 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
     name = "LoggerLib",
-    non_arc_srcs = [
+    srcs = [
         "GTMLoggerTest.m",
     ],
     testonly = 1,
@@ -19,7 +19,7 @@ objc_library(
 
 objc_library(
     name = "LoggerASLLib",
-    non_arc_srcs = [
+    srcs = [
         "GTMLogger+ASLTest.m",
     ],
     testonly = 1,

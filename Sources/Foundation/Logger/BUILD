@@ -31,7 +31,7 @@ apple_resource_bundle(
 
 objc_library(
     name = "LoggerASL",
-    non_arc_srcs = [
+    srcs = [
         "GTMLogger+ASL.m",
     ],
     hdrs = [
