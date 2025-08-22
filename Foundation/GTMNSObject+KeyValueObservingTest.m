@@ -33,7 +33,7 @@
 @interface GTMNSObject_KeyValueObservingTest : GTMTestCase  {
   int32_t count_;
   NSMutableDictionary *dict_;
-  GTM_WEAK NSString *expectedValue_;
+  NSString *expectedValue_;
 }
 
 - (void)observeValueChange:(GTMKeyValueChangeNotification *)notification;
