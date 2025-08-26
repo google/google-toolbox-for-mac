@@ -16,6 +16,10 @@
 //  the License.
 //
 
+#if !__has_feature(objc_arc)
+#error "This file needs to be compiled with ARC enabled."
+#endif
+
 //
 //  Tester.m
 //  MAKVONotificationCenter
@@ -45,10 +49,6 @@
   dict_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
           @"foo", @"key",
           nil];
-}
-
-- (void)tearDown {
-  [dict_ release];
 }
 
 - (void)testSingleChange {
@@ -115,7 +115,7 @@
   XCTAssertEqualObjects(value, expectedValue_);
   ++count_;
 
-  GTMKeyValueChangeNotification *copy = [[notification copy] autorelease];
+  GTMKeyValueChangeNotification *copy = [notification copy];
   XCTAssertEqualObjects(notification, copy);
   XCTAssertEqual([notification hash], [copy hash]);
 }
