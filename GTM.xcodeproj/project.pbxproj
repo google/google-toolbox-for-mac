@@ -75,7 +75,7 @@
 		8BFE6E891282371200B5C894 /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */; };
 		8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
 		8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
-		8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
+		8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
 		8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
 		8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };
