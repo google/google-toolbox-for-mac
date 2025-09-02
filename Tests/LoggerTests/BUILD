@@ -3,49 +3,49 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
     name = "LoggerLib",
+    testonly = 1,
     srcs = [
         "GTMLoggerTest.m",
     ],
-    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/Logger:Logger",
-        "//UnitTesting:SenTestCase",
         "//:Defines",
+        "//Sources/Logger",
+        "//UnitTesting:SenTestCase",
     ],
 )
 
 objc_library(
     name = "LoggerASLLib",
+    testonly = 1,
     srcs = [
         "GTMLogger+ASLTest.m",
     ],
-    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/Logger:LoggerASL",
-        "//UnitTesting:SenTestCase",
         "//:Defines",
+        "//Sources/Logger:LoggerASL",
+        "//UnitTesting:SenTestCase",
     ],
 )
 
 objc_library(
     name = "LoggerRingBufferWriterLib",
+    testonly = 1,
     non_arc_srcs = [
         "GTMLoggerRingBufferWriterTest.m",
     ],
-    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/Logger:LoggerRingBufferWriter",
-        "//UnitTesting:SenTestCase",
         "//:Defines",
+        "//Sources/Logger:LoggerRingBufferWriter",
+        "//UnitTesting:SenTestCase",
     ],
 )
 

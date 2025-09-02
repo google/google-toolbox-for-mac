@@ -2,34 +2,33 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
-    name = "KVOLib",
-    testonly = 1,
+    name = "NSThread_BlocksLib",
     non_arc_srcs = [
-        "GTMNSObject+KeyValueObservingTest.m",
+        "GTMNSThread+BlocksTest.m",
     ],
+    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/KVO:KVO",
-        "//:Defines",
-        "//DebugUtils",
+        "//Sources/NSThread_Blocks:NSThread_Blocks",
         "//UnitTesting:SenTestCase",
+        "//:Defines",
     ],
 )
 
 ios_unit_test(
-    name = "KVOUnitTest",
+    name = "NSThread_BlocksUnitTest",
     minimum_os_version = "12.0",
     deps = [
-        ":KVOLib",
+        ":NSThread_BlocksLib",
     ],
 )
 
 macos_unit_test(
-    name = "KVOMacOSUnitTest",
+    name = "NSThread_BlocksMacOSUnitTest",
     minimum_os_version = "10.10",
     deps = [
-        ":KVOLib",
+        ":NSThread_BlocksLib",
     ],
 )

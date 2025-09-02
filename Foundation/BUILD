@@ -3,73 +3,73 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_build_test")
 
 alias(
     name = "LocalizedString",
-    actual = "//Sources/Foundation/LocalizedString:LocalizedString",
+    actual = "//Sources/LocalizedString:LocalizedString",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "GeometryUtils",
-    actual = "//Sources/Foundation/GeometryUtils:GeometryUtils",
+    actual = "//Sources/GeometryUtils:GeometryUtils",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "KVO",
-    actual = "//Sources/Foundation/KVO:KVO",
+    actual = "//Sources/KVO:KVO",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "Logger",
-    actual = "//Sources/Foundation/Logger:Logger",
+    actual = "//Sources/Logger:Logger",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "StackTrace",
-    actual = "//Sources/Foundation/StackTrace:StackTrace",
+    actual = "//Sources/StackTrace:StackTrace",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "StringEncoding",
-    actual = "//Sources/Foundation/StringEncoding:StringEncoding",
+    actual = "//Sources/StringEncoding:StringEncoding",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "NSData_zlib",
-    actual = "//Sources/Foundation/NSData_zlib:NSData_zlib",
+    actual = "//Sources/NSData_zlib:NSData_zlib",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "NSFileHandle_UniqueName",
-    actual = "//Sources/Foundation/NSFileHandle_UniqueName:NSFileHandle_UniqueName",
+    actual = "//Sources/NSFileHandle_UniqueName:NSFileHandle_UniqueName",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "NSString_HTML",
-    actual = "//Sources/Foundation/NSString_HTML:NSString_HTML",
+    actual = "//Sources/NSString_HTML:NSString_HTML",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "NSString_XML",
-    actual = "//Sources/Foundation/NSString_XML:NSString_XML",
+    actual = "//Sources/NSString_XML:NSString_XML",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "NSThread_Blocks",
-    actual = "//Sources/Foundation/NSThread_Blocks:NSThread_Blocks",
+    actual = "//Sources/NSThread_Blocks:NSThread_Blocks",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "TimeUtils",
-    actual = "//Sources/Foundation/TimeUtils:TimeUtils",
+    actual = "//Sources/TimeUtils:TimeUtils",
     visibility = ["//visibility:public"],
 )
 

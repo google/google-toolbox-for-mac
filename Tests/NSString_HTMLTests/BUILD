@@ -11,7 +11,7 @@ objc_library(
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/NSString_HTML:NSString_HTML",
+        "//Sources/NSString_HTML:NSString_HTML",
         "//UnitTesting:SenTestCase",
         "//:Defines",
     ],

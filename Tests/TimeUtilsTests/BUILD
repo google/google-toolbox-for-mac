@@ -2,33 +2,33 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
-    name = "NSString_XMLLib",
-    non_arc_srcs = [
-        "GTMNSString+XMLTest.m",
+    name = "TimeUtilsLib",
+    srcs = [
+        "GTMTimeUtilsTest.m",
     ],
     testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/NSString_XML:NSString_XML",
+        "//Sources/TimeUtils:TimeUtils",
         "//UnitTesting:SenTestCase",
         "//:Defines",
     ],
 )
 
 ios_unit_test(
-    name = "NSString_XMLUnitTest",
+    name = "TimeUtilsUnitTest",
     minimum_os_version = "12.0",
     deps = [
-        ":NSString_XMLLib",
+        ":TimeUtilsLib",
     ],
 )
 
 macos_unit_test(
-    name = "NSString_XMLMacOSUnitTest",
+    name = "TimeUtilsMacOSUnitTest",
     minimum_os_version = "10.10",
     deps = [
-        ":NSString_XMLLib",
+        ":TimeUtilsLib",
     ],
 )

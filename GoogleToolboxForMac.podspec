@@ -47,9 +47,9 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |sp|
     sp.source_files =
         'DebugUtils/GTMTypeCasting.h',
-        'Sources/Foundation/LocalizedString/Public/Foundation/GTMLocalizedString.h',
-        'Sources/Foundation/Logger/Public/Foundation/GTMLogger.h'
-    sp.public_header_files = 'Sources/Foundation/LocalizedString/Public/Foundation/GTMLocalizedString.h', 'Sources/Foundation/Logger/Public/Foundation/GTMLogger.h'
+        'Sources/LocalizedString/Public/Foundation/GTMLocalizedString.h',
+        'Sources/Logger/Public/Foundation/GTMLogger.h'
+    sp.public_header_files = 'Sources/LocalizedString/Public/Foundation/GTMLocalizedString.h', 'Sources/Logger/Public/Foundation/GTMLogger.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
@@ -62,27 +62,27 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'GeometryUtils' do |sp|
-    sp.source_files = 'Sources/Foundation/GeometryUtils/GTMGeometryUtils.m', 'Sources/Foundation/GeometryUtils/Public/Foundation/GTMGeometryUtils.h'
-    sp.public_header_files = 'Sources/Foundation/GeometryUtils/Public/Foundation/GTMGeometryUtils.h'
+    sp.source_files = 'Sources/GeometryUtils/GTMGeometryUtils.m', 'Sources/GeometryUtils/Public/Foundation/GTMGeometryUtils.h'
+    sp.public_header_files = 'Sources/GeometryUtils/Public/Foundation/GTMGeometryUtils.h'
     sp.frameworks = 'CoreGraphics'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'KVO' do |sp|
     sp.source_files =
-        'Sources/Foundation/KVO/GTMNSObject+KeyValueObserving.m', 'Sources/Foundation/KVO/Public/Foundation/GTMNSObject+KeyValueObserving.h'
-    sp.public_header_files = 'Sources/Foundation/KVO/Public/Foundation/GTMNSObject+KeyValueObserving.h'
+        'Sources/KVO/GTMNSObject+KeyValueObserving.m', 'Sources/KVO/Public/Foundation/GTMNSObject+KeyValueObserving.h'
+    sp.public_header_files = 'Sources/KVO/Public/Foundation/GTMNSObject+KeyValueObserving.h'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/DebugUtils', "#{s.version}"
   end
 
   s.subspec 'Logger' do |sp|
-    sp.source_files = 'Sources/Foundation/Logger/GTMLogger.m', 'Sources/Foundation/Logger/Public/Foundation/GTMLogger.h'
-    sp.public_header_files = 'Sources/Foundation/Logger/Public/Foundation/GTMLogger.h'
-    sp.requires_arc = 'Sources/Foundation/Logger/GTMLogger.m', 'Sources/Foundation/Logger/Public/Foundation/GTMLogger.h'
+    sp.source_files = 'Sources/Logger/GTMLogger.m', 'Sources/Logger/Public/Foundation/GTMLogger.h'
+    sp.public_header_files = 'Sources/Logger/Public/Foundation/GTMLogger.h'
+    sp.requires_arc = 'Sources/Logger/GTMLogger.m', 'Sources/Logger/Public/Foundation/GTMLogger.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
     sp.resource_bundle = {
-      "GoogleToolboxForMac_Logger_Privacy" => "Sources/Foundation/Logger/Resources/PrivacyInfo.xcprivacy"
+      "GoogleToolboxForMac_Logger_Privacy" => "Sources/Logger/Resources/PrivacyInfo.xcprivacy"
     }
   end
 
@@ -97,53 +97,53 @@ Pod::Spec.new do |s|
   # creates frameworks.
 
   s.subspec 'StackTrace' do |sp|
-    sp.source_files = 'Sources/Foundation/StackTrace/GTMStackTrace.m', 'Sources/Foundation/StackTrace/Public/Foundation/GTMStackTrace.h'
-    sp.public_header_files = 'Sources/Foundation/StackTrace/Public/Foundation/GTMStackTrace.h'
+    sp.source_files = 'Sources/StackTrace/GTMStackTrace.m', 'Sources/StackTrace/Public/Foundation/GTMStackTrace.h'
+    sp.public_header_files = 'Sources/StackTrace/Public/Foundation/GTMStackTrace.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'StringEncoding' do |sp|
-    sp.source_files = 'Sources/Foundation/StringEncoding/GTMStringEncoding.m', 'Sources/Foundation/StringEncoding/Public/Foundation/GTMStringEncoding.h'
-    sp.public_header_files = 'Sources/Foundation/StringEncoding/Public/Foundation/GTMStringEncoding.h'
-    sp.requires_arc = 'Sources/Foundation/StringEncoding/GTMStringEncoding.m', 'Sources/Foundation/StringEncoding/Public/Foundation/GTMStringEncoding.h'
+    sp.source_files = 'Sources/StringEncoding/GTMStringEncoding.m', 'Sources/StringEncoding/Public/Foundation/GTMStringEncoding.h'
+    sp.public_header_files = 'Sources/StringEncoding/Public/Foundation/GTMStringEncoding.h'
+    sp.requires_arc = 'Sources/StringEncoding/GTMStringEncoding.m', 'Sources/StringEncoding/Public/Foundation/GTMStringEncoding.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'NSData+zlib' do |sp|
-    sp.source_files = 'Sources/Foundation/NSData_zlib/GTMNSData+zlib.m', 'Sources/Foundation/NSData_zlib/Public/Foundation/GTMNSData+zlib.h'
-    sp.public_header_files = 'Sources/Foundation/NSData_zlib/Public/Foundation/GTMNSData+zlib.h'
-    sp.requires_arc = 'Sources/Foundation/NSData_zlib/GTMNSData+zlib.m', 'Sources/Foundation/NSData_zlib/Public/Foundation/GTMNSData+zlib.h'
+    sp.source_files = 'Sources/NSData_zlib/GTMNSData+zlib.m', 'Sources/NSData_zlib/Public/Foundation/GTMNSData+zlib.h'
+    sp.public_header_files = 'Sources/NSData_zlib/Public/Foundation/GTMNSData+zlib.h'
+    sp.requires_arc = 'Sources/NSData_zlib/GTMNSData+zlib.m', 'Sources/NSData_zlib/Public/Foundation/GTMNSData+zlib.h'
     sp.libraries = 'z'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'NSFileHandle+UniqueName' do |sp|
-    sp.source_files = 'Sources/Foundation/NSFileHandle_UniqueName/GTMNSFileHandle+UniqueName.m', 'Sources/Foundation/NSFileHandle_UniqueName/Public/Foundation/GTMNSFileHandle+UniqueName.h'
-    sp.public_header_files = 'Sources/Foundation/NSFileHandle_UniqueName/Public/Foundation/GTMNSFileHandle+UniqueName.h'
+    sp.source_files = 'Sources/NSFileHandle_UniqueName/GTMNSFileHandle+UniqueName.m', 'Sources/NSFileHandle_UniqueName/Public/Foundation/GTMNSFileHandle+UniqueName.h'
+    sp.public_header_files = 'Sources/NSFileHandle_UniqueName/Public/Foundation/GTMNSFileHandle+UniqueName.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'NSString+HTML' do |sp|
-    sp.source_files = 'Sources/Foundation/NSString_HTML/GTMNSString+HTML.m', 'Sources/Foundation/NSString_HTML/Public/Foundation/GTMNSString+HTML.h'
-    sp.public_header_files = 'Sources/Foundation/NSString_HTML/Public/Foundation/GTMNSString+HTML.h'
+    sp.source_files = 'Sources/NSString_HTML/GTMNSString+HTML.m', 'Sources/NSString_HTML/Public/Foundation/GTMNSString+HTML.h'
+    sp.public_header_files = 'Sources/NSString_HTML/Public/Foundation/GTMNSString+HTML.h'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
   end
 
   s.subspec 'NSString+XML' do |sp|
-    sp.source_files = 'Sources/Foundation/NSString_XML/GTMNSString+XML.m', 'Sources/Foundation/NSString_XML/Public/Foundation/GTMNSString+XML.h'
-    sp.public_header_files = 'Sources/Foundation/NSString_XML/Public/Foundation/GTMNSString+XML.h'
+    sp.source_files = 'Sources/NSString_XML/GTMNSString+XML.m', 'Sources/NSString_XML/Public/Foundation/GTMNSString+XML.h'
+    sp.public_header_files = 'Sources/NSString_XML/Public/Foundation/GTMNSString+XML.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'NSThread+Blocks' do |sp|
-    sp.source_files = 'Sources/Foundation/NSThread_Blocks/GTMNSThread+Blocks.m', 'Sources/Foundation/NSThread_Blocks/Public/Foundation/GTMNSThread+Blocks.h'
-    sp.public_header_files = 'Sources/Foundation/NSThread_Blocks/Public/Foundation/GTMNSThread+Blocks.h'
+    sp.source_files = 'Sources/NSThread_Blocks/GTMNSThread+Blocks.m', 'Sources/NSThread_Blocks/Public/Foundation/GTMNSThread+Blocks.h'
+    sp.public_header_files = 'Sources/NSThread_Blocks/Public/Foundation/GTMNSThread+Blocks.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 
   s.subspec 'TimeUtils' do |sp|
-    sp.source_files = 'Sources/Foundation/TimeUtils/GTMTimeUtils.m', 'Sources/Foundation/TimeUtils/Public/Foundation/GTMTimeUtils.h'
-    sp.public_header_files = 'Sources/Foundation/TimeUtils/Public/Foundation/GTMTimeUtils.h'
+    sp.source_files = 'Sources/TimeUtils/GTMTimeUtils.m', 'Sources/TimeUtils/Public/Foundation/GTMTimeUtils.h'
+    sp.public_header_files = 'Sources/TimeUtils/Public/Foundation/GTMTimeUtils.h'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
   end
 

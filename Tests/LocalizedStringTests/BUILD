@@ -2,33 +2,33 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
-    name = "TimeUtilsLib",
+    name = "LocalizedStringLib",
     srcs = [
-        "GTMTimeUtilsTest.m",
+        "GTMLocalizedStringTest.m",
     ],
     testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/TimeUtils:TimeUtils",
+        "//Sources/LocalizedString:LocalizedString",
         "//UnitTesting:SenTestCase",
         "//:Defines",
     ],
 )
 
 ios_unit_test(
-    name = "TimeUtilsUnitTest",
+    name = "LocalizedStringUnitTest",
     minimum_os_version = "12.0",
     deps = [
-        ":TimeUtilsLib",
+        ":LocalizedStringLib",
     ],
 )
 
 macos_unit_test(
-    name = "TimeUtilsMacOSUnitTest",
+    name = "LocalizedStringMacOSUnitTest",
     minimum_os_version = "10.10",
     deps = [
-        ":TimeUtilsLib",
+        ":LocalizedStringLib",
     ],
 )

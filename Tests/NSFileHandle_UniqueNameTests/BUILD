@@ -2,33 +2,33 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
-    name = "LocalizedStringLib",
-    srcs = [
-        "GTMLocalizedStringTest.m",
+    name = "NSFileHandle_UniqueNameLib",
+    non_arc_srcs = [
+        "GTMNSFileHandle+UniqueNameTest.m",
     ],
     testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/LocalizedString:LocalizedString",
+        "//Sources/NSFileHandle_UniqueName:NSFileHandle_UniqueName",
         "//UnitTesting:SenTestCase",
         "//:Defines",
     ],
 )
 
 ios_unit_test(
-    name = "LocalizedStringUnitTest",
+    name = "NSFileHandle_UniqueNameUnitTest",
     minimum_os_version = "12.0",
     deps = [
-        ":LocalizedStringLib",
+        ":NSFileHandle_UniqueNameLib",
     ],
 )
 
 macos_unit_test(
-    name = "LocalizedStringMacOSUnitTest",
+    name = "NSFileHandle_UniqueNameMacOSUnitTest",
     minimum_os_version = "10.10",
     deps = [
-        ":LocalizedStringLib",
+        ":NSFileHandle_UniqueNameLib",
     ],
 )

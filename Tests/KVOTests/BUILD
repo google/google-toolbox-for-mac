@@ -2,33 +2,34 @@ load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
-    name = "StringEncodingLib",
-    srcs = [
-        "GTMStringEncodingTest.m",
-    ],
+    name = "KVOLib",
     testonly = 1,
+    non_arc_srcs = [
+        "GTMNSObject+KeyValueObservingTest.m",
+    ],
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/Foundation/StringEncoding:StringEncoding",
-        "//UnitTesting:SenTestCase",
+        "//Sources/KVO:KVO",
         "//:Defines",
+        "//DebugUtils",
+        "//UnitTesting:SenTestCase",
     ],
 )
 
 ios_unit_test(
-    name = "StringEncodingUnitTest",
+    name = "KVOUnitTest",
     minimum_os_version = "12.0",
     deps = [
-        ":StringEncodingLib",
+        ":KVOLib",
     ],
 )
 
 macos_unit_test(
-    name = "StringEncodingMacOSUnitTest",
+    name = "KVOMacOSUnitTest",
     minimum_os_version = "10.10",
     deps = [
-        ":StringEncodingLib",
+        ":KVOLib",
     ],
 )
