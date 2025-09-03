@@ -16,10 +16,6 @@
 //  the License.
 //
 
-#if !__has_feature(objc_arc)
-#error "This file needs to be compiled with ARC enabled."
-#endif
-
 //
 //  MAKVONotificationCenter.m
 //  MAKVONotificationCenter
