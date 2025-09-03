@@ -4,16 +4,16 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 objc_library(
     name = "KVOLib",
     testonly = 1,
-    non_arc_srcs = [
+    srcs = [
         "GTMNSObject+KeyValueObservingTest.m",
     ],
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/KVO:KVO",
         "//:Defines",
         "//DebugUtils",
+        "//Sources/KVO",
         "//UnitTesting:SenTestCase",
     ],
 )

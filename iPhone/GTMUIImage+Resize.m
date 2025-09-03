@@ -87,11 +87,10 @@ GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
 
   // Resize photo. Use UIImage drawing methods because they respect
   // UIImageOrientation as opposed to CGContextDrawImage().
-  UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:targetSize];
-  UIImage *resizedPhoto =
-      [renderer imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull rendererContext) {
-        [self drawInRect:projectTo];
-      }];
+  UIGraphicsBeginImageContext(targetSize);
+  [self drawInRect:projectTo];
+  UIImage* resizedPhoto = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
   return resizedPhoto;
 }
 
@@ -157,31 +156,30 @@ GTM_INLINE CGSize swapWidthAndHeight(CGSize size) {
       return nil;
   }
 
-  UIGraphicsImageRendererFormat *rendererFormat = [[UIGraphicsImageRendererFormat alloc] init];
-  rendererFormat.scale = self.scale;
-  UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:bounds.size
-                                                                             format:rendererFormat];
-  UIImage *rotatedImage =
-      [renderer imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull rendererContext) {
-        CGContextRef context = rendererContext.CGContext;
-        switch (orientation) {
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-          CGContextScaleCTM(context, -1.0, 1.0);
-          CGContextTranslateCTM(context, -rect.size.height, 0.0);
-          break;
+  UIGraphicsBeginImageContextWithOptions(bounds.size, NO, self.scale);
+  CGContextRef context = UIGraphicsGetCurrentContext();
 
-        default:
-          CGContextScaleCTM(context, 1.0, -1.0);
-          CGContextTranslateCTM(context, 0.0, -rect.size.height);
-          break;
-        }
+  switch (orientation) {
+    case UIImageOrientationLeft:
+    case UIImageOrientationLeftMirrored:
+    case UIImageOrientationRight:
+    case UIImageOrientationRightMirrored:
+      CGContextScaleCTM(context, -1.0, 1.0);
+      CGContextTranslateCTM(context, -rect.size.height, 0.0);
+      break;
 
-        CGContextConcatCTM(context, transform);
-        CGContextDrawImage(context, rect, [self CGImage]);
-      }];
+    default:
+      CGContextScaleCTM(context, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, -rect.size.height);
+      break;
+  }
+
+  CGContextConcatCTM(context, transform);
+  CGContextDrawImage(context, rect, [self CGImage]);
+
+  UIImage *rotatedImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
   return rotatedImage;
 }
 

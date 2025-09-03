@@ -3,20 +3,20 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 
 objc_library(
     name = "KVO",
+    srcs = [
+        "GTMNSObject+KeyValueObserving.m",
+    ],
     hdrs = [
         "Public/Foundation/GTMNSObject+KeyValueObserving.h",
     ],
-    non_arc_srcs = [
-        "GTMNSObject+KeyValueObserving.m",
+    copts = ["-IDebugUtils"],
+    includes = [
+        "DebugUtils",
+        "Public/Foundation",
     ],
     sdk_frameworks = [
         "CoreGraphics",
     ],
-    includes = [
-        "Public/Foundation",
-        "DebugUtils",
-    ],
-    copts = ["-IDebugUtils"],
     visibility = ["//visibility:public"],
     deps = [
         "//:Defines",

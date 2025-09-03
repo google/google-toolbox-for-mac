@@ -44,7 +44,7 @@
 		8B5769AB21CD7ACF00D924D3 /* GTMTimeUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B5769A921CD798000D924D3 /* GTMTimeUtilsTest.m */; };
 		8B61FDC00E4CDB8000FF9C21 /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61FDBF0E4CDB8000FF9C21 /* GTMStackTrace.m */; };
 		8B6C15930F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6C15910F356E6400E51E5D /* GTMNSObject+KeyValueObserving.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */; };
+		8B6C15940F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C15920F356E6400E51E5D /* GTMNSObject+KeyValueObserving.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8B6F4B630E8856CA00425D9F /* GTMDebugThreadValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6F4B610E8856CA00425D9F /* GTMDebugThreadValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B6F4B640E8856CA00425D9F /* GTMDebugThreadValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F4B620E8856CA00425D9F /* GTMDebugThreadValidation.m */; };
 		8B7DCBA50DFF0EFF0017E983 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F42E086D0D199A5B00D5DDE0 /* GoogleToolboxForMac.framework */; };
@@ -75,7 +75,7 @@
 		8BFE6E891282371200B5C894 /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4E600D4E5EC90041161F /* GTMNSData+zlibTest.m */; };
 		8BFE6E8D1282371200B5C894 /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B29078611F8D1BF0064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
 		8BFE6E8F1282371200B5C894 /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F413908E0D75F63C00F72B31 /* GTMNSFileManager+PathTest.m */; };
-		8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
+		8BFE6E911282371200B5C894 /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C161B0F3580DA00E51E5D /* GTMNSObject+KeyValueObservingTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8BFE6E951282371200B5C894 /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F48FE2900D198D24009257D2 /* GTMNSString+HTMLTest.m */; };
 		8BFE6E981282371200B5C894 /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E4C270D4E361D0041161F /* GTMNSString+XMLTest.m */; };
 		8BFE6E9C1282371200B5C894 /* GTMScriptRunnerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F47A79870D746EE9002302AB /* GTMScriptRunnerTest.m */; };

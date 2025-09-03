@@ -72,6 +72,8 @@ Pod::Spec.new do |s|
     sp.source_files =
         'Sources/KVO/GTMNSObject+KeyValueObserving.m', 'Sources/KVO/Public/Foundation/GTMNSObject+KeyValueObserving.h'
     sp.public_header_files = 'Sources/KVO/Public/Foundation/GTMNSObject+KeyValueObserving.h'
+    sp.requires_arc =
+        'Sources/KVO/GTMNSObject+KeyValueObserving.{h,m}'
     sp.dependency 'GoogleToolboxForMac/Core', "#{s.version}"
     sp.dependency 'GoogleToolboxForMac/DebugUtils', "#{s.version}"
   end

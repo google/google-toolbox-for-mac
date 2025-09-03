@@ -21,7 +21,7 @@
 		8B82CF081D9C1C3B007182AA /* GTMNSData+zlib.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */; };
 		8B82CF0A1D9C1C3B007182AA /* GTMNSFileManager+Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047850DAE928A00C2D1CA /* GTMNSFileManager+Path.m */; };
 		8B82CF0B1D9C1C3B007182AA /* GTMNSFileHandle+UniqueName.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2908B011F8E7070064F50F /* GTMNSFileHandle+UniqueName.m */; };
-		8B82CF0D1D9C1C3B007182AA /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */; };
+		8B82CF0D1D9C1C3B007182AA /* GTMNSObject+KeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18720F3769D200E51E5D /* GTMNSObject+KeyValueObserving.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8B82CF0F1D9C1C3B007182AA /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047880DAE928A00C2D1CA /* GTMNSString+HTML.m */; };
 		8B82CF111D9C1C3B007182AA /* GTMNSString+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0478B0DAE928A00C2D1CA /* GTMNSString+XML.m */; };
 		8B82CF121D9C1C3B007182AA /* GTMNSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF392151A664600B0642B /* GTMNSThread+Blocks.m */; };
@@ -41,7 +41,7 @@
 		8B82CF3B1D9C2373007182AA /* GTMNSData+zlibTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */; };
 		8B82CF3D1D9C2373007182AA /* GTMNSFileManager+PathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047860DAE928A00C2D1CA /* GTMNSFileManager+PathTest.m */; };
 		8B82CF3E1D9C2373007182AA /* GTMNSFileHandle+UniqueNameTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2908B111F8E7070064F50F /* GTMNSFileHandle+UniqueNameTest.m */; };
-		8B82CF401D9C2373007182AA /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; };
+		8B82CF401D9C2373007182AA /* GTMNSObject+KeyValueObservingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6C18730F3769D200E51E5D /* GTMNSObject+KeyValueObservingTest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8B82CF421D9C2373007182AA /* GTMNSString+HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC047890DAE928A00C2D1CA /* GTMNSString+HTMLTest.m */; };
 		8B82CF441D9C2373007182AA /* GTMNSString+XMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC0478C0DAE928A00C2D1CA /* GTMNSString+XMLTest.m */; };
 		8B82CF451D9C2373007182AA /* GTMNSThread+BlocksTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6FF393151A664600B0642B /* GTMNSThread+BlocksTest.m */; };
@@ -63,6 +63,16 @@
 		8BF753DF1D9DB3740010A295 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF753DE1D9DB3740010A295 /* libsqlite3.tbd */; };
 		F4A1EEA52B62D38F008B2FC1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F4A1EEA12B62D338008B2FC1 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8BFA30492E562C740037F469 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B82CEF51D9C17DE007182AA;
+			remoteInfo = GTM;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8B82CEF41D9C17DE007182AA /* CopyFiles */ = {
@@ -462,6 +472,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8BFA304A2E562C740037F469 /* PBXTargetDependency */,
 			);
 			name = GTMTests;
 			productName = GTMTests;
@@ -592,6 +603,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8BFA304A2E562C740037F469 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B82CEF51D9C17DE007182AA /* GTM */;
+			targetProxy = 8BFA30492E562C740037F469 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8B82CEFD1D9C17DE007182AA /* Debug */ = {
