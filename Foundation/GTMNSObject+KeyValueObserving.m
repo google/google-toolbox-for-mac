@@ -27,7 +27,9 @@
 // See comment in header.
 #import "GTMNSObject+KeyValueObserving.h"
 
+#import <libkern/OSAtomic.h>
 #include <objc/runtime.h>
+#import <stdatomic.h>
 
 #import "GTMDefines.h"
 #import "GTMDebugSelectorValidation.h"
@@ -62,10 +64,11 @@
 @end
 
 @interface GTMKeyValueObservingHelper : NSObject {
-  __weak id observer_;
+ @private
+  GTM_WEAK id observer_;
   SEL selector_;
   id userInfo_;
-  __weak id target_;
+  GTM_WEAK id target_;
   NSString* keyPath_;
 }
 
@@ -103,10 +106,10 @@ static char* GTMKeyValueObservingHelperContext
   if((self = [super init])) {
     observer_ = observer;
     selector_ = selector;
-    userInfo_ = userInfo;
+    userInfo_ = [userInfo retain];
 
     target_ = target;
-    keyPath_ = keyPath;
+    keyPath_ = [keyPath retain];
 
     [target addObserver:self
              forKeyPath:keyPath
@@ -128,6 +131,9 @@ static char* GTMKeyValueObservingHelperContext
     _GTMDevLog(@"Didn't deregister %@", self);
     [self deregister];
   }
+  [userInfo_ release];
+  [keyPath_ release];
+  [super dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -140,11 +146,8 @@ static char* GTMKeyValueObservingHelperContext
                                                       ofObject:object
                                                       userInfo:userInfo_
                                                         change:change];
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    // We are good here because the selector should not return anything.
     [observer_ performSelector:selector_ withObject:notification];
-    #pragma clang diagnostic pop
+    [notification release];
   } else {
     // COV_NF_START
     // There's no way this should ever be called.
@@ -160,7 +163,6 @@ static char* GTMKeyValueObservingHelperContext
 - (void)deregister {
   [target_ removeObserver:self forKeyPath:keyPath_];
   target_ = nil;
-  observer_ = nil;
 }
 
 @end
@@ -168,12 +170,19 @@ static char* GTMKeyValueObservingHelperContext
 @implementation GTMKeyValueObservingCenter
 
 + (instancetype)defaultCenter {
-    static dispatch_once_t onceToken;
-    static GTMKeyValueObservingCenter *center;
-    dispatch_once(&onceToken, ^{
-        center = [[self alloc] init];
-    });
-    return center;
+  static _Atomic (GTMKeyValueObservingCenter *)center = nil;
+  if(!center) {
+    // do a bit of clever atomic setting to make this thread safe
+    // if two threads try to set simultaneously, one will fail
+    // and the other will set things up so that the failing thread
+    // gets the shared center
+    GTMKeyValueObservingCenter *newCenter = [[self alloc] init];
+    GTMKeyValueObservingCenter *expected = nil;
+    if (!atomic_compare_exchange_strong(&center, &expected, newCenter)) {
+      [newCenter release];  // COV_NF_LINE no guarantee we'll hit this line
+    }
+  }
+  return center;
 }
 
 - (instancetype)init {
@@ -182,6 +191,14 @@ static char* GTMKeyValueObservingHelperContext
   }
   return self;
 }
+
+// COV_NF_START
+// Singletons don't get deallocated
+- (void)dealloc {
+  [observerHelpers_ release];
+  [super dealloc];
+}
+// COV_NF_END
 
 - (id)dictionaryKeyForObserver:(id)observer
                       ofObject:(id)target
@@ -223,6 +240,7 @@ static char* GTMKeyValueObservingHelperContext
     }
     [observerHelpers_ setObject:helper forKey:key];
   }
+  [helper release];
 }
 
 - (void)removeObserver:(id)observer
@@ -320,11 +338,19 @@ static char* GTMKeyValueObservingHelperContext
                          change:(NSDictionary *)change {
   if ((self = [super init])) {
     keyPath_ = [keyPath copy];
-    object_ = object;
-    userInfo_ = userInfo;
-    change_ = change;
+    object_ = [object retain];
+    userInfo_ = [userInfo retain];
+    change_ = [change retain];
   }
   return self;
+}
+
+- (void)dealloc {
+  [keyPath_ release];
+  [object_ release];
+  [userInfo_ release];
+  [change_ release];
+  [super dealloc];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
@@ -422,41 +448,40 @@ GTM_METHOD_CHECK(NSArray,
     _gtmDebugArrayRemoveObserver:fromObjectsAtIndexes:forKeyPath:);
 
 + (void)load {
-  @autoreleasepool {
-
-    NSDictionary *env = [[NSProcessInfo processInfo] environment];
-    id debugKeyValue = [env valueForKey:@"GTMDebugKVO"];
-    BOOL debug = NO;
-    if ([debugKeyValue isKindOfClass:[NSNumber class]]) {
-      debug = [debugKeyValue intValue] != 0 ? YES : NO;
-    } else if ([debugKeyValue isKindOfClass:[NSString class]]) {
-      debug = ([debugKeyValue hasPrefix:@"Y"] || [debugKeyValue hasPrefix:@"T"] ||
-               [debugKeyValue intValue]);
-    }
-    Class cls = Nil;
-    if (debug) {
-      cls = [NSObject class];
-      SwizzleMethodsInClass(cls,
-                            @selector(addObserver:forKeyPath:options:context:),
-                            @selector(_gtmDebugAddObserver:forKeyPath:options:context:));
-      SwizzleMethodsInClass(cls,
-                            @selector(removeObserver:forKeyPath:),
-                            @selector(_gtmDebugRemoveObserver:forKeyPath:));
-      SwizzleMethodsInClass(cls,
-                            @selector(willChangeValueForKey:),
-                            @selector(_gtmDebugWillChangeValueForKey:));
-      SwizzleMethodsInClass(cls,
-                            @selector(didChangeValueForKey:),
-                            @selector(_gtmDebugDidChangeValueForKey:));
-      cls = [NSArray class];
-      SwizzleMethodsInClass(cls,
-                            @selector(addObserver:toObjectsAtIndexes:forKeyPath:options:context:),
-                            @selector(_gtmDebugArrayAddObserver:toObjectsAtIndexes:forKeyPath:options:context:));
-      SwizzleMethodsInClass(cls,
-                            @selector(removeObserver:fromObjectsAtIndexes:forKeyPath:),
-                            @selector(_gtmDebugArrayRemoveObserver:fromObjectsAtIndexes:forKeyPath:));
-    }
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  NSDictionary *env = [[NSProcessInfo processInfo] environment];
+  id debugKeyValue = [env valueForKey:@"GTMDebugKVO"];
+  BOOL debug = NO;
+  if ([debugKeyValue isKindOfClass:[NSNumber class]]) {
+    debug = [debugKeyValue intValue] != 0 ? YES : NO;
+  } else if ([debugKeyValue isKindOfClass:[NSString class]]) {
+    debug = ([debugKeyValue hasPrefix:@"Y"] || [debugKeyValue hasPrefix:@"T"] ||
+             [debugKeyValue intValue]);
   }
+  Class cls = Nil;
+  if (debug) {
+    cls = [NSObject class];
+    SwizzleMethodsInClass(cls,
+        @selector(addObserver:forKeyPath:options:context:),
+        @selector(_gtmDebugAddObserver:forKeyPath:options:context:));
+    SwizzleMethodsInClass(cls,
+        @selector(removeObserver:forKeyPath:),
+        @selector(_gtmDebugRemoveObserver:forKeyPath:));
+    SwizzleMethodsInClass(cls,
+        @selector(willChangeValueForKey:),
+        @selector(_gtmDebugWillChangeValueForKey:));
+    SwizzleMethodsInClass(cls,
+        @selector(didChangeValueForKey:),
+        @selector(_gtmDebugDidChangeValueForKey:));
+    cls = [NSArray class];
+    SwizzleMethodsInClass(cls,
+        @selector(addObserver:toObjectsAtIndexes:forKeyPath:options:context:),
+        @selector(_gtmDebugArrayAddObserver:toObjectsAtIndexes:forKeyPath:options:context:));
+    SwizzleMethodsInClass(cls,
+        @selector(removeObserver:fromObjectsAtIndexes:forKeyPath:),
+        @selector(_gtmDebugArrayRemoveObserver:fromObjectsAtIndexes:forKeyPath:));
+  }
+  [pool drain];
 }
 
 - (void)_gtmDebugAddObserver:(NSObject *)observer

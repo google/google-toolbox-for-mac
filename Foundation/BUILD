@@ -32,7 +32,7 @@ objc_library(
         "GTMNSObject+KeyValueObserving.h",
     ],
     copts = ["-IDebugUtils"],
-    srcs = [
+    non_arc_srcs = [
         "GTMNSObject+KeyValueObserving.m",
     ],
     sdk_frameworks = [
