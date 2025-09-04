@@ -66,10 +66,16 @@
 @end
 
 @interface GTMKeyValueObservingHelper : NSObject {
+  // observer_ is weak so if the observer is dealloc'd without being removed it should
+  // be a no-op if the value is modified. This is just to be safe.
   __weak id observer_;
   SEL selector_;
   id userInfo_;
-  __weak id target_;
+  // target_ is _unsafe_unretained to prevent retain loops if self is observing self.
+  // It is intentionally not _weak so that one can call `deregister` in dealloc.
+  // In some versions of iOS _weak pointers are set to nil *before* dealloc is called on
+  // the object, which means that the `deregister` method would fail.
+  __unsafe_unretained id target_;
   NSString* keyPath_;
 }
 
