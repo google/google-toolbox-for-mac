@@ -64,8 +64,12 @@ static BOOL gSelfReferencingKVODeallocCalled = NO;
 
 - (void)dealloc {
   [self gtm_stopObservingAllKeyPaths];
-  // This verifies that KVO has been deregistered.
-  XCTAssertNil([self observationInfo], @"%@", [self observationInfo]);
+  #if !(defined(__x86_64__) && (defined(TARGET_OS_TV) || defined(TARGET_OS_IOS)))
+    // This verifies that KVO has been deregistered.
+    // FB20091232 - Calling `[self observationInfo]` in dealloc causes crash under rosetta only on
+    // ios and tvos simulators.
+    XCTAssertNil([self observationInfo], @"%@", [self observationInfo]);
+  #endif
   gSelfReferencingKVODeallocCalled = YES;
 }
 
