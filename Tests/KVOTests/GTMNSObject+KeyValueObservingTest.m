@@ -44,6 +44,41 @@
 
 @end
 
+static BOOL gSelfReferencingKVODeallocCalled = NO;
+
+@interface SelfReferencingKVO : NSObject
+@property(nonatomic) int count;
+@property(nonatomic) BOOL sawSelf;
+@end
+
+@implementation SelfReferencingKVO
+- (instancetype)init {
+  self = [super init];
+  [self gtm_addObserver:self
+             forKeyPath:GTM_SEL_STRING(count)
+               selector:@selector(countDidChange:)
+               userInfo:nil
+                options:0];
+  return self;
+}
+
+- (void)dealloc {
+  [self gtm_stopObservingAllKeyPaths];
+  #if !(defined(__x86_64__) && (defined(TARGET_OS_TV) || defined(TARGET_OS_IOS)))
+    // This verifies that KVO has been deregistered.
+    // FB20091232 - Calling `[self observationInfo]` in dealloc causes crash under rosetta only on
+    // ios and tvos simulators.
+    XCTAssertNil([self observationInfo], @"%@", [self observationInfo]);
+  #endif
+  gSelfReferencingKVODeallocCalled = YES;
+}
+
+- (void)countDidChange:(GTMKeyValueChangeNotification *)notification {
+  self.sawSelf = YES;
+}
+
+@end
+
 @implementation GTMNSObject_KeyValueObservingTest
 - (void)setUp {
   dict_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -118,6 +153,20 @@
   GTMKeyValueChangeNotification *copy = [notification copy];
   XCTAssertEqualObjects(notification, copy);
   XCTAssertEqual([notification hash], [copy hash]);
+}
+
+- (void)testSelfReferencingKVO {
+  // This test is for verifying that the KVO code does not cause a self-retain cycle, and that
+  // the KVO is properly cleaned up when the object is deallocated.
+  // See assert in [SelfReferencingKVO dealloc] that verifies that KVO has been deregistered.
+  SelfReferencingKVO *selfReferencingKVO = [[SelfReferencingKVO alloc] init];
+  XCTAssertEqual(selfReferencingKVO.count, 0);
+  selfReferencingKVO.count = 1;
+  XCTAssertEqual(selfReferencingKVO.count, 1);
+  XCTAssertEqual(selfReferencingKVO.sawSelf, YES);
+  XCTAssertFalse(gSelfReferencingKVODeallocCalled);
+  selfReferencingKVO = nil;
+  XCTAssertTrue(gSelfReferencingKVODeallocCalled);
 }
 
 @end
