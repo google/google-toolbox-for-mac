@@ -174,7 +174,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'UnitTesting' do |sp|
-    sp.source_files = 'UnitTesting/GTMSenTestCase.{h,m}'
+    sp.source_files = 'UnitTesting/SenTestCase/include/GTMSenTestCase.h', 'UnitTesting/SenTestCase/GTMSenTestCase.m'
+    sp.public_header_files = 'UnitTesting/SenTestCase/include/GTMSenTestCase.h'
     sp.frameworks = 'XCTest'
     sp.dependency 'GoogleToolboxForMac/Defines', "#{s.version}"
     # Enable GTMSenTestCase.h to find <XCTest/XCTest.h>

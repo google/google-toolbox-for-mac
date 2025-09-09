@@ -5,12 +5,12 @@ objc_library(
     name = "SenTestCase",
     testonly = 1,
     hdrs = [
-        "GTMSenTestCase.h",
+        "SenTestCase/include/GTMSenTestCase.h",
     ],
+    includes = ["SenTestCase/include"],
     non_arc_srcs = [
-        "GTMSenTestCase.m",
+        "SenTestCase/GTMSenTestCase.m",
     ],
-    includes = ["."],
     visibility = ["//visibility:public"],
     deps = [
         "//:Defines",
