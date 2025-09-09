@@ -15,6 +15,7 @@ on:
       - '.github/workflows/xcode.yml'
       - '*.xcodeproj/**'
       - 'XcodeConfig/**'
+      - '!**/BUILD'
   pull_request:
     branches: [ main ]
     paths:
@@ -29,6 +30,7 @@ on:
       - '.github/workflows/xcode.yml'
       - '*.xcodeproj/**'
       - 'XcodeConfig/**'
+      - '!**/BUILD'
   schedule:
     # Run the first and fifteenth of every month at 4:15 UTC
     - cron:  '15 4 1,15 * *'
