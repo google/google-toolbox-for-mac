@@ -3,7 +3,8 @@ load("@build_bazel_rules_apple//apple:macos.bzl", "macos_build_test")
 
 objc_library(
     name = "Defines",
-    hdrs = ["GTMDefines.h"],
+    hdrs = ["Sources/Defines/Public/GTMDefines.h"],
+    includes = ["Sources/Defines/Public"],
     visibility = ["//visibility:public"],
 )
 

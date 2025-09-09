@@ -1,0 +1,63 @@
+name: SPM
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Sources/**'
+      - 'Tests/**'
+      - 'UnitTesting/**'
+      - 'Package.swift'
+      - '.github/workflows/spm.yml'
+      - '!**/BUILD'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'Sources/**'
+      - 'Tests/**'
+      - 'UnitTesting/**'
+      - 'Package.swift'
+      - '.github/workflows/spm.yml'
+      - '!**/BUILD'
+  schedule:
+    # Run the first and fifteenth of every month at 4:18 UTC
+    - cron:  '18 4 1,18 * *'
+  # Also allow manual triggering from the github UX to revalidate things.
+  workflow_dispatch:
+
+jobs:
+  spm:
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        MODE: ["Debug", "Release"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: spm build
+        run: |
+          spm_mode=""
+          if [ "${{ matrix.MODE }}" == "Debug" ]; then
+            spm_mode="debug"
+          elif [ "${{ matrix.MODE }}" == "Release" ]; then
+            spm_mode="release"
+          else
+            echo "Invalid mode: ${{ matrix.MODE }}"
+            exit 1
+          fi
+          swift build -c $spm_mode
+          swift test -c $spm_mode
+          # Remove the xcodeproj so that we can build SPM with xcodebuild.
+          rm -rf *.xcodeproj
+          # For iOS and tvOS, tests are skipped for now because
+          # setting up a Host Application in SPM is much more complex.
+          xcodebuild \
+            -scheme GoogleToolboxForMac-Package \
+            -destination 'generic/platform=iOS' \
+            -configuration ${{ matrix.MODE }} \
+            build
+          xcodebuild \
+            -scheme GoogleToolboxForMac-Package \
+            -destination 'generic/platform=tvOS' \
+            -configuration ${{ matrix.MODE }} \
+            build
