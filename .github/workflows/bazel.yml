@@ -8,6 +8,8 @@ on:
       - 'DebugUtils/**'
       - 'Foundation/**'
       - 'Resources/**'
+      - 'Sources/**'
+      - 'Tests/**'
       - 'UnitTesting/**'
       - 'iPhone/**'
       - 'BUILD.bazel'
@@ -23,6 +25,8 @@ on:
       - 'DebugUtils/**'
       - 'Foundation/**'
       - 'Resources/**'
+      - 'Sources/**'
+      - 'Tests/**'
       - 'UnitTesting/**'
       - 'iPhone/**'
       - 'BUILD.bazel'
@@ -56,4 +60,4 @@ jobs:
         repository-cache: true
     - name: bazel test
       run:  |
-        bazelisk test --build_tests_only --test_output=errors -c "${{ matrix.MODE }}" //...
+        bazelisk test --build_tests_only --test_output=errors -c "${{ matrix.MODE }}" --ios_simulator_device='iPhone 15' //...
