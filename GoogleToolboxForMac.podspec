@@ -37,8 +37,8 @@ Pod::Spec.new do |s|
                        'NSString+XML', 'NSThread+Blocks'
 
   s.subspec 'Defines' do |sp|
-    sp.public_header_files = 'GTMDefines.h'
-    sp.source_files = 'GTMDefines.h'
+    sp.public_header_files = 'Sources/Defines/Public/GTMDefines.h'
+    sp.source_files = 'Sources/Defines/Public/GTMDefines.h'
     sp.resource_bundle = {
       "GoogleToolboxForMac_Privacy" => "Resources/Base/PrivacyInfo.xcprivacy"
     }

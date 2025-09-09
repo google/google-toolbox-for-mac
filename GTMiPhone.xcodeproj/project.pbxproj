@@ -134,7 +134,7 @@
 		8B82CF561D9C24D9007182AA /* iOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = iOS.xcconfig; sourceTree = "<group>"; };
 		8B82CF571D9C24D9007182AA /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		8B82CF581D9C24D9007182AA /* Unittest.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Unittest.xcconfig; sourceTree = "<group>"; };
-		8BC047750DAE926E00C2D1CA /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
+		8BC047750DAE926E00C2D1CA /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = Sources/Defines/Public/GTMDefines.h; sourceTree = SOURCE_ROOT; };
 		8BC0477E0DAE928A00C2D1CA /* GTMNSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "GTMNSData+zlib.h"; path = "Sources/NSData_zlib/Public/Foundation/GTMNSData+zlib.h"; sourceTree = SOURCE_ROOT; };
 		8BC0477F0DAE928A00C2D1CA /* GTMNSData+zlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "GTMNSData+zlib.m"; path = "Sources/NSData_zlib/GTMNSData+zlib.m"; sourceTree = SOURCE_ROOT; };
 		8BC047800DAE928A00C2D1CA /* GTMNSData+zlibTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "GTMNSData+zlibTest.m"; path = "Tests/NSData_zlibTests/GTMNSData+zlibTest.m"; sourceTree = SOURCE_ROOT; };
