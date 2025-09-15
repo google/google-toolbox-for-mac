@@ -46,10 +46,6 @@ jobs:
         MODE: ["Debug", "Release"]
     steps:
     - uses: actions/checkout@v5
-    - name: Select Xcode Version
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: 'latest-stable'
     - name: Build and Test
       run:  |
         xcodebuild \
@@ -65,10 +61,6 @@ jobs:
         MODE: ["Debug", "Release"]
     steps:
     - uses: actions/checkout@v5
-    - name: Select Xcode Version
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: 'latest-stable'
     - name: Build and Test
       run:  |
         xcodebuild \

@@ -50,10 +50,6 @@ jobs:
         MODE: ["dbg", "opt"]
     steps:
     - uses: actions/checkout@v5
-    - name: Select Xcode Version
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: 'latest-stable'
     - uses: bazel-contrib/setup-bazel@0.15.0
       with:
         bazelisk-cache: true
