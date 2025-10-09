@@ -20,7 +20,7 @@ let package = Package(
     .library(
       name: "GTMStringEncoding",
       targets: ["GTMStringEncoding"]
-    ),
+    )
   ],
   targets: [
     .target(
@@ -74,7 +74,7 @@ let package = Package(
       path: "UnitTesting/SenTestCase",
       exclude: [
         "GTMSenTestCaseTest.m"
-      ],
+      ]
     ),
     .testTarget(
       name: "GTMLoggerTests",
@@ -101,6 +101,6 @@ let package = Package(
       exclude: [
         "BUILD"
       ]
-    ),
+    )
   ]
 )
