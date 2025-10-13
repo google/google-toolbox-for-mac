@@ -74,7 +74,7 @@ let package = Package(
       path: "UnitTesting/SenTestCase",
       exclude: [
         "GTMSenTestCaseTest.m"
-      ],
+      ]
     ),
     .testTarget(
       name: "GTMLoggerTests",
