@@ -68,6 +68,7 @@
 
   // Resize with same aspect ratio.
   CGSize size50x50 = CGSizeMake(50, 50);
+  CGFloat expectedScale = [originalImage scale];
   actual = [originalImage gtm_imageByResizingToSize:size50x50
                                 preserveAspectRatio:NO
                                           trimToFit:NO];
@@ -75,6 +76,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size50x50),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Resize with different aspect ratio
   CGSize size60x40 = CGSizeMake(60, 40);
@@ -85,6 +92,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size60x40),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   CGSize size40x60 = CGSizeMake(40, 60);
   actual = [originalImage gtm_imageByResizingToSize:size40x60
@@ -94,6 +107,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size40x60),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 }
 
 - (void)testImageByResizingPreservingAspectRatioWithoutClip {
@@ -104,6 +123,7 @@
   // Landscape resize to 50x50, but clipped to 50x25.
   CGSize size50x50 = CGSizeMake(50, 50);
   CGSize expected50x25 = CGSizeMake(50, 25);
+  CGFloat expectedScale = [landscapeImage scale];
   actual = [landscapeImage gtm_imageByResizingToSize:size50x50
                                  preserveAspectRatio:YES
                                            trimToFit:NO];
@@ -111,6 +131,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(expected50x25),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Landscape resize to 60x40, but clipped to 60x30.
   CGSize size60x40 = CGSizeMake(60, 40);
@@ -123,6 +149,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(expected60x30),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Landscape resize to 40x60, but clipped to 40x20.
   CGSize expected40x20 = CGSizeMake(40, 20);
@@ -134,6 +166,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(expected40x20),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Portrait Image
   UIImage *portraitImage = [self testImageNamed:@"GTMUIImage+Resize_50x100"];
@@ -147,6 +185,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(expected25x50),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Portrait resize to 60x40, but clipped to 20x40.
   CGSize expected20x40 = CGSizeMake(20, 40);
@@ -157,6 +201,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(expected20x40),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Portrait resize to 40x60, but clipped to 30x60.
   CGSize expected30x60 = CGSizeMake(30, 60);
@@ -167,6 +217,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(expected30x60),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 }
 
 - (void)testImageByResizingPreservingAspectRatioWithClip {
@@ -176,6 +232,7 @@
 
   // Landscape resize to 50x50
   CGSize size50x50 = CGSizeMake(50, 50);
+  CGFloat expectedScale = [landscapeImage scale];
   actual = [landscapeImage gtm_imageByResizingToSize:size50x50
                                  preserveAspectRatio:YES
                                            trimToFit:YES];
@@ -183,6 +240,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size50x50),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Landscape resize to 60x40
   CGSize size60x40 = CGSizeMake(60, 40);
@@ -193,6 +256,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size60x40),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Landscape resize to 40x60
   CGSize size40x60 = CGSizeMake(40, 60);
@@ -203,6 +272,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size40x60),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Portrait Image.
   UIImage *portraitImage = [self testImageNamed:@"GTMUIImage+Resize_50x100"];
@@ -215,6 +290,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size50x50),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Portrait resize to 60x40
   actual = [portraitImage gtm_imageByResizingToSize:size60x40
@@ -224,6 +305,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size60x40),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Portrait resize to 40x60.
   actual = [portraitImage gtm_imageByResizingToSize:size40x60
@@ -233,6 +320,12 @@
                 @"Resized image should equal size: %@ actual: %@",
                 NSStringFromCGSize(size40x60),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 }
 
 - (void)testImageByRotating {
@@ -241,6 +334,7 @@
 
   CGSize size50x100 = CGSizeMake(50, 100);
   CGSize size100x50 = CGSizeMake(100, 50);
+  CGFloat expectedScale = [landscapeImage scale];
 
   // Rotate 90 degrees.
   UIImage *actual = [landscapeImage gtm_imageByRotating:UIImageOrientationRight];
@@ -248,6 +342,12 @@
   XCTAssertTrue(CGSizeEqualToSize([actual size], size50x100),
                 @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size50x100),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Rotate 180 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationDown];
@@ -255,6 +355,12 @@
   XCTAssertTrue(CGSizeEqualToSize([actual size], size100x50),
                 @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size100x50),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Rotate 270 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationLeft];
@@ -262,6 +368,12 @@
   XCTAssertTrue(CGSizeEqualToSize([actual size], size50x100),
                 @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size50x100),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 
   // Rotate 360 degrees.
   actual = [landscapeImage gtm_imageByRotating:UIImageOrientationUp];
@@ -269,6 +381,12 @@
   XCTAssertTrue(CGSizeEqualToSize([actual size], size100x50),
                 @"Resized image should equal size: %@ actual: %@", NSStringFromCGSize(size100x50),
                 NSStringFromCGSize([actual size]));
+  XCTAssertEqualWithAccuracy([actual scale],
+                             expectedScale,
+                             0.000000001,
+                             @"Resized image should have scale: %f actual: %f",
+                             expectedScale,
+                             [actual scale]);
 }
 
 @end
