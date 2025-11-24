@@ -33,7 +33,7 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: spm build
         run: |
           spm_mode=""

@@ -45,7 +45,7 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Build and Test
       run:  |
         xcodebuild \
@@ -60,7 +60,7 @@ jobs:
       matrix:
         MODE: ["Debug", "Release"]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Build and Test
       run:  |
         xcodebuild \

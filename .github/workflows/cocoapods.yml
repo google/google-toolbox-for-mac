@@ -44,7 +44,7 @@ jobs:
         # Can't shard by platform because of https://github.com/CocoaPods/CocoaPods/issues/11358
         CONFIGURATION: ["Debug", "Release"]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Pod lib lint
       run:  |
         pod lib lint --verbose \
