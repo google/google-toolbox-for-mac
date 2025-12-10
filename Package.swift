@@ -20,7 +20,7 @@ let package = Package(
     .library(
       name: "GTMStringEncoding",
       targets: ["GTMStringEncoding"]
-    ),
+    )
   ],
   targets: [
     .target(
@@ -101,6 +101,6 @@ let package = Package(
       exclude: [
         "BUILD"
       ]
-    ),
+    )
   ]
 )
