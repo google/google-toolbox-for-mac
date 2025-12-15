@@ -4,7 +4,7 @@ module(
     compatibility_level = 0,
 )
 
-bazel_dep(name = "rules_apple", version = "4.3.2", repo_name = "build_bazel_rules_apple")
+bazel_dep(name = "rules_apple", version = "4.3.3", repo_name = "build_bazel_rules_apple")
 
 # Workaround https://github.com/bazelbuild/bazel/issues/20537
 bazel_dep(name = "apple_support", version = "1.24.5", repo_name = "build_bazel_apple_support")
