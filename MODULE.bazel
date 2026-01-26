@@ -7,4 +7,4 @@ module(
 bazel_dep(name = "rules_apple", version = "4.3.3", repo_name = "build_bazel_rules_apple")
 
 # Workaround https://github.com/bazelbuild/bazel/issues/20537
-bazel_dep(name = "apple_support", version = "2.1.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "apple_support", version = "2.2.0", repo_name = "build_bazel_apple_support")
