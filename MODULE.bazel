@@ -1,10 +1,10 @@
-module(
-    name = "google_toolbox_for_mac",
-    version = "5.0.0",
-    compatibility_level = 0,
-)
+module(name = "google_toolbox_for_mac", version = "5.0.0")
 
-bazel_dep(name = "rules_apple", version = "4.3.3", repo_name = "build_bazel_rules_apple")
-
-# Workaround https://github.com/bazelbuild/bazel/issues/20537
 bazel_dep(name = "apple_support", version = "2.2.0", repo_name = "build_bazel_apple_support")
+bazel_dep(name = "rules_apple", version = "4.3.3", repo_name = "build_bazel_rules_apple")
+bazel_dep(name = "rules_cc", version = "0.2.16")
+
+apple_cc_configure = use_extension("@build_bazel_apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
+use_repo(apple_cc_configure, "local_config_apple_cc", "local_config_apple_cc_toolchains")
+
+register_toolchains("@local_config_apple_cc_toolchains//:all")

@@ -1,4 +1,5 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_build_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "UILocalizer",

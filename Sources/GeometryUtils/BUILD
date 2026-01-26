@@ -1,5 +1,4 @@
-load("@build_bazel_rules_apple//apple:ios.bzl", "ios_build_test")
-load("@build_bazel_rules_apple//apple:macos.bzl", "macos_build_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "GeometryUtils",
@@ -9,11 +8,11 @@ objc_library(
     hdrs = [
         "Public/Foundation/GTMGeometryUtils.h",
     ],
-    sdk_frameworks = [
-        "CoreGraphics",
-    ],
     includes = [
         "Public/Foundation",
+    ],
+    sdk_frameworks = [
+        "CoreGraphics",
     ],
     visibility = ["//visibility:public"],
     deps = [

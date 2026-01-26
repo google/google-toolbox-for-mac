@@ -1,19 +1,20 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "LocalizedStringLib",
+    testonly = 1,
     srcs = [
         "GTMLocalizedStringTest.m",
     ],
-    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/LocalizedString:LocalizedString",
-        "//UnitTesting:SenTestCase",
         "//:Defines",
+        "//Sources/LocalizedString",
+        "//UnitTesting:SenTestCase",
     ],
 )
 

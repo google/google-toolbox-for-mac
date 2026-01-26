@@ -1,19 +1,20 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "NSData_zlibLib",
+    testonly = 1,
     srcs = [
         "GTMNSData+zlibTest.m",
     ],
-    testonly = 1,
+    sdk_dylibs = ["libz"],
     sdk_frameworks = [
         "XCTest",
     ],
-    sdk_dylibs = ["libz"],
     deps = [
-        "//Sources/NSData_zlib:NSData_zlib",
         "//:Defines",
+        "//Sources/NSData_zlib",
         "//UnitTesting:SenTestCase",
     ],
 )

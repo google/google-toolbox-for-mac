@@ -1,5 +1,4 @@
-load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
-load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "NSData_zlib",
@@ -9,10 +8,10 @@ objc_library(
     hdrs = [
         "Public/Foundation/GTMNSData+zlib.h",
     ],
-    sdk_dylibs = ["libz"],
     includes = [
         "Public/Foundation",
     ],
+    sdk_dylibs = ["libz"],
     visibility = ["//visibility:public"],
     deps = [
         "//:Defines",

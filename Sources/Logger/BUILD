@@ -1,6 +1,5 @@
-load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
-load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
 load("@build_bazel_rules_apple//apple:resources.bzl", "apple_resource_bundle")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "Logger",
@@ -15,17 +14,17 @@ objc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//:Defines",
         ":LoggerPrivacyResources",
+        "//:Defines",
     ],
 )
 
 apple_resource_bundle(
     name = "LoggerPrivacyResources",
+    bundle_name = "Logger_PrivacyInfo",
     resources = [
         "Resources/PrivacyInfo.xcprivacy",
     ],
-    bundle_name = "Logger_PrivacyInfo",
     visibility = ["//visibility:public"],
 )
 
@@ -49,14 +48,14 @@ objc_library(
 
 objc_library(
     name = "LoggerRingBufferWriter",
-    non_arc_srcs = [
-        "GTMLoggerRingBufferWriter.m",
-    ],
     hdrs = [
         "Public/Foundation/GTMLoggerRingBufferWriter.h",
     ],
     includes = [
         "Public/Foundation",
+    ],
+    non_arc_srcs = [
+        "GTMLoggerRingBufferWriter.m",
     ],
     visibility = ["//visibility:public"],
     deps = [

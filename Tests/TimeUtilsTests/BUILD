@@ -1,19 +1,20 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "TimeUtilsLib",
+    testonly = 1,
     srcs = [
         "GTMTimeUtilsTest.m",
     ],
-    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/TimeUtils:TimeUtils",
-        "//UnitTesting:SenTestCase",
         "//:Defines",
+        "//Sources/TimeUtils",
+        "//UnitTesting:SenTestCase",
     ],
 )
 

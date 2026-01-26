@@ -1,19 +1,20 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("@build_bazel_rules_apple//apple:macos.bzl", "macos_unit_test")
+load("@rules_cc//cc:objc_library.bzl", "objc_library")
 
 objc_library(
     name = "NSString_XMLLib",
+    testonly = 1,
     non_arc_srcs = [
         "GTMNSString+XMLTest.m",
     ],
-    testonly = 1,
     sdk_frameworks = [
         "XCTest",
     ],
     deps = [
-        "//Sources/NSString_XML:NSString_XML",
-        "//UnitTesting:SenTestCase",
         "//:Defines",
+        "//Sources/NSString_XML",
+        "//UnitTesting:SenTestCase",
     ],
 )
 
