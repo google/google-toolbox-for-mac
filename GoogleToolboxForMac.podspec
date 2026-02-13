@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'GoogleToolboxForMac'
-  s.version          = '5.0.0'
+  s.version          = '5.1.0'
   s.author           = 'Google Inc.'
   s.license          = { :type => 'Apache', :file => 'LICENSE' }
   s.homepage         = 'https://github.com/google/google-toolbox-for-mac'
