@@ -67,5 +67,5 @@ jobs:
             -project GTMiPhone.xcodeproj \
             -scheme GTMiPhone \
             -configuration ${{ matrix.MODE }} \
-            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
+            -destination "platform=iOS Simulator,name=iPhone 17,OS=latest" \
             build test
