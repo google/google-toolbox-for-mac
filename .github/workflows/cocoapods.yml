@@ -37,7 +37,7 @@ on:
 
 jobs:
   pod-lib-lint:
-    runs-on: macos-15
+    runs-on: macos-26
     strategy:
       fail-fast: false
       matrix:
