@@ -7,6 +7,10 @@ for writing code for Apple platforms.
 
 ### CocoaPods
 
+**NOTE***: CocoaPods is spinning down in 2026,
+[announcement](https://blog.cocoapods.org/CocoaPods-Specs-Repo/), so it is in
+your interest to move to Swift Package Manager (SwiftPM) before then.
+
 If you are building from CocoaPods, just use the pod provided, `GoogleToolboxForMac`.
 
 The podspec provides subspecs so you can depend on exactly what parts of GTM you want
