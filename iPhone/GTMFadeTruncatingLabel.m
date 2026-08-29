@@ -19,6 +19,8 @@
 
 @interface GTMFadeTruncatingLabel ()
 - (void)setup;
+- (void)drawAttributedTextInRect:(CGRect)rect
+                 foregroundColor:(UIColor *)foregroundColor;
 @end
 
 @implementation GTMFadeTruncatingLabel
@@ -51,7 +53,9 @@
   CGContextSaveGState(context);
 
   CGSize size = CGSizeZero;
-  if (self.font) {
+  if (self.attributedText) {
+    size = [self.attributedText size];
+  } else if (self.font) {
     size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
   }
   if (size.width > requestedRect.size.width) {
@@ -65,7 +69,10 @@
   if (self.shadowColor) {
     CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
                                      self.shadowOffset.height);
-    if (self.font) {
+    if (self.attributedText) {
+      [self drawAttributedTextInRect:shadowRect
+                     foregroundColor:self.shadowColor];
+    } else if (self.font) {
       NSMutableParagraphStyle* textStyle =
           [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
       textStyle.lineBreakMode = self.lineBreakMode;
@@ -91,7 +98,10 @@
   // (NOTE(bgoodwin): interesting side-note. These docs also say setting
   // textColor to nil will result in an exception. In my testing, that did not
   // happen.)
-  if (self.font) {
+  if (self.attributedText) {
+    [self drawAttributedTextInRect:requestedRect
+                   foregroundColor:nil];
+  } else if (self.font) {
     NSMutableParagraphStyle* textStyle =
         [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
     textStyle.lineBreakMode = self.lineBreakMode;
@@ -105,6 +115,39 @@
            withAttributes:attributes];
   }
   CGContextRestoreGState(context);
+}
+
+// Draws the attributed text into |rect|. The label's line break mode and
+// alignment are applied where the attributed string doesn't define its own
+// paragraph style, which is what UILabel would do if it were drawing the text
+// itself. When |foregroundColor| is non-nil it replaces the string's
+// foreground colors (used for the shadow pass).
+- (void)drawAttributedTextInRect:(CGRect)rect
+                 foregroundColor:(UIColor *)foregroundColor {
+  if (!self.attributedText || [self.attributedText length] == 0) {
+    return;
+  }
+  NSMutableAttributedString *drawText =
+      [[self.attributedText mutableCopy] autorelease];
+  NSRange styleRange = NSMakeRange(0, [drawText length]);
+  if (![drawText attribute:NSParagraphStyleAttributeName
+                   atIndex:0
+            longestEffectiveRange:&styleRange
+                          inRange:NSMakeRange(0, [drawText length])]) {
+    NSMutableParagraphStyle *textStyle =
+        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    textStyle.lineBreakMode = self.lineBreakMode;
+    textStyle.alignment = self.textAlignment;
+    [drawText addAttribute:NSParagraphStyleAttributeName
+                     value:textStyle
+                     range:NSMakeRange(0, [drawText length])];
+  }
+  if (foregroundColor) {
+    [drawText addAttribute:NSForegroundColorAttributeName
+                     value:foregroundColor
+                     range:NSMakeRange(0, [drawText length])];
+  }
+  [drawText drawInRect:rect];
 }
 
 // Create gradient opacity mask based on direction.
