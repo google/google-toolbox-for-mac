@@ -19,5 +19,16 @@
 
 #import "GTMLocalizedString.h"
 
+#import "GTMSenTestCase.h"
+
 // No real test here, just verification that GTMLocalizedString.h will compile
 // without errors.
+
+@interface GTMLocalizedStringTest : GTMTestCase
+@end
+
+@implementation GTMLocalizedStringTest
+- (void)testNothing {
+    XCTAssertTrue(YES);
+}
+@end
