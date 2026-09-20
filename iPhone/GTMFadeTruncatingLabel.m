@@ -56,7 +56,11 @@
 
   CGSize size = CGSizeZero;
   if (self.attributedText) {
-    size = [self.attributedText size];
+    // Measure the string we're about to draw, not the raw attributed text.
+    // The label's line break mode goes into the paragraph style below and it
+    // can change the layout, so measuring the unstyled string could disagree
+    // with what actually ends up on screen. Alignment doesn't affect the size.
+    size = [[self attributedTextWithLabelStyleAndForegroundColor:nil] size];
   } else if (self.font) {
     size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
   }
