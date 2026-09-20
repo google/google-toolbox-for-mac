@@ -19,6 +19,8 @@
 
 @interface GTMFadeTruncatingLabel ()
 - (void)setup;
+- (NSMutableAttributedString *)attributedTextWithLabelStyleAndForegroundColor:
+    (UIColor *)foregroundColor;
 - (void)drawAttributedTextInRect:(CGRect)rect
                  foregroundColor:(UIColor *)foregroundColor;
 @end
@@ -117,37 +119,47 @@
   CGContextRestoreGState(context);
 }
 
-// Draws the attributed text into |rect|. The label's line break mode and
-// alignment are applied where the attributed string doesn't define its own
-// paragraph style, which is what UILabel would do if it were drawing the text
-// itself. When |foregroundColor| is non-nil it replaces the string's
-// foreground colors (used for the shadow pass).
+// Returns the attributed text with the label's line break mode and alignment
+// filled in where the string doesn't define its own paragraph style, which is
+// what UILabel would do if it were drawing the text itself. When
+// |foregroundColor| is non-nil it replaces the string's foreground colors (used
+// for the shadow pass).
+- (NSMutableAttributedString *)attributedTextWithLabelStyleAndForegroundColor:
+    (UIColor *)foregroundColor {
+  NSMutableAttributedString *text =
+      [[self.attributedText mutableCopy] autorelease];
+  if ([text length] == 0) {
+    return text;
+  }
+  NSRange fullRange = NSMakeRange(0, [text length]);
+  NSRange styleRange = fullRange;
+  if (![text attribute:NSParagraphStyleAttributeName
+                atIndex:0
+         longestEffectiveRange:&styleRange
+               inRange:fullRange]) {
+    NSMutableParagraphStyle *textStyle =
+        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    textStyle.lineBreakMode = self.lineBreakMode;
+    textStyle.alignment = self.textAlignment;
+    [text addAttribute:NSParagraphStyleAttributeName
+                 value:textStyle
+                 range:fullRange];
+  }
+  if (foregroundColor) {
+    [text addAttribute:NSForegroundColorAttributeName
+                 value:foregroundColor
+                 range:fullRange];
+  }
+  return text;
+}
+
 - (void)drawAttributedTextInRect:(CGRect)rect
                  foregroundColor:(UIColor *)foregroundColor {
   if (!self.attributedText || [self.attributedText length] == 0) {
     return;
   }
-  NSMutableAttributedString *drawText =
-      [[self.attributedText mutableCopy] autorelease];
-  NSRange styleRange = NSMakeRange(0, [drawText length]);
-  if (![drawText attribute:NSParagraphStyleAttributeName
-                   atIndex:0
-            longestEffectiveRange:&styleRange
-                          inRange:NSMakeRange(0, [drawText length])]) {
-    NSMutableParagraphStyle *textStyle =
-        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-    textStyle.lineBreakMode = self.lineBreakMode;
-    textStyle.alignment = self.textAlignment;
-    [drawText addAttribute:NSParagraphStyleAttributeName
-                     value:textStyle
-                     range:NSMakeRange(0, [drawText length])];
-  }
-  if (foregroundColor) {
-    [drawText addAttribute:NSForegroundColorAttributeName
-                     value:foregroundColor
-                     range:NSMakeRange(0, [drawText length])];
-  }
-  [drawText drawInRect:rect];
+  [[self attributedTextWithLabelStyleAndForegroundColor:foregroundColor]
+      drawInRect:rect];
 }
 
 // Create gradient opacity mask based on direction.
