@@ -56,4 +56,11 @@ jobs:
         repository-cache: true
     - name: bazel test
       run:  |
-        bazelisk test --build_tests_only --test_output=errors -c "${{ matrix.MODE }}" --ios_simulator_device='iPhone 15' //...
+        bazelisk \
+          test \
+          --build_tests_only \
+          --test_output=errors \
+          -c "${{ matrix.MODE }}" \
+          --local_test_jobs=1 \
+          --ios_simulator_device='iPhone 17' \
+          //...
