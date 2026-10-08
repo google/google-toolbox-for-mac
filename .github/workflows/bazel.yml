@@ -54,13 +54,17 @@ jobs:
       with:
         bazelisk-cache: true
         repository-cache: true
+    - name: Boot iOS Simulator
+      run: |
+        bazelisk run @build_bazel_rules_apple//apple/testing/default_runner:simulator_creator -- \
+          --device-type='iPhone 17' \
+          --sdk-version="$(xcrun --sdk iphonesimulator --show-sdk-version)"
     - name: bazel test
-      run:  |
+      run: |
         bazelisk \
           test \
           --build_tests_only \
           --test_output=errors \
           -c "${{ matrix.MODE }}" \
-          --local_test_jobs=1 \
           --ios_simulator_device='iPhone 17' \
           //...
