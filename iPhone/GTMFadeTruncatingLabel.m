@@ -19,6 +19,10 @@
 
 @interface GTMFadeTruncatingLabel ()
 - (void)setup;
+- (NSMutableAttributedString *)attributedTextWithLabelStyleAndForegroundColor:
+    (UIColor *)foregroundColor;
+- (void)drawAttributedTextInRect:(CGRect)rect
+                 foregroundColor:(UIColor *)foregroundColor;
 @end
 
 @implementation GTMFadeTruncatingLabel
@@ -51,7 +55,13 @@
   CGContextSaveGState(context);
 
   CGSize size = CGSizeZero;
-  if (self.font) {
+  if (self.attributedText) {
+    // Measure the string we're about to draw, not the raw attributed text.
+    // The label's line break mode goes into the paragraph style below and it
+    // can change the layout, so measuring the unstyled string could disagree
+    // with what actually ends up on screen. Alignment doesn't affect the size.
+    size = [[self attributedTextWithLabelStyleAndForegroundColor:nil] size];
+  } else if (self.font) {
     size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
   }
   if (size.width > requestedRect.size.width) {
@@ -65,7 +75,10 @@
   if (self.shadowColor) {
     CGRect shadowRect = CGRectOffset(requestedRect, self.shadowOffset.width,
                                      self.shadowOffset.height);
-    if (self.font) {
+    if (self.attributedText) {
+      [self drawAttributedTextInRect:shadowRect
+                     foregroundColor:self.shadowColor];
+    } else if (self.font) {
       NSMutableParagraphStyle* textStyle =
           [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
       textStyle.lineBreakMode = self.lineBreakMode;
@@ -91,7 +104,10 @@
   // (NOTE(bgoodwin): interesting side-note. These docs also say setting
   // textColor to nil will result in an exception. In my testing, that did not
   // happen.)
-  if (self.font) {
+  if (self.attributedText) {
+    [self drawAttributedTextInRect:requestedRect
+                   foregroundColor:nil];
+  } else if (self.font) {
     NSMutableParagraphStyle* textStyle =
         [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
     textStyle.lineBreakMode = self.lineBreakMode;
@@ -105,6 +121,49 @@
            withAttributes:attributes];
   }
   CGContextRestoreGState(context);
+}
+
+// Returns the attributed text with the label's line break mode and alignment
+// filled in where the string doesn't define its own paragraph style, which is
+// what UILabel would do if it were drawing the text itself. When
+// |foregroundColor| is non-nil it replaces the string's foreground colors (used
+// for the shadow pass).
+- (NSMutableAttributedString *)attributedTextWithLabelStyleAndForegroundColor:
+    (UIColor *)foregroundColor {
+  NSMutableAttributedString *text =
+      [[self.attributedText mutableCopy] autorelease];
+  if ([text length] == 0) {
+    return text;
+  }
+  NSRange fullRange = NSMakeRange(0, [text length]);
+  NSRange styleRange = fullRange;
+  if (![text attribute:NSParagraphStyleAttributeName
+                atIndex:0
+         longestEffectiveRange:&styleRange
+               inRange:fullRange]) {
+    NSMutableParagraphStyle *textStyle =
+        [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    textStyle.lineBreakMode = self.lineBreakMode;
+    textStyle.alignment = self.textAlignment;
+    [text addAttribute:NSParagraphStyleAttributeName
+                 value:textStyle
+                 range:fullRange];
+  }
+  if (foregroundColor) {
+    [text addAttribute:NSForegroundColorAttributeName
+                 value:foregroundColor
+                 range:fullRange];
+  }
+  return text;
+}
+
+- (void)drawAttributedTextInRect:(CGRect)rect
+                 foregroundColor:(UIColor *)foregroundColor {
+  if (!self.attributedText || [self.attributedText length] == 0) {
+    return;
+  }
+  [[self attributedTextWithLabelStyleAndForegroundColor:foregroundColor]
+      drawInRect:rect];
 }
 
 // Create gradient opacity mask based on direction.
