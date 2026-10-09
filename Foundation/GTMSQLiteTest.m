@@ -1074,6 +1074,72 @@ static void TestUpperLower16Impl(sqlite3_context *context,
                          @"SELECT x FROM t1 WHERE x GLOB 'a[b-d]d' ORDER BY 1;"),
       ([NSArray arrayWithObjects:@"abd", @"acd", nil]),
       @"Fail on GLOB with character range");
+
+    // Section 6, backtracking. What follows a matchAll can fit in more than
+    // one place, so matching it at the first place it fits is not on its own
+    // enough; when the rest of the pattern then fails, the matchAll has to be
+    // allowed to consume more of the string and the rest retried. Every value
+    // in t1 contains what these patterns look for at most once, which leaves
+    // that untested, so use a separate table whose values repeat it.
+    err = [db executeSQL:@"CREATE TABLE t3 (x TEXT);"];
+    XCTAssertEqual(err, SQLITE_OK,
+                   @"Failed to create table for LIKE/GLOB backtracking test");
+    err = [db executeSQL:@"INSERT INTO t3 VALUES ('aa');"];
+    XCTAssertEqual(err, SQLITE_OK, @"Failed to execute sql");
+    err = [db executeSQL:@"INSERT INTO t3 VALUES ('abab');"];
+    XCTAssertEqual(err, SQLITE_OK, @"Failed to execute sql");
+    err = [db executeSQL:@"INSERT INTO t3 VALUES ('banana');"];
+    XCTAssertEqual(err, SQLITE_OK, @"Failed to execute sql");
+    err = [db executeSQL:@"INSERT INTO t3 VALUES ('bcbc');"];
+    XCTAssertEqual(err, SQLITE_OK, @"Failed to execute sql");
+    [db setLikeComparisonOptions:(kCFCompareNonliteral)];
+    [db setGlobComparisonOptions:(kCFCompareNonliteral)];
+
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x LIKE '%a' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"aa", @"banana", nil]),
+      @"Fail on LIKE test 6.1");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x LIKE '%ab' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"abab", nil]),
+      @"Fail on LIKE test 6.2");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x LIKE '%na' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"banana", nil]),
+      @"Fail on LIKE test 6.3");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x LIKE 'a%b' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"abab", nil]),
+      @"Fail on LIKE test 6.4");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x LIKE '%a_a' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"banana", nil]),
+      @"Fail on LIKE test 6.5");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x GLOB '*a' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"aa", @"banana", nil]),
+      @"Fail on GLOB test 6.6");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x GLOB 'a*b' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"abab", nil]),
+      @"Fail on GLOB test 6.7");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x GLOB '*a?a' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"banana", nil]),
+      @"Fail on GLOB test 6.8");
+    XCTAssertEqualObjects(
+      LikeGlobTestHelper(db,
+                         @"SELECT x FROM t3 WHERE x GLOB '*[ab]b' ORDER BY 1;"),
+      ([NSArray arrayWithObjects:@"abab", nil]),
+      @"Fail on GLOB test 6.9");
   }
 }
 

@@ -987,6 +987,35 @@ static int Collate16(void *userContext, int length1, const void *str1,
 
 #pragma mark Like/Glob
 
+// Private helper for LikeGlobCompare() below. Hands one more composed
+// character sequence of the target string to the most recent matchAll ("%"
+// for LIKE, "*" for GLOB) and rewinds the pattern walk to just after it, so
+// that the rest of the pattern is retried further along the string. Returns
+// NO, leaving all state untouched, if there is no matchAll to rewind to or it
+// has already consumed the whole string.
+static BOOL LikeGlobBacktrack(CFStringRef targetString,
+                              CFIndex targetStringLength,
+                              CFIndex backtrackPatternIndex,
+                              CFIndex *backtrackTargetIndex,
+                              CFIndex *patternIndex,
+                              CFIndex *targetStringIndex,
+                              BOOL *isAnchored) {
+  if ((backtrackPatternIndex == kCFNotFound) ||
+      (*backtrackTargetIndex >= targetStringLength)) {
+    return NO;
+  }
+  CFRange consumedRange =
+    CFStringGetRangeOfComposedCharactersAtIndex(targetString,
+                                                *backtrackTargetIndex);
+  // Strictly increasing, so a walk cannot backtrack more times than the
+  // target string is long.
+  *backtrackTargetIndex = consumedRange.location + consumedRange.length;
+  *patternIndex = backtrackPatternIndex;
+  *targetStringIndex = *backtrackTargetIndex;
+  *isAnchored = NO;
+  return YES;
+}
+
 // Private helper to handle LIKE and GLOB with different encodings. This
 // is essentially a reimplementation of patternCompare() in func.c of the
 // SQLite sources.
@@ -1009,6 +1038,15 @@ static void LikeGlobCompare(sqlite3_context *context,
   CFIndex targetStringLength = CFStringGetLength(targetString);
   CFIndex targetStringIndex = 0;
   BOOL isAnchored = YES;
+  // Backtracking state for the most recent matchAll. Matching each pattern
+  // element at the first place it fits is not on its own enough: when the
+  // rest of the pattern then fails, the matchAll ahead of it has to be
+  // allowed to consume more of the target string and the rest of the pattern
+  // retried. This is the backtracking that SQLite's patternCompare() gets
+  // from recursing at matchAll. kCFNotFound means no matchAll has been seen
+  // yet, so a failure is final.
+  CFIndex backtrackPatternIndex = kCFNotFound;
+  CFIndex backtrackTargetIndex = 0;
 
   size_t dataSize = patternLength * sizeof(UniChar);
   NSMutableData *tempData = [NSMutableData dataWithLength:dataSize];
@@ -1039,14 +1077,26 @@ static void LikeGlobCompare(sqlite3_context *context,
     return;
     // COV_NF_END
   }
-  // Walk the pattern
-  while (patternIndex < patternLength) {
+  // Walk the pattern. When the pattern runs out before the string does, the
+  // walk continues if a matchAll can still be made to consume more (the
+  // second clause rewinds the walk as a side effect); otherwise it ends and
+  // the result is read off the final state below.
+  while ((patternIndex < patternLength) ||
+         (isAnchored && (targetStringIndex != targetStringLength) &&
+          LikeGlobBacktrack(targetString, targetStringLength,
+                            backtrackPatternIndex, &backtrackTargetIndex,
+                            &patternIndex, &targetStringIndex, &isAnchored))) {
     patternChar = CFStringGetCharacterFromInlineBuffer(&patternBuffer,
                                                        patternIndex);
     // Match all character has no effect other than to unanchor the search
     if (patternChar == matchAll) {
       isAnchored = NO;
       patternIndex++;
+      // Remember where to resume the walk, and how much of the target string
+      // this matchAll has consumed so far, in case what follows it turns out
+      // not to match here.
+      backtrackPatternIndex = patternIndex;
+      backtrackTargetIndex = targetStringIndex;
       continue;
     }
     // Match one character pushes the string index forward by one composed
@@ -1200,14 +1250,32 @@ static void LikeGlobCompare(sqlite3_context *context,
                                                             rangeLen),
                                                 findOptions,
                                                 &foundRange);
-      // If no match then the whole pattern fails
+      // If no match then this attempt fails
       if (!found) {
+        // An unanchored search has already covered the whole rest of the
+        // string, so no later starting point can do better and the failure
+        // is final. An anchored one can be retried further along if there
+        // is a matchAll to absorb the difference.
+        if (isAnchored &&
+            LikeGlobBacktrack(targetString, targetStringLength,
+                              backtrackPatternIndex, &backtrackTargetIndex,
+                              &patternIndex, &targetStringIndex,
+                              &isAnchored)) {
+          continue;
+        }
         sqlite3_result_int(context, 0);
         return;
       }
       // If we did match then we need to push the string index to the
       // character past the end of the match and then go back around
       // the loop.
+      if (!isAnchored) {
+        // Everything the unanchored search passed over is a place this
+        // element cannot start, so hand it to the matchAll now rather than
+        // rediscovering it one composed character at a time on every
+        // backtrack. isAnchored can only be NO once a matchAll has been seen.
+        backtrackTargetIndex += foundRange.location - targetStringIndex;
+      }
       targetStringIndex = foundRange.location + foundRange.length;
       // At this point patternIndex is either at the end of the
       // string, or at the next special character which will be picked
@@ -1274,14 +1342,32 @@ static void LikeGlobCompare(sqlite3_context *context,
                                                      rangeLen),
                                          findOptions,
                                          &foundRange);
-    // If no match then the whole pattern fails
+    // If no match then this attempt fails
     if (!found) {
+      // An unanchored search has already covered the whole rest of the
+      // string, so no later starting point can do better and the failure is
+      // final. An anchored one can be retried further along if there is a
+      // matchAll to absorb the difference.
+      if (isAnchored &&
+          LikeGlobBacktrack(targetString, targetStringLength,
+                            backtrackPatternIndex, &backtrackTargetIndex,
+                            &patternIndex, &targetStringIndex,
+                            &isAnchored)) {
+        continue;
+      }
       sqlite3_result_int(context, 0);
       return;
     }
     // If we did match then we need to push the string index to the
     // character past the end of the match and then go back around the
     // loop.
+    if (!isAnchored) {
+      // Everything the unanchored search passed over is a place this element
+      // cannot start, so hand it to the matchAll now rather than
+      // rediscovering it one composed character at a time on every
+      // backtrack. isAnchored can only be NO once a matchAll has been seen.
+      backtrackTargetIndex += foundRange.location - targetStringIndex;
+    }
     targetStringIndex = foundRange.location + foundRange.length;
     // At this point patternIndex is either at the end of the string,
     // or at the next special character which will be picked up and
@@ -1289,8 +1375,10 @@ static void LikeGlobCompare(sqlite3_context *context,
     // the anchor status
     isAnchored = YES;
   }
-  // On loop exit all pattern characters have been considered. If we're still
-  // alive it means that we've matched the entire pattern, except for trailing
+  // On loop exit either all pattern characters have been considered, or
+  // backtracking ran out (in which case we are still anchored with string
+  // left over and fall out as a non-match below). If we're still alive it
+  // means that we've matched the entire pattern, except for trailing
   // wildcards, we need to handle that case.
   if (isAnchored) {
     // If we're still anchored there was no trailing matchAll, in which case
