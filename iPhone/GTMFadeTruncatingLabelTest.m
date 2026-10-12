@@ -48,4 +48,47 @@
   label.text = @"Fade on both left and right";
 }
 
+- (void)testFadeTruncatingLabelWithAttributedText {
+  GTMFadeTruncatingLabel* label = [[[GTMFadeTruncatingLabel alloc]
+                                    initWithFrame:CGRectMake(0, 0, 200, 25)]
+                                   autorelease];
+  NSMutableAttributedString* attributedText =
+      [[[NSMutableAttributedString alloc]
+        initWithString:@"A very long string that won't fit"]
+       autorelease];
+  [attributedText addAttribute:NSFontAttributeName
+                         value:[UIFont boldSystemFontOfSize:17]
+                         range:NSMakeRange(0, [attributedText length])];
+  [attributedText addAttribute:NSForegroundColorAttributeName
+                         value:[UIColor redColor]
+                         range:NSMakeRange(0, 8)];
+  label.attributedText = attributedText;
+  label.shadowColor = [UIColor grayColor];
+  label.shadowOffset = CGSizeMake(1, 1);
+
+  // Long attributed string, exercises the fade mask and the shadow copy.
+  UIGraphicsBeginImageContextWithOptions(label.bounds.size, NO, 0);
+  [label drawTextInRect:label.bounds];
+  UIGraphicsEndImageContext();
+}
+
+- (void)testFadeTruncatingLabelWithShortAttributedText {
+  GTMFadeTruncatingLabel* label = [[[GTMFadeTruncatingLabel alloc]
+                                    initWithFrame:CGRectMake(0, 0, 200, 25)]
+                                   autorelease];
+  NSMutableAttributedString* attributedText =
+      [[[NSMutableAttributedString alloc]
+        initWithString:@"A short string"]
+       autorelease];
+  [attributedText addAttribute:NSFontAttributeName
+                         value:[UIFont boldSystemFontOfSize:17]
+                         range:NSMakeRange(0, [attributedText length])];
+  label.attributedText = attributedText;
+
+  // Short attributed string, shouldn't create the fade mask.
+  UIGraphicsBeginImageContextWithOptions(label.bounds.size, NO, 0);
+  [label drawTextInRect:label.bounds];
+  UIGraphicsEndImageContext();
+}
+
 @end
