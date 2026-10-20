@@ -1,5 +1,8 @@
 name: CocoaPods
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [ main ]
